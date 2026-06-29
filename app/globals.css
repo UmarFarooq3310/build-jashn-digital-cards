@@ -1,0 +1,361 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-heading: var(--font-poppins), 'Poppins Fallback', sans-serif;
+  --font-sans: var(--font-poppins), 'Poppins Fallback', sans-serif;
+  --font-urdu: var(--font-nastaliq), serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-gold: var(--gold);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+:root {
+  color-scheme: light;
+  /* Jashn app chrome: warm ivory canvas, deep mehndi red brand, Mughal gold accent */
+  --background: oklch(0.985 0.012 80);
+  --foreground: oklch(0.22 0.04 25);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.04 25);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.04 25);
+  --primary: oklch(0.42 0.17 18);
+  --primary-foreground: oklch(0.98 0.02 90);
+  --secondary: oklch(0.94 0.02 80);
+  --secondary-foreground: oklch(0.3 0.05 25);
+  --muted: oklch(0.95 0.015 80);
+  --muted-foreground: oklch(0.5 0.03 40);
+  --accent: oklch(0.8 0.13 80);
+  --accent-foreground: oklch(0.28 0.06 40);
+  --gold: oklch(0.78 0.13 82);
+  --destructive: oklch(0.55 0.22 27);
+  --border: oklch(0.9 0.02 70);
+  --input: oklch(0.9 0.02 70);
+  --ring: oklch(0.55 0.14 30);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.98 0.012 80);
+  --sidebar-foreground: oklch(0.22 0.04 25);
+  --sidebar-primary: oklch(0.42 0.17 18);
+  --sidebar-primary-foreground: oklch(0.98 0.02 90);
+  --sidebar-accent: oklch(0.94 0.02 80);
+  --sidebar-accent-foreground: oklch(0.3 0.05 25);
+  --sidebar-border: oklch(0.9 0.02 70);
+  --sidebar-ring: oklch(0.55 0.14 30);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Urdu / bilingual helpers
+---------------------------------------------------------------------------- */
+.font-urdu {
+  font-family: var(--font-urdu);
+  direction: rtl;
+  line-height: 2.1;
+}
+
+/* ----------------------------------------------------------------------------
+   JASHN CARD THEME ENGINE
+   Each theme sets CSS variables consumed by the card surface.
+   --c-bg1/--c-bg2 = background gradient stops
+   --c-ink         = main text color
+   --c-accent      = decorative / border color (usually gold/silver)
+   --c-glow        = particle + shimmer color
+---------------------------------------------------------------------------- */
+.jashn-card {
+  position: relative;
+  overflow: hidden;
+  color: var(--c-ink, #fff);
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in oklab, var(--c-accent) 14%, transparent), transparent 60%),
+    linear-gradient(160deg, var(--c-bg1, #7B0D1E), var(--c-bg2, #4a0510));
+  isolation: isolate;
+}
+
+/* Free themes */
+.theme-mehndi-red {
+  --c-bg1: #8e0f24;
+  --c-bg2: #4a0510;
+  --c-ink: #fff4e6;
+  --c-accent: #e6b54a;
+  --c-glow: #ffd700;
+}
+.theme-feroza-teal {
+  --c-bg1: #006064;
+  --c-bg2: #002d30;
+  --c-ink: #e0f7fa;
+  --c-accent: #80deea;
+  --c-glow: #b2ebf2;
+}
+.theme-royal-blue {
+  --c-bg1: #1a237e;
+  --c-bg2: #0a0e3d;
+  --c-ink: #eef1ff;
+  --c-accent: #c7ccff;
+  --c-glow: #aab4ff;
+}
+.theme-emerald-classic {
+  --c-bg1: #1B5E20;
+  --c-bg2: #08300c;
+  --c-ink: #f1fff0;
+  --c-accent: #e6c45a;
+  --c-glow: #ffe27a;
+}
+
+/* Premium themes */
+.theme-saffron-kesari {
+  --c-bg1: #e65100;
+  --c-bg2: #5d1a00;
+  --c-ink: #fff3e0;
+  --c-accent: #ffd54f;
+  --c-glow: #ffe082;
+}
+.theme-plum-jamuni {
+  --c-bg1: #4a148c;
+  --c-bg2: #1f003b;
+  --c-ink: #f3e5f5;
+  --c-accent: #ff80ab;
+  --c-glow: #ffb3c9;
+}
+.theme-mughal-gold {
+  --c-bg1: #5D4037;
+  --c-bg2: #2c1a12;
+  --c-ink: #fff5e0;
+  --c-accent: #f0c95a;
+  --c-glow: #ffdf7e;
+}
+.theme-violet-noor {
+  --c-bg1: #4A0E6B;
+  --c-bg2: #25063a;
+  --c-ink: #fbeeff;
+  --c-accent: #e6b8ff;
+  --c-glow: #f0c2ff;
+}
+.theme-pink-zardozi {
+  --c-bg1: #c2185b;
+  --c-bg2: #6d0a30;
+  --c-ink: #fff0f6;
+  --c-accent: #ffd24a;
+  --c-glow: #ffe08a;
+}
+.theme-ivory-shahi {
+  --c-bg1: #f3e9d2;
+  --c-bg2: #e4d3aa;
+  --c-ink: #5b3a1a;
+  --c-accent: #b8862b;
+  --c-glow: #e8c873;
+}
+.theme-midnight-kashi {
+  --c-bg1: #0d1b4c;
+  --c-bg2: #050a26;
+  --c-ink: #eaf0ff;
+  --c-accent: #5fb6e6;
+  --c-glow: #8fd4ff;
+}
+.theme-ruby-gulabi {
+  --c-bg1: #b00020;
+  --c-bg2: #5c0010;
+  --c-ink: #fff0f0;
+  --c-accent: #ff9eb5;
+  --c-glow: #ffc2cf;
+}
+
+/* ----------------------------------------------------------------------------
+   Mehndi floral border (top & bottom) — pure CSS repeating pattern
+---------------------------------------------------------------------------- */
+.mehndi-border {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 26px;
+  color: var(--c-accent);
+  opacity: 0.9;
+  background-image:
+    radial-gradient(circle at 10px 13px, currentColor 2.5px, transparent 3px),
+    radial-gradient(circle at 10px 13px, transparent 6px, currentColor 6.5px, transparent 8px),
+    radial-gradient(circle at 0px 13px, currentColor 1.5px, transparent 2px),
+    radial-gradient(circle at 20px 13px, currentColor 1.5px, transparent 2px);
+  background-size: 20px 26px;
+  background-repeat: repeat-x;
+}
+.mehndi-border.top {
+  top: 0;
+}
+.mehndi-border.bottom {
+  bottom: 0;
+  transform: rotate(180deg);
+}
+
+/* Mughal arch decorative frame */
+.mughal-arch {
+  border: 1.5px solid color-mix(in oklab, var(--c-accent) 70%, transparent);
+  border-radius: 48% 48% 8px 8px / 70% 70% 8px 8px;
+  box-shadow: inset 0 0 0 4px color-mix(in oklab, var(--c-accent) 22%, transparent);
+}
+
+/* ----------------------------------------------------------------------------
+   Animations: shimmer text, sparkle, floating petals, twinkling stars
+---------------------------------------------------------------------------- */
+.shimmer-text {
+  background: linear-gradient(
+    100deg,
+    var(--c-ink) 30%,
+    var(--c-glow) 50%,
+    var(--c-ink) 70%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: jashn-shimmer 3.5s linear infinite;
+}
+@keyframes jashn-shimmer {
+  to {
+    background-position: -220% center;
+  }
+}
+
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-glow);
+  box-shadow: 0 0 8px 2px var(--c-glow);
+  animation: jashn-sparkle 2.4s ease-in-out infinite;
+}
+@keyframes jashn-sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.4); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+.petal {
+  position: absolute;
+  top: -24px;
+  width: 12px;
+  height: 12px;
+  background: var(--c-accent);
+  border-radius: 50% 0 50% 0;
+  opacity: 0.75;
+  animation: jashn-fall linear infinite;
+}
+@keyframes jashn-fall {
+  0% { transform: translateY(-10%) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.8; }
+  100% { transform: translateY(420px) rotate(360deg); opacity: 0; }
+}
+
+.twinkle {
+  position: absolute;
+  color: var(--c-glow);
+  animation: jashn-twinkle 3s ease-in-out infinite;
+}
+@keyframes jashn-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.crescent-float {
+  animation: jashn-floaty 5s ease-in-out infinite;
+}
+@keyframes jashn-floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ----------------------------------------------------------------------------
+   3D Animated Card Engine (Perspective Depth & Tilt Motion)
+---------------------------------------------------------------------------- */
+.card-3d-wrap {
+  perspective: 1200px;
+}
+
+.card-3d-surface {
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45), 0 0 20px 2px color-mix(in oklab, var(--c-accent, #ffd700) 25%, transparent);
+}
+
+.card-3d-surface:hover {
+  transform: translateY(-8px) rotateX(4deg) rotateY(-4deg) scale(1.02);
+  box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.6), 0 0 30px 6px color-mix(in oklab, var(--c-accent, #ffd700) 40%, transparent);
+}
+
+.card-3d-entrance {
+  animation: jashn-3d-entrance 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes jashn-3d-entrance {
+  0% {
+    opacity: 0;
+    transform: perspective(1200px) rotateY(-45deg) rotateX(15deg) translateZ(-150px) scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1200px) rotateY(0deg) rotateX(0deg) translateZ(0) scale(1);
+  }
+}
+
+/* 3D and Scrollbar Helpers */
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+

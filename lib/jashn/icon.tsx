@@ -1,0 +1,73 @@
+import {
+  Cake,
+  Heart,
+  Baby,
+  HeartPulse,
+  Plane,
+  PartyPopper,
+  Gift,
+  HandHeart,
+  Sparkles,
+  Sprout,
+  Moon,
+  Star,
+  GraduationCap,
+  Briefcase,
+  Award,
+  House,
+  Rocket,
+  ScrollText,
+  Flag,
+  Users,
+  Gem,
+  Crown,
+  Flower2,
+  Music,
+  Utensils,
+  BookOpen,
+  Store,
+  Building2,
+  type LucideIcon,
+} from 'lucide-react'
+
+const MAP: Record<string, LucideIcon> = {
+  Cake,
+  Heart,
+  Baby,
+  HeartPulse,
+  Plane,
+  PartyPopper,
+  Gift,
+  HandHeart,
+  Sparkles,
+  Sprout,
+  Moon,
+  Star,
+  GraduationCap,
+  Briefcase,
+  Award,
+  House,
+  Rocket,
+  ScrollText,
+  Flag,
+  Users,
+  Gem,
+  Crown,
+  Flower2,
+  Music,
+  Utensils,
+  BookOpen,
+  Store,
+  Building2,
+}
+
+export function JashnIcon({
+  name,
+  className,
+}: {
+  name: string
+  className?: string
+}) {
+  const Cmp = MAP[name] ?? Sparkles
+  return <Cmp className={className} aria-hidden="true" />
+}
