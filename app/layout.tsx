@@ -88,6 +88,8 @@ export default function RootLayout({
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
           crossOrigin="anonymous"
+          // @ts-ignore
+          data-adbreak-test="on"
         />
       </head>
       <body className="bg-background font-sans antialiased overflow-x-hidden">
