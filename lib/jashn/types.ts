@@ -11,6 +11,12 @@ export interface Occasion {
   category: 'Personal' | 'Islamic' | 'Achievements' | 'National' | 'Family'
   /** lucide icon name (kebab not needed — we map PascalCase) */
   icon: string
+  /** portrait background image path (e.g. '/occasions/birthday.jpg') */
+  bgImage?: string
+  /** fallback gradient used when bgImage is missing */
+  bgGradient?: string
+  /** hand-drawn sketch SVG illustration path (e.g. '/sketches/birthday.svg') */
+  sketchImage?: string
 }
 
 export interface InvitationType {
@@ -21,6 +27,12 @@ export interface InvitationType {
   icon: string
   /** does this event have a bride/groom pair */
   couple?: boolean
+  /** portrait background image path (e.g. '/invitations/mehndi.jpg') */
+  bgImage?: string
+  /** fallback gradient used when bgImage is missing */
+  bgGradient?: string
+  /** hand-drawn sketch SVG illustration path (e.g. '/sketches/mehndi.svg') */
+  sketchImage?: string
 }
 
 export interface CardTheme {

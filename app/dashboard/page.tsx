@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Plus, Sparkles, Eye, Users, Crown, Calendar, Send, ExternalLink, LogOut, FileText, CheckCircle2 } from 'lucide-react'
+import { Plus, Sparkles, Eye, Users, Crown, Calendar, Send, ExternalLink, LogOut, FileText, CheckCircle2, Loader2 } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -15,10 +15,16 @@ import { cn } from '@/lib/utils'
 
 export default function DashboardPage() {
   const router = useRouter()
-  const { user, wishes, invitations, signOut, fetchUserCards, upgrade } = useJashn()
+  const { user, wishes, invitations, signOut, fetchUserCards, upgrade, isAuthLoading } = useJashn()
   
   // Tab selector: 'all' | 'events' | 'wishes'
   const [activeFilter, setActiveFilter] = useState<'all' | 'events' | 'wishes'>('all')
+
+  useEffect(() => {
+    if (!isAuthLoading && !user) {
+      router.push('/login?redirect=/dashboard')
+    }
+  }, [user, isAuthLoading, router])
 
   useEffect(() => {
     if (user) {
@@ -43,28 +49,16 @@ export default function DashboardPage() {
   const hostWishes = user ? wishes.filter((w) => w.creatorId === user.uid) : []
   const hostInvitations = user ? invitations.filter((i) => i.creatorId === user.uid) : []
 
-  if (!user) {
+  if (isAuthLoading) {
     return (
-      <div className="flex min-h-screen flex-col bg-background">
-        <SiteHeader />
-        <main className="flex flex-1 flex-col items-center justify-center p-6 text-center">
-          <img src="/icon.svg" alt="Jashn Logo" className="mx-auto size-16 rounded-2xl mb-4 shadow-md" />
-          <h1 className="text-3xl font-extrabold text-foreground">Welcome to Jashn Host Dashboard</h1>
-          <p className="mt-2 text-muted-foreground max-w-md">
-            Please log in or register a host account to manage your created wish cards, invitation analytics, and RSVP responses.
-          </p>
-          <div className="mt-6 flex gap-3">
-            <Link href="/login" className="rounded-xl bg-primary px-6 py-3 font-bold text-primary-foreground shadow-lg hover:bg-primary/90">
-              Log in to Jashn
-            </Link>
-            <Link href="/create-wish" className="rounded-xl border border-input bg-background px-6 py-3 font-semibold text-foreground hover:bg-muted">
-              Create a Guest Card
-            </Link>
-          </div>
-        </main>
-        <SiteFooter />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="size-8 animate-spin text-primary" />
       </div>
     )
+  }
+
+  if (!user) {
+    return null
   }
 
   return (

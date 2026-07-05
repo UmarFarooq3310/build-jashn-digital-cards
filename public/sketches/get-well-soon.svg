@@ -1,0 +1,28 @@
+<svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- large bouquet stem -->
+  <line x1="45" y1="115" x2="45" y2="75" stroke="#1e293b" stroke-width="1.4"/>
+  <line x1="45" y1="95" x2="30" y2="78" stroke="#1e293b" stroke-width="1.2"/>
+  <line x1="45" y1="90" x2="60" y2="75" stroke="#1e293b" stroke-width="1.2"/>
+  <line x1="45" y1="85" x2="25" y2="70" stroke="#1e293b" stroke-width="1.2"/>
+  <line x1="45" y1="85" x2="65" y2="68" stroke="#1e293b" stroke-width="1.2"/>
+  <!-- flowers -->
+  <circle cx="45" cy="62" r="12" stroke="#1e293b" stroke-width="1.4" fill="#fce7f3" opacity="0.6"/>
+  <circle cx="45" cy="62" r="5" stroke="#1e293b" stroke-width="1" fill="#fbbf24" opacity="0.5"/>
+  <circle cx="30" cy="68" r="9" stroke="#1e293b" stroke-width="1.3" fill="#bae6fd" opacity="0.6"/>
+  <circle cx="30" cy="68" r="4" stroke="#1e293b" stroke-width="1" fill="#fbbf24" opacity="0.4"/>
+  <circle cx="60" cy="65" r="9" stroke="#1e293b" stroke-width="1.3" fill="#d1fae5" opacity="0.6"/>
+  <circle cx="60" cy="65" r="4" stroke="#1e293b" stroke-width="1" fill="#fbbf24" opacity="0.4"/>
+  <circle cx="22" cy="58" r="7" stroke="#1e293b" stroke-width="1.2" fill="#fce7f3" opacity="0.5"/>
+  <circle cx="68" cy="56" r="7" stroke="#1e293b" stroke-width="1.2" fill="#d1fae5" opacity="0.5"/>
+  <!-- ribbon/bow on bouquet -->
+  <path d="M36 108 Q45 104 54 108" stroke="#1e293b" stroke-width="1.2"/>
+  <path d="M36 108 Q32 102 38 100 Q42 102 45 104" stroke="#1e293b" stroke-width="1.2"/>
+  <path d="M54 108 Q58 102 52 100 Q48 102 45 104" stroke="#1e293b" stroke-width="1.2"/>
+  <!-- heart with cross (healing symbol) top right -->
+  <path d="M68 20 Q68 14 72 16 Q76 14 76 20 Q76 26 72 30 Q68 26 68 20Z" stroke="#1e293b" stroke-width="1.3" fill="#fce7f3" opacity="0.7"/>
+  <line x1="72" y1="17" x2="72" y2="27" stroke="#ef4444" stroke-width="1.5"/>
+  <line x1="67" y1="22" x2="77" y2="22" stroke="#ef4444" stroke-width="1.5"/>
+  <!-- sparkle -->
+  <line x1="12" y1="20" x2="12" y2="28" stroke="#1e293b" stroke-width="1"/>
+  <line x1="8" y1="24" x2="16" y2="24" stroke="#1e293b" stroke-width="1"/>
+</svg>

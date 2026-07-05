@@ -1,5 +1,7 @@
 'use client'
 
+import { useJashn } from './store'
+
 /**
  * Rich Web Audio API Synthesizer for Jashn.
  * Synthesizes premium, context-specific melodies on the fly:
@@ -68,21 +70,162 @@ function createDelayFeedback(ctx: AudioContext, input: AudioNode, dest: AudioNod
  * Play contextual background sound based on the occasion category or id.
  * Uses autoplay fallback handling (returns a promise).
  */
+let currentAudio: HTMLAudioElement | null = null
+
+export function stopContextualSound() {
+  if (currentAudio) {
+    try {
+      currentAudio.pause()
+      currentAudio.currentTime = 0
+    } catch (e) {
+      console.warn('Failed to stop audio:', e)
+    }
+    currentAudio = null
+  }
+}
+
+function getSoundPath(themeOrOccasion: string): string {
+  const normalized = themeOrOccasion.toLowerCase().trim()
+
+  // Sensitive — no sound
+  if (normalized === 'condolence' || normalized === 'death' || normalized === 'mourning') {
+    return ''
+  }
+
+  // Birthday / Saalgirah
+  if (
+    normalized === 'birthday' ||
+    normalized === 'saalgirah' ||
+    normalized === 'personal-birthday'
+  ) {
+    return '/sounds/birthday.mp3'
+  }
+
+  // Wedding / Family celebrations → wedding sound
+  if (
+    normalized === 'wedding' ||
+    normalized === 'shaadi' ||
+    normalized === 'nikah' ||
+    normalized === 'mehndi' ||
+    normalized === 'dholki' ||
+    normalized === 'barat' ||
+    normalized === 'walima' ||
+    normalized === 'family' ||
+    normalized === 'marriage' ||
+    normalized === 'anniversary'       // golden shimmer + similar festive mood
+  ) {
+    return '/sounds/wedding.mp3'
+  }
+
+  // Islamic occasions → islamic sound
+  if (
+    normalized === 'islamic' ||
+    normalized === 'eid-ul-fitr' ||
+    normalized === 'eid-ul-adha' ||
+    normalized === 'ramadan' ||
+    normalized === 'jumma' ||
+    normalized === 'eid-party' ||
+    normalized === 'eid' ||
+    normalized === 'milad' ||
+    normalized === 'hajj' ||
+    normalized === 'umrah'
+  ) {
+    return '/sounds/islamic.mp3'
+  }
+
+  // National / Festive (dhol beat family) → general (upbeat)
+  if (
+    normalized === 'national' ||
+    normalized === 'independence-day' ||
+    normalized === 'kashmir-day' ||
+    normalized === 'basant'
+  ) {
+    return '/sounds/general.mp3'
+  }
+
+  // Personal warm occasions → general (soft)
+  if (
+    normalized === 'friendship-day' ||
+    normalized === 'thank-you' ||
+    normalized === 'miss-you' ||
+    normalized === 'valentines' ||
+    normalized === 'mothers-day' ||
+    normalized === 'fathers-day' ||
+    normalized === 'get-well-soon' ||
+    normalized === 'welcome-back' ||
+    normalized === 'good-luck' ||
+    normalized === 'farewell' ||
+    normalized === 'miss you' ||
+    normalized === 'thank you'
+  ) {
+    return '/sounds/general.mp3'
+  }
+
+  // Achievements / Congratulations → birthday (celebratory)
+  if (
+    normalized === 'graduation' ||
+    normalized === 'new-job' ||
+    normalized === 'promotion' ||
+    normalized === 'new-home' ||
+    normalized === 'business-launch' ||
+    normalized === 'exam-pass' ||
+    normalized === 'congratulations' ||
+    normalized === 'new-baby' ||
+    normalized === 'new-year'
+  ) {
+    return '/sounds/birthday.mp3'
+  }
+
+  // Default fallback
+  return '/sounds/general.mp3'
+}
+
 export function playContextualSound(categoryOrId: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const ctx = getAudioContext()
-    if (!ctx) {
-      reject(new Error('AudioContext not supported'))
+    if (typeof window === 'undefined') {
+      resolve()
       return
     }
 
-    // Resume context if suspended (browser autoplay security policy)
-    if (ctx.state === 'suspended') {
-      ctx.resume().then(() => playTheme(ctx, categoryOrId, resolve, reject))
-        .catch(reject)
-    } else {
-      playTheme(ctx, categoryOrId, resolve, reject)
+    const { isMuted } = useJashn.getState()
+    if (isMuted) {
+      resolve()
+      return
     }
+
+    const queryOccasion = new URLSearchParams(window.location.search).get('occasion')
+    const occasion = queryOccasion || categoryOrId
+    const path = getSoundPath(occasion)
+
+    if (!path) {
+      stopContextualSound()
+      resolve()
+      return
+    }
+
+    stopContextualSound()
+
+    const audio = new Audio(path)
+    audio.loop = true
+    currentAudio = audio
+
+    audio.play()
+      .then(() => {
+        resolve()
+      })
+      .catch((err) => {
+        console.warn('HTML5 Audio autoplay blocked, falling back to Web Audio synth...', err)
+        const ctx = getAudioContext()
+        if (ctx) {
+          if (ctx.state === 'suspended') {
+            ctx.resume().then(() => playTheme(ctx, occasion, resolve, reject)).catch(reject)
+          } else {
+            playTheme(ctx, occasion, resolve, reject)
+          }
+        } else {
+          reject(err)
+        }
+      })
   })
 }
 
@@ -115,23 +258,58 @@ function playTheme(ctx: AudioContext, theme: string, resolve: () => void, reject
       normalized === 'dholki' ||
       normalized === 'barat' ||
       normalized === 'walima' ||
-      normalized === 'family'
+      normalized === 'family' ||
+      normalized === 'anniversary'
     ) {
       playWeddingShehnai(ctx, master, now)
       resolve()
       return
     }
 
-    // 4. Islamic (Eid, Ramadan, Jumma)
-    if (normalized === 'islamic' || normalized === 'eid-ul-fitr' || normalized === 'eid-ul-adha' || normalized === 'ramadan' || normalized === 'jumma' || normalized === 'eid-party') {
+    // 4. Islamic (Eid, Ramadan, Jumma, Hajj, Umrah, Milad)
+    if (
+      normalized === 'islamic' ||
+      normalized === 'eid-ul-fitr' ||
+      normalized === 'eid-ul-adha' ||
+      normalized === 'ramadan' ||
+      normalized === 'jumma' ||
+      normalized === 'eid-party' ||
+      normalized === 'milad' ||
+      normalized === 'hajj' ||
+      normalized === 'umrah'
+    ) {
       playIslamicAmbiance(ctx, master, now)
       resolve()
       return
     }
 
     // 5. Pakistani Festive (Dhol beat / National Days)
-    if (normalized === 'national' || normalized === 'independence-day' || normalized === 'pakistani' || normalized === 'kashmir-day') {
+    if (
+      normalized === 'national' ||
+      normalized === 'independence-day' ||
+      normalized === 'pakistani' ||
+      normalized === 'kashmir-day' ||
+      normalized === 'basant'
+    ) {
       playDholBeat(ctx, master, now)
+      resolve()
+      return
+    }
+
+    // 6. Warm personal occasions (friendship, thank-you, miss-you)
+    if (
+      normalized === 'friendship-day' ||
+      normalized === 'thank-you' ||
+      normalized === 'miss-you' ||
+      normalized === 'valentines' ||
+      normalized === 'mothers-day' ||
+      normalized === 'fathers-day' ||
+      normalized === 'get-well-soon' ||
+      normalized === 'welcome-back' ||
+      normalized === 'good-luck' ||
+      normalized === 'farewell'
+    ) {
+      playHarpCelebration(ctx, master, now)
       resolve()
       return
     }

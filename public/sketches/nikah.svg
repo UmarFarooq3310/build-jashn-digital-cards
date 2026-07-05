@@ -1,0 +1,32 @@
+<svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- Mughal pointed arch frame -->
+  <path d="M12 118 L12 58 Q12 12 45 8 Q78 12 78 58 L78 118" stroke="#1e293b" stroke-width="1.8" fill="none"/>
+  <!-- inner arch -->
+  <path d="M20 118 L20 62 Q20 22 45 18 Q70 22 70 62 L70 118" stroke="#1e293b" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- keystone ornament at arch apex -->
+  <circle cx="45" cy="10" r="5" stroke="#1e293b" stroke-width="1.2" fill="#fef9c3" opacity="0.6"/>
+  <path d="M40 14 Q45 18 50 14" stroke="#1e293b" stroke-width="1" fill="none"/>
+  <!-- interlocked rings (nikah symbol) -->
+  <circle cx="32" cy="70" r="16" stroke="#1e293b" stroke-width="1.8"/>
+  <circle cx="58" cy="70" r="16" stroke="#1e293b" stroke-width="1.8"/>
+  <!-- diamond ring on top right -->
+  <polygon points="45,38 52,50 45,58 38,50" stroke="#1e293b" stroke-width="1.4" fill="#e0e7ff" opacity="0.7"/>
+  <line x1="38" y1="50" x2="52" y2="50" stroke="#1e293b" stroke-width="1"/>
+  <circle cx="45" cy="37" r="3" stroke="#1e293b" stroke-width="1.2" fill="#fbbf24" opacity="0.5"/>
+  <!-- floral motifs in arch spandrels -->
+  <circle cx="22" cy="50" r="5" stroke="#1e293b" stroke-width="1" fill="none" opacity="0.5"/>
+  <circle cx="68" cy="50" r="5" stroke="#1e293b" stroke-width="1" fill="none" opacity="0.5"/>
+  <circle cx="22" cy="50" r="2" stroke="none" fill="#fce7f3" opacity="0.4"/>
+  <circle cx="68" cy="50" r="2" stroke="none" fill="#fce7f3" opacity="0.4"/>
+  <!-- petal flowers in spandrels -->
+  <circle cx="22" cy="44" r="2" stroke="#1e293b" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <circle cx="22" cy="56" r="2" stroke="#1e293b" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <circle cx="16" cy="50" r="2" stroke="#1e293b" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <circle cx="28" cy="50" r="2" stroke="#1e293b" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <circle cx="68" cy="44" r="2" stroke="#1e293b" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <circle cx="68" cy="56" r="2" stroke="#1e293b" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <circle cx="62" cy="50" r="2" stroke="#1e293b" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <circle cx="74" cy="50" r="2" stroke="#1e293b" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <!-- base ornament -->
+  <path d="M12 118 Q28 112 45 114 Q62 112 78 118" stroke="#1e293b" stroke-width="1" fill="none" opacity="0.5"/>
+</svg>

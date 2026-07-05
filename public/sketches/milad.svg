@@ -1,0 +1,31 @@
+<svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- ornamental top border -->
+  <path d="M8 10 Q15 5 22 10 Q29 15 36 10 Q43 5 50 10 Q57 15 64 10 Q71 5 78 10 Q85 15 92 10" stroke="#1e293b" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- crescent with star -->
+  <circle cx="45" cy="28" r="14" stroke="#1e293b" stroke-width="1.5" fill="#fef9c3" opacity="0.8"/>
+  <circle cx="52" cy="23" r="11" stroke="none" fill="white"/>
+  <polygon points="61,18 63,22 68,22 64,25 66,29 61,26 56,29 58,25 54,22 59,22" stroke="#1e293b" stroke-width="1" fill="#fef9c3" opacity="0.9"/>
+  <!-- decorative rosette beneath crescent -->
+  <circle cx="45" cy="52" r="10" stroke="#1e293b" stroke-width="1.2" fill="none" opacity="0.5"/>
+  <circle cx="45" cy="52" r="5" stroke="#1e293b" stroke-width="1" fill="#fef9c3" opacity="0.4"/>
+  <line x1="45" y1="42" x2="45" y2="62" stroke="#1e293b" stroke-width="0.8" opacity="0.4"/>
+  <line x1="35" y1="52" x2="55" y2="52" stroke="#1e293b" stroke-width="0.8" opacity="0.4"/>
+  <line x1="38" y1="45" x2="52" y2="59" stroke="#1e293b" stroke-width="0.8" opacity="0.4"/>
+  <line x1="52" y1="45" x2="38" y2="59" stroke="#1e293b" stroke-width="0.8" opacity="0.4"/>
+  <!-- mosque body -->
+  <rect x="15" y="78" width="60" height="35" stroke="#1e293b" stroke-width="1.4" fill="#f0f9ff" opacity="0.4"/>
+  <!-- main dome -->
+  <path d="M26 78 Q26 62 45 58 Q64 62 64 78" stroke="#1e293b" stroke-width="1.4" fill="#e0f2fe" opacity="0.4"/>
+  <line x1="45" y1="58" x2="45" y2="50" stroke="#1e293b" stroke-width="1.2"/>
+  <circle cx="45" cy="49" r="2.5" stroke="#1e293b" stroke-width="1" fill="#fef9c3" opacity="0.8"/>
+  <!-- side arches -->
+  <path d="M15 90 Q15 82 22 80 Q29 82 29 90" stroke="#1e293b" stroke-width="1.1" fill="#e0f2fe" opacity="0.3"/>
+  <path d="M61 90 Q61 82 68 80 Q75 82 75 90" stroke="#1e293b" stroke-width="1.1" fill="#e0f2fe" opacity="0.3"/>
+  <!-- minarets -->
+  <rect x="6" y="66" width="7" height="27" rx="2" stroke="#1e293b" stroke-width="1.2" fill="#f0f9ff" opacity="0.4"/>
+  <polygon points="6,66 9.5,57 13,66" stroke="#1e293b" stroke-width="1" fill="#e0f2fe" opacity="0.4"/>
+  <rect x="77" y="66" width="7" height="27" rx="2" stroke="#1e293b" stroke-width="1.2" fill="#f0f9ff" opacity="0.4"/>
+  <polygon points="77,66 80.5,57 84,66" stroke="#1e293b" stroke-width="1" fill="#e0f2fe" opacity="0.4"/>
+  <!-- ornamental bottom border -->
+  <path d="M8 112 Q15 107 22 112 Q29 117 36 112 Q43 107 50 112 Q57 117 64 112 Q71 107 78 112" stroke="#1e293b" stroke-width="1" fill="none" opacity="0.4"/>
+</svg>

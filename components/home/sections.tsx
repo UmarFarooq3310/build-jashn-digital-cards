@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRef } from 'react'
 import {
   ArrowRight,
   MousePointerClick,
@@ -19,6 +20,11 @@ import {
   Gem,
   CheckCircle,
 } from 'lucide-react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 import { JashnIcon } from '@/lib/jashn/icon'
 import { OCCASIONS } from '@/lib/jashn/occasions'
 import { INVITATION_TYPES } from '@/lib/jashn/invitations'
@@ -32,14 +38,16 @@ function SectionHead({
   title,
   desc,
   kickerColor = 'text-primary',
+  className,
 }: {
   kicker: string
   title: string
   desc?: string
   kickerColor?: string
+  className?: string
 }) {
   return (
-    <div className="mx-auto mb-10 max-w-2xl text-center">
+    <div className={cn("mx-auto mb-10 max-w-2xl text-center", className)}>
       <p className={cn("text-xs font-bold uppercase tracking-[0.2em]", kickerColor)}>
         {kicker}
       </p>
@@ -60,9 +68,23 @@ export function WeddingSection() {
   const weddingOccasions = OCCASIONS.filter(
     (o) => o.id === 'shaadi' || o.id === 'nikah' || o.id === 'anniversary'
   )
-  
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const el = sectionRef.current
+    if (!el) return
+    gsap.fromTo(el.querySelectorAll('.wedding-head'), { y: 40, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelectorAll('.wedding-card'), { y: 50, opacity: 0, scale: 0.95 }, {
+      y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.12, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 70%', toggleActions: 'play none none none' }
+    })
+  }, { scope: sectionRef })
+
   return (
-    <section className="relative overflow-hidden border-t border-[#8e0f24]/20 bg-gradient-to-br from-[#4a0510]/5 via-card to-[#8e0f24]/5 py-20">
+    <section ref={sectionRef} className="relative overflow-hidden border-t border-[#8e0f24]/20 bg-gradient-to-br from-[#4a0510]/5 via-card to-[#8e0f24]/5 py-20">
       {/* Decorative Floral background SVG */}
       <div className="absolute right-0 top-0 -mr-16 -mt-16 size-64 opacity-10 text-[#8e0f24] pointer-events-none">
         <Flower2 className="w-full h-full" />
@@ -77,6 +99,7 @@ export function WeddingSection() {
           kickerColor="text-[#8e0f24] font-extrabold"
           title="Celebrate Eternal Love & Togetherness"
           desc="Beautiful Mughal-arched Shaadi, Nikkah, Mehndi cards and Anniversary wishes with traditional bilingual greetings."
+          className="wedding-head"
         />
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -85,7 +108,7 @@ export function WeddingSection() {
             <Link
               key={o.id}
               href={`/create-wish?occasion=${o.id}`}
-              className="group flex flex-col justify-between p-6 rounded-3xl border border-[#8e0f24]/20 bg-card hover:border-[#8e0f24] hover:shadow-[0_20px_40px_-15px_rgba(142,15,36,0.15)] transition-all duration-300"
+              className="wedding-card group flex flex-col justify-between p-6 rounded-3xl border border-[#8e0f24]/20 bg-card hover:border-[#8e0f24] hover:shadow-[0_20px_40px_-15px_rgba(142,15,36,0.15)] transition-all duration-300"
             >
               <div>
                 <div className="flex size-12 items-center justify-center rounded-2xl bg-[#8e0f24]/10 text-[#8e0f24] group-hover:bg-[#8e0f24] group-hover:text-[#fff4e6] transition-colors mb-4">
@@ -105,7 +128,7 @@ export function WeddingSection() {
           {/* Featured invitation link */}
           <Link
             href="/create-invitation?type=mehndi"
-            className="group flex flex-col justify-between p-6 rounded-3xl border-2 border-dashed border-[#e6b54a] bg-gradient-to-br from-[#e6b54a]/5 to-card hover:border-[#8e0f24] transition-all duration-300"
+            className="wedding-card group flex flex-col justify-between p-6 rounded-3xl border-2 border-dashed border-[#e6b54a] bg-gradient-to-br from-[#e6b54a]/5 to-card hover:border-[#8e0f24] transition-all duration-300"
           >
             <div>
               <div className="flex size-12 items-center justify-center rounded-2xl bg-[#e6b54a]/20 text-[#8e0f24] mb-4">
@@ -128,14 +151,33 @@ export function WeddingSection() {
 
 // 2. Birthdays Section (Fun / Playful / Vibrant Balloon Vibe)
 export function BirthdaysSection() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const el = sectionRef.current
+    if (!el) return
+    gsap.fromTo(el.querySelectorAll('.bday-head'), { y: 40, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelector('.bday-content'), { x: -50, opacity: 0 }, {
+      x: 0, opacity: 1, duration: 0.7, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 70%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelector('.bday-card'), { x: 50, opacity: 0, rotate: 4 }, {
+      x: 0, opacity: 1, rotate: 2, duration: 0.7, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 70%', toggleActions: 'play none none none' }
+    })
+  }, { scope: sectionRef })
+
   return (
-    <section className="relative overflow-hidden border-t border-[#0d1b4c]/10 bg-gradient-to-br from-[#0d1b4c]/5 via-card to-[#1a237e]/5 py-20">
+    <section ref={sectionRef} className="relative overflow-hidden border-t border-[#0d1b4c]/10 bg-gradient-to-br from-[#0d1b4c]/5 via-card to-[#1a237e]/5 py-20">
       {/* Star twinkling decoration or neon glows */}
       <div className="absolute right-10 bottom-10 size-72 rounded-full bg-cyan-500/5 blur-3xl pointer-events-none" />
       <div className="absolute left-10 top-10 size-72 rounded-full bg-indigo-500/5 blur-3xl pointer-events-none" />
 
       <div className="mx-auto max-w-6xl px-4 relative z-10">
-        <div className="mx-auto mb-10 max-w-2xl text-center">
+        <div className="mx-auto mb-10 max-w-2xl text-center bday-head">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-indigo-600">
             Saalgirah Mubarak
           </p>
@@ -148,7 +190,7 @@ export function BirthdaysSection() {
         </div>
 
         <div className="flex flex-col md:flex-row items-center gap-10 bg-card rounded-[2.5rem] border border-indigo-100 p-8 md:p-12 shadow-xl">
-          <div className="w-full md:w-1/2 space-y-6">
+          <div className="bday-content w-full md:w-1/2 space-y-6">
             <div className="flex items-center gap-3">
               <span className="flex size-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600">
                 <Cake className="size-6" />
@@ -179,7 +221,7 @@ export function BirthdaysSection() {
             </div>
           </div>
 
-          <div className="w-full md:w-1/2 max-w-sm flex justify-center">
+          <div className="bday-card w-full md:w-1/2 max-w-sm flex justify-center">
             {/* Visual preview of birthday card */}
             <div className="w-full rotate-2 transform hover:rotate-0 transition-transform duration-500 shadow-2xl rounded-3xl overflow-hidden border border-indigo-100">
               <WishCard
@@ -207,15 +249,30 @@ export function FriendshipSection() {
   const friendshipOccasions = OCCASIONS.filter(
     (o) => o.id === 'friendship-day' || o.id === 'miss-you' || o.id === 'thank-you'
   )
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const el = sectionRef.current
+    if (!el) return
+    gsap.fromTo(el.querySelectorAll('.friend-head'), { y: 35, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelectorAll('.friend-card'), { y: 40, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.55, stagger: 0.1, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 72%', toggleActions: 'play none none none' }
+    })
+  }, { scope: sectionRef })
 
   return (
-    <section className="relative border-t border-rose-100 bg-gradient-to-br from-rose-50/70 via-peach-50/40 to-card py-20">
+    <section ref={sectionRef} className="relative border-t border-rose-100 bg-gradient-to-br from-rose-50/70 via-peach-50/40 to-card py-20">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHead
           kicker="Dosti Mubarak"
           kickerColor="text-rose-500 font-extrabold"
           title="Strengthen Your Bonds of Friendship"
           desc="Show gratitude, say thank you, tell them they are missed, or celebrate Friendship Day with personalized heart warming notes."
+          className="friend-head"
         />
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -223,7 +280,7 @@ export function FriendshipSection() {
             <Link
               key={o.id}
               href={`/create-wish?occasion=${o.id}`}
-              className="group relative overflow-hidden rounded-3xl border border-rose-100/80 bg-card p-6 hover:border-rose-300 hover:shadow-lg transition-all duration-300"
+              className="friend-card group relative overflow-hidden rounded-3xl border border-rose-100/80 bg-card p-6 hover:border-rose-300 hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-start justify-between">
                 <div className="flex size-11 items-center justify-center rounded-xl bg-rose-50 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-colors">
@@ -248,19 +305,43 @@ export function FriendshipSection() {
 
 // 4. Invitations Section (Emerald / Sophisticated Wedding / Events Countdowns)
 export function InvitationsSection() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const el = sectionRef.current
+    if (!el) return
+    gsap.fromTo(el.querySelector('.inv-head'), { y: 35, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.65, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelector('.inv-card'), { x: -60, opacity: 0, rotate: -3 }, {
+      x: 0, opacity: 1, rotate: -1, duration: 0.75, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 72%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelector('.inv-features'), { x: 60, opacity: 0 }, {
+      x: 0, opacity: 1, duration: 0.75, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 72%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelectorAll('.inv-feature-item'), { y: 12, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.4, stagger: 0.07, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 65%', toggleActions: 'play none none none' }
+    })
+  }, { scope: sectionRef })
+
   return (
-    <section className="relative overflow-hidden border-t border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 via-card to-[#08300c]/5 py-20">
+    <section ref={sectionRef} className="relative overflow-hidden border-t border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 via-card to-[#08300c]/5 py-20">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHead
           kicker="Desi Event Coordinator"
           kickerColor="text-emerald-700 font-bold"
           title="Digital Invitations with Live RSVPs"
           desc="Perfect for Wedding, Mehndi, Baraat, Walima, Nikkah, Birthday Parties, and family events. Everything coordinates in one elegant dashboard."
+          className="inv-head"
         />
 
         <div className="grid gap-8 lg:grid-cols-12 items-center">
           {/* Sample Invitation preview */}
-          <div className="lg:col-span-5 flex justify-center order-2 lg:order-1">
+          <div className="inv-card lg:col-span-5 flex justify-center order-2 lg:order-1">
             <div className="w-full max-w-sm shadow-xl rounded-3xl -rotate-1 transform hover:rotate-0 transition-transform duration-500">
               <InvitationCard
                 watermark={false}
@@ -284,7 +365,7 @@ export function InvitationsSection() {
           </div>
 
           {/* Feature list */}
-          <div className="lg:col-span-7 space-y-6 order-1 lg:order-2">
+          <div className="inv-features lg:col-span-7 space-y-6 order-1 lg:order-2">
             <h3 className="text-2xl font-extrabold text-foreground leading-tight">
               One link, all the details your guests need.
             </h3>
@@ -301,7 +382,7 @@ export function InvitationsSection() {
                 'Secure host dashboard control',
                 'Premium animates & background audio',
               ].map((f) => (
-                <div key={f} className="flex items-center gap-2 text-xs font-semibold text-foreground">
+                <div key={f} className="inv-feature-item flex items-center gap-2 text-xs font-semibold text-foreground">
                   <CheckCircle className="size-4 text-emerald-600 shrink-0" />
                   <span>{f}</span>
                 </div>
@@ -339,15 +420,29 @@ export function CelebrationEventsSection() {
       o.id === 'new-year' ||
       o.id === 'independence-day'
   ).slice(0, 8)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const el = sectionRef.current
+    if (!el) return
+    gsap.fromTo(el.querySelector('.celeb-head'), { y: 35, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.65, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelectorAll('.celeb-item'), { y: 30, opacity: 0, scale: 0.9 }, {
+      y: 0, opacity: 1, scale: 1, duration: 0.45, stagger: 0.06, ease: 'back.out(1.4)',
+      scrollTrigger: { trigger: el, start: 'top 72%', toggleActions: 'play none none none' }
+    })
+  }, { scope: sectionRef })
 
   return (
-    <section className="relative overflow-hidden border-t border-amber-500/10 bg-gradient-to-br from-amber-500/5 via-card to-amber-600/5 py-20">
+    <section ref={sectionRef} className="relative overflow-hidden border-t border-amber-500/10 bg-gradient-to-br from-amber-500/5 via-card to-amber-600/5 py-20">
       {/* Decorative stars */}
       <div className="absolute top-10 left-1/4 size-1 bg-amber-500 rounded-full opacity-10 animate-ping" />
       <div className="absolute bottom-16 right-1/4 size-1.5 bg-amber-400 rounded-full opacity-20 animate-pulse" />
 
       <div className="mx-auto max-w-6xl px-4 relative z-10">
-        <div className="mx-auto mb-10 max-w-2xl text-center">
+        <div className="mx-auto mb-10 max-w-2xl text-center celeb-head">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
             Jashn &amp; Achievements
           </p>
@@ -364,7 +459,7 @@ export function CelebrationEventsSection() {
             <Link
               key={o.id}
               href={`/create-wish?occasion=${o.id}`}
-              className="group flex flex-col items-center gap-3 rounded-2xl border border-amber-100 bg-card p-5 text-center transition-all hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/5 hover:bg-amber-500/5"
+              className="celeb-item group flex flex-col items-center gap-3 rounded-2xl border border-amber-100 bg-card p-5 text-center transition-all hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/5 hover:bg-amber-500/5"
             >
               <span className="flex size-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 transition-all group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white">
                 <JashnIcon name={o.icon} className="size-5" />
@@ -406,13 +501,28 @@ const STEPS = [
 ]
 
 export function HowItWorks() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const el = sectionRef.current
+    if (!el) return
+    gsap.fromTo(el.querySelector('.hiw-head'), { y: 30, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.6, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelectorAll('.hiw-step'), { y: 40, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.5, stagger: 0.12, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 72%', toggleActions: 'play none none none' }
+    })
+  }, { scope: sectionRef })
+
   return (
-    <section className="border-t border-border bg-secondary/30">
+    <section ref={sectionRef} className="border-t border-border bg-secondary/30">
       <div className="mx-auto max-w-6xl px-4 py-16">
-        <SectionHead kicker="How it works" title="Live in four simple steps" />
+        <SectionHead kicker="How it works" title="Live in four simple steps" className="hiw-head" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (
-            <div key={s.title} className="relative rounded-2xl border border-border bg-card p-6">
+            <div key={s.title} className="hiw-step relative rounded-2xl border border-border bg-card p-6">
               <span className="absolute right-4 top-4 text-4xl font-extrabold text-primary/10">
                 {i + 1}
               </span>
@@ -489,26 +599,41 @@ export function SampleCards() {
 }
 
 export function HomeCTA() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const el = sectionRef.current
+    if (!el) return
+    gsap.fromTo(el.querySelectorAll('.cta-item'), { y: 30, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 82%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelectorAll('.cta-btn'), { scale: 0.88, opacity: 0 }, {
+      scale: 1, opacity: 1, duration: 0.45, stagger: 0.1, ease: 'back.out(1.5)',
+      scrollTrigger: { trigger: el, start: 'top 78%', toggleActions: 'play none none none' }
+    })
+  }, { scope: sectionRef })
+
   return (
-    <section className="border-t border-border">
+    <section ref={sectionRef} className="border-t border-border">
       <div className="mx-auto max-w-4xl px-4 py-20 text-center">
-        <h2 className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+        <h2 className="cta-item text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
           Ready to spread some joy?
         </h2>
-        <p className="mx-auto mt-3 max-w-md text-pretty text-muted-foreground">
+        <p className="cta-item mx-auto mt-3 max-w-md text-pretty text-muted-foreground">
           Create your first animated wish or invitation for free. No sign-up
           needed to start.
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Link
             href="/create-wish"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-7 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            className="cta-btn inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-7 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
           >
             Send a Wish <ArrowRight className="size-4" />
           </Link>
           <Link
             href="/create-invitation"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-secondary px-7 font-semibold text-secondary-foreground transition-colors hover:bg-secondary/70"
+            className="cta-btn inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-secondary px-7 font-semibold text-secondary-foreground transition-colors hover:bg-secondary/70"
           >
             Create Invitation
           </Link>

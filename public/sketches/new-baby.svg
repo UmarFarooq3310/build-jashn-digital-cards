@@ -1,0 +1,28 @@
+<svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- pram body -->
+  <path d="M15 80 Q15 108 45 112 Q75 108 75 80Z" stroke="#1e293b" stroke-width="1.6" fill="#fce7f3" opacity="0.6"/>
+  <line x1="15" y1="80" x2="75" y2="80" stroke="#1e293b" stroke-width="1.6"/>
+  <!-- pram hood -->
+  <path d="M15 80 Q22 48 60 54 L60 80Z" stroke="#1e293b" stroke-width="1.4" fill="#fef9c3" opacity="0.6"/>
+  <!-- axle bar -->
+  <line x1="22" y1="112" x2="68" y2="112" stroke="#1e293b" stroke-width="1.4"/>
+  <!-- wheels -->
+  <circle cx="28" cy="112" r="9" stroke="#1e293b" stroke-width="1.5"/>
+  <circle cx="28" cy="112" r="3" stroke="#1e293b" stroke-width="1"/>
+  <circle cx="62" cy="112" r="9" stroke="#1e293b" stroke-width="1.5"/>
+  <circle cx="62" cy="112" r="3" stroke="#1e293b" stroke-width="1"/>
+  <!-- handle -->
+  <path d="M60 56 Q78 42 80 72" stroke="#1e293b" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- baby stars -->
+  <circle cx="18" cy="20" r="2.5" stroke="#1e293b" stroke-width="1"/>
+  <circle cx="72" cy="15" r="2" stroke="#1e293b" stroke-width="1"/>
+  <circle cx="45" cy="12" r="1.5" stroke="#1e293b" stroke-width="1"/>
+  <!-- 4-pointed sparkle -->
+  <line x1="10" y1="40" x2="10" y2="48" stroke="#1e293b" stroke-width="1"/>
+  <line x1="6" y1="44" x2="14" y2="44" stroke="#1e293b" stroke-width="1"/>
+  <line x1="80" y1="35" x2="80" y2="43" stroke="#1e293b" stroke-width="1"/>
+  <line x1="76" y1="39" x2="84" y2="39" stroke="#1e293b" stroke-width="1"/>
+  <!-- baby booties at bottom corners -->
+  <ellipse cx="28" cy="6" rx="9" ry="4.5" stroke="#1e293b" stroke-width="1.2" fill="#fce7f3" opacity="0.6"/>
+  <ellipse cx="62" cy="6" rx="9" ry="4.5" stroke="#1e293b" stroke-width="1.2" fill="#bae6fd" opacity="0.6"/>
+</svg>

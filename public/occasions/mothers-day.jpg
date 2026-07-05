@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 427" width="320" height="427">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0.2" y2="1"><stop offset="0%" stop-color="#4a0e2e"/><stop offset="100%" stop-color="#db2777"/></linearGradient></defs>
+<rect width="320" height="427" fill="url(#bg)"/>
+<ellipse cx="30" cy="60" rx="20" ry="11" fill="#f9a8d4" opacity=".3" transform="rotate(-20,30,60)"/>
+<ellipse cx="290" cy="80" rx="18" ry="10" fill="#f9a8d4" opacity=".25" transform="rotate(15,290,80)"/>
+<line x1="160" y1="427" x2="160" y2="220" stroke="#15803d" stroke-width="5"/>
+<line x1="160" y1="340" x2="95" y2="265" stroke="#15803d" stroke-width="4"/>
+<line x1="160" y1="310" x2="225" y2="255" stroke="#15803d" stroke-width="4"/>
+<line x1="160" y1="285" x2="75" y2="235" stroke="#15803d" stroke-width="3"/>
+<line x1="160" y1="285" x2="245" y2="232" stroke="#15803d" stroke-width="3"/>
+<circle cx="160" cy="185" r="44" fill="#f9a8d4" opacity=".9"/>
+<circle cx="160" cy="163" r="23" fill="#f9a8d4"/><circle cx="183" cy="174" r="23" fill="#f9a8d4"/>
+<circle cx="137" cy="174" r="23" fill="#f9a8d4"/><circle cx="160" cy="200" r="23" fill="#f9a8d4"/>
+<circle cx="160" cy="185" r="23" fill="#fbbf24"/>
+<circle cx="160" cy="185" r="10" fill="#92400e" opacity=".6"/>
+<circle cx="95" cy="240" r="30" fill="#fda4af" opacity=".9"/>
+<circle cx="95" cy="224" r="16" fill="#fda4af"/><circle cx="111" cy="233" r="16" fill="#fda4af"/>
+<circle cx="79" cy="233" r="16" fill="#fda4af"/><circle cx="95" cy="252" r="16" fill="#fda4af"/>
+<circle cx="95" cy="240" r="15" fill="#fbbf24"/>
+<circle cx="225" cy="232" r="28" fill="#f472b6" opacity=".9"/>
+<circle cx="225" cy="218" r="15" fill="#f472b6"/><circle cx="239" cy="226" r="15" fill="#f472b6"/>
+<circle cx="211" cy="226" r="15" fill="#f472b6"/><circle cx="225" cy="244" r="15" fill="#f472b6"/>
+<circle cx="225" cy="232" r="14" fill="#fbbf24"/>
+<path d="M120 120 Q120 98 133 104 Q146 98 146 120 Q146 144 133 155 Q120 144 120 120Z" fill="#fce7f3" opacity=".8"/>
+<path d="M174 110 Q174 92 185 96 Q196 92 196 110 Q196 130 185 140 Q174 130 174 110Z" fill="#fce7f3" opacity=".7"/>
+<defs><linearGradient id="sc" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(0,0,0,0)"/><stop offset="100%" stop-color="rgba(0,0,0,0.72)"/></linearGradient></defs><rect x="0" y="330" width="320" height="97" fill="url(#sc)"/></svg>

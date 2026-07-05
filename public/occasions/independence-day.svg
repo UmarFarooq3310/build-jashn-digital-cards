@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 427" width="320" height="427">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#052e16"/><stop offset="100%" stop-color="#166534"/></linearGradient></defs>
+<rect width="320" height="427" fill="url(#bg)"/>
+<rect x="38" y="30" width="10" height="280" rx="4" fill="#78716c"/>
+<rect x="48" y="32" width="200" height="140" rx="4" fill="#064e3b"/>
+<rect x="48" y="32" width="44" height="140" fill="white" opacity=".92"/>
+<line x1="92" y1="32" x2="92" y2="172" stroke="#d1d5db" stroke-width="1" opacity=".4"/>
+<circle cx="166" cy="102" r="38" fill="white" opacity=".95"/>
+<circle cx="182" cy="92" r="30" fill="#064e3b"/>
+<polygon points="202,78 205,88 215,88 207,94 210,104 202,98 194,104 197,94 189,88 199,88" fill="white" opacity=".95"/>
+<path d="M0 210 Q40 222 80 210 Q120 198 160 210 Q200 222 240 210 Q280 198 320 210" stroke="#064e3b" stroke-width="2" fill="none" opacity=".6"/>
+<path d="M0 225 Q40 237 80 225 Q120 213 160 225 Q200 237 240 225 Q280 213 320 225" stroke="#064e3b" stroke-width="1.5" fill="none" opacity=".4"/>
+<polygon points="8,210 28,210 18,226" fill="#064e3b" opacity=".8"/>
+<polygon points="36,205 56,205 46,221" fill="white" opacity=".8"/>
+<polygon points="70,210 90,210 80,226" fill="#064e3b" opacity=".8"/>
+<polygon points="108,206 128,206 118,222" fill="white" opacity=".8"/>
+<polygon points="145,210 165,210 155,226" fill="#064e3b" opacity=".8"/>
+<polygon points="183,208 203,208 193,224" fill="white" opacity=".8"/>
+<polygon points="218,210 238,210 228,226" fill="#064e3b" opacity=".8"/>
+<polygon points="255,206 275,206 265,222" fill="white" opacity=".8"/>
+<polygon points="290,210 310,210 300,226" fill="#064e3b" opacity=".8"/>
+<circle cx="22" cy="260" r="10" fill="#fbbf24" opacity=".7"/>
+<circle cx="298" cy="255" r="8" fill="#fbbf24" opacity=".65"/>
+<defs><linearGradient id="sc" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(0,0,0,0)"/><stop offset="100%" stop-color="rgba(0,0,0,0.72)"/></linearGradient></defs><rect x="0" y="330" width="320" height="97" fill="url(#sc)"/></svg>

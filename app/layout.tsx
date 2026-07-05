@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Poppins, Noto_Nastaliq_Urdu } from 'next/font/google'
 import { ToastNotification } from '@/components/ui/toast-notification'
+import { FirebaseAuthListener } from '@/components/firebase-auth-listener'
 import './globals.css'
 
 const poppins = Poppins({
@@ -92,6 +93,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background font-sans antialiased overflow-x-hidden">
+        <FirebaseAuthListener />
         {children}
         <ToastNotification />
         {process.env.NODE_ENV === 'production' && <Analytics />}

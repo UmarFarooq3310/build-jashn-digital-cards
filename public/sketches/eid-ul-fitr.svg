@@ -1,0 +1,37 @@
+<svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- crescent moon -->
+  <circle cx="52" cy="28" r="18" stroke="#1e293b" stroke-width="1.5" fill="#fef9c3" opacity="0.8"/>
+  <circle cx="60" cy="23" r="14" stroke="none" fill="white"/>
+  <!-- star next to crescent -->
+  <polygon points="72,18 74,23 79,23 75,26 77,31 72,28 67,31 69,26 65,23 70,23" stroke="#1e293b" stroke-width="1" fill="#fef9c3" opacity="0.9"/>
+  <!-- background stars -->
+  <circle cx="14" cy="12" r="1.5" fill="#1e293b" opacity="0.5"/>
+  <circle cx="35" cy="8" r="1.2" fill="#1e293b" opacity="0.5"/>
+  <circle cx="80" cy="14" r="1.5" fill="#1e293b" opacity="0.5"/>
+  <circle cx="10" cy="35" r="1.2" fill="#1e293b" opacity="0.4"/>
+  <circle cx="82" cy="42" r="1.2" fill="#1e293b" opacity="0.4"/>
+  <!-- mosque outline -->
+  <rect x="15" y="85" width="60" height="32" stroke="#1e293b" stroke-width="1.4" fill="#f0f9ff" opacity="0.5"/>
+  <!-- main dome -->
+  <path d="M30 85 Q30 68 45 65 Q60 68 60 85" stroke="#1e293b" stroke-width="1.4" fill="#e0f2fe" opacity="0.5"/>
+  <!-- spire on main dome -->
+  <line x1="45" y1="65" x2="45" y2="58" stroke="#1e293b" stroke-width="1.2"/>
+  <circle cx="45" cy="57" r="2" stroke="#1e293b" stroke-width="1" fill="#fef9c3" opacity="0.8"/>
+  <!-- side domes -->
+  <path d="M15 85 Q15 76 23 74 Q31 76 31 85" stroke="#1e293b" stroke-width="1.2" fill="#e0f2fe" opacity="0.4"/>
+  <path d="M59 85 Q59 76 67 74 Q75 76 75 85" stroke="#1e293b" stroke-width="1.2" fill="#e0f2fe" opacity="0.4"/>
+  <!-- minarets -->
+  <rect x="8" y="68" width="7" height="30" rx="2" stroke="#1e293b" stroke-width="1.2" fill="#f0f9ff" opacity="0.5"/>
+  <polygon points="8,68 11.5,58 15,68" stroke="#1e293b" stroke-width="1" fill="#e0f2fe" opacity="0.5"/>
+  <rect x="75" y="68" width="7" height="30" rx="2" stroke="#1e293b" stroke-width="1.2" fill="#f0f9ff" opacity="0.5"/>
+  <polygon points="75,68 78.5,58 82,68" stroke="#1e293b" stroke-width="1" fill="#e0f2fe" opacity="0.5"/>
+  <!-- mosque door arch -->
+  <path d="M40 117 L40 100 Q40 93 45 92 Q50 93 50 100 L50 117" stroke="#1e293b" stroke-width="1.1"/>
+  <!-- lanterns -->
+  <rect x="24" y="53" width="8" height="12" rx="2" stroke="#1e293b" stroke-width="1.2" fill="#fef9c3" opacity="0.7"/>
+  <polygon points="24,53 28,46 32,53" stroke="#1e293b" stroke-width="1" fill="#fef9c3" opacity="0.6"/>
+  <line x1="28" y1="43" x2="28" y2="46" stroke="#1e293b" stroke-width="1.2"/>
+  <rect x="58" y="50" width="8" height="12" rx="2" stroke="#1e293b" stroke-width="1.2" fill="#fef9c3" opacity="0.7"/>
+  <polygon points="58,50 62,43 66,50" stroke="#1e293b" stroke-width="1" fill="#fef9c3" opacity="0.6"/>
+  <line x1="62" y1="40" x2="62" y2="43" stroke="#1e293b" stroke-width="1.2"/>
+</svg>

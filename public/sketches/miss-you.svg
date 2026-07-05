@@ -1,0 +1,22 @@
+<svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- envelope body -->
+  <rect x="10" y="45" width="70" height="52" rx="4" stroke="#1e293b" stroke-width="1.6" fill="#f5f3ff" opacity="0.6"/>
+  <!-- envelope flap (open) -->
+  <path d="M10 45 L45 70 L80 45" stroke="#1e293b" stroke-width="1.5" fill="none"/>
+  <path d="M10 45 L45 75 L80 45 L10 45Z" stroke="#1e293b" stroke-width="1.3" fill="#ede9fe" opacity="0.5"/>
+  <!-- bottom fold lines -->
+  <path d="M10 97 L30 75" stroke="#1e293b" stroke-width="1" opacity="0.4"/>
+  <path d="M80 97 L60 75" stroke="#1e293b" stroke-width="1" opacity="0.4"/>
+  <!-- hearts floating up from envelope -->
+  <path d="M35 32 Q35 26 39 28 Q43 26 43 32 Q43 38 39 42 Q35 38 35 32Z" stroke="#1e293b" stroke-width="1.3" fill="#fce7f3" opacity="0.8"/>
+  <path d="M48 20 Q48 15 51 17 Q54 15 54 20 Q54 25 51 28 Q48 25 48 20Z" stroke="#1e293b" stroke-width="1.2" fill="#fce7f3" opacity="0.7"/>
+  <path d="M22 15 Q22 11 24.5 13 Q27 11 27 15 Q27 19 24.5 21 Q22 19 22 15Z" stroke="#1e293b" stroke-width="1" fill="#fce7f3" opacity="0.6"/>
+  <path d="M62 12 Q62 9 64 10.5 Q66 9 66 12 Q66 15 64 16.5 Q62 15 62 12Z" stroke="#1e293b" stroke-width="1" fill="#fce7f3" opacity="0.6"/>
+  <!-- stars / dots -->
+  <circle cx="15" cy="35" r="1.5" fill="#818cf8" opacity="0.7"/>
+  <circle cx="75" cy="28" r="2" fill="#818cf8" opacity="0.7"/>
+  <line x1="8" y1="105" x2="8" y2="111" stroke="#fbbf24" stroke-width="1.2"/>
+  <line x1="5" y1="108" x2="11" y2="108" stroke="#fbbf24" stroke-width="1.2"/>
+  <line x1="82" y1="100" x2="82" y2="106" stroke="#fbbf24" stroke-width="1.2"/>
+  <line x1="79" y1="103" x2="85" y2="103" stroke="#fbbf24" stroke-width="1.2"/>
+</svg>

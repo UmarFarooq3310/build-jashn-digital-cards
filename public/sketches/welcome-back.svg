@@ -1,0 +1,34 @@
+<svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- door frame -->
+  <rect x="22" y="45" width="46" height="68" rx="2" stroke="#1e293b" stroke-width="1.6" fill="#fef9c3" opacity="0.5"/>
+  <!-- door arch top -->
+  <path d="M22 45 Q22 32 45 30 Q68 32 68 45" stroke="#1e293b" stroke-width="1.6" fill="#fef9c3" opacity="0.4"/>
+  <!-- door panel details -->
+  <rect x="27" y="50" width="16" height="22" rx="2" stroke="#1e293b" stroke-width="1"/>
+  <rect x="47" y="50" width="16" height="22" rx="2" stroke="#1e293b" stroke-width="1"/>
+  <rect x="27" y="78" width="16" height="25" rx="2" stroke="#1e293b" stroke-width="1"/>
+  <rect x="47" y="78" width="16" height="25" rx="2" stroke="#1e293b" stroke-width="1"/>
+  <!-- door knob -->
+  <circle cx="57" cy="82" r="3.5" stroke="#1e293b" stroke-width="1.3" fill="#fbbf24" opacity="0.6"/>
+  <!-- ground line -->
+  <line x1="10" y1="113" x2="80" y2="113" stroke="#1e293b" stroke-width="1.2"/>
+  <!-- flower pots flanking door -->
+  <rect x="8" y="98" width="12" height="15" rx="2" stroke="#1e293b" stroke-width="1.2" fill="#fef9c3" opacity="0.5"/>
+  <ellipse cx="14" cy="98" rx="8" ry="3" stroke="#1e293b" stroke-width="1"/>
+  <line x1="14" y1="95" x2="14" y2="82" stroke="#1e293b" stroke-width="1.2"/>
+  <circle cx="14" cy="78" r="7" stroke="#1e293b" stroke-width="1.3" fill="#fce7f3" opacity="0.6"/>
+  <circle cx="14" cy="78" r="3" stroke="#1e293b" stroke-width="1" fill="#fbbf24" opacity="0.5"/>
+  <rect x="70" y="98" width="12" height="15" rx="2" stroke="#1e293b" stroke-width="1.2" fill="#fef9c3" opacity="0.5"/>
+  <ellipse cx="76" cy="98" rx="8" ry="3" stroke="#1e293b" stroke-width="1"/>
+  <line x1="76" y1="95" x2="76" y2="82" stroke="#1e293b" stroke-width="1.2"/>
+  <circle cx="76" cy="78" r="7" stroke="#1e293b" stroke-width="1.3" fill="#d1fae5" opacity="0.6"/>
+  <circle cx="76" cy="78" r="3" stroke="#1e293b" stroke-width="1" fill="#fbbf24" opacity="0.5"/>
+  <!-- sun above door -->
+  <circle cx="45" cy="16" r="8" stroke="#1e293b" stroke-width="1.4" fill="#fef9c3" opacity="0.7"/>
+  <line x1="45" y1="5" x2="45" y2="2" stroke="#fbbf24" stroke-width="1.3"/>
+  <line x1="45" y1="27" x2="45" y2="30" stroke="#fbbf24" stroke-width="1.3"/>
+  <line x1="34" y1="16" x2="31" y2="16" stroke="#fbbf24" stroke-width="1.3"/>
+  <line x1="56" y1="16" x2="59" y2="16" stroke="#fbbf24" stroke-width="1.3"/>
+  <line x1="37" y1="8" x2="35" y2="6" stroke="#fbbf24" stroke-width="1"/>
+  <line x1="53" y1="8" x2="55" y2="6" stroke="#fbbf24" stroke-width="1"/>
+</svg>

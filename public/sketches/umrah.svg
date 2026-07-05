@@ -1,0 +1,32 @@
+<svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- crescent at top -->
+  <circle cx="45" cy="15" r="11" stroke="#1e293b" stroke-width="1.4" fill="#fef9c3" opacity="0.8"/>
+  <circle cx="51" cy="11" r="8.5" stroke="none" fill="white"/>
+  <polygon points="59,7 60.5,11 65,11 61.5,13.5 63,17 59,14.5 55,17 56.5,13.5 53,11 57.5,11" stroke="#1e293b" stroke-width="0.9" fill="#fef9c3" opacity="0.9"/>
+  <!-- Masjid al-Haram outline (simplified Grand Mosque) -->
+  <!-- Main building -->
+  <rect x="15" y="72" width="60" height="42" stroke="#1e293b" stroke-width="1.4" fill="#f0f9ff" opacity="0.35"/>
+  <!-- Central large dome -->
+  <path d="M28 72 Q28 52 45 48 Q62 52 62 72" stroke="#1e293b" stroke-width="1.4" fill="#e0f2fe" opacity="0.4"/>
+  <line x1="45" y1="48" x2="45" y2="40" stroke="#1e293b" stroke-width="1.3"/>
+  <circle cx="45" cy="39" r="2.5" stroke="#1e293b" stroke-width="1" fill="#fef9c3" opacity="0.9"/>
+  <!-- side domes -->
+  <path d="M15 72 Q15 63 22 61 Q29 63 29 72" stroke="#1e293b" stroke-width="1.1" fill="#e0f2fe" opacity="0.3"/>
+  <path d="M61 72 Q61 63 68 61 Q75 63 75 72" stroke="#1e293b" stroke-width="1.1" fill="#e0f2fe" opacity="0.3"/>
+  <!-- 4 minarets (signature Masjid look) -->
+  <rect x="5" y="55" width="7" height="32" rx="1.5" stroke="#1e293b" stroke-width="1.1" fill="#f0f9ff" opacity="0.4"/>
+  <polygon points="5,55 8.5,46 12,55" stroke="#1e293b" stroke-width="1" fill="#e0f2fe" opacity="0.4"/>
+  <rect x="78" y="55" width="7" height="32" rx="1.5" stroke="#1e293b" stroke-width="1.1" fill="#f0f9ff" opacity="0.4"/>
+  <polygon points="78,55 81.5,46 85,55" stroke="#1e293b" stroke-width="1" fill="#e0f2fe" opacity="0.4"/>
+  <!-- front minarets (smaller) -->
+  <rect x="18" y="62" width="5" height="20" rx="1" stroke="#1e293b" stroke-width="1" fill="#f0f9ff" opacity="0.35"/>
+  <polygon points="18,62 20.5,55 23,62" stroke="#1e293b" stroke-width="0.9" fill="#e0f2fe" opacity="0.35"/>
+  <rect x="67" y="62" width="5" height="20" rx="1" stroke="#1e293b" stroke-width="1" fill="#f0f9ff" opacity="0.35"/>
+  <polygon points="67,62 69.5,55 72,62" stroke="#1e293b" stroke-width="0.9" fill="#e0f2fe" opacity="0.35"/>
+  <!-- gate arch -->
+  <path d="M38 114 L38 97 Q38 90 45 88 Q52 90 52 97 L52 114" stroke="#1e293b" stroke-width="1.1"/>
+  <!-- Kaaba inside (small) -->
+  <rect x="39" y="76" width="12" height="14" stroke="#1e293b" stroke-width="1.3" fill="#1e293b" opacity="0.08"/>
+  <!-- ground -->
+  <line x1="5" y1="114" x2="85" y2="114" stroke="#1e293b" stroke-width="0.8" opacity="0.3"/>
+</svg>

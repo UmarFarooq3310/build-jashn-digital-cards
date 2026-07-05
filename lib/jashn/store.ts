@@ -3,7 +3,16 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Invitation, JashnUser, Plan, Wish } from './types'
-import { db, isFirebaseConfigured } from '../firebase'
+import { db, auth, isFirebaseConfigured } from '../firebase'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  updateProfile,
+  signOut as firebaseSignOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth'
 import {
   doc,
   setDoc,
@@ -40,10 +49,15 @@ interface JashnState {
   wishes: Wish[]
   invitations: Invitation[]
   toast: { message: string; type: 'success' | 'info' | 'error' } | null
+  isMuted: boolean
+  toggleMuted: () => void
+  isAuthLoading: boolean
 
   signUp: (name: string, email: string, phone: string, password: string) => Promise<boolean>
   signIn: (email: string, password: string) => Promise<boolean>
   signInOAuth: (name: string, email: string) => Promise<void>
+  signInWithGoogle: () => Promise<boolean>
+  resetPassword: (email: string) => Promise<boolean>
   signOut: () => void
   upgrade: (plan: Plan) => Promise<void>
   migrateGuestCards: (userId: string) => Promise<void>
@@ -75,6 +89,9 @@ export const useJashn = create<JashnState>()(
       wishes: [],
       invitations: [],
       toast: null,
+      isMuted: false,
+      toggleMuted: () => set((state) => ({ isMuted: !state.isMuted })),
+      isAuthLoading: true,
 
       showToast: (message, type = 'success') => {
         set({ toast: { message, type } })
@@ -82,133 +99,192 @@ export const useJashn = create<JashnState>()(
       hideToast: () => set({ toast: null }),
 
       signUp: async (name, email, phone, password) => {
-        const users = get().registeredUsers || []
-        let exists = users.some((u) => u.email.toLowerCase() === email.toLowerCase())
+        if (!auth) return false
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+          const firebaseUser = userCredential.user
+          await updateProfile(firebaseUser, { displayName: name })
+          
+          const newUser: JashnUser = {
+            uid: firebaseUser.uid,
+            name,
+            email,
+            phone,
+            plan: 'free',
+            createdAt: Date.now(),
+          }
 
-        if (isFirebaseConfigured && db) {
-          try {
-            const userRef = doc(db, 'users', email.toLowerCase())
-            const userSnap = await getDoc(userRef)
-            if (userSnap.exists()) {
-              exists = true
+          if (db) {
+            try {
+              await setDoc(doc(db, 'users', firebaseUser.uid), newUser)
+            } catch (e) {
+              console.error('Failed to save user profile to Firestore:', e)
             }
-          } catch (e) {
-            console.error('Failed to check user existence in Firestore:', e)
           }
+
+          set({ user: newUser })
+          await get().fetchUserCards()
+          return true
+        } catch (error) {
+          console.error('Sign up error:', error)
+          return false
         }
-
-        if (exists) return false
-
-        const newUser: JashnUser = {
-          uid: uid(),
-          name,
-          email,
-          phone,
-          password,
-          plan: 'free',
-          createdAt: Date.now(),
-        }
-
-        if (isFirebaseConfigured && db) {
-          try {
-            await setDoc(doc(db, 'users', newUser.email.toLowerCase()), newUser)
-          } catch (e) {
-            console.error('Failed to save user to Firestore:', e)
-          }
-        }
-
-        set({
-          registeredUsers: [...users, newUser],
-          user: newUser,
-        })
-
-        await get().fetchUserCards()
-        return true
       },
 
       signIn: async (email, password) => {
-        const users = get().registeredUsers || []
-        let matched = users.find(
-          (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-        )
+        if (!auth) return false
+        try {
+          const userCredential = await signInWithEmailAndPassword(auth, email, password)
+          const firebaseUser = userCredential.user
 
-        if (isFirebaseConfigured && db) {
-          try {
-            const userRef = doc(db, 'users', email.toLowerCase())
-            const userSnap = await getDoc(userRef)
-            if (userSnap.exists()) {
-              const userData = userSnap.data() as JashnUser
-              if (userData.password === password) {
-                matched = userData
-                const existsLocally = users.some((u) => u.email.toLowerCase() === email.toLowerCase())
-                if (!existsLocally) {
-                  set({ registeredUsers: [...users, matched] })
-                }
+          let userData: JashnUser | null = null
+          if (db) {
+            try {
+              const userSnap = await getDoc(doc(db, 'users', firebaseUser.uid))
+              if (userSnap.exists()) {
+                userData = userSnap.data() as JashnUser
               }
+            } catch (e) {
+              console.error('Failed to fetch user from Firestore:', e)
             }
-          } catch (e) {
-            console.error('Failed to fetch user from Firestore:', e)
           }
+
+          if (!userData) {
+            userData = {
+              uid: firebaseUser.uid,
+              name: firebaseUser.displayName || 'Jashn User',
+              email: firebaseUser.email || email,
+              plan: 'free',
+              createdAt: Date.now(),
+            }
+          }
+
+          set({ user: userData })
+          await get().fetchUserCards()
+          return true
+        } catch (error) {
+          console.error('Sign in error:', error)
+          return false
         }
+      },
 
-        if (!matched) return false
+      signInWithGoogle: async () => {
+        if (!auth) return false
+        try {
+          const provider = new GoogleAuthProvider()
+          provider.setCustomParameters({ prompt: 'select_account' })
+          const result = await signInWithPopup(auth, provider)
+          const firebaseUser = result.user
 
-        set({ user: matched })
-        await get().fetchUserCards()
-        return true
+          let userData: JashnUser | null = null
+          if (db) {
+            try {
+              const userRef = doc(db, 'users', firebaseUser.uid)
+              const userSnap = await getDoc(userRef)
+              if (userSnap.exists()) {
+                userData = userSnap.data() as JashnUser
+              } else {
+                userData = {
+                  uid: firebaseUser.uid,
+                  name: firebaseUser.displayName || 'Jashn User',
+                  email: firebaseUser.email || '',
+                  plan: 'free',
+                  createdAt: Date.now(),
+                }
+                await setDoc(userRef, userData)
+              }
+            } catch (e) {
+              console.error('Failed to sync Google user to Firestore:', e)
+            }
+          }
+
+          if (!userData) {
+            userData = {
+              uid: firebaseUser.uid,
+              name: firebaseUser.displayName || 'Jashn User',
+              email: firebaseUser.email || '',
+              plan: 'free',
+              createdAt: Date.now(),
+            }
+          }
+
+          set({ user: userData })
+          await get().fetchUserCards()
+          return true
+        } catch (error: any) {
+          if (
+            error?.code === 'auth/popup-closed-by-user' ||
+            error?.code === 'auth/cancelled-popup-request'
+          ) {
+            return false
+          }
+          console.error('Google sign-in error:', error)
+          return false
+        }
+      },
+
+      resetPassword: async (email) => {
+        if (!auth) return false
+        try {
+          await sendPasswordResetEmail(auth, email)
+          return true
+        } catch (error) {
+          console.error('Reset password error:', error)
+          return false
+        }
       },
 
       signInOAuth: async (name, email) => {
-        const users = get().registeredUsers || []
-        let matched = users.find((u) => u.email.toLowerCase() === email.toLowerCase())
+        if (!auth) return
+        const uidToUse = auth.currentUser?.uid || uid()
+        let userData: JashnUser | null = null
 
-        if (isFirebaseConfigured && db) {
+        if (db) {
           try {
-            const userRef = doc(db, 'users', email.toLowerCase())
+            const userRef = doc(db, 'users', uidToUse)
             const userSnap = await getDoc(userRef)
             if (userSnap.exists()) {
-              matched = userSnap.data() as JashnUser
+              userData = userSnap.data() as JashnUser
             } else {
               const newUser: JashnUser = {
-                uid: uid(),
+                uid: uidToUse,
                 name,
                 email,
                 plan: 'free',
                 createdAt: Date.now(),
               }
               await setDoc(userRef, newUser)
-              matched = newUser
-            }
-
-            const existsLocally = users.some((u) => u.email.toLowerCase() === email.toLowerCase())
-            if (!existsLocally && matched) {
-              set({ registeredUsers: [...users, matched] })
+              userData = newUser
             }
           } catch (e) {
             console.error('Failed to sync OAuth user to Firestore:', e)
           }
         }
 
-        if (!matched) {
-          matched = {
-            uid: uid(),
+        if (!userData) {
+          userData = {
+            uid: uidToUse,
             name,
             email,
             plan: 'free',
             createdAt: Date.now(),
           }
-          set({
-            registeredUsers: [...users, matched],
-            user: matched,
-          })
-        } else {
-          set({ user: matched })
         }
 
+        set({ user: userData })
         await get().fetchUserCards()
       },
 
-      signOut: () => set({ user: null }),
+      signOut: async () => {
+        if (auth) {
+          try {
+            await firebaseSignOut(auth)
+          } catch (e) {
+            console.error('Sign out error:', e)
+          }
+        }
+        set({ user: null })
+      },
 
       upgrade: async (plan) => {
         const currentUser = get().user
@@ -216,11 +292,9 @@ export const useJashn = create<JashnState>()(
 
         const updatedUser = { ...currentUser, plan }
 
-        const userKey = (currentUser.email || currentUser.uid || '').toLowerCase()
-
-        if (isFirebaseConfigured && db && userKey) {
+        if (isFirebaseConfigured && db && currentUser.uid) {
           try {
-            await setDoc(doc(db, 'users', userKey), { plan }, { merge: true })
+            await setDoc(doc(db, 'users', currentUser.uid), { plan }, { merge: true })
           } catch (e) {
             console.error('Failed to update user plan in Firestore:', e)
           }

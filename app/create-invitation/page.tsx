@@ -9,6 +9,9 @@ import { Button } from '@/components/ui/button'
 import { ThemePicker } from '@/components/jashn/theme-picker'
 import { BorderPicker } from '@/components/jashn/border-picker'
 import { InvitationCard } from '@/components/jashn/invitation-card'
+import { InvitationTypePicker } from '@/components/jashn/invitation-type-picker'
+import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
+import AudioPlayer from '@/components/jashn/AudioPlayer'
 import { AdBanner } from '@/components/ad-banner'
 import { useJashn } from '@/lib/jashn/store'
 import { INVITATION_TYPES, INVITATION_CATEGORIES, getInvitationType } from '@/lib/jashn/invitations'
@@ -20,16 +23,28 @@ import { isFirebaseConfigured } from '@/lib/firebase'
 function CreateInvitationContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { user, createInvitation, updateInvitation, invitations } = useJashn()
+  const { user, createInvitation, updateInvitation, invitations, isAuthLoading } = useJashn()
 
   const editSlug = searchParams.get('edit')
 
   useEffect(() => {
-    if (!user) {
+    if (!isAuthLoading && !user) {
       const currentPath = window.location.pathname + window.location.search
       router.push(`/login?redirect=${encodeURIComponent(currentPath)}`)
     }
-  }, [user, router])
+  }, [user, isAuthLoading, router])
+
+  if (isAuthLoading) {
+    return (
+      <div className="flex py-20 items-center justify-center">
+        <Loader2 className="size-8 animate-spin text-emerald-600" />
+      </div>
+    )
+  }
+
+  if (!user) {
+    return null
+  }
 
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1)
   const [typeId, setTypeId] = useState('nikkah')
@@ -303,50 +318,15 @@ function CreateInvitationContent() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-bold text-foreground">Step 1: Select Event Type</h2>
-                  <span className="text-xs text-muted-foreground">Click any tile to edit</span>
+                  <span className="text-xs text-muted-foreground">Click any tile to select</span>
                 </div>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {INVITATION_CATEGORIES.map((c) => (
-                    <button
-                      key={c}
-                      type="button"
-                      onClick={() => setCategory(c)}
-                      className={cn(
-                        'rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors',
-                        category === c
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-secondary text-secondary-foreground hover:bg-muted'
-                      )}
-                    >
-                      {c}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {filteredTypes.map((t) => {
-                    const active = typeId === t.id
-                    return (
-                      <button
-                        key={t.id}
-                        type="button"
-                        onClick={() => handleTypeSelect(t.id)}
-                        className={cn(
-                          'flex flex-col items-center gap-2 rounded-xl border p-4 text-center transition-all',
-                          active
-                            ? 'border-primary bg-primary/5 ring-2 ring-primary/30'
-                            : 'border-border bg-card hover:border-primary/40 hover:bg-muted'
-                        )}
-                      >
-                        <span className={cn('flex size-10 items-center justify-center rounded-full', active ? 'bg-primary text-primary-foreground' : 'bg-secondary text-foreground')}>
-                          <JashnIcon name={t.icon} className="size-5" />
-                        </span>
-                        <span className="text-xs font-semibold text-foreground">{t.label}</span>
-                        <span className="font-urdu text-sm text-muted-foreground">{t.urdu}</span>
-                      </button>
-                    )
-                  })}
-                </div>
+                <InvitationTypePicker
+                  value={typeId}
+                  onChange={(id) => {
+                    setTypeId(id)
+                    setStep(2)
+                  }}
+                />
               </div>
             )}
 
@@ -636,23 +616,33 @@ function CreateInvitationContent() {
               Invitation Live Preview
             </p>
             <div className="transform scale-[0.95] origin-top">
-              <InvitationCard
-                data={{
-                  typeId,
-                  title: title || selectedType?.label || 'Invitation',
-                  hostNames,
-                  groom,
-                  bride,
-                  date: date || new Date().toISOString().slice(0, 10),
-                  time: time || '7:00 PM',
-                  venue: venue || 'Venue Name',
-                  city: city || 'Lahore',
-                  dressCode,
-                  notes,
-                  themeId,
-                  borderId,
-                }}
-              />
+              <CardAnimationPreview occasionId={typeId} animationKey={typeId}>
+                <InvitationCard
+                  data={{
+                    typeId,
+                    title: title || selectedType?.label || 'Invitation',
+                    hostNames,
+                    groom,
+                    bride,
+                    date: date || new Date().toISOString().slice(0, 10),
+                    time: time || '7:00 PM',
+                    venue: venue || 'Venue Name',
+                    city: city || 'Lahore',
+                    dressCode,
+                    notes,
+                    themeId,
+                    borderId,
+                  }}
+                />
+              </CardAnimationPreview>
+            </div>
+
+            {/* Sound preview — manual play only, NO autoplay */}
+            <div className="mt-4 flex flex-col items-center gap-1">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Sound Preview
+              </p>
+              <AudioPlayer occasionId={typeId} />
             </div>
           </div>
         </div>

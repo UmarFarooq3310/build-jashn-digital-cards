@@ -1,0 +1,28 @@
+<svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- large heart -->
+  <path d="M45 105 Q10 78 10 52 A20 20 0 0 1 45 40 A20 20 0 0 1 80 52 Q80 78 45 105Z" stroke="#1e293b" stroke-width="1.8" fill="#fce7f3" opacity="0.6"/>
+  <!-- inner heart lighter -->
+  <path d="M45 93 Q20 74 20 54 A14 14 0 0 1 45 48 A14 14 0 0 1 70 54 Q70 74 45 93Z" stroke="#1e293b" stroke-width="0.8" fill="#fce7f3" opacity="0.3"/>
+  <!-- Cupid arrow through heart -->
+  <line x1="10" y1="98" x2="80" y2="42" stroke="#1e293b" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- arrowhead -->
+  <polygon points="80,42 72,46 76,36" stroke="#1e293b" stroke-width="1.2" fill="#fbbf24" opacity="0.8"/>
+  <!-- arrow tail feathers -->
+  <path d="M10,98 L6,93 M10,98 L4,100" stroke="#1e293b" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- small floating hearts -->
+  <path d="M14 25 Q14 19 18 21 Q22 19 22 25 Q22 31 18 35 Q14 31 14 25Z" stroke="#1e293b" stroke-width="1.2" fill="#fce7f3" opacity="0.7"/>
+  <path d="M68 18 Q68 13 71 15 Q74 13 74 18 Q74 23 71 26 Q68 23 68 18Z" stroke="#1e293b" stroke-width="1.1" fill="#fce7f3" opacity="0.7"/>
+  <path d="M78 72 Q78 68 80.5 70 Q83 68 83 72 Q83 76 80.5 78 Q78 76 78 72Z" stroke="#1e293b" stroke-width="1" fill="#fce7f3" opacity="0.6"/>
+  <!-- roses at bottom -->
+  <circle cx="22" cy="115" r="7" stroke="#1e293b" stroke-width="1.2" fill="#fce7f3" opacity="0.6"/>
+  <circle cx="19" cy="111" r="4" stroke="#1e293b" stroke-width="1" fill="#fce7f3" opacity="0.4"/>
+  <line x1="22" y1="108" x2="20" y2="100" stroke="#1e293b" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="20" y1="104" x2="16" y2="106" stroke="#1e293b" stroke-width="1"/>
+  <circle cx="68" cy="115" r="7" stroke="#1e293b" stroke-width="1.2" fill="#fce7f3" opacity="0.6"/>
+  <circle cx="65" cy="111" r="4" stroke="#1e293b" stroke-width="1" fill="#fce7f3" opacity="0.4"/>
+  <line x1="68" y1="108" x2="70" y2="100" stroke="#1e293b" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="70" y1="104" x2="74" y2="106" stroke="#1e293b" stroke-width="1"/>
+  <!-- sparkle -->
+  <line x1="8" y1="48" x2="8" y2="54" stroke="#fbbf24" stroke-width="1.2"/>
+  <line x1="5" y1="51" x2="11" y2="51" stroke="#fbbf24" stroke-width="1.2"/>
+</svg>

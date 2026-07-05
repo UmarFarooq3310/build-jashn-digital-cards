@@ -10,6 +10,8 @@ import { OccasionPicker } from '@/components/jashn/occasion-picker'
 import { ThemePicker } from '@/components/jashn/theme-picker'
 import { BorderPicker } from '@/components/jashn/border-picker'
 import { WishCard } from '@/components/jashn/wish-card'
+import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
+import AudioPlayer from '@/components/jashn/AudioPlayer'
 import { AdBanner } from '@/components/ad-banner'
 import { useJashn } from '@/lib/jashn/store'
 import { getOccasion, getTemplates } from '@/lib/jashn/occasions'
@@ -530,19 +532,29 @@ function CreateWishContent() {
               </p>
             </div>
             <div className="transform scale-[0.95] origin-top">
-              <WishCard
-                data={{
-                  occasionId,
-                  themeId,
-                  borderId,
-                  message: message || templates[0]?.en || 'Best wishes!',
-                  messageUrdu: messageUrdu || templates[0]?.ur || 'بہترین دعائیں!',
-                  senderName: senderName || user?.name || 'Your Name',
-                  recipientName,
-                  relation,
-                  language,
-                }}
-              />
+              <CardAnimationPreview occasionId={occasionId} animationKey={occasionId}>
+                <WishCard
+                  data={{
+                    occasionId,
+                    themeId,
+                    borderId,
+                    message: message || templates[0]?.en || 'Best wishes!',
+                    messageUrdu: messageUrdu || templates[0]?.ur || 'بہترین دعائیں!',
+                    senderName: senderName || user?.name || 'Your Name',
+                    recipientName,
+                    relation,
+                    language,
+                  }}
+                />
+              </CardAnimationPreview>
+            </div>
+
+            {/* Sound preview — manual play only, NO autoplay */}
+            <div className="mt-4 flex flex-col items-center gap-1">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Sound Preview
+              </p>
+              <AudioPlayer occasionId={occasionId} />
             </div>
           </div>
         </div>

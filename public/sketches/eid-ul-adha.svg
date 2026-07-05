@@ -1,0 +1,29 @@
+<svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- crescent moon -->
+  <circle cx="55" cy="22" r="16" stroke="#1e293b" stroke-width="1.5" fill="#fef9c3" opacity="0.8"/>
+  <circle cx="63" cy="18" r="12" stroke="none" fill="white"/>
+  <!-- star -->
+  <polygon points="70,14 72,18 77,18 73,21 75,25 70,22 65,25 67,21 63,18 68,18" stroke="#1e293b" stroke-width="1" fill="#fef9c3" opacity="0.9"/>
+  <!-- scattered stars -->
+  <circle cx="12" cy="10" r="1.5" fill="#1e293b" opacity="0.4"/>
+  <circle cx="30" cy="6" r="1.2" fill="#1e293b" opacity="0.4"/>
+  <circle cx="18" cy="28" r="1" fill="#1e293b" opacity="0.3"/>
+  <!-- Kaaba outline (cube) -->
+  <rect x="22" y="70" width="46" height="44" stroke="#1e293b" stroke-width="2" fill="#1e293b" opacity="0.08"/>
+  <!-- Kaaba cloth (Kiswah) pattern -->
+  <rect x="22" y="72" width="46" height="8" stroke="#1e293b" stroke-width="1" fill="#1e293b" opacity="0.12"/>
+  <!-- Kaaba door -->
+  <rect x="36" y="88" width="18" height="26" rx="2" stroke="#1e293b" stroke-width="1.3" fill="#fef9c3" opacity="0.5"/>
+  <!-- corner pillars suggestion -->
+  <line x1="22" y1="70" x2="30" y2="60" stroke="#1e293b" stroke-width="1.3"/>
+  <line x1="68" y1="70" x2="76" y2="60" stroke="#1e293b" stroke-width="1.3"/>
+  <line x1="30" y1="60" x2="76" y2="60" stroke="#1e293b" stroke-width="1.3"/>
+  <!-- Black Stone corner -->
+  <circle cx="22" cy="78" r="4" stroke="#1e293b" stroke-width="1.2" fill="#d1d5db" opacity="0.6"/>
+  <!-- Tawaf lines (circular path of pilgrims) -->
+  <circle cx="45" cy="93" r="34" stroke="#1e293b" stroke-width="0.8" stroke-dasharray="4,4" opacity="0.25"/>
+  <circle cx="45" cy="93" r="40" stroke="#1e293b" stroke-width="0.7" stroke-dasharray="3,5" opacity="0.18"/>
+  <!-- stars at top -->
+  <line x1="10" y1="50" x2="10" y2="56" stroke="#fbbf24" stroke-width="1.2"/>
+  <line x1="7" y1="53" x2="13" y2="53" stroke="#fbbf24" stroke-width="1.2"/>
+</svg>

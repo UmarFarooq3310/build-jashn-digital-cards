@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 427" width="320" height="427">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0f0c29"/><stop offset="100%" stop-color="#1e1b4b"/></linearGradient></defs>
+<rect width="320" height="427" fill="url(#bg)"/>
+<circle cx="20" cy="20" r="2" fill="#fff" opacity=".6"/><circle cx="55" cy="10" r="1.5" fill="#fff" opacity=".5"/>
+<circle cx="100" cy="28" r="2" fill="#fff" opacity=".6"/><circle cx="200" cy="15" r="1.5" fill="#fff" opacity=".5"/>
+<circle cx="290" cy="25" r="2" fill="#fff" opacity=".6"/><circle cx="250" cy="40" r="1.5" fill="#fff" opacity=".4"/>
+<circle cx="240" cy="52" r="32" fill="#fde68a" opacity=".9"/>
+<circle cx="255" cy="43" r="25" fill="#0f0c29"/>
+<polygon points="272,33 274.5,41 283,41 276,46 278.5,54 272,49 265.5,54 268,46 261,41 269.5,41" fill="#fde68a" opacity=".9"/>
+<rect x="20" y="258" width="280" height="100" fill="#0a0820"/>
+<path d="M60 258 Q60 228 160 220 Q260 228 260 258" fill="#0c0a22"/>
+<line x1="160" y1="220" x2="160" y2="208" stroke="#fbbf24" stroke-width="2"/>
+<circle cx="160" cy="206" r="4" fill="#fbbf24"/>
+<rect x="8" y="210" width="16" height="68" rx="3" fill="#0c0a22"/>
+<polygon points="8,210 16,194 24,210" fill="#0c0a22"/>
+<rect x="296" y="210" width="16" height="68" rx="3" fill="#0c0a22"/>
+<polygon points="296,210 304,194 312,210" fill="#0c0a22"/>
+<rect x="133" y="130" width="24" height="35" rx="5" fill="#fbbf24" opacity=".9"/>
+<polygon points="133,130 145,110 157,130" fill="#fbbf24" opacity=".8"/>
+<line x1="145" y1="107" x2="145" y2="110" stroke="#fbbf24" stroke-width="3"/>
+<line x1="138" y1="140" x2="152" y2="140" stroke="#b45309" stroke-width="1.5" opacity=".5"/>
+<line x1="138" y1="148" x2="152" y2="148" stroke="#b45309" stroke-width="1.5" opacity=".5"/>
+<ellipse cx="90" cy="360" rx="50" ry="16" fill="#92400e" opacity=".8"/>
+<ellipse cx="72" cy="350" rx="16" ry="9" fill="#78350f"/>
+<ellipse cx="90" cy="346" rx="16" ry="9" fill="#78350f"/>
+<ellipse cx="108" cy="350" rx="16" ry="9" fill="#92400e" opacity=".8"/>
+<defs><linearGradient id="sc" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(0,0,0,0)"/><stop offset="100%" stop-color="rgba(0,0,0,0.72)"/></linearGradient></defs><rect x="0" y="330" width="320" height="97" fill="url(#sc)"/></svg>

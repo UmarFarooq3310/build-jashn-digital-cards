@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 427" width="320" height="427">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a0a2a"/><stop offset="100%" stop-color="#003344"/></linearGradient></defs>
+<rect width="320" height="427" fill="url(#bg)"/>
+<circle cx="20" cy="25" r="2" fill="#fff" opacity=".6"/><circle cx="60" cy="12" r="1.5" fill="#fff" opacity=".5"/>
+<circle cx="100" cy="30" r="2" fill="#fff" opacity=".6"/><circle cx="200" cy="18" r="2" fill="#fff" opacity=".5"/>
+<circle cx="280" cy="28" r="1.5" fill="#fff" opacity=".6"/>
+<circle cx="160" cy="52" r="30" fill="#fde68a" opacity=".9"/>
+<circle cx="173" cy="43" r="23" fill="#0a0a2a"/>
+<polygon points="188,32 190.5,40 200,40 192.5,45 195,53 188,48 181,53 183.5,45 176,40 185.5,40" fill="#fde68a" opacity=".9"/>
+<circle cx="160" cy="52" r="50" fill="none" stroke="#fde68a" stroke-width="1" stroke-dasharray="4,6" opacity=".3"/>
+<circle cx="160" cy="52" r="65" fill="none" stroke="#fde68a" stroke-width="0.8" stroke-dasharray="3,7" opacity=".2"/>
+<rect x="20" y="258" width="280" height="110" fill="#04151f"/>
+<path d="M60 258 Q60 220 160 212 Q260 220 260 258" fill="#051a26"/>
+<line x1="160" y1="212" x2="160" y2="198" stroke="#fbbf24" stroke-width="2.5"/>
+<circle cx="160" cy="196" r="5" fill="#fbbf24"/>
+<rect x="4" y="208" width="16" height="70" rx="3" fill="#051a26"/>
+<polygon points="4,208 12,188 20,208" fill="#051a26"/>
+<rect x="300" y="208" width="16" height="70" rx="3" fill="#051a26"/>
+<polygon points="300,208 308,188 316,208" fill="#051a26"/>
+<path d="M8 148 Q60 135 100 148 Q60 155 8 148Z" fill="#fde68a" opacity=".15"/>
+<path d="M220 138 Q260 125 312 138 Q260 148 220 138Z" fill="#fde68a" opacity=".15"/>
+<path d="M30 170 Q160 152 290 170" stroke="#fbbf24" stroke-width="1" fill="none" stroke-dasharray="4,8" opacity=".3"/>
+<defs><linearGradient id="sc" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(0,0,0,0)"/><stop offset="100%" stop-color="rgba(0,0,0,0.72)"/></linearGradient></defs><rect x="0" y="330" width="320" height="97" fill="url(#sc)"/></svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 427" width="320" height="427">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0%" stop-color="#1c0a00"/><stop offset="100%" stop-color="#431407"/></linearGradient></defs>
+<rect width="320" height="427" fill="url(#bg)"/>
+<path d="M30 380 L170 120" stroke="#fbbf24" stroke-width="8" stroke-linecap="round"/>
+<path d="M30 380 L14 415 L58 405 Z" fill="#fbbf24"/>
+<path d="M30 380 L90 340 L155 270 L170 120 L110 200 L55 275 Z" fill="#fde68a" opacity=".35" stroke="#fbbf24" stroke-width="1.5"/>
+<rect x="170" y="95" width="22" height="10" rx="3" fill="#f472b6" transform="rotate(-25,181,100)" opacity=".9"/>
+<rect x="195" y="78" width="18" height="9" rx="3" fill="#818cf8" transform="rotate(15,204,82)" opacity=".9"/>
+<rect x="218" y="108" width="16" height="8" rx="3" fill="#34d399" transform="rotate(-50,226,112)" opacity=".9"/>
+<rect x="145" y="72" width="18" height="8" rx="3" fill="#fbbf24" transform="rotate(40,154,76)" opacity=".9"/>
+<rect x="238" y="85" width="15" height="8" rx="3" fill="#f472b6" transform="rotate(-20,245,89)" opacity=".9"/>
+<rect x="268" y="95" width="13" height="7" rx="3" fill="#818cf8" transform="rotate(10,274,98)" opacity=".9"/>
+<circle cx="200" cy="65" r="8" fill="#fbbf24" opacity=".8"/>
+<circle cx="240" cy="75" r="7" fill="#f472b6" opacity=".8"/>
+<circle cx="160" cy="60" r="6" fill="#818cf8" opacity=".8"/>
+<circle cx="278" cy="68" r="7" fill="#34d399" opacity=".8"/>
+<path d="M170 120 Q200 160 185 200 Q170 240 200 270" stroke="#f472b6" stroke-width="3" fill="none" opacity=".6"/>
+<path d="M170 118 Q145 165 160 210 Q175 255 150 285" stroke="#818cf8" stroke-width="3" fill="none" opacity=".6"/>
+<circle cx="280" cy="175" r="14" fill="#fbbf24" opacity=".5"/>
+<circle cx="35" cy="150" r="11" fill="#f472b6" opacity=".4"/>
+<defs><linearGradient id="sc" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(0,0,0,0)"/><stop offset="100%" stop-color="rgba(0,0,0,0.72)"/></linearGradient></defs><rect x="0" y="330" width="320" height="97" fill="url(#sc)"/></svg>

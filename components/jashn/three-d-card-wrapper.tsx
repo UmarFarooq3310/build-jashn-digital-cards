@@ -1,9 +1,12 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { Sparkles, Volume2, BookOpen } from 'lucide-react'
-import { playContextualSound } from '@/lib/jashn/audio'
+import { Sparkles, Volume2, VolumeX, BookOpen } from 'lucide-react'
+import { playContextualSound, stopContextualSound } from '@/lib/jashn/audio'
+import { useJashn } from '@/lib/jashn/store'
 import { cn } from '@/lib/utils'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 interface ThreeDCardWrapperProps {
   children: React.ReactNode
@@ -27,6 +30,208 @@ export function ThreeDCardWrapper({
   const [isOpen, setIsOpen] = useState(false)
   const [hasOpened, setHasOpened] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  const isMuted = useJashn((s) => s.isMuted)
+  const toggleMuted = useJashn((s) => s.toggleMuted)
+
+  const handleMuteToggle = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    toggleMuted()
+    if (!isMuted) {
+      stopContextualSound()
+    } else {
+      playContextualSound(occasionIdOrCategory)
+    }
+  }
+
+  useGSAP(() => {
+    if (!isOpen) return
+
+    const occasion = occasionIdOrCategory.toLowerCase().trim()
+    const isIslamicCategory =
+      occasion === 'islamic' ||
+      occasion === 'eid-ul-fitr' ||
+      occasion === 'eid-ul-adha' ||
+      occasion === 'ramadan' ||
+      occasion === 'jumma' ||
+      occasion === 'eid' ||
+      isIslamic
+
+    const isFriendshipCategory =
+      occasion === 'friendship-day' ||
+      occasion === 'friendship' ||
+      occasion === 'thank-you' ||
+      occasion === 'thankyou' ||
+      occasion === 'miss-you' ||
+      occasion === 'missyou' ||
+      occasion === 'love' ||
+      occasion === 'valentines' ||
+      occasion === 'mothers-day' ||
+      occasion === 'fathers-day' ||
+      occasion === 'congratulations'
+
+    const isWeddingCategory =
+      occasion === 'wedding' ||
+      occasion === 'shaadi' ||
+      occasion === 'nikah' ||
+      occasion === 'mehndi' ||
+      occasion === 'dholki' ||
+      occasion === 'barat' ||
+      occasion === 'walima' ||
+      occasion === 'family' ||
+      occasion === 'marriage'
+
+    // General Card Fade-in
+    gsap.fromTo('.jashn-card', 
+      { scale: 0.93, opacity: 0 }, 
+      { scale: 1, opacity: 1, duration: 1.0, ease: 'power2.out' }
+    )
+
+    // General Text animations
+    gsap.fromTo('h1, p, .site-header, .site-footer', 
+      { y: 15, opacity: 0 }, 
+      { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out', delay: 0.2, stagger: 0.08 }
+    )
+
+    // Wedding / Nikah Animations
+    if (isWeddingCategory) {
+      // Elegant Mughal-arch reveal
+      gsap.fromTo('.mughal-arch',
+        { scale: 0.85, opacity: 0, borderWidth: '0px' },
+        { scale: 1, opacity: 1, borderWidth: '2px', duration: 1.4, ease: 'power3.out', delay: 0.1 }
+      )
+      
+      // Floating petals
+      gsap.fromTo('.petal',
+        { y: -60, x: 'random(-30, 30)', rotation: 0, opacity: 0 },
+        { 
+          y: 'random(350, 550)', 
+          x: 'random(-60, 60)', 
+          rotation: 'random(180, 360)', 
+          opacity: 'random(0.5, 0.95)', 
+          duration: 'random(4.5, 7.5)', 
+          repeat: -1, 
+          ease: 'sine.inOut',
+          stagger: 0.15 
+        }
+      )
+
+      // Shimmering calligraphy
+      gsap.fromTo('.font-urdu, .shimmer-text',
+        { opacity: 0, filter: 'drop-shadow(0 0 15px rgba(230,181,74,0))' },
+        { opacity: 1, filter: 'drop-shadow(0 0 8px rgba(230,181,74,0.7))', duration: 1.6, ease: 'power1.inOut', delay: 0.3 }
+      )
+    }
+
+    // Birthday Animations
+    if (occasion === 'birthday') {
+      // Bounce-in Cake
+      gsap.fromTo('.birthday-cake',
+        { scale: 0, rotation: -25, opacity: 0 },
+        { scale: 1, rotation: 0, opacity: 1, duration: 1.2, ease: 'back.out(1.7)', delay: 0.4 }
+      )
+
+      // Candle Flicker
+      gsap.to('.candle-flame', {
+        scaleY: 1.25,
+        scaleX: 0.85,
+        opacity: 0.75,
+        duration: 0.12,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut'
+      })
+
+      // Confetti burst
+      gsap.fromTo('.confetti-dot',
+        { x: 0, y: 0, scale: 0, opacity: 1 },
+        {
+          x: 'random(-140, 140)',
+          y: 'random(-220, 80)',
+          scale: 'random(0.6, 1.4)',
+          rotation: 'random(0, 360)',
+          opacity: 0,
+          duration: 'random(1.2, 2.8)',
+          ease: 'power3.out',
+          stagger: { each: 0.02 }
+        }
+      )
+    }
+
+    // Islamic / Eid Animations
+    if (isIslamicCategory) {
+      // Crescent Glow
+      gsap.to('.crescent-float', {
+        filter: 'drop-shadow(0 0 16px rgba(230,196,90,0.85))',
+        duration: 1.8,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      })
+
+      // Swaying lanterns
+      gsap.fromTo('.hanging-lantern',
+        { rotation: -5 },
+        { rotation: 5, duration: 2.2, repeat: -1, yoyo: true, ease: 'sine.inOut' }
+      )
+
+      // Soft light-sweep
+      gsap.fromTo('.light-sweep',
+        { x: '-100%' },
+        { x: '100%', duration: 2.0, ease: 'power2.inOut', delay: 0.4 }
+      )
+    }
+
+    // Friendship Animations
+    if (isFriendshipCategory) {
+      // Floating hearts
+      gsap.fromTo('.floating-heart',
+        { y: 150, x: 'random(-30, 30)', scale: 0, opacity: 0 },
+        {
+          y: -150,
+          x: 'random(-80, 80)',
+          scale: 'random(0.6, 1.3)',
+          opacity: 'random(0.4, 0.85)',
+          duration: 'random(3.2, 5.2)',
+          stagger: 0.25,
+          repeat: -1,
+          ease: 'sine.out'
+        }
+      )
+    }
+
+    // National / Independence Day animations
+    if (
+      occasion === 'national' ||
+      occasion === 'independence-day' ||
+      occasion === 'kashmir-day' ||
+      occasion === 'basant'
+    ) {
+      // Flag-themed confetti burst
+      gsap.fromTo('.national-star',
+        { x: 0, y: 0, scale: 0, opacity: 1, rotation: 0 },
+        {
+          x: 'random(-120, 120)',
+          y: 'random(-200, 60)',
+          scale: 'random(0.5, 1.3)',
+          rotation: 'random(0, 360)',
+          opacity: 0,
+          duration: 'random(1.4, 2.6)',
+          ease: 'power3.out',
+          stagger: { each: 0.05 }
+        }
+      )
+    }
+
+    // Anniversary Animations
+    if (occasion === 'anniversary') {
+      // Spinning rings
+      gsap.fromTo('.anniversary-rings',
+        { scale: 0, rotation: -40, opacity: 0 },
+        { scale: 1, rotation: 0, opacity: 1, duration: 1.4, ease: 'back.out(1.5)', delay: 0.5 }
+      )
+    }
+  }, { dependencies: [isOpen, occasionIdOrCategory], scope: containerRef })
   
   // Interactive 3D tilt & shine values
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, px: 50, py: 50 })
@@ -316,7 +521,7 @@ export function ThreeDCardWrapper({
           ========================================================= */}
       <div
         className={cn(
-          "w-full rounded-[2.5rem] z-10 no-scrollbar",
+          "w-full rounded-[2.5rem] z-10 no-scrollbar relative",
           "transition-all duration-700",
           isOpen 
             ? "relative h-auto opacity-100 pointer-events-auto scale-100" 
@@ -327,6 +532,125 @@ export function ThreeDCardWrapper({
         }}
       >
         {children}
+
+        {/* Dynamic Animated Overlay elements */}
+        {isOpen && (
+          <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden rounded-[2.5rem]">
+            {/* Confetti (Birthday) */}
+            {occasionIdOrCategory.toLowerCase().trim() === 'birthday' && Array.from({ length: 25 }).map((_, i) => (
+              <div key={i} className="confetti-dot absolute left-1/2 top-1/2 size-2.5 rounded-full" style={{ backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6'][i % 5] }} />
+            ))}
+
+            {/* Birthday Cake */}
+            {occasionIdOrCategory.toLowerCase().trim() === 'birthday' && (
+              <div className="birthday-cake absolute bottom-12 right-6 size-16 drop-shadow-md">
+                <svg viewBox="0 0 100 100" className="w-full h-full">
+                  <path d="M20 70 h60 v15 a5 5 0 0 1 -5 5 h-50 a5 5 0 0 1 -5 -5 z" fill="#f43f5e" />
+                  <path d="M25 50 h50 v20 h-50 z" fill="#fb7185" />
+                  <path d="M25 50 q5 5 10 0 q5 5 10 0 q5 5 10 0 q5 5 10 0 q5 5 10 0" fill="#fff" stroke="#fff" strokeWidth="3" />
+                  <rect x="47" y="25" width="6" height="25" fill="#f59e0b" />
+                  <path className="candle-flame origin-bottom" d="M50 10 q-4 8 0 15 q4 -7 0 -15" fill="#ef4444" />
+                </svg>
+              </div>
+            )}
+
+            {/* Hanging Lanterns (Islamic) */}
+            {(occasionIdOrCategory.toLowerCase().trim() === 'islamic' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'eid-ul-fitr' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'eid-ul-adha' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'ramadan' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'jumma' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'eid' ||
+              isIslamic) && (
+              <>
+                <div className="hanging-lantern absolute left-8 top-0 w-8 h-20 origin-top">
+                  <div className="w-px h-10 bg-amber-500/60 mx-auto" />
+                  <svg viewBox="0 0 100 120" className="w-full h-10 text-amber-500 fill-current drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]">
+                    <path d="M50 10 L30 40 L30 80 L50 110 L70 80 L70 40 Z" />
+                    <circle cx="50" cy="60" r="15" fill="#fff" className="animate-pulse" />
+                  </svg>
+                </div>
+                <div className="hanging-lantern absolute right-8 top-0 w-8 h-24 origin-top">
+                  <div className="w-px h-14 bg-amber-500/60 mx-auto" />
+                  <svg viewBox="0 0 100 120" className="w-full h-10 text-amber-500 fill-current drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]">
+                    <path d="M50 10 L30 40 L30 80 L50 110 L70 80 L70 40 Z" />
+                    <circle cx="50" cy="60" r="15" fill="#fff" className="animate-pulse" />
+                  </svg>
+                </div>
+              </>
+            )}
+
+            {/* Light Sweep (Islamic) */}
+            {(occasionIdOrCategory.toLowerCase().trim() === 'islamic' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'eid-ul-fitr' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'eid-ul-adha' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'ramadan' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'jumma' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'eid' ||
+              isIslamic) && (
+              <div className="light-sweep absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 pointer-events-none" />
+            )}
+
+            {/* Floating Hearts (Friendship/Love/Thank-you/Miss-you) */}
+            {(occasionIdOrCategory.toLowerCase().trim() === 'friendship-day' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'friendship' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'thank-you' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'thankyou' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'miss-you' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'missyou' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'valentines' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'mothers-day' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'fathers-day' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'love' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'congratulations') && 
+              Array.from({ length: 8 }).map((_, i) => (
+                <svg key={i} viewBox="0 0 24 24" className="floating-heart absolute bottom-0 left-[20%] text-rose-500 fill-current size-5" style={{ left: `${15 + i * 10}%` }}>
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+            ))}
+
+            {/* National Stars / Crescent confetti (Independence Day / Kashmir Day / Basant) */}
+            {(occasionIdOrCategory.toLowerCase().trim() === 'national' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'independence-day' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'kashmir-day' ||
+              occasionIdOrCategory.toLowerCase().trim() === 'basant') &&
+              Array.from({ length: 18 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="national-star absolute left-1/2 top-1/2"
+                  style={{
+                    color: i % 3 === 0 ? '#FFFFFF' : i % 3 === 1 ? '#01411C' : '#f5d020',
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" className="fill-current" style={{ width: `${10 + (i % 4) * 4}px`, height: `${10 + (i % 4) * 4}px` }}>
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                </div>
+              ))}
+
+            {/* Golden Rings (Anniversary) */}
+            {occasionIdOrCategory.toLowerCase().trim() === 'anniversary' && (
+              <div className="anniversary-rings absolute bottom-12 right-8 size-16 drop-shadow-md">
+                <svg viewBox="0 0 100 100" className="w-full h-full text-amber-500 fill-none stroke-current" strokeWidth="6">
+                  <circle cx="40" cy="50" r="23" />
+                  <circle cx="60" cy="50" r="23" />
+                  <polygon points="40,22 44,26 40,30 36,26" fill="#fff" stroke="none" />
+                </svg>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Global Mute/Unmute Audio button */}
+        {isOpen && !isSensitive && (
+          <button
+            onClick={handleMuteToggle}
+            className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 transition-all shadow-md backdrop-blur-sm pointer-events-auto cursor-pointer"
+            aria-label={isMuted ? "Unmute sound" : "Mute sound"}
+          >
+            {isMuted ? <VolumeX className="size-4 text-white/90" /> : <Volume2 className="size-4 text-white/90 animate-pulse" />}
+          </button>
+        )}
       </div>
     </div>
   )
