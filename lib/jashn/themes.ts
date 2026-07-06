@@ -107,3 +107,22 @@ export const PREMIUM_THEMES = THEMES.filter((t) => t.isPremium)
 export function getTheme(id: string | undefined): CardTheme {
   return THEMES.find((t) => t.id === id) ?? THEMES[0]
 }
+
+export function getCategoryPatternClass(category: string | undefined): string {
+  if (!category) return ''
+  const cat = category.toLowerCase().trim()
+  if (cat === 'islamic' || cat === 'religious') {
+    return 'jashn-pattern-islamic'
+  }
+  if (cat === 'family' || cat === 'wedding') {
+    return 'jashn-pattern-wedding'
+  }
+  if (cat === 'personal' || cat === 'social' || cat === 'national') {
+    return 'jashn-pattern-personal'
+  }
+  if (cat === 'achievements' || cat === 'professional') {
+    return 'jashn-pattern-professional'
+  }
+  return ''
+}
+

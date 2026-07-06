@@ -8,10 +8,12 @@ import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
 import { ThemePicker } from '@/components/jashn/theme-picker'
 import { BorderPicker } from '@/components/jashn/border-picker'
+import { BackgroundPicker } from '@/components/jashn/background-picker'
 import { InvitationCard } from '@/components/jashn/invitation-card'
 import { InvitationTypePicker } from '@/components/jashn/invitation-type-picker'
 import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
 import AudioPlayer from '@/components/jashn/AudioPlayer'
+import { useCardSound } from '@/lib/jashn/useCardSound'
 import { AdBanner } from '@/components/ad-banner'
 import { useJashn } from '@/lib/jashn/store'
 import { INVITATION_TYPES, INVITATION_CATEGORIES, getInvitationType } from '@/lib/jashn/invitations'
@@ -79,11 +81,13 @@ function CreateInvitationContent() {
   const [rsvpPhone, setRsvpPhone] = useState('')
   const [themeId, setThemeId] = useState('mehndi-red')
   const [borderId, setBorderId] = useState('mehndi')
+  const [bgVariantId, setBgVariantId] = useState('default')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const selectedType = getInvitationType(typeId)
   const isCouple = selectedType?.couple
   const isPro = user?.plan === 'pro' || user?.plan === 'business'
+  const { playClickSound } = useCardSound(selectedType?.soundCategory)
 
   useEffect(() => {
     if (editSlug) {
@@ -108,6 +112,7 @@ function CreateInvitationContent() {
         setRsvpPhone(existing.rsvpPhone || '')
         setThemeId(existing.themeId || 'mehndi-red')
         setBorderId(existing.borderId || 'mehndi')
+        setBgVariantId(existing.bgVariantId || 'default')
         setStep(2)
       }
     } else {
@@ -254,7 +259,10 @@ function CreateInvitationContent() {
       rsvpPhone: cleanedPhone,
       themeId,
       borderId,
+      bgVariantId,
     }
+
+    playClickSound()
 
     if (editSlug) {
       await updateInvitation(editSlug, payload)
@@ -578,6 +586,15 @@ function CreateInvitationContent() {
                   />
                 </div>
 
+                <div className="border-t border-border pt-6">
+                  <h2 className="text-base font-bold text-foreground mb-3">Choose Card Background Design</h2>
+                  <BackgroundPicker
+                    value={bgVariantId}
+                    onChange={setBgVariantId}
+                    variants={selectedType?.bgVariants}
+                  />
+                </div>
+
                 <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-4">
                   <Button variant="outline" onClick={() => setStep(2)} className="w-full sm:w-auto">
                     <ArrowLeft className="mr-2 size-4" /> Back
@@ -632,6 +649,7 @@ function CreateInvitationContent() {
                     notes,
                     themeId,
                     borderId,
+                    bgVariantId,
                   }}
                 />
               </CardAnimationPreview>

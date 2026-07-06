@@ -9,9 +9,11 @@ import { Button } from '@/components/ui/button'
 import { OccasionPicker } from '@/components/jashn/occasion-picker'
 import { ThemePicker } from '@/components/jashn/theme-picker'
 import { BorderPicker } from '@/components/jashn/border-picker'
+import { BackgroundPicker } from '@/components/jashn/background-picker'
 import { WishCard } from '@/components/jashn/wish-card'
 import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
 import AudioPlayer from '@/components/jashn/AudioPlayer'
+import { useCardSound } from '@/lib/jashn/useCardSound'
 import { AdBanner } from '@/components/ad-banner'
 import { useJashn } from '@/lib/jashn/store'
 import { getOccasion, getTemplates } from '@/lib/jashn/occasions'
@@ -54,6 +56,7 @@ function CreateWishContent() {
   const [messageUrdu, setMessageUrdu] = useState('')
   const [themeId, setThemeId] = useState('mehndi-red')
   const [borderId, setBorderId] = useState('mehndi')
+  const [bgVariantId, setBgVariantId] = useState('default')
   const [senderName, setSenderName] = useState('')
   const [recipientName, setRecipientName] = useState('')
   const [relation, setRelation] = useState('')
@@ -62,6 +65,7 @@ function CreateWishContent() {
   const templates = getTemplates(occasionId)
   const selectedOccasion = getOccasion(occasionId)
   const isPro = user?.plan === 'pro' || user?.plan === 'business'
+  const { playClickSound } = useCardSound(selectedOccasion?.soundCategory)
 
   useEffect(() => {
     if (editSlug) {
@@ -73,6 +77,7 @@ function CreateWishContent() {
         setMessageUrdu(existing.messageUrdu || '')
         setThemeId(existing.themeId || 'mehndi-red')
         setBorderId(existing.borderId || 'mehndi')
+        setBgVariantId(existing.bgVariantId || 'default')
         setSenderName(existing.senderName || '')
         setRecipientName(existing.recipientName || '')
         setRelation(existing.relation || '')
@@ -204,10 +209,13 @@ function CreateWishContent() {
       language,
       themeId,
       borderId,
+      bgVariantId,
       senderName: senderName.trim() || user?.name || 'A Well Wisher',
       recipientName: recipientName.trim(),
       relation,
     }
+
+    playClickSound()
 
     if (editSlug) {
       await updateWish(editSlug, payload)
@@ -482,6 +490,17 @@ function CreateWishContent() {
                   />
                 </div>
 
+                <div className="pt-4 border-t border-border pt-4">
+                  <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    Select Card Background Design
+                  </label>
+                  <BackgroundPicker
+                    value={bgVariantId}
+                    onChange={setBgVariantId}
+                    variants={selectedOccasion?.bgVariants}
+                  />
+                </div>
+
                 <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-4">
                   <Button variant="outline" onClick={() => setStep(2)} className="w-full sm:w-auto">
                     <ArrowLeft className="mr-2 size-4" /> Back
@@ -500,11 +519,11 @@ function CreateWishContent() {
                   Review your live animated card on the right. Clicking below will generate a clean, compact link for WhatsApp & Instagram sharing!
                 </p>
 
-                <div className="rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 p-4 text-xs text-primary border border-primary/20 flex items-center gap-3">
-                  <Sparkles className="size-6 shrink-0" />
+                <div className="rounded-xl bg-primary/8 p-4 text-xs text-foreground border border-primary/20 flex items-center gap-3">
+                  <Sparkles className="size-6 shrink-0 text-primary" />
                   <div>
-                    <span className="font-bold block">Clean Short URL Enabled</span>
-                    <span>Generates a compact link like <code>jashn.app/w/{occasionId.slice(0,4)}</code> with celebration audio vibes.</span>
+                    <span className="font-bold block text-primary">Clean Short URL Enabled</span>
+                    <span className="text-muted-foreground">Generates a compact link like <code className="font-mono bg-muted px-1 py-0.5 rounded text-foreground">jashn.app/w/{occasionId.slice(0,4)}</code> with celebration audio vibes.</span>
                   </div>
                 </div>
 
@@ -538,6 +557,7 @@ function CreateWishContent() {
                     occasionId,
                     themeId,
                     borderId,
+                    bgVariantId,
                     message: message || templates[0]?.en || 'Best wishes!',
                     messageUrdu: messageUrdu || templates[0]?.ur || 'بہترین دعائیں!',
                     senderName: senderName || user?.name || 'Your Name',

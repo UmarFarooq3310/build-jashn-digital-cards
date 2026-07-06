@@ -17,6 +17,10 @@ export interface Occasion {
   bgGradient?: string
   /** hand-drawn sketch SVG illustration path (e.g. '/sketches/birthday.svg') */
   sketchImage?: string
+  bgVariants?: { id: string; name: string; bgGradient: string; bgImage?: string }[]
+  patternOverlay?: string
+  decorations?: string[]
+  soundCategory?: 'dholki' | 'islamic' | 'festive' | 'somber' | 'default'
 }
 
 export interface InvitationType {
@@ -33,6 +37,10 @@ export interface InvitationType {
   bgGradient?: string
   /** hand-drawn sketch SVG illustration path (e.g. '/sketches/mehndi.svg') */
   sketchImage?: string
+  bgVariants?: { id: string; name: string; bgGradient: string; bgImage?: string }[]
+  patternOverlay?: string
+  decorations?: string[]
+  soundCategory?: 'dholki' | 'islamic' | 'festive' | 'somber' | 'default'
 }
 
 export interface CardTheme {
@@ -74,6 +82,7 @@ export interface Wish {
   language: Language
   themeId: string
   borderId?: string
+  bgVariantId?: string
   senderName: string
   recipientName: string
   relation?: string
@@ -100,6 +109,7 @@ export interface Invitation {
   rsvpPhone: string
   themeId: string
   borderId?: string
+  bgVariantId?: string
   rsvpCount: number
   viewCount?: number
   createdAt: number

@@ -1,0 +1,661 @@
+/* ==========================================================================
+   JASHN PREMIUM ANIMATIONS LIBRARY
+   30+ unique keyframe animations for cards, text, backgrounds, particles
+   ========================================================================== */
+
+/* ── Aurora flowing background ────────────────────────────────────────── */
+@keyframes aurora-shift {
+  0%   { background-position: 0% 50%; }
+  25%  { background-position: 50% 100%; }
+  50%  { background-position: 100% 50%; }
+  75%  { background-position: 50% 0%; }
+  100% { background-position: 0% 50%; }
+}
+
+.aurora-bg {
+  background: linear-gradient(
+    -45deg,
+    var(--c-bg1), var(--c-bg2),
+    color-mix(in oklab, var(--c-accent) 25%, var(--c-bg1)),
+    color-mix(in oklab, var(--c-glow) 20%, var(--c-bg2)),
+    var(--c-bg1)
+  );
+  background-size: 400% 400%;
+  animation: aurora-shift 12s ease infinite;
+}
+
+/* ── Fire / ember glow pulse ──────────────────────────────────────────── */
+@keyframes ember-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 10px 2px rgba(255,120,0,0.4),
+      0 0 30px 8px rgba(255,60,0,0.2),
+      inset 0 0 20px rgba(255,100,0,0.08);
+  }
+  50% {
+    box-shadow:
+      0 0 20px 6px rgba(255,160,0,0.6),
+      0 0 55px 16px rgba(255,80,0,0.3),
+      inset 0 0 35px rgba(255,120,0,0.14);
+  }
+}
+
+/* ── Ink spread reveal ────────────────────────────────────────────────── */
+@keyframes ink-spread {
+  0%   { clip-path: circle(0% at 50% 50%); opacity: 0.4; }
+  60%  { clip-path: circle(70% at 50% 50%); opacity: 1; }
+  100% { clip-path: circle(150% at 50% 50%); opacity: 1; }
+}
+
+.ink-reveal {
+  animation: ink-spread 1.2s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* ── Ripple expand ────────────────────────────────────────────────────── */
+@keyframes ripple-out {
+  0%   { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid var(--c-accent);
+  animation: ripple-out 2s ease-out infinite;
+  pointer-events: none;
+}
+.ripple:nth-child(2) { animation-delay: 0.6s; }
+.ripple:nth-child(3) { animation-delay: 1.2s; }
+
+/* ── Typewriter cursor blink ──────────────────────────────────────────── */
+@keyframes cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.typewriter-cursor::after {
+  content: '|';
+  color: var(--c-accent);
+  animation: cursor-blink 0.9s step-end infinite;
+  margin-left: 2px;
+}
+
+/* ── Floating orb drift ───────────────────────────────────────────────── */
+@keyframes orb-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(12px, -18px) scale(1.08); }
+  50%  { transform: translate(-8px, -30px) scale(0.95); }
+  75%  { transform: translate(16px, -15px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.orb-float {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(18px);
+  animation: orb-drift var(--orb-duration, 8s) ease-in-out infinite;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* ── Starburst spin ───────────────────────────────────────────────────── */
+@keyframes starburst {
+  0%   { transform: rotate(0deg) scale(0.8); opacity: 0.5; }
+  50%  { transform: rotate(180deg) scale(1.2); opacity: 1; }
+  100% { transform: rotate(360deg) scale(0.8); opacity: 0.5; }
+}
+
+.starburst {
+  animation: starburst 4s linear infinite;
+}
+
+/* ── Neon pulse glow ──────────────────────────────────────────────────── */
+@keyframes neon-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 4px var(--c-glow),
+      0 0 12px var(--c-glow),
+      0 0 24px var(--c-accent);
+    opacity: 0.85;
+  }
+  50% {
+    text-shadow:
+      0 0 8px var(--c-glow),
+      0 0 28px var(--c-glow),
+      0 0 50px var(--c-accent),
+      0 0 80px var(--c-accent);
+    opacity: 1;
+  }
+}
+
+.neon-text {
+  animation: neon-pulse 2.5s ease-in-out infinite;
+}
+
+/* ── Bounce cascade (for balloons, confetti) ──────────────────────────── */
+@keyframes bounce-cascade {
+  0%   { transform: translateY(0) scaleY(1); }
+  20%  { transform: translateY(-22px) scaleY(0.94); }
+  40%  { transform: translateY(0) scaleY(1.06); }
+  55%  { transform: translateY(-10px) scaleY(0.97); }
+  70%  { transform: translateY(0) scaleY(1.02); }
+  85%  { transform: translateY(-4px) scaleY(0.99); }
+  100% { transform: translateY(0) scaleY(1); }
+}
+
+.bounce-cascade {
+  animation: bounce-cascade 2.2s cubic-bezier(0.34,1.56,0.64,1) infinite;
+}
+
+/* ── Shimmer slide (gold sweep across text) ───────────────────────────── */
+@keyframes shimmer-slide {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer-gold {
+  background: linear-gradient(
+    100deg,
+    var(--c-ink) 20%,
+    var(--c-glow) 38%,
+    #fffde0 50%,
+    var(--c-glow) 62%,
+    var(--c-ink) 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-slide 2.8s linear infinite;
+}
+
+/* ── Heartbeat pulse ──────────────────────────────────────────────────── */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%  { transform: scale(1.18); }
+  28%  { transform: scale(1); }
+  42%  { transform: scale(1.12); }
+  70%  { transform: scale(1); }
+}
+
+.heartbeat {
+  animation: heartbeat 1.8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* ── Sparkle trail (on hover / move) ─────────────────────────────────── */
+@keyframes sparkle-trail {
+  0%   { transform: scale(0) rotate(0deg); opacity: 1; }
+  60%  { transform: scale(1.5) rotate(180deg); opacity: 0.8; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+.sparkle-trail-dot {
+  position: fixed;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  background: var(--trail-color, #ffd700);
+  box-shadow: 0 0 6px 2px var(--trail-color, #ffd700);
+  animation: sparkle-trail 0.7s ease-out forwards;
+  transform-origin: center;
+}
+
+/* ── Shooting star ────────────────────────────────────────────────────── */
+@keyframes shoot {
+  0%   { transform: translateX(0) translateY(0) scaleX(1); opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateX(180px) translateY(-90px) scaleX(3); opacity: 0; }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 4px 2px rgba(255,255,255,0.6);
+  animation: shoot var(--shoot-dur, 2.5s) ease-in var(--shoot-delay, 0s) infinite;
+}
+.shooting-star::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 50%;
+  width: 30px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5));
+  transform: translateY(-50%);
+}
+
+/* ── Wave divider ─────────────────────────────────────────────────────── */
+@keyframes wave-sway {
+  0%, 100% { d: path("M0,12 C20,4 40,20 60,12 C80,4 100,20 120,12 C140,4 160,20 180,12 C200,4 220,20 240,12"); }
+  50%       { d: path("M0,12 C20,20 40,4 60,12 C80,20 100,4 120,12 C140,20 160,4 180,12 C200,20 220,4 240,12"); }
+}
+
+/* ── Zoom breathe ─────────────────────────────────────────────────────── */
+@keyframes zoom-breathe {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.025); }
+}
+
+/* ── Slide up reveal ──────────────────────────────────────────────────── */
+@keyframes slide-up-reveal {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── Rotate 360 loop ──────────────────────────────────────────────────── */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spin-slow  { animation: spin-slow 20s linear infinite; }
+.spin-slow-reverse { animation: spin-slow 20s linear infinite reverse; }
+
+/* ── Glow ring expand ─────────────────────────────────────────────────── */
+@keyframes glow-ring {
+  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--c-accent) 50%, transparent); }
+  70%  { box-shadow: 0 0 0 12px color-mix(in oklab, var(--c-accent) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--c-accent) 0%, transparent); }
+}
+
+.glow-ring-anim {
+  animation: glow-ring 2s ease-out infinite;
+}
+
+/* ── Flame flicker ────────────────────────────────────────────────────── */
+@keyframes flame-flicker {
+  0%, 100% { transform: scaleY(1) skewX(0deg); filter: brightness(1); }
+  20%       { transform: scaleY(1.04) skewX(-2deg); filter: brightness(1.1); }
+  40%       { transform: scaleY(0.97) skewX(1.5deg); filter: brightness(0.95); }
+  60%       { transform: scaleY(1.06) skewX(-1deg); filter: brightness(1.08); }
+  80%       { transform: scaleY(0.98) skewX(2deg); filter: brightness(0.97); }
+}
+
+/* ── Petal spin fall ──────────────────────────────────────────────────── */
+@keyframes petal-spiral {
+  0%   { transform: translateY(-10px) rotate(0deg) translateX(0); opacity: 0; }
+  10%  { opacity: 1; }
+  50%  { transform: translateY(160px) rotate(200deg) translateX(20px); opacity: 0.7; }
+  100% { transform: translateY(340px) rotate(420deg) translateX(-10px); opacity: 0; }
+}
+
+.petal-spiral {
+  position: absolute;
+  width: 10px; height: 14px;
+  border-radius: 50% 0 50% 0;
+  background: var(--c-accent);
+  opacity: 0;
+  animation: petal-spiral var(--petal-dur, 5s) ease-in var(--petal-delay, 0s) infinite;
+}
+
+/* ── Confetti tumble ──────────────────────────────────────────────────── */
+@keyframes confetti-tumble {
+  0%   { transform: translateY(-20px) rotate(0deg) translateX(0); opacity: 1; }
+  100% { transform: translateY(420px) rotate(720deg) translateX(var(--cx, 20px)); opacity: 0; }
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 7px; height: 9px;
+  border-radius: 1px;
+  opacity: 0;
+  animation: confetti-tumble var(--cd, 3s) linear var(--cdel, 0s) infinite;
+}
+
+/* ── Light ray sweep ──────────────────────────────────────────────────── */
+@keyframes ray-sweep {
+  0%   { opacity: 0; transform: rotate(-30deg) translateX(-60px); }
+  30%  { opacity: 0.6; }
+  70%  { opacity: 0.4; }
+  100% { opacity: 0; transform: rotate(-30deg) translateX(120px); }
+}
+
+.light-ray {
+  position: absolute;
+  top: -40%;
+  width: 60px;
+  height: 300%;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.06), transparent);
+  transform-origin: top center;
+  animation: ray-sweep var(--ray-dur, 6s) ease-in-out var(--ray-delay, 0s) infinite;
+  pointer-events: none;
+}
+
+/* ── Floating bubble ──────────────────────────────────────────────────── */
+@keyframes bubble-rise {
+  0%   { transform: translateY(0) scale(1); opacity: 0.7; }
+  50%  { transform: translateY(-30px) scale(1.1) translateX(8px); opacity: 1; }
+  100% { transform: translateY(-65px) scale(0.6); opacity: 0; }
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--c-accent) 40%, transparent);
+  background: color-mix(in oklab, var(--c-accent) 8%, transparent);
+  animation: bubble-rise var(--bub-dur, 4s) ease-in var(--bub-delay, 0s) infinite;
+}
+
+/* ── Magnetic hover wobble ────────────────────────────────────────────── */
+@keyframes wobble-hover {
+  0%, 100% { transform: rotate(0deg); }
+  15%  { transform: rotate(-3deg); }
+  30%  { transform: rotate(2.5deg); }
+  45%  { transform: rotate(-2deg); }
+  60%  { transform: rotate(1.5deg); }
+  75%  { transform: rotate(-1deg); }
+}
+
+/* ── Counter flip (number counting animation) ─────────────────────────── */
+@keyframes flip-in {
+  from { transform: rotateX(90deg) translateY(-10px); opacity: 0; }
+  to   { transform: rotateX(0deg)  translateY(0); opacity: 1; }
+}
+
+@keyframes flip-out {
+  from { transform: rotateX(0deg)  translateY(0); opacity: 1; }
+  to   { transform: rotateX(-90deg) translateY(10px); opacity: 0; }
+}
+
+.flip-number {
+  display: inline-block;
+  animation: flip-in 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+  transform-origin: center bottom;
+  perspective: 400px;
+}
+
+/* ── Gradient border rotate ───────────────────────────────────────────── */
+@keyframes border-spin {
+  to { --border-angle: 360deg; }
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.border-gradient-spin {
+  position: relative;
+}
+.border-gradient-spin::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--border-angle),
+    var(--c-accent) 0deg,
+    var(--c-glow) 90deg,
+    transparent 180deg,
+    var(--c-accent) 360deg
+  );
+  animation: border-spin 3s linear infinite;
+  z-index: -1;
+}
+
+/* ── Glitter cascade ──────────────────────────────────────────────────── */
+@keyframes glitter-fall {
+  0%   { transform: translateY(-5%) rotate(0deg) scale(0.5); opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 0.6; }
+  100% { transform: translateY(105%) rotate(360deg) scale(0.8); opacity: 0; }
+}
+
+.glitter-particle {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: var(--c-glow);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  animation: glitter-fall var(--glit-dur, 3.5s) ease-in var(--glit-delay, 0s) infinite;
+  pointer-events: none;
+}
+
+/* ── Accordion reveal (sections expand in) ───────────────────────────── */
+@keyframes accordion-open {
+  from { max-height: 0; opacity: 0; transform: translateY(-8px); }
+  to   { max-height: 300px; opacity: 1; transform: translateY(0); }
+}
+
+/* ── Morph blob ───────────────────────────────────────────────────────── */
+@keyframes blob-morph {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25%       { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50%       { border-radius: 50% 40% 60% 30% / 40% 70% 60% 50%; }
+  75%       { border-radius: 40% 50% 30% 60% / 70% 40% 50% 30%; }
+}
+
+.blob-morph {
+  animation: blob-morph 8s ease-in-out infinite;
+}
+
+/* ── Particle swirl ───────────────────────────────────────────────────── */
+@keyframes swirl {
+  from { transform: rotate(0deg) translateX(var(--swirl-r, 30px)) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(var(--swirl-r, 30px)) rotate(-360deg); }
+}
+
+.swirl-particle {
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  box-shadow: 0 0 5px 2px var(--c-glow);
+  animation: swirl var(--swirl-dur, 5s) linear infinite;
+}
+
+/* ── Text wave ────────────────────────────────────────────────────────── */
+@keyframes text-wave {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+.text-wave-char {
+  display: inline-block;
+  animation: text-wave 1.6s ease-in-out infinite;
+}
+.text-wave-char:nth-child(1)  { animation-delay: 0.0s; }
+.text-wave-char:nth-child(2)  { animation-delay: 0.1s; }
+.text-wave-char:nth-child(3)  { animation-delay: 0.2s; }
+.text-wave-char:nth-child(4)  { animation-delay: 0.3s; }
+.text-wave-char:nth-child(5)  { animation-delay: 0.4s; }
+.text-wave-char:nth-child(6)  { animation-delay: 0.5s; }
+.text-wave-char:nth-child(7)  { animation-delay: 0.6s; }
+.text-wave-char:nth-child(8)  { animation-delay: 0.7s; }
+
+/* ── Gradient text animate ────────────────────────────────────────────── */
+@keyframes gradient-text-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+.gradient-text-animate {
+  background: linear-gradient(90deg, var(--c-accent), var(--c-glow), var(--c-ink), var(--c-accent));
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-text-shift 4s ease infinite;
+}
+
+/* ── Stamp reveal (card enters like a rubber stamp) ──────────────────── */
+@keyframes stamp-in {
+  0%   { transform: scale(1.3) rotate(-4deg); opacity: 0; filter: blur(4px); }
+  60%  { transform: scale(0.96) rotate(0.5deg); opacity: 1; filter: blur(0); }
+  80%  { transform: scale(1.02); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.stamp-reveal {
+  animation: stamp-in 0.75s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* ── Dust burst ───────────────────────────────────────────────────────── */
+@keyframes dust-burst {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx,20px), var(--dy,-30px)) scale(0); opacity: 0; }
+}
+
+.dust-particle {
+  position: absolute;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--c-glow);
+  animation: dust-burst 0.6s ease-out var(--ddel,0s) both;
+}
+
+/* ── Utility: hover lift ──────────────────────────────────────────────── */
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+/* ── Pulse ring on icon ───────────────────────────────────────────────── */
+.pulse-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--c-accent);
+  opacity: 0;
+  animation: glow-ring 2.5s ease-out infinite;
+}
+.pulse-ring:nth-child(2) { animation-delay: 0.8s; }
+
+/* ── Responsive: reduce all animations on low-power preference ────────── */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-bg, .orb-float, .starburst, .neon-text, .bounce-cascade,
+  .shimmer-gold, .heartbeat, .spinning-star, .spin-slow, .spin-slow-reverse,
+  .glow-ring-anim, .petal-spiral, .confetti-piece, .light-ray, .bubble,
+  .flip-number, .border-gradient-spin, .glitter-particle, .blob-morph,
+  .swirl-particle, .text-wave-char, .gradient-text-animate, .stamp-reveal,
+  .dust-particle, .shooting-star {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   ENHANCED ANIMATION LAYERS — added on top of base type themes
+   ========================================================================== */
+
+/* ── Mehndi: aurora green-gold + floating orbs ───────────────────────── */
+.inv-type-mehndi {
+  animation: aurora-shift 14s ease infinite;
+  background-size: 300% 300%;
+}
+.inv-type-mehndi .orb-1 {
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(249,199,79,0.35) 0%, transparent 70%);
+  top: -20px; left: -20px;
+  --orb-duration: 9s;
+}
+.inv-type-mehndi .orb-2 {
+  width: 90px; height: 90px;
+  background: radial-gradient(circle, rgba(82,183,136,0.3) 0%, transparent 70%);
+  bottom: 10px; right: -10px;
+  --orb-duration: 12s;
+  animation-delay: -4s;
+}
+
+/* ── Dholki: neon pulse border + confetti rain ───────────────────────── */
+.inv-type-dholki .light-ray { animation-duration: 4s; }
+.inv-type-dholki .confetti-piece { --cd: 2.8s; }
+
+/* ── Nikkah: slow conic shimmer mesh + shooting stars ───────────────── */
+.inv-type-nikkah .shooting-star {
+  --shoot-dur: 4s;
+  background: rgba(200,134,10,0.9);
+  box-shadow: 0 0 4px 2px rgba(200,134,10,0.5);
+}
+
+/* ── Barat: ember glow + glitter cascade ────────────────────────────── */
+.inv-type-barat {
+  animation: aurora-shift 18s ease infinite, ember-glow 3s ease-in-out infinite;
+  background-size: 400% 400%;
+}
+.inv-type-barat .glitter-particle { background: #ffd700; box-shadow: 0 0 4px 1px #ffd700; }
+
+/* ── Walima: bokeh orbs pulse ────────────────────────────────────────── */
+.inv-type-walima .orb-1 {
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
+  top: 10%; left: 10%;
+  --orb-duration: 7s;
+}
+.inv-type-walima .orb-2 {
+  width: 70px; height: 70px;
+  background: radial-gradient(circle, rgba(244,211,94,0.3) 0%, transparent 70%);
+  bottom: 15%; right: 8%;
+  --orb-duration: 10s;
+  animation-delay: -3s;
+}
+
+/* ── Engagement: heartbeat icon + petal spiral ───────────────────────── */
+.inv-type-engagement .petal-spiral {
+  background: rgba(244,160,192,0.8);
+  --petal-dur: 4.5s;
+}
+
+/* ── Eid: bubble rise + shooting stars ──────────────────────────────── */
+.inv-type-eid .bubble {
+  --bub-dur: 5s;
+  border-color: rgba(255,215,0,0.4);
+}
+.inv-type-eid .shooting-star { --shoot-dur: 3.5s; }
+
+/* ── Milad: light rays fan ───────────────────────────────────────────── */
+.inv-type-milad .light-ray { --ray-dur: 7s; }
+
+/* ── Iftaar: sunset aurora shift ─────────────────────────────────────── */
+.inv-type-iftaar {
+  animation: aurora-shift 10s ease infinite;
+  background-size: 350% 350%;
+}
+
+/* ── Birthday: confetti tumble + glitter ─────────────────────────────── */
+.inv-type-birthday .confetti-piece { --cd: 2.2s; }
+.inv-type-birthday .glitter-particle { --glit-dur: 2.5s; }
+
+/* ── Graduation: starburst spin on icon ──────────────────────────────── */
+.inv-type-graduation .starburst-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(255,215,0,0.5);
+  animation: spin-slow 12s linear infinite;
+}
+
+/* ── Kids: blob morph background shape ───────────────────────────────── */
+.inv-type-kids .blob-bg {
+  position: absolute;
+  width: 160px; height: 160px;
+  background: rgba(255,107,157,0.12);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  animation: blob-morph 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Product Launch: swirl particles around icon ─────────────────────── */
+.inv-type-launch .swirl-particle {
+  --swirl-r: 40px;
+  --swirl-dur: 4s;
+  background: #00f5ff;
+  box-shadow: 0 0 6px 2px rgba(0,245,255,0.7);
+}
+.inv-type-launch .swirl-particle:nth-child(2) { --swirl-dur: 5s; animation-delay: -1.5s; background: #b700ff; box-shadow: 0 0 6px 2px rgba(183,0,255,0.7); }
+.inv-type-launch .swirl-particle:nth-child(3) { --swirl-dur: 3.5s; animation-delay: -3s; }
+
+/* ── Shop Opening: ripple from centre ────────────────────────────────── */
+.inv-type-shop .ripple {
+  width: 60px; height: 60px;
+  border-color: rgba(255,215,0,0.5);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+}

@@ -1,0 +1,335 @@
+/* ==========================================================================
+   RELIGIOUS INVITATION TYPE THEMES
+   ========================================================================== */
+
+/* ── Eid 🌙 ─────────────────────────────────────────────────────────────── */
+.inv-type-eid {
+  --c-bg1: #0a3d1f;
+  --c-bg2: #051a0c;
+  --c-ink: #f0faf4;
+  --c-accent: #ffd700;
+  --c-glow: #ffe44d;
+  --c-accent2: #52b788;
+  background:
+    radial-gradient(ellipse at 80% 10%, rgba(255,215,0,0.18) 0%, transparent 40%),
+    radial-gradient(ellipse at 20% 90%, rgba(82,183,136,0.15) 0%, transparent 40%),
+    linear-gradient(160deg, #0a3d1f 0%, #062b14 50%, #051a0c 100%);
+}
+
+/* Star-studded night sky dots */
+.inv-type-eid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255,215,0,0.9) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,215,0,0.6) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px);
+  background-size: 80px 80px, 50px 50px, 120px 120px;
+  background-position: 10px 15px, 35px 45px, 5px 60px;
+  pointer-events: none;
+  z-index: 0;
+  animation: star-twinkle-bg 4s ease-in-out infinite alternate;
+}
+
+@keyframes star-twinkle-bg {
+  0%   { opacity: 0.4; }
+  100% { opacity: 0.9; }
+}
+
+/* Mosque silhouette gradient at bottom */
+.inv-type-eid::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0,60,20,0.4) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Lantern hanging element */
+.inv-type-eid .decor-lantern {
+  position: absolute;
+  width: 14px;
+  height: 22px;
+  background: linear-gradient(180deg, rgba(255,215,0,0.8) 0%, rgba(255,140,0,0.5) 100%);
+  border-radius: 40% 40% 50% 50%;
+  box-shadow: 0 0 12px 4px rgba(255,215,0,0.4);
+  transform-origin: top center;
+  animation: lantern-swing 3s ease-in-out infinite;
+}
+
+@keyframes lantern-swing {
+  0%, 100% { transform: rotate(-8deg); }
+  50%       { transform: rotate(8deg); }
+}
+
+.inv-type-eid .decor-lantern::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: 50%;
+  transform: translateX(-50%);
+  width: 2px; height: 8px;
+  background: rgba(255,215,0,0.6);
+}
+
+/* Crescent glow */
+.inv-type-eid .decor-crescent-glow {
+  position: absolute;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3px rgba(255,215,0,0.3),
+    0 0 20px 8px rgba(255,215,0,0.2);
+  animation: crescent-glow 5s ease-in-out infinite;
+}
+
+@keyframes crescent-glow {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(255,215,0,0.2), 0 0 16px 6px rgba(255,215,0,0.1); }
+  50%       { box-shadow: 0 0 0 5px rgba(255,215,0,0.4), 0 0 30px 12px rgba(255,215,0,0.3); }
+}
+
+/* ── Milad ──────────────────────────────────────────────────────────────── */
+.inv-type-milad {
+  --c-bg1: #004d40;
+  --c-bg2: #002520;
+  --c-ink: #e8f5e9;
+  --c-accent: #ffd700;
+  --c-glow: #ffe44d;
+  --c-accent2: #80cbc4;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(0,150,136,0.12) 0%, transparent 40%),
+    linear-gradient(170deg, #004d40 0%, #003530 50%, #002520 100%);
+}
+
+/* Soft light rays */
+.inv-type-milad::before {
+  content: '';
+  position: absolute;
+  top: -30%; left: 50%;
+  transform: translateX(-50%);
+  width: 200%;
+  height: 70%;
+  background: conic-gradient(from 90deg at 50% 0%,
+    transparent 0deg,
+    rgba(255,215,0,0.04) 30deg,
+    transparent 60deg,
+    rgba(255,215,0,0.03) 90deg,
+    transparent 120deg,
+    rgba(255,215,0,0.04) 150deg,
+    transparent 180deg);
+  pointer-events: none;
+  z-index: 0;
+  animation: light-ray-pulse 8s ease-in-out infinite;
+}
+
+@keyframes light-ray-pulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+/* Islamic arch geometric border */
+.inv-type-milad::after {
+  content: '';
+  position: absolute;
+  top: 10px; left: 10px; right: 10px;
+  height: 50px;
+  border-top: 1.5px solid rgba(255,215,0,0.3);
+  border-left: 1.5px solid rgba(255,215,0,0.3);
+  border-right: 1.5px solid rgba(255,215,0,0.3);
+  border-radius: 48% 48% 0 0 / 80% 80% 0 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Glow float particle */
+.inv-type-milad .decor-glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,215,0,0.6) 0%, transparent 70%);
+  animation: glow-orb-float 6s ease-in-out infinite;
+}
+
+@keyframes glow-orb-float {
+  0%, 100% { transform: translateY(0) scale(0.8); opacity: 0.3; }
+  50%       { transform: translateY(-15px) scale(1.2); opacity: 0.7; }
+}
+
+/* ── Quran Khatam ─────────────────────────────────────────────────────── */
+.inv-type-quran {
+  --c-bg1: #1b3a2a;
+  --c-bg2: #0c1f16;
+  --c-ink: #f0fff4;
+  --c-accent: #d4af37;
+  --c-glow: #f0c040;
+  --c-accent2: #81c784;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(212,175,55,0.1) 0%, transparent 60%),
+    linear-gradient(165deg, #1b3a2a 0%, #142d20 50%, #0c1f16 100%);
+}
+
+/* Islamic geometric tile overlay */
+.inv-type-quran::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(30deg,
+      rgba(212,175,55,0.04) 0px, rgba(212,175,55,0.04) 1px,
+      transparent 1px, transparent 30px),
+    repeating-linear-gradient(150deg,
+      rgba(212,175,55,0.04) 0px, rgba(212,175,55,0.04) 1px,
+      transparent 1px, transparent 30px),
+    repeating-linear-gradient(90deg,
+      rgba(212,175,55,0.03) 0px, rgba(212,175,55,0.03) 1px,
+      transparent 1px, transparent 30px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Decorative arch top */
+.inv-type-quran::after {
+  content: '';
+  position: absolute;
+  top: 12px; left: 12px; right: 12px;
+  bottom: 12px;
+  border: 1px solid rgba(212,175,55,0.2);
+  border-radius: 48% 48% 4px 4px / 30% 30% 4px 4px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Gentle light ray particle */
+.inv-type-quran .decor-ray {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(212,175,55,0.6) 0%, transparent 100%);
+  animation: ray-pulse 4s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+@keyframes ray-pulse {
+  0%, 100% { opacity: 0.2; transform: scaleY(0.7); }
+  50%       { opacity: 0.6; transform: scaleY(1); }
+}
+
+/* ── Iftaar ──────────────────────────────────────────────────────────── */
+.inv-type-iftaar {
+  --c-bg1: #1a1035;
+  --c-bg2: #0d0820;
+  --c-ink: #fff8f0;
+  --c-accent: #ffc107;
+  --c-glow: #ffab00;
+  --c-accent2: #ff7043;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(255,112,67,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 60%, rgba(255,193,7,0.18) 0%, transparent 40%),
+    linear-gradient(175deg, #1a1035 0%, #150c2a 40%, #1c0f10 80%, #2a0d00 100%);
+}
+
+/* Sunset sky gradient shift */
+.inv-type-iftaar::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 45%;
+  background: linear-gradient(0deg,
+    rgba(255,112,67,0.25) 0%,
+    rgba(255,193,7,0.12) 50%,
+    transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+  animation: sunset-glow 6s ease-in-out infinite alternate;
+}
+
+@keyframes sunset-glow {
+  0%   { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Stars appearing animation */
+.inv-type-iftaar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 55%;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,215,0,0.6) 1px, transparent 1px);
+  background-size: 60px 60px, 90px 90px;
+  background-position: 15px 20px, 45px 35px;
+  pointer-events: none;
+  z-index: 0;
+  animation: stars-appear 3s ease-in-out infinite alternate;
+}
+
+@keyframes stars-appear {
+  0%   { opacity: 0.3; }
+  100% { opacity: 0.8; }
+}
+
+/* Lantern glow */
+.inv-type-iftaar .decor-lantern-warm {
+  position: absolute;
+  width: 16px; height: 24px;
+  background: linear-gradient(180deg, rgba(255,193,7,0.9) 0%, rgba(255,112,67,0.6) 100%);
+  border-radius: 40% 40% 50% 50%;
+  box-shadow: 0 0 18px 8px rgba(255,193,7,0.35);
+  transform-origin: top center;
+  animation: lantern-swing 2.5s ease-in-out infinite;
+}
+
+/* ── Chelum ──────────────────────────────────────────────────────────── */
+.inv-type-chelum {
+  --c-bg1: #37474f;
+  --c-bg2: #1c2b30;
+  --c-ink: #eceff1;
+  --c-accent: #90a4ae;
+  --c-glow: #b0bec5;
+  --c-accent2: #78909c;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(144,164,174,0.12) 0%, transparent 55%),
+    linear-gradient(160deg, #37474f 0%, #2c3e45 50%, #1c2b30 100%);
+}
+
+/* Soft fog / mist texture */
+.inv-type-chelum::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(176,190,197,0.1) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 50%, rgba(176,190,197,0.08) 0%, transparent 35%);
+  pointer-events: none;
+  z-index: 0;
+  animation: mist-drift 8s ease-in-out infinite alternate;
+}
+
+@keyframes mist-drift {
+  0%   { transform: translateX(0); opacity: 0.5; }
+  100% { transform: translateX(8px); opacity: 0.8; }
+}
+
+/* Minimal elegant outer ring — via box-shadow only */
+.inv-type-chelum {
+  box-shadow:
+    0 25px 50px -12px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(144,164,174,0.18);
+}
+
+/* Floating mist particle */
+.inv-type-chelum .decor-mist {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(176,190,197,0.15);
+  filter: blur(8px);
+  animation: mist-float 10s ease-in-out infinite;
+}
+
+@keyframes mist-float {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+  33%       { transform: translateY(-10px) translateX(5px); opacity: 0.5; }
+  66%       { transform: translateY(-5px) translateX(-5px); opacity: 0.4; }
+}

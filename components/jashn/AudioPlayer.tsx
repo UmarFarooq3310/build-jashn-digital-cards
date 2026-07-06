@@ -44,7 +44,7 @@ export default function AudioPlayer({ occasionId, autoPlay = false }: AudioPlaye
     }
 
     const audio = new Audio(soundSrc)
-    audio.loop = true
+    audio.loop = false
     audioRef.current = audio
     setIsPlaying(false)
 

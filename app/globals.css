@@ -1,6 +1,12 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
+@import './invitation-themes-wedding.css';
+@import './invitation-themes-religious.css';
+@import './invitation-themes-social.css';
+@import './invitation-themes-professional.css';
+@import './invitation-themes-premium.css';
+@import './invitation-themes-animations.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -118,122 +124,273 @@
 /* Free themes */
 .theme-mehndi-red {
   --c-bg1: #8e0f24;
-  --c-bg2: #4a0510;
-  --c-ink: #fff4e6;
-  --c-accent: #e6b54a;
-  --c-glow: #ffd700;
+  --c-bg2: #3a0210;
+  --c-ink: #fff8ee;
+  --c-accent: #f0c060;
+  --c-glow: #ffe090;
 }
 .theme-feroza-teal {
-  --c-bg1: #006064;
-  --c-bg2: #002d30;
-  --c-ink: #e0f7fa;
-  --c-accent: #80deea;
-  --c-glow: #b2ebf2;
+  --c-bg1: #005f63;
+  --c-bg2: #001e20;
+  --c-ink: #e8fafa;
+  --c-accent: #72dde0;
+  --c-glow: #a8efef;
 }
 .theme-royal-blue {
   --c-bg1: #1a237e;
-  --c-bg2: #0a0e3d;
-  --c-ink: #eef1ff;
-  --c-accent: #c7ccff;
-  --c-glow: #aab4ff;
+  --c-bg2: #080c2e;
+  --c-ink: #edf0ff;
+  --c-accent: #b8c4ff;
+  --c-glow: #ccd5ff;
 }
 .theme-emerald-classic {
-  --c-bg1: #1B5E20;
-  --c-bg2: #08300c;
-  --c-ink: #f1fff0;
-  --c-accent: #e6c45a;
-  --c-glow: #ffe27a;
+  --c-bg1: #1b5e20;
+  --c-bg2: #061408;
+  --c-ink: #f0fff2;
+  --c-accent: #f5d060;
+  --c-glow: #fae890;
 }
 
 /* Premium themes */
 .theme-saffron-kesari {
-  --c-bg1: #e65100;
-  --c-bg2: #5d1a00;
-  --c-ink: #fff3e0;
-  --c-accent: #ffd54f;
-  --c-glow: #ffe082;
+  --c-bg1: #d44a00;
+  --c-bg2: #481500;
+  --c-ink: #fff5e8;
+  --c-accent: #ffd060;
+  --c-glow: #ffe898;
 }
 .theme-plum-jamuni {
   --c-bg1: #4a148c;
-  --c-bg2: #1f003b;
-  --c-ink: #f3e5f5;
-  --c-accent: #ff80ab;
-  --c-glow: #ffb3c9;
+  --c-bg2: #160030;
+  --c-ink: #f5e8ff;
+  --c-accent: #f090c0;
+  --c-glow: #ffb8d8;
 }
 .theme-mughal-gold {
-  --c-bg1: #5D4037;
-  --c-bg2: #2c1a12;
-  --c-ink: #fff5e0;
-  --c-accent: #f0c95a;
-  --c-glow: #ffdf7e;
+  --c-bg1: #4e3220;
+  --c-bg2: #1c0c04;
+  --c-ink: #fff8ed;
+  --c-accent: #f0c060;
+  --c-glow: #ffe08c;
 }
 .theme-violet-noor {
-  --c-bg1: #4A0E6B;
-  --c-bg2: #25063a;
-  --c-ink: #fbeeff;
-  --c-accent: #e6b8ff;
-  --c-glow: #f0c2ff;
+  --c-bg1: #3d0c5c;
+  --c-bg2: #180028;
+  --c-ink: #f8eeff;
+  --c-accent: #d8a0ff;
+  --c-glow: #ecc8ff;
 }
 .theme-pink-zardozi {
-  --c-bg1: #c2185b;
-  --c-bg2: #6d0a30;
-  --c-ink: #fff0f6;
-  --c-accent: #ffd24a;
-  --c-glow: #ffe08a;
+  --c-bg1: #ad1457;
+  --c-bg2: #540026;
+  --c-ink: #fff2f8;
+  --c-accent: #ffd060;
+  --c-glow: #ffe89a;
 }
 .theme-ivory-shahi {
-  --c-bg1: #f3e9d2;
-  --c-bg2: #e4d3aa;
-  --c-ink: #5b3a1a;
-  --c-accent: #b8862b;
-  --c-glow: #e8c873;
+  --c-bg1: #f0e4c8;
+  --c-bg2: #dcc898;
+  --c-ink: #3a2008;
+  --c-accent: #8b5e10;
+  --c-glow: #c89830;
 }
 .theme-midnight-kashi {
   --c-bg1: #0d1b4c;
-  --c-bg2: #050a26;
-  --c-ink: #eaf0ff;
-  --c-accent: #5fb6e6;
-  --c-glow: #8fd4ff;
+  --c-bg2: #030614;
+  --c-ink: #e8f0ff;
+  --c-accent: #60c0f0;
+  --c-glow: #90d8ff;
 }
 .theme-ruby-gulabi {
-  --c-bg1: #b00020;
-  --c-bg2: #5c0010;
-  --c-ink: #fff0f0;
-  --c-accent: #ff9eb5;
-  --c-glow: #ffc2cf;
+  --c-bg1: #980018;
+  --c-bg2: #400008;
+  --c-ink: #fff2f2;
+  --c-accent: #ffb0c8;
+  --c-glow: #ffd0dc;
 }
 
 /* ----------------------------------------------------------------------------
-   Mehndi floral border (top & bottom) — pure CSS repeating pattern
+   BORDER STYLES
+   All borders are absolutely-positioned children inside .jashn-card.
+   They NEVER use ::before / ::after on the card itself to avoid conflicts.
+   --c-accent drives the colour; opacity is baked into color-mix() calls so
+   the border always reads on both dark and light themes.
 ---------------------------------------------------------------------------- */
+
+/* ── 1. Mehndi Floral ── refined dot-and-ring pattern top & bottom */
 .mehndi-border {
   position: absolute;
   left: 0;
   right: 0;
-  height: 26px;
-  color: var(--c-accent);
-  opacity: 0.9;
+  height: 24px;
+  /* Each unit: filled dot → outer ring → flanking mini dots */
   background-image:
-    radial-gradient(circle at 10px 13px, currentColor 2.5px, transparent 3px),
-    radial-gradient(circle at 10px 13px, transparent 6px, currentColor 6.5px, transparent 8px),
-    radial-gradient(circle at 0px 13px, currentColor 1.5px, transparent 2px),
-    radial-gradient(circle at 20px 13px, currentColor 1.5px, transparent 2px);
-  background-size: 20px 26px;
+    radial-gradient(circle at 10px 12px, color-mix(in oklab,var(--c-accent) 90%,transparent) 2.2px, transparent 2.8px),
+    radial-gradient(circle at 10px 12px, transparent 4.5px, color-mix(in oklab,var(--c-accent) 45%,transparent) 5px, transparent 6.5px),
+    radial-gradient(circle at 3px  12px, color-mix(in oklab,var(--c-accent) 55%,transparent) 1.2px, transparent 1.8px),
+    radial-gradient(circle at 17px 12px, color-mix(in oklab,var(--c-accent) 55%,transparent) 1.2px, transparent 1.8px);
+  background-size: 20px 24px;
   background-repeat: repeat-x;
+  pointer-events: none;
+  z-index: 10;
 }
-.mehndi-border.top {
-  top: 0;
-}
-.mehndi-border.bottom {
-  bottom: 0;
-  transform: rotate(180deg);
+.mehndi-border.top    { top: 0; }
+.mehndi-border.bottom { bottom: 0; transform: scaleY(-1); }
+
+/* ── 2. Mughal Arch Frame ── arched top, clean sides & bottom */
+.mughal-arch {
+  position: absolute;
+  inset: 10px;
+  border: 1.5px solid color-mix(in oklab, var(--c-accent) 65%, transparent);
+  border-radius: 44% 44% 8px 8px / 20% 20% 8px 8px;
+  box-shadow:
+    inset 0 0 0 4px color-mix(in oklab, var(--c-accent) 12%, transparent);
+  pointer-events: none;
+  z-index: 10;
 }
 
-/* Mughal arch decorative frame */
-.mughal-arch {
+/* ── 3. Royal Gold ── outer solid + inner glow ring */
+.border-royal-gold {
+  position: absolute;
+  inset: 10px;
+  border: 1.8px solid color-mix(in oklab, var(--c-accent) 80%, transparent);
+  border-radius: calc(var(--card-radius, 24px) - 8px);
+  pointer-events: none;
+  z-index: 10;
+  box-shadow:
+    inset 0 0 0 5px color-mix(in oklab, var(--c-accent) 14%, transparent),
+    0 0 12px 2px color-mix(in oklab, var(--c-accent) 18%, transparent);
+}
+
+/* ── 4. Dashed Frame ── clean minimal rounded dashed border */
+.border-dashed-frame {
+  position: absolute;
+  inset: 12px;
+  border: 1.5px dashed color-mix(in oklab, var(--c-accent) 60%, transparent);
+  border-radius: calc(var(--card-radius, 24px) - 10px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── 5. Corner Brackets ── four precise L-shaped corners */
+.border-corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+.border-corners::before,
+.border-corners::after {
+  content: '';
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-color: color-mix(in oklab, var(--c-accent) 80%, transparent);
+  border-style: solid;
+}
+.border-corners::before {
+  top: 14px; left: 14px;
+  border-width: 2.5px 0 0 2.5px;
+  border-top-left-radius: 5px;
+}
+.border-corners::after {
+  top: 14px; right: 14px;
+  border-width: 2.5px 2.5px 0 0;
+  border-top-right-radius: 5px;
+}
+/* Bottom corners — sibling spans rendered by CardDecor */
+.border-corner-bottom-left {
+  position: absolute;
+  bottom: 14px; left: 14px;
+  width: 26px; height: 26px;
+  border: 2.5px solid color-mix(in oklab, var(--c-accent) 80%, transparent);
+  border-top: none; border-right: none;
+  border-bottom-left-radius: 5px;
+  pointer-events: none;
+  z-index: 10;
+}
+.border-corner-bottom-right {
+  position: absolute;
+  bottom: 14px; right: 14px;
+  width: 26px; height: 26px;
+  border: 2.5px solid color-mix(in oklab, var(--c-accent) 80%, transparent);
+  border-top: none; border-left: none;
+  border-bottom-right-radius: 5px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── 6. Double Line Frame ── two concentric lines with breathing room */
+.border-double-frame {
+  position: absolute;
+  inset: 10px;
   border: 1.5px solid color-mix(in oklab, var(--c-accent) 70%, transparent);
-  border-radius: 48% 48% 8px 8px / 70% 70% 8px 8px;
-  box-shadow: inset 0 0 0 4px color-mix(in oklab, var(--c-accent) 22%, transparent);
+  border-radius: calc(var(--card-radius, 24px) - 8px);
+  pointer-events: none;
+  z-index: 10;
+}
+.border-double-frame::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid color-mix(in oklab, var(--c-accent) 38%, transparent);
+  border-radius: calc(var(--card-radius, 24px) - 16px);
+}
+
+/* ── 7. Diamond Strip ── sharp rotated-square chain top & bottom */
+.border-diamond-strip {
+  position: absolute;
+  left: 0; right: 0;
+  height: 16px;
+  pointer-events: none;
+  z-index: 10;
+  /* Two offset half-drop grids produce solid filled diamonds */
+  background-image:
+    linear-gradient(45deg,
+      color-mix(in oklab, var(--c-accent) 65%, transparent) 25%,
+      transparent 25%, transparent 75%,
+      color-mix(in oklab, var(--c-accent) 65%, transparent) 75%),
+    linear-gradient(45deg,
+      color-mix(in oklab, var(--c-accent) 65%, transparent) 25%,
+      transparent 25%, transparent 75%,
+      color-mix(in oklab, var(--c-accent) 65%, transparent) 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 5px 5px;
+  background-repeat: repeat-x;
+}
+.border-diamond-strip.top    { top: 0; }
+.border-diamond-strip.bottom { bottom: 0; }
+
+/* ── 8. Woven / Lattice ── cross-hatch visible only near edges (mask) */
+.border-woven {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 10;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      color-mix(in oklab, var(--c-accent) 22%, transparent) 0px,
+      color-mix(in oklab, var(--c-accent) 22%, transparent) 1px,
+      transparent 1px,
+      transparent 8px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      color-mix(in oklab, var(--c-accent) 16%, transparent) 0px,
+      color-mix(in oklab, var(--c-accent) 16%, transparent) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+  -webkit-mask-image:
+    linear-gradient(to bottom, black 0%, transparent 20%, transparent 80%, black 100%),
+    linear-gradient(to right,  black 0%, transparent 20%, transparent 80%, black 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, black 0%, transparent 20%, transparent 80%, black 100%),
+    linear-gradient(to right,  black 0%, transparent 20%, transparent 80%, black 100%);
+  mask-composite: intersect;
 }
 
 /* ----------------------------------------------------------------------------
@@ -376,6 +533,133 @@
   100% { opacity: 0; left: 130%; }
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   CARD TEXTURE LAYERS
+   Applied as extra classes on .jashn-card to make it feel like a real
+   material rather than a flat CSS gradient.
+───────────────────────────────────────────────────────────────────────── */
+
+/* Noise grain — fine paper/fabric texture */
+.card-texture-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+}
+
+/* Inner vignette — darkens edges for depth */
+.card-texture-vignette::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 55%,
+    rgba(0,0,0,0.28) 100%
+  );
+}
+
+/* Diagonal fabric weave */
+.card-texture-fabric::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.06;
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255,255,255,0.9) 0px, rgba(255,255,255,0.9) 1px,
+      transparent 1px, transparent 6px
+    );
+}
+
+/* Silk / satin sheen — diagonal highlight band */
+.card-texture-silk::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.10) 0%,
+    rgba(255,255,255,0.04) 40%,
+    rgba(255,255,255,0.00) 60%,
+    rgba(255,255,255,0.06) 100%
+  );
+}
+
+/* Brocade — subtle gold thread diagonal cross-hatch */
+.card-texture-brocade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.09;
+  background-image:
+    repeating-linear-gradient( 45deg, var(--c-accent) 0px, var(--c-accent) 1px, transparent 1px, transparent 14px),
+    repeating-linear-gradient(-45deg, var(--c-accent) 0px, var(--c-accent) 1px, transparent 1px, transparent 14px);
+}
+
+/* All jashn-cards get grain + vignette by default */
+.jashn-card {
+  --card-radius: 24px;
+}
+.jashn-card .card-texture {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  /* grain */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+}
+.jashn-card .card-vignette {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.22) 100%);
+}
+.jashn-card .card-silk {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    130deg,
+    rgba(255,255,255,0.09) 0%,
+    rgba(255,255,255,0.02) 45%,
+    transparent 55%,
+    rgba(255,255,255,0.05) 100%
+  );
+}
+
+/* Light theme cards (ivory/champagne) get a darker vignette */
+.theme-ivory-shahi .card-vignette {
+  background: radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(100,60,10,0.18) 100%);
+}
+
 /* Avatar float wrapper */
 .relation-avatar-wrap svg {
   display: block;
@@ -400,5 +684,145 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Humanised card refinements
+   Beautiful detail pills, warm typography rhythm, soft inner depth
+───────────────────────────────────────────────────────────────────────── */
+
+/* Card inner top-light — only on cards WITHOUT the mehndi border (mehndi has its own top strip) */
+.jashn-card:not(:has(.mehndi-border)) {
+  /* subtle inner highlight via box-shadow, no pseudo-element needed */
+  --card-inner-highlight: inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+/* Names: tighter tracking, slightly warmer weight */
+.jashn-card h1,
+.jashn-card .shimmer-text {
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Detail pills: consistent font size */
+.jashn-card .detail-pill {
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* Notes block sits like a handwritten card note */
+.jashn-card .notes-block {
+  font-family: var(--font-urdu, serif), Georgia, serif;
+}
+
+/* Watermark sits quietly at the bottom */
+.jashn-card .watermark-footer {
+  opacity: 0.55;
+  transition: opacity 0.3s ease;
+}
+.jashn-card:hover .watermark-footer {
+  opacity: 0.7;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CATEGORY BACKGROUND PATTERNS
+   Gives each category card a beautiful, subtle background texture/pattern
+   matching its theme, rather than just flat colors.
+───────────────────────────────────────────────────────────────────────── */
+
+/* Background Pattern Container */
+.card-bg-pattern {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1; /* Sits below content (z-index 10) and above the card gradient */
+  transition: opacity 0.5s ease;
+}
+
+/* Islamic / Religious Background Pattern (Tiling geometric stars) */
+.jashn-pattern-islamic {
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='0.85'%3E%3Cpath d='M40 0 L48 24 L72 32 L48 40 L40 64 L32 40 L8 32 L32 24 Z'/%3E%3Cpath d='M0 0 L8 8 M80 0 L72 8 M0 80 L8 72 M80 80 L72 72' stroke-width='0.4'/%3E%3Ccircle cx='40' cy='32' r='18' stroke-dasharray='2 2'/%3E%3Ccircle cx='40' cy='32' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  mix-blend-mode: overlay;
+}
+
+/* Wedding / Family Background Pattern (Lace / henna floral mandala / paisley) */
+.jashn-pattern-wedding {
+  opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='0.7'%3E%3Cpath d='M50 15 C54 30, 64 30, 50 45 C36 30, 46 30, 50 15 Z'/%3E%3Cpath d='M50 45 C54 60, 64 60, 50 75 C36 60, 46 60, 50 45 Z'/%3E%3Cpath d='M15 45 C30 49, 30 59, 50 45 C30 31, 30 41, 15 45 Z'/%3E%3Cpath d='M50 45 C70 49, 70 59, 85 45 C70 31, 70 41, 50 45 Z'/%3E%3Ccircle cx='50' cy='45' r='8'/%3E%3Ccircle cx='50' cy='45' r='3' fill='%23ffffff'/%3E%3Cpath d='M10 10 Q20 20 10 30'/%3E%3Cpath d='M90 10 Q80 20 90 30'/%3E%3Cpath d='M10 90 Q20 80 10 70'/%3E%3Cpath d='M90 90 Q80 80 90 70'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100px 100px;
+  mix-blend-mode: overlay;
+}
+
+/* Personal / Social / National Background Pattern (Sparkles, mini streamers, confetti) */
+.jashn-pattern-personal {
+  opacity: 0.11;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23ffffff' fill-opacity='0.75'%3E%3Cpath d='M10 15 L12 12 L15 10 L12 8 L10 5 L8 8 L5 10 L8 12 Z'/%3E%3Ccircle cx='60' cy='20' r='2'/%3E%3Ccircle cx='25' cy='55' r='2.5'/%3E%3Cpath d='M50 60 L52 56 L56 54 L52 52 L50 48 L48 52 L44 54 L48 56 Z'/%3E%3Ccircle cx='70' cy='65' r='1.5'/%3E%3Ccircle cx='15' cy='35' r='1'/%3E%3Cpath d='M40 25 Q45 28 42 32' fill='none' stroke='%23ffffff' stroke-width='0.75'/%3E%3Cpath d='M65 45 Q60 48 63 52' fill='none' stroke='%23ffffff' stroke-width='0.75'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  mix-blend-mode: overlay;
+}
+
+/* Achievements / Professional Background Pattern (Clean grid, lines & tech points) */
+.jashn-pattern-professional {
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg stroke='%23ffffff' stroke-width='0.5' fill='none'%3E%3Crect x='0' y='0' width='60' height='60'/%3E%3Cpath d='M0 30 L60 30 M30 0 L30 60' stroke-dasharray='2 2' stroke-width='0.35'/%3E%3Ccircle cx='30' cy='30' r='2' fill='%23ffffff'/%3E%3Ccircle cx='0' cy='0' r='1.5' fill='%23ffffff'/%3E%3Ccircle cx='60' cy='0' r='1.5' fill='%23ffffff'/%3E%3Ccircle cx='0' cy='60' r='1.5' fill='%23ffffff'/%3E%3Ccircle cx='60' cy='60' r='1.5' fill='%23ffffff'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 60px 60px;
+  mix-blend-mode: overlay;
+}
+
+/* Tactile Refinements & Micro-interactions */
+.inv-avatar-anim, .avatar-float-anim {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+}
+.inv-avatar-anim:hover, .avatar-float-anim:hover {
+  transform: scale(1.08) rotate(2deg) !important;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.45)) !important;
+}
+
+.jashn-card {
+  box-shadow:
+    0 16px 45px -10px rgba(0, 0, 0, 0.45),
+    0 4px 12px -2px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.theme-ivory-shahi.jashn-card {
+  box-shadow:
+    0 16px 45px -10px rgba(91, 58, 26, 0.28),
+    0 4px 12px -2px rgba(91, 58, 26, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -1.5px 0 rgba(91, 58, 26, 0.18);
+  border: 1px solid rgba(91, 58, 26, 0.12);
+}
+
+/* ── Slow-Moving Gradient & Motion Degradation ── */
+@keyframes slow-gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-slow-gradient {
+  background-size: 200% 200%;
+  animation: slow-gradient-shift 15s ease infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-slow-gradient,
+  .petal-spiral,
+  .crescent-float,
+  .avatar-float-anim,
+  .inv-avatar-anim {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+
 
 

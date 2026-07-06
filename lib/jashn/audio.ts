@@ -206,7 +206,7 @@ export function playContextualSound(categoryOrId: string): Promise<void> {
     stopContextualSound()
 
     const audio = new Audio(path)
-    audio.loop = true
+    audio.loop = false
     currentAudio = audio
 
     audio.play()

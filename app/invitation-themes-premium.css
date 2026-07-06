@@ -1,0 +1,325 @@
+/* ==========================================================================
+   PREMIUM GLOBAL FEATURES
+   Glassmorphism, animated gradients, depth layers, micro-interactions
+   ========================================================================== */
+
+/* ── Glassmorphism Card ─────────────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.glass-card-dark {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ── Animated Gradient Mesh ─────────────────────────────────────────── */
+.gradient-mesh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.gradient-mesh::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    color-mix(in oklab, var(--c-accent) 8%, transparent) 0deg,
+    transparent 90deg,
+    color-mix(in oklab, var(--c-glow) 6%, transparent) 180deg,
+    transparent 270deg,
+    color-mix(in oklab, var(--c-accent) 5%, transparent) 360deg
+  );
+  animation: mesh-rotate 25s linear infinite;
+  will-change: transform;
+}
+
+@keyframes mesh-rotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ── Floating Particle System ───────────────────────────────────────── */
+.particle-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--c-glow, #ffd700);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.particle-sm  { width: 3px;  height: 3px;  }
+.particle-md  { width: 5px;  height: 5px;  }
+.particle-lg  { width: 8px;  height: 8px;  }
+
+.particle-rise {
+  animation: particle-rise-anim var(--duration, 5s) ease-in var(--delay, 0s) infinite;
+  box-shadow: 0 0 6px 2px var(--c-glow, #ffd700);
+}
+
+@keyframes particle-rise-anim {
+  0%   { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+  15%  { opacity: 0.8; }
+  85%  { opacity: 0.4; }
+  100% { transform: translateY(calc(-1 * var(--travel, 80px))) translateX(var(--drift, 10px)) scale(0.2); opacity: 0; }
+}
+
+/* ── Cursor Glow (applied via JS class on cursor move) ──────────────── */
+.cursor-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, opacity 0.3s;
+  mix-blend-mode: screen;
+}
+
+/* ── Premium Shadow System ──────────────────────────────────────────── */
+.shadow-premium {
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 10px 20px -5px rgba(0, 0, 0, 0.2),
+    0 30px 60px -10px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.shadow-glow {
+  box-shadow:
+    0 0 20px 4px color-mix(in oklab, var(--c-accent, #ffd700) 30%, transparent),
+    0 25px 50px -10px rgba(0, 0, 0, 0.4);
+}
+
+.shadow-glow-strong {
+  box-shadow:
+    0 0 40px 12px color-mix(in oklab, var(--c-accent, #ffd700) 40%, transparent),
+    0 30px 60px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Animated Border ────────────────────────────────────────────────── */
+.animated-border {
+  position: relative;
+}
+
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    var(--border-angle, 0deg),
+    var(--c-accent, #ffd700),
+    var(--c-glow, #ffd700),
+    transparent,
+    var(--c-accent, #ffd700)
+  );
+  background-size: 300% 300%;
+  animation: border-rotate 4s linear infinite, border-bg-move 3s ease infinite;
+  z-index: -1;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  padding: 2px;
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-rotate {
+  to { --border-angle: 360deg; }
+}
+
+@keyframes border-bg-move {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+/* ── SVG Decorative Divider ─────────────────────────────────────────── */
+.divider-ornament {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  color: var(--c-accent, #ffd700);
+  opacity: 0.7;
+}
+
+.divider-ornament::before,
+.divider-ornament::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+}
+
+/* ── Hover Tilt (3D perspective) ─────────────────────────────────────── */
+.hover-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease;
+  will-change: transform;
+}
+
+.hover-tilt:hover {
+  /* JS handles actual tilt values via GSAP; this is fallback */
+  transform: perspective(1000px) rotateX(2deg) rotateY(2deg);
+}
+
+/* ── Smooth Page Transition ─────────────────────────────────────────── */
+.page-enter {
+  animation: page-enter-anim 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-enter-anim {
+  0%   { opacity: 0; transform: translateY(20px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.page-exit {
+  animation: page-exit-anim 0.4s cubic-bezier(0.55, 0, 1, 0.45) both;
+}
+
+@keyframes page-exit-anim {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-15px) scale(0.98); }
+}
+
+/* ── SplitText Title ─────────────────────────────────────────────────── */
+.split-title-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ── Staggered Reveal ────────────────────────────────────────────────── */
+.stagger-reveal > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.stagger-reveal.in-view > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-reveal.in-view > *:nth-child(1)  { transition-delay: 0.05s; }
+.stagger-reveal.in-view > *:nth-child(2)  { transition-delay: 0.10s; }
+.stagger-reveal.in-view > *:nth-child(3)  { transition-delay: 0.15s; }
+.stagger-reveal.in-view > *:nth-child(4)  { transition-delay: 0.20s; }
+.stagger-reveal.in-view > *:nth-child(5)  { transition-delay: 0.25s; }
+.stagger-reveal.in-view > *:nth-child(6)  { transition-delay: 0.30s; }
+
+/* ── Depth Layer System ──────────────────────────────────────────────── */
+.depth-far    { transform: translateZ(-20px) scale(0.98); }
+.depth-mid    { transform: translateZ(0px); }
+.depth-near   { transform: translateZ(20px) scale(1.02); }
+
+/* ── Responsive Animations (reduce-motion) ───────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Dark Mode Overrides ─────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+}
+
+/* ── Type-specific gradient mesh indicator strip ─────────────────────── */
+.inv-type-mehndi      .inv-type-strip { background: linear-gradient(90deg, #1a4a2e, #f9c74f, #52b788); }
+.inv-type-dholki      .inv-type-strip { background: linear-gradient(90deg, #6a0572, #f72585, #f9c74f); }
+.inv-type-nikkah      .inv-type-strip { background: linear-gradient(90deg, #f8f4ed, #c8860a, #2e7d32); }
+.inv-type-barat       .inv-type-strip { background: linear-gradient(90deg, #5c0a1a, #d4af37, #ffd700); }
+.inv-type-walima      .inv-type-strip { background: linear-gradient(90deg, #f5e6c8, #c8860a, #f4d35e); }
+.inv-type-engagement  .inv-type-strip { background: linear-gradient(90deg, #7b1a4a, #f4a0c0, #d4af37); }
+.inv-type-eid         .inv-type-strip { background: linear-gradient(90deg, #0a3d1f, #ffd700, #52b788); }
+.inv-type-milad       .inv-type-strip { background: linear-gradient(90deg, #004d40, #ffd700, #80cbc4); }
+.inv-type-quran       .inv-type-strip { background: linear-gradient(90deg, #1b3a2a, #d4af37, #81c784); }
+.inv-type-iftaar      .inv-type-strip { background: linear-gradient(90deg, #1a1035, #ffc107, #ff7043); }
+.inv-type-chelum      .inv-type-strip { background: linear-gradient(90deg, #37474f, #90a4ae, #78909c); }
+.inv-type-birthday    .inv-type-strip { background: linear-gradient(90deg, #3a0068, #ff6b9d, #ffd700); }
+.inv-type-graduation  .inv-type-strip { background: linear-gradient(90deg, #0d1b4c, #ffd700, #90caf9); }
+.inv-type-family      .inv-type-strip { background: linear-gradient(90deg, #4a2800, #ff9f1c, #52b788); }
+.inv-type-baby        .inv-type-strip { background: linear-gradient(90deg, #d4e8ff, #7ab4f5, #f4a0c0); }
+.inv-type-kids        .inv-type-strip { background: linear-gradient(90deg, #c0006a, #ffd700, #00e5ff); }
+.inv-type-house       .inv-type-strip { background: linear-gradient(90deg, #5d3a1a, #f4a261, #52b788); }
+.inv-type-shop        .inv-type-strip { background: linear-gradient(90deg, #0a2a6e, #ffd700, #90caf9); }
+.inv-type-office      .inv-type-strip { background: linear-gradient(90deg, #1a2744, #90caf9, #a5d6a7); }
+.inv-type-seminar     .inv-type-strip { background: linear-gradient(90deg, #1a1060, #7c83f5, #00e5ff); }
+.inv-type-launch      .inv-type-strip { background: linear-gradient(90deg, #080020, #00f5ff, #b700ff); }
+.inv-type-school      .inv-type-strip { background: linear-gradient(90deg, #0d3b6e, #ffd700, #81c784); }
+
+/* ── Scroll-triggered fade-up ────────────────────────────────────────── */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.revealed {
+  animation: scroll-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes scroll-fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Premium glow text variant ───────────────────────────────────────── */
+.glow-text {
+  text-shadow:
+    0 0 10px color-mix(in oklab, var(--c-glow, #ffd700) 80%, transparent),
+    0 0 30px color-mix(in oklab, var(--c-glow, #ffd700) 40%, transparent),
+    0 0 60px color-mix(in oklab, var(--c-glow, #ffd700) 20%, transparent);
+}
+
+/* ── Blurred soft overlay ─────────────────────────────────────────────── */
+.blur-overlay {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  pointer-events: none;
+  z-index: 2;
+  background: rgba(0,0,0,0.05);
+}

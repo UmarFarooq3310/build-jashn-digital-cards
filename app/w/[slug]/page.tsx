@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, use, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { Sparkles, Eye, Loader2, HeartHandshake, Edit3, Trash2 } from 'lucide-react'
+import { Sparkles, Eye, Loader2, HeartHandshake, Edit3, Trash2, Volume2, VolumeX } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -14,6 +14,7 @@ import { ShareBar } from '@/components/jashn/share-bar'
 import { AdBanner } from '@/components/ad-banner'
 import { useJashn } from '@/lib/jashn/store'
 import { getOccasion } from '@/lib/jashn/occasions'
+import { useCardSound } from '@/lib/jashn/useCardSound'
 import { decodeShortWish, encodeShortWish } from '@/lib/jashn/codec'
 import type { Wish } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
@@ -31,6 +32,19 @@ function WishPublicContent({ slug }: { slug: string }) {
   const [isLoading, setIsLoading] = useState(true)
   const [rainActive, setRainActive] = useState(false)
   const viewIncrementedRef = useRef<string | null>(null)
+
+  // Resolve occasion early so we can pass soundCategory to the hook.
+  // The hook is always called (Rules of Hooks), but only acts when card loads.
+  const occasionForSound = activeWish ? (wishes.find(w => w.slug === slug) ?? activeWish) : null
+  const soundCategory = occasionForSound
+    ? (() => {
+        const occ = getOccasion(occasionForSound.occasionId)
+        return occ?.soundCategory ?? 'default'
+      })()
+    : 'default'
+
+  const { isMuted, toggleMuted, autoplayBlocked, playCategorySound, handleUserInteraction, hasSound } =
+    useCardSound(soundCategory as 'dholki' | 'islamic' | 'festive' | 'somber' | 'default')
 
   const isCreator = (() => {
     const card = wishes.find((w) => w.slug === slug)
@@ -236,6 +250,41 @@ function WishPublicContent({ slug }: { slug: string }) {
         </span>
       </div>
 
+      {/* "Tap to hear" autoplay-blocked banner — shown only when browser blocked autoplay */}
+      {autoplayBlocked && hasSound && !isSensitive && (
+        <button
+          type="button"
+          onClick={handleUserInteraction}
+          className="mb-4 mx-auto flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors animate-pulse"
+          aria-label="Tap to play card sound"
+        >
+          <Volume2 className="size-3.5 shrink-0" />
+          🔊 Tap to hear the card sound
+        </button>
+      )}
+
+      {/* Global mute toggle — always visible when sound is available */}
+      {hasSound && !isSensitive && (
+        <div className="mb-3 flex justify-center">
+          <button
+            type="button"
+            onClick={toggleMuted}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+              isMuted
+                ? "border-zinc-400/30 bg-zinc-100 text-zinc-500 hover:bg-zinc-200"
+                : "border-primary/20 bg-primary/5 text-primary/70 hover:bg-primary/10"
+            )}
+            aria-label={isMuted ? 'Unmute card sound' : 'Mute card sound'}
+          >
+            {isMuted
+              ? <><VolumeX className="size-3" /> Sound off</>
+              : <><Volume2 className="size-3" /> Sound on</>
+            }
+          </button>
+        </div>
+      )}
+
       {/* Card Component with 3D Envelope Opening Cover */}
       <div className="my-6 py-4 flex justify-center">
         <ThreeDCardWrapper
@@ -247,6 +296,9 @@ function WishPublicContent({ slug }: { slug: string }) {
           onOpened={() => {
             if (!isSensitive) {
               setRainActive(true)
+              // Play category sound as soon as recipient opens the card.
+              // playCategorySound handles autoplay-blocked gracefully.
+              playCategorySound()
             }
           }}
         >
@@ -267,29 +319,27 @@ function WishPublicContent({ slug }: { slug: string }) {
 
       <AdBanner className="mt-6" />
 
-      {/* CTA Banner */}
+      {/* CTA Banner — solid background so text is always readable */}
       <div className={cn(
         "mt-8 rounded-2xl p-6 text-center border",
         isSensitive
-          ? "bg-zinc-950 border-zinc-800 text-zinc-400"
-          : isIslamic
-          ? "bg-gradient-to-r from-emerald-600/10 via-emerald-600/5 to-emerald-600/10 border-emerald-600/20 text-emerald-800"
-          : "bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-primary/20 text-primary"
+          ? "bg-zinc-900 border-zinc-700"
+          : "bg-card border-border shadow-sm"
       )}>
         {isSensitive ? (
           <>
-            <p className="text-sm font-medium text-zinc-300">Jashn - Share digital condolence letters respectfully.</p>
+            <p className="text-sm font-medium text-zinc-300">Jashn — share digital condolence letters respectfully.</p>
             <Link
               href="/create-wish"
-              className="mt-4 inline-flex items-center gap-2 rounded-xl bg-zinc-800 px-6 py-2.5 text-sm font-bold text-zinc-100 border border-zinc-700 hover:bg-zinc-700 transition-colors"
+              className="mt-4 inline-flex items-center gap-2 rounded-xl bg-zinc-700 px-6 py-2.5 text-sm font-bold text-zinc-100 border border-zinc-600 hover:bg-zinc-600 transition-colors"
             >
               Create Condolence Note
             </Link>
           </>
         ) : (
           <>
-            <p className="font-urdu text-xl mb-1">آپ بھی بنائیں اپنا ڈیجیٹل کارڈ بالکل مفت</p>
-            <p className="text-sm font-medium text-foreground">Inspired by this wish? Send one to your friends & family!</p>
+            <p className="font-urdu text-xl mb-1 text-foreground">آپ بھی بنائیں اپنا ڈیجیٹل کارڈ بالکل مفت</p>
+            <p className="text-sm font-medium text-muted-foreground mt-1">Inspired by this wish? Send one to your friends & family!</p>
             <Link
               href="/create-wish"
               className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"

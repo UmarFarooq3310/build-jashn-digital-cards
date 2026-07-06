@@ -6,6 +6,7 @@ export function encodeShortWish(w: Partial<Wish>): string {
   if (w.occasionId) params.set('o', w.occasionId)
   if (w.themeId) params.set('t', w.themeId)
   if (w.borderId) params.set('bor', w.borderId)
+  if (w.bgVariantId) params.set('bgV', w.bgVariantId)
   if (w.senderName) params.set('s', w.senderName)
   if (w.recipientName) params.set('r', w.recipientName)
   if (w.relation) params.set('rel', w.relation)
@@ -42,6 +43,7 @@ export function decodeShortWish(params: URLSearchParams, slug: string): Wish | n
     occasionId: o,
     themeId: params.get('t') || 'mehndi-red',
     borderId: params.get('bor') || 'mehndi',
+    bgVariantId: params.get('bgV') || undefined,
     senderName: params.get('s') || 'Well Wisher',
     recipientName: params.get('r') || '',
     relation: params.get('rel') || '',
@@ -58,6 +60,7 @@ export function encodeShortInvitation(i: Partial<Invitation>): string {
   if (i.typeId) params.set('tp', i.typeId)
   if (i.themeId) params.set('t', i.themeId)
   if (i.borderId) params.set('bor', i.borderId)
+  if (i.bgVariantId) params.set('bgV', i.bgVariantId)
   if (i.groom) params.set('g', i.groom)
   if (i.bride) params.set('b', i.bride)
   if (i.title) params.set('tt', i.title)
@@ -83,6 +86,7 @@ export function decodeShortInvitation(params: URLSearchParams, slug: string): In
     typeId: tp,
     themeId: params.get('t') || 'mehndi-red',
     borderId: params.get('bor') || 'mehndi',
+    bgVariantId: params.get('bgV') || undefined,
     groom: params.get('g') || '',
     bride: params.get('b') || '',
     title: params.get('tt') || '',

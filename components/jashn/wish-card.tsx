@@ -3,10 +3,11 @@
 import { forwardRef, useRef } from 'react'
 import { JashnIcon } from '@/lib/jashn/icon'
 import { getOccasion } from '@/lib/jashn/occasions'
-import { getTheme } from '@/lib/jashn/themes'
+import { getTheme, getCategoryPatternClass } from '@/lib/jashn/themes'
 import type { Language } from '@/lib/jashn/types'
 import { CardDecor } from './decor'
 import { RelationAvatar, detectRelation } from './relation-avatar'
+import { AnimatedBackgroundDecor } from './animated-background-decor'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
@@ -14,6 +15,7 @@ export interface WishCardData {
   occasionId: string
   themeId: string
   borderId?: string
+  bgVariantId?: string
   message: string
   messageUrdu: string
   senderName: string
@@ -30,6 +32,8 @@ export const WishCard = forwardRef<HTMLDivElement, {
   const occasion = getOccasion(data.occasionId)
   const theme = getTheme(data.themeId)
   const isIslamic = occasion?.category === 'Islamic'
+  const categoryPatternClass = getCategoryPatternClass(occasion?.category)
+  const patternClass = occasion?.patternOverlay || categoryPatternClass
   const showEn = data.language !== 'ur'
   const showUr = data.language !== 'en'
   const relationType = detectRelation(data.relation)
@@ -43,6 +47,23 @@ export const WishCard = forwardRef<HTMLDivElement, {
   ]
     .filter(Boolean)
     .join(' ')
+
+  const activeVariant = occasion?.bgVariants?.find(v => v.id === data.bgVariantId) || occasion?.bgVariants?.find(v => v.id === 'default')
+  // The radial top-glow is layered ABOVE the gradient/image on every variant.
+  const radialGlow = `radial-gradient(ellipse 80% 40% at 50% 0%, color-mix(in oklab, var(--c-accent, #f0c060) 20%, transparent), transparent 65%)`
+  const backgroundStyle: React.CSSProperties = activeVariant
+    ? activeVariant.bgImage
+      ? {
+          backgroundImage: `${radialGlow}, url(${activeVariant.bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }
+      : {
+          // CSS gradients work on the 'background' shorthand — 'backgroundImage'
+          // would strip the second layer if both are strings.
+          background: `${radialGlow}, ${activeVariant.bgGradient}`,
+        }
+    : {}
 
   // ── 3D tilt on mouse move ──────────────────────────────────────────────
   useGSAP(() => {
@@ -130,13 +151,26 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
       <div
         ref={ref}
-        className={`wish-card-surface jashn-card card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-md rounded-[2.5rem] px-4 py-8 sm:px-6 sm:py-12 text-center ${className ?? ''}`}
-        style={{ transformStyle: 'preserve-3d' }}
+        className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-md rounded-[2.5rem] px-4 py-8 sm:px-6 sm:py-12 text-center ${className ?? ''}`}
+        style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
       >
         {/* Decor layer (far) */}
         <div className="parallax-far">
-          <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId} />
+          <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId} decorations={occasion?.decorations} />
         </div>
+
+        {/* Background pattern layer */}
+        {patternClass && (
+          <div className={`card-bg-pattern absolute inset-0 ${patternClass}`} aria-hidden="true" />
+        )}
+
+        {/* Texture layers: grain + vignette + silk sheen */}
+        <div className="card-texture" aria-hidden="true" />
+        <div className="card-vignette" aria-hidden="true" />
+        <div className="card-silk" aria-hidden="true" />
+
+        {/* Ambient Animated backgrounds */}
+        <AnimatedBackgroundDecor category={occasion?.category} occasionId={data.occasionId} />
 
         {/* ── Shimmer sweep overlay ── */}
         <div className="card-shimmer-sweep pointer-events-none parallax-mid" aria-hidden="true" />

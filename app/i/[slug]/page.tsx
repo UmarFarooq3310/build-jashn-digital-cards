@@ -16,6 +16,8 @@ import { useJashn } from '@/lib/jashn/store'
 import { decodeShortInvitation, encodeShortInvitation } from '@/lib/jashn/codec'
 import { playRsvpSound } from '@/lib/jashn/audio'
 import { getInvitationType } from '@/lib/jashn/invitations'
+import { useCardSound } from '@/lib/jashn/useCardSound'
+import { Volume2, VolumeX } from 'lucide-react'
 import type { Invitation } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
 import { db, isFirebaseConfigured } from '@/lib/firebase'
@@ -33,6 +35,16 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   const [isLoading, setIsLoading] = useState(true)
   const [rsvped, setRsvped] = useState(false)
   const [rainActive, setRainActive] = useState(false)
+
+  // Resolve sound category from the invitation type
+  const soundCategory = (() => {
+    if (!activeInvitation) return 'default' as const
+    const t = getInvitationType(activeInvitation.typeId)
+    return (t?.soundCategory ?? 'default') as 'dholki' | 'islamic' | 'festive' | 'somber' | 'default'
+  })()
+
+  const { isMuted, toggleMuted, autoplayBlocked, playCategorySound, handleUserInteraction, hasSound } =
+    useCardSound(soundCategory)
 
   const isCreator = (() => {
     const card = invitations.find((i) => i.slug === slug)
@@ -251,13 +263,52 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         </span>
       </div>
 
+      {/* "Tap to hear" autoplay-blocked banner */}
+      {autoplayBlocked && hasSound && (
+        <button
+          type="button"
+          onClick={handleUserInteraction}
+          className="mb-4 mx-auto flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors animate-pulse"
+          aria-label="Tap to play invitation sound"
+        >
+          <Volume2 className="size-3.5 shrink-0" />
+          🔊 Tap to hear the invitation sound
+        </button>
+      )}
+
+      {/* Global mute toggle */}
+      {hasSound && (
+        <div className="mb-3 flex justify-center">
+          <button
+            type="button"
+            onClick={toggleMuted}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+              isMuted
+                ? "border-zinc-400/30 bg-zinc-100 text-zinc-500 hover:bg-zinc-200"
+                : "border-primary/20 bg-primary/5 text-primary/70 hover:bg-primary/10"
+            )}
+            aria-label={isMuted ? 'Unmute card sound' : 'Mute card sound'}
+          >
+            {isMuted
+              ? <><VolumeX className="size-3" /> Sound off</>
+              : <><Volume2 className="size-3" /> Sound on</>
+            }
+          </button>
+        </div>
+      )}
+
       {/* Card Component with 3D Envelope Opening Cover */}
       <div className="my-6 py-4 flex justify-center">
         <ThreeDCardWrapper
           eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
           occasionIdOrCategory={activeInvitation.typeId}
           isIslamic={isIslamic}
-          onOpened={() => setRainActive(true)}
+          onOpened={() => {
+            setRainActive(true)
+            // Play category sound when recipient opens the envelope
+            playCategorySound()
+          }}
         >
           <InvitationCard ref={cardRef} data={activeInvitation} watermark={true} showCountdown={true} />
         </ThreeDCardWrapper>
@@ -294,14 +345,10 @@ function InvitationPublicContent({ slug }: { slug: string }) {
 
       <AdBanner className="mt-6" />
 
-      <div className={cn(
-        "mt-8 rounded-2xl p-6 text-center border",
-        isIslamic
-          ? "bg-gradient-to-r from-emerald-600/10 via-emerald-600/5 to-emerald-600/10 border-emerald-600/20 text-emerald-800"
-          : "bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-primary/20 text-primary"
-      )}>
-        <p className="font-urdu text-xl mb-1">آپ بھی اپنے ایونٹ کا ڈیجیٹل کارڈ بنائیں</p>
-        <p className="text-sm font-medium text-foreground">Planning a wedding or event? Create your custom animated card now!</p>
+      {/* CTA Banner — solid card background ensures readability */}
+      <div className="mt-8 rounded-2xl p-6 text-center border border-border bg-card shadow-sm">
+        <p className="font-urdu text-xl mb-1 text-foreground">آپ بھی اپنے ایونٹ کا ڈیجیٹل کارڈ بنائیں</p>
+        <p className="text-sm font-medium text-muted-foreground mt-1">Planning a wedding or event? Create your custom animated card now!</p>
         <Link
           href="/create-invitation"
           className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"
