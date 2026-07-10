@@ -13,6 +13,8 @@ const NAV = [
   { href: '/create-wish', label: 'Send a Wish' },
   { href: '/create-invitation', label: 'Create Invitation' },
   { href: '/pricing', label: 'Pricing' },
+  { href: '/faq', label: 'FAQs' },
+  { href: '/guide', label: 'Guides' },
 ]
 
 export function SiteHeader() {
