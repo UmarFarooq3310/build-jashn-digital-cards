@@ -38,6 +38,8 @@ export function SiteFooter() {
               links={[
                 { href: '/', label: 'Home' },
                 { href: '/pricing', label: 'Plans' },
+                { href: '/faq', label: 'FAQs' },
+                { href: '/guide', label: 'Guides' },
                 { href: '/privacy', label: 'Privacy Policy' },
               ]}
             />

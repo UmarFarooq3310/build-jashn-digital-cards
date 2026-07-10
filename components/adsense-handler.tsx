@@ -10,6 +10,7 @@ function isAdSenseAllowed(pathname: string): boolean {
   if (pathname === '/') return true
   if (pathname === '/faq') return true
   if (pathname.startsWith('/guide')) return true
+  if (pathname === '/eid-wording-ideas' || pathname.startsWith('/eid-wording-ideas/')) return true
   return false
 }
 
