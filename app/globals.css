@@ -886,6 +886,19 @@
   }
 }
 
-
-
-
+/* ----------------------------------------------------------------------------
+   AdSense Page Exclusion Override
+   Forcefully hide Auto Ads elements on pages where ads are forbidden
+---------------------------------------------------------------------------- */
+.no-ads .google-auto-placed,
+.no-ads .adsbygoogle,
+.no-ads [id^="google_ads_"],
+.no-ads iframe[id^="aswift_"],
+.no-ads iframe[name^="google_ads_"] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

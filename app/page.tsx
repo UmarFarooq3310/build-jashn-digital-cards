@@ -2,7 +2,6 @@ import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Hero } from '@/components/home/hero'
 import { AdBanner } from '@/components/ad-banner'
-import Script from 'next/script'
 import {
   CategoryTabs,
   InvitationsSection,
@@ -15,12 +14,6 @@ import {
 export default function Page() {
   return (
     <div className="flex min-h-screen flex-col">
-      <Script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
-        crossOrigin="anonymous"
-        strategy="afterInteractive"
-      />
       <SiteHeader />
       <main className="flex-1">
         <Hero />

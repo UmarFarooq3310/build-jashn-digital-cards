@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Poppins, Noto_Nastaliq_Urdu } from 'next/font/google'
 import { ToastNotification } from '@/components/ui/toast-notification'
 import { FirebaseAuthListener } from '@/components/firebase-auth-listener'
+import { AdSenseHandler } from '@/components/adsense-handler'
 import './globals.css'
 
 const poppins = Poppins({
@@ -87,6 +88,7 @@ export default function RootLayout({
         <meta name="google-adsense-account" content="ca-pub-8899224608517833" />
       </head>
       <body className="bg-background font-sans antialiased overflow-x-hidden">
+        <AdSenseHandler />
         <FirebaseAuthListener />
         {children}
         <ToastNotification />
