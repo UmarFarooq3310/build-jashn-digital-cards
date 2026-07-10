@@ -4,7 +4,7 @@ import { forwardRef, useRef } from 'react'
 import { CalendarDays, Clock, MapPin, Shirt, Star } from 'lucide-react'
 import { JashnIcon } from '@/lib/jashn/icon'
 import { getInvitationType } from '@/lib/jashn/invitations'
-import { getTheme, getCategoryPatternClass } from '@/lib/jashn/themes'
+import { getTheme, getCategoryPatternClass, isLightVariant } from '@/lib/jashn/themes'
 import { CardDecor } from './decor'
 import { Countdown } from './countdown'
 import { RelationAvatar } from './relation-avatar'
@@ -315,6 +315,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
   const patternClass = type?.patternOverlay || categoryPatternClass
 
   const activeVariant = type?.bgVariants?.find(v => v.id === data.bgVariantId) || type?.bgVariants?.find(v => v.id === 'default')
+  const isLight = isLightVariant(activeVariant?.id)
   const radialGlow = `radial-gradient(ellipse 80% 40% at 50% 0%, color-mix(in oklab, var(--c-accent, #f0c060) 20%, transparent), transparent 65%)`
   const backgroundStyle: React.CSSProperties = activeVariant
     ? activeVariant.bgImage
@@ -489,7 +490,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
       <div
         ref={ref}
-        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} ${typeTheme?.typeClass ?? ''} mx-auto w-full max-w-sm rounded-3xl shadow-2xl ${className ?? ''}`}
+        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} ${typeTheme?.typeClass ?? ''} mx-auto w-full max-w-sm rounded-3xl shadow-2xl ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
         style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
       >
         {/* Decor layer */}

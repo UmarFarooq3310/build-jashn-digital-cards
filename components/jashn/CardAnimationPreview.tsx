@@ -4,6 +4,7 @@ import { useRef, useMemo } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { getOccasion } from '@/lib/jashn/occasions'
+import { cn } from '@/lib/utils'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -11,6 +12,8 @@ interface CardAnimationPreviewProps {
   occasionId: string
   children: React.ReactNode
   animationKey?: string
+  className?: string
+  roundedClass?: string
 }
 
 // ─── Occasion classifier helpers ─────────────────────────────────────────────
@@ -81,18 +84,6 @@ function seededRand(seed: number) {
 function WeddingOverlay() {
   return (
     <>
-      {/* Mughal arch frame drawn in by GSAP */}
-      <div
-        className="anim-arch pointer-events-none absolute inset-4 rounded-[1.8rem]"
-        style={{
-          border: '2px solid #e6b54a',
-          boxShadow: 'inset 0 0 0 4px rgba(230,181,74,0.18)',
-          transformOrigin: 'center',
-          willChange: 'transform',
-        }}
-        aria-hidden="true"
-      />
-
       {/* Tagline shimmer target — GSAP brightens it */}
       <div
         className="anim-shimmer pointer-events-none absolute inset-0"
@@ -410,6 +401,8 @@ export default function CardAnimationPreview({
   occasionId,
   children,
   animationKey,
+  className,
+  roundedClass,
 }: CardAnimationPreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const type = useMemo(() => classifyOccasion(occasionId), [occasionId])
@@ -421,10 +414,11 @@ export default function CardAnimationPreview({
         if (type === 'wedding') {
           const tl = gsap.timeline()
 
-          // 1. Mughal arch draws in
+          // 1. Chosen border draws in
+          const borderSelector = '.mughal-arch, .border-royal-gold, .border-dashed-frame, .border-corners, .border-corner-bottom-left, .border-corner-bottom-right, .border-double-frame, .border-woven, .mehndi-border, .border-diamond-strip'
           tl.fromTo(
-            '.anim-arch',
-            { scaleX: 0.6, scaleY: 0.6, opacity: 0 },
+            borderSelector,
+            { scaleX: 0.85, scaleY: 0.85, opacity: 0 },
             { scaleX: 1, scaleY: 1, opacity: 1, duration: 0.9, ease: 'power3.out' },
             0,
           )
@@ -733,7 +727,7 @@ export default function CardAnimationPreview({
   return (
     <div
       ref={containerRef}
-      className="relative w-full"
+      className={cn("relative w-full", className)}
       // key-prop variant: parent can change animationKey to force re-mount
     >
       {/* ── Card content ── */}
@@ -741,7 +735,10 @@ export default function CardAnimationPreview({
 
       {/* ── GSAP overlay (absolute, pointer-events-none, clipped to card) ── */}
       <div
-        className="pointer-events-none absolute inset-0 overflow-hidden rounded-[2.5rem]"
+        className={cn(
+          "pointer-events-none absolute inset-0 overflow-hidden",
+          roundedClass || 'rounded-[2.5rem]'
+        )}
         aria-hidden="true"
       >
         {type === 'wedding'    && <WeddingOverlay />}

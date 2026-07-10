@@ -210,6 +210,69 @@
 }
 
 /* ----------------------------------------------------------------------------
+   CONTRAST & ACCESSIBILITY OVERRIDES
+   Ensures text contrast when a dark theme is applied over a light background,
+   or when a light theme is applied over a dark background.
+---------------------------------------------------------------------------- */
+
+/* Case A: Dark themes loaded over a LIGHT background variant (e.g. Ivory) */
+.theme-mehndi-red.light-bg,
+.theme-feroza-teal.light-bg,
+.theme-royal-blue.light-bg,
+.theme-emerald-classic.light-bg,
+.theme-saffron-kesari.light-bg,
+.theme-plum-jamuni.light-bg,
+.theme-mughal-gold.light-bg,
+.theme-violet-noor.light-bg,
+.theme-pink-zardozi.light-bg,
+.theme-midnight-kashi.light-bg,
+.theme-ruby-gulabi.light-bg {
+  --c-ink: #2b1704 !important;
+  --c-accent: #8b5e10 !important;
+  --c-glow: #c89830 !important;
+}
+
+/* Case B: Light theme (Ivory Shahi) loaded over a DARK background variant */
+.theme-ivory-shahi.dark-bg {
+  --c-ink: #fff8ee !important;
+  --c-accent: #f0c060 !important;
+  --c-glow: #ffe090 !important;
+}
+
+/* Increase contrast for muted/opacity text classes on light background */
+.jashn-card.light-bg .opacity-55 {
+  opacity: 0.75 !important;
+}
+.jashn-card.light-bg .opacity-60 {
+  opacity: 0.8 !important;
+}
+.jashn-card.light-bg .opacity-65 {
+  opacity: 0.82 !important;
+}
+.jashn-card.light-bg .opacity-70 {
+  opacity: 0.85 !important;
+}
+.jashn-card.light-bg .opacity-80 {
+  opacity: 0.92 !important;
+}
+.jashn-card.light-bg .opacity-85 {
+  opacity: 0.96 !important;
+}
+
+/* Countdown component adjustments for light backgrounds */
+.jashn-card.light-bg .countdown-unit-bg {
+  background: color-mix(in oklab, var(--c-accent) 12%, rgba(255, 255, 255, 0.75)) !important;
+  border-color: color-mix(in oklab, var(--c-accent) 35%, transparent) !important;
+  box-shadow: 0 4px 12px rgba(139, 94, 16, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.85) !important;
+}
+.jashn-card.light-bg .countdown-unit-top-half {
+  background: color-mix(in oklab, var(--c-accent) 6%, rgba(255, 255, 255, 0.45)) !important;
+}
+.jashn-card.light-bg .countdown-unit-flip-overlay {
+  background: color-mix(in oklab, var(--c-accent) 14%, rgba(255, 255, 255, 0.75)) !important;
+}
+
+/* ----------------------------------------------------------------------------
    BORDER STYLES
    All borders are absolutely-positioned children inside .jashn-card.
    They NEVER use ::before / ::after on the card itself to avoid conflicts.

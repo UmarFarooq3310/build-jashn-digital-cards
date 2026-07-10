@@ -85,12 +85,6 @@ export default function RootLayout({
     >
       <head>
         <meta name="google-adsense-account" content="ca-pub-8899224608517833" />
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
-          crossOrigin="anonymous"
-        />
       </head>
       <body className="bg-background font-sans antialiased overflow-x-hidden">
         <FirebaseAuthListener />

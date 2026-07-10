@@ -7,7 +7,6 @@ import { Plus, Sparkles, Eye, Users, Crown, Calendar, Send, ExternalLink, LogOut
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
-import { AdBanner } from '@/components/ad-banner'
 import { useJashn } from '@/lib/jashn/store'
 import { getOccasion } from '@/lib/jashn/occasions'
 import { getInvitationType } from '@/lib/jashn/invitations'
@@ -124,10 +123,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Ad for free-plan users between actions and content */}
-          {user?.plan === 'free' && (
-            <AdBanner format="display" className="mb-6" />
-          )}
+
 
           {/* Sub-header Filter Tabs */}
           <div className="flex border-b border-border mb-6 gap-2">

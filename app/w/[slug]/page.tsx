@@ -11,7 +11,6 @@ import { WishCard } from '@/components/jashn/wish-card'
 import { ThreeDCardWrapper } from '@/components/jashn/three-d-card-wrapper'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { ShareBar } from '@/components/jashn/share-bar'
-import { AdBanner } from '@/components/ad-banner'
 import { useJashn } from '@/lib/jashn/store'
 import { getOccasion } from '@/lib/jashn/occasions'
 import { useCardSound } from '@/lib/jashn/useCardSound'
@@ -250,40 +249,7 @@ function WishPublicContent({ slug }: { slug: string }) {
         </span>
       </div>
 
-      {/* "Tap to hear" autoplay-blocked banner — shown only when browser blocked autoplay */}
-      {autoplayBlocked && hasSound && !isSensitive && (
-        <button
-          type="button"
-          onClick={handleUserInteraction}
-          className="mb-4 mx-auto flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors animate-pulse"
-          aria-label="Tap to play card sound"
-        >
-          <Volume2 className="size-3.5 shrink-0" />
-          🔊 Tap to hear the card sound
-        </button>
-      )}
 
-      {/* Global mute toggle — always visible when sound is available */}
-      {hasSound && !isSensitive && (
-        <div className="mb-3 flex justify-center">
-          <button
-            type="button"
-            onClick={toggleMuted}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors",
-              isMuted
-                ? "border-zinc-400/30 bg-zinc-100 text-zinc-500 hover:bg-zinc-200"
-                : "border-primary/20 bg-primary/5 text-primary/70 hover:bg-primary/10"
-            )}
-            aria-label={isMuted ? 'Unmute card sound' : 'Mute card sound'}
-          >
-            {isMuted
-              ? <><VolumeX className="size-3" /> Sound off</>
-              : <><Volume2 className="size-3" /> Sound on</>
-            }
-          </button>
-        </div>
-      )}
 
       {/* Card Component with 3D Envelope Opening Cover */}
       <div className="my-6 py-4 flex justify-center">
@@ -317,7 +283,6 @@ function WishPublicContent({ slug }: { slug: string }) {
         <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`jashn-wish-${activeWish.slug}`} />
       </div>
 
-      <AdBanner className="mt-6" />
 
       {/* CTA Banner — solid background so text is always readable */}
       <div className={cn(
@@ -350,7 +315,6 @@ function WishPublicContent({ slug }: { slug: string }) {
         )}
       </div>
 
-      <AdBanner format="multiplex" className="mt-6 mb-2" />
     </div>
   )
 }

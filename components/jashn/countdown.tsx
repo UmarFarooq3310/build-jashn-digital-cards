@@ -32,7 +32,7 @@ function FlipUnit({ value, label }: { value: number; label: string }) {
     <div className="flex flex-col items-center gap-1">
       {/* Flip card wrapper */}
       <div
-        className="relative flex items-center justify-center overflow-hidden rounded-xl select-none"
+        className="countdown-unit-bg relative flex items-center justify-center overflow-hidden rounded-xl select-none"
         style={{
           width: 54,
           height: 52,
@@ -55,7 +55,7 @@ function FlipUnit({ value, label }: { value: number; label: string }) {
 
         {/* Top half — static current value */}
         <div
-          className="absolute top-0 inset-x-0 flex items-end justify-center pb-0.5 overflow-hidden"
+          className="countdown-unit-top-half absolute top-0 inset-x-0 flex items-end justify-center pb-0.5 overflow-hidden"
           style={{
             height: '50%',
             background: 'color-mix(in oklab, var(--c-accent) 8%, rgba(0,0,0,0.18))',
@@ -85,7 +85,7 @@ function FlipUnit({ value, label }: { value: number; label: string }) {
         {/* Flip animation overlay — old value flipping away */}
         {flip && (
           <div
-            className="absolute inset-0 flex items-center justify-center"
+            className="countdown-unit-flip-overlay absolute inset-0 flex items-center justify-center"
             style={{
               animation: 'flip-in 0.36s cubic-bezier(0.34,1.56,0.64,1) both',
               background: 'color-mix(in oklab, var(--c-accent) 14%, rgba(0,0,0,0.25))',

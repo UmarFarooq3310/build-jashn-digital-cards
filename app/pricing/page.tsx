@@ -6,7 +6,6 @@ import { Check, Crown, Sparkles, Smartphone, ShieldCheck, Loader2, AlertCircle }
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
-import { AdBanner } from '@/components/ad-banner'
 import { useJashn } from '@/lib/jashn/store'
 import type { Plan } from '@/lib/jashn/types'
 
@@ -439,7 +438,6 @@ export default function PricingPage() {
         )}
       </main>
 
-      <AdBanner format="display" className="mx-auto max-w-4xl px-4 pb-6" />
       <SiteFooter />
     </div>
   )

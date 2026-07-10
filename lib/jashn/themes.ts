@@ -126,3 +126,16 @@ export function getCategoryPatternClass(category: string | undefined): string {
   return ''
 }
 
+export function isLightVariant(variantId: string | undefined): boolean {
+  if (!variantId) return false
+  const id = variantId.toLowerCase().trim()
+  return (
+    id === 'islamic-ivory' ||
+    id === 'ivory-shahi' ||
+    id === 'light-ivory' ||
+    id === 'light-gold' ||
+    id === 'cream' ||
+    id === 'white'
+  )
+}
+

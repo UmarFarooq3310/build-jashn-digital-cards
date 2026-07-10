@@ -3,7 +3,7 @@
 import { forwardRef, useRef } from 'react'
 import { JashnIcon } from '@/lib/jashn/icon'
 import { getOccasion } from '@/lib/jashn/occasions'
-import { getTheme, getCategoryPatternClass } from '@/lib/jashn/themes'
+import { getTheme, getCategoryPatternClass, isLightVariant } from '@/lib/jashn/themes'
 import type { Language } from '@/lib/jashn/types'
 import { CardDecor } from './decor'
 import { RelationAvatar, detectRelation } from './relation-avatar'
@@ -49,6 +49,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
     .join(' ')
 
   const activeVariant = occasion?.bgVariants?.find(v => v.id === data.bgVariantId) || occasion?.bgVariants?.find(v => v.id === 'default')
+  const isLight = isLightVariant(activeVariant?.id)
   // The radial top-glow is layered ABOVE the gradient/image on every variant.
   const radialGlow = `radial-gradient(ellipse 80% 40% at 50% 0%, color-mix(in oklab, var(--c-accent, #f0c060) 20%, transparent), transparent 65%)`
   const backgroundStyle: React.CSSProperties = activeVariant
@@ -151,7 +152,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
       <div
         ref={ref}
-        className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-md rounded-[2.5rem] px-4 py-8 sm:px-6 sm:py-12 text-center ${className ?? ''}`}
+        className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-md rounded-[2.5rem] px-4 py-8 sm:px-6 sm:py-12 text-center ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
         style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
       >
         {/* Decor layer (far) */}

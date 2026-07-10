@@ -10,7 +10,6 @@ import { InvitationCard } from '@/components/jashn/invitation-card'
 import { ThreeDCardWrapper } from '@/components/jashn/three-d-card-wrapper'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { ShareBar } from '@/components/jashn/share-bar'
-import { AdBanner } from '@/components/ad-banner'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { decodeShortInvitation, encodeShortInvitation } from '@/lib/jashn/codec'
@@ -263,40 +262,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         </span>
       </div>
 
-      {/* "Tap to hear" autoplay-blocked banner */}
-      {autoplayBlocked && hasSound && (
-        <button
-          type="button"
-          onClick={handleUserInteraction}
-          className="mb-4 mx-auto flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors animate-pulse"
-          aria-label="Tap to play invitation sound"
-        >
-          <Volume2 className="size-3.5 shrink-0" />
-          🔊 Tap to hear the invitation sound
-        </button>
-      )}
 
-      {/* Global mute toggle */}
-      {hasSound && (
-        <div className="mb-3 flex justify-center">
-          <button
-            type="button"
-            onClick={toggleMuted}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors",
-              isMuted
-                ? "border-zinc-400/30 bg-zinc-100 text-zinc-500 hover:bg-zinc-200"
-                : "border-primary/20 bg-primary/5 text-primary/70 hover:bg-primary/10"
-            )}
-            aria-label={isMuted ? 'Unmute card sound' : 'Mute card sound'}
-          >
-            {isMuted
-              ? <><VolumeX className="size-3" /> Sound off</>
-              : <><Volume2 className="size-3" /> Sound on</>
-            }
-          </button>
-        </div>
-      )}
 
       {/* Card Component with 3D Envelope Opening Cover */}
       <div className="my-6 py-4 flex justify-center">
@@ -343,7 +309,6 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`jashn-invitation-${activeInvitation.slug}`} />
       </div>
 
-      <AdBanner className="mt-6" />
 
       {/* CTA Banner — solid card background ensures readability */}
       <div className="mt-8 rounded-2xl p-6 text-center border border-border bg-card shadow-sm">
@@ -357,7 +322,6 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         </Link>
       </div>
 
-      <AdBanner format="multiplex" className="mt-6 mb-2" />
     </div>
   )
 }

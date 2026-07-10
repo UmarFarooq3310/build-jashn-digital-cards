@@ -40,7 +40,8 @@ export default function AudioPlayer({ occasionId, autoPlay = false }: AudioPlaye
     if (prev) {
       prev.pause()
       prev.currentTime = 0
-      prev.src = ''
+      prev.removeAttribute('src')
+      prev.load()
     }
 
     const audio = new Audio(soundSrc)
@@ -60,7 +61,8 @@ export default function AudioPlayer({ occasionId, autoPlay = false }: AudioPlaye
 
     return () => {
       audio.pause()
-      audio.src = ''
+      audio.removeAttribute('src')
+      audio.load()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [occasionId, soundSrc])

@@ -1,24 +1,29 @@
 'use client'
 
 import Link from 'next/link'
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
 import {
   ArrowRight,
+  ArrowLeft,
   MousePointerClick,
-  PenLine,
-  Palette,
-  Send,
-  Heart,
-  Calendar,
-  Gift,
-  PartyPopper,
   Sparkles,
-  Users,
+  Heart,
+  Gift,
   Moon,
   Flower2,
   Cake,
   Gem,
   CheckCircle,
+  Award,
+  Crown,
+  Star,
+  GraduationCap,
+  MessageCircle,
+  Plus,
+  X,
+  Mail,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -27,7 +32,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 import { JashnIcon } from '@/lib/jashn/icon'
 import { OCCASIONS } from '@/lib/jashn/occasions'
-import { INVITATION_TYPES } from '@/lib/jashn/invitations'
 import { WishCard } from '@/components/jashn/wish-card'
 import { InvitationCard } from '@/components/jashn/invitation-card'
 import { cn } from '@/lib/utils'
@@ -37,7 +41,7 @@ function SectionHead({
   kicker,
   title,
   desc,
-  kickerColor = 'text-primary',
+  kickerColor = 'text-[#7B0D1E]',
   className,
 }: {
   kicker: string
@@ -55,7 +59,7 @@ function SectionHead({
         {title}
       </h2>
       {desc ? (
-        <p className="mx-auto mt-3 max-w-xl text-pretty leading-relaxed text-muted-foreground">
+        <p className="mx-auto mt-3 max-w-xl text-pretty leading-relaxed text-muted-foreground text-sm sm:text-base">
           {desc}
         </p>
       ) : null}
@@ -63,247 +67,434 @@ function SectionHead({
   )
 }
 
-// 1. Wedding / Engagement Themed Section (Gold/Maroon Mughal Vibe)
-export function WeddingSection() {
+// ─────────────────────────────────────────────────────────────────────────
+// 1. HOW IT WORKS (Compact horizontal 2-step stepper + Pricing indicator)
+// ─────────────────────────────────────────────────────────────────────────
+export function HowItWorks() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const el = sectionRef.current
+    if (!el) return
+    gsap.fromTo(el.querySelector('.hiw-head'), { y: 25, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.5, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelectorAll('.hiw-step'), { y: 30, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.5, stagger: 0.15, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+    })
+    gsap.fromTo(el.querySelector('.pricing-box'), { scale: 0.95, opacity: 0 }, {
+      scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.2)',
+      scrollTrigger: { trigger: el, start: 'top 70%', toggleActions: 'play none none none' }
+    })
+  }, { scope: sectionRef })
+
+  return (
+    <section ref={sectionRef} className="border-t border-[#7B0D1E]/10 bg-[#FAF6F0] py-16 relative overflow-hidden">
+      {/* Subtle mandala background decoration */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-96 opacity-[0.03] text-[#7B0D1E] pointer-events-none select-none">
+        <Flower2 className="w-full h-full" />
+      </div>
+
+      <div className="mx-auto max-w-6xl px-4 relative z-10">
+        <SectionHead
+          kicker="Bazaar-e-Jashn"
+          title="Create & Send in Two Simple Steps"
+          desc="Beautiful bilingual designs with interactive elements, made fast."
+          className="hiw-head"
+        />
+
+        {/* 2-Step Horizontal Stepper */}
+        <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto mb-12">
+          {/* Step 1 */}
+          <div className="hiw-step relative rounded-2xl border border-[#7B0D1E]/10 bg-card p-6 shadow-sm flex gap-4 items-start">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#7B0D1E]/10 text-[#7B0D1E] font-bold text-lg">
+              1
+            </span>
+            <div className="space-y-1">
+              <h3 className="font-bold text-foreground flex items-center gap-2">
+                <span>Pick Occasion</span>
+                <span className="font-urdu text-xs text-[#7B0D1E]/60">(تقریب چنیں)</span>
+              </h3>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                Choose from 50+ beautiful templates across weddings, birthdays, festivals, achievements, or friendship notes.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 2 */}
+          <div className="hiw-step relative rounded-2xl border border-[#7B0D1E]/10 bg-card p-6 shadow-sm flex gap-4 items-start">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#7B0D1E]/10 text-[#7B0D1E] font-bold text-lg">
+              2
+            </span>
+            <div className="space-y-1">
+              <h3 className="font-bold text-foreground flex items-center gap-2">
+                <span>Personalize & Share</span>
+                <span className="font-urdu text-xs text-[#7B0D1E]/60">(کارڈ بنائیں اور بھیجیں)</span>
+              </h3>
+              <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                Add names, select design themes/music, type in English or Urdu script with live preview, and generate a clean shareable link instantly.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Free vs Premium Pricing Indicator (Surfaced Earlier) */}
+        <div className="pricing-box max-w-4xl mx-auto rounded-3xl border border-[#7B0D1E]/15 bg-gradient-to-br from-[#7B0D1E]/5 via-card to-[#7B0D1E]/10 p-6 sm:p-8 shadow-md">
+          <div className="text-center mb-6">
+            <span className="inline-block bg-[#7B0D1E] text-white px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase mb-1">
+              Pricing Options
+            </span>
+            <h3 className="text-lg font-extrabold text-foreground">Transparent Desi Pricing</h3>
+          </div>
+          
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="space-y-2 p-4 rounded-2xl bg-card border border-[#7B0D1E]/10 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-[#7B0D1E]/10 text-[#7B0D1E] px-2 py-0.5 rounded-bl-xl text-[10px] font-bold">
+                Free Forever
+              </div>
+              <h4 className="font-bold text-[#7B0D1E] text-sm flex items-center gap-1.5">
+                <Sparkles className="size-4 shrink-0" /> Wish Cards & Standard Themes
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                All personalized greetings (Eid, Birthdays, Friendship notes) are 100% free! Includes bilingual script, floating animations, and clean sharing link.
+              </p>
+            </div>
+            
+            <div className="space-y-2 p-4 rounded-2xl bg-card border border-emerald-500/20 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-emerald-500/10 text-emerald-700 px-2 py-0.5 rounded-bl-xl text-[10px] font-bold">
+                Jashn Pro (Premium)
+              </div>
+              <h4 className="font-bold text-emerald-700 text-sm flex items-center gap-1.5">
+                <Crown className="size-4 shrink-0" /> Live RSVPs, Maps & Countdowns
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Upgrade event invitations (Mehndi, Shaadi, Parties) for a small fee. Add Google Map pins, dress codes, host control dashboard, and receive real-time guest confirmations on WhatsApp!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// 2. CATEGORY TABS (Wedding, Birthday, Friendship, Festivals & Milestones)
+// ─────────────────────────────────────────────────────────────────────────
+type TabType = 'wedding' | 'birthday' | 'friendship' | 'festivals'
+
+export function CategoryTabs() {
+  const [activeTab, setActiveTab] = useState<TabType>('wedding')
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const el = sectionRef.current
+    if (!el) return
+    gsap.fromTo(el.querySelector('.tabs-head'), { y: 25, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.5, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+    })
+  }, { scope: sectionRef })
+
+  // Categories mapping
   const weddingOccasions = OCCASIONS.filter(
     (o) => o.id === 'shaadi' || o.id === 'nikah' || o.id === 'anniversary'
   )
-  const sectionRef = useRef<HTMLElement>(null)
 
-  useGSAP(() => {
-    const el = sectionRef.current
-    if (!el) return
-    gsap.fromTo(el.querySelectorAll('.wedding-head'), { y: 40, opacity: 0 }, {
-      y: 0, opacity: 1, duration: 0.7, stagger: 0.15, ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
-    })
-    gsap.fromTo(el.querySelectorAll('.wedding-card'), { y: 50, opacity: 0, scale: 0.95 }, {
-      y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.12, ease: 'power2.out',
-      scrollTrigger: { trigger: el, start: 'top 70%', toggleActions: 'play none none none' }
-    })
-  }, { scope: sectionRef })
-
-  return (
-    <section ref={sectionRef} className="relative overflow-hidden border-t border-[#8e0f24]/20 bg-gradient-to-br from-[#4a0510]/5 via-card to-[#8e0f24]/5 py-20">
-      {/* Decorative Floral background SVG */}
-      <div className="absolute right-0 top-0 -mr-16 -mt-16 size-64 opacity-10 text-[#8e0f24] pointer-events-none">
-        <Flower2 className="w-full h-full" />
-      </div>
-      <div className="absolute left-0 bottom-0 -ml-16 -mb-16 size-64 opacity-10 text-[#8e0f24] pointer-events-none">
-        <Flower2 className="w-full h-full" />
-      </div>
-
-      <div className="mx-auto max-w-6xl px-4 relative z-10">
-        <SectionHead
-          kicker="Wedding & Engagement"
-          kickerColor="text-[#8e0f24] font-extrabold"
-          title="Celebrate Eternal Love & Togetherness"
-          desc="Beautiful Mughal-arched Shaadi, Nikkah, Mehndi cards and Anniversary wishes with traditional bilingual greetings."
-          className="wedding-head"
-        />
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {/* Card creations */}
-          {weddingOccasions.map((o) => (
-            <Link
-              key={o.id}
-              href={`/create-wish?occasion=${o.id}`}
-              className="wedding-card group flex flex-col justify-between p-6 rounded-3xl border border-[#8e0f24]/20 bg-card hover:border-[#8e0f24] hover:shadow-[0_20px_40px_-15px_rgba(142,15,36,0.15)] transition-all duration-300"
-            >
-              <div>
-                <div className="flex size-12 items-center justify-center rounded-2xl bg-[#8e0f24]/10 text-[#8e0f24] group-hover:bg-[#8e0f24] group-hover:text-[#fff4e6] transition-colors mb-4">
-                  <JashnIcon name={o.icon} className="size-6" />
-                </div>
-                <h3 className="text-lg font-bold text-foreground mb-1">{o.label} Card</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Bilingual greeting cards in English and Urdu script with elegant floral overlays.
-                </p>
-              </div>
-              <span className="mt-6 flex items-center gap-1 text-xs font-bold text-[#8e0f24] hover:underline">
-                Create custom card <ArrowRight className="size-3.5" />
-              </span>
-            </Link>
-          ))}
-          
-          {/* Featured invitation link */}
-          <Link
-            href="/create-invitation?type=mehndi"
-            className="wedding-card group flex flex-col justify-between p-6 rounded-3xl border-2 border-dashed border-[#e6b54a] bg-gradient-to-br from-[#e6b54a]/5 to-card hover:border-[#8e0f24] transition-all duration-300"
-          >
-            <div>
-              <div className="flex size-12 items-center justify-center rounded-2xl bg-[#e6b54a]/20 text-[#8e0f24] mb-4">
-                <Gem className="size-6 text-[#e6b54a] animate-pulse" />
-              </div>
-              <h3 className="text-lg font-bold text-[#8e0f24] mb-1">Mughal Mehndi & Baraat Invitations</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Create a full multi-day digital invitation website with venue location map pins, dress code guides, and live countdowns.
-              </p>
-            </div>
-            <span className="mt-6 flex items-center gap-1 text-xs font-bold text-[#8e0f24]">
-              Build Wedding Invitation <ArrowRight className="size-3.5" />
-            </span>
-          </Link>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// 2. Birthdays Section (Fun / Playful / Vibrant Balloon Vibe)
-export function BirthdaysSection() {
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useGSAP(() => {
-    const el = sectionRef.current
-    if (!el) return
-    gsap.fromTo(el.querySelectorAll('.bday-head'), { y: 40, opacity: 0 }, {
-      y: 0, opacity: 1, duration: 0.7, stagger: 0.15, ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
-    })
-    gsap.fromTo(el.querySelector('.bday-content'), { x: -50, opacity: 0 }, {
-      x: 0, opacity: 1, duration: 0.7, ease: 'power2.out',
-      scrollTrigger: { trigger: el, start: 'top 70%', toggleActions: 'play none none none' }
-    })
-    gsap.fromTo(el.querySelector('.bday-card'), { x: 50, opacity: 0, rotate: 4 }, {
-      x: 0, opacity: 1, rotate: 2, duration: 0.7, ease: 'power2.out',
-      scrollTrigger: { trigger: el, start: 'top 70%', toggleActions: 'play none none none' }
-    })
-  }, { scope: sectionRef })
-
-  return (
-    <section ref={sectionRef} className="relative overflow-hidden border-t border-[#0d1b4c]/10 bg-gradient-to-br from-[#0d1b4c]/5 via-card to-[#1a237e]/5 py-20">
-      {/* Star twinkling decoration or neon glows */}
-      <div className="absolute right-10 bottom-10 size-72 rounded-full bg-cyan-500/5 blur-3xl pointer-events-none" />
-      <div className="absolute left-10 top-10 size-72 rounded-full bg-indigo-500/5 blur-3xl pointer-events-none" />
-
-      <div className="mx-auto max-w-6xl px-4 relative z-10">
-        <div className="mx-auto mb-10 max-w-2xl text-center bday-head">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-indigo-600">
-            Saalgirah Mubarak
-          </p>
-          <h2 className="mt-2 text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-            Vibrant Animated Birthday Greetings
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-pretty leading-relaxed text-muted-foreground">
-            Send sweet, colorful birthday wishes to your friends, family, and loved ones with animated cake candles and playful sparkles.
-          </p>
-        </div>
-
-        <div className="flex flex-col md:flex-row items-center gap-10 bg-card rounded-[2.5rem] border border-indigo-100 p-8 md:p-12 shadow-xl">
-          <div className="bday-content w-full md:w-1/2 space-y-6">
-            <div className="flex items-center gap-3">
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600">
-                <Cake className="size-6" />
-              </span>
-              <div>
-                <h3 className="text-xl font-bold text-foreground">Customizable Saalgirah Cards</h3>
-                <p className="text-xs text-muted-foreground">Select a playful midnight theme and add recipient details.</p>
-              </div>
-            </div>
-
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Our birthday greeting template contains Urdu script (&ldquo;سالگرہ مبارک&rdquo;) with sweet customizable messages. Every card includes a custom music-box birthday chime when opened!
-            </p>
-
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Link
-                href="/create-wish?occasion=birthday"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-[#5fb6e6] px-6 font-bold text-white hover:opacity-90 transition-opacity shadow-lg shadow-indigo-600/20"
-              >
-                Send Birthday Wish <ArrowRight className="size-4" />
-              </Link>
-              <Link
-                href="/create-invitation?type=birthday"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-input bg-background px-6 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
-              >
-                Create Party Invitation
-              </Link>
-            </div>
-          </div>
-
-          <div className="bday-card w-full md:w-1/2 max-w-sm flex justify-center">
-            {/* Visual preview of birthday card */}
-            <div className="w-full rotate-2 transform hover:rotate-0 transition-transform duration-500 shadow-2xl rounded-3xl overflow-hidden border border-indigo-100">
-              <WishCard
-                watermark={false}
-                data={{
-                  occasionId: 'birthday',
-                  themeId: 'midnight-kashi',
-                  language: 'both',
-                  senderName: 'Sajid',
-                  recipientName: 'Zainab',
-                  message: 'May Allah bless you with a year of immense success and happiness!',
-                  messageUrdu: 'سالگرہ مبارک ہو! اللہ آپ کو ڈھیروں خوشیاں نصیب فرمائے۔',
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// 3. Friendship Section (Cozy / Sunset / Hand-heart Vibe)
-export function FriendshipSection() {
   const friendshipOccasions = OCCASIONS.filter(
     (o) => o.id === 'friendship-day' || o.id === 'miss-you' || o.id === 'thank-you'
   )
-  const sectionRef = useRef<HTMLElement>(null)
 
-  useGSAP(() => {
-    const el = sectionRef.current
-    if (!el) return
-    gsap.fromTo(el.querySelectorAll('.friend-head'), { y: 35, opacity: 0 }, {
-      y: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
-    })
-    gsap.fromTo(el.querySelectorAll('.friend-card'), { y: 40, opacity: 0 }, {
-      y: 0, opacity: 1, duration: 0.55, stagger: 0.1, ease: 'power2.out',
-      scrollTrigger: { trigger: el, start: 'top 72%', toggleActions: 'play none none none' }
-    })
-  }, { scope: sectionRef })
+  // Separating Festivals (Religious) from Milestones (Achievements)
+  const religiousOccasions = OCCASIONS.filter(
+    (o) => o.category === 'Islamic' && o.id !== 'condolence'
+  )
+
+  const milestoneOccasions = OCCASIONS.filter(
+    (o) => 
+      o.category === 'Achievements' || 
+      o.id === 'new-year' || 
+      o.id === 'independence-day' || 
+      o.id === 'graduation'
+  )
 
   return (
-    <section ref={sectionRef} className="relative border-t border-rose-100 bg-gradient-to-br from-rose-50/70 via-peach-50/40 to-card py-20">
+    <section ref={sectionRef} className="border-t border-border bg-card py-20 relative">
       <div className="mx-auto max-w-6xl px-4">
-        <SectionHead
-          kicker="Dosti Mubarak"
-          kickerColor="text-rose-500 font-extrabold"
-          title="Strengthen Your Bonds of Friendship"
-          desc="Show gratitude, say thank you, tell them they are missed, or celebrate Friendship Day with personalized heart warming notes."
-          className="friend-head"
-        />
+        <div className="tabs-head">
+          <SectionHead
+            kicker="Daawat-e-Jashn"
+            title="Explore Card Categories"
+            desc="Select a category to view stunning card templates and start personalizing."
+          />
+        </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {friendshipOccasions.map((o) => (
-            <Link
-              key={o.id}
-              href={`/create-wish?occasion=${o.id}`}
-              className="friend-card group relative overflow-hidden rounded-3xl border border-rose-100/80 bg-card p-6 hover:border-rose-300 hover:shadow-lg transition-all duration-300"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex size-11 items-center justify-center rounded-xl bg-rose-50 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-colors">
-                  <JashnIcon name={o.icon} className="size-5" />
+        {/* Tab Buttons bar (Scrollable on mobile) */}
+        <div className="flex border-b border-border overflow-x-auto scrollbar-none gap-2 sm:gap-6 justify-start sm:justify-center pb-2 mb-8">
+          {[
+            { id: 'wedding', label: 'Wedding & Shaadi', urdu: 'شادی اور نکاح', icon: Gem },
+            { id: 'birthday', label: 'Birthdays & Saalgirah', urdu: 'سالگرہ مبارک', icon: Cake },
+            { id: 'friendship', label: 'Friendship & Notes', urdu: 'دوستی اور پیغامات', icon: Heart },
+            { id: 'festivals', label: 'Festivals & Milestones', urdu: 'تہوار اور سنگ میل', icon: Moon },
+          ].map((tab) => {
+            const Icon = tab.icon
+            const active = activeTab === tab.id
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as TabType)}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2.5 rounded-t-2xl font-semibold text-sm transition-all whitespace-nowrap border-b-2",
+                  active
+                    ? "border-[#7B0D1E] text-[#7B0D1E] bg-[#7B0D1E]/5 font-bold"
+                    : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40"
+                )}
+              >
+                <Icon className="size-4" />
+                <div className="text-left">
+                  <span className="block leading-tight text-xs sm:text-sm">{tab.label}</span>
+                  <span className="block font-urdu text-[10px] opacity-75 sm:hidden lg:block">{tab.urdu}</span>
                 </div>
-                <Heart className="size-4 text-rose-200 group-hover:text-rose-400 group-hover:scale-110 transition-all duration-300" />
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Tab Content Display Area */}
+        <div className="min-h-[380px] bg-gradient-to-br from-card to-secondary/5 rounded-3xl border border-border p-6 sm:p-8 transition-all duration-300">
+          
+          {/* TAB 1: WEDDING */}
+          {activeTab === 'wedding' && (
+            <div className="space-y-6 animate-fadeIn">
+              <div className="max-w-2xl">
+                <span className="text-xs uppercase font-extrabold tracking-wider text-[#7B0D1E]">Mughal Mughal Vibe</span>
+                <h3 className="text-xl font-bold text-foreground mt-1">Celebrate Eternal Love & Togetherness</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-1.5">
+                  Beautiful Mughal-arched Shaadi, Nikkah, Mehndi cards and Anniversary wishes with traditional bilingual greetings.
+                </p>
               </div>
-              <h3 className="mt-5 text-lg font-bold text-foreground">{o.label} Card</h3>
-              <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                Send warm, heartfelt vibes with a clean, short shareable link instantly.
-              </p>
-              <div className="mt-6 flex items-center gap-1 text-xs font-bold text-rose-500">
-                Write a note <ArrowRight className="size-3.5" />
+
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {weddingOccasions.map((o) => (
+                  <Link
+                    key={o.id}
+                    href={`/create-wish?occasion=${o.id}`}
+                    className="group flex flex-col justify-between p-5 rounded-2xl border border-[#7B0D1E]/20 bg-card hover:border-[#7B0D1E] hover:shadow-[0_12px_24px_-10px_rgba(123,13,30,0.1)] transition-all duration-200"
+                  >
+                    <div>
+                      <div className="flex size-10 items-center justify-center rounded-xl bg-[#7B0D1E]/10 text-[#7B0D1E] group-hover:bg-[#7B0D1E] group-hover:text-white transition-colors mb-3">
+                        <JashnIcon name={o.icon} className="size-5" />
+                      </div>
+                      <h4 className="text-base font-bold text-foreground">{o.label} Card</h4>
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                        Bilingual wedding greeting scripts in English and Urdu calligraphy.
+                      </p>
+                    </div>
+                    <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#7B0D1E] group-hover:underline">
+                      Customize Card <ArrowRight className="size-3" />
+                    </span>
+                  </Link>
+                ))}
+
+                {/* Mughal Mehndi Invitation Link */}
+                <Link
+                  href="/create-invitation?type=mehndi"
+                  className="group flex flex-col justify-between p-5 rounded-2xl border-2 border-dashed border-amber-500 bg-gradient-to-br from-amber-500/5 to-card hover:border-[#7B0D1E] transition-all duration-200 animate-pulse"
+                >
+                  <div>
+                    <div className="flex size-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-700 mb-3">
+                      <Gem className="size-5" />
+                    </div>
+                    <h4 className="text-base font-bold text-amber-800">Mughal Mehndi &amp; Baraat Invitations</h4>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                      Create a complete digital invitation website with venue location pins, dress guides, and live countdowns.
+                    </p>
+                  </div>
+                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#7B0D1E]">
+                    Build Invitation <ArrowRight className="size-3" />
+                  </span>
+                </Link>
               </div>
-            </Link>
-          ))}
+            </div>
+          )}
+
+          {/* TAB 2: BIRTHDAY */}
+          {activeTab === 'birthday' && (
+            <div className="animate-fadeIn">
+              <div className="grid gap-8 lg:grid-cols-12 items-center">
+                <div className="lg:col-span-7 space-y-4">
+                  <div>
+                    <span className="text-xs uppercase font-extrabold tracking-wider text-indigo-600">Saalgirah Mubarak</span>
+                    <h3 className="text-xl font-bold text-foreground mt-1">Vibrant Animated Birthday Greetings</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-1.5">
+                      Send sweet, colorful birthday wishes to your friends, family, and loved ones with animated cake candles and playful sparkles. Every card includes a custom music-box birthday chime when opened!
+                    </p>
+                  </div>
+
+                  <ul className="space-y-2 text-xs sm:text-sm text-muted-foreground">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="size-4 text-indigo-600 shrink-0" />
+                      <span>Customizable Saalgirah Cards with Urdu calligraphy (سالگرہ مبارک)</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="size-4 text-indigo-600 shrink-0" />
+                      <span>Playful balloon, confetti, and sparkles float animations</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="size-4 text-indigo-600 shrink-0" />
+                      <span>Free creation and instant sharing via WhatsApp links</span>
+                    </li>
+                  </ul>
+
+                  <div className="pt-2">
+                    <Link
+                      href="/create-wish?occasion=birthday"
+                      className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7B0D1E] to-[#b81d36] px-5 text-xs sm:text-sm font-bold text-white hover:opacity-90 transition-opacity shadow-md"
+                    >
+                      Create Birthday Card <ArrowRight className="size-3.5" />
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Card Preview Column */}
+                <div className="lg:col-span-5 flex justify-center mt-6 lg:mt-0">
+                  <div className="w-full max-w-xs rotate-2 shadow-lg rounded-2xl overflow-hidden border border-indigo-50">
+                    <WishCard
+                      watermark={false}
+                      data={{
+                        occasionId: 'birthday',
+                        themeId: 'midnight-kashi',
+                        language: 'both',
+                        senderName: 'Sajid',
+                        recipientName: 'Zainab',
+                        message: 'May Allah bless you with a year of immense success and happiness!',
+                        messageUrdu: 'سالگرہ مبارک ہو! اللہ آپ کو ڈھیروں خوشیاں نصیب فرمائے۔',
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: FRIENDSHIP */}
+          {activeTab === 'friendship' && (
+            <div className="space-y-6 animate-fadeIn">
+              <div className="max-w-2xl">
+                <span className="text-xs uppercase font-extrabold tracking-wider text-rose-500">Dosti Mubarak</span>
+                <h3 className="text-xl font-bold text-foreground mt-1">Strengthen Your Bonds of Friendship</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-1.5">
+                  Show gratitude, say thank you, tell them they are missed, or celebrate Friendship Day with personalized heartwarming notes.
+                </p>
+              </div>
+
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {friendshipOccasions.map((o) => (
+                  <Link
+                    key={o.id}
+                    href={`/create-wish?occasion=${o.id}`}
+                    className="group relative overflow-hidden rounded-2xl border border-rose-100/80 bg-card p-5 hover:border-rose-300 hover:shadow-md transition-all duration-200"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex size-10 items-center justify-center rounded-xl bg-rose-50 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-colors">
+                        <JashnIcon name={o.icon} className="size-4.5" />
+                      </div>
+                      <Heart className="size-4 text-rose-200 group-hover:text-rose-400 transition-colors" />
+                    </div>
+                    <h4 className="text-base font-bold text-foreground mt-4">{o.label} Card</h4>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                      Send warm, heartfelt vibes with a clean, short shareable link instantly.
+                    </p>
+                    <div className="mt-4 flex items-center gap-1 text-xs font-bold text-rose-500 group-hover:underline">
+                      Write Note <ArrowRight className="size-3" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: FESTIVALS & MILESTONES (Religious Occasions and Achievements Separated) */}
+          {activeTab === 'festivals' && (
+            <div className="space-y-8 animate-fadeIn">
+              <div className="max-w-2xl">
+                <span className="text-xs uppercase font-extrabold tracking-wider text-amber-700">Milestones &amp; Festivals</span>
+                <h3 className="text-xl font-bold text-foreground mt-1">Celebrate Festivals &amp; Milestones</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-1.5">
+                  Congratulate achievements, promotions, graduations, or send blessings on Eid, Ramadan, and national events.
+                </p>
+              </div>
+
+              {/* Group A: Religious Occasions */}
+              <div className="space-y-3">
+                <h4 className="text-xs uppercase font-bold tracking-wider text-emerald-700 border-b border-emerald-500/10 pb-1.5 flex items-center gap-1.5">
+                  <Moon className="size-4 text-emerald-700" /> Religious Occasions (مذہبی تہوار)
+                </h4>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {religiousOccasions.map((o) => (
+                    <Link
+                      key={o.id}
+                      href={`/create-wish?occasion=${o.id}`}
+                      className="group flex items-center gap-2.5 rounded-xl border border-emerald-100 bg-card p-3 transition-all hover:border-emerald-500/40 hover:bg-emerald-500/[0.02]"
+                    >
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                        <JashnIcon name={o.icon} className="size-4" />
+                      </span>
+                      <div className="truncate">
+                        <span className="text-xs font-bold text-foreground leading-tight block group-hover:text-[#7B0D1E] truncate">
+                          {o.label}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground font-urdu block">
+                          {o.urdu}
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Group B: Milestones & Achievements */}
+              <div className="space-y-3 pt-2">
+                <h4 className="text-xs uppercase font-bold tracking-wider text-amber-700 border-b border-amber-500/10 pb-1.5 flex items-center gap-1.5">
+                  <Award className="size-4 text-amber-700" /> Achievements &amp; Life Events (کامیابی اور سنگ میل)
+                </h4>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {milestoneOccasions.map((o) => (
+                    <Link
+                      key={o.id}
+                      href={`/create-wish?occasion=${o.id}`}
+                      className="group flex items-center gap-2.5 rounded-xl border border-amber-100 bg-card p-3 transition-all hover:border-amber-500/40 hover:bg-amber-500/[0.02]"
+                    >
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-all">
+                        <JashnIcon name={o.icon} className="size-4" />
+                      </span>
+                      <div className="truncate">
+                        <span className="text-xs font-bold text-foreground leading-tight block group-hover:text-[#7B0D1E] truncate">
+                          {o.label}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground font-urdu block">
+                          {o.urdu}
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
     </section>
   )
 }
 
-// 4. Invitations Section (Emerald / Sophisticated Wedding / Events Countdowns)
+
+// ─────────────────────────────────────────────────────────────────────────
+// 2.5 INVITATIONS (RSVP Feature Block)
+// ─────────────────────────────────────────────────────────────────────────
 export function InvitationsSection() {
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -380,7 +571,7 @@ export function InvitationsSection() {
                 'Live event countdown timers',
                 'Dress code & family notes',
                 'Secure host dashboard control',
-                'Premium animates & background audio',
+                'Premium animations & background audio',
               ].map((f) => (
                 <div key={f} className="inv-feature-item flex items-center gap-2 text-xs font-semibold text-foreground">
                   <CheckCircle className="size-4 text-emerald-600 shrink-0" />
@@ -389,18 +580,18 @@ export function InvitationsSection() {
               ))}
             </div>
 
-            <div className="pt-4 flex flex-wrap gap-3">
+            <div className="pt-4 flex flex-wrap items-center gap-4">
               <Link
                 href="/create-invitation"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-700 px-6 font-bold text-white hover:bg-emerald-800 transition-colors shadow-lg shadow-emerald-700/10"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-700 px-6 font-bold text-white hover:bg-emerald-800 transition-colors shadow-lg shadow-emerald-700/10 active:scale-95 transition-transform"
               >
                 Create Event Invitation <ArrowRight className="size-4" />
               </Link>
               <Link
                 href="/dashboard"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-white px-6 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 transition-colors"
+                className="text-xs font-bold text-emerald-700 hover:underline"
               >
-                View Host Dashboard
+                View Host Dashboard →
               </Link>
             </div>
           </div>
@@ -410,235 +601,287 @@ export function InvitationsSection() {
   )
 }
 
-// 5. Celebration Events Section (Elegant Golden Vibe)
-export function CelebrationEventsSection() {
-  const celebrationOccasions = OCCASIONS.filter(
-    (o) =>
-      o.category === 'Islamic' ||
-      o.category === 'Achievements' ||
-      o.id === 'graduation' ||
-      o.id === 'new-year' ||
-      o.id === 'independence-day'
-  ).slice(0, 8)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useGSAP(() => {
-    const el = sectionRef.current
-    if (!el) return
-    gsap.fromTo(el.querySelector('.celeb-head'), { y: 35, opacity: 0 }, {
-      y: 0, opacity: 1, duration: 0.65, ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
-    })
-    gsap.fromTo(el.querySelectorAll('.celeb-item'), { y: 30, opacity: 0, scale: 0.9 }, {
-      y: 0, opacity: 1, scale: 1, duration: 0.45, stagger: 0.06, ease: 'back.out(1.4)',
-      scrollTrigger: { trigger: el, start: 'top 72%', toggleActions: 'play none none none' }
-    })
-  }, { scope: sectionRef })
-
-  return (
-    <section ref={sectionRef} className="relative overflow-hidden border-t border-amber-500/10 bg-gradient-to-br from-amber-500/5 via-card to-amber-600/5 py-20">
-      {/* Decorative stars */}
-      <div className="absolute top-10 left-1/4 size-1 bg-amber-500 rounded-full opacity-10 animate-ping" />
-      <div className="absolute bottom-16 right-1/4 size-1.5 bg-amber-400 rounded-full opacity-20 animate-pulse" />
-
-      <div className="mx-auto max-w-6xl px-4 relative z-10">
-        <div className="mx-auto mb-10 max-w-2xl text-center celeb-head">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
-            Jashn &amp; Achievements
-          </p>
-          <h2 className="mt-2 text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-            Celebrate Festivals &amp; Milestones
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-pretty leading-relaxed text-muted-foreground text-sm">
-            Congratulate career promotions, graduations, business launches, or send blessings on Eid, Ramadan, and Independence Day.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-4">
-          {celebrationOccasions.map((o) => (
-            <Link
-              key={o.id}
-              href={`/create-wish?occasion=${o.id}`}
-              className="celeb-item group flex flex-col items-center gap-3 rounded-2xl border border-amber-100 bg-card p-5 text-center transition-all hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-lg hover:shadow-amber-500/5 hover:bg-amber-500/5"
-            >
-              <span className="flex size-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 transition-all group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white">
-                <JashnIcon name={o.icon} className="size-5" />
-              </span>
-              <div>
-                <span className="text-xs font-bold text-foreground leading-tight block">
-                  {o.label}
-                </span>
-                <span className="text-[10px] text-muted-foreground mt-0.5 block">
-                  {o.category}
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <div className="mt-10 text-center">
-          <Link
-            href="/create-wish"
-            className="inline-flex items-center gap-1.5 text-sm font-bold text-amber-700 hover:underline"
-          >
-            Explore all celebration themes <ArrowRight className="size-4" />
-          </Link>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ---------------------------
-// RETAINED ORIGINAL SECTIONS: HowItWorks, SampleCards, HomeCTA
-// ---------------------------
-
-const STEPS = [
-  { icon: MousePointerClick, title: 'Pick occasion or event', desc: 'Choose from 30+ wishes or 20+ invitation types.' },
-  { icon: PenLine, title: 'Add your details', desc: 'Write a message or fill in event info — in Urdu, English or both.' },
-  { icon: Palette, title: 'Choose a theme', desc: 'Select from free and premium animated Pakistani designs.' },
-  { icon: Send, title: 'Share the link', desc: 'Send instantly on WhatsApp, Instagram or copy the link.' },
-]
-
-export function HowItWorks() {
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useGSAP(() => {
-    const el = sectionRef.current
-    if (!el) return
-    gsap.fromTo(el.querySelector('.hiw-head'), { y: 30, opacity: 0 }, {
-      y: 0, opacity: 1, duration: 0.6, ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
-    })
-    gsap.fromTo(el.querySelectorAll('.hiw-step'), { y: 40, opacity: 0 }, {
-      y: 0, opacity: 1, duration: 0.5, stagger: 0.12, ease: 'power2.out',
-      scrollTrigger: { trigger: el, start: 'top 72%', toggleActions: 'play none none none' }
-    })
-  }, { scope: sectionRef })
-
-  return (
-    <section ref={sectionRef} className="border-t border-border bg-secondary/30">
-      <div className="mx-auto max-w-6xl px-4 py-16">
-        <SectionHead kicker="How it works" title="Live in four simple steps" className="hiw-head" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((s, i) => (
-            <div key={s.title} className="hiw-step relative rounded-2xl border border-border bg-card p-6">
-              <span className="absolute right-4 top-4 text-4xl font-extrabold text-primary/10">
-                {i + 1}
-              </span>
-              <span className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                <s.icon className="size-5" />
-              </span>
-              <h3 className="mt-4 font-semibold text-foreground">{s.title}</h3>
-              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                {s.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
+// ─────────────────────────────────────────────────────────────────────────
+// 3. SAMPLE CARDS CAROUSEL (Touch-swipeable & dot navigation slider)
+// ─────────────────────────────────────────────────────────────────────────
 
 export function SampleCards() {
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const [activeCardIndex, setActiveCardIndex] = useState(0)
+
+  const cardsData = [
+    {
+      type: 'wish',
+      title: 'Eid Mubarak Card',
+      urduTitle: 'عید مبارک کارڈ',
+      description: 'Mughal Gold theme with traditional blessings',
+      watermark: true,
+      data: {
+        occasionId: 'eid-ul-fitr',
+        themeId: 'mughal-gold',
+        language: 'both',
+        senderName: 'The Ahmed Family',
+        recipientName: 'You',
+        message: 'May this blessed Eid bring joy, peace and prosperity to you and your loved ones.',
+        messageUrdu: 'اللہ یہ مبارک دن آپ کے لیے خوشیوں کا باعث بنائے۔',
+      }
+    },
+    {
+      type: 'wish',
+      title: 'Shaadi Mubarak Card',
+      urduTitle: 'شادی مبارک کارڈ',
+      description: 'Elegant Pink Zardozi design with custom script',
+      watermark: true,
+      data: {
+        occasionId: 'shaadi',
+        themeId: 'pink-zardozi',
+        language: 'both',
+        senderName: 'The Khan Family',
+        message: 'Wishing the happy couple a lifetime of love and togetherness.',
+        messageUrdu: 'اللہ جوڑے کو ہمیشہ خوش رکھے۔',
+      }
+    },
+    {
+      type: 'wish',
+      title: 'Saalgirah Mubarak Card',
+      urduTitle: 'سالگرہ مبارک کارڈ',
+      description: 'Midnight Kashi design with music-box chime',
+      watermark: true,
+      data: {
+        occasionId: 'birthday',
+        themeId: 'midnight-kashi',
+        language: 'both',
+        senderName: 'Bilal',
+        recipientName: 'Sana',
+        message: 'May Allah bless you with health and happiness always. Happy Birthday!',
+        messageUrdu: 'سالگرہ مبارک ہو! اللہ آپ کو لمبی عمر عطا فرمائے۔',
+      }
+    },
+    {
+      type: 'invitation',
+      title: 'Mehndi Invitation',
+      urduTitle: 'دعوت نامہ مہندی',
+      description: 'Emerald Classic event website invitation with RSVP',
+      watermark: true,
+      data: {
+        typeId: 'mehndi',
+        title: 'Mehndi Night',
+        hostNames: 'The Malik Family',
+        groom: 'Hamza',
+        bride: 'Ayesha',
+        date: '2026-12-20',
+        time: '7:00 PM',
+        venue: 'Royal Palm',
+        city: 'Lahore',
+        dressCode: 'Yellow & Green',
+        notes: 'Dholki and dinner to follow.',
+        themeId: 'emerald-classic',
+      }
+    }
+  ]
+
+  const handleScroll = () => {
+    if (carouselRef.current) {
+      const scrollLeft = carouselRef.current.scrollLeft
+      const itemWidth = carouselRef.current.clientWidth
+      const index = Math.round(scrollLeft / itemWidth)
+      setActiveCardIndex(index)
+    }
+  }
+
+  const navigateToCard = (idx: number) => {
+    if (carouselRef.current) {
+      const itemWidth = carouselRef.current.clientWidth
+      carouselRef.current.scrollTo({ left: idx * itemWidth, behavior: 'smooth' })
+      setActiveCardIndex(idx)
+    }
+  }
+
   return (
-    <section className="border-t border-border bg-secondary/10">
-      <div className="mx-auto max-w-6xl px-4 py-16">
+    <section className="border-t border-[#7B0D1E]/10 bg-[#FAF6F0]/60 py-16 relative">
+      <div className="mx-auto max-w-4xl px-4">
         <SectionHead
-          kicker="Sample designs"
-          title="Animated, bilingual, unmistakably desi"
-          desc="Deep jewel tones, Mughal arches, mehndi borders, shimmering calligraphy and floating petals."
+          kicker="Zebaish"
+          title="Consolidated Design Showcase"
+          desc="Swipe to view live animated greetings and RSVP event invitations. Deep jewel tones, shimmering calligraphy, and floating petals."
         />
-        <div className="grid gap-6 md:grid-cols-3">
-          <WishCard
-            watermark
-            data={{
-              occasionId: 'shaadi',
-              themeId: 'pink-zardozi',
-              language: 'both',
-              senderName: 'The Khan Family',
-              message: 'Wishing the happy couple a lifetime of love and togetherness.',
-              messageUrdu: 'اللہ جوڑے کو ہمیشہ خوش رکھے۔',
-            }}
-          />
-          <InvitationCard
-            watermark
-            showCountdown={false}
-            data={{
-              typeId: 'mehndi',
-              title: 'Mehndi Night',
-              hostNames: 'The Malik Family',
-              groom: 'Hamza',
-              bride: 'Ayesha',
-              date: '2026-12-20',
-              time: '7:00 PM',
-              venue: 'Royal Palm',
-              city: 'Lahore',
-              dressCode: 'Yellow & Green',
-              notes: 'Dholki and dinner to follow.',
-              themeId: 'emerald-classic',
-            }}
-          />
-          <WishCard
-            watermark
-            data={{
-              occasionId: 'birthday',
-              themeId: 'midnight-kashi',
-              language: 'both',
-              senderName: 'Bilal',
-              recipientName: 'Sana',
-              message: 'May Allah bless you with health and happiness always. Happy Birthday!',
-              messageUrdu: 'سالگرہ مبارک ہو! اللہ آپ کو لمبی عمر عطا فرمائے۔',
-            }}
-          />
+
+        {/* Carousel Showcase */}
+        <div className="relative mt-8 max-w-md mx-auto">
+          {/* Navigation Arrows */}
+          <button
+            onClick={() => navigateToCard(Math.max(0, activeCardIndex - 1))}
+            className="absolute left-[-20px] sm:left-[-50px] top-1/2 -translate-y-1/2 z-10 flex size-10 items-center justify-center rounded-full border border-[#7B0D1E]/20 bg-card text-[#7B0D1E] shadow-md hover:bg-[#7B0D1E] hover:text-white transition-all disabled:opacity-30 disabled:pointer-events-none"
+            disabled={activeCardIndex === 0}
+            aria-label="Previous card"
+          >
+            <ChevronLeft className="size-5" />
+          </button>
+          
+          <button
+            onClick={() => navigateToCard(Math.min(cardsData.length - 1, activeCardIndex + 1))}
+            className="absolute right-[-20px] sm:right-[-50px] top-1/2 -translate-y-1/2 z-10 flex size-10 items-center justify-center rounded-full border border-[#7B0D1E]/20 bg-card text-[#7B0D1E] shadow-md hover:bg-[#7B0D1E] hover:text-white transition-all disabled:opacity-30 disabled:pointer-events-none"
+            disabled={activeCardIndex === cardsData.length - 1}
+            aria-label="Next card"
+          >
+            <ChevronRight className="size-5" />
+          </button>
+
+          {/* Cards slider */}
+          <div
+            ref={carouselRef}
+            onScroll={handleScroll}
+            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 scroll-smooth"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {cardsData.map((card, idx) => (
+              <div key={idx} className="w-full shrink-0 snap-center pb-4 flex flex-col items-center">
+                {/* Details above card */}
+                <div className="text-center mb-4">
+                  <h3 className="text-lg font-bold text-foreground flex items-center gap-1.5 justify-center">
+                    <span>{card.title}</span>
+                    <span className="font-urdu text-sm text-[#7B0D1E] font-medium">({card.urduTitle})</span>
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">{card.description}</p>
+                </div>
+
+                {/* Card renderer */}
+                <div className="w-[320px] shadow-2xl rounded-3xl overflow-hidden border border-[#7B0D1E]/15 bg-card hover:scale-[1.01] transition-transform duration-300">
+                  {card.type === 'wish' ? (
+                    <WishCard watermark={card.watermark} data={card.data as any} />
+                  ) : (
+                    <InvitationCard watermark={card.watermark} showCountdown={true} data={card.data as any} />
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Carousel dots indicators */}
+          <div className="flex justify-center gap-2 mt-6">
+            {cardsData.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => navigateToCard(idx)}
+                className={cn(
+                  "size-2.5 rounded-full transition-all",
+                  activeCardIndex === idx
+                    ? "bg-[#7B0D1E] w-6"
+                    : "bg-[#7B0D1E]/20 hover:bg-[#7B0D1E]/40"
+                )}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
   )
 }
 
+// ─────────────────────────────────────────────────────────────────────────
+// 4. CTA SECTION (Only 2 main button CTA pairings on page, Hero & bottom)
+// ─────────────────────────────────────────────────────────────────────────
 export function HomeCTA() {
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
     const el = sectionRef.current
     if (!el) return
-    gsap.fromTo(el.querySelectorAll('.cta-item'), { y: 30, opacity: 0 }, {
-      y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 82%', toggleActions: 'play none none none' }
-    })
-    gsap.fromTo(el.querySelectorAll('.cta-btn'), { scale: 0.88, opacity: 0 }, {
-      scale: 1, opacity: 1, duration: 0.45, stagger: 0.1, ease: 'back.out(1.5)',
-      scrollTrigger: { trigger: el, start: 'top 78%', toggleActions: 'play none none none' }
+    gsap.fromTo(el.querySelectorAll('.cta-item'), { y: 25, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
     })
   }, { scope: sectionRef })
 
   return (
-    <section ref={sectionRef} className="border-t border-border">
-      <div className="mx-auto max-w-4xl px-4 py-20 text-center">
-        <h2 className="cta-item text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+    <section ref={sectionRef} className="border-t border-[#7B0D1E]/20 bg-gradient-to-br from-[#7B0D1E] to-[#4A0510] text-[#FAF6F0] py-20 relative overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(#FAF6F0_1.5px,transparent_1.5px)] [background-size:16px_16px] pointer-events-none" />
+      
+      <div className="mx-auto max-w-4xl px-4 py-8 text-center relative z-10 space-y-6">
+        <span className="cta-item inline-block font-urdu text-2xl text-amber-400 font-medium">
+          ہر خوشی کے لیے ایک خوبصورت پیغام
+        </span>
+        <h2 className="cta-item text-balance text-3xl font-extrabold tracking-tight sm:text-4xl text-white">
           Ready to spread some joy?
         </h2>
-        <p className="cta-item mx-auto mt-3 max-w-md text-pretty text-muted-foreground">
-          Create your first animated wish or invitation for free. No sign-up
-          needed to start.
+        <p className="cta-item mx-auto mt-2 max-w-md text-pretty text-amber-100/80 text-sm sm:text-base leading-relaxed">
+          Create your first animated wish card or full event invitation for free. No credit card or pre-signup required.
         </p>
-        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        
+        {/* Main CTA pair (Instance 2 of 2) */}
+        <div className="cta-item mt-8 flex flex-col justify-center gap-3 sm:flex-row max-w-xs sm:max-w-none mx-auto">
           <Link
             href="/create-wish"
-            className="cta-btn inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-7 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-amber-500 px-8 text-sm font-bold text-[#4A0510] hover:bg-amber-400 active:scale-95 transition-all shadow-lg shadow-amber-500/25"
           >
             Send a Wish <ArrowRight className="size-4" />
           </Link>
           <Link
             href="/create-invitation"
-            className="cta-btn inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-secondary px-7 font-semibold text-secondary-foreground transition-colors hover:bg-secondary/70"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-8 text-sm font-bold text-white hover:bg-white/20 active:scale-95 transition-all"
           >
             Create Invitation
           </Link>
         </div>
       </div>
     </section>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// 5. STICKY MOBILE FLOATING CTA BUTTON
+// ─────────────────────────────────────────────────────────────────────────
+export function FloatingCTA() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <div className="fixed bottom-6 right-6 z-50 md:hidden flex flex-col items-end gap-3">
+      {/* Floating Options Menu */}
+      {isOpen && (
+        <div className="flex flex-col gap-2.5 items-end mb-1 animate-slideUp">
+          <Link
+            href="/create-wish"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-2 bg-[#7B0D1E] text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-xl border border-white/10 active:scale-95 transition-transform"
+          >
+            <Sparkles className="size-3.5" />
+            <span>Send a Wish / کارڈ بھیجیں</span>
+          </Link>
+          <Link
+            href="/create-invitation"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-2 bg-emerald-700 text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-xl border border-white/10 active:scale-95 transition-transform"
+          >
+            <Mail className="size-3.5" />
+            <span>Create Invitation / دعوت نامہ</span>
+          </Link>
+        </div>
+      )}
+
+      {/* Main Floating Trigger Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          "flex h-12 items-center justify-center gap-2 rounded-full px-6 font-bold text-sm text-white shadow-2xl transition-all active:scale-95 border border-white/15",
+          isOpen 
+            ? "bg-zinc-800 ring-4 ring-zinc-800/20" 
+            : "bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 ring-4 ring-[#7B0D1E]/20 shadow-amber-500/10"
+        )}
+        aria-label="Create card menu"
+      >
+        {isOpen ? (
+          <>
+            <X className="size-4 shrink-0" />
+            <span>Close</span>
+          </>
+        ) : (
+          <>
+            <Plus className="size-4 shrink-0" />
+            <span>Create Card / کارڈ بنائیں</span>
+          </>
+        )}
+      </button>
+    </div>
   )
 }
