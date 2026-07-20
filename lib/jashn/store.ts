@@ -2,7 +2,7 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Invitation, JashnUser, Plan, Wish } from './types'
+import type { Invitation, JashnUser, Plan, Wish, RsvpGuest } from './types'
 import { db, auth, isFirebaseConfigured } from '../firebase'
 import {
   createUserWithEmailAndPassword,
@@ -12,6 +12,7 @@ import {
   signOut as firebaseSignOut,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
 } from 'firebase/auth'
 import {
   doc,
@@ -79,6 +80,12 @@ interface JashnState {
   updateInvitation: (slug: string, data: Partial<Invitation>) => Promise<void>
   showToast: (message: string, type?: 'success' | 'info' | 'error') => void
   hideToast: () => void
+  rsvps: RsvpGuest[]
+  adminUpdateUserPlan: (uid: string, plan: Plan, durationDays?: number) => Promise<void>
+  addRsvp: (guestData: Omit<RsvpGuest, 'id' | 'createdAt'>) => Promise<void>
+  getInvitationRsvps: (invitationSlug: string) => RsvpGuest[]
+  downloadAllGuestsCsv: (invitationSlug?: string) => void
+  isUserPlanActive: (user?: JashnUser | null) => boolean
 }
 
 export const useJashn = create<JashnState>()(
@@ -173,44 +180,73 @@ export const useJashn = create<JashnState>()(
         try {
           const provider = new GoogleAuthProvider()
           provider.setCustomParameters({ prompt: 'select_account' })
-          const result = await signInWithPopup(auth, provider)
-          const firebaseUser = result.user
 
-          let userData: JashnUser | null = null
-          if (db) {
-            try {
-              const userRef = doc(db, 'users', firebaseUser.uid)
-              const userSnap = await getDoc(userRef)
-              if (userSnap.exists()) {
-                userData = userSnap.data() as JashnUser
-              } else {
-                userData = {
-                  uid: firebaseUser.uid,
-                  name: firebaseUser.displayName || 'Jashn User',
-                  email: firebaseUser.email || '',
-                  plan: 'free',
-                  createdAt: Date.now(),
+          const isMobile = typeof window !== 'undefined' && (
+            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+            window.innerWidth < 768
+          )
+
+          if (isMobile) {
+            await signInWithRedirect(auth, provider)
+            return true
+          }
+
+          let firebaseUser: any = null
+          try {
+            const result = await signInWithPopup(auth, provider)
+            firebaseUser = result.user
+          } catch (popupErr: any) {
+            if (
+              popupErr?.code === 'auth/popup-blocked' ||
+              popupErr?.code === 'auth/popup-closed-by-user' ||
+              popupErr?.code === 'auth/cancelled-popup-request' ||
+              isMobile
+            ) {
+              await signInWithRedirect(auth, provider)
+              return true
+            }
+            throw popupErr
+          }
+
+          if (firebaseUser) {
+            let userData: JashnUser | null = null
+            if (db) {
+              try {
+                const userRef = doc(db, 'users', firebaseUser.uid)
+                const userSnap = await getDoc(userRef)
+                if (userSnap.exists()) {
+                  userData = userSnap.data() as JashnUser
+                } else {
+                  userData = {
+                    uid: firebaseUser.uid,
+                    name: firebaseUser.displayName || 'Cardzy User',
+                    email: firebaseUser.email || '',
+                    plan: 'free',
+                    createdAt: Date.now(),
+                  }
+                  await setDoc(userRef, userData)
                 }
-                await setDoc(userRef, userData)
+              } catch (e) {
+                console.error('Failed to sync Google user to Firestore:', e)
               }
-            } catch (e) {
-              console.error('Failed to sync Google user to Firestore:', e)
             }
+
+            if (!userData) {
+              userData = {
+                uid: firebaseUser.uid,
+                name: firebaseUser.displayName || 'Cardzy User',
+                email: firebaseUser.email || '',
+                plan: 'free',
+                createdAt: Date.now(),
+              }
+            }
+
+            set({ user: userData })
+            await get().fetchUserCards()
+            return true
           }
 
-          if (!userData) {
-            userData = {
-              uid: firebaseUser.uid,
-              name: firebaseUser.displayName || 'Jashn User',
-              email: firebaseUser.email || '',
-              plan: 'free',
-              createdAt: Date.now(),
-            }
-          }
-
-          set({ user: userData })
-          await get().fetchUserCards()
-          return true
+          return false
         } catch (error: any) {
           if (
             error?.code === 'auth/popup-closed-by-user' ||
@@ -493,7 +529,7 @@ export const useJashn = create<JashnState>()(
         }
       },
 
-      deleteInvitation: (slug) => {
+      deleteInvitation: (slug: string) => {
         set((s) => ({
           invitations: s.invitations.filter((i) => i.slug !== slug),
         }))
@@ -505,7 +541,7 @@ export const useJashn = create<JashnState>()(
         }
       },
 
-      updateWish: async (slug, data) => {
+      updateWish: async (slug: string, data: Partial<Wish>) => {
         set((s) => ({
           wishes: s.wishes.map((w) => (w.slug === slug ? { ...w, ...data } : w)),
         }))
@@ -519,7 +555,7 @@ export const useJashn = create<JashnState>()(
         }
       },
 
-      updateInvitation: async (slug, data) => {
+      updateInvitation: async (slug: string, data: Partial<Invitation>) => {
         set((s) => ({
           invitations: s.invitations.map((i) => (i.slug === slug ? { ...i, ...data } : i)),
         }))
@@ -531,6 +567,100 @@ export const useJashn = create<JashnState>()(
             console.error('Failed to update invitation in Firestore:', err)
           }
         }
+      },
+
+      rsvps: [],
+
+      isUserPlanActive: (userToTest) => {
+        const u = userToTest || get().user
+        if (!u) return false
+        if (u.plan === 'free') return true
+        if (!u.planExpiresAt) return true // no expiry limit set
+        return Date.now() < u.planExpiresAt
+      },
+
+      adminUpdateUserPlan: async (uidToUpdate, newPlan, durationDays = 30) => {
+        const now = Date.now()
+        const planActivatedAt = now
+        // if free, no expiry limit; if pro/business set expiry date
+        const planExpiresAt = newPlan === 'free' ? undefined : now + (durationDays * 24 * 60 * 60 * 1000)
+
+        set((s) => {
+          const updatedRegistered = s.registeredUsers.map((u) => {
+            if (u.uid === uidToUpdate) {
+              return { ...u, plan: newPlan, planActivatedAt, planExpiresAt }
+            }
+            return u
+          })
+          const isCurrent = s.user?.uid === uidToUpdate
+          const updatedUser = isCurrent
+            ? { ...s.user!, plan: newPlan, planActivatedAt, planExpiresAt }
+            : s.user
+          return { registeredUsers: updatedRegistered, user: updatedUser }
+        })
+
+        if (isFirebaseConfigured && db) {
+          try {
+            await setDoc(
+              doc(db, 'users', uidToUpdate),
+              { plan: newPlan, planActivatedAt, planExpiresAt: planExpiresAt || null },
+              { merge: true }
+            )
+          } catch (e) {
+            console.error('Failed to update user plan in Firestore:', e)
+          }
+        }
+      },
+
+      addRsvp: async (guestData) => {
+        const newRsvp: RsvpGuest = {
+          ...guestData,
+          id: uid(),
+          createdAt: Date.now(),
+        }
+        set((s) => ({ rsvps: [newRsvp, ...(s.rsvps || [])] }))
+        get().incrementRsvp(guestData.invitationSlug)
+
+        if (isFirebaseConfigured && db) {
+          try {
+            await setDoc(doc(db, 'rsvps', newRsvp.id), newRsvp)
+          } catch (err) {
+            console.error('Failed to save RSVP to Firestore:', err)
+          }
+        }
+      },
+
+      getInvitationRsvps: (invitationSlug) => {
+        return (get().rsvps || []).filter((r) => r.invitationSlug === invitationSlug)
+      },
+
+      downloadAllGuestsCsv: (invitationSlug) => {
+        const state = get()
+        let filteredRsvps = state.rsvps || []
+        if (invitationSlug) {
+          filteredRsvps = filteredRsvps.filter((r) => r.invitationSlug === invitationSlug)
+        }
+
+        const headers = ['Invitation Slug', 'Guest Name', 'Phone Number', 'Attending', 'Guest Count', 'Special Note', 'Date Submitted']
+        const rows = filteredRsvps.map((r) => [
+          `"${r.invitationSlug || ''}"`,
+          `"${(r.guestName || '').replace(/"/g, '""')}"`,
+          `"${(r.phone || '').replace(/"/g, '""')}"`,
+          `"${r.attending || 'yes'}"`,
+          r.guestCount || 1,
+          `"${(r.note || '').replace(/"/g, '""')}"`,
+          `"${new Date(r.createdAt || Date.now()).toLocaleString()}"`,
+        ])
+
+        const csvString = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n')
+        const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.setAttribute('href', url)
+        link.setAttribute('download', `guests_rsvp_export_${invitationSlug || 'all'}_${Date.now()}.csv`)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
       },
     }),
     { name: 'jashn-store' },

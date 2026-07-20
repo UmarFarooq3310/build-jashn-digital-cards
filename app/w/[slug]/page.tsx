@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, use, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { Sparkles, Eye, Loader2, HeartHandshake, Edit3, Trash2, Volume2, VolumeX } from 'lucide-react'
+import { Sparkles, Eye, Loader2, HeartHandshake, Edit3, Trash2 } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -12,8 +12,8 @@ import { ThreeDCardWrapper } from '@/components/jashn/three-d-card-wrapper'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { ShareBar } from '@/components/jashn/share-bar'
 import { useJashn } from '@/lib/jashn/store'
+import { useLang } from '@/lib/lang/context'
 import { getOccasion } from '@/lib/jashn/occasions'
-import { useCardSound } from '@/lib/jashn/useCardSound'
 import { decodeShortWish, encodeShortWish } from '@/lib/jashn/codec'
 import type { Wish } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
@@ -21,6 +21,7 @@ import { db, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc, onSnapshot } from 'firebase/firestore'
 
 function WishPublicContent({ slug }: { slug: string }) {
+  const { lang, t } = useLang()
   const searchParams = useSearchParams()
   const router = useRouter()
   const { user, wishes, incrementWishView, deleteWish, showToast } = useJashn()
@@ -32,18 +33,7 @@ function WishPublicContent({ slug }: { slug: string }) {
   const [rainActive, setRainActive] = useState(false)
   const viewIncrementedRef = useRef<string | null>(null)
 
-  // Resolve occasion early so we can pass soundCategory to the hook.
-  // The hook is always called (Rules of Hooks), but only acts when card loads.
-  const occasionForSound = activeWish ? (wishes.find(w => w.slug === slug) ?? activeWish) : null
-  const soundCategory = occasionForSound
-    ? (() => {
-        const occ = getOccasion(occasionForSound.occasionId)
-        return occ?.soundCategory ?? 'default'
-      })()
-    : 'default'
 
-  const { isMuted, toggleMuted, autoplayBlocked, playCategorySound, handleUserInteraction, hasSound } =
-    useCardSound(soundCategory as 'dholki' | 'islamic' | 'festive' | 'somber' | 'default')
 
   const isCreator = (() => {
     const card = wishes.find((w) => w.slug === slug)
@@ -135,11 +125,10 @@ function WishPublicContent({ slug }: { slug: string }) {
           creatorId: 'demo',
           occasionId: 'birthday',
           message: 'Wishing you a day filled with joy, laughter, and immense blessings!',
-          messageUrdu: 'آپ کو سالگرہ کی بہت بہت مبارک باد!',
-          language: 'both',
+          language: 'en',
           themeId: 'mehndi-red',
           borderId: 'mehndi',
-          senderName: 'Jashn Team',
+          senderName: 'Cardzy Team',
           recipientName: 'Friend',
           viewCount: 12,
           createdAt: Date.now(),
@@ -176,8 +165,8 @@ function WishPublicContent({ slug }: { slug: string }) {
   if (!activeWish) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center p-6 text-center py-20">
-        <h1 className="text-3xl font-bold text-primary">Wish Card Not Found</h1>
-        <p className="mt-2 text-muted-foreground">This wish link may have expired or is invalid.</p>
+        <h1 className="text-3xl font-bold text-primary">{t('wishNotFoundTitle')}</h1>
+        <p className="mt-2 text-muted-foreground">{t('wishNotFoundDesc')}</p>
         <Link href="/create-wish" className="mt-6 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground shadow-lg hover:bg-primary/90">
           Create Your Own Wish Card
         </Link>
@@ -189,11 +178,11 @@ function WishPublicContent({ slug }: { slug: string }) {
   const isIslamic = occasion?.category === 'Islamic'
   const isSensitive = activeWish.occasionId === 'condolence'
 
-  const waMsg = `${activeWish.senderName} sent you a ${occasion?.label ?? 'Special'} Wish Card on Jashn!`
+  const waMsg = `${activeWish.senderName} sent you a 0`
   const cleanUrl = `/w/${activeWish.slug}`
 
   return (
-    <div className="mx-auto max-w-2xl px-4 text-center">
+    <div className="mx-auto max-w-2xl md:max-w-4xl px-4 text-center">
       {/* Celebration Effects Rain */}
       {!isSensitive && <ConfettiRain active={rainActive} />}
 
@@ -204,7 +193,7 @@ function WishPublicContent({ slug }: { slug: string }) {
             <p className="text-sm font-bold text-primary flex items-center gap-1.5">
               <Sparkles className="size-4 text-primary animate-pulse" /> You Created This Card!
             </p>
-            <p className="text-xs text-muted-foreground">You can make changes or delete this wish card at any time.</p>
+            <p className="text-xs text-muted-foreground">{t('wishOwnerControlDesc')}</p>
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
             <Button
@@ -242,7 +231,7 @@ function WishPublicContent({ slug }: { slug: string }) {
           ) : (
             <Sparkles className="size-3.5" />
           )}
-          {isSensitive ? 'Condolence Message' : 'Special Animated Card'}
+          {isSensitive ? t('forwardMessage') : t('specialAnimatedCard')}
         </span>
         <span className="flex items-center gap-1 text-xs text-muted-foreground">
           <Eye className="size-3.5" /> {activeWish.viewCount ?? 1} views
@@ -255,16 +244,13 @@ function WishPublicContent({ slug }: { slug: string }) {
       <div className="my-6 py-4 flex justify-center">
         <ThreeDCardWrapper
           recipientName={activeWish.recipientName}
-          eventTitle={occasion?.label ?? 'Mubarak ho'}
+          eventTitle={lang === 'ur' ? (occasion?.urdu || occasion?.label || 'مبارک ہو') : (t(`occ_${occasion?.id?.replace(/-/g, '_')}`) || occasion?.label || 'Greetings')}
           occasionIdOrCategory={activeWish.occasionId}
           isIslamic={isIslamic}
           isSensitive={isSensitive}
           onOpened={() => {
             if (!isSensitive) {
               setRainActive(true)
-              // Play category sound as soon as recipient opens the card.
-              // playCategorySound handles autoplay-blocked gracefully.
-              playCategorySound()
             }
           }}
         >
@@ -278,7 +264,7 @@ function WishPublicContent({ slug }: { slug: string }) {
         isSensitive ? "border-zinc-800 bg-zinc-950" : "border-border"
       )}>
         <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          {isSensitive ? 'Forward Message' : 'Share this Card'}
+          {isSensitive ? t('forwardMessage') : t('shareThisCard')}
         </h3>
         <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`jashn-wish-${activeWish.slug}`} />
       </div>
@@ -293,23 +279,25 @@ function WishPublicContent({ slug }: { slug: string }) {
       )}>
         {isSensitive ? (
           <>
-            <p className="text-sm font-medium text-zinc-300">Jashn — share digital condolence letters respectfully.</p>
+            <p className="text-sm font-medium text-zinc-300">Cardzy — share digital condolence letters respectfully.</p>
             <Link
               href="/create-wish"
               className="mt-4 inline-flex items-center gap-2 rounded-xl bg-zinc-700 px-6 py-2.5 text-sm font-bold text-zinc-100 border border-zinc-600 hover:bg-zinc-600 transition-colors"
             >
-              Create Condolence Note
+              Create Free Animated Card
             </Link>
           </>
         ) : (
           <>
-            <p className="font-urdu text-xl mb-1 text-foreground">آپ بھی بنائیں اپنا ڈیجیٹل کارڈ بالکل مفت</p>
-            <p className="text-sm font-medium text-muted-foreground mt-1">Inspired by this wish? Send one to your friends & family!</p>
+            <p className={lang === 'ur' ? "font-urdu text-xl mb-1 text-foreground" : "text-base font-bold mb-1 text-foreground"}>
+              {t('createDigitalCardCTA')}
+            </p>
+            <p className="text-sm font-medium text-muted-foreground mt-1">{t('inspiredByWish')}</p>
             <Link
               href="/create-wish"
               className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"
             >
-              Create Free Animated Card <Sparkles className="size-4" />
+              {t('sendWish')} <Sparkles className="size-4" />
             </Link>
           </>
         )}

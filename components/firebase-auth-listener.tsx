@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged, getRedirectResult } from 'firebase/auth'
 import { auth, db } from '@/lib/firebase'
 import { useJashn } from '@/lib/jashn/store'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
@@ -31,7 +31,7 @@ async function syncFirestoreUser(firebaseUser: {
       } else {
         userData = {
           uid: firebaseUser.uid,
-          name: firebaseUser.displayName || firebaseUser.phoneNumber || 'Jashn User',
+          name: firebaseUser.displayName || firebaseUser.phoneNumber || 'Cardzy User',
           email: firebaseUser.email || '',
           phone: firebaseUser.phoneNumber || '',
           plan: 'free',
@@ -47,7 +47,7 @@ async function syncFirestoreUser(firebaseUser: {
   if (!userData) {
     userData = {
       uid: firebaseUser.uid,
-      name: firebaseUser.displayName || firebaseUser.phoneNumber || 'Jashn User',
+      name: firebaseUser.displayName || firebaseUser.phoneNumber || 'Cardzy User',
       email: firebaseUser.email || '',
       phone: firebaseUser.phoneNumber || '',
       plan: 'free',
@@ -63,6 +63,18 @@ export function FirebaseAuthListener() {
 
   useEffect(() => {
     if (!auth) return
+
+    // Handle Google Auth redirect result on Mobile / Android
+    getRedirectResult(auth).then(async (result) => {
+      if (result?.user) {
+        const userData = await syncFirestoreUser(result.user)
+        setAuthCookie(true)
+        useJashn.setState({ user: userData, isAuthLoading: false })
+        useJashn.getState().fetchUserCards()
+      }
+    }).catch((err) => {
+      console.error('Redirect auth result error:', err)
+    })
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {

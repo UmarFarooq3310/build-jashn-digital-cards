@@ -1,4 +1,4 @@
-export type Language = 'ur' | 'en' | 'both'
+export type Language = 'en' | 'es' | 'fr' | 'ar' | 'hi' | 'zh' | 'pt' | 'ru' | 'de' | 'ja' | 'ko' | 'it' | 'tr' | 'id' | 'ur' | 'bn' | 'vi' | 'sw'
 
 export interface Occasion {
   id: string
@@ -7,8 +7,8 @@ export interface Occasion {
   /** Transliterated / Urdu greeting shown on the card e.g. "Eid Mubarak" */
   tagline: string
   /** Urdu script greeting */
-  urdu: string
-  category: 'Personal' | 'Islamic' | 'Achievements' | 'National' | 'Family'
+  urdu?: string
+  category: 'Personal' | 'Islamic' | 'Achievements' | 'National' | 'Family' | 'Universal'
   /** lucide icon name (kebab not needed — we map PascalCase) */
   icon: string
   /** portrait background image path (e.g. '/occasions/birthday.jpg') */
@@ -26,7 +26,7 @@ export interface Occasion {
 export interface InvitationType {
   id: string
   label: string
-  urdu: string
+  urdu?: string
   category: 'Wedding' | 'Religious' | 'Social' | 'Professional'
   icon: string
   /** does this event have a bride/groom pair */
@@ -58,6 +58,22 @@ export interface CardTheme {
 export interface MessageTemplate {
   en: string
   ur: string
+  es?: string
+  fr?: string
+  ar?: string
+  hi?: string
+  zh?: string
+  pt?: string
+  ru?: string
+  de?: string
+  ja?: string
+  ko?: string
+  it?: string
+  tr?: string
+  id?: string
+  bn?: string
+  vi?: string
+  sw?: string
 }
 
 export type Plan = 'free' | 'pro' | 'business'
@@ -69,6 +85,19 @@ export interface JashnUser {
   phone?: string
   password?: string
   plan: Plan
+  planActivatedAt?: number
+  planExpiresAt?: number
+  createdAt: number
+}
+
+export interface RsvpGuest {
+  id: string
+  invitationSlug: string
+  guestName: string
+  phone?: string
+  attending: 'yes' | 'no' | 'maybe'
+  guestCount: number
+  note?: string
   createdAt: number
 }
 
@@ -78,7 +107,6 @@ export interface Wish {
   creatorId: string
   occasionId: string
   message: string
-  messageUrdu: string
   language: Language
   themeId: string
   borderId?: string

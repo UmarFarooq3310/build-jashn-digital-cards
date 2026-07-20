@@ -2,6 +2,8 @@
 
 import { forwardRef, useRef } from 'react'
 import { CalendarDays, Clock, MapPin, Shirt, Star } from 'lucide-react'
+import { useLang } from '@/lib/lang/context'
+import { cn } from '@/lib/utils'
 import { JashnIcon } from '@/lib/jashn/icon'
 import { getInvitationType } from '@/lib/jashn/invitations'
 import { getTheme, getCategoryPatternClass, isLightVariant } from '@/lib/jashn/themes'
@@ -30,23 +32,33 @@ export interface InvitationCardData {
   borderId?: string
 }
 
-function formatDate(date: string) {
+const LOCALE_MAP: Record<string, string> = {
+  ur: 'ur-PK', es: 'es-ES', fr: 'fr-FR', ar: 'ar-SA', hi: 'hi-IN', zh: 'zh-CN',
+  pt: 'pt-BR', ru: 'ru-RU', de: 'de-DE', ja: 'ja-JP', ko: 'ko-KR', it: 'it-IT',
+  tr: 'tr-TR', id: 'id-ID', bn: 'bn-BD', vi: 'vi-VN', sw: 'sw-KE', en: 'en-US'
+}
+
+function formatDate(date: string, lang: string = 'en') {
   if (!date) return ''
   const d = new Date(`${date}T00:00`)
   if (Number.isNaN(d.getTime())) return date
-  return d.toLocaleDateString('en-GB', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+  const loc = LOCALE_MAP[lang] || 'en-US'
+  return d.toLocaleDateString(loc, {
+    weekday: 'short', day: 'numeric', month: 'short', year: 'numeric',
   })
 }
 
-function formatTime12h(timeStr: string) {
+function formatTime12h(timeStr: string, lang: string = 'en') {
   if (!timeStr) return ''
   const match = timeStr.match(/^(\d{2}):(\d{2})$/)
   if (!match) return timeStr
   let hours = parseInt(match[1], 10)
   const minutes = match[2]
-  const ampm = hours >= 12 ? 'PM' : 'AM'
+  const isPm = hours >= 12
   hours = hours % 12 || 12
+  const ampm = isPm
+    ? (lang === 'ur' ? 'شام/رات' : 'PM')
+    : (lang === 'ur' ? 'صبح/دوپہر' : 'AM')
   return `${hours}:${minutes} ${ampm}`
 }
 
@@ -251,15 +263,15 @@ function CardAnimLayers({ typeId }: { typeId: string }) {
 function DetailPill({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
   return (
     <div
-      className="flex items-center gap-2.5 rounded-full px-4 py-2 text-sm w-full justify-center"
+      className="flex items-center gap-2.5 sm:gap-3 rounded-2xl md:rounded-3xl px-3.5 py-2.5 sm:px-5 sm:py-3 md:px-6 md:py-3.5 text-xs sm:text-sm md:text-base font-semibold w-full justify-center transition-all shadow-sm h-full backdrop-blur-md"
       style={{
-        background: 'color-mix(in oklab, var(--c-accent) 10%, transparent)',
-        border: '1px solid color-mix(in oklab, var(--c-accent) 20%, transparent)',
+        background: 'color-mix(in oklab, var(--c-accent) 12%, transparent)',
+        border: '1px solid color-mix(in oklab, var(--c-accent) 25%, transparent)',
         color: 'var(--c-ink)',
       }}
     >
       <span style={{ color: 'var(--c-accent)', flexShrink: 0 }}>{icon}</span>
-      <span className="leading-snug">{children}</span>
+      <span className="leading-snug text-center break-words">{children}</span>
     </div>
   )
 }
@@ -282,20 +294,11 @@ function OrnamentDivider() {
 
 /** Top ornament crown / star cluster */
 function TopOrnament({ hasCouple }: { hasCouple: boolean }) {
-  if (hasCouple) {
-    return (
-      <div className="flex items-center justify-center gap-1 mb-1 ic-stagger" aria-hidden="true">
-        <Star className="size-2.5 fill-current opacity-60" style={{ color: 'var(--c-accent)' }} />
-        <Star className="size-3.5 fill-current opacity-85" style={{ color: 'var(--c-accent)' }} />
-        <Star className="size-2.5 fill-current opacity-60" style={{ color: 'var(--c-accent)' }} />
-      </div>
-    )
-  }
   return (
-    <div className="flex items-center justify-center gap-1 mb-1 ic-stagger" aria-hidden="true">
-      <div className="h-px w-8" style={{ background: 'var(--c-accent)', opacity: 0.5 }} />
-      <Star className="size-3 fill-current opacity-75" style={{ color: 'var(--c-accent)' }} />
-      <div className="h-px w-8" style={{ background: 'var(--c-accent)', opacity: 0.5 }} />
+    <div className="flex items-center justify-center gap-1.5 mb-1 ic-stagger" aria-hidden="true">
+      <Star className="size-2.5 fill-current opacity-60" style={{ color: 'var(--c-accent)' }} />
+      <Star className="size-3.5 fill-current opacity-85" style={{ color: 'var(--c-accent)' }} />
+      <Star className="size-2.5 fill-current opacity-60" style={{ color: 'var(--c-accent)' }} />
     </div>
   )
 }
@@ -306,6 +309,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
   showCountdown?: boolean
   className?: string
 }>(function InvitationCard({ data, watermark = true, showCountdown = true, className }, ref) {
+  const { lang, t } = useLang()
   const type = getInvitationType(data.typeId)
   const theme = getTheme(data.themeId)
   const typeTheme = getInvitationTypeTheme(data.typeId)
@@ -490,13 +494,11 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
       <div
         ref={ref}
-        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} ${typeTheme?.typeClass ?? ''} mx-auto w-full max-w-sm rounded-3xl shadow-2xl ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
+        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} ${typeTheme?.typeClass ?? ''} mx-auto w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl rounded-3xl shadow-xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
         style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
       >
-        {/* Decor layer */}
-        <div className="inv-parallax-far">
-          <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId} typeDecor={typeTheme?.decor} decorations={type?.decorations} />
-        </div>
+        {/* Decor layer (anchored to card frame) */}
+        <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId} typeDecor={typeTheme?.decor} decorations={type?.decorations} />
 
         {/* Background pattern layer */}
         {patternClass && (
@@ -518,41 +520,41 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
         <CardAnimLayers typeId={data.typeId} />
 
         {/* ── Card body ──────────────────────────────────────────────── */}
-        <div className="relative z-10 flex flex-col items-center px-6 pt-8 pb-6 gap-0">
+        <div className="relative z-10 flex flex-col items-center px-4 pt-6 pb-5 sm:px-8 sm:pt-8 sm:pb-6 md:px-12 md:pt-10 md:pb-8 gap-0">
 
           {/* Top ornament */}
           <TopOrnament hasCouple={!!isCouple} />
 
-          {/* Type label (Urdu + English) */}
+          {/* Type label (Urdu or English depending on selected site language) */}
           {type && (
             <div className="ic-stagger inv-parallax-mid flex flex-col items-center gap-0.5 mb-3">
               <p
-                className="font-urdu text-xl leading-relaxed"
-                style={{ color: 'var(--c-accent)', textShadow: '0 1px 8px color-mix(in oklab,var(--c-accent) 40%,transparent)' }}
+                className={cn(
+                  "text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.25em] md:tracking-[0.35em] font-medium opacity-85",
+                  (lang === 'ur' || lang === 'ar') && "font-urdu text-base sm:text-lg tracking-normal"
+                )}
+                style={{ color: 'var(--c-accent)' }}
               >
-                {type.urdu}
-              </p>
-              <p className="text-[10px] uppercase tracking-[0.28em] opacity-60 font-medium">
-                {type.label}
+                {t(`type_${type.id.replace(/-/g, '_')}`) || type.label}
               </p>
             </div>
           )}
 
           {/* ── Couple avatars ── */}
           {isCouple ? (
-            <div className="flex items-end justify-center gap-4 mb-4 inv-parallax-near">
+            <div className="flex items-end justify-center gap-4 sm:gap-6 md:gap-8 mb-4 sm:mb-6 inv-parallax-near">
               <div className="flex flex-col items-center gap-1.5">
-                <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.35))' }}>
-                  <RelationAvatar relation="bride" size={60} />
+                <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.38))' }}>
+                  <RelationAvatar relation="bride" size={72} />
                 </div>
                 {data.bride && (
-                  <p className="text-[11px] opacity-70 font-medium tracking-wide">{data.bride}</p>
+                  <p className="text-[11px] sm:text-xs md:text-sm opacity-75 font-medium tracking-wide">{data.bride}</p>
                 )}
               </div>
 
               {/* Ampersand / heart centre */}
-              <div className="flex flex-col items-center pb-5 inv-avatar-anim">
-                <svg width="36" height="32" viewBox="0 0 36 32" fill="none">
+              <div className="flex flex-col items-center pb-5 sm:pb-6 inv-avatar-anim">
+                <svg width="40" height="36" viewBox="0 0 36 32" fill="none" className="size-8 sm:size-9 md:size-10">
                   <path
                     d="M18 28 Q5 20 5 11 A7 7 0 0 1 18 9 A7 7 0 0 1 31 11 Q31 20 18 28Z"
                     fill="var(--c-accent)"
@@ -562,18 +564,18 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
               </div>
 
               <div className="flex flex-col items-center gap-1.5">
-                <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.35))' }}>
-                  <RelationAvatar relation="groom" size={60} />
+                <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.38))' }}>
+                  <RelationAvatar relation="groom" size={72} />
                 </div>
                 {data.groom && (
-                  <p className="text-[11px] opacity-70 font-medium tracking-wide">{data.groom}</p>
+                  <p className="text-[11px] sm:text-xs md:text-sm opacity-75 font-medium tracking-wide">{data.groom}</p>
                 )}
               </div>
             </div>
           ) : (
             /* ── Single event icon ── */
             <div
-              className="ic-stagger inv-parallax-mid mb-4 flex items-center justify-center rounded-full"
+              className="ic-stagger inv-parallax-mid mb-4 sm:mb-6 flex items-center justify-center rounded-full transition-transform duration-300 hover:scale-105"
               style={{
                 width: 64, height: 64,
                 border: '1.5px solid color-mix(in oklab,var(--c-accent) 50%,transparent)',
@@ -582,57 +584,66 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                 boxShadow: '0 0 0 6px color-mix(in oklab,var(--c-accent) 8%,transparent), 0 6px 24px color-mix(in oklab,var(--c-accent) 25%,transparent)',
               }}
             >
-              {type && <JashnIcon name={type.icon} className="size-7" />}
+              {type && <JashnIcon name={type.icon} className="size-7 sm:size-8 md:size-9" />}
             </div>
           )}
 
           {/* Couple headline or event title */}
           {isCouple ? (
-            <div className="ic-stagger inv-parallax-near text-center mb-1">
-              <p className="shimmer-text text-2xl font-bold leading-tight tracking-wide">
-                {data.groom || 'Groom'} <span style={{ color: 'var(--c-accent)', opacity: 0.7 }}>&amp;</span> {data.bride || 'Bride'}
+            <div className="ic-stagger inv-parallax-near text-center mb-1 sm:mb-2">
+              <p className={cn(
+                "shimmer-text font-bold tracking-wide",
+                (lang === 'ur' || lang === 'ar') ? "font-urdu text-2xl sm:text-3xl md:text-4xl leading-loose py-2" : "text-2xl sm:text-3xl md:text-5xl leading-tight"
+              )}>
+                {data.groom || t('groom')} <span style={{ color: 'var(--c-accent)', opacity: 0.7 }}>{lang === 'ur' ? 'اور' : '&'}</span> {data.bride || t('bride')}
               </p>
               {data.hostNames && (
-                <p className="mt-1.5 text-xs opacity-65 tracking-wide">
-                  {data.hostNames} joyfully invite you
+                <p className={cn(
+                  "mt-1.5 sm:mt-2 opacity-70 tracking-wide",
+                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-base sm:text-lg leading-loose py-1" : "text-xs sm:text-sm md:text-base"
+                )}>
+                  {data.hostNames} {t('joyfullyInvite')}
                 </p>
               )}
             </div>
           ) : (
-            <div className="ic-stagger inv-parallax-near text-center mb-1">
-              <h1 className="shimmer-text text-2xl font-bold leading-snug tracking-wide">
-                {data.title || data.hostNames || type?.label}
+            <div className="ic-stagger inv-parallax-near text-center mb-1 sm:mb-2">
+              <h1 className={cn(
+                "shimmer-text font-bold tracking-wide",
+                (lang === 'ur' || lang === 'ar') ? "font-urdu text-2xl sm:text-3xl md:text-4xl leading-loose py-2" : "text-2xl sm:text-3xl md:text-5xl leading-snug"
+              )}>
+                {data.title || data.hostNames || (t(`type_${type?.id.replace(/-/g, '_')}`) || type?.label)}
               </h1>
               {data.hostNames && data.title && (
-                <p className="mt-1.5 text-xs opacity-65 tracking-wide">Hosted by {data.hostNames}</p>
+                <p className={cn(
+                  "mt-1.5 sm:mt-2 opacity-70 tracking-wide",
+                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-base sm:text-lg leading-loose py-1" : "text-xs sm:text-sm md:text-base"
+                )}>{t('hostedBy')} {data.hostNames}</p>
               )}
             </div>
           )}
 
-          {/* Warm host invite line for couple cards */}
-          {isCouple && data.hostNames && false /* already shown above */ && null}
-
           <OrnamentDivider />
 
-          {/* ── Event details as pills ── */}
-          <div className="ic-stagger flex flex-col items-stretch gap-2 w-full mt-1">
+          {/* ── Event details as responsive pills (2-cols on desktop) ── */}
+          <div className="ic-stagger flex flex-col md:grid md:grid-cols-2 items-stretch gap-2.5 sm:gap-3 md:gap-4.5 w-full mt-2 sm:mt-3 md:mt-5">
             {data.date && (
-              <DetailPill icon={<CalendarDays className="size-3.5" />}>
-                {formatDate(data.date)}
+              <DetailPill icon={<CalendarDays className="size-4 md:size-5" />}>
+                {formatDate(data.date, lang)}
               </DetailPill>
             )}
             {data.time && (
-              <DetailPill icon={<Clock className="size-3.5" />}>
-                {formatTime12h(data.time)}
+              <DetailPill icon={<Clock className="size-4 md:size-5" />}>
+                {formatTime12h(data.time, lang)}
               </DetailPill>
             )}
             {(data.venue || data.city) && (
-              <DetailPill icon={<MapPin className="size-3.5" />}>
+              <DetailPill icon={<MapPin className="size-4 md:size-5" />}>
                 {[data.venue, data.city].filter(Boolean).join(' · ')}
               </DetailPill>
             )}
             {data.dressCode && (
-              <DetailPill icon={<Shirt className="size-3.5" />}>
+              <DetailPill icon={<Shirt className="size-4 md:size-5" />}>
                 {data.dressCode}
               </DetailPill>
             )}
@@ -641,14 +652,14 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
           {/* Personal notes / message */}
           {data.notes && (
             <div
-              className="ic-stagger mt-4 w-full rounded-2xl px-4 py-3 text-center"
+              className="ic-stagger mt-4 sm:mt-5 md:mt-7 w-full rounded-2xl md:rounded-3xl px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-5 text-center shadow-inner"
               style={{
                 background: 'color-mix(in oklab,var(--c-accent) 7%,transparent)',
                 border: '1px solid color-mix(in oklab,var(--c-accent) 15%,transparent)',
               }}
             >
               <p
-                className="text-xs italic leading-relaxed opacity-85"
+                className="text-xs sm:text-sm md:text-base italic leading-relaxed opacity-90"
                 style={{ fontStyle: 'italic' }}
               >
                 &ldquo;{data.notes}&rdquo;
@@ -658,7 +669,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
           {/* Countdown */}
           {showCountdown && data.date && (
-            <div className="ic-stagger mt-4 w-full">
+            <div className="ic-stagger mt-4 sm:mt-5 md:mt-7 w-full">
               <Countdown date={data.date} time={data.time} />
             </div>
           )}
@@ -667,11 +678,12 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
         {/* Watermark footer */}
         {watermark && (
           <div
-            className="relative z-10 px-6 pb-5 pt-3 flex flex-col items-center gap-0.5"
+            className="relative z-10 px-6 pb-5 pt-3 sm:pb-6 sm:pt-4 flex flex-col items-center gap-0.5"
             style={{ borderTop: '1px solid color-mix(in oklab,var(--c-accent) 18%,transparent)' }}
           >
-            <p className="font-urdu text-xs opacity-60">بنایا گیا Jashn.app سے</p>
-            <p className="text-[9px] uppercase tracking-widest opacity-40">jashn.app</p>
+            <p className={lang === 'ur' ? "font-urdu text-xs sm:text-sm opacity-65" : "text-[10px] sm:text-xs font-semibold opacity-65"}>
+              {t('madeWithCardzy')}
+            </p>
           </div>
         )}
       </div>

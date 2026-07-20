@@ -1,8 +1,9 @@
 'use client'
 
+import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Sparkles, Wand2, UserCheck, Heart, Grid, Loader2, AlertCircle } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Wand2, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -12,13 +13,11 @@ import { BorderPicker } from '@/components/jashn/border-picker'
 import { BackgroundPicker } from '@/components/jashn/background-picker'
 import { WishCard } from '@/components/jashn/wish-card'
 import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
-import AudioPlayer from '@/components/jashn/AudioPlayer'
-import { useCardSound } from '@/lib/jashn/useCardSound'
 import { useJashn } from '@/lib/jashn/store'
-import { getOccasion, getTemplates } from '@/lib/jashn/occasions'
-import { encodeShortWish } from '@/lib/jashn/codec'
+import { getOccasion, getTemplates, getLocalizedTemplateText } from '@/lib/jashn/occasions'
 import type { Language } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/lang/context'
 
 const RELATIONS = [
   { id: 'Brother', en: 'Brother', ur: 'بھائی' },
@@ -30,29 +29,24 @@ const RELATIONS = [
   { id: 'Wife', en: 'Wife', ur: 'بیوی' },
   { id: 'Son', en: 'Son', ur: 'بیٹا' },
   { id: 'Daughter', en: 'Daughter', ur: 'بیٹی' },
-  { id: 'Bestie', en: 'Best Friend', ur: 'بہترین دوست' },
+  { id: 'BestFriend', en: 'Best Friend', ur: 'بہترین دوست' },
 ]
 
 function CreateWishContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { user, createWish, updateWish, wishes } = useJashn()
+  const { t, lang } = useLang()
 
   const editSlug = searchParams.get('edit')
 
-  useEffect(() => {
-    if (!user) {
-      const currentPath = window.location.pathname + window.location.search
-      router.push(`/login?redirect=${encodeURIComponent(currentPath)}`)
-    }
-  }, [user, router])
+  // Free creation for everyone - no login required to send cards
 
   const [step, setStep] = useState<1 | 2>(1)
   const [occasionId, setOccasionId] = useState('birthday')
-  const [showMobilePreview, setShowMobilePreview] = useState(true)
-  const [language, setLanguage] = useState<Language>('both')
+  const [mobileTab, setMobileTab] = useState<'details' | 'design' | 'preview'>('details')
+  const [language, setLanguage] = useState<Language>('en')
   const [message, setMessage] = useState('')
-  const [messageUrdu, setMessageUrdu] = useState('')
   const [themeId, setThemeId] = useState('mehndi-red')
   const [borderId, setBorderId] = useState('mehndi')
   const [bgVariantId, setBgVariantId] = useState('default')
@@ -64,16 +58,14 @@ function CreateWishContent() {
   const templates = getTemplates(occasionId)
   const selectedOccasion = getOccasion(occasionId)
   const isPro = user?.plan === 'pro' || user?.plan === 'business'
-  const { playClickSound } = useCardSound(selectedOccasion?.soundCategory)
 
   useEffect(() => {
     if (editSlug) {
       const existing = wishes.find((w) => w.slug === editSlug)
       if (existing) {
         setOccasionId(existing.occasionId)
-        setLanguage(existing.language || 'both')
+        setLanguage(existing.language || 'en')
         setMessage(existing.message || '')
-        setMessageUrdu(existing.messageUrdu || '')
         setThemeId(existing.themeId || 'mehndi-red')
         setBorderId(existing.borderId || 'mehndi')
         setBgVariantId(existing.bgVariantId || 'default')
@@ -86,62 +78,42 @@ function CreateWishContent() {
       const occParam = searchParams.get('occasion')
       if (occParam) {
         setOccasionId(occParam)
-        const t = getTemplates(occParam)
-        if (t.length > 0) {
-          setMessage(t[0].en)
-          setMessageUrdu(t[0].ur)
+        const tPlates = getTemplates(occParam)
+        if (tPlates.length > 0) {
+          setMessage(getLocalizedTemplateText(tPlates[0], lang))
         }
         setStep(2)
       }
     }
-  }, [searchParams, editSlug, wishes])
+  }, [searchParams, editSlug, wishes, lang])
 
   function handleOccasionSelect(id: string) {
     setOccasionId(id)
     const newTemplates = getTemplates(id)
     if (newTemplates.length > 0) {
-      setMessage(newTemplates[0].en)
-      setMessageUrdu(newTemplates[0].ur)
+      setMessage(getLocalizedTemplateText(newTemplates[0], lang))
     }
     setErrors({})
     setStep(2)
   }
 
   function applyTemplate(index: number) {
-    const t = templates[index]
-    if (t) {
-      setMessage(t.en)
-      setMessageUrdu(t.ur)
+    const tmpl = templates[index]
+    if (tmpl) {
+      setMessage(getLocalizedTemplateText(tmpl, lang))
     }
     setErrors((prev) => {
       const copy = { ...prev }
       delete copy.message
-      delete copy.messageUrdu
       return copy
     })
   }
 
   function runValidation() {
     const errs: Record<string, string> = {}
-    const nameRegex = /^[A-Za-z\s]*$/
 
-    if (senderName.trim() && !nameRegex.test(senderName.trim())) {
-      errs.senderName = "Sender name must contain only letters and spaces."
-    }
-
-    if (recipientName.trim() && !nameRegex.test(recipientName.trim())) {
-      errs.recipientName = "Recipient name must contain only letters and spaces."
-    }
-
-    if (step === 2) {
-      if (language === 'en' && !message.trim()) {
-        errs.message = "English message is required."
-      } else if (language === 'ur' && !messageUrdu.trim()) {
-        errs.messageUrdu = "Urdu message is required."
-      } else if (language === 'both' && !message.trim() && !messageUrdu.trim()) {
-        errs.message = "At least one message (English or Urdu) is required."
-        errs.messageUrdu = "At least one message (English or Urdu) is required."
-      }
+    if (step === 2 && !message.trim()) {
+      errs.message = t('titleRequired')
     }
 
     return errs
@@ -149,25 +121,10 @@ function CreateWishContent() {
 
   function handleFieldChange(field: string, value: string, setter: (v: string) => void) {
     setter(value)
-    
-    // Live validation
     const tempErrors = { ...errors }
-    const nameRegex = /^[A-Za-z\s]*$/
-
-    if (field === 'senderName' || field === 'recipientName') {
-      if (value.trim() && !nameRegex.test(value.trim())) {
-        tempErrors[field] = "Only letters and spaces are allowed."
-      } else {
-        delete tempErrors[field]
-      }
-    } else if (field === 'message' || field === 'messageUrdu') {
-      // Clear message errors if at least one starts to contain text
-      if (value.trim()) {
-        delete tempErrors.message
-        delete tempErrors.messageUrdu
-      }
+    if (field === 'message' && value.trim()) {
+      delete tempErrors.message
     }
-
     setErrors(tempErrors)
   }
 
@@ -175,13 +132,15 @@ function CreateWishContent() {
     const errs = runValidation()
     setErrors(errs)
     if (Object.keys(errs).length > 0) {
+      if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+        setMobileTab('details')
+      }
       return
     }
 
     const payload = {
       occasionId,
-      message: message || templates[0]?.en || 'Best wishes!',
-      messageUrdu: messageUrdu || templates[0]?.ur || 'بہترین دعائیں!',
+      message: message || (lang === 'ur' ? templates[0]?.ur : templates[0]?.en) || 'Best wishes!',
       language,
       themeId,
       borderId,
@@ -190,8 +149,6 @@ function CreateWishContent() {
       recipientName: recipientName.trim(),
       relation,
     }
-
-    playClickSound()
 
     if (editSlug) {
       await updateWish(editSlug, payload)
@@ -203,104 +160,123 @@ function CreateWishContent() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4">
+    <div className="mx-auto max-w-5xl px-3 sm:px-4 pb-20">
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-[#7B0D1E]">
-          {editSlug ? 'Edit Animated Wish Card' : 'Send an Animated Wish Card'}
+        {/* Card Studio Mode Switcher */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+          <Link
+            href="/create-invitation"
+            className="inline-flex items-center gap-2 rounded-full border border-[#E5DFD3] bg-white px-5 py-2.5 text-xs sm:text-sm font-semibold text-[#5A4530] transition-all hover:border-[#7A1E2B]/40 hover:text-foreground shadow-sm"
+          >
+            🎉 {t('weddingInvitationTitle') || 'Wedding & Event Invitation'}
+          </Link>
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#7A1E2B] px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md">
+            📧 {t('sendAnimatedWishCard') || 'Send an Animated Wish Card'}
+          </div>
+        </div>
+
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-[#7A1E2B] font-serif">
+          {editSlug ? t('editAnimatedWishCard') : t('sendAnimatedWishCard')}
         </h1>
-        <p className="mt-2 text-muted-foreground text-sm">
-          Select relation, write your custom message, pick dynamic themes & generate a clean short link!
+        <p className="mt-2 text-[#5A4530] text-sm sm:text-base max-w-xl mx-auto">
+          Beautiful Animated Wishes &amp; Invitations for Every Celebration — Cardzy.online
         </p>
 
-        {/* 2-Step Progress Indicator */}
-        <div className="mt-6 flex items-center justify-center gap-2 sm:gap-4">
+        {/* Horizontal 2-Step Stepper */}
+        <div className="mt-6 flex items-center justify-center gap-3">
           {[
-            { s: 1, label: 'Choose Occasion' },
-            { s: 2, label: 'Personalize & Share' },
-          ].map(({ s, label }) => (
-            <div key={s} className="flex items-center gap-2">
+            { s: 1, label: t('stepChooseOccasion') },
+            { s: 2, label: t('personalizeShare') },
+          ].map(({ s, label }, idx) => (
+            <div key={s} className="flex items-center gap-3">
               <button
                 onClick={() => { setErrors({}); setStep(s as 1 | 2); }}
-                className={`flex size-8 items-center justify-center rounded-full text-xs font-bold transition-all ${
+                className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all ${
                   step === s
-                    ? 'bg-[#7B0D1E] text-white ring-4 ring-[#7B0D1E]/20'
-                    : 'bg-[#7B0D1E]/20 text-[#7B0D1E] cursor-pointer'
+                    ? 'text-[#7A1E2B]'
+                    : 'text-muted-foreground hover:text-foreground cursor-pointer'
                 }`}
               >
-                {s}
+                <span className={`flex size-7 items-center justify-center rounded-full text-xs transition-all ${
+                  step === s
+                    ? 'bg-[#7A1E2B] text-white shadow-md ring-4 ring-[#7A1E2B]/20'
+                    : 'bg-muted/80 text-muted-foreground'
+                }`}>
+                  {s}
+                </span>
+                <span>{label}</span>
               </button>
-              <span className={`hidden text-xs font-semibold sm:inline ${step === s ? 'text-foreground font-bold' : 'text-muted-foreground'}`}>
-                {label}
-              </span>
-              {s < 2 && <span className="text-muted-foreground/40 sm:ml-2">/</span>}
+              {idx < 1 && <div className="h-px w-8 sm:w-12 bg-[#E5DFD3]" />}
             </div>
           ))}
         </div>
       </div>
 
       {Object.keys(errors).length > 0 && (
-        <div className="mb-6 mx-auto max-w-xl rounded-xl border border-red-500/30 bg-red-500/10 p-3.5 text-xs font-semibold text-red-600 flex items-center gap-2 shadow-sm">
+        <div className="mb-5 mx-auto max-w-xl rounded-2xl border border-red-500/30 bg-red-500/10 p-3.5 text-xs font-semibold text-red-600 flex items-center gap-2 shadow-sm">
           <AlertCircle className="size-4 shrink-0 text-red-600" />
-          <span>Please fix the validation errors below before proceeding.</span>
+          <span>{t('validationErrorsNotice')}</span>
         </div>
       )}
 
-      {/* Mobile Sticky Preview */}
+      {/* 📱 Mobile Tabs (Only visible on Step 2 & Mobile < 1024px) */}
       {step === 2 && (
-        <div className="sticky top-16 z-40 block lg:hidden border border-border bg-card/95 backdrop-blur-md shadow-sm rounded-2xl mb-6 transition-all overflow-hidden">
-          <div className="px-4 py-2.5 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Heart className="size-4 text-[#7B0D1E] animate-pulse" />
-              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                Live Preview
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <AudioPlayer occasionId={occasionId} />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowMobilePreview(!showMobilePreview)}
-                className="text-xs h-7 px-2.5 font-semibold text-[#7B0D1E] border-[#7B0D1E]/20 hover:bg-[#7B0D1E]/5"
-              >
-                {showMobilePreview ? 'Hide Preview' : 'Show Preview'}
-              </Button>
-            </div>
-          </div>
+        <div className="block lg:hidden mb-5">
+          <div className="grid grid-cols-3 gap-1 rounded-2xl bg-muted/60 p-1.5 border border-border/70 shadow-sm">
+            <button
+              onClick={() => setMobileTab('details')}
+              className={cn(
+                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all',
+                mobileTab === 'details'
+                  ? 'bg-background text-[#7B0D1E] shadow-md border border-border/50'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              <Edit3 className="size-3.5" />
+              <span>{t('tabDetails')}</span>
+            </button>
 
-          {showMobilePreview && (
-            <div className="h-[210px] w-full overflow-hidden flex justify-center bg-muted/10 relative border-t border-border/50">
-              <div className="absolute top-2 transform scale-[0.42] sm:scale-[0.5] origin-top">
-                <CardAnimationPreview occasionId={occasionId} animationKey={occasionId} className="max-w-md" roundedClass="rounded-[2.5rem]">
-                  <WishCard
-                    data={{
-                      occasionId,
-                      themeId,
-                      borderId,
-                      bgVariantId,
-                      message: message || templates[0]?.en || 'Best wishes!',
-                      messageUrdu: messageUrdu || templates[0]?.ur || 'بہترین دعائیں!',
-                      senderName: senderName || user?.name || 'Your Name',
-                      recipientName,
-                      relation,
-                      language,
-                    }}
-                  />
-                </CardAnimationPreview>
-              </div>
-            </div>
-          )}
+            <button
+              onClick={() => setMobileTab('design')}
+              className={cn(
+                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all',
+                mobileTab === 'design'
+                  ? 'bg-background text-[#7B0D1E] shadow-md border border-border/50'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              <Palette className="size-3.5" />
+              <span>{t('tabDesign')}</span>
+            </button>
+
+            <button
+              onClick={() => setMobileTab('preview')}
+              className={cn(
+                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all relative',
+                mobileTab === 'preview'
+                  ? 'bg-[#7B0D1E] text-white shadow-md'
+                  : 'text-[#7B0D1E] bg-[#7B0D1E]/10 hover:bg-[#7B0D1E]/20'
+              )}
+            >
+              <Eye className="size-3.5" />
+              <span>{t('tabPreview')}</span>
+              <span className="absolute -top-1 -right-1 size-2 rounded-full bg-emerald-500 animate-ping" />
+            </button>
+          </div>
         </div>
       )}
 
       <div className="grid gap-8 lg:grid-cols-12">
+        {/* Main Column */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <div className="rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-sm">
             {step === 1 && (
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-bold text-foreground">Step 1: Select Event / Occasion</h2>
-                  <span className="text-xs font-medium text-muted-foreground">Click any tile to edit</span>
+                <div className="flex items-center justify-between border-b border-border pb-3">
+                  <h2 className="text-lg font-extrabold text-foreground flex items-center gap-2">
+                    <Grid className="size-5 text-[#7B0D1E]" /> {t('stepChooseOccasion')}
+                  </h2>
+                  <span className="text-xs font-medium text-muted-foreground">{t('clickTileToPersonalize')}</span>
                 </div>
                 <OccasionPicker value={occasionId} onChange={handleOccasionSelect} />
               </div>
@@ -308,42 +284,46 @@ function CreateWishContent() {
 
             {step === 2 && (
               <div className="space-y-6">
-                {/* Header info block */}
+                {/* Header Selected Occasion Info */}
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <div>
-                    <span className="text-xs uppercase font-bold tracking-wider text-[#7B0D1E]">Selected Occasion</span>
-                    <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
-                      {selectedOccasion?.label} <span className="font-urdu text-base text-muted-foreground">({selectedOccasion?.urdu})</span>
+                    <span className="text-[10px] uppercase font-extrabold tracking-wider text-[#7B0D1E]">
+                      {t('selectedOccasion')}
+                    </span>
+                    <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+                      {t(`occ_${selectedOccasion?.id.replace(/-/g, '_')}`) || selectedOccasion?.label}
                     </h2>
                   </div>
-                  <Button variant="outline" size="sm" onClick={() => setStep(1)} className="text-xs flex items-center gap-1">
-                    <Grid className="size-3.5" /> View Occasions
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setStep(1)}
+                    className="text-xs h-8 px-3 rounded-xl flex items-center gap-1.5"
+                  >
+                    <Grid className="size-3.5 text-[#7B0D1E]" /> {t('viewOccasions')}
                   </Button>
                 </div>
 
-                {/* Block 1: Names & Relations */}
-                <div className="space-y-4">
-                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1">
-                    <UserCheck className="size-4" /> 1. Recipient & Relations
-                  </h3>
-                  
-                  <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Who is this card for? (Select Relation)
-                    </label>
-                    <div className="flex flex-wrap gap-2">
+                {/* 📝 Details Tab Content */}
+                <div className={cn(mobileTab !== 'details' && 'hidden lg:block', 'space-y-5')}>
+                  {/* Relation Pills */}
+                  <div className="space-y-3">
+                    <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5">
+                      <UserCheck className="size-4" /> 1. WHO IS THIS CARD FOR? (SELECT RELATION)
+                    </h3>
+                    <div className="flex flex-wrap gap-2 pt-1">
                       {RELATIONS.map((r) => (
                         <button
                           key={r.id}
                           type="button"
                           onClick={() => setRelation(relation === r.en ? '' : r.en)}
-                          className={`rounded-xl border px-3.5 py-2 text-xs font-semibold transition-all ${
+                          className={`rounded-full border px-4 py-1.5 text-xs font-bold transition-all ${
                             relation === r.en
-                              ? 'border-[#7B0D1E] bg-[#7B0D1E] text-white shadow-sm ring-2 ring-[#7B0D1E]/30'
-                              : 'border-border bg-background text-foreground hover:bg-muted'
+                              ? 'border-[#7A1E2B] bg-[#7A1E2B] text-white shadow-md ring-2 ring-[#7A1E2B]/25'
+                              : 'border-[#E5DFD3] bg-white text-[#5A4530] hover:bg-muted/60'
                           }`}
                         >
-                          {r.en} <span className="font-urdu opacity-80">({r.ur})</span>
+                          {t(('rel' + r.id) as any) || r.en}
                         </button>
                       ))}
                     </div>
@@ -351,27 +331,24 @@ function CreateWishContent() {
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="mb-1 block text-sm font-medium text-foreground">
+                      <label className="mb-1.5 block text-xs font-bold text-foreground">
                         Recipient Name (Optional)
                       </label>
                       <input
                         type="text"
                         value={recipientName}
                         onChange={(e) => handleFieldChange('recipientName', e.target.value, setRecipientName)}
-                        placeholder="e.g. Ayesha, Bilal"
+                        placeholder="e.g. Ayesha"
+                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
                         className={cn(
-                          "w-full rounded-xl border p-3 text-sm bg-background focus:outline-none focus:ring-2",
-                          errors.recipientName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                          errors.recipientName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
                         )}
                       />
-                      {errors.recipientName && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                          <AlertCircle className="size-3 shrink-0" /> {errors.recipientName}
-                        </p>
-                      )}
                     </div>
+
                     <div>
-                      <label className="mb-1 block text-sm font-medium text-foreground">
+                      <label className="mb-1.5 block text-xs font-bold text-foreground">
                         Your Name (Sender)
                       </label>
                       <input
@@ -379,75 +356,54 @@ function CreateWishContent() {
                         value={senderName}
                         onChange={(e) => handleFieldChange('senderName', e.target.value, setSenderName)}
                         placeholder="e.g. Tariq & Family"
+                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
                         className={cn(
-                          "w-full rounded-xl border p-3 text-sm bg-background focus:outline-none focus:ring-2",
-                          errors.senderName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                          errors.senderName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
                         )}
                       />
-                      {errors.senderName && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                          <AlertCircle className="size-3 shrink-0" /> {errors.senderName}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Block 2: Message Calligraphy */}
-                <div className="space-y-4 pt-4 border-t border-border">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1 flex-1">
-                      <Heart className="size-4" /> 2. Message Calligraphy
-                    </h3>
-                    <div className="flex items-center rounded-lg bg-muted p-1 text-xs font-semibold ml-2">
-                      {(['both', 'en', 'ur'] as const).map((lang) => (
-                        <button
-                          key={lang}
-                          type="button"
-                          onClick={() => { setLanguage(lang); setErrors({}); }}
-                          className={`rounded-md px-2.5 py-1 transition-colors capitalize ${
-                            language === lang ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
-                          }`}
-                        >
-                          {lang === 'both' ? 'Bilingual' : lang === 'en' ? 'English' : 'Urdu'}
-                        </button>
-                      ))}
                     </div>
                   </div>
 
-                  {templates.length > 0 && (
-                    <div>
-                      <label className="mb-2 block text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                        Choose Pre-written Template
-                      </label>
-                      <div className="flex flex-wrap gap-2">
-                        {templates.map((t, idx) => (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={() => applyTemplate(idx)}
-                            className="flex items-center gap-1 rounded-lg border border-[#7B0D1E]/20 bg-[#7B0D1E]/5 px-3 py-1.5 text-xs font-medium text-[#7B0D1E] hover:bg-[#7B0D1E]/10 transition-colors"
-                          >
-                            <Wand2 className="size-3" /> Template {idx + 1}
-                          </button>
-                        ))}
+                  {/* Message & Pre-written templates */}
+                  <div className="space-y-3 pt-3 border-t border-border/60">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5">
+                        <Heart className="size-4" /> 2. CARD MESSAGE
+                      </h3>
+                    </div>
+
+                    {templates.length > 0 && (
+                      <div>
+                        <label className="mb-2 block text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                          CHOOSE PRE-WRITTEN WISH TEMPLATE
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          {templates.map((tmpl, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => applyTemplate(idx)}
+                              className="flex items-center gap-1.5 rounded-xl border border-[#7A1E2B]/20 bg-[#7A1E2B]/5 px-3 py-1.5 text-xs font-bold text-[#7A1E2B] hover:bg-[#7A1E2B]/15 transition-all"
+                            >
+                              🎁 Template {idx + 1}
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {(language === 'both' || language === 'en') && (
                     <div>
-                      <label className="mb-1 block text-sm font-medium text-foreground">
-                        English Message
-                      </label>
                       <textarea
                         rows={3}
+                        dir={lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(message) ? 'rtl' : 'ltr'}
                         value={message}
                         onChange={(e) => handleFieldChange('message', e.target.value, setMessage)}
-                        placeholder="Write your custom wish in English..."
+                        placeholder={t('writeMsgPlaceholder')}
                         className={cn(
-                          "w-full rounded-xl border p-3 text-sm bg-background focus:outline-none focus:ring-2",
-                          errors.message ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all leading-relaxed",
+                          (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(message)) && "font-urdu text-base",
+                          errors.message ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
                         )}
                       />
                       {errors.message && (
@@ -456,42 +412,18 @@ function CreateWishContent() {
                         </p>
                       )}
                     </div>
-                  )}
-
-                  {(language === 'both' || language === 'ur') && (
-                    <div>
-                      <label className="mb-1 block text-sm font-medium text-foreground">
-                        Urdu Message (اردو پیغام)
-                      </label>
-                      <textarea
-                        rows={3}
-                        dir="rtl"
-                        value={messageUrdu}
-                        onChange={(e) => handleFieldChange('messageUrdu', e.target.value, setMessageUrdu)}
-                        placeholder="اپنا پیغام اردو میں لکھیں..."
-                        className={cn(
-                          "w-full font-urdu rounded-xl border p-3 text-base bg-background focus:outline-none focus:ring-2",
-                          errors.messageUrdu ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
-                        )}
-                      />
-                      {errors.messageUrdu && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                          <AlertCircle className="size-3 shrink-0" /> {errors.messageUrdu}
-                        </p>
-                      )}
-                    </div>
-                  )}
+                  </div>
                 </div>
 
-                {/* Block 3: Themes & Designs */}
-                <div className="space-y-4 pt-4 border-t border-border">
-                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1">
-                    <Sparkles className="size-4" /> 3. Card Theme &amp; Artwork
+                {/* 🎨 Design Tab Content */}
+                <div className={cn(mobileTab !== 'design' && 'hidden lg:block', 'space-y-6 pt-4 border-t border-border')}>
+                  <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5">
+                    <Palette className="size-4" /> 3. CARD THEME &amp; ARTWORK
                   </h3>
 
                   <div>
                     <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Select Theme Style
+                      SELECT THEME STYLE
                     </label>
                     <ThemePicker
                       value={themeId}
@@ -503,7 +435,7 @@ function CreateWishContent() {
 
                   <div>
                     <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Select Card Border Design
+                      SELECT BORDER FRAME
                     </label>
                     <BorderPicker
                       value={borderId}
@@ -515,7 +447,7 @@ function CreateWishContent() {
 
                   <div>
                     <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Select Card Background Design
+                      SELECT CANVAS TEXTURE
                     </label>
                     <BackgroundPicker
                       value={bgVariantId}
@@ -525,13 +457,51 @@ function CreateWishContent() {
                   </div>
                 </div>
 
-                {/* Action Block */}
+                {/* 👁️ Preview Tab Content (Mobile) */}
+                <div className={cn(mobileTab !== 'preview' && 'hidden lg:hidden', 'space-y-4 pt-2')}>
+                  <div className="rounded-3xl border border-border bg-gradient-to-b from-muted/20 to-card p-4 text-center shadow-md">
+                    <div className="flex items-center justify-between mb-3 px-1">
+                      <span className="text-xs font-extrabold uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5">
+                        ♡ LIVE PREVIEW
+                      </span>
+                    </div>
+
+                    <div className="flex justify-center overflow-hidden py-2">
+                      <div className="w-full">
+                        <CardAnimationPreview occasionId={occasionId} animationKey={occasionId} className="max-w-md mx-auto" roundedClass="rounded-[2.5rem]">
+                          <WishCard
+                            data={{
+                              occasionId,
+                              themeId,
+                              borderId,
+                              bgVariantId,
+                              message: message || (lang === 'ur' ? templates[0]?.ur : templates[0]?.en) || 'Best wishes!',
+                              senderName: senderName || user?.name || 'Your Name',
+                              recipientName,
+                              relation,
+                              language,
+                            }}
+                          />
+                        </CardAnimationPreview>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Navigation Buttons */}
                 <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-6 mt-6">
-                  <Button variant="outline" onClick={() => setStep(1)} className="w-full sm:w-auto">
-                    <ArrowLeft className="mr-2 size-4" /> Change Occasion
+                  <Button
+                    variant="outline"
+                    onClick={() => setStep(1)}
+                    className="w-full sm:w-auto rounded-full h-11 px-6 border-[#E5DFD3]"
+                  >
+                    ← Change Occasion
                   </Button>
-                  <Button onClick={handleFinish} className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-bold px-8 shadow-md flex items-center justify-center gap-1.5 active:scale-95 transition-transform">
-                    {editSlug ? 'Save Changes' : 'Generate Clean Link'} <Sparkles className="size-4" />
+                  <Button
+                    onClick={handleFinish}
+                    className="w-full sm:w-auto bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold h-11 px-8 rounded-full shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
+                  >
+                    Create &amp; Share Wish Card 🚀
                   </Button>
                 </div>
               </div>
@@ -539,16 +509,14 @@ function CreateWishContent() {
           </div>
         </div>
 
-        {/* Right column — sticky preview */}
+        {/* Desktop Right Column — Sticky Live Animated Card Preview */}
         <div className="hidden lg:block lg:col-span-5 space-y-4">
-          <div className="sticky top-24 rounded-2xl border border-border bg-card p-6 shadow-md text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Heart className="size-4 text-[#7B0D1E] animate-pulse" />
-              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                Live Animated Preview
-              </p>
-            </div>
-            <div className="transform scale-[0.95] origin-top">
+          <div className="sticky top-24 rounded-3xl border border-border bg-card p-6 shadow-xl text-center backdrop-blur-md">
+            <p className="mb-4 text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center justify-center gap-1.5">
+              <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
+            </p>
+
+            <div>
               <CardAnimationPreview occasionId={occasionId} animationKey={occasionId} className="max-w-md mx-auto" roundedClass="rounded-[2.5rem]">
                 <WishCard
                   data={{
@@ -556,8 +524,7 @@ function CreateWishContent() {
                     themeId,
                     borderId,
                     bgVariantId,
-                    message: message || templates[0]?.en || 'Best wishes!',
-                    messageUrdu: messageUrdu || templates[0]?.ur || 'بہترین دعائیں!',
+                    message: message || (lang === 'ur' ? templates[0]?.ur : templates[0]?.en) || 'Best wishes!',
                     senderName: senderName || user?.name || 'Your Name',
                     recipientName,
                     relation,
@@ -566,17 +533,41 @@ function CreateWishContent() {
                 />
               </CardAnimationPreview>
             </div>
-
-            {/* Sound preview */}
-            <div className="mt-4 flex flex-col items-center gap-1">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Sound Preview
-              </p>
-              <AudioPlayer occasionId={occasionId} />
-            </div>
           </div>
         </div>
       </div>
+
+      {/* 📱 Mobile Sticky Bottom Action Bar (Fixed at bottom on phone screens when step 2) */}
+      {step === 2 && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 block lg:hidden border-t border-border/80 bg-background/95 backdrop-blur-md p-3 shadow-2xl">
+          <div className="mx-auto flex max-w-md items-center gap-2">
+            {mobileTab !== 'preview' ? (
+              <Button
+                variant="outline"
+                onClick={() => setMobileTab('preview')}
+                className="flex-1 rounded-2xl text-xs font-bold h-12 border-[#7B0D1E]/30 text-[#7B0D1E] bg-[#7B0D1E]/5"
+              >
+                <Eye className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabPreview')}
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => setMobileTab('details')}
+                className="flex-1 rounded-2xl text-xs font-bold h-12"
+              >
+                <Edit3 className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabDetails')}
+              </Button>
+            )}
+
+            <Button
+              onClick={handleFinish}
+              className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all"
+            >
+              {editSlug ? t('saveChanges') : t('createWishBtn')}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -585,7 +576,7 @@ export default function CreateWishPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
-      <main className="flex-1 py-8 md:py-12">
+      <main className="flex-1 py-6 md:py-10">
         <Suspense fallback={
           <div className="flex py-20 items-center justify-center">
             <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />

@@ -92,7 +92,7 @@ export function GoogleOneTap({ redirectTo = '/dashboard' }: Props) {
           } else {
             userData = {
               uid: firebaseUser.uid,
-              name: firebaseUser.displayName || 'Jashn User',
+              name: firebaseUser.displayName || 'Cardzy User',
               email: firebaseUser.email || '',
               plan: 'free',
               createdAt: Date.now(),
@@ -104,7 +104,7 @@ export function GoogleOneTap({ redirectTo = '/dashboard' }: Props) {
         if (!userData) {
           userData = {
             uid: firebaseUser.uid,
-            name: firebaseUser.displayName || 'Jashn User',
+            name: firebaseUser.displayName || 'Cardzy User',
             email: firebaseUser.email || '',
             plan: 'free',
             createdAt: Date.now(),

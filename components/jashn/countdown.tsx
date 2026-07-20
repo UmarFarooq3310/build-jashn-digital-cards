@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useLang } from '@/lib/lang/context'
 
 function diff(target: number) {
   const ms = Math.max(0, target - Date.now())
@@ -145,20 +146,21 @@ function Sep() {
 }
 
 export function Countdown({ date, time }: { date: string; time?: string }) {
+  const { t } = useLang()
   const target = new Date(`${date}T${time || '00:00'}`).getTime()
-  const [t, setT] = useState(() => diff(target))
+  const [cd, setCd] = useState(() => diff(target))
 
   useEffect(() => {
-    const id = setInterval(() => setT(diff(target)), 1000)
+    const id = setInterval(() => setCd(diff(target)), 1000)
     return () => clearInterval(id)
   }, [target])
 
   if (Number.isNaN(target)) return null
 
-  if (t.done) {
+  if (cd.done) {
     return (
       <p className="shimmer-gold text-center text-lg font-bold">
-        🎉 The day has arrived!
+        {t('eventArrivedTitle')}
       </p>
     )
   }
@@ -170,18 +172,18 @@ export function Countdown({ date, time }: { date: string; time?: string }) {
         className="text-[10px] uppercase tracking-[0.25em] font-medium opacity-55"
         style={{ color: 'var(--c-ink)' }}
       >
-        Counting down to the big day
+        {t('countdownTitle')}
       </p>
 
       {/* Flip units */}
       <div className="flex items-end gap-1.5">
-        <FlipUnit value={t.days}    label="Days" />
+        <FlipUnit value={cd.days}    label={t('unitDays')} />
         <Sep />
-        <FlipUnit value={t.hours}   label="Hrs" />
+        <FlipUnit value={cd.hours}   label={t('unitHours')} />
         <Sep />
-        <FlipUnit value={t.minutes} label="Min" />
+        <FlipUnit value={cd.minutes} label={t('unitMinutes')} />
         <Sep />
-        <FlipUnit value={t.seconds} label="Sec" />
+        <FlipUnit value={cd.seconds} label={t('unitSeconds')} />
       </div>
     </div>
   )

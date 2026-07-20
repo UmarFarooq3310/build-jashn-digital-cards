@@ -12,17 +12,16 @@ import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { ShareBar } from '@/components/jashn/share-bar'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
+import { useLang } from '@/lib/lang/context'
 import { decodeShortInvitation, encodeShortInvitation } from '@/lib/jashn/codec'
-import { playRsvpSound } from '@/lib/jashn/audio'
 import { getInvitationType } from '@/lib/jashn/invitations'
-import { useCardSound } from '@/lib/jashn/useCardSound'
-import { Volume2, VolumeX } from 'lucide-react'
 import type { Invitation } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
 import { db, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc, onSnapshot } from 'firebase/firestore'
 
 function InvitationPublicContent({ slug }: { slug: string }) {
+  const { lang, t } = useLang()
   const searchParams = useSearchParams()
   const router = useRouter()
   const { user, invitations, incrementInvitationView, incrementRsvp, deleteInvitation, showToast } = useJashn()
@@ -36,14 +35,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   const [rainActive, setRainActive] = useState(false)
 
   // Resolve sound category from the invitation type
-  const soundCategory = (() => {
-    if (!activeInvitation) return 'default' as const
-    const t = getInvitationType(activeInvitation.typeId)
-    return (t?.soundCategory ?? 'default') as 'dholki' | 'islamic' | 'festive' | 'somber' | 'default'
-  })()
 
-  const { isMuted, toggleMuted, autoplayBlocked, playCategorySound, handleUserInteraction, hasSound } =
-    useCardSound(soundCategory)
 
   const isCreator = (() => {
     const card = invitations.find((i) => i.slug === slug)
@@ -162,13 +154,12 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   }, [slug, invitations, searchParams, isMounted, incrementInvitationView])
 
   function handleRsvp() {
-    playRsvpSound()
     if (!rsvped) {
       incrementRsvp(slug)
       setRsvped(true)
     }
     if (activeInvitation?.rsvpPhone) {
-      const text = encodeURIComponent(`Hi! I will be attending ${activeInvitation.title || 'the event'}. Confirming my RSVP via Jashn.app!`)
+      const text = encodeURIComponent(`Hi! I will be attending ${activeInvitation.title || 'the event'}. Confirming my RSVP via Cardzy.online!`)
       window.open(`https://wa.me/${activeInvitation.rsvpPhone.replace(/[^0-9]/g, '')}?text=${text}`, '_blank')
     }
   }
@@ -196,8 +187,8 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   if (!activeInvitation) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center p-6 text-center py-20">
-        <h1 className="text-3xl font-bold text-primary">Invitation Not Found</h1>
-        <p className="mt-2 text-muted-foreground">This invitation link may have expired or is invalid.</p>
+        <h1 className="text-3xl font-bold text-primary">{t('invitationNotFoundTitle')}</h1>
+        <p className="mt-2 text-muted-foreground">{t('invitationNotFoundDesc')}</p>
         <Link href="/create-invitation" className="mt-6 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground shadow-lg hover:bg-primary/90">
           Create Event Invitation
         </Link>
@@ -211,7 +202,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   const cleanUrl = `/i/${activeInvitation.slug}`
 
   return (
-    <div className="mx-auto max-w-2xl px-4 text-center">
+    <div className="mx-auto max-w-2xl md:max-w-4xl px-4 text-center">
       {/* Celebration Effects Rain */}
       <ConfettiRain active={rainActive} />
 
@@ -222,7 +213,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
             <p className="text-sm font-bold text-primary flex items-center gap-1.5">
               <Sparkles className="size-4 text-primary animate-pulse" /> You Created This Card!
             </p>
-            <p className="text-xs text-muted-foreground">You can make changes or delete this invitation at any time.</p>
+            <p className="text-xs text-muted-foreground">{t('invitationOwnerControlDesc')}</p>
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
             <Button
@@ -272,8 +263,6 @@ function InvitationPublicContent({ slug }: { slug: string }) {
           isIslamic={isIslamic}
           onOpened={() => {
             setRainActive(true)
-            // Play category sound when recipient opens the envelope
-            playCategorySound()
           }}
         >
           <InvitationCard ref={cardRef} data={activeInvitation} watermark={true} showCountdown={true} />
@@ -312,13 +301,15 @@ function InvitationPublicContent({ slug }: { slug: string }) {
 
       {/* CTA Banner — solid card background ensures readability */}
       <div className="mt-8 rounded-2xl p-6 text-center border border-border bg-card shadow-sm">
-        <p className="font-urdu text-xl mb-1 text-foreground">آپ بھی اپنے ایونٹ کا ڈیجیٹل کارڈ بنائیں</p>
-        <p className="text-sm font-medium text-muted-foreground mt-1">Planning a wedding or event? Create your custom animated card now!</p>
+        <p className={lang === 'ur' ? "font-urdu text-xl mb-1 text-foreground" : "text-base font-bold mb-1 text-foreground"}>
+          {t('createDigitalCardCTA')}
+        </p>
+        <p className="text-sm font-medium text-muted-foreground mt-1">{t('planningEventCTA')}</p>
         <Link
           href="/create-invitation"
           className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"
         >
-          Create Event Invitation <Sparkles className="size-4" />
+          {t('buildInvitation')} <Sparkles className="size-4" />
         </Link>
       </div>
 

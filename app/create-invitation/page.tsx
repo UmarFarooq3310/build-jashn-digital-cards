@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Sparkles, Grid, Loader2, AlertCircle, Heart } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Sparkles, Grid, Loader2, AlertCircle, Heart, Check, Edit3, Palette, Eye } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -12,44 +12,23 @@ import { BackgroundPicker } from '@/components/jashn/background-picker'
 import { InvitationCard } from '@/components/jashn/invitation-card'
 import { InvitationTypePicker } from '@/components/jashn/invitation-type-picker'
 import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
-import AudioPlayer from '@/components/jashn/AudioPlayer'
-import { useCardSound } from '@/lib/jashn/useCardSound'
 import { useJashn } from '@/lib/jashn/store'
-import { INVITATION_TYPES, INVITATION_CATEGORIES, getInvitationType } from '@/lib/jashn/invitations'
-import { encodeShortInvitation } from '@/lib/jashn/codec'
-import { JashnIcon } from '@/lib/jashn/icon'
+import { INVITATION_TYPES, getInvitationType } from '@/lib/jashn/invitations'
+import { useLang } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
 
 function CreateInvitationContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { user, createInvitation, updateInvitation, invitations, isAuthLoading } = useJashn()
+  const { t, lang } = useLang()
 
   const editSlug = searchParams.get('edit')
 
-  useEffect(() => {
-    if (!isAuthLoading && !user) {
-      const currentPath = window.location.pathname + window.location.search
-      router.push(`/login?redirect=${encodeURIComponent(currentPath)}`)
-    }
-  }, [user, isAuthLoading, router])
-
-  if (isAuthLoading) {
-    return (
-      <div className="flex py-20 items-center justify-center">
-        <Loader2 className="size-8 animate-spin text-emerald-600" />
-      </div>
-    )
-  }
-
-  if (!user) {
-    return null
-  }
-
   const [step, setStep] = useState<1 | 2>(1)
   const [typeId, setTypeId] = useState('nikkah')
-  const [showMobilePreview, setShowMobilePreview] = useState(true)
-  
+  const [mobileTab, setMobileTab] = useState<'details' | 'design' | 'preview'>('details')
+
   const getTodayString = () => {
     const today = new Date()
     const yyyy = today.getFullYear()
@@ -85,7 +64,8 @@ function CreateInvitationContent() {
   const selectedType = getInvitationType(typeId)
   const isCouple = selectedType?.couple
   const isPro = user?.plan === 'pro' || user?.plan === 'business'
-  const { playClickSound } = useCardSound(selectedType?.soundCategory)
+
+  // Free creation for everyone - no login required to send invitations
 
   useEffect(() => {
     if (editSlug) {
@@ -118,6 +98,18 @@ function CreateInvitationContent() {
     }
   }, [searchParams, editSlug, invitations])
 
+  if (isAuthLoading) {
+    return (
+      <div className="flex py-20 items-center justify-center">
+        <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />
+      </div>
+    )
+  }
+
+  if (!user) {
+    return null
+  }
+
   function handleTypeSelect(id: string) {
     setTypeId(id)
     setErrors({})
@@ -126,48 +118,34 @@ function CreateInvitationContent() {
 
   function runValidation() {
     const errs: Record<string, string> = {}
-    const nameRegex = /^[A-Za-z\s]+$/
 
     if (isCouple) {
       if (!groom.trim()) {
-        errs.groom = "Groom's name is required."
-      } else if (!nameRegex.test(groom.trim())) {
-        errs.groom = "Only letters and spaces are allowed."
+        errs.groom = t('groomRequired')
       }
-
       if (!bride.trim()) {
-        errs.bride = "Bride's name is required."
-      } else if (!nameRegex.test(bride.trim())) {
-        errs.bride = "Only letters and spaces are allowed."
+        errs.bride = t('brideRequired')
       }
     } else {
       if (!title.trim() && !selectedType?.label) {
-        errs.title = "Please enter an event title."
-      } else if (title.trim() && !nameRegex.test(title.trim())) {
-        errs.title = "Only letters and spaces are allowed."
+        errs.title = t('titleRequired')
       }
     }
 
-    if (hostNames.trim() && !nameRegex.test(hostNames.trim())) {
-      errs.hostNames = "Only letters and spaces are allowed."
-    }
-
     if (!date) {
-      errs.date = "Please select an event date."
+      errs.date = t('dateRequired')
     }
 
     if (!time) {
-      errs.time = "Please select an event time."
+      errs.time = t('timeRequired')
     }
 
     if (!rsvpPhone.trim()) {
-      errs.rsvpPhone = "RSVP WhatsApp number is required."
+      errs.rsvpPhone = t('rsvpRequired')
     } else {
-      const cleanedPhone = rsvpPhone.trim()
-      if (!/^\d+$/.test(cleanedPhone)) {
-        errs.rsvpPhone = "Phone number must contain only numbers (no letters, spaces, or symbols)."
-      } else if (cleanedPhone.length < 10 || cleanedPhone.length > 12) {
-        errs.rsvpPhone = "Phone number must be between 10 and 12 digits (e.g. 03001234567)."
+      const cleanedPhone = rsvpPhone.trim().replace(/\s+/g, '')
+      if (!/^\+?\d{10,14}$/.test(cleanedPhone)) {
+        errs.rsvpPhone = t('invalidPhone')
       }
     }
 
@@ -176,37 +154,32 @@ function CreateInvitationContent() {
 
   function handleFieldChange(field: string, value: string, setter: (v: string) => void) {
     setter(value)
-    
-    // Live validation check on change
     const tempErrors = { ...errors }
-    const nameRegex = /^[A-Za-z\s]+$/
 
-    if (field === 'groom' || field === 'bride' || field === 'title' || field === 'hostNames') {
+    if (field === 'groom' || field === 'bride' || field === 'title') {
       if (!value.trim()) {
-        if (field === 'groom') tempErrors.groom = "Groom's name is required."
-        else if (field === 'bride') tempErrors.bride = "Bride's name is required."
-        else if (field === 'title' && !selectedType?.label) tempErrors.title = "Event title is required."
-        else delete tempErrors[field]
-      } else if (!nameRegex.test(value.trim())) {
-        tempErrors[field] = "Only letters and spaces are allowed."
+        if (field === 'groom') tempErrors.groom = t('groomRequired')
+        else if (field === 'bride') tempErrors.bride = t('brideRequired')
+        else if (field === 'title' && !selectedType?.label) tempErrors.title = t('titleRequired')
       } else {
         delete tempErrors[field]
       }
     } else if (field === 'rsvpPhone') {
       if (!value.trim()) {
-        tempErrors.rsvpPhone = "RSVP WhatsApp number is required."
-      } else if (!/^\d+$/.test(value.trim())) {
-        tempErrors.rsvpPhone = "Must contain only numbers."
-      } else if (value.trim().length < 10 || value.trim().length > 12) {
-        tempErrors.rsvpPhone = "Must be between 10 and 12 digits."
+        tempErrors.rsvpPhone = t('rsvpRequired')
       } else {
-        delete tempErrors.rsvpPhone
+        const cleanedPhone = value.trim().replace(/\s+/g, '')
+        if (!/^\+?\d{10,14}$/.test(cleanedPhone)) {
+          tempErrors.rsvpPhone = t('invalidPhone')
+        } else {
+          delete tempErrors.rsvpPhone
+        }
       }
     } else if (field === 'date') {
-      if (!value) tempErrors.date = "Please select an event date."
+      if (!value) tempErrors.date = t('dateRequired')
       else delete tempErrors.date
     } else if (field === 'time') {
-      if (!value) tempErrors.time = "Please select an event time."
+      if (!value) tempErrors.time = t('timeRequired')
       else delete tempErrors.time
     }
 
@@ -217,10 +190,13 @@ function CreateInvitationContent() {
     const errs = runValidation()
     setErrors(errs)
     if (Object.keys(errs).length > 0) {
+      if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+        setMobileTab('details')
+      }
       return
     }
 
-    const cleanedPhone = rsvpPhone.trim()
+    const cleanedPhone = rsvpPhone.trim().replace(/\s+/g, '')
     const payload = {
       typeId,
       title: title.trim() || selectedType?.label || 'Event Invitation',
@@ -240,8 +216,6 @@ function CreateInvitationContent() {
       bgVariantId,
     }
 
-    playClickSound()
-
     if (editSlug) {
       await updateInvitation(editSlug, payload)
       router.push(`/i/${editSlug}`)
@@ -252,109 +226,119 @@ function CreateInvitationContent() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-[#7B0D1E]">
-          {editSlug ? 'Edit Event Invitation' : 'Create an Event Invitation'}
+    <div className="mx-auto max-w-5xl px-3 sm:px-4 pb-20">
+      <div className="mb-6 text-center">
+        {/* Card Studio Mode Switcher */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-5">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#7B0D1E] px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-md">
+            🎉 {t('weddingInvitationTitle') || 'Wedding & Event Invitation'}
+          </div>
+          <Link
+            href="/create-wish"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2 text-xs sm:text-sm font-bold text-muted-foreground transition-all hover:border-[#7B0D1E]/40 hover:text-foreground shadow-sm"
+          >
+            💌 {t('sendAnimatedWishCard') || 'Wish / Greeting Card'}
+          </Link>
+        </div>
+
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-4xl text-[#7B0D1E]">
+          {editSlug ? t('editAnimatedWishCard') : t('createInvitation')}
         </h1>
-        <p className="mt-2 text-muted-foreground text-sm">
-          Design digital invitations complete with live countdowns, Google Maps & RSVP tracking
+        <p className="mt-1.5 text-muted-foreground text-xs sm:text-sm max-w-xl mx-auto">
+          {t('tagline')} — Cardzy.online
         </p>
 
         {/* 2-Step Progress Stepper */}
-        <div className="mt-6 flex items-center justify-center gap-2 sm:gap-4">
+        <div className="mt-5 flex items-center justify-center gap-3">
           {[
-            { s: 1, label: 'Select Event Type' },
-            { s: 2, label: 'Personalize & Share' },
+            { s: 1, label: t('stepChooseOccasion') },
+            { s: 2, label: t('personalizeShare') },
           ].map(({ s, label }) => (
             <div key={s} className="flex items-center gap-2">
               <button
                 onClick={() => { setErrors({}); setStep(s as 1 | 2); }}
                 className={`flex size-8 items-center justify-center rounded-full text-xs font-bold transition-all ${
                   step === s
-                    ? 'bg-[#7B0D1E] text-white ring-4 ring-[#7B0D1E]/20'
-                    : 'bg-[#7B0D1E]/20 text-[#7B0D1E] cursor-pointer'
+                    ? 'bg-[#7B0D1E] text-white ring-4 ring-[#7B0D1E]/20 shadow-md'
+                    : 'bg-[#7B0D1E]/15 text-[#7B0D1E] hover:bg-[#7B0D1E]/25 cursor-pointer'
                 }`}
               >
                 {s}
               </button>
-              <span className={`hidden text-xs font-semibold sm:inline ${step === s ? 'text-foreground font-bold' : 'text-muted-foreground'}`}>
+              <span className={`text-xs font-semibold ${step === s ? 'text-foreground font-bold' : 'text-muted-foreground'}`}>
                 {label}
               </span>
-              {s < 2 && <span className="text-muted-foreground/40 sm:ml-2">/</span>}
+              {s < 2 && <span className="text-muted-foreground/40 ml-1">/</span>}
             </div>
           ))}
         </div>
       </div>
 
       {Object.keys(errors).length > 0 && (
-        <div className="mb-6 mx-auto max-w-xl rounded-xl border border-red-500/30 bg-red-500/10 p-3.5 text-xs font-semibold text-red-600 flex items-center gap-2 shadow-sm">
+        <div className="mb-5 mx-auto max-w-xl rounded-2xl border border-red-500/30 bg-red-500/10 p-3.5 text-xs font-semibold text-red-600 flex items-center gap-2 shadow-sm">
           <AlertCircle className="size-4 shrink-0 text-red-600" />
-          <span>Please fix the validation errors below before proceeding.</span>
+          <span>{t('validationErrorsNotice')}</span>
         </div>
       )}
 
-      {/* Mobile Sticky Preview */}
+      {/* 📱 Mobile Tabs (Only visible on Step 2 & Mobile < 1024px) */}
       {step === 2 && (
-        <div className="sticky top-16 z-40 block lg:hidden border border-border bg-card/95 backdrop-blur-md shadow-sm rounded-2xl mb-6 transition-all overflow-hidden">
-          <div className="px-4 py-2.5 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Heart className="size-4 text-[#7B0D1E] animate-pulse" />
-              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                Live Preview
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <AudioPlayer occasionId={typeId} />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowMobilePreview(!showMobilePreview)}
-                className="text-xs h-7 px-2.5 font-semibold text-[#7B0D1E] border-[#7B0D1E]/20 hover:bg-[#7B0D1E]/5"
-              >
-                {showMobilePreview ? 'Hide Preview' : 'Show Preview'}
-              </Button>
-            </div>
-          </div>
+        <div className="block lg:hidden mb-5">
+          <div className="grid grid-cols-3 gap-1 rounded-2xl bg-muted/60 p-1.5 border border-border/70 shadow-sm">
+            <button
+              onClick={() => setMobileTab('details')}
+              className={cn(
+                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all',
+                mobileTab === 'details'
+                  ? 'bg-background text-[#7B0D1E] shadow-md border border-border/50'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              <Edit3 className="size-3.5" />
+              <span>{t('tabDetails')}</span>
+            </button>
 
-          {showMobilePreview && (
-            <div className="h-[210px] w-full overflow-hidden flex justify-center bg-muted/10 relative border-t border-border/50">
-              <div className="absolute top-2 transform scale-[0.42] sm:scale-[0.5] origin-top">
-                <CardAnimationPreview occasionId={typeId} animationKey={typeId} className="max-w-sm" roundedClass="rounded-3xl">
-                  <InvitationCard
-                    data={{
-                      typeId,
-                      title: title || selectedType?.label || 'Invitation',
-                      hostNames,
-                      groom,
-                      bride,
-                      date: date || new Date().toISOString().slice(0, 10),
-                      time: time || '7:00 PM',
-                      venue: venue || 'Venue Name',
-                      city: city || 'Lahore',
-                      dressCode,
-                      notes,
-                      themeId,
-                      borderId,
-                      bgVariantId,
-                    }}
-                    showCountdown={false}
-                  />
-                </CardAnimationPreview>
-              </div>
-            </div>
-          )}
+            <button
+              onClick={() => setMobileTab('design')}
+              className={cn(
+                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all',
+                mobileTab === 'design'
+                  ? 'bg-background text-[#7B0D1E] shadow-md border border-border/50'
+                  : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              <Palette className="size-3.5" />
+              <span>{t('tabDesign')}</span>
+            </button>
+
+            <button
+              onClick={() => setMobileTab('preview')}
+              className={cn(
+                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all relative',
+                mobileTab === 'preview'
+                  ? 'bg-[#7B0D1E] text-white shadow-md'
+                  : 'text-[#7B0D1E] bg-[#7B0D1E]/10 hover:bg-[#7B0D1E]/20'
+              )}
+            >
+              <Eye className="size-3.5" />
+              <span>{t('tabPreview')}</span>
+              <span className="absolute -top-1 -right-1 size-2 rounded-full bg-emerald-500 animate-ping" />
+            </button>
+          </div>
         </div>
       )}
 
       <div className="grid gap-8 lg:grid-cols-12">
+        {/* Main Column */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <div className="rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-sm">
             {step === 1 && (
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-bold text-foreground">Step 1: Select Event Type</h2>
-                  <span className="text-xs font-medium text-muted-foreground">Click any card to edit details</span>
+                <div className="flex items-center justify-between border-b border-border pb-3">
+                  <h2 className="text-lg font-extrabold text-foreground flex items-center gap-2">
+                    <Grid className="size-5 text-[#7B0D1E]" /> {t('stepChooseOccasion')}
+                  </h2>
+                  <span className="text-xs font-medium text-muted-foreground">{t('clickTileToPersonalize')}</span>
                 </div>
 
                 <InvitationTypePicker
@@ -366,37 +350,47 @@ function CreateInvitationContent() {
 
             {step === 2 && (
               <div className="space-y-6">
-                {/* Header selected event info */}
+                {/* Header Selected Event Info */}
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <div>
-                    <span className="text-xs uppercase font-bold tracking-wider text-[#7B0D1E]">Selected Event Type</span>
-                    <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
-                      {selectedType?.label} <span className="font-urdu text-base text-muted-foreground">({selectedType?.urdu})</span>
+                    <span className="text-[10px] uppercase font-extrabold tracking-wider text-[#7B0D1E]">
+                      {t('selectedOccasion')}
+                    </span>
+                    <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+                      {t(`type_${selectedType?.id.replace(/-/g, '_')}`) || selectedType?.label}
                     </h2>
                   </div>
-                  <Button variant="outline" size="sm" onClick={() => setStep(1)} className="text-xs flex items-center gap-1">
-                    <Grid className="size-3.5" /> View Event Types
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setStep(1)}
+                    className="text-xs h-8 px-3 rounded-xl flex items-center gap-1.5"
+                  >
+                    <Grid className="size-3.5 text-[#7B0D1E]" /> {t('viewOccasions')}
                   </Button>
                 </div>
 
-                {/* Section A: Event Details */}
-                <div className="space-y-4">
-                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1">
-                    <Grid className="size-4" /> 1. Event Information
+                {/* 📝 Details Tab Content (Mobile details or Desktop always) */}
+                <div className={cn(mobileTab !== 'details' && 'hidden lg:block', 'space-y-5')}>
+                  <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
+                    <Edit3 className="size-4" /> 1. {t('cardDetailsHeading')}
                   </h3>
 
                   {isCouple ? (
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="mb-1 block text-sm font-medium">Groom&apos;s Name *</label>
+                        <label className="mb-1.5 block text-xs font-bold text-foreground">
+                          {t('groomName')} *
+                        </label>
                         <input
                           type="text"
                           required
                           value={groom}
                           onChange={(e) => handleFieldChange('groom', e.target.value, setGroom)}
-                          placeholder="e.g. Shahzaib Khan"
+                          placeholder={t('placeholderGroom')}
+                          dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
                           className={cn(
-                            "w-full rounded-xl border p-2.5 text-sm bg-background focus:outline-none focus:ring-2",
+                            "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
                             errors.groom ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
                           )}
                         />
@@ -407,15 +401,18 @@ function CreateInvitationContent() {
                         )}
                       </div>
                       <div>
-                        <label className="mb-1 block text-sm font-medium">Bride&apos;s Name *</label>
+                        <label className="mb-1.5 block text-xs font-bold text-foreground">
+                          {t('brideName')} *
+                        </label>
                         <input
                           type="text"
                           required
                           value={bride}
                           onChange={(e) => handleFieldChange('bride', e.target.value, setBride)}
-                          placeholder="e.g. Fatima Ali"
+                          placeholder={t('placeholderBride')}
+                          dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
                           className={cn(
-                            "w-full rounded-xl border p-2.5 text-sm bg-background focus:outline-none focus:ring-2",
+                            "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
                             errors.bride ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
                           )}
                         />
@@ -428,15 +425,18 @@ function CreateInvitationContent() {
                     </div>
                   ) : (
                     <div>
-                      <label className="mb-1 block text-sm font-medium">Event Title *</label>
+                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                        {t('eventTitle')} *
+                      </label>
                       <input
                         type="text"
                         required
                         value={title}
                         onChange={(e) => handleFieldChange('title', e.target.value, setTitle)}
-                        placeholder={`e.g. Annual ${selectedType?.label}`}
+                        placeholder={`e.g. ${selectedType?.label || 'Annual Event'}`}
+                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
                         className={cn(
-                          "w-full rounded-xl border p-2.5 text-sm bg-background focus:outline-none focus:ring-2",
+                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
                           errors.title ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
                         )}
                       />
@@ -449,34 +449,31 @@ function CreateInvitationContent() {
                   )}
 
                   <div>
-                    <label className="mb-1 block text-sm font-medium">Host / Family Names</label>
+                    <label className="mb-1.5 block text-xs font-bold text-foreground">
+                      {t('hostNamesLabel')}
+                    </label>
                     <input
                       type="text"
                       value={hostNames}
                       onChange={(e) => handleFieldChange('hostNames', e.target.value, setHostNames)}
-                      placeholder="e.g. Mr. & Mrs. Tariq Mahmood"
-                      className={cn(
-                        "w-full rounded-xl border p-2.5 text-sm bg-background focus:outline-none focus:ring-2",
-                        errors.hostNames ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
-                      )}
+                      placeholder={t('placeholderHost')}
+                      dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                      className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
                     />
-                    {errors.hostNames && (
-                      <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                        <AlertCircle className="size-3 shrink-0" /> {errors.hostNames}
-                      </p>
-                    )}
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="mb-1 block text-sm font-medium">Date *</label>
+                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                        {t('eventDateLabel')} *
+                      </label>
                       <input
                         type="date"
                         required
                         value={date}
                         onChange={(e) => handleFieldChange('date', e.target.value, setDate)}
                         className={cn(
-                          "w-full rounded-xl border p-2.5 text-sm bg-background focus:outline-none focus:ring-2",
+                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
                           errors.date ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
                         )}
                       />
@@ -487,14 +484,16 @@ function CreateInvitationContent() {
                       )}
                     </div>
                     <div>
-                      <label className="mb-1 block text-sm font-medium">Time *</label>
+                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                        {t('eventTimeLabel')} *
+                      </label>
                       <input
                         type="time"
                         required
                         value={time}
                         onChange={(e) => handleFieldChange('time', e.target.value, setTime)}
                         className={cn(
-                          "w-full rounded-xl border p-2.5 text-sm bg-background focus:outline-none focus:ring-2",
+                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
                           errors.time ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
                         )}
                       />
@@ -508,92 +507,110 @@ function CreateInvitationContent() {
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="mb-1 block text-sm font-medium">Venue Name</label>
+                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                        {t('venueLabel')}
+                      </label>
                       <input
                         type="text"
                         value={venue}
                         onChange={(e) => setVenue(e.target.value)}
-                        placeholder="e.g. Pearl Continental Marquee"
-                        className="w-full rounded-xl border border-input bg-background p-2.5 text-sm focus:ring-2 focus:ring-[#7B0D1E]"
+                        placeholder={t('placeholderVenue')}
+                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                        className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
                       />
                     </div>
                     <div>
-                      <label className="mb-1 block text-sm font-medium">City</label>
+                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                        {t('cityLabel')}
+                      </label>
                       <input
                         type="text"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        placeholder="e.g. Lahore, Karachi, Islamabad"
-                        className="w-full rounded-xl border border-input bg-background p-2.5 text-sm focus:ring-2 focus:ring-[#7B0D1E]"
+                        placeholder={t('placeholderCity')}
+                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                        className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
                       />
                     </div>
                   </div>
 
+                  <div>
+                    <label className="mb-1.5 block text-xs font-bold text-foreground">
+                      {t('rsvpPhoneLabel')} *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={rsvpPhone}
+                      onChange={(e) => handleFieldChange('rsvpPhone', e.target.value, setRsvpPhone)}
+                      placeholder={t('placeholderRsvpPhone')}
+                      className={cn(
+                        "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                        errors.rsvpPhone ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                      )}
+                    />
+                    <p className="mt-1 text-[11px] text-muted-foreground">
+                      {t('rsvpPhoneHelp')}
+                    </p>
+                    {errors.rsvpPhone && (
+                      <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                        <AlertCircle className="size-3 shrink-0" /> {errors.rsvpPhone}
+                      </p>
+                    )}
+                  </div>
+
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="mb-1 block text-sm font-medium">Google Maps Link (Optional)</label>
+                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                        {t('mapsLinkLabel')}
+                      </label>
                       <input
                         type="text"
                         value={mapsLink}
                         onChange={(e) => setMapsLink(e.target.value)}
                         placeholder="https://maps.google.com/..."
-                        className="w-full rounded-xl border border-input bg-background p-2.5 text-sm focus:ring-2 focus:ring-[#7B0D1E]"
+                        className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
                       />
                     </div>
                     <div>
-                      <label className="mb-1 block text-sm font-medium">RSVP WhatsApp Number *</label>
-                      <input
-                        type="text"
-                        required
-                        value={rsvpPhone}
-                        onChange={(e) => handleFieldChange('rsvpPhone', e.target.value, setRsvpPhone)}
-                        placeholder="e.g. 03001234567"
-                        className={cn(
-                          "w-full rounded-xl border p-2.5 text-sm bg-background focus:outline-none focus:ring-2",
-                          errors.rsvpPhone ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
-                        )}
-                      />
-                      {errors.rsvpPhone && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                          <AlertCircle className="size-3 shrink-0" /> {errors.rsvpPhone}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label className="mb-1 block text-sm font-medium">Dress Code (Optional)</label>
+                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                        {t('dressCodeLabel')}
+                      </label>
                       <input
                         type="text"
                         value={dressCode}
                         onChange={(e) => setDressCode(e.target.value)}
-                        placeholder="e.g. Traditional / Formal"
-                        className="w-full rounded-xl border border-input bg-background p-2.5 text-sm focus:ring-2 focus:ring-[#7B0D1E]"
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1 block text-sm font-medium">Special Notes / Message</label>
-                      <input
-                        type="text"
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                        placeholder="e.g. Family request: No photography"
-                        className="w-full rounded-xl border border-input bg-background p-2.5 text-sm focus:ring-2 focus:ring-[#7B0D1E]"
+                        placeholder={t('placeholderDressCode')}
+                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                        className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
                       />
                     </div>
                   </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-xs font-bold text-foreground">
+                      {t('notesLabel')}
+                    </label>
+                    <input
+                      type="text"
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      placeholder="e.g. Children welcome / No gifts"
+                      dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                      className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
+                    />
+                  </div>
                 </div>
 
-                {/* Section B: Theme & Customization */}
-                <div className="space-y-4 pt-4 border-t border-border">
-                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1">
-                    <Sparkles className="size-4" /> 2. Invitation Customization
+                {/* 🎨 Design Tab Content (Mobile design or Desktop always) */}
+                <div className={cn(mobileTab !== 'design' && 'hidden lg:block', 'space-y-6 pt-4 border-t border-border')}>
+                  <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
+                    <Palette className="size-4" /> 2. {t('cardStylingHeading')}
                   </h3>
 
                   <div>
                     <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Select Theme Style
+                      {t('selectTheme')}
                     </label>
                     <ThemePicker
                       value={themeId}
@@ -605,7 +622,7 @@ function CreateInvitationContent() {
 
                   <div>
                     <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Select Card Border Design
+                      {t('selectBorder')}
                     </label>
                     <BorderPicker
                       value={borderId}
@@ -617,7 +634,7 @@ function CreateInvitationContent() {
 
                   <div>
                     <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Select Card Background Design
+                      {t('selectBackground')}
                     </label>
                     <BackgroundPicker
                       value={bgVariantId}
@@ -627,13 +644,56 @@ function CreateInvitationContent() {
                   </div>
                 </div>
 
-                {/* Bottom navigation action buttons */}
+                {/* 👁️ Preview Tab Content (Only displayed on Mobile when preview tab active) */}
+                <div className={cn(mobileTab !== 'preview' && 'hidden lg:hidden', 'space-y-4 pt-2')}>
+                  <div className="rounded-3xl border border-border bg-gradient-to-b from-muted/20 to-card p-4 text-center shadow-md">
+                    <div className="flex items-center justify-between mb-3 px-1">
+                      <span className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
+                        <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-center overflow-hidden py-2">
+                      <div className="w-full">
+                        <CardAnimationPreview occasionId={typeId} animationKey={typeId} className="max-w-sm mx-auto" roundedClass="rounded-3xl">
+                          <InvitationCard
+                            data={{
+                              typeId,
+                              title: title || selectedType?.label || 'Invitation',
+                              hostNames,
+                              groom,
+                              bride,
+                              date: date || new Date().toISOString().slice(0, 10),
+                              time: time || '7:00 PM',
+                              venue: venue || 'Venue Name',
+                              city: city || 'Lahore',
+                              dressCode,
+                              notes,
+                              themeId,
+                              borderId,
+                              bgVariantId,
+                            }}
+                          />
+                        </CardAnimationPreview>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Navigation Buttons */}
                 <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-6 mt-6">
-                  <Button variant="outline" onClick={() => setStep(1)} className="w-full sm:w-auto">
+                  <Button
+                    variant="outline"
+                    onClick={() => setStep(1)}
+                    className="w-full sm:w-auto rounded-2xl h-11"
+                  >
                     <ArrowLeft className="mr-2 size-4" /> Change Event Type
                   </Button>
-                  <Button onClick={handleFinish} className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-bold px-8 shadow-md flex items-center justify-center gap-1.5 active:scale-95 transition-transform">
-                    {editSlug ? 'Save Changes' : 'Generate Clean Link'} <Sparkles className="size-4" />
+                  <Button
+                    onClick={handleFinish}
+                    className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
+                  >
+                    {editSlug ? t('saveInvitationBtn') : t('createAndShareBtn')}
                   </Button>
                 </div>
               </div>
@@ -641,13 +701,13 @@ function CreateInvitationContent() {
           </div>
         </div>
 
-        {/* Right column — Sticky live preview */}
+        {/* Desktop Right Column — Sticky Live Interactive Preview */}
         <div className="hidden lg:block lg:col-span-5 space-y-4">
-          <div className="sticky top-24 rounded-2xl border border-border bg-card p-6 shadow-md text-center">
-            <p className="mb-4 text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-center gap-1">
-              <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> Invitation Live Preview
+          <div className="sticky top-24 rounded-3xl border border-border bg-card p-6 shadow-xl text-center backdrop-blur-md">
+            <p className="mb-4 text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center justify-center gap-1.5">
+              <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
             </p>
-            <div className="transform scale-[0.95] origin-top">
+            <div>
               <CardAnimationPreview occasionId={typeId} animationKey={typeId} className="max-w-sm mx-auto" roundedClass="rounded-3xl">
                 <InvitationCard
                   data={{
@@ -669,17 +729,41 @@ function CreateInvitationContent() {
                 />
               </CardAnimationPreview>
             </div>
-
-            {/* Sound preview */}
-            <div className="mt-4 flex flex-col items-center gap-1">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Sound Preview
-              </p>
-              <AudioPlayer occasionId={typeId} />
-            </div>
           </div>
         </div>
       </div>
+
+      {/* 📱 Mobile Sticky Bottom Action Bar (Fixed at bottom on phone screens when step 2) */}
+      {step === 2 && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 block lg:hidden border-t border-border/80 bg-background/95 backdrop-blur-md p-3 shadow-2xl">
+          <div className="mx-auto flex max-w-md items-center gap-2">
+            {mobileTab !== 'preview' ? (
+              <Button
+                variant="outline"
+                onClick={() => setMobileTab('preview')}
+                className="flex-1 rounded-2xl text-xs font-bold h-12 border-[#7B0D1E]/30 text-[#7B0D1E] bg-[#7B0D1E]/5"
+              >
+                <Eye className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabPreview')}
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => setMobileTab('details')}
+                className="flex-1 rounded-2xl text-xs font-bold h-12"
+              >
+                <Edit3 className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabDetails')}
+              </Button>
+            )}
+
+            <Button
+              onClick={handleFinish}
+              className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all"
+            >
+              {editSlug ? t('saveChanges') : t('createAndShareBtn')}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -688,10 +772,10 @@ export default function CreateInvitationPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
-      <main className="flex-1 py-8 md:py-12">
+      <main className="flex-1 py-6 md:py-10">
         <Suspense fallback={
           <div className="flex py-20 items-center justify-center">
-            <Loader2 className="size-8 animate-spin text-emerald-600" />
+            <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />
           </div>
         }>
           <CreateInvitationContent />

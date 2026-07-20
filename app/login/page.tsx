@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { GoogleOneTap } from '@/components/google-one-tap'
+import { CardzyLogo } from '@/components/ui/logo'
+import { useLang } from '@/lib/lang/context'
 
 // Popular email domains for autocomplete suggestions
 const EMAIL_DOMAINS = [
@@ -141,6 +143,7 @@ function LoginPageContent() {
 
   const tabParam = searchParams.get('tab')
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(tabParam === 'signup' ? 'signup' : 'login')
+  const { t } = useLang()
   const [signupStep, setSignupStep] = useState<1 | 2>(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -319,9 +322,9 @@ function LoginPageContent() {
           <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary via-gold to-emerald-500" />
 
           <div className="text-center">
-            <img src="/icon.svg" alt="Jashn Logo" className="mx-auto size-12 rounded-2xl mb-3 shadow-md" />
-            <h1 className="text-2xl font-extrabold text-foreground">Welcome to Jashn</h1>
-            <p className="text-xs text-muted-foreground mt-1">Design premium digital cards, invitations & track RSVPs live</p>
+            <CardzyLogo className="mx-auto size-12 mb-3 shadow-md" />
+            <h1 className="text-2xl font-extrabold text-foreground">{t('welcomeBack')}</h1>
+            <p className="text-xs text-muted-foreground mt-1">{t('signInToContinue')}</p>
           </div>
 
           {/* Tabs */}
@@ -330,13 +333,13 @@ function LoginPageContent() {
               onClick={() => { setActiveTab('login'); setGeneralError(null) }}
               className={cn('py-2.5 rounded-lg transition-all', activeTab === 'login' ? 'bg-card text-foreground shadow' : 'text-muted-foreground hover:text-foreground')}
             >
-              Sign In
+              {t('logIn')}
             </button>
             <button
               onClick={() => { setActiveTab('signup'); setGeneralError(null) }}
               className={cn('py-2.5 rounded-lg transition-all', activeTab === 'signup' ? 'bg-card text-foreground shadow' : 'text-muted-foreground hover:text-foreground')}
             >
-              Register
+              {t('signUpFree')}
             </button>
           </div>
 
@@ -350,7 +353,7 @@ function LoginPageContent() {
           {activeTab === 'login' && !forgotMode && (
             <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-foreground mb-1">Email Address</label>
+                <label className="block text-xs font-medium text-foreground mb-1">{t('emailAddress')}</label>
                 <EmailSuggestInput
                   value={loginEmail}
                   onChange={setLoginEmail}
@@ -359,7 +362,7 @@ function LoginPageContent() {
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-medium text-foreground">Password</label>
+                  <label className="block text-xs font-medium text-foreground">{t('password')}</label>
                   <button
                     type="button"
                     onClick={() => {
@@ -371,7 +374,7 @@ function LoginPageContent() {
                     }}
                     className="text-[11px] text-primary hover:underline font-semibold"
                   >
-                    Forgot password?
+                    {t('forgotPassword')}
                   </button>
                 </div>
                 <div className="relative">
@@ -394,7 +397,7 @@ function LoginPageContent() {
               {/* Divider */}
               <div className="flex items-center gap-3 text-[11px] text-muted-foreground font-medium">
                 <span className="flex-1 h-px bg-border" />
-                or continue with
+                {t('orContinueWith')}
                 <span className="flex-1 h-px bg-border" />
               </div>
 
@@ -415,13 +418,13 @@ function LoginPageContent() {
                     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                   </svg>
                 )}
-                Sign in with Google
+                {t('continueWithGoogle')}
               </button>
 
               <div className="text-center text-xs text-muted-foreground pt-2 border-t border-border/60">
-                Don&apos;t have an account?{' '}
+                {t('dontHaveAccount')}{' '}
                 <button type="button" onClick={() => { setActiveTab('signup'); setGeneralError(null) }} className="text-primary hover:underline font-bold">
-                  Create account
+                  {t('createFreeAccount')}
                 </button>
               </div>
             </form>
@@ -472,7 +475,7 @@ function LoginPageContent() {
                   )}
 
                   <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">Email Address</label>
+                    <label className="block text-xs font-medium text-foreground mb-1">{t('emailAddress')}</label>
                     <EmailSuggestInput
                       value={resetEmail}
                       onChange={setResetEmail}
@@ -515,7 +518,7 @@ function LoginPageContent() {
               {signupStep === 1 && (
                 <form onSubmit={handleNextStep} className="login-step-fields space-y-4">
                   <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">Full Name</label>
+                    <label className="block text-xs font-medium text-foreground mb-1">{t('fullName')}</label>
                     <div className="relative">
                       <input
                         type="text"

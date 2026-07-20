@@ -8,7 +8,7 @@ export function ShareBar({
   url,
   waMessage,
   captureRef,
-  fileName = 'jashn-card',
+  fileName = 'cardzy-card',
 }: {
   url: string
   waMessage: string

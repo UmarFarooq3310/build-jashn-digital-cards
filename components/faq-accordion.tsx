@@ -1,61 +1,25 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, Sparkles } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
+import { useLang } from '@/lib/lang/context'
 
-interface FaqItem {
-  question: string
-  answer: string
-}
-
-const FAQ_ITEMS: FaqItem[] = [
-  {
-    question: "What is Jashn and how does it work?",
-    answer: "Jashn (jashn.app) is Pakistan's premier platform for creating animated digital wish cards and full event invitation websites. We help you design and share beautiful, bilingual (English & Urdu) invites for weddings, dholkis, birthdays, Eid, and more. You simply select a template, customize the text and event details (like maps, date, and dress code), choose an optional background audio track, and generate a unique link to share with your family and friends via WhatsApp."
-  },
-  {
-    question: "How can I create and send a digital wish card?",
-    answer: "To send a wish card, go to 'Send a Wish' from the navigation. Select your occasion (such as Eid Mubarak, Birthday, Wedding, or Anniversary), pick a theme, enter the sender and recipient names, write a custom message (in English, Urdu, or both), and click create. You will instantly get a link to send on WhatsApp, or you can preview the animated card with traditional music and animations."
-  },
-  {
-    question: "How do I create a digital event invitation website?",
-    answer: "For invitations, choose 'Create Invitation' in the menu. Enter your event details—host names, bride & groom names, date, venue, dress code, and optional Google Maps location links. Once created, Jashn hosts a dedicated, beautiful invitation web page for your event. Guests visiting this link will see a countdown timer, event location, and an interactive RSVP section."
-  },
-  {
-    question: "Is Jashn free to use?",
-    answer: "Yes, Jashn is completely free to start! With our Free Plan, you can create unlimited wish cards using our classic free themes, send basic invitation pages, and share them instantly. For premium events like weddings, we offer Pro and Business upgrades."
-  },
-  {
-    question: "What features are included in the Pro and Business plans?",
-    answer: "Our Pro Plan (Rs. 499) removes the Jashn watermark, unlocks premium themes (like Mughal Gold and Pink Zardozi), enables petal & sparkle falling animations, provides real-time view & RSVP guest analytics, and allows high-resolution image downloads. The Business Plan (Rs. 2,999) is designed for event organizers and venues, offering branded cards with custom logos, CSV guest list exports, WhatsApp API sending, and a dedicated account manager."
-  },
-  {
-    question: "What payment methods are supported in Pakistan?",
-    answer: "To make it incredibly easy for users in Pakistan, we support direct mobile wallet billing. You can upgrade your plan instantly using JazzCash or EasyPaisa. Simply enter your mobile wallet number during checkout on our Pricing page, and you will receive a secure OTP confirmation request on your phone."
-  },
-  {
-    question: "How do guest RSVPs and analytics work?",
-    answer: "When you share a premium invitation, your guests can click 'Going' or 'Maybe' and enter the number of guests attending directly on your invitation link. As the creator, you can log into your Jashn Dashboard at any time to see the total view count, how many guests have RSVPed, and view the list of guest names and attendance counts in real-time."
-  },
-  {
-    question: "Can I add Urdu text and Nastaliq calligraphy to my cards?",
-    answer: "Absolutely! Jashn features native support for the beautiful Noto Nastaliq Urdu font. During customization, you can write Urdu text for titles, sender names, and messages. Our templates are designed to display Urdu calligraphy gracefully alongside English details."
-  },
-  {
-    question: "Can I add background music or sounds to my invitation?",
-    answer: "Yes. Jashn supports ambient audio themes to set the mood for your invitations. You can select classic Dholki beats for mehndis, soft instrumental/shehnai for weddings, festive tunes for birthdays, or serene background sounds. Guests can easily mute or unmute the audio using a floating speaker button on the page."
-  },
-  {
-    question: "Can I download my card as a high-resolution image?",
-    answer: "Yes, Pro and Business plan users can download their wish cards as high-quality PNG images. This is perfect for posting on Instagram, printing, or sending as a static photo, though we highly recommend sharing the interactive animated web link for the best multimedia experience."
-  },
-  {
-    question: "Do these digital invitations work on mobile devices?",
-    answer: "Yes, Jashn cards are fully responsive and optimized for mobile screens. Since over 95% of guests open invitations on their mobile phones via WhatsApp, we design every theme to look stunning, load fast, and animate smoothly on all iOS and Android smartphones."
-  }
+const FAQ_ITEMS = [
+  { qKey: 'faq_q1', aKey: 'faq_a1', fallbackQ: "What is Cardzy and how does it work?", fallbackA: "Cardzy (cardzy.online) is a global platform for creating animated digital wish cards and full event invitation websites..." },
+  { qKey: 'faq_q2', aKey: 'faq_a2', fallbackQ: "How can I create and send a digital wish card?", fallbackA: "To send a wish card, select your occasion (Eid, Birthday, Wedding, Christmas), pick a theme, enter names, and click create." },
+  { qKey: 'faq_q3', aKey: 'faq_a3', fallbackQ: "How do I create a digital event invitation website?", fallbackA: "Choose 'Create Invitation' in the menu, enter your event details, and Cardzy generates a dedicated invitation page." },
+  { qKey: 'faq_q4', aKey: 'faq_a4', fallbackQ: "Is Cardzy free to use?", fallbackA: "Yes, Cardzy is completely free to start! You can create unlimited wish cards using our classic free themes and share them instantly." },
+  { qKey: 'faq_q5', aKey: 'faq_a5', fallbackQ: "What features are included in the Pro and Business plans?", fallbackA: "Our Pro Plan removes watermarks and unlocks all premium themes. The Business Plan offers custom logos and CSV exports." },
+  { qKey: 'faq_q6', aKey: 'faq_a6', fallbackQ: "How do I upgrade to a Pro or Business plan?", fallbackA: "Reach out via WhatsApp (+92 309 3518796) or Email (cardzyonline@gmail.com) with payment proof." },
+  { qKey: 'faq_q7', aKey: 'faq_a7', fallbackQ: "What payment methods do you accept?", fallbackA: "For Pakistan: EasyPaisa, JazzCash, or Bank Transfer. For International: PayPal, Wise, or Bank Transfer." },
+  { qKey: 'faq_q8', aKey: 'faq_a8', fallbackQ: "How do guest RSVPs and analytics work?", fallbackA: "Guests click 'Going' or 'Maybe' on your link. You can view real-time view counts and guest attendance in your Dashboard." },
+  { qKey: 'faq_q9', aKey: 'faq_a9', fallbackQ: "What languages are supported?", fallbackA: "Cardzy supports 18 languages: English, Spanish, French, Arabic, Hindi, Mandarin, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Urdu, Bengali, Vietnamese, and Swahili." },
+  { qKey: 'faq_q10', aKey: 'faq_a10', fallbackQ: "Can I download my card as a high-resolution image?", fallbackA: "Yes, Pro and Business plan users can download their wish cards as high-quality PNG images." },
+  { qKey: 'faq_q11', aKey: 'faq_a11', fallbackQ: "Do these digital invitations work on mobile devices?", fallbackA: "Yes, Cardzy cards are 100% responsive and optimized for mobile screens on iOS and Android." },
 ]
 
 export function FaqAccordion() {
+  const { t } = useLang()
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   const toggleIndex = (index: number) => {
@@ -66,6 +30,9 @@ export function FaqAccordion() {
     <div className="mx-auto max-w-3xl space-y-4">
       {FAQ_ITEMS.map((item, index) => {
         const isOpen = openIndex === index
+        const question = t(item.qKey) || item.fallbackQ
+        const answer = t(item.aKey) || item.fallbackA
+
         return (
           <div
             key={index}
@@ -77,7 +44,7 @@ export function FaqAccordion() {
               aria-expanded={isOpen}
               id={`faq-btn-${index}`}
             >
-              <span className="text-base sm:text-lg">{item.question}</span>
+              <span className="text-base sm:text-lg">{question}</span>
               <ChevronDown
                 className={`size-5 text-muted-foreground transition-transform duration-300 ${
                   isOpen ? 'rotate-180 text-primary' : ''
@@ -86,11 +53,11 @@ export function FaqAccordion() {
             </button>
             <div
               className={`transition-all duration-300 ease-in-out ${
-                isOpen ? 'max-h-[350px] opacity-100 border-t border-border' : 'max-h-0 opacity-0'
+                isOpen ? 'max-h-[400px] opacity-100 border-t border-border' : 'max-h-0 opacity-0'
               } overflow-hidden`}
             >
               <p className="p-5 text-sm sm:text-base leading-relaxed text-muted-foreground bg-muted/20">
-                {item.answer}
+                {answer}
               </p>
             </div>
           </div>

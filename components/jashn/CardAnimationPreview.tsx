@@ -410,48 +410,51 @@ export default function CardAnimationPreview({
   useGSAP(
     () => {
       const ctx = gsap.context(() => {
+        const root = containerRef.current
+        if (!root) return
+
         // ── WEDDING / NIKAH / SHAADI / ANNIVERSARY ──────────────────────────
         if (type === 'wedding') {
           const tl = gsap.timeline()
 
-          // 1. Chosen border draws in
-          const borderSelector = '.mughal-arch, .border-royal-gold, .border-dashed-frame, .border-corners, .border-corner-bottom-left, .border-corner-bottom-right, .border-double-frame, .border-woven, .mehndi-border, .border-diamond-strip'
-          tl.fromTo(
-            borderSelector,
-            { scaleX: 0.85, scaleY: 0.85, opacity: 0 },
-            { scaleX: 1, scaleY: 1, opacity: 1, duration: 0.9, ease: 'power3.out' },
-            0,
-          )
+          const borders = root.querySelectorAll('.mughal-arch, .border-royal-gold, .border-dashed-frame, .border-corners, .border-corner-bottom-left, .border-corner-bottom-right, .border-double-frame, .border-woven, .mehndi-border, .border-diamond-strip')
+          if (borders.length > 0) {
+            tl.fromTo(borders, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' }, 0)
+          }
 
-          // 2. Gold petals fall with stagger, x drift, rotation
-          tl.fromTo(
-            '.anim-petal',
-            { y: 0, x: 0, rotation: 0, opacity: 0 },
-            {
-              y: 480,
-              x: 'random(-40, 40)',
-              rotation: 'random(120, 280)',
-              opacity: 0.85,
-              duration: 2.6,
-              ease: 'sine.inOut',
-              stagger: 0.3,
-            },
-            0.3,
-          )
+          const petals = root.querySelectorAll('.anim-petal')
+          if (petals.length > 0) {
+            tl.fromTo(
+              petals,
+              { y: 0, x: 0, rotation: 0, opacity: 0 },
+              {
+                y: 480,
+                x: 'random(-40, 40)',
+                rotation: 'random(120, 280)',
+                opacity: 0.85,
+                duration: 2.6,
+                ease: 'sine.inOut',
+                stagger: 0.3,
+              },
+              0.3,
+            )
+          }
 
-          // 3. Shimmer overlay brightness pulse — looping
-          tl.fromTo(
-            '.anim-shimmer',
-            { filter: 'brightness(1)' },
-            {
-              filter: 'brightness(1.35)',
-              duration: 1.1,
-              ease: 'sine.inOut',
-              repeat: -1,
-              yoyo: true,
-            },
-            1.0,
-          )
+          const shimmer = root.querySelectorAll('.anim-shimmer')
+          if (shimmer.length > 0) {
+            tl.fromTo(
+              shimmer,
+              { filter: 'brightness(1)' },
+              {
+                filter: 'brightness(1.35)',
+                duration: 1.1,
+                ease: 'sine.inOut',
+                repeat: -1,
+                yoyo: true,
+              },
+              1.0,
+            )
+          }
 
           return () => tl.kill()
         }
@@ -460,48 +463,50 @@ export default function CardAnimationPreview({
         if (type === 'mehndi') {
           const tl = gsap.timeline()
 
-          // 1. Amber glow pulse on card border via the overlay wash
-          tl.fromTo(
-            '.anim-mehndi-wash',
-            { opacity: 0 },
-            {
-              opacity: 1,
-              duration: 0.8,
-              ease: 'power2.out',
-              repeat: -1,
-              yoyo: true,
-              repeatDelay: 0.4,
-            },
-            0,
-          )
+          const wash = root.querySelectorAll('.anim-mehndi-wash')
+          if (wash.length > 0) {
+            tl.fromTo(
+              wash,
+              { opacity: 0 },
+              {
+                opacity: 1,
+                duration: 0.8,
+                ease: 'power2.out',
+                repeat: -1,
+                yoyo: true,
+                repeatDelay: 0.4,
+              },
+              0,
+            )
+          }
 
-          // 2. Henna dots fade+scale in with stagger
-          tl.fromTo(
-            '.anim-henna-dot',
-            { scale: 0, opacity: 0 },
-            {
-              scale: 1,
-              opacity: 1,
-              duration: 0.45,
-              ease: 'back.out(2)',
-              stagger: 0.12,
-            },
-            0.2,
-          )
-
-          // 3. Subtle pulse on dots after entrance
-          tl.to(
-            '.anim-henna-dot',
-            {
-              scale: 1.35,
-              duration: 0.7,
-              ease: 'sine.inOut',
-              repeat: -1,
-              yoyo: true,
-              stagger: { each: 0.15, repeat: -1 },
-            },
-            1.5,
-          )
+          const dots = root.querySelectorAll('.anim-henna-dot')
+          if (dots.length > 0) {
+            tl.fromTo(
+              dots,
+              { scale: 0, opacity: 0 },
+              {
+                scale: 1,
+                opacity: 1,
+                duration: 0.45,
+                ease: 'back.out(2)',
+                stagger: 0.12,
+              },
+              0.2,
+            )
+            tl.to(
+              dots,
+              {
+                scale: 1.35,
+                duration: 0.7,
+                ease: 'sine.inOut',
+                repeat: -1,
+                yoyo: true,
+                stagger: { each: 0.15, repeat: -1 },
+              },
+              1.5,
+            )
+          }
 
           return () => tl.kill()
         }
@@ -510,44 +515,50 @@ export default function CardAnimationPreview({
         if (type === 'birthday') {
           const tl = gsap.timeline()
 
-          // 1. Confetti burst from center
-          tl.fromTo(
-            '.anim-confetti',
-            { x: 0, y: 0, scale: 0, opacity: 1, rotation: 0 },
-            {
-              x: 'random(-160, 160)',
-              y: 'random(-240, 80)',
-              scale: 'random(0.7, 1.5)',
-              rotation: 'random(0, 360)',
-              opacity: 0,
-              duration: 'random(1.1, 2.4)',
-              ease: 'power3.out',
-              stagger: { each: 0.025 },
-            },
-            0,
-          )
+          const confetti = root.querySelectorAll('.anim-confetti')
+          if (confetti.length > 0) {
+            tl.fromTo(
+              confetti,
+              { x: 0, y: 0, scale: 0, opacity: 1, rotation: 0 },
+              {
+                x: 'random(-160, 160)',
+                y: 'random(-240, 80)',
+                scale: 'random(0.7, 1.5)',
+                rotation: 'random(0, 360)',
+                opacity: 0,
+                duration: 'random(1.1, 2.4)',
+                ease: 'power3.out',
+                stagger: { each: 0.025 },
+              },
+              0,
+            )
+          }
 
-          // 2. Candle appears
-          tl.fromTo(
-            '.anim-candle',
-            { y: 30, opacity: 0, scale: 0.7 },
-            { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: 'back.out(1.8)' },
-            0.4,
-          )
+          const candle = root.querySelectorAll('.anim-candle')
+          if (candle.length > 0) {
+            tl.fromTo(
+              candle,
+              { y: 30, opacity: 0, scale: 0.7 },
+              { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: 'back.out(1.8)' },
+              0.4,
+            )
+          }
 
-          // 3. Flame flicker loop — scaleY yoyo
-          tl.to(
-            '.anim-flame',
-            {
-              scaleY: 1.35,
-              scaleX: 0.82,
-              duration: 0.11,
-              ease: 'power1.inOut',
-              repeat: -1,
-              yoyo: true,
-            },
-            1.0,
-          )
+          const flame = root.querySelectorAll('.anim-flame')
+          if (flame.length > 0) {
+            tl.to(
+              flame,
+              {
+                scaleY: 1.35,
+                scaleX: 0.82,
+                duration: 0.11,
+                ease: 'power1.inOut',
+                repeat: -1,
+                yoyo: true,
+              },
+              1.0,
+            )
+          }
 
           return () => tl.kill()
         }
@@ -556,66 +567,70 @@ export default function CardAnimationPreview({
         if (type === 'islamic') {
           const tl = gsap.timeline()
 
-          // 1. Crescent rises from below with glow
-          tl.fromTo(
-            '.anim-crescent',
-            { y: 60, opacity: 0, filter: 'drop-shadow(0 0 0px rgba(230,196,90,0))' },
-            {
-              y: 0,
-              opacity: 1,
-              filter: 'drop-shadow(0 0 12px rgba(230,196,90,0.9))',
-              duration: 1.0,
-              ease: 'power2.out',
-            },
-            0,
-          )
+          const crescent = root.querySelectorAll('.anim-crescent')
+          if (crescent.length > 0) {
+            tl.fromTo(
+              crescent,
+              { y: 60, opacity: 0, filter: 'drop-shadow(0 0 0px rgba(230,196,90,0))' },
+              {
+                y: 0,
+                opacity: 1,
+                filter: 'drop-shadow(0 0 12px rgba(230,196,90,0.9))',
+                duration: 1.0,
+                ease: 'power2.out',
+              },
+              0,
+            )
+            tl.to(
+              crescent,
+              {
+                filter: 'drop-shadow(0 0 20px rgba(230,196,90,1))',
+                duration: 1.4,
+                ease: 'sine.inOut',
+                repeat: -1,
+                yoyo: true,
+              },
+              1.1,
+            )
+          }
 
-          // 2. Crescent glow pulse loop after entrance
-          tl.to(
-            '.anim-crescent',
-            {
-              filter: 'drop-shadow(0 0 20px rgba(230,196,90,1))',
-              duration: 1.4,
-              ease: 'sine.inOut',
-              repeat: -1,
-              yoyo: true,
-            },
-            1.1,
-          )
+          const lanterns = root.querySelectorAll('.anim-lantern')
+          if (lanterns.length > 0) {
+            tl.fromTo(
+              lanterns,
+              { rotation: 0, opacity: 0 },
+              {
+                rotation: -8,
+                opacity: 1,
+                duration: 0.5,
+                ease: 'power2.out',
+                stagger: 0.12,
+              },
+              0.5,
+            )
+            tl.to(
+              lanterns,
+              {
+                rotation: 8,
+                duration: 2.0,
+                ease: 'sine.inOut',
+                repeat: -1,
+                yoyo: true,
+                stagger: { each: 0.2, repeat: -1 },
+              },
+              1.2,
+            )
+          }
 
-          // 3. Lanterns sway with stagger
-          tl.fromTo(
-            '.anim-lantern',
-            { rotation: 0, opacity: 0 },
-            {
-              rotation: -8,
-              opacity: 1,
-              duration: 0.5,
-              ease: 'power2.out',
-              stagger: 0.12,
-            },
-            0.5,
-          )
-          tl.to(
-            '.anim-lantern',
-            {
-              rotation: 8,
-              duration: 2.0,
-              ease: 'sine.inOut',
-              repeat: -1,
-              yoyo: true,
-              stagger: { each: 0.2, repeat: -1 },
-            },
-            1.2,
-          )
-
-          // 4. Light sweep across card
-          tl.fromTo(
-            '.anim-light-sweep',
-            { x: '-34%' },
-            { x: '140%', duration: 1.6, ease: 'power2.inOut' },
-            1.0,
-          )
+          const sweep = root.querySelectorAll('.anim-light-sweep')
+          if (sweep.length > 0) {
+            tl.fromTo(
+              sweep,
+              { x: '-34%' },
+              { x: '140%', duration: 1.6, ease: 'power2.inOut' },
+              1.0,
+            )
+          }
 
           return () => tl.kill()
         }
@@ -624,27 +639,28 @@ export default function CardAnimationPreview({
         if (type === 'friendship') {
           const tl = gsap.timeline()
 
-          // 1. Hearts float upward with random x, fade out near top
-          tl.fromTo(
-            '.anim-heart',
-            { y: 0, x: 0, opacity: 0, scale: 0 },
-            {
-              y: -340,
-              x: 'random(-50, 50)',
-              opacity: 0,
-              scale: 'random(0.7, 1.3)',
-              duration: 'random(2.2, 3.8)',
-              ease: 'power1.out',
-              stagger: { each: 0.28, repeat: -1 },
-              // Start opacity at 0.85 mid-way via keyframes
-              keyframes: [
-                { opacity: 0, scale: 0.4, y: 0, ease: 'back.out(2)', duration: 0.3 },
-                { opacity: 0.85, scale: 1.0, y: -160, ease: 'power1.out', duration: 1.4 },
-                { opacity: 0, y: -340, ease: 'power2.in', duration: 1.0 },
-              ],
-            },
-            0,
-          )
+          const hearts = root.querySelectorAll('.anim-heart')
+          if (hearts.length > 0) {
+            tl.fromTo(
+              hearts,
+              { y: 0, x: 0, opacity: 0, scale: 0 },
+              {
+                y: -340,
+                x: 'random(-50, 50)',
+                opacity: 0,
+                scale: 'random(0.7, 1.3)',
+                duration: 'random(2.2, 3.8)',
+                ease: 'power1.out',
+                stagger: { each: 0.28, repeat: -1 },
+                keyframes: [
+                  { opacity: 0, scale: 0.4, y: 0, ease: 'back.out(2)', duration: 0.3 },
+                  { opacity: 0.85, scale: 1.0, y: -160, ease: 'power1.out', duration: 1.4 },
+                  { opacity: 0, y: -340, ease: 'power2.in', duration: 1.0 },
+                ],
+              },
+              0,
+            )
+          }
 
           return () => tl.kill()
         }
@@ -653,22 +669,24 @@ export default function CardAnimationPreview({
         if (type === 'national') {
           const tl = gsap.timeline()
 
-          // 1. Stars burst from center with back.out
-          tl.fromTo(
-            '.anim-nat-star',
-            { x: 0, y: 0, scale: 0, opacity: 1, rotation: 0 },
-            {
-              x: 'random(-170, 170)',
-              y: 'random(-260, 60)',
-              scale: 'random(0.6, 1.6)',
-              rotation: 'random(0, 360)',
-              opacity: 0,
-              duration: 'random(1.0, 2.2)',
-              ease: 'back.out(1.4)',
-              stagger: { each: 0.04 },
-            },
-            0,
-          )
+          const stars = root.querySelectorAll('.anim-nat-star')
+          if (stars.length > 0) {
+            tl.fromTo(
+              stars,
+              { x: 0, y: 0, scale: 0, opacity: 1, rotation: 0 },
+              {
+                x: 'random(-170, 170)',
+                y: 'random(-260, 60)',
+                scale: 'random(0.6, 1.6)',
+                rotation: 'random(0, 360)',
+                opacity: 0,
+                duration: 'random(1.0, 2.2)',
+                ease: 'back.out(1.4)',
+                stagger: { each: 0.04 },
+              },
+              0,
+            )
+          }
 
           return () => tl.kill()
         }
@@ -677,40 +695,44 @@ export default function CardAnimationPreview({
         {
           const tl = gsap.timeline()
 
-          // Card scale+fade entrance
-          tl.fromTo(
-            '.jashn-card',
-            { scale: 0.92, opacity: 0 },
-            { scale: 1, opacity: 1, duration: 0.85, ease: 'power2.out' },
-            0,
-          )
+          const card = root.querySelectorAll('.jashn-card')
+          if (card.length > 0) {
+            tl.fromTo(
+              card,
+              { scale: 0.92, opacity: 0 },
+              { scale: 1, opacity: 1, duration: 0.85, ease: 'power2.out' },
+              0,
+            )
+          }
 
-          // Sparkle dots pulse in sequence, then loop
-          tl.fromTo(
-            '.anim-sparkle',
-            { scale: 0, opacity: 0 },
-            {
-              scale: 1,
-              opacity: 1,
-              duration: 0.4,
-              ease: 'back.out(2)',
-              stagger: 0.18,
-            },
-            0.3,
-          )
-          tl.to(
-            '.anim-sparkle',
-            {
-              scale: 1.4,
-              opacity: 0.4,
-              duration: 0.9,
-              ease: 'sine.inOut',
-              repeat: -1,
-              yoyo: true,
-              stagger: { each: 0.22, repeat: -1 },
-            },
-            1.4,
-          )
+          const sparkles = root.querySelectorAll('.anim-sparkle')
+          if (sparkles.length > 0) {
+            tl.fromTo(
+              sparkles,
+              { scale: 0, opacity: 0 },
+              {
+                scale: 1,
+                opacity: 1,
+                duration: 0.4,
+                ease: 'back.out(2)',
+                stagger: 0.18,
+              },
+              0.3,
+            )
+            tl.to(
+              sparkles,
+              {
+                scale: 1.4,
+                opacity: 0.4,
+                duration: 0.9,
+                ease: 'sine.inOut',
+                repeat: -1,
+                yoyo: true,
+                stagger: { each: 0.22, repeat: -1 },
+              },
+              1.4,
+            )
+          }
 
           return () => tl.kill()
         }
@@ -723,32 +745,22 @@ export default function CardAnimationPreview({
   )
 
   // ── Render ────────────────────────────────────────────────────────────────
-
   return (
     <div
       ref={containerRef}
-      className={cn("relative w-full", className)}
-      // key-prop variant: parent can change animationKey to force re-mount
+      className={cn("relative w-full overflow-hidden", className)}
     >
       {/* ── Card content ── */}
       {children}
 
-      {/* ── GSAP overlay (absolute, pointer-events-none, clipped to card) ── */}
-      <div
-        className={cn(
-          "pointer-events-none absolute inset-0 overflow-hidden",
-          roundedClass || 'rounded-[2.5rem]'
-        )}
-        aria-hidden="true"
-      >
-        {type === 'wedding'    && <WeddingOverlay />}
-        {type === 'mehndi'     && <MehndiOverlay />}
-        {type === 'birthday'   && <BirthdayOverlay />}
-        {type === 'islamic'    && <IslamicOverlay />}
-        {type === 'friendship' && <FriendshipOverlay />}
-        {type === 'national'   && <NationalOverlay />}
-        {type === 'default'    && <DefaultOverlay />}
-      </div>
+      {/* ── Animation Overlays ── */}
+      {type === 'wedding' && <WeddingOverlay />}
+      {type === 'mehndi' && <MehndiOverlay />}
+      {type === 'birthday' && <BirthdayOverlay />}
+      {type === 'islamic' && <IslamicOverlay />}
+      {type === 'friendship' && <FriendshipOverlay />}
+      {type === 'national' && <NationalOverlay />}
+      {type === 'default' && <DefaultOverlay />}
     </div>
   )
 }

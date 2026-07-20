@@ -11,13 +11,15 @@ import { useJashn } from '@/lib/jashn/store'
 import { getOccasion } from '@/lib/jashn/occasions'
 import { getInvitationType } from '@/lib/jashn/invitations'
 import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/lang/context'
 
 export default function DashboardPage() {
   const router = useRouter()
-  const { user, wishes, invitations, signOut, fetchUserCards, upgrade, isAuthLoading } = useJashn()
+  const { user, wishes, invitations, signOut, fetchUserCards, upgrade, isAuthLoading, downloadAllGuestsCsv } = useJashn()
   
   // Tab selector: 'all' | 'events' | 'wishes'
   const [activeFilter, setActiveFilter] = useState<'all' | 'events' | 'wishes'>('all')
+  const { t } = useLang()
 
   useEffect(() => {
     if (!isAuthLoading && !user) {
@@ -70,7 +72,7 @@ export default function DashboardPage() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 rounded-3xl border border-border bg-card p-6 shadow-sm mb-8">
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-extrabold text-foreground">Welcome back, {user.name}!</h1>
+                <h1 className="text-2xl font-extrabold text-foreground">{t('welcomeBackUser')} {user.name}!</h1>
                 <span className="inline-flex items-center gap-1 rounded-full bg-gold/20 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-amber-600">
                   <Crown className="size-3" /> {user.plan} Host Plan
                 </span>
@@ -79,8 +81,16 @@ export default function DashboardPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => downloadAllGuestsCsv()}
+                className="inline-flex items-center gap-1.5 rounded-xl border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 hover:bg-emerald-500/20 h-auto"
+              >
+                <FileText className="size-4" /> Download All Guests (CSV)
+              </Button>
               <Link href="/pricing" className="inline-flex items-center gap-1.5 rounded-xl border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-bold text-primary hover:bg-primary/20">
-                <Crown className="size-4" /> Upgrade Plan
+                <Crown className="size-4" /> {t('upgradePlan')}
               </Link>
               {user.plan !== 'free' && (
                 <Button
@@ -89,11 +99,11 @@ export default function DashboardPage() {
                   onClick={handleCancelPlan}
                   className="inline-flex items-center gap-1.5 rounded-xl border-destructive/30 bg-destructive/10 px-4 py-2 text-sm font-bold text-destructive hover:bg-destructive/20 h-auto"
                 >
-                  Cancel Plan
+                  {t('cancelPlan')}
                 </Button>
               )}
               <Button variant="ghost" size="sm" onClick={() => { signOut(); router.push('/'); }}>
-                <LogOut className="size-4 mr-1.5" /> Sign Out
+                <LogOut className="size-4 mr-1.5" /> {t('signOut')}
               </Button>
             </div>
           </div>
@@ -102,9 +112,9 @@ export default function DashboardPage() {
           <div className="grid gap-4 sm:grid-cols-2 mb-10">
             <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 via-card to-card p-6 shadow-sm flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">Event Management</span>
-                <h3 className="text-xl font-bold text-foreground mt-1">Create Event Invitation</h3>
-                <p className="text-xs text-muted-foreground mt-1">Shaadi, Nikkah, birthday or party with RSVPs.</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">{t('createInvitation')}</span>
+                <h3 className="text-xl font-bold text-foreground mt-1">{t('dashCreateInviteTitle')}</h3>
+                <p className="text-xs text-muted-foreground mt-1">{t('dashCreateInviteDesc')}</p>
               </div>
               <Link href="/create-invitation" className="rounded-xl bg-emerald-700 p-3 text-white hover:bg-emerald-800 shadow-md">
                 <Plus className="size-6" />
@@ -113,9 +123,9 @@ export default function DashboardPage() {
 
             <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-card to-card p-6 shadow-sm flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-primary">Greetings & Wishes</span>
-                <h3 className="text-xl font-bold text-foreground mt-1">Send an Animated Wish</h3>
-                <p className="text-xs text-muted-foreground mt-1">Quick birthday, Eid, or congratulatory greetings.</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-primary">{t('greetingsWishes')}</span>
+                <h3 className="text-xl font-bold text-foreground mt-1">{t('dashCreateWishTitle')}</h3>
+                <p className="text-xs text-muted-foreground mt-1">{t('dashCreateWishDesc')}</p>
               </div>
               <Link href="/create-wish" className="rounded-xl bg-primary p-3 text-primary-foreground hover:bg-primary/90 shadow-md">
                 <Plus className="size-6" />
@@ -128,9 +138,9 @@ export default function DashboardPage() {
           {/* Sub-header Filter Tabs */}
           <div className="flex border-b border-border mb-6 gap-2">
             {[
-              { id: 'all', label: `All Content (${hostInvitations.length + hostWishes.length})` },
-              { id: 'events', label: `Hosted Events (${hostInvitations.length})` },
-              { id: 'wishes', label: `Greetings & Wishes (${hostWishes.length})` }
+              { id: 'all', label: `${t('dashboard')} (${hostInvitations.length + hostWishes.length})` },
+              { id: 'events', label: `${t('hostedInvitations')} (${hostInvitations.length})` },
+              { id: 'wishes', label: `${t('greetingsWishes')} (${hostWishes.length})` }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -152,7 +162,7 @@ export default function DashboardPage() {
             <div className="mb-10">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-                  <Calendar className="size-5 text-emerald-600" /> Hosted Invitations ({hostInvitations.length})
+                  <Calendar className="size-5 text-emerald-600" /> {t('hostedInvitations')} ({hostInvitations.length})
                 </h2>
                 <Link href="/create-invitation" className="text-xs font-bold text-emerald-600 hover:underline flex items-center gap-1">
                   New Invitation <Plus className="size-3" />
@@ -161,7 +171,7 @@ export default function DashboardPage() {
 
               {hostInvitations.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-border p-8 text-center bg-card">
-                  <p className="text-muted-foreground text-xs">You haven&apos;t created any invitations yet.</p>
+                  <p className="text-muted-foreground text-xs">{t('dashNoInvitesYet')}</p>
                 </div>
               ) : (
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -197,7 +207,7 @@ export default function DashboardPage() {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-                  <Send className="size-5 text-primary" /> Sent Greetings &amp; Wishes ({hostWishes.length})
+                  <Send className="size-5 text-primary" /> {t('greetingsWishes')} ({hostWishes.length})
                 </h2>
                 <Link href="/create-wish" className="text-xs font-bold text-primary hover:underline flex items-center gap-1">
                   New Wish <Plus className="size-3" />
@@ -206,7 +216,7 @@ export default function DashboardPage() {
 
               {hostWishes.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-border p-8 text-center bg-card">
-                  <p className="text-muted-foreground text-xs">You haven&apos;t created any wishes yet.</p>
+                  <p className="text-muted-foreground text-xs">{t('dashNoWishesYet')}</p>
                 </div>
               ) : (
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -219,7 +229,7 @@ export default function DashboardPage() {
                             <span className="font-bold text-primary uppercase tracking-wider">{occ?.label ?? 'Wish'}</span>
                             <span className="flex items-center gap-1"><Eye className="size-3.5" /> {w.viewCount} views</span>
                           </div>
-                          <p className="text-sm font-semibold text-foreground line-clamp-2 leading-relaxed">{w.message || w.messageUrdu}</p>
+                          <p className="text-sm font-semibold text-foreground line-clamp-2 leading-relaxed">{w.message}</p>
                           <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-border/50">For: <span className="font-bold text-foreground">{w.recipientName || 'Friend'}</span></p>
                         </div>
                         <div className="mt-4 pt-3 flex justify-end">

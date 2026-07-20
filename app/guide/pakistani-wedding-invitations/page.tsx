@@ -1,23 +1,16 @@
-import type { Metadata } from 'next'
+'use client'
+
 import Link from 'next/link'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
-import { ArrowLeft, BookOpen, Clock, Calendar, CheckCircle, Smartphone, MapPin, Music } from 'lucide-react'
-
-export const metadata: Metadata = {
-  title: 'How to Design a Pakistani Wedding Invite: Wording & Etiquette — Jashn',
-  description:
-    'A detailed guide on wording templates, calligraphy etiquette, and design choices for modern Pakistani digital wedding invitations (Mehndi, Shaadi, Valima).',
-  keywords: [
-    'Pakistani wedding card wording',
-    'shaadi card design guide',
-    'valima invitation wording',
-    'urdu invitation calligraphy',
-    'online wedding RSVP pakistan',
-  ],
-}
+import { ArrowLeft, Clock, Calendar, Smartphone, MapPin, Music } from 'lucide-react'
+import { useLang } from '@/lib/lang/context'
+import { cn } from '@/lib/utils'
 
 export default function WeddingGuidePage() {
+  const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
@@ -30,27 +23,30 @@ export default function WeddingGuidePage() {
             href="/guide"
             className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-8"
           >
-            <ArrowLeft className="size-4" /> Back to Guides
+            <ArrowLeft className="size-4" /> {t('backToGuides') || 'Back to Guides'}
           </Link>
 
           {/* Article Header */}
           <article>
             <header className="mb-10">
               <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
-                Weddings
+                {t('catWedding') || 'Weddings'}
               </span>
-              <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-                How to Design the Perfect Pakistani Wedding Invitation: Wording & Etiquette
+              <h1 className={cn(
+                "mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight",
+                isUrdu && "font-urdu leading-relaxed py-2 text-2xl sm:text-3xl"
+              )}>
+                {lang === 'ur' ? 'مکمل ڈیجیٹل شادی کا دعوت نامہ کیسے بنائیں: الفاظ اور طریقے' : 'How to Design the Perfect Pakistani Wedding Invitation: Wording & Etiquette'}
               </h1>
               
               <div className="mt-6 flex flex-wrap items-center gap-4 border-y border-border/60 py-4 text-xs sm:text-sm text-muted-foreground">
                 <span className="flex items-center gap-1">
-                  <Calendar className="size-4" /> Published July 10, 2026
+                  <Calendar className="size-4" /> {lang === 'ur' ? 'شائع شدہ: 10 جولائی 2026' : 'Published July 10, 2026'}
                 </span>
                 <span className="flex items-center gap-1">
-                  <Clock className="size-4" /> 6 min read
+                  <Clock className="size-4" /> 6 {t('minRead') || 'min read'}
                 </span>
-                <span>By Jashn Editorial Team</span>
+                <span>{t('editorialTeam') || 'By Cardzy Editorial Team'}</span>
               </div>
             </header>
 
@@ -81,7 +77,7 @@ export default function WeddingGuidePage() {
                 2. Traditional Wording Templates (English & Urdu)
               </h2>
               <p>
-                Here are a few popular wording layouts you can drop directly into your Jashn digital invitation setup:
+                Here are a few popular wording layouts you can drop directly into your Cardzy digital invitation setup:
               </p>
 
               {/* Boxed template: Mehndi */}
@@ -118,7 +114,7 @@ export default function WeddingGuidePage() {
                 3. Elevating the Invitation with Modern Features
               </h2>
               <p>
-                A digital invitation is much more than a static JPEG shared on WhatsApp. By leveraging the interactive features built into platforms like Jashn, you make guest coordination extremely simple:
+                A digital invitation is much more than a static JPEG shared on WhatsApp. By leveraging the interactive features built into platforms like Cardzy, you make guest coordination extremely simple:
               </p>
               
               <div className="grid gap-6 sm:grid-cols-3 my-6">
@@ -149,11 +145,11 @@ export default function WeddingGuidePage() {
                 4. Etiquette When Sharing on WhatsApp
               </h2>
               <p>
-                When sending your Jashn link, avoid bulk spamming. Personalize your WhatsApp message:
+                When sending your Cardzy link, avoid bulk spamming. Personalize your WhatsApp message:
               </p>
               <blockquote>
                 <p className="text-sm text-muted-foreground italic border-l-4 border-primary pl-4 py-1">
-                  &quot;Assalamu Alaikum Uncle, we are thrilled to invite you to Hamza&apos;s wedding. Please find our interactive invitation card with dates, map links, and RSVP RSVP details here: [Your Jashn Link]. Looking forward to having you!&quot;
+                  &quot;Assalamu Alaikum Uncle, we are thrilled to invite you to Hamza&apos;s wedding. Please find our interactive invitation card with dates, map links, and RSVP RSVP details here: [Your Cardzy Link]. Looking forward to having you!&quot;
                 </p>
               </blockquote>
 
@@ -161,22 +157,24 @@ export default function WeddingGuidePage() {
 
             {/* Article Footer / CTA */}
             <footer className="mt-12 border-t border-border/80 pt-8 text-center">
-              <h3 className="text-xl font-bold text-foreground">Launch Your Invitation in Minutes</h3>
-              <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-                Select from our heritage Mughal Gold or Emerald Classic themes, fill in your timings, and create a beautiful mobile-responsive website.
+              <h3 className={cn("text-xl font-bold text-foreground", isUrdu && "font-urdu py-1")}>
+                {t('launchInviteTitle') || 'Launch Your Invitation in Minutes'}
+              </h3>
+              <p className={cn("text-sm text-muted-foreground mt-1 max-w-md mx-auto", isUrdu && "font-urdu py-1")}>
+                {t('launchInviteSub') || 'Select from our heritage Mughal Gold or Emerald Classic themes, fill in your timings, and create a beautiful mobile-responsive website.'}
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-4">
                 <Link
                   href="/create-invitation"
                   className="rounded-xl bg-primary px-6 py-3 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm"
                 >
-                  Create Invitation
+                  {t('createInvitationBtn') || 'Create Invitation'}
                 </Link>
                 <Link
                   href="/pricing"
                   className="rounded-xl border border-border px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary transition-colors"
                 >
-                  View Premium Themes
+                  {t('viewPremiumThemes') || 'View Premium Themes'}
                 </Link>
               </div>
             </footer>

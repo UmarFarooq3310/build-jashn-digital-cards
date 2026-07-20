@@ -5,10 +5,8 @@ import { useState, useRef } from 'react'
 import {
   ArrowRight,
   ArrowLeft,
-  MousePointerClick,
   Sparkles,
   Heart,
-  Gift,
   Moon,
   Flower2,
   Cake,
@@ -16,14 +14,11 @@ import {
   CheckCircle,
   Award,
   Crown,
-  Star,
-  GraduationCap,
-  MessageCircle,
-  Plus,
-  X,
-  Mail,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Mail,
+  X,
+  Plus
 } from 'lucide-react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -31,17 +26,18 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 import { JashnIcon } from '@/lib/jashn/icon'
-import { OCCASIONS } from '@/lib/jashn/occasions'
+import { OCCASIONS, getOccasionLabel, getOccasionTagline } from '@/lib/jashn/occasions'
 import { WishCard } from '@/components/jashn/wish-card'
 import { InvitationCard } from '@/components/jashn/invitation-card'
 import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/lang/context'
 
 // Sub-component for Section Heading
 function SectionHead({
   kicker,
   title,
   desc,
-  kickerColor = 'text-[#7B0D1E]',
+  kickerColor = 'text-amber-600 dark:text-amber-400',
   className,
 }: {
   kicker: string
@@ -50,16 +46,18 @@ function SectionHead({
   kickerColor?: string
   className?: string
 }) {
+  const { lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
   return (
     <div className={cn("mx-auto mb-10 max-w-2xl text-center", className)}>
-      <p className={cn("text-xs font-bold uppercase tracking-[0.2em]", kickerColor)}>
+      <p className={cn("text-xs font-bold uppercase tracking-[0.2em]", kickerColor, isUrdu && "font-urdu tracking-normal text-sm")}>
         {kicker}
       </p>
-      <h2 className="mt-2 text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+      <h2 className={cn("mt-2 text-balance font-extrabold tracking-tight text-foreground", isUrdu ? "font-urdu text-2xl sm:text-3xl md:text-4xl leading-[2.2] py-2" : "text-3xl sm:text-4xl leading-tight")}>
         {title}
       </h2>
       {desc ? (
-        <p className="mx-auto mt-3 max-w-xl text-pretty leading-relaxed text-muted-foreground text-sm sm:text-base">
+        <p className={cn("mx-auto mt-3 max-w-xl text-pretty text-muted-foreground", isUrdu ? "font-urdu text-base sm:text-lg leading-[2.2] py-2" : "text-sm sm:text-base leading-relaxed")}>
           {desc}
         </p>
       ) : null}
@@ -71,6 +69,7 @@ function SectionHead({
 // 1. HOW IT WORKS (Compact horizontal 2-step stepper + Pricing indicator)
 // ─────────────────────────────────────────────────────────────────────────
 export function HowItWorks() {
+  const { t } = useLang()
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
@@ -91,86 +90,84 @@ export function HowItWorks() {
   }, { scope: sectionRef })
 
   return (
-    <section ref={sectionRef} className="border-t border-[#7B0D1E]/10 bg-[#FAF6F0] py-16 relative overflow-hidden">
+    <section ref={sectionRef} className="bg-gradient-to-b from-background via-emerald-950/5 to-background py-16 relative overflow-hidden">
       {/* Subtle mandala background decoration */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-96 opacity-[0.03] text-[#7B0D1E] pointer-events-none select-none">
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-96 opacity-[0.04] text-emerald-800 pointer-events-none select-none">
         <Flower2 className="w-full h-full" />
       </div>
 
       <div className="mx-auto max-w-6xl px-4 relative z-10">
         <SectionHead
-          kicker="Bazaar-e-Jashn"
-          title="Create & Send in Two Simple Steps"
-          desc="Beautiful bilingual designs with interactive elements, made fast."
+          kicker={t('howItWorks')}
+          title={t('pickOccasion') + ' & ' + t('personalizeShare')}
+          desc={t('heroDesc').split('.')[0] + '.'}
           className="hiw-head"
         />
 
         {/* 2-Step Horizontal Stepper */}
         <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto mb-12">
           {/* Step 1 */}
-          <div className="hiw-step relative rounded-2xl border border-[#7B0D1E]/10 bg-card p-6 shadow-sm flex gap-4 items-start">
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#7B0D1E]/10 text-[#7B0D1E] font-bold text-lg">
+          <div className="hiw-step relative rounded-2xl border border-teal-500/10 bg-card p-6 shadow-sm flex gap-4 items-start">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-teal-100 text-teal-600 font-bold text-lg">
               1
             </span>
             <div className="space-y-1">
               <h3 className="font-bold text-foreground flex items-center gap-2">
-                <span>Pick Occasion</span>
-                <span className="font-urdu text-xs text-[#7B0D1E]/60">(تقریب چنیں)</span>
+                <span>{t('pickOccasion')}</span>
               </h3>
               <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
-                Choose from 50+ beautiful templates across weddings, birthdays, festivals, achievements, or friendship notes.
+                {t('pickOccasionDesc')}
               </p>
             </div>
           </div>
 
           {/* Step 2 */}
-          <div className="hiw-step relative rounded-2xl border border-[#7B0D1E]/10 bg-card p-6 shadow-sm flex gap-4 items-start">
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#7B0D1E]/10 text-[#7B0D1E] font-bold text-lg">
+          <div className="hiw-step relative rounded-2xl border border-teal-500/10 bg-card p-6 shadow-sm flex gap-4 items-start">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-teal-100 text-teal-600 font-bold text-lg">
               2
             </span>
             <div className="space-y-1">
               <h3 className="font-bold text-foreground flex items-center gap-2">
-                <span>Personalize & Share</span>
-                <span className="font-urdu text-xs text-[#7B0D1E]/60">(کارڈ بنائیں اور بھیجیں)</span>
+                <span>{t('personalizeShare')}</span>
               </h3>
               <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
-                Add names, select design themes/music, type in English or Urdu script with live preview, and generate a clean shareable link instantly.
+                {t('personalizeShareDesc')}
               </p>
             </div>
           </div>
         </div>
 
         {/* Free vs Premium Pricing Indicator (Surfaced Earlier) */}
-        <div className="pricing-box max-w-4xl mx-auto rounded-3xl border border-[#7B0D1E]/15 bg-gradient-to-br from-[#7B0D1E]/5 via-card to-[#7B0D1E]/10 p-6 sm:p-8 shadow-md">
+        <div className="pricing-box max-w-4xl mx-auto rounded-3xl border border-teal-500/15 bg-gradient-to-br from-violet-50 via-card to-violet-100 p-6 sm:p-8 shadow-md">
           <div className="text-center mb-6">
-            <span className="inline-block bg-[#7B0D1E] text-white px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase mb-1">
-              Pricing Options
+            <span className="inline-block bg-teal-600 text-white px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase mb-1">
+              {t('pricing')}
             </span>
-            <h3 className="text-lg font-extrabold text-foreground">Transparent Desi Pricing</h3>
+            <h3 className="text-lg font-extrabold text-foreground">{t('simpleTransparentPricing')}</h3>
           </div>
           
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-2 p-4 rounded-2xl bg-card border border-[#7B0D1E]/10 shadow-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-[#7B0D1E]/10 text-[#7B0D1E] px-2 py-0.5 rounded-bl-xl text-[10px] font-bold">
-                Free Forever
+            <div className="space-y-2 p-4 rounded-2xl bg-card border border-teal-500/10 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-teal-100 text-teal-600 px-2 py-0.5 rounded-bl-xl text-[10px] font-bold">
+                {t('freeForever')}
               </div>
-              <h4 className="font-bold text-[#7B0D1E] text-sm flex items-center gap-1.5">
-                <Sparkles className="size-4 shrink-0" /> Wish Cards & Standard Themes
+              <h4 className="font-bold text-teal-600 text-sm flex items-center gap-1.5">
+                <Sparkles className="size-4 shrink-0" /> {t('wishCardsStandardThemes')}
               </h4>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                All personalized greetings (Eid, Birthdays, Friendship notes) are 100% free! Includes bilingual script, floating animations, and clean sharing link.
+                {t('freeForeverDesc')}
               </p>
             </div>
             
             <div className="space-y-2 p-4 rounded-2xl bg-card border border-emerald-500/20 shadow-sm relative overflow-hidden">
               <div className="absolute top-0 right-0 bg-emerald-500/10 text-emerald-700 px-2 py-0.5 rounded-bl-xl text-[10px] font-bold">
-                Jashn Pro (Premium)
+                {t('cardzyProPremium')}
               </div>
               <h4 className="font-bold text-emerald-700 text-sm flex items-center gap-1.5">
-                <Crown className="size-4 shrink-0" /> Live RSVPs, Maps & Countdowns
+                <Crown className="size-4 shrink-0" /> {t('liveRsvpsMaps')}
               </h4>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Upgrade event invitations (Mehndi, Shaadi, Parties) for a small fee. Add Google Map pins, dress codes, host control dashboard, and receive real-time guest confirmations on WhatsApp!
+                {t('proUpgradeDesc')}
               </p>
             </div>
           </div>
@@ -183,10 +180,11 @@ export function HowItWorks() {
 // ─────────────────────────────────────────────────────────────────────────
 // 2. CATEGORY TABS (Wedding, Birthday, Friendship, Festivals & Milestones)
 // ─────────────────────────────────────────────────────────────────────────
-type TabType = 'wedding' | 'birthday' | 'friendship' | 'festivals'
+type TabType = 'global' | 'wedding' | 'birthday' | 'friendship' | 'festivals'
 
 export function CategoryTabs() {
-  const [activeTab, setActiveTab] = useState<TabType>('wedding')
+  const { t, lang } = useLang()
+  const [activeTab, setActiveTab] = useState<TabType>('global')
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
@@ -199,80 +197,114 @@ export function CategoryTabs() {
   }, { scope: sectionRef })
 
   // Categories mapping
-  const weddingOccasions = OCCASIONS.filter(
-    (o) => o.id === 'shaadi' || o.id === 'nikah' || o.id === 'anniversary'
+  const globalOccasions = OCCASIONS.filter(
+    (o) =>
+      o.id === 'christmas' ||
+      o.id === 'new-year' ||
+      o.id === 'thanksgiving' ||
+      o.id === 'halloween' ||
+      o.id === 'easter' ||
+      o.id === 'diwali' ||
+      o.id === 'hanukkah' ||
+      o.id === 'lunar-new-year' ||
+      o.id === 'valentines' ||
+      o.id === 'mothers-day' ||
+      o.id === 'fathers-day' ||
+      o.id === 'st-patricks-day' ||
+      o.id === 'earth-day' ||
+      o.id === 'friendship-day'
   )
-
+  const weddingOccasions = OCCASIONS.filter((o) => o.category === 'Family')
   const friendshipOccasions = OCCASIONS.filter(
-    (o) => o.id === 'friendship-day' || o.id === 'miss-you' || o.id === 'thank-you'
+    (o) => o.id === 'friendship-day' || o.id === 'thank-you' || o.id === 'miss-you'
   )
-
-  // Separating Festivals (Religious) from Milestones (Achievements)
-  const religiousOccasions = OCCASIONS.filter(
-    (o) => o.category === 'Islamic' && o.id !== 'condolence'
-  )
-
-  const milestoneOccasions = OCCASIONS.filter(
-    (o) => 
-      o.category === 'Achievements' || 
-      o.id === 'new-year' || 
-      o.id === 'independence-day' || 
-      o.id === 'graduation'
-  )
+  const religiousOccasions = OCCASIONS.filter((o) => o.category === 'Islamic')
+  const milestoneOccasions = OCCASIONS.filter((o) => o.category === 'Achievements' || o.category === 'National')
 
   return (
-    <section ref={sectionRef} className="border-t border-border bg-card py-20 relative">
+    <section ref={sectionRef} className="py-16 bg-background">
       <div className="mx-auto max-w-6xl px-4">
-        <div className="tabs-head">
-          <SectionHead
-            kicker="Daawat-e-Jashn"
-            title="Explore Card Categories"
-            desc="Select a category to view stunning card templates and start personalizing."
-          />
-        </div>
+        <SectionHead
+          kicker={t('exploreCollection')}
+          title={t('findCardForEveryMoment')}
+          desc={t('heroDesc')}
+          className="tabs-head"
+        />
 
-        {/* Tab Buttons bar (Scrollable on mobile) */}
-        <div className="flex border-b border-border overflow-x-auto scrollbar-none gap-2 sm:gap-6 justify-start sm:justify-center pb-2 mb-8">
-          {[
-            { id: 'wedding', label: 'Wedding & Shaadi', urdu: 'شادی اور نکاح', icon: Gem },
-            { id: 'birthday', label: 'Birthdays & Saalgirah', urdu: 'سالگرہ مبارک', icon: Cake },
-            { id: 'friendship', label: 'Friendship & Notes', urdu: 'دوستی اور پیغامات', icon: Heart },
-            { id: 'festivals', label: 'Festivals & Milestones', urdu: 'تہوار اور سنگ میل', icon: Moon },
-          ].map((tab) => {
-            const Icon = tab.icon
-            const active = activeTab === tab.id
-            return (
+        {/* Tab Navigation */}
+        <div className="flex justify-center mb-10 overflow-x-auto pb-2 scrollbar-none">
+          <div className="inline-flex rounded-2xl bg-muted/60 p-1.5 border border-border">
+            {(
+              [
+                { id: 'global', label: t('globalCelebrations') || 'World Holidays & Global Days' },
+                { id: 'wedding', label: t('weddings') || 'Weddings & Celebrations' },
+                { id: 'birthday', label: t('birthdays') || 'Birthdays & Milestones' },
+                { id: 'friendship', label: t('greetingsWishes') || 'Friendship & Wishes' },
+                { id: 'festivals', label: t('religiousCulturalTab') || 'Festivals & Achievements' },
+              ] as const
+            ).map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as TabType)}
+                onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2.5 rounded-t-2xl font-semibold text-sm transition-all whitespace-nowrap border-b-2",
-                  active
-                    ? "border-[#7B0D1E] text-[#7B0D1E] bg-[#7B0D1E]/5 font-bold"
-                    : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40"
+                  'px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 whitespace-nowrap',
+                  activeTab === tab.id
+                    ? 'bg-card text-emerald-700 dark:text-emerald-400 shadow-sm border border-emerald-500/20'
+                    : 'text-muted-foreground hover:text-foreground'
                 )}
               >
-                <Icon className="size-4" />
-                <div className="text-left">
-                  <span className="block leading-tight text-xs sm:text-sm">{tab.label}</span>
-                  <span className="block font-urdu text-[10px] opacity-75 sm:hidden lg:block">{tab.urdu}</span>
-                </div>
+                {tab.label}
               </button>
-            )
-          })}
+            ))}
+          </div>
         </div>
 
-        {/* Tab Content Display Area */}
-        <div className="min-h-[380px] bg-gradient-to-br from-card to-secondary/5 rounded-3xl border border-border p-6 sm:p-8 transition-all duration-300">
-          
+        {/* Tab Contents */}
+        <div className="min-h-[350px]">
+          {/* TAB 0: GLOBAL CELEBRATIONS */}
+          {activeTab === 'global' && (
+            <div className="space-y-6 animate-fadeIn">
+              <div className="max-w-2xl">
+                <span className="text-xs uppercase font-extrabold tracking-wider text-emerald-700">{t('globalCelebrations')}</span>
+                <h3 className="text-xl font-bold text-foreground mt-1">{t('worldHolidaysTitle')}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-1.5">
+                  {t('worldHolidaysDesc')}
+                </p>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {globalOccasions.map((o) => (
+                  <Link
+                    key={o.id}
+                    href={`/create-wish?occasion=${o.id}`}
+                    className="group flex flex-col justify-between p-5 rounded-2xl border border-emerald-500/20 bg-card hover:border-emerald-500 hover:shadow-lg transition-all duration-200"
+                  >
+                    <div>
+                      <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300 group-hover:bg-emerald-600 group-hover:text-white transition-colors mb-3">
+                        <JashnIcon name={o.icon} className="size-5" />
+                      </div>
+                      <h4 className="text-base font-bold text-foreground">{getOccasionLabel(o, lang, t)}</h4>
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                        {getOccasionTagline(o, lang, t)}
+                      </p>
+                    </div>
+                    <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 group-hover:underline">
+                      {t('sendWishCardBtn')} <ArrowRight className="size-3" />
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* TAB 1: WEDDING */}
           {activeTab === 'wedding' && (
             <div className="space-y-6 animate-fadeIn">
               <div className="max-w-2xl">
-                <span className="text-xs uppercase font-extrabold tracking-wider text-[#7B0D1E]">Mughal Mughal Vibe</span>
-                <h3 className="text-xl font-bold text-foreground mt-1">Celebrate Eternal Love & Togetherness</h3>
+                <span className="text-xs uppercase font-extrabold tracking-wider text-teal-600">{t('weddings')}</span>
+                <h3 className="text-xl font-bold text-foreground mt-1">{t('celebrateLoveTogetherness')}</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-1.5">
-                  Beautiful Mughal-arched Shaadi, Nikkah, Mehndi cards and Anniversary wishes with traditional bilingual greetings.
+                  {t('weddingCardsDesc')}
                 </p>
               </div>
 
@@ -281,19 +313,19 @@ export function CategoryTabs() {
                   <Link
                     key={o.id}
                     href={`/create-wish?occasion=${o.id}`}
-                    className="group flex flex-col justify-between p-5 rounded-2xl border border-[#7B0D1E]/20 bg-card hover:border-[#7B0D1E] hover:shadow-[0_12px_24px_-10px_rgba(123,13,30,0.1)] transition-all duration-200"
+                    className="group flex flex-col justify-between p-5 rounded-2xl border border-teal-500/20 bg-card hover:border-teal-500 hover:shadow-violet-100 transition-all duration-200"
                   >
                     <div>
-                      <div className="flex size-10 items-center justify-center rounded-xl bg-[#7B0D1E]/10 text-[#7B0D1E] group-hover:bg-[#7B0D1E] group-hover:text-white transition-colors mb-3">
+                      <div className="flex size-10 items-center justify-center rounded-xl bg-teal-100 text-teal-600 group-hover:bg-teal-600 group-hover:text-white transition-colors mb-3">
                         <JashnIcon name={o.icon} className="size-5" />
                       </div>
-                      <h4 className="text-base font-bold text-foreground">{o.label} Card</h4>
+                      <h4 className="text-base font-bold text-foreground">{t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}</h4>
                       <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                        Bilingual wedding greeting scripts in English and Urdu calligraphy.
+                        {t('cardDescriptionText')}
                       </p>
                     </div>
-                    <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#7B0D1E] group-hover:underline">
-                      Customize Card <ArrowRight className="size-3" />
+                    <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-teal-600 group-hover:underline">
+                      {t('orderCardBtn')} <ArrowRight className="size-3" />
                     </span>
                   </Link>
                 ))}
@@ -301,19 +333,19 @@ export function CategoryTabs() {
                 {/* Mughal Mehndi Invitation Link */}
                 <Link
                   href="/create-invitation?type=mehndi"
-                  className="group flex flex-col justify-between p-5 rounded-2xl border-2 border-dashed border-amber-500 bg-gradient-to-br from-amber-500/5 to-card hover:border-[#7B0D1E] transition-all duration-200 animate-pulse"
+                  className="group flex flex-col justify-between p-5 rounded-2xl border-2 border-dashed border-amber-500 bg-gradient-to-br from-amber-500/5 to-card hover:border-teal-500 transition-all duration-200 animate-pulse"
                 >
                   <div>
                     <div className="flex size-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-700 mb-3">
                       <Gem className="size-5" />
                     </div>
-                    <h4 className="text-base font-bold text-amber-800">Mughal Mehndi &amp; Baraat Invitations</h4>
+                    <h4 className="text-base font-bold text-amber-800">{t('mughalMehndiTitle')}</h4>
                     <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      Create a complete digital invitation website with venue location pins, dress guides, and live countdowns.
+                      {t('mughalMehndiDesc')}
                     </p>
                   </div>
-                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#7B0D1E]">
-                    Build Invitation <ArrowRight className="size-3" />
+                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-teal-600">
+                    {t('buildInvitation')} <ArrowRight className="size-3" />
                   </span>
                 </Link>
               </div>
@@ -326,34 +358,34 @@ export function CategoryTabs() {
               <div className="grid gap-8 lg:grid-cols-12 items-center">
                 <div className="lg:col-span-7 space-y-4">
                   <div>
-                    <span className="text-xs uppercase font-extrabold tracking-wider text-indigo-600">Saalgirah Mubarak</span>
-                    <h3 className="text-xl font-bold text-foreground mt-1">Vibrant Animated Birthday Greetings</h3>
+                    <span className="text-xs uppercase font-extrabold tracking-wider text-indigo-600">{t('birthdays')}</span>
+                    <h3 className="text-xl font-bold text-foreground mt-1">{t('vibrantBirthdayTitle')}</h3>
                     <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-1.5">
-                      Send sweet, colorful birthday wishes to your friends, family, and loved ones with animated cake candles and playful sparkles. Every card includes a custom music-box birthday chime when opened!
+                      {t('vibrantBirthdayDesc')}
                     </p>
                   </div>
 
                   <ul className="space-y-2 text-xs sm:text-sm text-muted-foreground">
                     <li className="flex items-center gap-2">
                       <CheckCircle className="size-4 text-indigo-600 shrink-0" />
-                      <span>Customizable Saalgirah Cards with Urdu calligraphy (سالگرہ مبارک)</span>
+                      <span>{t('bdayFeat1')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="size-4 text-indigo-600 shrink-0" />
-                      <span>Playful balloon, confetti, and sparkles float animations</span>
+                      <span>{t('bdayFeat2')}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="size-4 text-indigo-600 shrink-0" />
-                      <span>Free creation and instant sharing via WhatsApp links</span>
+                      <span>{t('bdayFeat3')}</span>
                     </li>
                   </ul>
 
                   <div className="pt-2">
                     <Link
                       href="/create-wish?occasion=birthday"
-                      className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7B0D1E] to-[#b81d36] px-5 text-xs sm:text-sm font-bold text-white hover:opacity-90 transition-opacity shadow-md"
+                      className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#0d9488] to-[#0d9488] px-5 text-xs sm:text-sm font-bold text-white hover:opacity-90 transition-opacity shadow-md"
                     >
-                      Create Birthday Card <ArrowRight className="size-3.5" />
+                      {t('sendWish')} — {t('birthdays')} <ArrowRight className="size-3.5" />
                     </Link>
                   </div>
                 </div>
@@ -366,11 +398,10 @@ export function CategoryTabs() {
                       data={{
                         occasionId: 'birthday',
                         themeId: 'midnight-kashi',
-                        language: 'both',
-                        senderName: 'Sajid',
-                        recipientName: 'Zainab',
-                        message: 'May Allah bless you with a year of immense success and happiness!',
-                        messageUrdu: 'سالگرہ مبارک ہو! اللہ آپ کو ڈھیروں خوشیاں نصیب فرمائے۔',
+                        language: lang,
+                        senderName: t('sampleSenderSajid') || 'Sajid',
+                        recipientName: t('sampleRecipientZainab') || 'Zainab',
+                        message: t('sampleBdayMsg'),
                       }}
                     />
                   </div>
@@ -383,10 +414,10 @@ export function CategoryTabs() {
           {activeTab === 'friendship' && (
             <div className="space-y-6 animate-fadeIn">
               <div className="max-w-2xl">
-                <span className="text-xs uppercase font-extrabold tracking-wider text-rose-500">Dosti Mubarak</span>
-                <h3 className="text-xl font-bold text-foreground mt-1">Strengthen Your Bonds of Friendship</h3>
+                <span className="text-xs uppercase font-extrabold tracking-wider text-rose-500">{t('greetingsWishes')}</span>
+                <h3 className="text-xl font-bold text-foreground mt-1">{t('strengthenBondsTitle')}</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-1.5">
-                  Show gratitude, say thank you, tell them they are missed, or celebrate Friendship Day with personalized heartwarming notes.
+                  {t('strengthenBondsDesc')}
                 </p>
               </div>
 
@@ -403,12 +434,12 @@ export function CategoryTabs() {
                       </div>
                       <Heart className="size-4 text-rose-200 group-hover:text-rose-400 transition-colors" />
                     </div>
-                    <h4 className="text-base font-bold text-foreground mt-4">{o.label} Card</h4>
+                    <h4 className="text-base font-bold text-foreground mt-4">{t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}</h4>
                     <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      Send warm, heartfelt vibes with a clean, short shareable link instantly.
+                      {t('friendshipFeat')}
                     </p>
                     <div className="mt-4 flex items-center gap-1 text-xs font-bold text-rose-500 group-hover:underline">
-                      Write Note <ArrowRight className="size-3" />
+                      {t('writeNote')} <ArrowRight className="size-3" />
                     </div>
                   </Link>
                 ))}
@@ -420,17 +451,17 @@ export function CategoryTabs() {
           {activeTab === 'festivals' && (
             <div className="space-y-8 animate-fadeIn">
               <div className="max-w-2xl">
-                <span className="text-xs uppercase font-extrabold tracking-wider text-amber-700">Milestones &amp; Festivals</span>
-                <h3 className="text-xl font-bold text-foreground mt-1">Celebrate Festivals &amp; Milestones</h3>
+                <span className="text-xs uppercase font-extrabold tracking-wider text-amber-700">{t('festivals')}</span>
+                <h3 className="text-xl font-bold text-foreground mt-1">{t('celebrateFestivalsMilestones')}</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-1.5">
-                  Congratulate achievements, promotions, graduations, or send blessings on Eid, Ramadan, and national events.
+                  {t('celebrateFestivalsDesc')}
                 </p>
               </div>
 
               {/* Group A: Religious Occasions */}
               <div className="space-y-3">
                 <h4 className="text-xs uppercase font-bold tracking-wider text-emerald-700 border-b border-emerald-500/10 pb-1.5 flex items-center gap-1.5">
-                  <Moon className="size-4 text-emerald-700" /> Religious Occasions (مذہبی تہوار)
+                  <Moon className="size-4 text-emerald-700" /> {t('festivals')}
                 </h4>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                   {religiousOccasions.map((o) => (
@@ -443,11 +474,8 @@ export function CategoryTabs() {
                         <JashnIcon name={o.icon} className="size-4" />
                       </span>
                       <div className="truncate">
-                        <span className="text-xs font-bold text-foreground leading-tight block group-hover:text-[#7B0D1E] truncate">
-                          {o.label}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground font-urdu block">
-                          {o.urdu}
+                        <span className="text-xs font-bold text-foreground leading-tight block group-hover:text-teal-600 truncate">
+                          {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
                         </span>
                       </div>
                     </Link>
@@ -458,7 +486,7 @@ export function CategoryTabs() {
               {/* Group B: Milestones & Achievements */}
               <div className="space-y-3 pt-2">
                 <h4 className="text-xs uppercase font-bold tracking-wider text-amber-700 border-b border-amber-500/10 pb-1.5 flex items-center gap-1.5">
-                  <Award className="size-4 text-amber-700" /> Achievements &amp; Life Events (کامیابی اور سنگ میل)
+                  <Award className="size-4 text-amber-700" /> {t('achievements')}
                 </h4>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                   {milestoneOccasions.map((o) => (
@@ -471,11 +499,8 @@ export function CategoryTabs() {
                         <JashnIcon name={o.icon} className="size-4" />
                       </span>
                       <div className="truncate">
-                        <span className="text-xs font-bold text-foreground leading-tight block group-hover:text-[#7B0D1E] truncate">
-                          {o.label}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground font-urdu block">
-                          {o.urdu}
+                        <span className="text-xs font-bold text-foreground leading-tight block group-hover:text-teal-600 truncate">
+                          {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
                         </span>
                       </div>
                     </Link>
@@ -496,6 +521,7 @@ export function CategoryTabs() {
 // 2.5 INVITATIONS (RSVP Feature Block)
 // ─────────────────────────────────────────────────────────────────────────
 export function InvitationsSection() {
+  const { t, lang } = useLang()
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
@@ -523,10 +549,10 @@ export function InvitationsSection() {
     <section ref={sectionRef} className="relative overflow-hidden border-t border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 via-card to-[#08300c]/5 py-20">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHead
-          kicker="Desi Event Coordinator"
+          kicker={t('createInvitation')}
           kickerColor="text-emerald-700 font-bold"
-          title="Digital Invitations with Live RSVPs"
-          desc="Perfect for Wedding, Mehndi, Baraat, Walima, Nikkah, Birthday Parties, and family events. Everything coordinates in one elegant dashboard."
+          title={t('oneLink')}
+          desc={t('designInviteDesc')}
           className="inv-head"
         />
 
@@ -539,16 +565,16 @@ export function InvitationsSection() {
                 showCountdown={true}
                 data={{
                   typeId: 'mehndi',
-                  title: 'Mehndi Night',
-                  hostNames: 'The Malik Family',
-                  groom: 'Zaryab',
-                  bride: 'Rida',
+                  title: t('sampleMehndiTitle'),
+                  hostNames: t('sampleHostMalik'),
+                  groom: t('sampleGroomZaryab') || 'Zaryab',
+                  bride: t('sampleBrideRida') || 'Rida',
                   date: new Date(Date.now() + 86400000 * 12).toISOString().slice(0, 10), // 12 days in future
                   time: '8:00 PM',
-                  venue: 'Pearl Continental Lawn',
-                  city: 'Rawalpindi',
-                  dressCode: 'Bright Yellows & Greens',
-                  notes: 'Traditional dholki and delicious food setup.',
+                  venue: t('sampleVenuePC') || 'Pearl Continental Lawn',
+                  city: t('sampleCityRawalpindi') || 'Rawalpindi',
+                  dressCode: t('sampleDressYellowGreen'),
+                  notes: t('sampleNotesDholki'),
                   themeId: 'emerald-classic',
                 }}
               />
@@ -557,21 +583,27 @@ export function InvitationsSection() {
 
           {/* Feature list */}
           <div className="inv-features lg:col-span-7 space-y-6 order-1 lg:order-2">
-            <h3 className="text-2xl font-extrabold text-foreground leading-tight">
-              One link, all the details your guests need.
+            <h3 className={cn(
+              "font-extrabold text-foreground",
+              (lang === 'ur' || lang === 'ar') ? "font-urdu text-2xl md:text-3xl leading-[2.2] py-2" : "text-2xl leading-tight"
+            )}>
+              {t('oneLink')}
             </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              No more printing expensive paper cards. Share your custom invitation link on WhatsApp. Guests can confirm attendance with one-click, see Google Map directions, and watch the live wedding countdown!
+            <p className={cn(
+              "text-muted-foreground",
+              (lang === 'ur' || lang === 'ar') ? "font-urdu text-base sm:text-lg leading-[2.2] py-2" : "text-sm leading-relaxed"
+            )}>
+              {t('oneLinkDesc')}
             </p>
 
             <div className="grid gap-4 sm:grid-cols-2 pt-2">
               {[
-                'WhatsApp RSVP confirmations',
-                'Google Maps integration',
-                'Live event countdown timers',
-                'Dress code & family notes',
-                'Secure host dashboard control',
-                'Premium animations & background audio',
+                t('featWhatsappRsvp'),
+                t('featGoogleMaps'),
+                t('featCountdown'),
+                t('featDressCodeNotes'),
+                t('featHostDashboard'),
+                t('featPremiumAudio'),
               ].map((f) => (
                 <div key={f} className="inv-feature-item flex items-center gap-2 text-xs font-semibold text-foreground">
                   <CheckCircle className="size-4 text-emerald-600 shrink-0" />
@@ -585,13 +617,13 @@ export function InvitationsSection() {
                 href="/create-invitation"
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-700 px-6 font-bold text-white hover:bg-emerald-800 transition-colors shadow-lg shadow-emerald-700/10 active:scale-95 transition-transform"
               >
-                Create Event Invitation <ArrowRight className="size-4" />
+                {t('createInvitation')} <ArrowRight className="size-4" />
               </Link>
               <Link
                 href="/dashboard"
                 className="text-xs font-bold text-emerald-700 hover:underline"
               >
-                View Host Dashboard →
+                {t('viewDashboard')} →
               </Link>
             </div>
           </div>
@@ -606,75 +638,69 @@ export function InvitationsSection() {
 // ─────────────────────────────────────────────────────────────────────────
 
 export function SampleCards() {
+  const { t, lang } = useLang()
   const carouselRef = useRef<HTMLDivElement>(null)
   const [activeCardIndex, setActiveCardIndex] = useState(0)
 
   const cardsData = [
     {
       type: 'wish',
-      title: 'Eid Mubarak Card',
-      urduTitle: 'عید مبارک کارڈ',
-      description: 'Mughal Gold theme with traditional blessings',
+      title: t('sampleEidCardTitle'),
+      description: t('sampleEidCardDesc'),
       watermark: true,
       data: {
         occasionId: 'eid-ul-fitr',
         themeId: 'mughal-gold',
-        language: 'both',
-        senderName: 'The Ahmed Family',
-        recipientName: 'You',
-        message: 'May this blessed Eid bring joy, peace and prosperity to you and your loved ones.',
-        messageUrdu: 'اللہ یہ مبارک دن آپ کے لیے خوشیوں کا باعث بنائے۔',
+        language: lang,
+        senderName: t('sampleSenderAhmed'),
+        recipientName: t('sampleRecipientYou'),
+        message: t('sampleEidMsg'),
       }
     },
     {
       type: 'wish',
-      title: 'Shaadi Mubarak Card',
-      urduTitle: 'شادی مبارک کارڈ',
-      description: 'Elegant Pink Zardozi design with custom script',
+      title: t('sampleShaadiCardTitle'),
+      description: t('sampleShaadiCardDesc'),
       watermark: true,
       data: {
         occasionId: 'shaadi',
         themeId: 'pink-zardozi',
-        language: 'both',
-        senderName: 'The Khan Family',
-        message: 'Wishing the happy couple a lifetime of love and togetherness.',
-        messageUrdu: 'اللہ جوڑے کو ہمیشہ خوش رکھے۔',
+        language: lang,
+        senderName: t('sampleSenderKhan'),
+        message: t('sampleShaadiMsg'),
       }
     },
     {
       type: 'wish',
-      title: 'Saalgirah Mubarak Card',
-      urduTitle: 'سالگرہ مبارک کارڈ',
-      description: 'Midnight Kashi design with music-box chime',
+      title: t('sampleBirthdayCardTitle'),
+      description: t('sampleBirthdayCardDesc'),
       watermark: true,
       data: {
         occasionId: 'birthday',
         themeId: 'midnight-kashi',
-        language: 'both',
-        senderName: 'Bilal',
-        recipientName: 'Sana',
-        message: 'May Allah bless you with health and happiness always. Happy Birthday!',
-        messageUrdu: 'سالگرہ مبارک ہو! اللہ آپ کو لمبی عمر عطا فرمائے۔',
+        language: lang,
+        senderName: t('sampleSenderBilal'),
+        recipientName: t('sampleRecipientSana'),
+        message: t('sampleBdayMsg'),
       }
     },
     {
       type: 'invitation',
-      title: 'Mehndi Invitation',
-      urduTitle: 'دعوت نامہ مہندی',
-      description: 'Emerald Classic event website invitation with RSVP',
+      title: t('sampleMehndiInviteTitle'),
+      description: t('sampleMehndiInviteDesc'),
       watermark: true,
       data: {
         typeId: 'mehndi',
-        title: 'Mehndi Night',
-        hostNames: 'The Malik Family',
-        groom: 'Hamza',
-        bride: 'Ayesha',
+        title: t('sampleMehndiTitle'),
+        hostNames: t('sampleHostMalik'),
+        groom: t('sampleGroomHamza'),
+        bride: t('sampleBrideAyesha'),
         date: '2026-12-20',
         time: '7:00 PM',
-        venue: 'Royal Palm',
-        city: 'Lahore',
-        dressCode: 'Yellow & Green',
-        notes: 'Dholki and dinner to follow.',
+        venue: t('sampleVenueRoyal'),
+        city: t('sampleCityLahore'),
+        dressCode: t('sampleDressYellowGreen'),
+        notes: t('sampleNotesDholki'),
         themeId: 'emerald-classic',
       }
     }
@@ -698,81 +724,39 @@ export function SampleCards() {
   }
 
   return (
-    <section className="border-t border-[#7B0D1E]/10 bg-[#FAF6F0]/60 py-16 relative">
-      <div className="mx-auto max-w-4xl px-4">
+    <section className="border-t border-emerald-900/10 bg-gradient-to-b from-background via-emerald-950/5 to-background py-16 relative overflow-hidden">
+      <div className="mx-auto max-w-6xl px-4">
         <SectionHead
-          kicker="Zebaish"
-          title="Consolidated Design Showcase"
-          desc="Swipe to view live animated greetings and RSVP event invitations. Deep jewel tones, shimmering calligraphy, and floating petals."
+          kicker={t('designShowcase')}
+          title={t('liveAnimatedCardPreview')}
+          desc={t('swipeShowcaseDesc')}
         />
 
-        {/* Carousel Showcase */}
-        <div className="relative mt-8 max-w-md mx-auto">
-          {/* Navigation Arrows */}
-          <button
-            onClick={() => navigateToCard(Math.max(0, activeCardIndex - 1))}
-            className="absolute left-[-20px] sm:left-[-50px] top-1/2 -translate-y-1/2 z-10 flex size-10 items-center justify-center rounded-full border border-[#7B0D1E]/20 bg-card text-[#7B0D1E] shadow-md hover:bg-[#7B0D1E] hover:text-white transition-all disabled:opacity-30 disabled:pointer-events-none"
-            disabled={activeCardIndex === 0}
-            aria-label="Previous card"
-          >
-            <ChevronLeft className="size-5" />
-          </button>
-          
-          <button
-            onClick={() => navigateToCard(Math.min(cardsData.length - 1, activeCardIndex + 1))}
-            className="absolute right-[-20px] sm:right-[-50px] top-1/2 -translate-y-1/2 z-10 flex size-10 items-center justify-center rounded-full border border-[#7B0D1E]/20 bg-card text-[#7B0D1E] shadow-md hover:bg-[#7B0D1E] hover:text-white transition-all disabled:opacity-30 disabled:pointer-events-none"
-            disabled={activeCardIndex === cardsData.length - 1}
-            aria-label="Next card"
-          >
-            <ChevronRight className="size-5" />
-          </button>
-
-          {/* Cards slider */}
-          <div
-            ref={carouselRef}
-            onScroll={handleScroll}
-            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 scroll-smooth"
-            style={{ WebkitOverflowScrolling: 'touch' }}
-          >
-            {cardsData.map((card, idx) => (
-              <div key={idx} className="w-full shrink-0 snap-center pb-4 flex flex-col items-center">
-                {/* Details above card */}
-                <div className="text-center mb-4">
-                  <h3 className="text-lg font-bold text-foreground flex items-center gap-1.5 justify-center">
-                    <span>{card.title}</span>
-                    <span className="font-urdu text-sm text-[#7B0D1E] font-medium">({card.urduTitle})</span>
-                  </h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">{card.description}</p>
-                </div>
-
-                {/* Card renderer */}
-                <div className="w-[320px] shadow-2xl rounded-3xl overflow-hidden border border-[#7B0D1E]/15 bg-card hover:scale-[1.01] transition-transform duration-300">
-                  {card.type === 'wish' ? (
-                    <WishCard watermark={card.watermark} data={card.data as any} />
-                  ) : (
-                    <InvitationCard watermark={card.watermark} showCountdown={true} data={card.data as any} />
-                  )}
-                </div>
+        {/* ── Responsive Grid Showcase (Zero Horizontal Scroll, Uniform Width & Height) ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mt-8">
+          {cardsData.map((card, idx) => (
+            <div
+              key={idx}
+              className="w-full flex flex-col items-center justify-between rounded-3xl border border-emerald-900/20 bg-card/70 p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 min-h-[500px]"
+            >
+              {/* Details above card */}
+              <div className="text-center mb-4 w-full">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-500/10 px-3 py-1 rounded-full mb-1.5">
+                  <Sparkles className="size-3.5 text-amber-500" /> {card.title}
+                </span>
+                <p className="text-xs text-muted-foreground line-clamp-1">{card.description}</p>
               </div>
-            ))}
-          </div>
 
-          {/* Carousel dots indicators */}
-          <div className="flex justify-center gap-2 mt-6">
-            {cardsData.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => navigateToCard(idx)}
-                className={cn(
-                  "size-2.5 rounded-full transition-all",
-                  activeCardIndex === idx
-                    ? "bg-[#7B0D1E] w-6"
-                    : "bg-[#7B0D1E]/20 hover:bg-[#7B0D1E]/40"
+              {/* Uniform card wrapper (Fixed Aspect & Identical Dimensions) */}
+              <div className="w-full max-w-[360px] mx-auto flex-1 flex flex-col justify-center rounded-2xl overflow-hidden shadow-xl border border-amber-500/20 bg-card">
+                {card.type === 'wish' ? (
+                  <WishCard watermark={card.watermark} data={card.data as any} />
+                ) : (
+                  <InvitationCard watermark={card.watermark} showCountdown={true} data={card.data as any} />
                 )}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -783,6 +767,7 @@ export function SampleCards() {
 // 4. CTA SECTION (Only 2 main button CTA pairings on page, Hero & bottom)
 // ─────────────────────────────────────────────────────────────────────────
 export function HomeCTA() {
+  const { t } = useLang()
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
@@ -795,33 +780,30 @@ export function HomeCTA() {
   }, { scope: sectionRef })
 
   return (
-    <section ref={sectionRef} className="border-t border-[#7B0D1E]/20 bg-gradient-to-br from-[#7B0D1E] to-[#4A0510] text-[#FAF6F0] py-20 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(#FAF6F0_1.5px,transparent_1.5px)] [background-size:16px_16px] pointer-events-none" />
+    <section ref={sectionRef} className="border-t border-teal-500/20 bg-gradient-to-br from-teal-600 to-teal-900 text-[#f5f3ff] py-20 relative overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(#f5f3ff_1.5px,transparent_1.5px)] [background-size:16px_16px] pointer-events-none" />
       
       <div className="mx-auto max-w-4xl px-4 py-8 text-center relative z-10 space-y-6">
-        <span className="cta-item inline-block font-urdu text-2xl text-amber-400 font-medium">
-          ہر خوشی کے لیے ایک خوبصورت پیغام
-        </span>
         <h2 className="cta-item text-balance text-3xl font-extrabold tracking-tight sm:text-4xl text-white">
-          Ready to spread some joy?
+          {t('spreadJoy')}
         </h2>
         <p className="cta-item mx-auto mt-2 max-w-md text-pretty text-amber-100/80 text-sm sm:text-base leading-relaxed">
-          Create your first animated wish card or full event invitation for free. No credit card or pre-signup required.
+          {t('spreadJoyDesc')}
         </p>
         
         {/* Main CTA pair (Instance 2 of 2) */}
         <div className="cta-item mt-8 flex flex-col justify-center gap-3 sm:flex-row max-w-xs sm:max-w-none mx-auto">
           <Link
             href="/create-wish"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-amber-500 px-8 text-sm font-bold text-[#4A0510] hover:bg-amber-400 active:scale-95 transition-all shadow-lg shadow-amber-500/25"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-amber-500 px-8 text-sm font-bold text-[#0f766e] hover:bg-amber-400 active:scale-95 transition-all shadow-lg shadow-amber-500/25"
           >
-            Send a Wish <ArrowRight className="size-4" />
+            {t('sendWish')} <ArrowRight className="size-4" />
           </Link>
           <Link
             href="/create-invitation"
             className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-8 text-sm font-bold text-white hover:bg-white/20 active:scale-95 transition-all"
           >
-            Create Invitation
+            {t('createInvitation')}
           </Link>
         </div>
       </div>
@@ -833,6 +815,7 @@ export function HomeCTA() {
 // 5. STICKY MOBILE FLOATING CTA BUTTON
 // ─────────────────────────────────────────────────────────────────────────
 export function FloatingCTA() {
+  const { t } = useLang()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -843,10 +826,10 @@ export function FloatingCTA() {
           <Link
             href="/create-wish"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 bg-[#7B0D1E] text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-xl border border-white/10 active:scale-95 transition-transform"
+            className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-xl border border-white/10 active:scale-95 transition-transform"
           >
             <Sparkles className="size-3.5" />
-            <span>Send a Wish / کارڈ بھیجیں</span>
+            <span>{t('sendWish')}</span>
           </Link>
           <Link
             href="/create-invitation"
@@ -854,7 +837,7 @@ export function FloatingCTA() {
             className="flex items-center gap-2 bg-emerald-700 text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-xl border border-white/10 active:scale-95 transition-transform"
           >
             <Mail className="size-3.5" />
-            <span>Create Invitation / دعوت نامہ</span>
+            <span>{t('createInvitation')}</span>
           </Link>
         </div>
       )}
@@ -866,19 +849,19 @@ export function FloatingCTA() {
           "flex h-12 items-center justify-center gap-2 rounded-full px-6 font-bold text-sm text-white shadow-2xl transition-all active:scale-95 border border-white/15",
           isOpen 
             ? "bg-zinc-800 ring-4 ring-zinc-800/20" 
-            : "bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 ring-4 ring-[#7B0D1E]/20 shadow-amber-500/10"
+            : "bg-teal-600 hover:bg-teal-600/90 ring-4 ring-teal-100 shadow-amber-500/10"
         )}
         aria-label="Create card menu"
       >
         {isOpen ? (
           <>
             <X className="size-4 shrink-0" />
-            <span>Close</span>
+            <span>{t('close')}</span>
           </>
         ) : (
           <>
             <Plus className="size-4 shrink-0" />
-            <span>Create Card / کارڈ بنائیں</span>
+            <span>{t('getStarted')}</span>
           </>
         )}
       </button>

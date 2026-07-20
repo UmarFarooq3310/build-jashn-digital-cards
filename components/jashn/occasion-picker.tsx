@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { OCCASIONS, OCCASION_CATEGORIES } from '@/lib/jashn/occasions'
+import { OCCASIONS, OCCASION_CATEGORIES, getOccasionLabel } from '@/lib/jashn/occasions'
 import { JashnIcon } from '@/lib/jashn/icon'
 import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/lang/context'
 
 /** Portrait card ratio ~3:4. Overlays label + Urdu tagline on a gradient scrim. */
 function OccasionCard({
@@ -19,14 +20,16 @@ function OccasionCard({
 }: {
   id: string
   label: string
-  urdu: string
+  urdu?: string
   icon: string
   bgImage?: string
   bgGradient?: string
   active: boolean
   onClick: () => void
 }) {
+  const { lang, t } = useLang()
   const fallback = bgGradient ?? 'linear-gradient(160deg,#1a237e,#4a0e6b)'
+  const displayLabel = getOccasionLabel({ id, label, urdu } as any, lang, t)
 
   return (
     <button
@@ -42,13 +45,13 @@ function OccasionCard({
       )}
       style={{ aspectRatio: '3/4', background: fallback }}
       aria-pressed={active}
-      aria-label={label}
+      aria-label={displayLabel}
     >
       {/* ── Background image (SVG placeholder or real photo) ── */}
       {bgImage && (
         <Image
           src={bgImage}
-          alt={label}
+          alt={displayLabel}
           fill
           sizes="(max-width: 640px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -76,11 +79,11 @@ function OccasionCard({
 
       {/* ── Text overlay at bottom ── */}
       <span className="absolute bottom-0 left-0 right-0 flex flex-col items-start gap-0.5 p-2.5">
-        <span className="text-[11px] font-bold leading-tight text-white drop-shadow-sm line-clamp-2">
-          {label}
-        </span>
-        <span className="font-urdu text-[13px] leading-snug text-white/80 drop-shadow-sm line-clamp-1">
-          {urdu}
+        <span className={cn(
+          "leading-tight text-white drop-shadow-sm line-clamp-2",
+          (lang === 'ur' || lang === 'ar') ? "font-urdu text-base font-bold py-0.5" : "text-[11px] font-bold"
+        )}>
+          {displayLabel}
         </span>
       </span>
     </button>
@@ -94,6 +97,7 @@ export function OccasionPicker({
   value: string
   onChange: (id: string) => void
 }) {
+  const { t } = useLang()
   const [cat, setCat] = useState<(typeof OCCASION_CATEGORIES)[number]>('Personal')
   const list = OCCASIONS.filter((o) => o.category === cat)
 
@@ -113,7 +117,7 @@ export function OccasionPicker({
                 : 'bg-secondary text-secondary-foreground hover:bg-muted',
             )}
           >
-            {c}
+            {t(`cat_${c}`) || c}
           </button>
         ))}
       </div>
@@ -125,7 +129,7 @@ export function OccasionPicker({
             key={o.id}
             id={o.id}
             label={o.label}
-            urdu={o.urdu}
+            urdu={o.urdu || ''}
             icon={o.icon}
             bgImage={o.bgImage}
             bgGradient={o.bgGradient}

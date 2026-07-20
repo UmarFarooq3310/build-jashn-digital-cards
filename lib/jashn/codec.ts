@@ -15,14 +15,13 @@ export function encodeShortWish(w: Partial<Wish>): string {
   // Optimization: check if message matches a predefined template
   const templates = w.occasionId ? getTemplates(w.occasionId) : []
   const matchedTemplateIdx = templates.findIndex(
-    (t) => t.en === w.message && t.ur === w.messageUrdu
+    (t) => t.en === w.message || t.ur === w.message
   )
 
   if (matchedTemplateIdx !== -1) {
     params.set('ti', String(matchedTemplateIdx))
   } else {
     if (w.message) params.set('m', w.message)
-    if (w.messageUrdu) params.set('mu', w.messageUrdu)
   }
   return params.toString()
 }
@@ -47,9 +46,8 @@ export function decodeShortWish(params: URLSearchParams, slug: string): Wish | n
     senderName: params.get('s') || 'Well Wisher',
     recipientName: params.get('r') || '',
     relation: params.get('rel') || '',
-    language: (params.get('l') as 'en' | 'ur' | 'both') || 'both',
+    language: (params.get('l') as any) || 'en',
     message: matchedTemplate ? matchedTemplate.en : (params.get('m') || ''),
-    messageUrdu: matchedTemplate ? matchedTemplate.ur : (params.get('mu') || ''),
     viewCount: 1,
     createdAt: Date.now(),
   }

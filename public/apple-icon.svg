@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d9488"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect width="1024" height="1024" rx="240" fill="url(#bg)"/>
+  <!-- Top-left shine overlay -->
+  <rect width="1024" height="1024" rx="240" fill="url(#shine)"/>
+
+  <!-- Card body -->
+  <rect x="184" y="306" width="656" height="430" rx="82" fill="white" fill-opacity="0.15" stroke="white" stroke-width="30" stroke-linejoin="round"/>
+
+  <!-- Envelope flap line -->
+  <path d="M184 388 L512 552 L840 388" stroke="white" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Heart centred on card -->
+  <path d="M512 666 C512 666 408 582 408 521 C408 483 436 455 474 455 C492 455 506 463 512 474 C518 463 532 455 550 455 C588 455 616 483 616 521 C616 582 512 666 512 666Z" fill="white" fill-opacity="0.85"/>
+
+  <!-- Sparkle top-right -->
+  <path d="M778 204 C778 234 793 248 823 248 C793 248 778 262 778 292 C778 262 763 248 733 248 C763 248 778 234 778 204Z" fill="url(#spark)"/>
+
+  <!-- Small sparkle bottom-left -->
+  <path d="M250 780 C250 800 258 808 278 808 C258 808 250 816 250 836 C250 816 242 808 222 808 C242 808 250 800 250 780Z" fill="url(#spark)" opacity="0.7"/>
+</svg>

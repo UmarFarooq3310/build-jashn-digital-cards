@@ -27,6 +27,23 @@ import {
   BookOpen,
   Store,
   Building2,
+  TreePine,
+  Snowflake,
+  Flame,
+  Wine,
+  GlassWater,
+  HeartHandshake,
+  Palmtree,
+  Globe,
+  Calendar,
+  Smile,
+  Trophy,
+  Egg,
+  Sun,
+  Clapperboard,
+  Gamepad2,
+  Clover,
+  Sparkle,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -59,6 +76,23 @@ const MAP: Record<string, LucideIcon> = {
   BookOpen,
   Store,
   Building2,
+  TreePine,
+  Snowflake,
+  Flame,
+  Wine,
+  GlassWater,
+  HeartHandshake,
+  Palmtree,
+  Globe,
+  Calendar,
+  Smile,
+  Trophy,
+  Egg,
+  Sun,
+  Clapperboard,
+  Gamepad2,
+  Clover,
+  Sparkle,
 }
 
 export function JashnIcon({
@@ -71,3 +105,4 @@ export function JashnIcon({
   const Cmp = MAP[name] ?? Sparkles
   return <Cmp className={className} aria-hidden="true" />
 }
+

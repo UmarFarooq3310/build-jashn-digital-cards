@@ -1,7 +1,6 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import Script from 'next/script'
 import { useEffect } from 'react'
 
 // Only allow Google AdSense on the Homepage and Informational content directories (FAQ/Guides)
@@ -31,24 +30,29 @@ export function AdSenseHandler() {
         '.google-auto-placed, ins.adsbygoogle, [id^="google_ads_"], iframe[id^="aswift_"]'
       )
       adElements.forEach((el) => el.remove())
+
+      // 3. Remove script if it exists
+      const existingScript = document.getElementById('google-adsense-dynamic')
+      if (existingScript) {
+        existingScript.remove()
+      }
     } else {
       // Restore ads when navigating back to allowed pages
       document.documentElement.classList.remove('no-ads')
       document.body.classList.remove('no-ads')
+
+      // Dynamically load AdSense script if not already present
+      const scriptId = 'google-adsense-dynamic'
+      if (!document.getElementById(scriptId)) {
+        const script = document.createElement('script')
+        script.id = scriptId
+        script.async = true
+        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833'
+        script.setAttribute('crossorigin', 'anonymous')
+        document.head.appendChild(script)
+      }
     }
   }, [pathname, allowed])
 
-  if (!allowed) {
-    return null
-  }
-
-  return (
-    <Script
-      id="google-adsense"
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
-      crossOrigin="anonymous"
-      strategy="afterInteractive"
-    />
-  )
+  return null
 }

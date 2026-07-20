@@ -3,6 +3,7 @@
 import { Lock } from 'lucide-react'
 import { THEMES } from '@/lib/jashn/themes'
 import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/lang/context'
 
 export function ThemePicker({
   value,
@@ -15,40 +16,49 @@ export function ThemePicker({
   isPro: boolean
   onLockedClick?: () => void
 }) {
+  const { t } = useLang()
+
   return (
-    <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
-      {THEMES.map((t) => {
-        const locked = t.isPremium && !isPro
-        const active = value === t.id
+    <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+      {THEMES.map((theme) => {
+        const isSelected = value === theme.id
+        const isLocked = theme.isPremium && !isPro
+
         return (
           <button
-            key={t.id}
+            key={theme.id}
             type="button"
-            onClick={() => (locked ? onLockedClick?.() : onChange(t.id))}
+            onClick={() => {
+              if (isLocked) {
+                onLockedClick?.()
+              } else {
+                onChange(theme.id)
+              }
+            }}
             className={cn(
-              'group relative flex flex-col items-center gap-1.5 rounded-xl border p-2 transition-all',
-              active ? 'border-primary ring-2 ring-primary/30' : 'border-border hover:border-primary/40',
+              'relative flex flex-col items-center gap-1 rounded-2xl border p-3 transition-all',
+              isSelected
+                ? 'border-primary bg-primary/10 shadow-sm ring-1 ring-primary'
+                : 'border-border hover:border-primary/50'
             )}
           >
             <span
-              className="relative flex h-16 w-full items-center justify-center overflow-hidden rounded-lg"
-              style={{
-                background: `linear-gradient(160deg, ${t.previewColor}, color-mix(in oklab, ${t.previewColor} 55%, #000))`,
-              }}
+              className="flex size-10 items-center justify-center rounded-xl font-bold shadow-inner"
+              style={{ background: theme.previewColor }}
             >
-              {locked ? (
+              {isLocked ? (
                 <Lock className="size-4 text-white/90" />
               ) : (
                 <span className="text-[10px] font-semibold uppercase tracking-widest text-white/80">
-                  {t.motif}
+                  {theme.motif}
                 </span>
               )}
             </span>
-            <span className="text-[11px] font-medium leading-tight text-foreground">{t.name}</span>
-            {t.isPremium ? (
-              <span className="text-[9px] font-bold uppercase tracking-wide text-gold">Pro</span>
+            <span className="text-[11px] font-medium leading-tight text-foreground">{theme.name}</span>
+            {theme.isPremium ? (
+              <span className="text-[9px] font-bold uppercase tracking-wide text-gold">{t('badgePro')}</span>
             ) : (
-              <span className="text-[9px] uppercase tracking-wide text-muted-foreground">Free</span>
+              <span className="text-[9px] uppercase tracking-wide text-muted-foreground">{t('badgeFree')}</span>
             )}
           </button>
         )

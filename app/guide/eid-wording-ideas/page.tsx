@@ -5,7 +5,7 @@ import { SiteFooter } from '@/components/site-footer'
 import { ArrowLeft, BookOpen, Clock, Calendar, Heart, Share2, Sparkles, Send } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Eid Mubarak Wish Wording & Urdu Messages Ideas — Jashn',
+  title: 'Eid Mubarak Wish Wording & Urdu Messages Ideas — Cardzy',
   description:
     'Browse our curated collection of Eid Mubarak wishes, traditional Urdu greetings, and poetry verses for digital animated greeting cards.',
   keywords: [
@@ -17,9 +17,35 @@ export const metadata: Metadata = {
   ],
 }
 
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Creative Wording & Custom Message Ideas for Eid Mubarak Wish Cards',
+  description: 'Browse our curated collection of Eid Mubarak wishes, traditional Urdu greetings, and poetry verses for digital animated greeting cards.',
+  url: 'https://cardzy.online/guide/eid-wording-ideas',
+  author: {
+    '@type': 'Organization',
+    name: 'Cardzy Editorial Team',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Cardzy',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://cardzy.online/favicon.svg',
+    },
+  },
+  datePublished: '2026-07-08',
+  dateModified: '2026-07-18',
+}
+
 export default function EidGuidePage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <SiteHeader />
 
       <main className="flex-1 py-10 md:py-16">
@@ -50,7 +76,7 @@ export default function EidGuidePage() {
                 <span className="flex items-center gap-1">
                   <Clock className="size-4" /> 4 min read
                 </span>
-                <span>By Jashn Editorial Team</span>
+                <span>By Cardzy Editorial Team</span>
               </div>
             </header>
 
@@ -61,7 +87,7 @@ export default function EidGuidePage() {
                 Eid-ul-Fitr and Eid-ul-Adha are times of immense gratitude, gathering, and sharing love with family. A long-standing subcontinental tradition is sending Eid cards to loved ones. While paper cards are harder to find, sending an <strong>animated digital wish card</strong> brings back that exact nostalgia with full audio chimes, sliding calligraphy, and custom animations.
               </p>
               <p>
-                If you are creating an Eid card on Jashn, choosing the right words makes a huge difference. Here is our curated collection of short, formal, and poetic greetings in English and Urdu that you can copy and use directly.
+                If you are creating an Eid card on Cardzy, choosing the right words makes a huge difference. Here is our curated collection of short, formal, and poetic greetings in English and Urdu that you can copy and use directly.
               </p>
 
               <h2 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
@@ -92,7 +118,7 @@ export default function EidGuidePage() {
                 3. Urdu Wording & Traditional Poetry (Shayari)
               </h2>
               <p>
-                Expressing Eid greetings in Urdu carries a special emotional depth. In Jashn, our templates render Urdu in the beautiful <strong>Noto Nastaliq Urdu</strong> font, which looks incredibly elegant.
+                Expressing Eid greetings in Urdu carries a special emotional depth. In Cardzy, our templates render Urdu in the beautiful <strong>Noto Nastaliq Urdu</strong> font, which looks incredibly elegant.
               </p>
 
               <div className="space-y-4 my-6">
@@ -116,7 +142,7 @@ export default function EidGuidePage() {
               </div>
 
               <h2 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
-                4. Customizing Your Eid Card on Jashn
+                4. Customizing Your Eid Card on Cardzy
               </h2>
               <p>
                 Ready to create your card? Follow these quick steps to make it stand out:

@@ -1,77 +1,105 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Poppins, Noto_Nastaliq_Urdu } from 'next/font/google'
 import { ToastNotification } from '@/components/ui/toast-notification'
 import { FirebaseAuthListener } from '@/components/firebase-auth-listener'
 import { AdSenseHandler } from '@/components/adsense-handler'
+import { LanguageProvider } from '@/lib/lang/context'
 import './globals.css'
 
-const poppins = Poppins({
-  variable: '--font-poppins',
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-})
-
-const nastaliq = Noto_Nastaliq_Urdu({
-  variable: '--font-nastaliq',
-  subsets: ['arabic'],
-  weight: ['400', '500', '600', '700'],
-})
-
 export const metadata: Metadata = {
-  title: 'Jashn — Pakistan\'s Animated Digital Wish & Invitation Cards',
+  metadataBase: new URL('https://cardzy.online'),
+  title: 'Cardzy — Digital Wish Cards & Event Invitations',
   description:
-    'Jashn (jashn.app) lets you send beautiful animated wish cards and full event invitations with RSVP, countdowns, and Urdu calligraphy. Free to start.',
+    'Create and share animated digital wish cards & event websites for weddings, Eid, birthdays & celebrations with RSVP and 18 languages.',
   generator: 'v0.app',
+  alternates: {
+    canonical: 'https://cardzy.online',
+  },
   other: {
     'google-adsense-account': 'ca-pub-8899224608517833',
   },
   keywords: [
-    'Jashn',
-    'digital invitation Pakistan',
-    'shaadi card',
-    'eid mubarak card',
+    'Cardzy',
+    'digital invitation',
     'animated wish card',
-    'mehndi invitation',
+    'online invitation',
+    'eid mubarak card',
+    'wedding invitation',
+    'birthday card',
+    'RSVP invitation',
+    'multilingual card',
+    'event invitation',
   ],
   icons: {
     icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
-      { url: '/icon.svg', type: 'image/svg+xml' }
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
     ],
-    apple: '/apple-icon.png',
+    shortcut: '/favicon.svg',
+    apple: '/apple-icon-180x180.png',
   },
   openGraph: {
-    title: 'Jashn — Pakistan\'s Animated Digital Wish & Invitation Cards',
+    title: 'Cardzy — Digital Wish Cards & Event Invitations',
     description:
-      'Jashn (jashn.app) lets you send beautiful animated wish cards and full event invitations with RSVP, countdowns, and Urdu calligraphy. Free to start.',
-    url: 'https://jashn.app',
-    siteName: 'Jashn',
+      'Create and share animated digital wish cards & event websites for weddings, Eid, birthdays & celebrations with RSVP and 18 languages.',
+    url: 'https://cardzy.online',
+    siteName: 'Cardzy',
     images: [
       {
-        url: 'https://jashn.app/apple-icon.png',
-        width: 180,
-        height: 180,
-        alt: 'Jashn App Icon',
+        url: '/post1.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Cardzy — Beautiful Animated Wish Cards & Invitations',
       },
     ],
-    locale: 'en_PK',
+    locale: 'en_US',
     type: 'website',
   },
   twitter: {
-    card: 'summary',
-    title: 'Jashn — Pakistan\'s Animated Digital Wish & Invitation Cards',
+    card: 'summary_large_image',
+    title: 'Cardzy — Digital Wish Cards & Event Invitations',
     description:
-      'Jashn (jashn.app) lets you send beautiful animated wish cards and full event invitations with RSVP, countdowns, and Urdu calligraphy. Free to start.',
-    images: ['https://jashn.app/apple-icon.png'],
+      'Create and share animated digital wish cards & event websites for weddings, Eid, birthdays & celebrations with RSVP and 18 languages.',
+    images: ['/post1.svg'],
   },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#7B0D1E',
+  themeColor: '#0d9488',
   width: 'device-width',
   initialScale: 1,
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://cardzy.online/#website',
+      url: 'https://cardzy.online',
+      name: 'Cardzy',
+      description: 'Global digital wish cards & event invitations',
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://cardzy.online/#organization',
+      name: 'Cardzy Online',
+      url: 'https://cardzy.online',
+      logo: 'https://cardzy.online/favicon.svg',
+      sameAs: [
+        'https://facebook.com/cardzy.online',
+        'https://x.com/cardzy_online',
+        'https://instagram.com/cardzy.online',
+        'https://youtube.com/@cardzyonline',
+        'https://linkedin.com/company/cardzy-online',
+      ],
+      contactPoint: {
+        '@type': 'ContactPoint',
+        email: 'cardzyonline@gmail.com',
+        contactType: 'customer service',
+      },
+    },
+  ],
 }
 
 export default function RootLayout({
@@ -80,19 +108,28 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${poppins.variable} ${nastaliq.variable}`}
-    >
+    <html lang="en">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
         <meta name="google-adsense-account" content="ca-pub-8899224608517833" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
-      <body className="bg-background font-sans antialiased overflow-x-hidden">
-        <AdSenseHandler />
-        <FirebaseAuthListener />
-        {children}
-        <ToastNotification />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+      <body className="bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]">
+        <LanguageProvider>
+          <AdSenseHandler />
+          <FirebaseAuthListener />
+          {children}
+          <ToastNotification />
+          {process.env.NODE_ENV === 'production' && <Analytics />}
+        </LanguageProvider>
       </body>
     </html>
   )

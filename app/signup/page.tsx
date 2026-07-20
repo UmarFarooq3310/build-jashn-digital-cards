@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { GoogleOneTap } from '@/components/google-one-tap'
+import { CardzyLogo } from '@/components/ui/logo'
+import { useLang } from '@/lib/lang/context'
 
 // Popular email domains for autocomplete suggestions
 const EMAIL_DOMAINS = [
@@ -146,6 +148,7 @@ function SignupPageContent() {
   const { user, signUp, signInWithGoogle, migrateGuestCards } = useJashn()
 
   const [signupStep, setSignupStep] = useState<1 | 2>(1)
+  const { t } = useLang()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState(searchParams.get('email') ?? '')
@@ -279,8 +282,8 @@ function SignupPageContent() {
           <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary via-gold to-emerald-500" />
 
           <div className="text-center">
-            <img src="/icon.svg" alt="Jashn Logo" className="mx-auto size-12 rounded-2xl mb-3 shadow-md" />
-            <h1 className="text-2xl font-extrabold text-foreground">Create Account</h1>
+            <CardzyLogo className="mx-auto size-12 mb-3 shadow-md" />
+            <h1 className="text-2xl font-extrabold text-foreground">{t('createFreeAccount')}</h1>
             <p className="text-xs text-muted-foreground mt-1">Design premium digital cards, invitations & track RSVPs live</p>
           </div>
 
@@ -340,7 +343,7 @@ function SignupPageContent() {
               {/* Divider */}
               <div className="flex items-center gap-3 text-[11px] text-muted-foreground font-medium">
                 <span className="flex-1 h-px bg-border" />
-                or sign up with
+                {t('orContinueWith')}
                 <span className="flex-1 h-px bg-border" />
               </div>
 
@@ -361,7 +364,7 @@ function SignupPageContent() {
                     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                   </svg>
                 )}
-                Continue with Google
+                {t('continueWithGoogle')}
               </button>
             </form>
           )}
@@ -370,7 +373,7 @@ function SignupPageContent() {
           {signupStep === 2 && (
             <form onSubmit={handleSignupSubmit} className="signup-step-fields space-y-4">
               <div>
-                <label className="block text-xs font-medium text-foreground mb-1">Password</label>
+                <label className="block text-xs font-medium text-foreground mb-1">{t('password')}</label>
                 <div className="relative">
                   <input
                     type="password"
@@ -458,16 +461,16 @@ function SignupPageContent() {
                   disabled={!isStep2Valid || isSubmitting}
                   className="w-2/3 py-5 bg-primary hover:bg-primary/90 font-bold text-primary-foreground rounded-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
-                  {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : 'Create Account'}
+                  {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : t('createFreeAccount')}
                 </Button>
               </div>
             </form>
           )}
 
           <div className="text-center text-xs text-muted-foreground pt-4 border-t border-border/60">
-            Already have an account?{' '}
+            {t('alreadyHaveAccount')}{' '}
             <Link href={`/login?redirect=${encodeURIComponent(redirect)}`} className="text-primary hover:underline font-bold">
-              Sign In
+              {t('logIn')}
             </Link>
           </div>
         </div>

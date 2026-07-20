@@ -1,10 +1,9 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { Sparkles, Volume2, VolumeX, BookOpen } from 'lucide-react'
-import { playContextualSound, stopContextualSound } from '@/lib/jashn/audio'
-import { useJashn } from '@/lib/jashn/store'
+import { Sparkles, BookOpen } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/lang/context'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
@@ -27,22 +26,10 @@ export function ThreeDCardWrapper({
   isSensitive = false,
   onOpened,
 }: ThreeDCardWrapperProps) {
+  const { t, lang } = useLang()
   const [isOpen, setIsOpen] = useState(false)
   const [hasOpened, setHasOpened] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
-
-  const isMuted = useJashn((s) => s.isMuted)
-  const toggleMuted = useJashn((s) => s.toggleMuted)
-
-  const handleMuteToggle = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    toggleMuted()
-    if (!isMuted) {
-      stopContextualSound()
-    } else {
-      playContextualSound(occasionIdOrCategory)
-    }
-  }
 
   useGSAP(() => {
     if (!isOpen) return
@@ -256,20 +243,11 @@ export function ThreeDCardWrapper({
     setTilt({ rx: 0, ry: 0, px: 50, py: 50 })
   }
 
-  const handleOpen = async () => {
+  const handleOpen = () => {
     if (isOpen) return
     setIsOpen(true)
     setHasOpened(true)
     setTilt({ rx: 0, ry: 0, px: 50, py: 50 }) // Reset tilt immediately on open
-
-    // Trigger audio play immediately on user interaction
-    if (!isSensitive) {
-      try {
-        await playContextualSound(occasionIdOrCategory)
-      } catch (err) {
-        console.warn('Autoplay sound was prevented:', err)
-      }
-    }
 
     if (onOpened) {
       onOpened()
@@ -280,23 +258,23 @@ export function ThreeDCardWrapper({
   let coverBg = 'linear-gradient(145deg, #8e0f24 0%, #4a0510 100%)' // Wedding Red
   let coverBorderColor = '#e6b54a' // Gold
   let coverTextColor = '#fff4e6'
-  let badgeLabel = 'Mubarak ho'
+  let badgeLabel = t(`type_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t(`occ_${occasionIdOrCategory?.replace(/-/g, '_')}`) || (lang === 'ur' ? 'مبارک ہو' : 'Mubarak ho')
 
   if (isSensitive) {
     coverBg = 'linear-gradient(145deg, #27272a 0%, #18181b 100%)' // Muted Zinc
     coverBorderColor = '#52525b'
     coverTextColor = '#e4e4e7'
-    badgeLabel = 'Condolences'
+    badgeLabel = t('badgeCondolences') || (lang === 'ur' ? 'تعزیت' : 'Condolences')
   } else if (isIslamic) {
     coverBg = 'linear-gradient(145deg, #1B5E20 0%, #08300c 100%)' // Islamic Emerald
     coverBorderColor = '#e6c45a'
     coverTextColor = '#f1fff0'
-    badgeLabel = 'Eid Mubarak'
-  } else if (occasionIdOrCategory === 'birthday') {
+    badgeLabel = t(`type_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t(`occ_${occasionIdOrCategory?.replace(/-/g, '_')}`) || (lang === 'ur' ? 'عید مبارک' : 'Eid Mubarak')
+  } else if (occasionIdOrCategory === 'birthday' || occasionIdOrCategory === 'birthday-party') {
     coverBg = 'linear-gradient(145deg, #1a237e 0%, #0a0e3d 100%)' // Birthday Royal Blue
     coverBorderColor = '#aab4ff'
     coverTextColor = '#eef1ff'
-    badgeLabel = 'Saalgirah'
+    badgeLabel = t('occ_birthday') || t('type_birthday_party') || (lang === 'ur' ? 'سالگرہ' : 'Birthday')
   }
 
   const SealIcon = isSensitive ? BookOpen : Sparkles
@@ -502,16 +480,12 @@ export function ThreeDCardWrapper({
         >
           {recipientName ? (
             <p className="text-[11px] font-semibold line-clamp-1 max-w-[200px] mb-2 drop-shadow-sm" style={{ color: coverTextColor }}>
-              For {recipientName}
+              {lang === 'ur' ? `${recipientName} ${t('forRecipient')}` : `${t('forRecipient')} ${recipientName}`}
             </p>
           ) : null}
           
           <p className="text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5 drop-shadow-sm" style={{ color: coverBorderColor }}>
-            {isSensitive ? 'Click to open' : 'Tap to open card'}
-          </p>
-
-          <p className="text-[9px] opacity-60 flex items-center gap-1.5" style={{ color: coverTextColor }}>
-            <Volume2 className="size-3 shrink-0" /> Sound active
+            {t('tapToOpenCard')}
           </p>
         </div>
       </div>
@@ -641,16 +615,7 @@ export function ThreeDCardWrapper({
           </div>
         )}
 
-        {/* Global Mute/Unmute Audio button */}
-        {isOpen && !isSensitive && (
-          <button
-            onClick={handleMuteToggle}
-            className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 transition-all shadow-md backdrop-blur-sm pointer-events-auto cursor-pointer"
-            aria-label={isMuted ? "Unmute sound" : "Mute sound"}
-          >
-            {isMuted ? <VolumeX className="size-4 text-white/90" /> : <Volume2 className="size-4 text-white/90 animate-pulse" />}
-          </button>
-        )}
+        {/* Global Mute/Unmute Audio button removed */}
       </div>
     </div>
   )

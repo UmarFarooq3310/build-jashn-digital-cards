@@ -1,8 +1,10 @@
 'use client'
 
 import { forwardRef, useRef } from 'react'
+import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/lang/context'
 import { JashnIcon } from '@/lib/jashn/icon'
-import { getOccasion } from '@/lib/jashn/occasions'
+import { getOccasion, getLocalizedMessageText } from '@/lib/jashn/occasions'
 import { getTheme, getCategoryPatternClass, isLightVariant } from '@/lib/jashn/themes'
 import type { Language } from '@/lib/jashn/types'
 import { CardDecor } from './decor'
@@ -17,7 +19,7 @@ export interface WishCardData {
   borderId?: string
   bgVariantId?: string
   message: string
-  messageUrdu: string
+  messageUrdu?: string
   senderName: string
   recipientName?: string
   relation?: string
@@ -29,20 +31,31 @@ export const WishCard = forwardRef<HTMLDivElement, {
   watermark?: boolean
   className?: string
 }>(function WishCard({ data, watermark = true, className }, ref) {
+  const { lang, t } = useLang()
   const occasion = getOccasion(data.occasionId)
   const theme = getTheme(data.themeId)
   const isIslamic = occasion?.category === 'Islamic'
   const categoryPatternClass = getCategoryPatternClass(occasion?.category)
   const patternClass = occasion?.patternOverlay || categoryPatternClass
-  const showEn = data.language !== 'ur'
-  const showUr = data.language !== 'en'
+  const showEn = data.language === 'en'
+  const showUr = data.language === 'ur'
   const relationType = detectRelation(data.relation)
   const showAvatar = !!data.relation || !!data.recipientName
 
   const wrapRef = useRef<HTMLDivElement>(null)
 
+  const getLocalizedRelation = (rel?: string) => {
+    if (!rel) return ''
+    // Map relation string like "Best Friend" to translation key "relBestFriend"
+    const key = `rel${rel.replace(/\s+/g, '')}`
+    return t(key as any) || rel
+  }
+
+  const dearestPrefix = t('dearest') || 'Dearest'
+  const localizedRelation = getLocalizedRelation(data.relation)
+
   const recipientLabel = [
-    data.relation ? `Dearest ${data.relation}` : null,
+    data.relation ? `${dearestPrefix} ${localizedRelation}` : null,
     data.recipientName,
   ]
     .filter(Boolean)
@@ -135,133 +148,137 @@ export const WishCard = forwardRef<HTMLDivElement, {
   useGSAP(() => {
     const wrap = wrapRef.current
     if (!wrap) return
+    const card = wrap.querySelector('.wish-card-surface')
+    if (card) {
+      gsap.fromTo(card,
+        { scale: 0.92, rotateX: 12, opacity: 0, y: 24 },
+        { scale: 1, rotateX: 0, opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }
+      )
+    }
     gsap.fromTo(
       wrap.querySelectorAll('.wc-stagger'),
-      { y: 18, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.55, stagger: 0.1, ease: 'power2.out', delay: 0.5 }
+      { y: 14, opacity: 0, scale: 0.97 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.55, stagger: 0.08, ease: 'back.out(1.4)', delay: 0.25 }
     )
   }, { scope: wrapRef })
 
   return (
-    <div ref={wrapRef} className="card-3d-wrap w-full" style={{ perspective: '1200px' }}>
-      {/* ── Parallax glow blob (far layer) ── */}
+    <div ref={wrapRef} className="wish-card-wrapper relative w-full py-1" style={{ perspective: '1000px' }}>
       <div
-        className="parallax-far pointer-events-none absolute -inset-8 -z-10 rounded-full opacity-40 blur-3xl"
+        className="pointer-events-none absolute -inset-4 -z-10 rounded-full opacity-35 blur-3xl transition-opacity duration-500"
         style={{ background: `radial-gradient(circle, var(--c-glow, #ffd700) 0%, transparent 70%)` }}
       />
 
       <div
         ref={ref}
-        className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-md rounded-[2.5rem] px-4 py-8 sm:px-6 sm:py-12 text-center ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
+        className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl rounded-3xl px-4 py-5 sm:px-6 sm:py-6 text-center shadow-xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
         style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
       >
-        {/* Decor layer (far) */}
-        <div className="parallax-far">
-          <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId} decorations={occasion?.decorations} />
-        </div>
+        <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId} decorations={occasion?.decorations} />
 
-        {/* Background pattern layer */}
         {patternClass && (
           <div className={`card-bg-pattern absolute inset-0 ${patternClass}`} aria-hidden="true" />
         )}
 
-        {/* Texture layers: grain + vignette + silk sheen */}
         <div className="card-texture" aria-hidden="true" />
         <div className="card-vignette" aria-hidden="true" />
         <div className="card-silk" aria-hidden="true" />
 
-        {/* Ambient Animated backgrounds */}
         <AnimatedBackgroundDecor category={occasion?.category} occasionId={data.occasionId} />
 
-        {/* ── Shimmer sweep overlay ── */}
         <div className="card-shimmer-sweep pointer-events-none parallax-mid" aria-hidden="true" />
 
-        <div className="relative z-10 mx-auto flex max-w-sm flex-col items-center gap-5 px-2 py-6">
+        <div className="relative z-10 mx-auto flex w-full max-w-sm sm:max-w-md md:max-w-lg flex-col items-center gap-3 sm:gap-4 px-3 py-3">
 
-          {/* ── Relation Avatar (floating, 2D illustrated) ── */}
+          {recipientLabel ? (
+            <p
+              className="wc-stagger text-xs font-semibold uppercase tracking-[0.2em] opacity-85 parallax-near"
+              style={{ color: 'var(--c-accent)' }}
+            >
+              {recipientLabel}
+            </p>
+          ) : null}
+
           {showAvatar && (
-            <div className="avatar-float-anim relative" style={{ filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.35))' }}>
-              {/* glow ring behind avatar */}
+            <div className="avatar-float-anim relative" style={{ filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.32))' }}>
               <span
                 className="parallax-near absolute inset-0 -z-10 rounded-full blur-lg opacity-60"
                 style={{ background: 'radial-gradient(circle, var(--c-glow) 0%, transparent 70%)', transform: 'scale(1.4)' }}
               />
-              <RelationAvatar relation={data.relation || data.recipientName} size={72} />
+              <RelationAvatar relation={data.relation || data.recipientName} size={68} />
             </div>
           )}
 
-          {/* Recipient label */}
-          {recipientLabel ? (
-            <p
-              className="wc-stagger text-sm font-medium uppercase tracking-[0.25em] opacity-80 parallax-near"
-              style={{ color: 'var(--c-accent)' }}
-            >
-              For {recipientLabel}
-            </p>
-          ) : null}
-
-          {/* Occasion icon */}
           <span
-            className="wc-stagger parallax-mid flex items-center justify-center rounded-full border"
+            className="wc-stagger parallax-mid flex items-center justify-center rounded-full border transition-transform duration-300 hover:scale-105"
             style={{
-              width: 56, height: 56,
+              width: 50, height: 50,
               borderColor: 'var(--c-accent)',
               color: 'var(--c-accent)',
               background: 'color-mix(in oklab, var(--c-accent) 12%, transparent)',
-              boxShadow: '0 4px 20px color-mix(in oklab, var(--c-accent) 30%, transparent)',
+              boxShadow: '0 4px 18px color-mix(in oklab, var(--c-accent) 30%, transparent)',
             }}
           >
-            {occasion ? <JashnIcon name={occasion.icon} className="size-7" /> : null}
+            {occasion ? <JashnIcon name={occasion.icon} className="size-6 md:size-7" /> : null}
           </span>
 
-          {/* Urdu greeting */}
-          {occasion ? (
-            <p
-              className="wc-stagger font-urdu text-3xl leading-snug parallax-mid"
-              style={{ color: 'var(--c-accent)', textShadow: '0 2px 12px color-mix(in oklab, var(--c-accent) 50%, transparent)' }}
+          {occasion && (
+            <h1
+              className={cn(
+                "wc-stagger shimmer-text text-balance font-extrabold tracking-tight parallax-near",
+                (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose py-1" : "text-xl sm:text-2xl md:text-3xl lg:text-4xl"
+              )}
             >
-              {occasion.urdu}
-            </p>
-          ) : null}
+              {t(`occ_${occasion.id.replace(/-/g, '_')}`) || occasion.tagline || occasion.label}
+            </h1>
+          )}
 
-          {/* Shimmer tagline */}
-          <h1 className="wc-stagger shimmer-text text-balance text-2xl font-extrabold tracking-tight sm:text-3xl parallax-near">
-            {occasion?.tagline ?? 'Mubarak ho'}
-          </h1>
-
-          {/* Divider */}
           <span
-            className="wc-stagger my-1 block h-px w-24 parallax-mid"
+            className="wc-stagger block h-px w-20 md:w-28 parallax-mid"
             style={{ background: 'var(--c-accent)', opacity: 0.6 }}
             aria-hidden="true"
           />
 
-          {/* Messages */}
-          {showUr && data.messageUrdu ? (
-            <p className="wc-stagger font-urdu text-xl leading-loose">{data.messageUrdu}</p>
-          ) : null}
-          {showEn && data.message ? (
-            <p className="wc-stagger text-pretty text-base leading-relaxed opacity-95">
-              {data.message}
-            </p>
-          ) : null}
+          {data.message ? (() => {
+            const localizedMsg = getLocalizedMessageText(data.message, data.occasionId, lang)
+            const isRtlScript = lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(localizedMsg)
+            return (
+              <div
+                className="wc-stagger w-full rounded-2xl p-3 sm:p-4 text-center shadow-inner parallax-near transition-all"
+                style={{
+                  background: 'color-mix(in oklab, var(--c-accent) 8%, transparent)',
+                  border: '1px solid color-mix(in oklab, var(--c-accent) 18%, transparent)',
+                }}
+              >
+                <p className={cn(
+                  "text-balance transition-all",
+                  isRtlScript
+                    ? "font-urdu text-base sm:text-lg md:text-xl leading-loose"
+                    : "text-sm sm:text-base leading-relaxed opacity-95"
+                )}
+                style={{ color: 'var(--c-ink)' }}
+                >
+                  &ldquo;{localizedMsg}&rdquo;
+                </p>
+              </div>
+            )
+          })() : null}
 
-          {/* Sender */}
           {data.senderName ? (
-            <p className="wc-stagger mt-2 text-sm parallax-near">
-              <span className="opacity-70">With love, </span>
-              <span className="font-semibold" style={{ color: 'var(--c-accent)' }}>
+            <p className="wc-stagger text-sm sm:text-base parallax-near">
+              <span className="opacity-70">{t('withLove')} </span>
+              <span className="font-bold tracking-wide" style={{ color: 'var(--c-accent)' }}>
                 {data.senderName}
               </span>
             </p>
           ) : null}
         </div>
 
-        {/* Watermark */}
         {watermark ? (
-          <div className="relative z-10 mt-2 border-t pt-4" style={{ borderColor: 'color-mix(in oklab, var(--c-accent) 30%, transparent)' }}>
-            <p className="font-urdu text-sm opacity-80">بنایا گیا Jashn.app سے — آپ بھی بنائیں مفت</p>
-            <p className="text-[11px] uppercase tracking-widest opacity-60">Made with Jashn.app</p>
+          <div className="relative z-10 mt-2 border-t pt-3 md:pt-4" style={{ borderColor: 'color-mix(in oklab, var(--c-accent) 30%, transparent)' }}>
+            <p className={lang === 'ur' ? "font-urdu text-xs md:text-sm opacity-80" : "text-xs font-semibold opacity-80"}>
+              {t('madeWithCardzy')} — {t('createYoursFree')}
+            </p>
           </div>
         ) : null}
       </div>

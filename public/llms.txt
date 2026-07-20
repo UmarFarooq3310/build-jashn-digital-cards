@@ -1,0 +1,19 @@
+# Cardzy (https://cardzy.online)
+> Global platform for animated digital wish cards and full event invitation websites.
+
+## Overview
+Cardzy provides interactive digital greeting cards and wedding/event invitations. Users can choose from 34+ celebration occasions and 21+ wedding & event types, customized with 18 international languages, 3D envelope opening animations, music, interactive maps, and real-time RSVP management.
+
+## Core Features
+- **Send a Wish**: Instant animated digital cards for Eid, Birthdays, Anniversaries, New Baby, Graduation, New Year, and more.
+- **Create Event Invitation**: Full event websites for Weddings, Mehndi, Baraat, Walima, Nikkah, Dholki, Business Launches, and Parties with RSVP tracking and Google Maps integration.
+- **18 Language Support**: English, Urdu, Spanish, French, Arabic, Hindi, Mandarin, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, Swahili.
+- **Pricing Plans**: Free ($0), Pro ($4 / Rs 1,100), Business ($18 / Rs 5,000).
+
+## Links
+- Homepage: https://cardzy.online
+- Create Wish Card: https://cardzy.online/create-wish
+- Create Invitation: https://cardzy.online/create-invitation
+- Pricing: https://cardzy.online/pricing
+- FAQ: https://cardzy.online/faq
+- Learning Hub & Guides: https://cardzy.online/guide

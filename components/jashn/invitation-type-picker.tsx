@@ -5,8 +5,10 @@ import Image from 'next/image'
 import { INVITATION_TYPES, INVITATION_CATEGORIES } from '@/lib/jashn/invitations'
 import { JashnIcon } from '@/lib/jashn/icon'
 import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/lang/context'
 
 function InvitationTypeCard({
+  id,
   label,
   urdu,
   icon,
@@ -16,8 +18,9 @@ function InvitationTypeCard({
   active,
   onClick,
 }: {
+  id: string
   label: string
-  urdu: string
+  urdu?: string
   icon: string
   bgImage?: string
   bgGradient?: string
@@ -25,6 +28,7 @@ function InvitationTypeCard({
   active: boolean
   onClick: () => void
 }) {
+  const { lang, t } = useLang()
   const fallback = bgGradient ?? 'linear-gradient(160deg,#8e0f24,#4a0510)'
 
   return (
@@ -74,18 +78,21 @@ function InvitationTypeCard({
       {/* Couple badge */}
       {isCouple && (
         <span className="absolute left-2 top-2 rounded-full bg-black/50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white/90 backdrop-blur-sm">
-          Couple
+          {t('coupleBadge') || (lang === 'ur' ? 'جوڑا' : 'Couple')}
         </span>
       )}
 
       {/* Text overlay */}
       <span className="absolute bottom-0 left-0 right-0 flex flex-col items-start gap-0.5 p-2.5">
-        <span className="text-[11px] font-bold leading-tight text-white drop-shadow-sm line-clamp-2">
-          {label}
-        </span>
-        <span className="font-urdu text-[13px] leading-snug text-white/80 drop-shadow-sm line-clamp-1">
-          {urdu}
-        </span>
+        {lang === 'ur' ? (
+          <span className="font-urdu text-base font-bold leading-relaxed py-0.5 text-white drop-shadow-sm line-clamp-2">
+            {urdu}
+          </span>
+        ) : (
+          <span className="text-[11px] font-bold leading-tight text-white drop-shadow-sm line-clamp-2">
+            {t(`type_${id.replace(/-/g, '_')}`) || label}
+          </span>
+        )}
       </span>
     </button>
   )
@@ -127,8 +134,9 @@ export function InvitationTypePicker({
         {list.map((t) => (
           <InvitationTypeCard
             key={t.id}
+            id={t.id}
             label={t.label}
-            urdu={t.urdu}
+            urdu={t.urdu || ''}
             icon={t.icon}
             bgImage={t.bgImage}
             bgGradient={t.bgGradient}
