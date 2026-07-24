@@ -1,0 +1,57 @@
+# Cardzy: Digital Wish Cards & Event Invitations (Full Documentation)
+
+> Cardzy is a global web application for creating interactive, animated digital wish cards and multi-event invitation websites with WhatsApp RSVP tracking, Google Maps integration, live countdown timers, and support for 18 international languages.
+
+## Platform Summary
+
+Cardzy (https://cardzy.online) allows users to design, customize, and publish digital wish cards for personal celebrations (Eid, Birthdays, Anniversaries, New Baby, Graduation) and multi-event wedding/party invitation websites (Shaadi, Mehndi, Baraat, Walima, Nikkah, Dholki, Parties).
+
+## Main Features & Workflows
+
+### 1. Digital Wish Cards
+- Select from 34+ celebration categories.
+- Personalize sender/recipient names, custom greeting messages, font styles, and background themes.
+- 3D envelope opening animation with ambient background music and floating particle motifs.
+- Shareable via unique URL (`cardzy.online/w/[slug]`) or downloadable as PNG image.
+
+### 2. Event Invitation Websites
+- Select from 21+ event types (Weddings, Corporate Events, Parties).
+- Manage multiple sub-events (e.g. Mehndi, Baraat, Walima) within a single event hub.
+- Real-time guest RSVP tracking integrated directly with WhatsApp.
+- Google Maps venue location pins for guest navigation.
+- Live countdown timers showing days, hours, and minutes until the event.
+
+### 3. Multilingual Capabilities
+Supported languages include:
+1. English
+2. Urdu (اردو with Nastaliq font)
+3. Arabic (العربية)
+4. Spanish (Español)
+5. French (Français)
+6. Hindi (हिन्दी)
+7. Chinese (中文)
+8. Portuguese (Português)
+9. Russian (Русский)
+10. German (Deutsch)
+11. Japanese (日本語)
+12. Korean (한국어)
+13. Italian (Italiano)
+14. Turkish (Türkçe)
+15. Indonesian (Bahasa Indonesia)
+16. Bengali (বাংলা)
+17. Vietnamese (Tiếng Việt)
+18. Swahili (Kiswahili)
+
+## Links Index
+
+- Homepage: https://cardzy.online
+- Create Wish Card: https://cardzy.online/create-wish
+- Create Invitation: https://cardzy.online/create-invitation
+- Eid Mubarak Collection: https://cardzy.online/eid-mubarak-cards
+- Pricing Plans: https://cardzy.online/pricing
+- FAQ: https://cardzy.online/faq
+- Guide - Pakistani Wedding Invitations: https://cardzy.online/guide/pakistani-wedding-invitations
+- Guide - Eid Wording Ideas: https://cardzy.online/guide/eid-wording-ideas
+- Instagram Campaign Assets: https://cardzy.online/campaign
+- Terms of Service: https://cardzy.online/terms
+- Privacy Policy: https://cardzy.online/privacy

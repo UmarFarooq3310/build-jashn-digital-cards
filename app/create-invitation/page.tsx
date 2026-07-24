@@ -1,5 +1,12 @@
 'use client'
 
+import '@/app/invitation-themes-wedding.css'
+import '@/app/invitation-themes-religious.css'
+import '@/app/invitation-themes-social.css'
+import '@/app/invitation-themes-professional.css'
+import '@/app/invitation-themes-premium.css'
+
+import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Sparkles, Grid, Loader2, AlertCircle, Heart, Check, Edit3, Palette, Eye } from 'lucide-react'
@@ -7,7 +14,8 @@ import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
 import { ThemePicker } from '@/components/jashn/theme-picker'
-import { BorderPicker } from '@/components/jashn/border-picker'
+import { BorderPicker, BORDERS } from '@/components/jashn/border-picker'
+import { THEMES } from '@/lib/jashn/themes'
 import { BackgroundPicker } from '@/components/jashn/background-picker'
 import { InvitationCard } from '@/components/jashn/invitation-card'
 import { InvitationTypePicker } from '@/components/jashn/invitation-type-picker'
@@ -44,18 +52,18 @@ function CreateInvitationContent() {
     return `${hh}:${mm}`
   }
 
-  const [title, setTitle] = useState('')
-  const [hostNames, setHostNames] = useState('')
-  const [groom, setGroom] = useState('')
-  const [bride, setBride] = useState('')
-  const [date, setDate] = useState(getTodayString())
-  const [time, setTime] = useState(getCurrentTimeString())
-  const [venue, setVenue] = useState('')
-  const [city, setCity] = useState('')
-  const [mapsLink, setMapsLink] = useState('')
-  const [dressCode, setDressCode] = useState('')
-  const [notes, setNotes] = useState('')
-  const [rsvpPhone, setRsvpPhone] = useState('')
+  const [title, setTitle] = useState('Nikkah Ceremony & Celebration')
+  const [hostNames, setHostNames] = useState('The Families of Hassan & Ayesha')
+  const [groom, setGroom] = useState('Hassan Ahmed')
+  const [bride, setBride] = useState('Ayesha Malik')
+  const [date, setDate] = useState('2026-12-14')
+  const [time, setTime] = useState('19:00')
+  const [venue, setVenue] = useState('Pearl Continental, Grand Ballroom')
+  const [city, setCity] = useState('Lahore')
+  const [mapsLink, setMapsLink] = useState('https://maps.google.com')
+  const [dressCode, setDressCode] = useState('Traditional Royal / Formal Attire')
+  const [notes, setNotes] = useState('Your gracious presence and prayers are the greatest blessing for our new journey.')
+  const [rsvpPhone, setRsvpPhone] = useState('+923093518796')
   const [themeId, setThemeId] = useState('mehndi-red')
   const [borderId, setBorderId] = useState('mehndi')
   const [bgVariantId, setBgVariantId] = useState('default')
@@ -106,9 +114,7 @@ function CreateInvitationContent() {
     )
   }
 
-  if (!user) {
-    return null
-  }
+  // Auth protection removed to support guest user creation as requested
 
   function handleTypeSelect(id: string) {
     setTypeId(id)
@@ -195,6 +201,16 @@ function CreateInvitationContent() {
       }
       return
     }
+    // Fallback premium themes/borders for non-pro users so anyone can create without signup
+    let finalThemeId = themeId
+    let finalBorderId = borderId
+
+    const selectedTheme = THEMES.find((t) => t.id === themeId)
+    const selectedBorder = BORDERS.find((b) => b.id === borderId)
+    if ((selectedTheme?.isPremium || selectedBorder?.isPremium) && !isPro) {
+      finalThemeId = 'emerald-classic'
+      finalBorderId = 'mehndi'
+    }
 
     const cleanedPhone = rsvpPhone.trim().replace(/\s+/g, '')
     const payload = {
@@ -211,8 +227,8 @@ function CreateInvitationContent() {
       dressCode,
       notes,
       rsvpPhone: cleanedPhone,
-      themeId,
-      borderId,
+      themeId: finalThemeId,
+      borderId: finalBorderId,
       bgVariantId,
     }
 
@@ -251,8 +267,8 @@ function CreateInvitationContent() {
         {/* 2-Step Progress Stepper */}
         <div className="mt-5 flex items-center justify-center gap-3">
           {[
-            { s: 1, label: t('stepChooseOccasion') },
-            { s: 2, label: t('personalizeShare') },
+            { s: 1, label: t('stepChooseOccasion') || (lang === 'ur' ? '1. تقریب منتخب کریں' : '1. Choose Occasion') },
+            { s: 2, label: t('stepPersonalizeShare') || t('personalizeShare') || (lang === 'ur' ? '2. تفصیلات لکھیں اور شیئر کریں' : '2. Personalize & Share') },
           ].map(({ s, label }) => (
             <div key={s} className="flex items-center gap-2">
               <button
@@ -659,16 +675,16 @@ function CreateInvitationContent() {
                           <InvitationCard
                             data={{
                               typeId,
-                              title: title || selectedType?.label || 'Invitation',
-                              hostNames,
-                              groom,
-                              bride,
-                              date: date || new Date().toISOString().slice(0, 10),
-                              time: time || '7:00 PM',
-                              venue: venue || 'Venue Name',
-                              city: city || 'Lahore',
-                              dressCode,
-                              notes,
+                              title: title || selectedType?.label || (lang === 'ur' ? 'دعوت نامہ' : 'Invitation'),
+                              hostNames: hostNames || (lang === 'ur' ? 'خاندانِ احمد و ملک' : 'The Families of Hassan & Ayesha'),
+                              groom: groom || (lang === 'ur' ? 'حسن' : 'Hassan'),
+                              bride: bride || (lang === 'ur' ? 'عائشہ' : 'Ayesha'),
+                              date: date || '2026-12-14',
+                              time: time || '07:00 PM',
+                              venue: venue || (lang === 'ur' ? 'پرل کانٹینینٹل، گراں ہال' : 'Pearl Continental, Grand Ballroom'),
+                              city: city || (lang === 'ur' ? 'لاہور' : 'Lahore'),
+                              dressCode: dressCode || (lang === 'ur' ? 'رواینی شاہی لباس' : 'Traditional Royal / Formal'),
+                              notes: notes || (lang === 'ur' ? 'آپ کی آمد ہمارے لیے باعثِ مسرت و افتخار ہوگی۔' : 'Your gracious presence will double our joy and happiness.'),
                               themeId,
                               borderId,
                               bgVariantId,
@@ -712,16 +728,16 @@ function CreateInvitationContent() {
                 <InvitationCard
                   data={{
                     typeId,
-                    title: title || selectedType?.label || 'Invitation',
-                    hostNames,
-                    groom,
-                    bride,
-                    date: date || new Date().toISOString().slice(0, 10),
-                    time: time || '7:00 PM',
-                    venue: venue || 'Venue Name',
-                    city: city || 'Lahore',
-                    dressCode,
-                    notes,
+                    title: title || selectedType?.label || (lang === 'ur' ? 'دعوت نامہ' : 'Invitation'),
+                    hostNames: hostNames || (lang === 'ur' ? 'خاندانِ احمد و ملک' : 'The Families of Hassan & Ayesha'),
+                    groom: groom || (lang === 'ur' ? 'حسن' : 'Hassan'),
+                    bride: bride || (lang === 'ur' ? 'عائشہ' : 'Ayesha'),
+                    date: date || '2026-12-14',
+                    time: time || '07:00 PM',
+                    venue: venue || (lang === 'ur' ? 'پرل کانٹینینٹل، گراں ہال' : 'Pearl Continental, Grand Ballroom'),
+                    city: city || (lang === 'ur' ? 'لاہور' : 'Lahore'),
+                    dressCode: dressCode || (lang === 'ur' ? 'رواینی شاہی لباس' : 'Traditional Royal / Formal'),
+                    notes: notes || (lang === 'ur' ? 'آپ کی آمد ہمارے لیے باعثِ مسرت و افتخار ہوگی۔' : 'Your gracious presence will double our joy and happiness.'),
                     themeId,
                     borderId,
                     bgVariantId,

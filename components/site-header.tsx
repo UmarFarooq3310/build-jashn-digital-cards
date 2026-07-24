@@ -38,22 +38,22 @@ function SiteHeaderInner() {
 
         <nav className="hidden items-center gap-1 md:flex">
           {[
-            { href: '/', key: 'home' },
-            { href: '/create-wish', key: 'sendWish' },
-            { href: '/create-invitation', key: 'createInvitation' },
-            { href: '/pricing', key: 'pricing' },
-            { href: '/faq', key: 'faqs' },
-            { href: '/guide', key: 'guides' },
+            { href: '/', key: 'home', fallback: 'Home' },
+            { href: '/create-wish', key: 'sendWish', fallback: 'Send Wish' },
+            { href: '/create-invitation', key: 'createInvitation', fallback: 'Invitations' },
+            { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },
+            { href: '/pricing', key: 'pricing', fallback: 'Pricing' },
+            { href: '/faq', key: 'faqs', fallback: 'FAQs' },
           ].map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                'rounded-xl px-3.5 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-emerald-950/10 hover:text-emerald-800 dark:hover:text-amber-400',
+                'rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold text-muted-foreground transition-all hover:bg-emerald-950/10 hover:text-emerald-800 dark:hover:text-amber-400',
                 pathname === item.href && 'text-emerald-800 dark:text-amber-400 font-bold bg-emerald-950/5',
               )}
             >
-              {t(item.key as any)}
+              {t(item.key as any) || item.fallback}
             </Link>
           ))}
         </nav>
@@ -138,12 +138,12 @@ function SiteHeaderInner() {
         <div className="border-t border-border bg-background px-4 py-3 md:hidden">
           <nav className="flex flex-col gap-1">
             {[
-              { href: '/', key: 'home' },
-              { href: '/create-wish', key: 'sendWish' },
-              { href: '/create-invitation', key: 'createInvitation' },
-              { href: '/pricing', key: 'pricing' },
-              { href: '/faq', key: 'faqs' },
-              { href: '/guide', key: 'guides' },
+              { href: '/', key: 'home', fallback: 'Home' },
+              { href: '/create-wish', key: 'sendWish', fallback: 'Send Wish' },
+              { href: '/create-invitation', key: 'createInvitation', fallback: 'Invitations' },
+              { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },
+              { href: '/pricing', key: 'pricing', fallback: 'Pricing' },
+              { href: '/faq', key: 'faqs', fallback: 'FAQs' },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -151,7 +151,7 @@ function SiteHeaderInner() {
                 onClick={() => setOpen(false)}
                 className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
               >
-                {t(item.key as any)}
+                {t(item.key as any) || item.fallback}
               </Link>
             ))}
 

@@ -15,7 +15,7 @@ import { useLang } from '@/lib/lang/context'
 
 export default function DashboardPage() {
   const router = useRouter()
-  const { user, wishes, invitations, signOut, fetchUserCards, upgrade, isAuthLoading, downloadAllGuestsCsv } = useJashn()
+  const { user, wishes, invitations, signOut, fetchUserCards, upgrade, isAuthLoading, downloadAllGuestsCsv, downloadAllGuestsPdf } = useJashn()
   
   // Tab selector: 'all' | 'events' | 'wishes'
   const [activeFilter, setActiveFilter] = useState<'all' | 'events' | 'wishes'>('all')
@@ -50,6 +50,26 @@ export default function DashboardPage() {
   const hostWishes = user ? wishes.filter((w) => w.creatorId === user.uid) : []
   const hostInvitations = user ? invitations.filter((i) => i.creatorId === user.uid) : []
 
+  function handleDownloadGuests() {
+    if (!user) return
+    if (user.plan !== 'business') {
+      alert('Downloading all guests in CSV format is exclusively available for Business plan subscribers. Please upgrade to the Business plan.')
+      router.push('/pricing')
+      return
+    }
+    downloadAllGuestsCsv()
+  }
+
+  function handleDownloadGuestsPdf() {
+    if (!user) return
+    if (user.plan !== 'business') {
+      alert('Downloading guest report in PDF format is exclusively available for Business plan subscribers. Please upgrade to the Business plan.')
+      router.push('/pricing')
+      return
+    }
+    downloadAllGuestsPdf()
+  }
+
   if (isAuthLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
@@ -80,14 +100,45 @@ export default function DashboardPage() {
               <p className="text-sm text-muted-foreground mt-1">{user.email} • Host Portal Dashboard</p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2.5">
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => downloadAllGuestsCsv()}
-                className="inline-flex items-center gap-1.5 rounded-xl border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 hover:bg-emerald-500/20 h-auto"
+                onClick={handleDownloadGuestsPdf}
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-bold h-auto transition-all",
+                  user.plan === 'business'
+                    ? "border-indigo-500/30 bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20"
+                    : "border-amber-500/40 bg-amber-500/10 text-amber-700 hover:bg-amber-500/20"
+                )}
               >
-                <FileText className="size-4" /> Download All Guests (CSV)
+                <FileText className="size-4" />
+                <span>Download PDF Report</span>
+                {user.plan !== 'business' && (
+                  <span className="ml-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-extrabold uppercase text-amber-800 border border-amber-500/30">
+                    Business Only
+                  </span>
+                )}
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDownloadGuests}
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-bold h-auto transition-all",
+                  user.plan === 'business'
+                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20"
+                    : "border-amber-500/40 bg-amber-500/10 text-amber-700 hover:bg-amber-500/20"
+                )}
+              >
+                <FileText className="size-4" />
+                <span>Export CSV</span>
+                {user.plan !== 'business' && (
+                  <span className="ml-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-extrabold uppercase text-amber-800 border border-amber-500/30">
+                    Business Only
+                  </span>
+                )}
               </Button>
               <Link href="/pricing" className="inline-flex items-center gap-1.5 rounded-xl border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-bold text-primary hover:bg-primary/20">
                 <Crown className="size-4" /> {t('upgradePlan')}
@@ -176,7 +227,8 @@ export default function DashboardPage() {
               ) : (
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {hostInvitations.map((inv) => {
-                    const type = getInvitationType(inv.typeId)
+                    const resolvedTypeId = !inv.typeId || (inv.typeId === 'iftaar' && (inv.groom || inv.bride)) ? 'nikkah' : inv.typeId
+                    const type = getInvitationType(resolvedTypeId)
                     return (
                       <div key={inv.id} className="rounded-2xl border border-border bg-card p-5 shadow-sm flex flex-col justify-between hover:border-emerald-500/40 hover:shadow-md transition-all">
                         <div>

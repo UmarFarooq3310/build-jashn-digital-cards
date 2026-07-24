@@ -1,0 +1,8 @@
+# Browserslist configuration for Cardzy (Targeting Modern ES6+ Browsers)
+defaults
+fully supports es6-module
+not dead
+chrome >= 90
+safari >= 14
+firefox >= 88
+edge >= 90

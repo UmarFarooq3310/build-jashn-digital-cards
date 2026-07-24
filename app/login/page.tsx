@@ -273,7 +273,7 @@ function LoginPageContent() {
       if (currentUser) await migrateGuestCards(currentUser.uid)
       router.push(redirect)
     } else {
-      setGeneralError('Incorrect email or password. Please try again.')
+      setGeneralError('Invalid email or password. If you do not have an account yet, please click "Sign Up Free" above to create one.')
     }
   }
 

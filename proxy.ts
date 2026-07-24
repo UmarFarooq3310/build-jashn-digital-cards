@@ -12,7 +12,7 @@ import type { NextRequest } from 'next/server'
  * This provides a fast server-side redirect (no flash of protected content)
  * while the full auth state is still verified client-side.
  */
-const PROTECTED_ROUTES = ['/dashboard', '/create-invitation']
+const PROTECTED_ROUTES = ['/dashboard']
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -36,5 +36,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/create-invitation/:path*'],
+  matcher: ['/dashboard/:path*'],
 }

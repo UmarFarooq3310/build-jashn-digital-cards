@@ -1,19 +1,28 @@
-# Cardzy (https://cardzy.online)
-> Global platform for animated digital wish cards and full event invitation websites.
+# Cardzy: Digital Wish Cards & Event Invitations
 
-## Overview
-Cardzy provides interactive digital greeting cards and wedding/event invitations. Users can choose from 34+ celebration occasions and 21+ wedding & event types, customized with 18 international languages, 3D envelope opening animations, music, interactive maps, and real-time RSVP management.
+> Cardzy is a global web application for creating interactive, animated digital wish cards and multi-event invitation websites with WhatsApp RSVP tracking, Google Maps integration, live countdown timers, and support for 18 international languages.
 
-## Core Features
-- **Send a Wish**: Instant animated digital cards for Eid, Birthdays, Anniversaries, New Baby, Graduation, New Year, and more.
-- **Create Event Invitation**: Full event websites for Weddings, Mehndi, Baraat, Walima, Nikkah, Dholki, Business Launches, and Parties with RSVP tracking and Google Maps integration.
-- **18 Language Support**: English, Urdu, Spanish, French, Arabic, Hindi, Mandarin, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, Swahili.
-- **Pricing Plans**: Free ($0), Pro ($4 / Rs 1,100), Business ($18 / Rs 5,000).
+## Key Pages & Tools
 
-## Links
-- Homepage: https://cardzy.online
-- Create Wish Card: https://cardzy.online/create-wish
-- Create Invitation: https://cardzy.online/create-invitation
-- Pricing: https://cardzy.online/pricing
-- FAQ: https://cardzy.online/faq
-- Learning Hub & Guides: https://cardzy.online/guide
+- [Cardzy Homepage](https://cardzy.online): Create animated digital wish cards and full event invitation websites.
+- [Create Digital Wish Card](https://cardzy.online/create-wish): Create custom animated greeting cards for Eid, Birthdays, Anniversaries, and 34+ occasions.
+- [Create Event Invitation Website](https://cardzy.online/create-invitation): Build full invitation websites for Shaadi, Mehndi, Baraat, Walima, Nikkah, and private events with RSVP tracking.
+- [Eid Mubarak Cards & Invitations](https://cardzy.online/eid-mubarak-cards): Specialized Ramadan & Eid Mubarak animated cards with Urdu Nastaliq & Arabic typography.
+- [Pricing & Plans](https://cardzy.online/pricing): View Free ($0), Pro ($4 / PKR 1,100), and Business ($18 / PKR 5,000) tiers.
+- [Guides & Help Center](https://cardzy.online/guide): Event planning guides, Pakistani wedding invitation etiquette, and wording ideas.
+- [FAQ](https://cardzy.online/faq): Frequently asked questions about digital cards, RSVP tracking, payments (EasyPaisa, JazzCash, Cards), and custom domain links.
+- [Instagram Campaign](https://cardzy.online/campaign): Official social media media kit, 5-slide carousel assets, and branding guidelines.
+
+## Core Capabilities
+
+- **3D Animated Card Opening**: Realistic envelope unboxing animations with custom background music, confetti, and floating particles.
+- **Multilingual Support (18 Languages)**: English, Urdu (اردو), Arabic (العربية), Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili.
+- **Interactive Event Features**: 1-click WhatsApp RSVP management, live countdown timers, Google Maps venue navigation pins, dress code notes, and gift registry links.
+- **Instant Digital Delivery**: Share via WhatsApp, SMS, Email, Instagram, or download high-resolution PNG image cards.
+
+## Contact & Legal
+
+- Contact Email: cardzyonline@gmail.com
+- WhatsApp Support: +92 309 3518796
+- Privacy Policy: https://cardzy.online/privacy
+- Terms of Service: https://cardzy.online/terms

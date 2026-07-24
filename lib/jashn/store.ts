@@ -2,7 +2,7 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Invitation, JashnUser, Plan, Wish, RsvpGuest } from './types'
+import type { Invitation, JashnUser, Plan, Wish, RsvpGuest, VisitingCard } from './types'
 import { db, auth, isFirebaseConfigured } from '../firebase'
 import {
   createUserWithEmailAndPassword,
@@ -49,6 +49,7 @@ interface JashnState {
   registeredUsers: JashnUser[]
   wishes: Wish[]
   invitations: Invitation[]
+  visitingCards: VisitingCard[]
   toast: { message: string; type: 'success' | 'info' | 'error' } | null
   isMuted: boolean
   toggleMuted: () => void
@@ -68,16 +69,23 @@ interface JashnState {
   createInvitation: (
     data: Omit<Invitation, 'id' | 'slug' | 'creatorId' | 'rsvpCount' | 'viewCount' | 'createdAt'>,
   ) => Promise<Invitation>
+  createVisitingCard: (
+    data: Omit<VisitingCard, 'id' | 'slug' | 'creatorId' | 'viewCount' | 'createdAt'>,
+  ) => Promise<VisitingCard>
 
   getWish: (slug: string) => Wish | undefined
   getInvitation: (slug: string) => Invitation | undefined
+  getVisitingCard: (slug: string) => VisitingCard | undefined
   incrementWishView: (slug: string) => void
   incrementInvitationView: (slug: string) => void
+  incrementVisitingCardView: (slug: string) => void
   incrementRsvp: (slug: string) => void
   deleteWish: (slug: string) => void
   deleteInvitation: (slug: string) => void
+  deleteVisitingCard: (slug: string) => void
   updateWish: (slug: string, data: Partial<Wish>) => Promise<void>
   updateInvitation: (slug: string, data: Partial<Invitation>) => Promise<void>
+  updateVisitingCard: (slug: string, data: Partial<VisitingCard>) => Promise<void>
   showToast: (message: string, type?: 'success' | 'info' | 'error') => void
   hideToast: () => void
   rsvps: RsvpGuest[]
@@ -85,6 +93,7 @@ interface JashnState {
   addRsvp: (guestData: Omit<RsvpGuest, 'id' | 'createdAt'>) => Promise<void>
   getInvitationRsvps: (invitationSlug: string) => RsvpGuest[]
   downloadAllGuestsCsv: (invitationSlug?: string) => void
+  downloadAllGuestsPdf: (invitationSlug?: string) => void
   isUserPlanActive: (user?: JashnUser | null) => boolean
 }
 
@@ -95,6 +104,7 @@ export const useJashn = create<JashnState>()(
       registeredUsers: [],
       wishes: [],
       invitations: [],
+      visitingCards: [],
       toast: null,
       isMuted: false,
       toggleMuted: () => set((state) => ({ isMuted: !state.isMuted })),
@@ -129,7 +139,12 @@ export const useJashn = create<JashnState>()(
             }
           }
 
-          set({ user: newUser })
+          set((s) => {
+            const existing = s.registeredUsers || []
+            const idx = existing.findIndex((u) => u.uid === newUser.uid || (u.email && u.email.toLowerCase() === newUser.email?.toLowerCase()))
+            const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...newUser } : u)) : [newUser, ...existing]
+            return { user: newUser, registeredUsers: updated }
+          })
           await get().fetchUserCards()
           return true
         } catch (error) {
@@ -166,11 +181,26 @@ export const useJashn = create<JashnState>()(
             }
           }
 
-          set({ user: userData })
+          set((s) => {
+            const existing = s.registeredUsers || []
+            const idx = existing.findIndex((u) => u.uid === userData.uid || (u.email && u.email.toLowerCase() === userData.email?.toLowerCase()))
+            const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
+            return { user: userData, registeredUsers: updated }
+          })
           await get().fetchUserCards()
           return true
-        } catch (error) {
-          console.error('Sign in error:', error)
+        } catch (error: any) {
+          const errCode = error?.code || error?.message || ''
+          if (
+            errCode.includes('invalid-credential') ||
+            errCode.includes('user-not-found') ||
+            errCode.includes('wrong-password') ||
+            errCode.includes('invalid-email')
+          ) {
+            console.warn('Sign-in notice: Invalid credentials provided.')
+          } else {
+            console.error('Sign in error:', error)
+          }
           return false
         }
       },
@@ -181,16 +211,6 @@ export const useJashn = create<JashnState>()(
           const provider = new GoogleAuthProvider()
           provider.setCustomParameters({ prompt: 'select_account' })
 
-          const isMobile = typeof window !== 'undefined' && (
-            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-            window.innerWidth < 768
-          )
-
-          if (isMobile) {
-            await signInWithRedirect(auth, provider)
-            return true
-          }
-
           let firebaseUser: any = null
           try {
             const result = await signInWithPopup(auth, provider)
@@ -200,12 +220,14 @@ export const useJashn = create<JashnState>()(
               popupErr?.code === 'auth/popup-blocked' ||
               popupErr?.code === 'auth/popup-closed-by-user' ||
               popupErr?.code === 'auth/cancelled-popup-request' ||
-              isMobile
+              popupErr?.code === 'auth/internal-error'
             ) {
               await signInWithRedirect(auth, provider)
-              return true
+              return false
             }
-            throw popupErr
+            // Fallback for Android/mobile devices where popup is not supported
+            await signInWithRedirect(auth, provider)
+            return false
           }
 
           if (firebaseUser) {
@@ -241,7 +263,12 @@ export const useJashn = create<JashnState>()(
               }
             }
 
-            set({ user: userData })
+            set((s) => {
+              const existing = s.registeredUsers || []
+              const idx = existing.findIndex((u) => u.uid === userData.uid || (u.email && u.email.toLowerCase() === userData.email?.toLowerCase()))
+              const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
+              return { user: userData, registeredUsers: updated }
+            })
             await get().fetchUserCards()
             return true
           }
@@ -307,7 +334,12 @@ export const useJashn = create<JashnState>()(
           }
         }
 
-        set({ user: userData })
+        set((s) => {
+          const existing = s.registeredUsers || []
+          const idx = existing.findIndex((u) => u.uid === userData.uid || (u.email && u.email.toLowerCase() === userData.email?.toLowerCase()))
+          const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
+          return { user: userData, registeredUsers: updated }
+        })
         await get().fetchUserCards()
       },
 
@@ -392,7 +424,13 @@ export const useJashn = create<JashnState>()(
           try {
             const invQ = query(collection(db, 'invitations'), where('creatorId', '==', currentUser.uid))
             const invSnap = await getDocs(invQ)
-            const fetchedInvs = invSnap.docs.map((doc) => doc.data() as Invitation)
+            const fetchedInvs = invSnap.docs.map((doc) => {
+              const d = doc.data() as Invitation
+              if (!d.typeId || (d.typeId === 'iftaar' && (d.groom || d.bride))) {
+                d.typeId = 'nikkah'
+              }
+              return d
+            })
 
             const wishQ = query(collection(db, 'wishes'), where('creatorId', '==', currentUser.uid))
             const wishSnap = await getDocs(wishQ)
@@ -466,8 +504,31 @@ export const useJashn = create<JashnState>()(
         return inv
       },
 
+      createVisitingCard: async (data) => {
+        const vc: VisitingCard = {
+          ...data,
+          id: uid(),
+          slug: slugify(),
+          creatorId: get().user?.uid ?? 'guest',
+          viewCount: 0,
+          createdAt: Date.now(),
+        }
+
+        if (isFirebaseConfigured && db) {
+          try {
+            await setDoc(doc(db, 'visitingCards', vc.slug), vc)
+          } catch (err) {
+            console.error('Failed to save visiting card to Firestore:', err)
+          }
+        }
+
+        set((s) => ({ visitingCards: [vc, ...s.visitingCards] }))
+        return vc
+      },
+
       getWish: (slug) => get().wishes.find((w) => w.slug === slug),
       getInvitation: (slug) => get().invitations.find((i) => i.slug === slug),
+      getVisitingCard: (slug) => get().visitingCards.find((v) => v.slug === slug),
 
       incrementWishView: (slug) => {
         set((s) => ({
@@ -497,6 +558,22 @@ export const useJashn = create<JashnState>()(
             viewCount: increment(1),
           }).catch((err) => {
             console.error('Failed to increment invitation view in Firestore:', err)
+          })
+        }
+      },
+
+      incrementVisitingCardView: (slug) => {
+        set((s) => ({
+          visitingCards: s.visitingCards.map((v) =>
+            v.slug === slug ? { ...v, viewCount: (v.viewCount || 0) + 1 } : v,
+          ),
+        }))
+
+        if (isFirebaseConfigured && db) {
+          updateDoc(doc(db, 'visitingCards', slug), {
+            viewCount: increment(1),
+          }).catch((err) => {
+            console.error('Failed to increment visiting card view in Firestore:', err)
           })
         }
       },
@@ -541,6 +618,18 @@ export const useJashn = create<JashnState>()(
         }
       },
 
+      deleteVisitingCard: (slug: string) => {
+        set((s) => ({
+          visitingCards: s.visitingCards.filter((v) => v.slug !== slug),
+        }))
+
+        if (isFirebaseConfigured && db) {
+          deleteDoc(doc(db, 'visitingCards', slug)).catch((err) => {
+            console.error('Failed to delete visiting card from Firestore:', err)
+          })
+        }
+      },
+
       updateWish: async (slug: string, data: Partial<Wish>) => {
         set((s) => ({
           wishes: s.wishes.map((w) => (w.slug === slug ? { ...w, ...data } : w)),
@@ -565,6 +654,20 @@ export const useJashn = create<JashnState>()(
             await setDoc(doc(db, 'invitations', slug), data, { merge: true })
           } catch (err) {
             console.error('Failed to update invitation in Firestore:', err)
+          }
+        }
+      },
+
+      updateVisitingCard: async (slug: string, data: Partial<VisitingCard>) => {
+        set((s) => ({
+          visitingCards: s.visitingCards.map((v) => (v.slug === slug ? { ...v, ...data } : v)),
+        }))
+
+        if (isFirebaseConfigured && db) {
+          try {
+            await setDoc(doc(db, 'visitingCards', slug), data, { merge: true })
+          } catch (err) {
+            console.error('Failed to update visiting card in Firestore:', err)
           }
         }
       },
@@ -636,6 +739,7 @@ export const useJashn = create<JashnState>()(
 
       downloadAllGuestsCsv: (invitationSlug) => {
         const state = get()
+
         let filteredRsvps = state.rsvps || []
         if (invitationSlug) {
           filteredRsvps = filteredRsvps.filter((r) => r.invitationSlug === invitationSlug)
@@ -661,6 +765,106 @@ export const useJashn = create<JashnState>()(
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
+      },
+
+      downloadAllGuestsPdf: (invitationSlug) => {
+        const state = get()
+
+        let filteredRsvps = state.rsvps || []
+        if (invitationSlug) {
+          filteredRsvps = filteredRsvps.filter((r) => r.invitationSlug === invitationSlug)
+        }
+
+        const printWindow = window.open('', '_blank')
+        if (!printWindow) return
+
+        const rowsHtml = filteredRsvps.length === 0
+          ? `<tr><td colspan="7" style="text-align:center; padding: 25px; color: #64748b;">No guest RSVPs recorded yet.</td></tr>`
+          : filteredRsvps.map((r, idx) => `
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 10px 12px;">${idx + 1}</td>
+                <td style="padding: 10px 12px; font-weight: 700; color: #0f172a;">${r.guestName || 'Anonymous'}</td>
+                <td style="padding: 10px 12px;">${r.phone || 'N/A'}</td>
+                <td style="padding: 10px 12px;"><span style="display:inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; background: #dcfce7; color: #15803d;">${r.attending || 'Yes'}</span></td>
+                <td style="padding: 10px 12px; font-weight: 600;">${r.guestCount || 1}</td>
+                <td style="padding: 10px 12px; color: #475569;">${r.note || '—'}</td>
+                <td style="padding: 10px 12px; color: #64748b; font-size: 11px;">${new Date(r.createdAt || Date.now()).toLocaleString()}</td>
+              </tr>
+            `).join('')
+
+        const html = `
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Cardzy — Official Guest RSVP Report</title>
+              <style>
+                body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 35px; color: #1e293b; background: #fff; }
+                .header { border-bottom: 3px solid #7A1E2B; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end; }
+                .brand { font-size: 26px; font-weight: 900; color: #7A1E2B; tracking-tight; }
+                .meta { font-size: 12px; color: #64748b; text-align: right; }
+                .summary { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; margin-bottom: 25px; display: flex; gap: 30px; font-size: 13px; }
+                .summary-item strong { color: #7A1E2B; font-size: 16px; display: block; }
+                table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+                th { background-color: #7A1E2B; color: #ffffff; font-weight: 700; text-align: left; padding: 10px 12px; text-transform: uppercase; font-size: 11px; tracking-wider; }
+                tr:nth-child(even) { background-color: #f8fafc; }
+                .footer { margin-top: 40px; padding-top: 15px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 11px; color: #94a3b8; }
+                @media print {
+                  body { padding: 0; }
+                  @page { margin: 1.5cm; }
+                }
+              </style>
+            </head>
+            <body>
+              <div class="header">
+                <div>
+                  <div class="brand">Cardzy.online</div>
+                  <div style="font-size: 14px; font-weight: 700; color: #334155; margin-top: 4px;">Official Guest RSVP & Attendee Report</div>
+                </div>
+                <div class="meta">
+                  <div><strong>Generated:</strong> ${new Date().toLocaleString()}</div>
+                  <div><strong>Scope:</strong> ${invitationSlug ? `Invitation ${invitationSlug}` : 'All Events & Cards'}</div>
+                </div>
+              </div>
+
+              <div class="summary">
+                <div class="summary-item">Total RSVPs Recorded: <strong>${filteredRsvps.length} Guests</strong></div>
+                <div class="summary-item">Report Status: <strong>Verified Admin PDF Export</strong></div>
+              </div>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Guest Name</th>
+                    <th>Phone / Contact</th>
+                    <th>RSVP Status</th>
+                    <th>Guests</th>
+                    <th>Special Notes</th>
+                    <th>Submission Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rowsHtml}
+                </tbody>
+              </table>
+
+              <div class="footer">
+                Cardzy.online • Digital Wishes & Event Invitations Portal
+              </div>
+
+              <script>
+                window.onload = function() {
+                  setTimeout(function() {
+                    window.print();
+                  }, 400);
+                }
+              </script>
+            </body>
+          </html>
+        `
+
+        printWindow.document.write(html)
+        printWindow.document.close()
       },
     }),
     { name: 'jashn-store' },

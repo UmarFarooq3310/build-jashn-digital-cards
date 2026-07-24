@@ -266,7 +266,7 @@ function WishPublicContent({ slug }: { slug: string }) {
         <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           {isSensitive ? t('forwardMessage') : t('shareThisCard')}
         </h3>
-        <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`jashn-wish-${activeWish.slug}`} />
+        <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-online-${activeWish.slug}`} />
       </div>
 
 

@@ -7,6 +7,7 @@ import {
   InvitationsSection,
   HowItWorks,
   SampleCards,
+  ConciergeService,
   HomeCTA,
   FloatingCTA,
 } from '@/components/home/sections'
@@ -30,11 +31,8 @@ export default function Page() {
         {/* RSVP feature block */}
         <InvitationsSection />
 
-        {/* Ad before sample cards */}
-        <AdBanner format="display" className="mx-auto max-w-4xl px-4 py-2" />
-
-        {/* Consolidated Swipeable/Carousel Showcase */}
-        <SampleCards />
+        {/* Concierge Custom Card Creation Service ("We Create For You!") */}
+        <ConciergeService />
 
         {/* Final CTA block */}
         <HomeCTA />

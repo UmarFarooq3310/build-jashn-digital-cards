@@ -167,14 +167,6 @@ export function Countdown({ date, time }: { date: string; time?: string }) {
 
   return (
     <div className="flex flex-col items-center gap-2">
-      {/* Label */}
-      <p
-        className="text-[10px] uppercase tracking-[0.25em] font-medium opacity-55"
-        style={{ color: 'var(--c-ink)' }}
-      >
-        {t('countdownTitle')}
-      </p>
-
       {/* Flip units */}
       <div className="flex items-end gap-1.5">
         <FlipUnit value={cd.days}    label={t('unitDays')} />

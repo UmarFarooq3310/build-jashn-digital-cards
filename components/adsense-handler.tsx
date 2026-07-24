@@ -41,15 +41,41 @@ export function AdSenseHandler() {
       document.documentElement.classList.remove('no-ads')
       document.body.classList.remove('no-ads')
 
-      // Dynamically load AdSense script if not already present
+      // Defer AdSense script loading until user interaction (scroll, touch, move) or 5s idle delay
       const scriptId = 'google-adsense-dynamic'
-      if (!document.getElementById(scriptId)) {
-        const script = document.createElement('script')
-        script.id = scriptId
-        script.async = true
-        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833'
-        script.setAttribute('crossorigin', 'anonymous')
-        document.head.appendChild(script)
+      let timerId: NodeJS.Timeout | null = null
+
+      const loadScript = () => {
+        if (!document.getElementById(scriptId)) {
+          const script = document.createElement('script')
+          script.id = scriptId
+          script.async = true
+          script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833'
+          script.setAttribute('crossorigin', 'anonymous')
+          document.head.appendChild(script)
+        }
+        removeListeners()
+      }
+
+      const onInteraction = () => {
+        loadScript()
+      }
+
+      const removeListeners = () => {
+        window.removeEventListener('scroll', onInteraction)
+        window.removeEventListener('touchstart', onInteraction)
+        window.removeEventListener('mousemove', onInteraction)
+        if (timerId) clearTimeout(timerId)
+      }
+
+      window.addEventListener('scroll', onInteraction, { passive: true })
+      window.addEventListener('touchstart', onInteraction, { passive: true })
+      window.addEventListener('mousemove', onInteraction, { passive: true })
+
+      timerId = setTimeout(loadScript, 5000)
+
+      return () => {
+        removeListeners()
       }
     }
   }, [pathname, allowed])

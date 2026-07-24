@@ -64,23 +64,37 @@ export function FirebaseAuthListener() {
   useEffect(() => {
     if (!auth) return
 
-    // Handle Google Auth redirect result on Mobile / Android
+    let unsubscribe: (() => void) | undefined
+    let isCancelled = false
+
+    // Handle Google Auth redirect result immediately on Mobile / Android
     getRedirectResult(auth).then(async (result) => {
-      if (result?.user) {
+      if (result?.user && !isCancelled) {
         const userData = await syncFirestoreUser(result.user)
         setAuthCookie(true)
-        useJashn.setState({ user: userData, isAuthLoading: false })
+        useJashn.setState((s) => {
+          const existing = s.registeredUsers || []
+          const idx = existing.findIndex((item) => item.uid === userData.uid || (item.email && item.email.toLowerCase() === userData.email?.toLowerCase()))
+          const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
+          return { user: userData, registeredUsers: updated, isAuthLoading: false }
+        })
         useJashn.getState().fetchUserCards()
       }
     }).catch((err) => {
       console.error('Redirect auth result error:', err)
     })
 
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+    unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (isCancelled) return
       if (firebaseUser) {
         const userData = await syncFirestoreUser(firebaseUser)
         setAuthCookie(true)
-        useJashn.setState({ user: userData, isAuthLoading: false })
+        useJashn.setState((s) => {
+          const existing = s.registeredUsers || []
+          const idx = existing.findIndex((item) => item.uid === userData.uid || (item.email && item.email.toLowerCase() === userData.email?.toLowerCase()))
+          const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
+          return { user: userData, registeredUsers: updated, isAuthLoading: false }
+        })
         fetchUserCards()
       } else {
         setAuthCookie(false)
@@ -88,7 +102,10 @@ export function FirebaseAuthListener() {
       }
     })
 
-    return () => unsubscribe()
+    return () => {
+      isCancelled = true
+      if (unsubscribe) unsubscribe()
+    }
   }, [fetchUserCards])
 
   return null

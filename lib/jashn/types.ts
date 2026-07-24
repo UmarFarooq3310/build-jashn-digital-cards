@@ -142,3 +142,52 @@ export interface Invitation {
   viewCount?: number
   createdAt: number
 }
+
+export type VisitingCardCategory =
+  | 'business'
+  | 'creative'
+  | 'medical'
+  | 'legal'
+  | 'real-estate'
+  | 'beauty'
+  | 'services'
+
+export interface VisitingCardTheme {
+  id: string
+  name: string
+  bgGradient: string
+  textColor: string
+  accentColor: string
+  cardBg: string
+  isPremium?: boolean
+}
+
+export interface VisitingCard {
+  id: string
+  slug: string
+  creatorId: string
+  fullName: string
+  title: string
+  company?: string
+  category: VisitingCardCategory
+  phone: string
+  whatsapp?: string
+  email: string
+  website?: string
+  address?: string
+  mapLink?: string
+  bio?: string
+  avatarUrl?: string
+  logoUrl?: string
+  themeId: string
+  language: Language
+  socialLinks?: {
+    linkedin?: string
+    instagram?: string
+    facebook?: string
+    twitter?: string
+    youtube?: string
+  }
+  viewCount: number
+  createdAt: number
+}

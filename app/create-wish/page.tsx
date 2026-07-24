@@ -9,7 +9,8 @@ import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
 import { OccasionPicker } from '@/components/jashn/occasion-picker'
 import { ThemePicker } from '@/components/jashn/theme-picker'
-import { BorderPicker } from '@/components/jashn/border-picker'
+import { BorderPicker, BORDERS } from '@/components/jashn/border-picker'
+import { THEMES } from '@/lib/jashn/themes'
 import { BackgroundPicker } from '@/components/jashn/background-picker'
 import { WishCard } from '@/components/jashn/wish-card'
 import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
@@ -46,13 +47,13 @@ function CreateWishContent() {
   const [occasionId, setOccasionId] = useState('birthday')
   const [mobileTab, setMobileTab] = useState<'details' | 'design' | 'preview'>('details')
   const [language, setLanguage] = useState<Language>('en')
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState('Wishing you a day filled with happiness, laughter and immense blessings always!')
   const [themeId, setThemeId] = useState('mehndi-red')
   const [borderId, setBorderId] = useState('mehndi')
   const [bgVariantId, setBgVariantId] = useState('default')
-  const [senderName, setSenderName] = useState('')
-  const [recipientName, setRecipientName] = useState('')
-  const [relation, setRelation] = useState('')
+  const [senderName, setSenderName] = useState('Tariq & Family')
+  const [recipientName, setRecipientName] = useState('Ayesha')
+  const [relation, setRelation] = useState('Friend')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const templates = getTemplates(occasionId)
@@ -138,12 +139,23 @@ function CreateWishContent() {
       return
     }
 
+    // Fallback premium themes/borders for non-pro users so anyone can create without signup
+    let finalThemeId = themeId
+    let finalBorderId = borderId
+
+    const selectedTheme = THEMES.find((t) => t.id === themeId)
+    const selectedBorder = BORDERS.find((b) => b.id === borderId)
+    if ((selectedTheme?.isPremium || selectedBorder?.isPremium) && !isPro) {
+      finalThemeId = 'emerald-classic'
+      finalBorderId = 'mehndi'
+    }
+
     const payload = {
       occasionId,
       message: message || (lang === 'ur' ? templates[0]?.ur : templates[0]?.en) || 'Best wishes!',
       language,
-      themeId,
-      borderId,
+      themeId: finalThemeId,
+      borderId: finalBorderId,
       bgVariantId,
       senderName: senderName.trim() || user?.name || 'A Well Wisher',
       recipientName: recipientName.trim(),
@@ -176,17 +188,17 @@ function CreateWishContent() {
         </div>
 
         <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-[#7A1E2B] font-serif">
-          {editSlug ? t('editAnimatedWishCard') : t('sendAnimatedWishCard')}
+          {editSlug ? (t('editAnimatedWishCard') || 'Edit Animated Wish Card') : (t('sendAnimatedWishCard') || 'Send an Animated Wish Card')}
         </h1>
-        <p className="mt-2 text-[#5A4530] text-sm sm:text-base max-w-xl mx-auto">
-          Beautiful Animated Wishes &amp; Invitations for Every Celebration — Cardzy.online
+        <p className="mt-2 text-[#5A4530] text-sm sm:text-base max-w-xl mx-auto font-medium">
+          {t('tagline') || 'Beautiful Animated Wishes & Invitations for Every Celebration'} — Cardzy.online
         </p>
 
         {/* Horizontal 2-Step Stepper */}
         <div className="mt-6 flex items-center justify-center gap-3">
           {[
-            { s: 1, label: t('stepChooseOccasion') },
-            { s: 2, label: t('personalizeShare') },
+            { s: 1, label: t('stepChooseOccasion') || (lang === 'ur' ? '1. تقریب منتخب کریں' : '1. Choose Occasion') },
+            { s: 2, label: t('stepPersonalizeShare') || t('personalizeShare') || (lang === 'ur' ? '2. تفصیلات لکھیں اور شیئر کریں' : '2. Personalize & Share') },
           ].map(({ s, label }, idx) => (
             <div key={s} className="flex items-center gap-3">
               <button
@@ -469,19 +481,19 @@ function CreateWishContent() {
                     <div className="flex justify-center overflow-hidden py-2">
                       <div className="w-full">
                         <CardAnimationPreview occasionId={occasionId} animationKey={occasionId} className="max-w-md mx-auto" roundedClass="rounded-[2.5rem]">
-                          <WishCard
-                            data={{
-                              occasionId,
-                              themeId,
-                              borderId,
-                              bgVariantId,
-                              message: message || (lang === 'ur' ? templates[0]?.ur : templates[0]?.en) || 'Best wishes!',
-                              senderName: senderName || user?.name || 'Your Name',
-                              recipientName,
-                              relation,
-                              language,
-                            }}
-                          />
+                  <WishCard
+                    data={{
+                      occasionId,
+                      themeId,
+                      borderId,
+                      bgVariantId,
+                      message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : (lang === 'ur' ? 'آپ کو خوشیوں، مسکراہٹوں اور برکتوں سے بھرپور دن مبارک ہو!' : 'Wishing you a day filled with happiness, laughter and immense blessings!')),
+                      senderName: senderName || user?.name || (lang === 'ur' ? 'طارق و اہل خانہ' : 'Tariq & Family'),
+                      recipientName: recipientName || (lang === 'ur' ? 'عائشہ' : 'Ayesha'),
+                      relation: relation || (lang === 'ur' ? 'دوست' : 'Friend'),
+                      language,
+                    }}
+                  />
                         </CardAnimationPreview>
                       </div>
                     </div>
@@ -524,10 +536,10 @@ function CreateWishContent() {
                     themeId,
                     borderId,
                     bgVariantId,
-                    message: message || (lang === 'ur' ? templates[0]?.ur : templates[0]?.en) || 'Best wishes!',
-                    senderName: senderName || user?.name || 'Your Name',
-                    recipientName,
-                    relation,
+                    message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : (lang === 'ur' ? 'آپ کو خوشیوں، مسکراہٹوں اور برکتوں سے بھرپور دن مبارک ہو!' : 'Wishing you a day filled with happiness, laughter and immense blessings!')),
+                    senderName: senderName || user?.name || (lang === 'ur' ? 'طارق و اہل خانہ' : 'Tariq & Family'),
+                    recipientName: recipientName || (lang === 'ur' ? 'عائشہ' : 'Ayesha'),
+                    relation: relation || (lang === 'ur' ? 'دوست' : 'Friend'),
                     language,
                   }}
                 />

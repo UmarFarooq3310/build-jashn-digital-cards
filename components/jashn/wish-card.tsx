@@ -86,12 +86,18 @@ export const WishCard = forwardRef<HTMLDivElement, {
     const card = wrap.querySelector<HTMLElement>('.wish-card-surface')
     if (!card) return
 
+    let rect: DOMRect | null = null
+
+    const onEnter = () => {
+      rect = card.getBoundingClientRect()
+    }
+
     const onMove = (e: MouseEvent) => {
-      const r = card.getBoundingClientRect()
-      const cx = r.left + r.width / 2
-      const cy = r.top + r.height / 2
-      const dx = (e.clientX - cx) / (r.width / 2)
-      const dy = (e.clientY - cy) / (r.height / 2)
+      if (!rect) rect = card.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      const dx = (e.clientX - cx) / (rect.width / 2)
+      const dy = (e.clientY - cy) / (rect.height / 2)
       gsap.to(card, {
         rotateY: dx * 10,
         rotateX: -dy * 10,
@@ -112,19 +118,23 @@ export const WishCard = forwardRef<HTMLDivElement, {
     }
 
     const onLeave = () => {
+      rect = null
       gsap.to(card, {
-        rotateY: 0, rotateX: 0, duration: 0.6, ease: 'elastic.out(1,0.5)',
+        rotateY: 0, rotateX: 0, duration: 0.6, ease: 'power2.out',
       })
       gsap.to(wrap.querySelectorAll('.parallax-far, .parallax-mid, .parallax-near'), {
-        x: 0, y: 0, duration: 0.5, ease: 'power2.out',
+        x: 0, y: 0, duration: 0.6, ease: 'power2.out',
       })
     }
 
-    card.addEventListener('mousemove', onMove)
-    card.addEventListener('mouseleave', onLeave)
+    wrap.addEventListener('mouseenter', onEnter)
+    wrap.addEventListener('mousemove', onMove)
+    wrap.addEventListener('mouseleave', onLeave)
+
     return () => {
-      card.removeEventListener('mousemove', onMove)
-      card.removeEventListener('mouseleave', onLeave)
+      wrap.removeEventListener('mouseenter', onEnter)
+      wrap.removeEventListener('mousemove', onMove)
+      wrap.removeEventListener('mouseleave', onLeave)
     }
   }, { scope: wrapRef })
 
@@ -223,14 +233,14 @@ export const WishCard = forwardRef<HTMLDivElement, {
           </span>
 
           {occasion && (
-            <h1
+            <h2
               className={cn(
                 "wc-stagger shimmer-text text-balance font-extrabold tracking-tight parallax-near",
                 (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose py-1" : "text-xl sm:text-2xl md:text-3xl lg:text-4xl"
               )}
             >
               {t(`occ_${occasion.id.replace(/-/g, '_')}`) || occasion.tagline || occasion.label}
-            </h1>
+            </h2>
           )}
 
           <span

@@ -1,5 +1,11 @@
 'use client'
 
+import '@/app/invitation-themes-wedding.css'
+import '@/app/invitation-themes-religious.css'
+import '@/app/invitation-themes-social.css'
+import '@/app/invitation-themes-professional.css'
+import '@/app/invitation-themes-premium.css'
+
 import { useEffect, useRef, useState, use, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -196,7 +202,8 @@ function InvitationPublicContent({ slug }: { slug: string }) {
     )
   }
 
-  const type = getInvitationType(activeInvitation.typeId)
+  const resolvedTypeId = !activeInvitation.typeId || (activeInvitation.typeId === 'iftaar' && (activeInvitation.groom || activeInvitation.bride)) ? 'nikkah' : activeInvitation.typeId
+  const type = getInvitationType(resolvedTypeId)
   const isIslamic = type?.category === 'Religious'
   const waMsg = `You are invited! Check out the digital invitation for ${activeInvitation.title || activeInvitation.groom + ' & ' + activeInvitation.bride}`
   const cleanUrl = `/i/${activeInvitation.slug}`
@@ -295,7 +302,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Share Invitation with Guests
         </h3>
-        <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`jashn-invitation-${activeInvitation.slug}`} />
+        <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-online-${activeInvitation.slug}`} />
       </div>
 
 

@@ -1,10 +1,29 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Poppins, Noto_Nastaliq_Urdu } from 'next/font/google'
 import { ToastNotification } from '@/components/ui/toast-notification'
 import { FirebaseAuthListener } from '@/components/firebase-auth-listener'
 import { AdSenseHandler } from '@/components/adsense-handler'
 import { LanguageProvider } from '@/lib/lang/context'
 import './globals.css'
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
+  display: 'swap',
+  fallback: ['system-ui', 'sans-serif'],
+  adjustFontFallback: false,
+})
+
+const urduFont = Noto_Nastaliq_Urdu({
+  subsets: ['arabic'],
+  weight: ['400', '700'],
+  variable: '--font-urdu',
+  display: 'swap',
+  fallback: ['Georgia', 'serif'],
+  adjustFontFallback: false,
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
@@ -13,7 +32,13 @@ export const metadata: Metadata = {
     'Create and share animated digital wish cards & event websites for weddings, Eid, birthdays & celebrations with RSVP and 18 languages.',
   generator: 'v0.app',
   alternates: {
-    canonical: 'https://cardzy.online',
+    canonical: 'https://cardzy.online/',
+    languages: {
+      'en': 'https://cardzy.online/',
+      'ur': 'https://cardzy.online/',
+      'ar': 'https://cardzy.online/',
+      'x-default': 'https://cardzy.online/',
+    },
   },
   other: {
     'google-adsense-account': 'ca-pub-8899224608517833',
@@ -87,11 +112,9 @@ const jsonLd = {
       url: 'https://cardzy.online',
       logo: 'https://cardzy.online/favicon.svg',
       sameAs: [
-        'https://facebook.com/cardzy.online',
-        'https://x.com/cardzy_online',
-        'https://instagram.com/cardzy.online',
-        'https://youtube.com/@cardzyonline',
-        'https://linkedin.com/company/cardzy-online',
+        'https://www.facebook.com/share/1bPTaFnxDz/',
+        'https://www.instagram.com/cardzyonline',
+        'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
       ],
       contactPoint: {
         '@type': 'ContactPoint',
@@ -108,21 +131,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${poppins.variable} ${urduFont.variable}`} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
+        <link rel="preconnect" href="https://jashn-app-e3888.firebaseapp.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://jashn-app-e3888.firebaseapp.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <meta name="google-adsense-account" content="ca-pub-8899224608517833" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]">
+      <body className="bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]" suppressHydrationWarning>
         <LanguageProvider>
           <AdSenseHandler />
           <FirebaseAuthListener />

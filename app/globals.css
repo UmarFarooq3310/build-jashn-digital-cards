@@ -1,11 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
-@import './invitation-themes-wedding.css';
-@import './invitation-themes-religious.css';
-@import './invitation-themes-social.css';
-@import './invitation-themes-professional.css';
-@import './invitation-themes-premium.css';
 @import './invitation-themes-animations.css';
 
 @custom-variant dark (&:is(.dark *));
@@ -142,9 +137,27 @@
 .font-urdu {
   font-family: var(--font-urdu), 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', serif;
   direction: rtl;
-  line-height: 1.9;
-  padding-top: 0.15em;
-  padding-bottom: 0.15em;
+  line-height: 2.2 !important;
+  padding-top: 0.35rem !important;
+  padding-bottom: 0.45rem !important;
+  overflow: visible !important;
+}
+
+[dir="rtl"] {
+  font-family: var(--font-urdu), 'Noto Nastaliq Urdu', system-ui, sans-serif;
+}
+
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] p,
+[dir="rtl"] span,
+[dir="rtl"] button,
+[dir="rtl"] a,
+[dir="rtl"] input,
+[dir="rtl"] textarea {
+  line-height: 1.8;
 }
 
 /* ----------------------------------------------------------------------------

@@ -1,16 +1,21 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowRight, MailOpen, Sparkles, Mail } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { buttonVariants } from '@/components/ui/button'
 import { useLang } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
-import { WishCard } from '@/components/jashn/wish-card'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+const WishCard = dynamic(
+  () => import('@/components/jashn/wish-card').then((mod) => mod.WishCard),
+  { ssr: false }
+)
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -26,62 +31,67 @@ export function Hero() {
   const router = useRouter()
   const { t, lang } = useLang()
   const [heroEmail, setHeroEmail] = useState('')
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
-  useGSAP(() => {
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+        // Badge, Heading & Description animate simultaneously to ensure instant LCP render
+        tl.fromTo(
+          badgeRef.current,
+          { y: -15, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.3 }
+        )
+        .fromTo(
+          headingRef.current,
+          { y: 15, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.35 },
+          '<'
+        )
+        .fromTo(
+          descRef.current,
+          { y: 10, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.35 },
+          '<'
+        )
+        // Buttons pop in staggered
+        .fromTo(
+          buttonsRef.current?.children ?? [],
+          { scale: 0.85, opacity: 0, y: 16 },
+          { scale: 1, opacity: 1, y: 0, duration: 0.4, stagger: 0.12, ease: 'back.out(1.5)' },
+          '-=0.2'
+        )
+        // Email form slides up
+        .fromTo(
+          emailFormRef.current,
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.5 },
+          '-=0.15'
+        )
+        // Card swings in from the right
+        .fromTo(
+          cardRef.current,
+          { x: 80, opacity: 0, rotateY: 20, scale: 0.92 },
+          { x: 0, opacity: 1, rotateY: 0, scale: 1, duration: 0.9, ease: 'power2.out' },
+          '-=0.7'
+        )
 
-    // Badge slides down from above
-    tl.fromTo(
-      badgeRef.current,
-      { y: -30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6 }
-    )
-    // Heading word-by-word feel via clip + translate
-    .fromTo(
-      headingRef.current,
-      { y: 40, opacity: 0, clipPath: 'inset(0 0 100% 0)' },
-      { y: 0, opacity: 1, clipPath: 'inset(0 0 0% 0)', duration: 0.8 },
-      '-=0.2'
-    )
-    // Description fades up
-    .fromTo(
-      descRef.current,
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.55 },
-      '-=0.3'
-    )
-    // Buttons pop in staggered
-    .fromTo(
-      buttonsRef.current?.children ?? [],
-      { scale: 0.85, opacity: 0, y: 16 },
-      { scale: 1, opacity: 1, y: 0, duration: 0.4, stagger: 0.12, ease: 'back.out(1.5)' },
-      '-=0.2'
-    )
-    // Email form slides up
-    .fromTo(
-      emailFormRef.current,
-      { y: 24, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.5 },
-      '-=0.15'
-    )
-    // Card swings in from the right
-    .fromTo(
-      cardRef.current,
-      { x: 80, opacity: 0, rotateY: 20, scale: 0.92 },
-      { x: 0, opacity: 1, rotateY: 0, scale: 1, duration: 0.9, ease: 'power2.out' },
-      '-=0.7'
-    )
+        // Floating card idle animation
+        gsap.to(cardRef.current, {
+          y: -10,
+          duration: 2.8,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          delay: 1.5,
+        })
+      }, sectionRef)
 
-    // Floating card idle animation
-    gsap.to(cardRef.current, {
-      y: -10,
-      duration: 2.8,
-      ease: 'sine.inOut',
-      repeat: -1,
-      yoyo: true,
-      delay: 1.5,
-    })
-  }, { scope: sectionRef })
+      return () => ctx.revert()
+    }, 50)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleEmailSignup = (e: React.FormEvent) => {
     e.preventDefault()
@@ -90,40 +100,44 @@ export function Hero() {
   }
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-gradient-to-b from-emerald-950/20 via-background to-background pt-6">
+    <section ref={sectionRef} suppressHydrationWarning className="relative overflow-hidden bg-gradient-to-b from-emerald-950/20 via-background to-background pt-6">
       {/* Background glow blobs */}
-      <div className="pointer-events-none absolute -top-32 -left-32 size-[500px] rounded-full bg-emerald-700/10 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -right-20 size-[400px] rounded-full bg-amber-500/10 blur-3xl" />
+      <div suppressHydrationWarning className="pointer-events-none absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-emerald-700/10 blur-3xl transform-gpu" />
+      <div suppressHydrationWarning className="pointer-events-none absolute -bottom-20 -right-20 w-[400px] h-[400px] rounded-full bg-amber-500/10 blur-3xl transform-gpu" />
 
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 lg:grid-cols-2 lg:py-20">
         {/* ── Left column ── */}
         <div>
           <span
             ref={badgeRef}
-            className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 shadow-sm opacity-0"
+            className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 shadow-sm"
           >
             <Sparkles className="size-4 text-amber-500 animate-pulse" />
             {t('tagline')} 🌍
           </span>
 
-          {lang === 'ur' || lang === 'ar' ? (
-            <h1
-              ref={headingRef}
-              className="mt-5 font-urdu text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-[2.5] py-4 text-emerald-900 dark:text-emerald-300 overflow-visible text-balance opacity-0"
-            >
-              {t('heroHeading')}
-            </h1>
-          ) : (
-            <h1
-              ref={headingRef}
-              className="mt-5 text-balance text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.15] tracking-tight text-foreground opacity-0"
-            >
-              {t('heroHeading').replace(t('heroHeadingHighlight'), '').trim()}{' '}
-              <span className="bg-gradient-to-r from-emerald-700 via-emerald-600 to-amber-600 bg-clip-text text-transparent">{t('heroHeadingHighlight')}</span>
-            </h1>
-          )}
+          <h1
+            ref={headingRef}
+            className={cn(
+              "mt-5 text-balance font-extrabold",
+              (lang === 'ur' || lang === 'ar')
+                ? "font-urdu text-3xl sm:text-4xl lg:text-5xl leading-[2.5] py-4 text-emerald-900 dark:text-emerald-300 overflow-visible"
+                : "text-4xl sm:text-5xl lg:text-6xl leading-[1.15] tracking-tight text-foreground"
+            )}
+          >
+            {lang === 'ur' || lang === 'ar' ? (
+              t('heroHeading')
+            ) : (
+              <>
+                {t('heroHeading').replace(t('heroHeadingHighlight'), '').trim()}{' '}
+                <span className="bg-gradient-to-r from-emerald-700 via-emerald-600 to-amber-600 bg-clip-text text-transparent">
+                  {t('heroHeadingHighlight')}
+                </span>
+              </>
+            )}
+          </h1>
 
-          <p ref={descRef} className="mt-4 max-w-lg text-pretty text-base sm:text-lg leading-relaxed text-muted-foreground opacity-0">
+          <p ref={descRef} className="mt-4 max-w-lg text-pretty text-base sm:text-lg leading-relaxed text-muted-foreground">
             {t('heroDesc')}
           </p>
 
@@ -131,7 +145,7 @@ export function Hero() {
           <div ref={buttonsRef} className="mt-8 flex flex-col gap-3.5 sm:flex-row">
             <Link
               href="/create-wish"
-              className={buttonVariants({ size: 'lg', className: 'h-14 px-7 text-base font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-emerald-950/20 rounded-2xl opacity-0' })}
+              className={buttonVariants({ size: 'lg', className: 'h-14 px-7 text-base font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-emerald-950/20 rounded-2xl' })}
             >
               <Sparkles className="size-5 text-amber-300" />
               {t('sendWish')}
@@ -142,7 +156,7 @@ export function Hero() {
               className={buttonVariants({
                 size: 'lg',
                 variant: 'outline',
-                className: 'h-14 px-7 text-base font-bold border-emerald-800/30 hover:bg-emerald-900/10 rounded-2xl opacity-0',
+                className: 'h-14 px-7 text-base font-bold border-emerald-800/30 hover:bg-emerald-900/10 rounded-2xl',
               })}
             >
               <MailOpen className="size-5 text-amber-600" />
@@ -151,7 +165,7 @@ export function Hero() {
           </div>
 
           {/* ── Inline email signup ── */}
-          <div ref={emailFormRef} className="mt-8 opacity-0">
+          <div ref={emailFormRef} className="mt-8">
             <p className="mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">
               {t('orSignUp')}
             </p>
@@ -169,7 +183,7 @@ export function Hero() {
               </div>
               <button
                 type="submit"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 px-5 py-3 text-sm font-bold text-white shadow-md active:scale-95 transition-all"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 px-5 py-3 text-sm font-extrabold text-white shadow-md active:scale-95 transition-all"
               >
                 {t('signUpArrow')} <ArrowRight className="size-3.5" />
               </button>
@@ -181,7 +195,7 @@ export function Hero() {
         </div>
 
         {/* ── Right column — Card preview ── */}
-        <div ref={cardRef} className="relative opacity-0">
+        <div ref={cardRef} className="relative">
           <div className="pointer-events-none absolute -inset-4 -z-10 rounded-[2.5rem] bg-amber-500/10 blur-2xl" />
           <div className="transition-transform duration-500">
             <WishCard
