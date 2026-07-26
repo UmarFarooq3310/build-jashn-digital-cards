@@ -80,6 +80,7 @@ export function SiteFooter() {
               title={t('footerPlatform')}
               links={[
                 { href: '/', label: t('home') },
+                { href: '/blog', label: t('blog') },
                 { href: '/about', label: t('footerAbout') },
                 { href: '/pricing', label: t('footerPlans') },
                 { href: '/faq', label: t('faqs') },

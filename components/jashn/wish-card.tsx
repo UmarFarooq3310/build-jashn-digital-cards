@@ -10,10 +10,12 @@ import type { Language } from '@/lib/jashn/types'
 import { CardDecor } from './decor'
 import { RelationAvatar, detectRelation } from './relation-avatar'
 import { AnimatedBackgroundDecor } from './animated-background-decor'
+import { CardQrCode } from './qr-code'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
 export interface WishCardData {
+  slug?: string
   occasionId: string
   themeId: string
   borderId?: string

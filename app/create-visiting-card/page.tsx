@@ -26,6 +26,7 @@ import {
 } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
+import { CardQrCode } from '@/components/jashn/qr-code'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -247,6 +248,14 @@ export default function CreateVisitingCardPage() {
                     <span>{t('viewPublicLiveCard') || 'View Public Live Card'}</span>
                     <ExternalLink className="size-4" />
                   </Link>
+                </div>
+
+                {/* External Barcode & Scannable QR Code Section */}
+                <div className="pt-4 border-t border-border flex flex-col items-center text-center space-y-2">
+                  <span className="text-xs font-bold text-emerald-500 dark:text-emerald-400 uppercase tracking-wider">
+                    Digital Visiting Card Barcode / QR Code
+                  </span>
+                  <CardQrCode slug={createdCard.slug} cardType="v" size={160} showDownloadBtn={true} />
                 </div>
 
                 <button

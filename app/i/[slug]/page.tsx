@@ -16,6 +16,7 @@ import { InvitationCard } from '@/components/jashn/invitation-card'
 import { ThreeDCardWrapper } from '@/components/jashn/three-d-card-wrapper'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { ShareBar } from '@/components/jashn/share-bar'
+import { CardQrCode } from '@/components/jashn/qr-code'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
@@ -298,11 +299,21 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         ) : null}
       </div>
 
-      <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Share Invitation with Guests
-        </h3>
-        <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-online-${activeInvitation.slug}`} />
+      <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col items-center gap-6">
+        <div className="w-full text-center sm:text-left">
+          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            Share Invitation with Guests
+          </h3>
+          <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-online-${activeInvitation.slug}`} />
+        </div>
+
+        {/* External Scannable & Downloadable QR Code */}
+        <div className="w-full pt-4 border-t border-border flex flex-col items-center text-center space-y-2">
+          <span className="text-xs font-bold text-primary uppercase tracking-wider">
+            Invitation Shareable QR Code
+          </span>
+          <CardQrCode slug={slug} cardType="i" size={160} showDownloadBtn={true} />
+        </div>
       </div>
 
 

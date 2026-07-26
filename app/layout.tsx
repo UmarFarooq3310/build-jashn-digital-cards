@@ -1,29 +1,13 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Poppins, Noto_Nastaliq_Urdu } from 'next/font/google'
 import { ToastNotification } from '@/components/ui/toast-notification'
 import { FirebaseAuthListener } from '@/components/firebase-auth-listener'
 import { AdSenseHandler } from '@/components/adsense-handler'
 import { LanguageProvider } from '@/lib/lang/context'
 import './globals.css'
 
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-poppins',
-  display: 'swap',
-  fallback: ['system-ui', 'sans-serif'],
-  adjustFontFallback: false,
-})
-
-const urduFont = Noto_Nastaliq_Urdu({
-  subsets: ['arabic'],
-  weight: ['400', '700'],
-  variable: '--font-urdu',
-  display: 'swap',
-  fallback: ['Georgia', 'serif'],
-  adjustFontFallback: false,
-})
+const poppins = { variable: '--font-poppins', className: '' }
+const urduFont = { variable: '--font-urdu', className: '' }
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
@@ -58,10 +42,11 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
     ],
     shortcut: '/favicon.svg',
-    apple: '/apple-icon-180x180.png',
+    apple: [
+      { url: '/apple-icon.svg', type: 'image/svg+xml' },
+    ],
   },
   openGraph: {
     title: 'Cardzy — Digital Wish Cards & Event Invitations',
@@ -137,6 +122,12 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://jashn-app-e3888.firebaseapp.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <meta name="google-adsense-account" content="ca-pub-8899224608517833" />
+        <meta name="google-site-verification" content="google8c02e6f18e222682" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
+          crossOrigin="anonymous"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -11,6 +11,7 @@ import { WishCard } from '@/components/jashn/wish-card'
 import { ThreeDCardWrapper } from '@/components/jashn/three-d-card-wrapper'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { ShareBar } from '@/components/jashn/share-bar'
+import { CardQrCode } from '@/components/jashn/qr-code'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
 import { getOccasion } from '@/lib/jashn/occasions'
@@ -258,15 +259,25 @@ function WishPublicContent({ slug }: { slug: string }) {
         </ThreeDCardWrapper>
       </div>
 
-      {/* Share Actions with Clean Short Link */}
+      {/* Share Actions with Clean Short Link & External QR Code */}
       <div className={cn(
-        "mt-8 rounded-2xl border bg-card p-6 shadow-sm",
+        "mt-8 rounded-2xl border bg-card p-6 shadow-sm flex flex-col items-center gap-6",
         isSensitive ? "border-zinc-800 bg-zinc-950" : "border-border"
       )}>
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          {isSensitive ? t('forwardMessage') : t('shareThisCard')}
-        </h3>
-        <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-online-${activeWish.slug}`} />
+        <div className="w-full text-center sm:text-left">
+          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            {isSensitive ? t('forwardMessage') : t('shareThisCard')}
+          </h3>
+          <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-online-${activeWish.slug}`} />
+        </div>
+
+        {/* External Scannable & Downloadable QR Code */}
+        <div className="w-full pt-4 border-t border-border flex flex-col items-center text-center space-y-2">
+          <span className="text-xs font-bold text-primary uppercase tracking-wider">
+            Wish Card Shareable QR Code
+          </span>
+          <CardQrCode slug={slug} cardType="w" size={160} showDownloadBtn={true} />
+        </div>
       </div>
 
 

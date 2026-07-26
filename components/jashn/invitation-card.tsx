@@ -10,12 +10,14 @@ import { getTheme, getCategoryPatternClass, isLightVariant } from '@/lib/jashn/t
 import { CardDecor } from './decor'
 import { Countdown } from './countdown'
 import { RelationAvatar } from './relation-avatar'
+import { CardQrCode } from './qr-code'
 import { getInvitationTypeTheme } from '@/lib/jashn/invitationThemes'
 import { AnimatedBackgroundDecor } from './animated-background-decor'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
 export interface InvitationCardData {
+  slug?: string
   typeId: string
   title: string
   hostNames: string

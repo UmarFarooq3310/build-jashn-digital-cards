@@ -36,9 +36,10 @@ function SiteHeaderInner() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1.5 md:flex">
           {[
             { href: '/', key: 'home', fallback: 'Home' },
+            { href: '/blog', key: 'blog', fallback: 'Blog' },
             { href: '/create-wish', key: 'sendWish', fallback: 'Send Wish' },
             { href: '/create-invitation', key: 'createInvitation', fallback: 'Invitations' },
             { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },
@@ -139,6 +140,7 @@ function SiteHeaderInner() {
           <nav className="flex flex-col gap-1">
             {[
               { href: '/', key: 'home', fallback: 'Home' },
+              { href: '/blog', key: 'blog', fallback: 'Blog' },
               { href: '/create-wish', key: 'sendWish', fallback: 'Send Wish' },
               { href: '/create-invitation', key: 'createInvitation', fallback: 'Invitations' },
               { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },

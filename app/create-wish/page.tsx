@@ -36,7 +36,7 @@ const RELATIONS = [
 function CreateWishContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { user, createWish, updateWish, wishes } = useJashn()
+  const { user, createWish, updateWish, wishes, showToast } = useJashn()
   const { t, lang } = useLang()
 
   const editSlug = searchParams.get('edit')
@@ -47,12 +47,12 @@ function CreateWishContent() {
   const [occasionId, setOccasionId] = useState('birthday')
   const [mobileTab, setMobileTab] = useState<'details' | 'design' | 'preview'>('details')
   const [language, setLanguage] = useState<Language>('en')
-  const [message, setMessage] = useState('Wishing you a day filled with happiness, laughter and immense blessings always!')
+  const [message, setMessage] = useState('')
   const [themeId, setThemeId] = useState('mehndi-red')
   const [borderId, setBorderId] = useState('mehndi')
   const [bgVariantId, setBgVariantId] = useState('default')
-  const [senderName, setSenderName] = useState('Tariq & Family')
-  const [recipientName, setRecipientName] = useState('Ayesha')
+  const [senderName, setSenderName] = useState('')
+  const [recipientName, setRecipientName] = useState('')
   const [relation, setRelation] = useState('Friend')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -90,10 +90,6 @@ function CreateWishContent() {
 
   function handleOccasionSelect(id: string) {
     setOccasionId(id)
-    const newTemplates = getTemplates(id)
-    if (newTemplates.length > 0) {
-      setMessage(getLocalizedTemplateText(newTemplates[0], lang))
-    }
     setErrors({})
     setStep(2)
   }
@@ -113,8 +109,16 @@ function CreateWishContent() {
   function runValidation() {
     const errs: Record<string, string> = {}
 
-    if (step === 2 && !message.trim()) {
-      errs.message = t('titleRequired')
+    if (step === 2) {
+      if (!recipientName.trim()) {
+        errs.recipientName = 'Recipient Name is required'
+      }
+      if (!senderName.trim()) {
+        errs.senderName = 'Your Name / Sender Name is required'
+      }
+      if (!message.trim()) {
+        errs.message = 'Wish message is required'
+      }
     }
 
     return errs
@@ -123,8 +127,8 @@ function CreateWishContent() {
   function handleFieldChange(field: string, value: string, setter: (v: string) => void) {
     setter(value)
     const tempErrors = { ...errors }
-    if (field === 'message' && value.trim()) {
-      delete tempErrors.message
+    if (value.trim()) {
+      delete tempErrors[field]
     }
     setErrors(tempErrors)
   }
@@ -133,6 +137,8 @@ function CreateWishContent() {
     const errs = runValidation()
     setErrors(errs)
     if (Object.keys(errs).length > 0) {
+      const firstError = Object.values(errs)[0] || 'Please complete all required fields marked in red.'
+      showToast(firstError, 'error')
       if (typeof window !== 'undefined' && window.innerWidth < 1024) {
         setMobileTab('details')
       }
@@ -344,7 +350,7 @@ function CreateWishContent() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
                       <label className="mb-1.5 block text-xs font-bold text-foreground">
-                        Recipient Name (Optional)
+                        Recipient Name *
                       </label>
                       <input
                         type="text"
@@ -357,11 +363,16 @@ function CreateWishContent() {
                           errors.recipientName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
                         )}
                       />
+                      {errors.recipientName && (
+                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                          <AlertCircle className="size-3 shrink-0" /> {errors.recipientName}
+                        </p>
+                      )}
                     </div>
 
                     <div>
                       <label className="mb-1.5 block text-xs font-bold text-foreground">
-                        Your Name (Sender)
+                        Your Name (Sender) *
                       </label>
                       <input
                         type="text"
@@ -374,6 +385,11 @@ function CreateWishContent() {
                           errors.senderName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
                         )}
                       />
+                      {errors.senderName && (
+                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                          <AlertCircle className="size-3 shrink-0" /> {errors.senderName}
+                        </p>
+                      )}
                     </div>
                   </div>
 

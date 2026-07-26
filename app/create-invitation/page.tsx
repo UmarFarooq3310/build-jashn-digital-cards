@@ -28,7 +28,7 @@ import { cn } from '@/lib/utils'
 function CreateInvitationContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { user, createInvitation, updateInvitation, invitations, isAuthLoading } = useJashn()
+  const { user, createInvitation, updateInvitation, invitations, isAuthLoading, showToast } = useJashn()
   const { t, lang } = useLang()
 
   const editSlug = searchParams.get('edit')
@@ -52,18 +52,18 @@ function CreateInvitationContent() {
     return `${hh}:${mm}`
   }
 
-  const [title, setTitle] = useState('Nikkah Ceremony & Celebration')
-  const [hostNames, setHostNames] = useState('The Families of Hassan & Ayesha')
-  const [groom, setGroom] = useState('Hassan Ahmed')
-  const [bride, setBride] = useState('Ayesha Malik')
-  const [date, setDate] = useState('2026-12-14')
-  const [time, setTime] = useState('19:00')
-  const [venue, setVenue] = useState('Pearl Continental, Grand Ballroom')
-  const [city, setCity] = useState('Lahore')
-  const [mapsLink, setMapsLink] = useState('https://maps.google.com')
-  const [dressCode, setDressCode] = useState('Traditional Royal / Formal Attire')
-  const [notes, setNotes] = useState('Your gracious presence and prayers are the greatest blessing for our new journey.')
-  const [rsvpPhone, setRsvpPhone] = useState('+923093518796')
+  const [title, setTitle] = useState('')
+  const [hostNames, setHostNames] = useState('')
+  const [groom, setGroom] = useState('')
+  const [bride, setBride] = useState('')
+  const [date, setDate] = useState('')
+  const [time, setTime] = useState('')
+  const [venue, setVenue] = useState('')
+  const [city, setCity] = useState('')
+  const [mapsLink, setMapsLink] = useState('')
+  const [dressCode, setDressCode] = useState('')
+  const [notes, setNotes] = useState('')
+  const [rsvpPhone, setRsvpPhone] = useState('')
   const [themeId, setThemeId] = useState('mehndi-red')
   const [borderId, setBorderId] = useState('mehndi')
   const [bgVariantId, setBgVariantId] = useState('default')
@@ -132,10 +132,14 @@ function CreateInvitationContent() {
       if (!bride.trim()) {
         errs.bride = t('brideRequired')
       }
-    } else {
-      if (!title.trim() && !selectedType?.label) {
-        errs.title = t('titleRequired')
-      }
+    }
+
+    if (!title.trim()) {
+      errs.title = t('titleRequired') || 'Event Title is required'
+    }
+
+    if (!hostNames.trim()) {
+      errs.hostNames = 'Host Names (Parents / Family) is required'
     }
 
     if (!date) {
@@ -144,6 +148,14 @@ function CreateInvitationContent() {
 
     if (!time) {
       errs.time = t('timeRequired')
+    }
+
+    if (!venue.trim()) {
+      errs.venue = 'Venue / Hall Address is required'
+    }
+
+    if (!city.trim()) {
+      errs.city = 'City / Location is required'
     }
 
     if (!rsvpPhone.trim()) {
@@ -162,11 +174,14 @@ function CreateInvitationContent() {
     setter(value)
     const tempErrors = { ...errors }
 
-    if (field === 'groom' || field === 'bride' || field === 'title') {
+    if (field === 'groom' || field === 'bride' || field === 'title' || field === 'hostNames' || field === 'venue' || field === 'city') {
       if (!value.trim()) {
         if (field === 'groom') tempErrors.groom = t('groomRequired')
         else if (field === 'bride') tempErrors.bride = t('brideRequired')
-        else if (field === 'title' && !selectedType?.label) tempErrors.title = t('titleRequired')
+        else if (field === 'title') tempErrors.title = t('titleRequired') || 'Event Title is required'
+        else if (field === 'hostNames') tempErrors.hostNames = 'Host Names (Parents / Family) is required'
+        else if (field === 'venue') tempErrors.venue = 'Venue / Hall Address is required'
+        else if (field === 'city') tempErrors.city = 'City / Location is required'
       } else {
         delete tempErrors[field]
       }
@@ -196,6 +211,8 @@ function CreateInvitationContent() {
     const errs = runValidation()
     setErrors(errs)
     if (Object.keys(errs).length > 0) {
+      const firstError = Object.values(errs)[0] || 'Please complete all required fields marked in red.'
+      showToast(firstError, 'error')
       if (typeof window !== 'undefined' && window.innerWidth < 1024) {
         setMobileTab('details')
       }
@@ -396,7 +413,7 @@ function CreateInvitationContent() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
                         <label className="mb-1.5 block text-xs font-bold text-foreground">
-                          {t('groomName')} *
+                          {t('groomName') === 'groomName' ? 'Groom Name' : t('groomName')} *
                         </label>
                         <input
                           type="text"
@@ -418,7 +435,7 @@ function CreateInvitationContent() {
                       </div>
                       <div>
                         <label className="mb-1.5 block text-xs font-bold text-foreground">
-                          {t('brideName')} *
+                          {t('brideName') === 'brideName' ? 'Bride Name' : t('brideName')} *
                         </label>
                         <input
                           type="text"
@@ -466,16 +483,25 @@ function CreateInvitationContent() {
 
                   <div>
                     <label className="mb-1.5 block text-xs font-bold text-foreground">
-                      {t('hostNamesLabel')}
+                      {t('hostNamesLabel')} *
                     </label>
                     <input
                       type="text"
+                      required
                       value={hostNames}
                       onChange={(e) => handleFieldChange('hostNames', e.target.value, setHostNames)}
                       placeholder={t('placeholderHost')}
                       dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                      className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
+                      className={cn(
+                        "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                        errors.hostNames ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                      )}
                     />
+                    {errors.hostNames && (
+                      <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                        <AlertCircle className="size-3 shrink-0" /> {errors.hostNames}
+                      </p>
+                    )}
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -524,29 +550,47 @@ function CreateInvitationContent() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
                       <label className="mb-1.5 block text-xs font-bold text-foreground">
-                        {t('venueLabel')}
+                        {t('venueLabel')} *
                       </label>
                       <input
                         type="text"
+                        required
                         value={venue}
-                        onChange={(e) => setVenue(e.target.value)}
+                        onChange={(e) => handleFieldChange('venue', e.target.value, setVenue)}
                         placeholder={t('placeholderVenue')}
                         dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                        className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
+                        className={cn(
+                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                          errors.venue ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                        )}
                       />
+                      {errors.venue && (
+                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                          <AlertCircle className="size-3 shrink-0" /> {errors.venue}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <label className="mb-1.5 block text-xs font-bold text-foreground">
-                        {t('cityLabel')}
+                        {t('cityLabel')} *
                       </label>
                       <input
                         type="text"
+                        required
                         value={city}
-                        onChange={(e) => setCity(e.target.value)}
+                        onChange={(e) => handleFieldChange('city', e.target.value, setCity)}
                         placeholder={t('placeholderCity')}
                         dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                        className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
+                        className={cn(
+                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                          errors.city ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                        )}
                       />
+                      {errors.city && (
+                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                          <AlertCircle className="size-3 shrink-0" /> {errors.city}
+                        </p>
+                      )}
                     </div>
                   </div>
 
