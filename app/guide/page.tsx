@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: 'Celebration Guides & Wording Ideas — Cardzy Digital Cards',
   description:
     'Explore our collection of expert guides for designing digital invitations, animated wish cards, wedding invitations, Eid greetings, and more. Find wording templates and tips for every occasion.',
+  alternates: {
+    canonical: 'https://cardzy.online/guide',
+  },
   keywords: [
     'digital invitation templates',
     'Eid Mubarak wishes wording',

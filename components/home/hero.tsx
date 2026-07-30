@@ -12,10 +12,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const WishCard = dynamic(
-  () => import('@/components/jashn/wish-card').then((mod) => mod.WishCard),
-  { ssr: false }
-)
+import { WishCard } from '@/components/jashn/wish-card'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -32,65 +29,54 @@ export function Hero() {
   const { t, lang } = useLang()
   const [heroEmail, setHeroEmail] = useState('')
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const ctx = gsap.context(() => {
-        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
-        // Badge, Heading & Description animate simultaneously to ensure instant LCP render
-        tl.fromTo(
-          badgeRef.current,
-          { y: -15, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.3 }
-        )
-        .fromTo(
-          headingRef.current,
-          { y: 15, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.35 },
-          '<'
-        )
-        .fromTo(
-          descRef.current,
-          { y: 10, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.35 },
-          '<'
-        )
-        // Buttons pop in staggered
-        .fromTo(
-          buttonsRef.current?.children ?? [],
-          { scale: 0.85, opacity: 0, y: 16 },
-          { scale: 1, opacity: 1, y: 0, duration: 0.4, stagger: 0.12, ease: 'back.out(1.5)' },
-          '-=0.2'
-        )
-        // Email form slides up
-        .fromTo(
-          emailFormRef.current,
-          { y: 24, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.5 },
-          '-=0.15'
-        )
-        // Card swings in from the right
-        .fromTo(
-          cardRef.current,
-          { x: 80, opacity: 0, rotateY: 20, scale: 0.92 },
-          { x: 0, opacity: 1, rotateY: 0, scale: 1, duration: 0.9, ease: 'power2.out' },
-          '-=0.7'
-        )
+      tl.fromTo(
+        badgeRef.current,
+        { opacity: 0.8 },
+        { opacity: 1, duration: 0.2 }
+      )
+      .fromTo(
+        descRef.current,
+        { opacity: 0.8 },
+        { opacity: 1, duration: 0.2 },
+        '<'
+      )
+      // Buttons pop in staggered
+      .fromTo(
+        buttonsRef.current?.children ?? [],
+        { scale: 0.95, opacity: 0.5, y: 12 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.35, stagger: 0.1, ease: 'power2.out' },
+        '-=0.1'
+      )
+      // Email form slides up
+      .fromTo(
+        emailFormRef.current,
+        { y: 16, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.4 },
+        '-=0.1'
+      )
+      // Card swings in from the right
+      .fromTo(
+        cardRef.current,
+        { x: 40, opacity: 0, scale: 0.95 },
+        { x: 0, opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' },
+        '-=0.4'
+      )
 
-        // Floating card idle animation
-        gsap.to(cardRef.current, {
-          y: -10,
-          duration: 2.8,
-          ease: 'sine.inOut',
-          repeat: -1,
-          yoyo: true,
-          delay: 1.5,
-        })
-      }, sectionRef)
+      // Floating card idle animation
+      gsap.to(cardRef.current, {
+        y: -10,
+        duration: 2.8,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+        delay: 1.5,
+      })
+    }, sectionRef)
 
-      return () => ctx.revert()
-    }, 50)
-
-    return () => clearTimeout(timer)
+    return () => ctx.revert()
   }, [])
 
   const handleEmailSignup = (e: React.FormEvent) => {
@@ -100,17 +86,17 @@ export function Hero() {
   }
 
   return (
-    <section ref={sectionRef} suppressHydrationWarning className="relative overflow-hidden bg-gradient-to-b from-emerald-950/20 via-background to-background pt-6">
-      {/* Background glow blobs */}
-      <div suppressHydrationWarning className="pointer-events-none absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-emerald-700/10 blur-3xl transform-gpu" />
-      <div suppressHydrationWarning className="pointer-events-none absolute -bottom-20 -right-20 w-[400px] h-[400px] rounded-full bg-amber-500/10 blur-3xl transform-gpu" />
-
+    <section
+      ref={sectionRef}
+      suppressHydrationWarning
+      className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(4,120,87,0.12),transparent_50%),radial-gradient(circle_at_bottom_right,rgba(245,158,11,0.1),transparent_50%)] bg-gradient-to-b from-emerald-950/20 via-background to-background pt-6"
+    >
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 lg:grid-cols-2 lg:py-20">
         {/* ── Left column ── */}
         <div>
           <span
             ref={badgeRef}
-            className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 shadow-sm"
+            className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-bold text-amber-900 dark:text-amber-300 shadow-sm"
           >
             <Sparkles className="size-4 text-amber-500 animate-pulse" />
             {t('tagline')} 🌍
@@ -183,7 +169,7 @@ export function Hero() {
               </div>
               <button
                 type="submit"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 px-5 py-3 text-sm font-extrabold text-white shadow-md active:scale-95 transition-all"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-amber-700 hover:bg-amber-800 px-5 py-3 text-sm font-extrabold text-white shadow-md active:scale-95 transition-all"
               >
                 {t('signUpArrow')} <ArrowRight className="size-3.5" />
               </button>
@@ -195,9 +181,9 @@ export function Hero() {
         </div>
 
         {/* ── Right column — Card preview ── */}
-        <div ref={cardRef} className="relative">
+        <div ref={cardRef} className="relative min-h-[380px] sm:min-h-[440px] flex items-center justify-center">
           <div className="pointer-events-none absolute -inset-4 -z-10 rounded-[2.5rem] bg-amber-500/10 blur-2xl" />
-          <div className="transition-transform duration-500">
+          <div className="w-full transition-transform duration-500">
             <WishCard
               watermark
               data={{

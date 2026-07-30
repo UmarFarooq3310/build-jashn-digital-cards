@@ -64,7 +64,7 @@ function SiteHeaderInner() {
           <div className="relative z-[9999]">
             <button
               onClick={() => setLangOpen((o) => !o)}
-              className="flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-500/10 px-3.5 py-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 transition-all hover:bg-amber-500/20 shadow-xs"
+              className="flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-100 dark:bg-amber-950/40 px-3.5 py-1.5 text-xs font-bold text-amber-950 dark:text-amber-300 transition-all hover:bg-amber-200 shadow-xs"
               aria-label="Select language"
             >
               <Globe className="size-3.5 text-amber-600" />
@@ -127,7 +127,7 @@ function SiteHeaderInner() {
         </div>
 
         <button
-          className="rounded-lg p-2 text-foreground md:hidden"
+          className="min-h-[48px] min-w-[48px] rounded-lg p-3 text-foreground md:hidden flex items-center justify-center"
           onClick={() => setOpen((o) => !o)}
           aria-label="Toggle menu"
         >

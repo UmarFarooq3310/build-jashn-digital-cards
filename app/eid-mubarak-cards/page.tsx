@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: 'Eid Mubarak Cards: Digital Greetings | Cardzy',
   description:
     'Create interactive Eid Mubarak digital cards with Cardzy. Personalize greetings in 18 languages, track RSVPs, and share via WhatsApp in seconds.',
+  alternates: {
+    canonical: 'https://cardzy.online/eid-mubarak-cards',
+  },
   keywords: [
     'Eid Mubarak cards',
     'digital Eid greetings',

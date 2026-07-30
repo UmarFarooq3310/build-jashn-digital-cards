@@ -27,6 +27,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `${post.seoTitle} | Cardzy`,
     description: post.metaDescription,
     keywords: post.tags,
+    alternates: {
+      canonical: `https://cardzy.online/blog/${post.slug}`,
+    },
     openGraph: {
       title: post.title,
       description: post.metaDescription,

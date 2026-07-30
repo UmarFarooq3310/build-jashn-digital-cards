@@ -1,17 +1,23 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
+  title: 'Create 3D Animated Wish Cards with Photo & Name | Cardzy',
+  description:
+    'Design custom 3D animated wish cards for Eid Mubarak, birthdays, anniversaries, and holidays with custom family photo and music.',
+  alternates: {
+    canonical: 'https://cardzy.online/create-wish',
+  },
   robots: {
-    index: false,
-    follow: false,
-    nocache: true,
+    index: true,
+    follow: true,
   },
 }
 
-export default function NoIndexLayout({
+export default function CreateWishLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return <>{children}</>
 }
+

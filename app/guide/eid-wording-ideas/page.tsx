@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: 'Eid Mubarak Wish Wording & Urdu Messages Ideas — Cardzy',
   description:
     'Browse our curated collection of Eid Mubarak wishes, traditional Urdu greetings, and poetry verses for digital animated greeting cards.',
+  alternates: {
+    canonical: 'https://cardzy.online/guide/eid-wording-ideas',
+  },
   keywords: [
     'Eid Mubarak wishes in Urdu',
     'Eid card wording templates',

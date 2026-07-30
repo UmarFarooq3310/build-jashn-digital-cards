@@ -1,13 +1,25 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Poppins, Noto_Nastaliq_Urdu } from 'next/font/google'
 import { ToastNotification } from '@/components/ui/toast-notification'
 import { FirebaseAuthListener } from '@/components/firebase-auth-listener'
 import { AdSenseHandler } from '@/components/adsense-handler'
 import { LanguageProvider } from '@/lib/lang/context'
 import './globals.css'
 
-const poppins = { variable: '--font-poppins', className: '' }
-const urduFont = { variable: '--font-urdu', className: '' }
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
+  display: 'swap',
+})
+
+const urduFont = Noto_Nastaliq_Urdu({
+  subsets: ['arabic'],
+  weight: ['400', '700'],
+  variable: '--font-urdu',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
@@ -124,11 +136,6 @@ export default function RootLayout({
         <meta name="google-adsense-account" content="ca-pub-8899224608517833" />
         <meta name="google-site-verification" content="google8c02e6f18e222682" />
         <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
-          crossOrigin="anonymous"
-        />
-        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
@@ -139,7 +146,7 @@ export default function RootLayout({
           <FirebaseAuthListener />
           {children}
           <ToastNotification />
-          {process.env.NODE_ENV === 'production' && <Analytics />}
+          {process.env.NODE_ENV === 'production' && process.env.VERCEL === '1' && <Analytics />}
         </LanguageProvider>
       </body>
     </html>

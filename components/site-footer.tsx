@@ -24,7 +24,7 @@ export function SiteFooter() {
               <a
                 href="mailto:cardzyonline@gmail.com"
                 suppressHydrationWarning
-                className="hover:text-amber-400 transition-colors flex items-center gap-1"
+                className="hover:text-amber-400 transition-colors inline-flex items-center gap-1 min-h-[44px] py-2"
               >
                 ✉️ cardzyonline@gmail.com
               </a>
@@ -33,7 +33,7 @@ export function SiteFooter() {
                 target="_blank"
                 rel="noopener noreferrer"
                 suppressHydrationWarning
-                className="hover:text-amber-400 transition-colors flex items-center gap-1"
+                className="hover:text-amber-400 transition-colors inline-flex items-center gap-1 min-h-[44px] py-2"
               >
                 💬 WhatsApp: +92 309 3518796
               </a>
@@ -114,7 +114,7 @@ function FooterCol({
 }) {
   return (
     <div suppressHydrationWarning>
-      <h4 suppressHydrationWarning className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-400">{title}</h4>
+      <h3 suppressHydrationWarning className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-400">{title}</h3>
       <ul className="mt-2.5 space-y-1">
         {links.map((l) => (
           <li key={l.href + l.label}>

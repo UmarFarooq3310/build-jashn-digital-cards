@@ -149,7 +149,7 @@ export function HowItWorks() {
         {/* Free vs Premium Pricing Indicator (Surfaced Earlier) */}
         <div className="pricing-box max-w-4xl mx-auto rounded-3xl border border-teal-500/15 bg-gradient-to-br from-violet-50 via-card to-violet-100 p-6 sm:p-8 shadow-md">
           <div className="text-center mb-6">
-            <span className="inline-block bg-teal-600 text-white px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase mb-1">
+            <span className="inline-block bg-teal-800 text-white px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase mb-1">
               {t('pricing')}
             </span>
             <h3 className="text-lg font-extrabold text-foreground">{t('simpleTransparentPricing')}</h3>
@@ -157,10 +157,10 @@ export function HowItWorks() {
           
           <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-2 p-4 rounded-2xl bg-card border border-teal-500/10 shadow-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-teal-100 text-teal-600 px-2 py-0.5 rounded-bl-xl text-[10px] font-bold">
+              <div className="absolute top-0 right-0 bg-teal-100 text-teal-900 px-2 py-0.5 rounded-bl-xl text-[10px] font-bold">
                 {t('freeForever')}
               </div>
-              <p className="font-bold text-teal-600 text-sm flex items-center gap-1.5">
+              <p className="font-bold text-teal-800 text-sm flex items-center gap-1.5">
                 <Sparkles className="size-4 shrink-0" /> {t('wishCardsStandardThemes')}
               </p>
               <p className="text-xs text-muted-foreground leading-relaxed">
@@ -169,10 +169,10 @@ export function HowItWorks() {
             </div>
             
             <div className="space-y-2 p-4 rounded-2xl bg-card border border-emerald-500/20 shadow-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-emerald-500/10 text-emerald-700 px-2 py-0.5 rounded-bl-xl text-[10px] font-bold">
+              <div className="absolute top-0 right-0 bg-emerald-900/10 text-emerald-950 px-2 py-0.5 rounded-bl-xl text-[10px] font-bold">
                 {t('cardzyProPremium')}
               </div>
-              <p className="font-bold text-emerald-700 text-sm flex items-center gap-1.5">
+              <p className="font-bold text-emerald-900 text-sm flex items-center gap-1.5">
                 <Crown className="size-4 shrink-0" /> {t('liveRsvpsMaps')}
               </p>
               <p className="text-xs text-muted-foreground leading-relaxed">
@@ -1007,7 +1007,7 @@ export function InvitationsSection() {
             <div className="pt-4 flex flex-wrap items-center gap-4">
               <Link
                 href="/create-invitation"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-700 px-6 font-bold text-white hover:bg-emerald-800 transition-colors shadow-lg shadow-emerald-700/10 active:scale-95 transition-transform"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-800 px-6 font-bold text-white hover:bg-emerald-900 transition-colors shadow-lg shadow-emerald-700/10 active:scale-95 transition-transform"
               >
                 {t('createInvitation')} <ArrowRight className="size-4" />
               </Link>
@@ -1189,7 +1189,7 @@ export function FloatingCTA() {
           <Link
             href="/create-invitation"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 bg-emerald-700 text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-xl border border-white/10 active:scale-95 transition-transform"
+            className="flex items-center gap-2 bg-emerald-800 text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-xl border border-white/10 active:scale-95 transition-transform"
           >
             <Mail className="size-3.5" />
             <span>{t('createInvitation')}</span>
@@ -1206,7 +1206,7 @@ export function FloatingCTA() {
             ? "bg-zinc-800 ring-4 ring-zinc-800/20 shadow-2xl" 
             : "bg-emerald-800 hover:bg-emerald-900 ring-4 ring-emerald-900/20 shadow-lg"
         )}
-        aria-label="Create card menu"
+        aria-label={isOpen ? t('close') : t('getStarted')}
       >
         {isOpen ? (
           <>
@@ -1305,7 +1305,7 @@ export function ConciergeService() {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-8 py-4 text-sm sm:text-base shadow-xl shadow-emerald-950/50 transition-all hover:scale-105"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-2xl bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold px-8 py-4 text-sm sm:text-base shadow-xl shadow-emerald-950/50 transition-all hover:scale-105"
           >
             <span>{t('sendWhatsApp')}</span>
             <ArrowRight className="size-5" />

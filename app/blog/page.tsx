@@ -5,6 +5,9 @@ import { BlogIndexClient } from '@/components/blog/blog-index-client'
 export const metadata: Metadata = {
   title: 'Blog & Guides - Digital Cards, Wedding Invitations & Eid Wishes | Cardzy',
   description: 'Explore expert guides on creating royal Pakistani wedding invitations, Eid Mubarak wish cards with name/photo, NFC digital business cards, and RSVP guest management.',
+  alternates: {
+    canonical: 'https://cardzy.online/blog',
+  },
   keywords: [
     'Pakistani wedding invitations blog',
     'Eid Mubarak wishes guide',
