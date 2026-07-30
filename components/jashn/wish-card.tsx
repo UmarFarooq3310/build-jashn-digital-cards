@@ -150,10 +150,6 @@ export const WishCard = forwardRef<HTMLDivElement, {
       { y: 0 },
       { y: -7, duration: 2.2, ease: 'sine.inOut', repeat: -1, yoyo: true }
     )
-    gsap.fromTo(av,
-      { opacity: 0, scale: 0.7 },
-      { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.7)', delay: 0.3 }
-    )
   }, { scope: wrapRef })
 
   // ── Content stagger entrance ───────────────────────────────────────────
@@ -163,15 +159,10 @@ export const WishCard = forwardRef<HTMLDivElement, {
     const card = wrap.querySelector('.wish-card-surface')
     if (card) {
       gsap.fromTo(card,
-        { scale: 0.92, rotateX: 12, opacity: 0, y: 24 },
-        { scale: 1, rotateX: 0, opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }
+        { scale: 0.98, y: 8 },
+        { scale: 1, y: 0, duration: 0.4, ease: 'power2.out' }
       )
     }
-    gsap.fromTo(
-      wrap.querySelectorAll('.wc-stagger'),
-      { y: 14, opacity: 0, scale: 0.97 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.55, stagger: 0.08, ease: 'back.out(1.4)', delay: 0.25 }
-    )
   }, { scope: wrapRef })
 
   return (

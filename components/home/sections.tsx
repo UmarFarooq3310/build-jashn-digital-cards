@@ -1150,7 +1150,7 @@ export function HomeCTA() {
         <div className="cta-item mt-8 flex flex-col justify-center gap-3 sm:flex-row max-w-xs sm:max-w-none mx-auto">
           <Link
             href="/create-wish"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-amber-500 px-8 text-sm font-bold text-[#0f766e] hover:bg-amber-400 active:scale-95 transition-all shadow-lg shadow-amber-500/25"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-amber-500 px-8 text-sm font-bold text-slate-950 hover:bg-amber-400 active:scale-95 transition-all shadow-lg shadow-amber-500/25"
           >
             {t('sendWish')} <ArrowRight className="size-4" />
           </Link>

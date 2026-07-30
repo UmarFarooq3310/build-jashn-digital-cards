@@ -67,43 +67,51 @@ export function FirebaseAuthListener() {
     let unsubscribe: (() => void) | undefined
     let isCancelled = false
 
-    // Handle Google Auth redirect result immediately on Mobile / Android
-    getRedirectResult(auth).then(async (result) => {
-      if (result?.user && !isCancelled) {
-        const userData = await syncFirestoreUser(result.user)
-        setAuthCookie(true)
-        useJashn.setState((s) => {
-          const existing = s.registeredUsers || []
-          const idx = existing.findIndex((item) => item.uid === userData.uid || (item.email && item.email.toLowerCase() === userData.email?.toLowerCase()))
-          const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
-          return { user: userData, registeredUsers: updated, isAuthLoading: false }
-        })
-        useJashn.getState().fetchUserCards()
-      }
-    }).catch((err) => {
-      console.error('Redirect auth result error:', err)
-    })
+    const initAuth = () => {
+      if (isCancelled || !auth) return
 
-    unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (isCancelled) return
-      if (firebaseUser) {
-        const userData = await syncFirestoreUser(firebaseUser)
-        setAuthCookie(true)
-        useJashn.setState((s) => {
-          const existing = s.registeredUsers || []
-          const idx = existing.findIndex((item) => item.uid === userData.uid || (item.email && item.email.toLowerCase() === userData.email?.toLowerCase()))
-          const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
-          return { user: userData, registeredUsers: updated, isAuthLoading: false }
-        })
-        fetchUserCards()
-      } else {
-        setAuthCookie(false)
-        useJashn.setState({ user: null, isAuthLoading: false })
-      }
-    })
+      // Handle Google Auth redirect result immediately on Mobile / Android
+      getRedirectResult(auth).then(async (result) => {
+        if (result?.user && !isCancelled) {
+          const userData = await syncFirestoreUser(result.user)
+          setAuthCookie(true)
+          useJashn.setState((s) => {
+            const existing = s.registeredUsers || []
+            const idx = existing.findIndex((item) => item.uid === userData.uid || (item.email && item.email.toLowerCase() === userData.email?.toLowerCase()))
+            const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
+            return { user: userData, registeredUsers: updated, isAuthLoading: false }
+          })
+          useJashn.getState().fetchUserCards()
+        }
+      }).catch((err) => {
+        console.error('Redirect auth result error:', err)
+      })
+
+      unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+        if (isCancelled) return
+        if (firebaseUser) {
+          const userData = await syncFirestoreUser(firebaseUser)
+          setAuthCookie(true)
+          useJashn.setState((s) => {
+            const existing = s.registeredUsers || []
+            const idx = existing.findIndex((item) => item.uid === userData.uid || (item.email && item.email.toLowerCase() === userData.email?.toLowerCase()))
+            const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
+            return { user: userData, registeredUsers: updated, isAuthLoading: false }
+          })
+          fetchUserCards()
+        } else {
+          setAuthCookie(false)
+          useJashn.setState({ user: null, isAuthLoading: false })
+        }
+      })
+    }
+
+    // Delay Firebase auth iframe initialization so it doesn't block initial page load / LCP
+    const timer = setTimeout(initAuth, 1200)
 
     return () => {
       isCancelled = true
+      clearTimeout(timer)
       if (unsubscribe) unsubscribe()
     }
   }, [fetchUserCards])
