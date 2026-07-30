@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Poppins, Noto_Nastaliq_Urdu } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 import { ToastNotification } from '@/components/ui/toast-notification'
 import { FirebaseAuthListener } from '@/components/firebase-auth-listener'
 import { AdSenseHandler } from '@/components/adsense-handler'
@@ -11,13 +11,6 @@ const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-poppins',
-  display: 'swap',
-})
-
-const urduFont = Noto_Nastaliq_Urdu({
-  subsets: ['arabic'],
-  weight: ['400', '700'],
-  variable: '--font-urdu',
   display: 'swap',
 })
 
@@ -128,7 +121,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${poppins.variable} ${urduFont.variable}`} suppressHydrationWarning>
+    <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://jashn-app-e3888.firebaseapp.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://jashn-app-e3888.firebaseapp.com" />
