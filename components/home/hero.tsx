@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { ArrowRight, MailOpen, Sparkles } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
-import { WishCard } from '@/components/jashn/wish-card'
 import { HeroEmailForm } from './hero-email-form'
+import { HeroStaticCard } from './hero-static-card'
 
 export function Hero() {
   return (
@@ -64,17 +64,7 @@ export function Hero() {
         <div className="relative min-h-[380px] sm:min-h-[440px] flex items-center justify-center">
           <div className="pointer-events-none absolute -inset-4 -z-10 rounded-[2.5rem] bg-amber-500/10 blur-2xl" />
           <div className="w-full transition-transform duration-500">
-            <WishCard
-              watermark
-              data={{
-                occasionId: 'eid-ul-fitr',
-                themeId: 'mughal-gold',
-                language: 'en',
-                senderName: 'Ahmed Family',
-                recipientName: 'You & Family',
-                message: 'May this blessed Eid bring joy, peace and prosperity to you and your loved ones.',
-              }}
-            />
+            <HeroStaticCard />
           </div>
         </div>
       </div>
