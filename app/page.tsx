@@ -1,16 +1,27 @@
+import dynamic from 'next/dynamic'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Hero } from '@/components/home/hero'
-import { AdBanner } from '@/components/ad-banner'
-import {
-  CategoryTabs,
-  InvitationsSection,
-  HowItWorks,
-  SampleCards,
-  ConciergeService,
-  HomeCTA,
-  FloatingCTA,
-} from '@/components/home/sections'
+import { HowItWorks } from '@/components/home/sections'
+
+const AdBanner = dynamic(
+  () => import('@/components/ad-banner').then((mod) => mod.AdBanner)
+)
+const CategoryTabs = dynamic(
+  () => import('@/components/home/sections').then((mod) => mod.CategoryTabs)
+)
+const InvitationsSection = dynamic(
+  () => import('@/components/home/sections').then((mod) => mod.InvitationsSection)
+)
+const ConciergeService = dynamic(
+  () => import('@/components/home/sections').then((mod) => mod.ConciergeService)
+)
+const HomeCTA = dynamic(
+  () => import('@/components/home/sections').then((mod) => mod.HomeCTA)
+)
+const FloatingCTA = dynamic(
+  () => import('@/components/home/sections').then((mod) => mod.FloatingCTA)
+)
 
 export default function Page() {
   return (

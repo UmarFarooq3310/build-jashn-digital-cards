@@ -63,16 +63,12 @@ export function AdSenseHandler() {
 
       const removeListeners = () => {
         window.removeEventListener('scroll', onInteraction)
-        window.removeEventListener('touchstart', onInteraction)
-        window.removeEventListener('mousemove', onInteraction)
         if (timerId) clearTimeout(timerId)
       }
 
       window.addEventListener('scroll', onInteraction, { passive: true })
-      window.addEventListener('touchstart', onInteraction, { passive: true })
-      window.addEventListener('mousemove', onInteraction, { passive: true })
 
-      timerId = setTimeout(loadScript, 5000)
+      timerId = setTimeout(loadScript, 6000)
 
       return () => {
         removeListeners()
