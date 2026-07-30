@@ -1,93 +1,12 @@
-'use client'
-
 import Link from 'next/link'
-import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
-import { ArrowRight, MailOpen, Sparkles, Mail } from 'lucide-react'
-import dynamic from 'next/dynamic'
+import { ArrowRight, MailOpen, Sparkles } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
-import { useLang } from '@/lib/lang/context'
-import { cn } from '@/lib/utils'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
 import { WishCard } from '@/components/jashn/wish-card'
-
-gsap.registerPlugin(ScrollTrigger)
+import { HeroEmailForm } from './hero-email-form'
 
 export function Hero() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const badgeRef = useRef<HTMLSpanElement>(null)
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  const descRef = useRef<HTMLParagraphElement>(null)
-  const buttonsRef = useRef<HTMLDivElement>(null)
-  const emailFormRef = useRef<HTMLDivElement>(null)
-  const cardRef = useRef<HTMLDivElement>(null)
-
-  const router = useRouter()
-  const { t, lang } = useLang()
-  const [heroEmail, setHeroEmail] = useState('')
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-
-      tl.fromTo(
-        badgeRef.current,
-        { opacity: 0.8 },
-        { opacity: 1, duration: 0.2 }
-      )
-      .fromTo(
-        descRef.current,
-        { opacity: 0.8 },
-        { opacity: 1, duration: 0.2 },
-        '<'
-      )
-      // Buttons pop in staggered
-      .fromTo(
-        buttonsRef.current?.children ?? [],
-        { scale: 0.95, opacity: 0.5, y: 12 },
-        { scale: 1, opacity: 1, y: 0, duration: 0.35, stagger: 0.1, ease: 'power2.out' },
-        '-=0.1'
-      )
-      // Email form slides up
-      .fromTo(
-        emailFormRef.current,
-        { y: 16, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.4 },
-        '-=0.1'
-      )
-      // Card swings in from the right
-      .fromTo(
-        cardRef.current,
-        { x: 40, opacity: 0, scale: 0.95 },
-        { x: 0, opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' },
-        '-=0.4'
-      )
-
-      // Floating card idle animation
-      gsap.to(cardRef.current, {
-        y: -10,
-        duration: 2.8,
-        ease: 'sine.inOut',
-        repeat: -1,
-        yoyo: true,
-        delay: 1.5,
-      })
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
-
-  const handleEmailSignup = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!heroEmail.trim()) return
-    router.push(`/signup?email=${encodeURIComponent(heroEmail.trim())}`)
-  }
-
   return (
     <section
-      ref={sectionRef}
       suppressHydrationWarning
       className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(4,120,87,0.12),transparent_50%),radial-gradient(circle_at_bottom_right,rgba(245,158,11,0.1),transparent_50%)] bg-gradient-to-b from-emerald-950/20 via-background to-background pt-6"
     >
@@ -95,46 +14,33 @@ export function Hero() {
         {/* ── Left column ── */}
         <div>
           <span
-            ref={badgeRef}
             className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-bold text-amber-900 dark:text-amber-300 shadow-sm"
           >
             <Sparkles className="size-4 text-amber-500 animate-pulse" />
-            {t('tagline')} 🌍
+            Global Digital Cards & Event Invitations 🌍
           </span>
 
           <h1
-            ref={headingRef}
-            className={cn(
-              "mt-5 text-balance font-extrabold",
-              (lang === 'ur' || lang === 'ar')
-                ? "font-urdu text-3xl sm:text-4xl lg:text-5xl leading-[2.5] py-4 text-emerald-900 dark:text-emerald-300 overflow-visible"
-                : "text-4xl sm:text-5xl lg:text-6xl leading-[1.15] tracking-tight text-foreground"
-            )}
+            className="mt-5 text-balance font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.15] tracking-tight text-foreground"
           >
-            {lang === 'ur' || lang === 'ar' ? (
-              t('heroHeading')
-            ) : (
-              <>
-                {t('heroHeading').replace(t('heroHeadingHighlight'), '').trim()}{' '}
-                <span className="bg-gradient-to-r from-emerald-700 via-emerald-600 to-amber-600 bg-clip-text text-transparent">
-                  {t('heroHeadingHighlight')}
-                </span>
-              </>
-            )}
+            Beautiful wishes & invitations,{' '}
+            <span className="bg-gradient-to-r from-emerald-700 via-emerald-600 to-amber-600 bg-clip-text text-transparent">
+              made in minutes
+            </span>
           </h1>
 
-          <p ref={descRef} className="mt-4 max-w-lg text-pretty text-base sm:text-lg leading-relaxed text-muted-foreground">
-            {t('heroDesc')}
+          <p className="mt-4 max-w-lg text-pretty text-base sm:text-lg leading-relaxed text-muted-foreground">
+            Create animated digital wish cards and event websites for Eid, weddings, birthdays & celebrations with live RSVP & 18 languages.
           </p>
 
           {/* CTA buttons */}
-          <div ref={buttonsRef} className="mt-8 flex flex-col gap-3.5 sm:flex-row">
+          <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
             <Link
               href="/create-wish"
               className={buttonVariants({ size: 'lg', className: 'h-14 px-7 text-base font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-emerald-950/20 rounded-2xl' })}
             >
               <Sparkles className="size-5 text-amber-300" />
-              {t('sendWish')}
+              Send a Wish
               <ArrowRight className="size-4" />
             </Link>
             <Link
@@ -146,42 +52,16 @@ export function Hero() {
               })}
             >
               <MailOpen className="size-5 text-amber-600" />
-              {t('createInvitation')}
+              Create Invitation
             </Link>
           </div>
 
           {/* ── Inline email signup ── */}
-          <div ref={emailFormRef} className="mt-8">
-            <p className="mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">
-              {t('orSignUp')}
-            </p>
-            <form onSubmit={handleEmailSignup} className="flex items-center gap-2 max-w-md">
-              <div className="relative flex-1">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-                <input
-                  type="email"
-                  value={heroEmail}
-                  onChange={(e) => setHeroEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  className="w-full rounded-xl border border-emerald-800/20 bg-card/80 py-3 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-amber-500/60 shadow-sm transition-all"
-                  aria-label="Email address for sign up"
-                />
-              </div>
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-amber-700 hover:bg-amber-800 px-5 py-3 text-sm font-extrabold text-white shadow-md active:scale-95 transition-all"
-              >
-                {t('signUpArrow')} <ArrowRight className="size-3.5" />
-              </button>
-            </form>
-            <p className="mt-2 text-xs text-muted-foreground">
-              {t('noCardRequired')} · {t('instantShareableLink')}
-            </p>
-          </div>
+          <HeroEmailForm />
         </div>
 
         {/* ── Right column — Card preview ── */}
-        <div ref={cardRef} className="relative min-h-[380px] sm:min-h-[440px] flex items-center justify-center">
+        <div className="relative min-h-[380px] sm:min-h-[440px] flex items-center justify-center">
           <div className="pointer-events-none absolute -inset-4 -z-10 rounded-[2.5rem] bg-amber-500/10 blur-2xl" />
           <div className="w-full transition-transform duration-500">
             <WishCard
@@ -189,10 +69,10 @@ export function Hero() {
               data={{
                 occasionId: 'eid-ul-fitr',
                 themeId: 'mughal-gold',
-                language: lang,
-                senderName: t('heroSampleSender') || 'Ahmed Family',
-                recipientName: t('heroSampleRecipient') || 'You & Family',
-                message: t('heroSampleMsg') || 'May this blessed Eid bring joy, peace and prosperity to you and your loved ones.',
+                language: 'en',
+                senderName: 'Ahmed Family',
+                recipientName: 'You & Family',
+                message: 'May this blessed Eid bring joy, peace and prosperity to you and your loved ones.',
               }}
             />
           </div>

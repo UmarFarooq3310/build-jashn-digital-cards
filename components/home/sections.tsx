@@ -1007,7 +1007,7 @@ export function InvitationsSection() {
             <div className="pt-4 flex flex-wrap items-center gap-4">
               <Link
                 href="/create-invitation"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-800 px-6 font-bold text-white hover:bg-emerald-900 transition-colors shadow-lg shadow-emerald-700/10 active:scale-95 transition-transform"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-950 px-6 font-bold text-white hover:bg-emerald-900 transition-colors shadow-lg shadow-emerald-950/20 active:scale-95 transition-transform"
               >
                 {t('createInvitation')} <ArrowRight className="size-4" />
               </Link>
