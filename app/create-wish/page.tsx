@@ -4,7 +4,7 @@ import '@/app/invitation-themes-animations.css'
 import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Wand2, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Wand2, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -55,7 +55,25 @@ function CreateWishContent() {
   const [senderName, setSenderName] = useState('')
   const [recipientName, setRecipientName] = useState('')
   const [relation, setRelation] = useState('Friend')
+
+  // Gaming Winner Extra Fields
+  const [playerName, setPlayerName] = useState('')
+  const [killCount, setKillCount] = useState('')
+  const [rank, setRank] = useState('')
+  const [winningNumber, setWinningNumber] = useState('')
+
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  const isGamingOccasion = [
+    'pubg-winner',
+    'free-fire-winner',
+    'ludo-champion',
+    'number-draw-winner',
+    'bingo-winner',
+    'esports-winner',
+  ].includes(occasionId)
+
+  const isNumberDrawOrBingo = ['number-draw-winner', 'bingo-winner'].includes(occasionId)
 
   const templates = getTemplates(occasionId)
   const selectedOccasion = getOccasion(occasionId)
@@ -74,6 +92,10 @@ function CreateWishContent() {
         setSenderName(existing.senderName || '')
         setRecipientName(existing.recipientName || '')
         setRelation(existing.relation || '')
+        setPlayerName(existing.playerName || '')
+        setKillCount(existing.killCount || '')
+        setRank(existing.rank || '')
+        setWinningNumber(existing.winningNumber || '')
         setStep(2)
       }
     } else {
@@ -111,11 +133,20 @@ function CreateWishContent() {
     const errs: Record<string, string> = {}
 
     if (step === 2) {
-      if (!recipientName.trim()) {
-        errs.recipientName = 'Recipient Name is required'
-      }
-      if (!senderName.trim()) {
-        errs.senderName = 'Your Name / Sender Name is required'
+      if (isGamingOccasion) {
+        if (!playerName.trim() && !recipientName.trim()) {
+          errs.playerName = 'Player / Squad Name is required'
+        }
+        if (killCount.trim() && !/\d+/.test(killCount.trim())) {
+          errs.killCount = 'Score / Kill Count must contain a number (e.g. 15 or 15 Kills)'
+        }
+        if (rank.trim() && !/\d+/.test(rank.trim())) {
+          errs.rank = 'Rank must contain a number (e.g. 1 or #1)'
+        }
+      } else {
+        if (!recipientName.trim()) {
+          errs.recipientName = 'Recipient Name is required'
+        }
       }
       if (!message.trim()) {
         errs.message = 'Wish message is required'
@@ -159,14 +190,18 @@ function CreateWishContent() {
 
     const payload = {
       occasionId,
-      message: message || (lang === 'ur' ? templates[0]?.ur : templates[0]?.en) || 'Best wishes!',
+      message: message || (lang === 'ur' ? templates[0]?.ur : templates[0]?.en) || 'Winner Winner Chicken Dinner!',
       language,
       themeId: finalThemeId,
       borderId: finalBorderId,
       bgVariantId,
-      senderName: senderName.trim() || user?.name || 'A Well Wisher',
-      recipientName: recipientName.trim(),
+      senderName: senderName.trim() || user?.name || (isGamingOccasion ? 'Victory Squad' : 'A Well Wisher'),
+      recipientName: (isGamingOccasion && playerName.trim()) ? playerName.trim() : (recipientName.trim() || 'Winner'),
       relation,
+      playerName: playerName.trim(),
+      killCount: killCount.trim(),
+      rank: rank.trim(),
+      winningNumber: winningNumber.trim(),
     }
 
     if (editSlug) {
@@ -320,74 +355,177 @@ function CreateWishContent() {
 
                 {/* 📝 Details Tab Content */}
                 <div className={cn(mobileTab !== 'details' && 'hidden lg:block', 'space-y-5')}>
-                  {/* Relation Pills */}
-                  <div className="space-y-3">
-                    <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5">
-                      <UserCheck className="size-4" /> 1. WHO IS THIS CARD FOR? (SELECT RELATION)
-                    </h3>
-                    <div className="flex flex-wrap gap-2 pt-1">
-                      {RELATIONS.map((r) => (
-                        <button
-                          key={r.id}
-                          type="button"
-                          onClick={() => setRelation(relation === r.en ? '' : r.en)}
-                          className={`rounded-full border px-4 py-1.5 text-xs font-bold transition-all ${
-                            relation === r.en
-                              ? 'border-[#7A1E2B] bg-[#7A1E2B] text-white shadow-md ring-2 ring-[#7A1E2B]/25'
-                              : 'border-[#E5DFD3] bg-white text-[#5A4530] hover:bg-muted/60'
-                          }`}
-                        >
-                          {t(('rel' + r.id) as any) || r.en}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                  {isGamingOccasion ? (
+                    <div className="space-y-4 rounded-2xl border border-amber-500/30 bg-slate-950/40 p-4 text-slate-100">
+                      <h3 className="text-xs font-extrabold uppercase tracking-wider text-amber-400 flex items-center gap-1.5 border-b border-amber-500/20 pb-2">
+                        <Trophy className="size-4 text-amber-400" /> GAMING WINNER PERSONALIZATION
+                      </h3>
 
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label className="mb-1.5 block text-xs font-bold text-foreground">
-                        Recipient Name *
-                      </label>
-                      <input
-                        type="text"
-                        value={recipientName}
-                        onChange={(e) => handleFieldChange('recipientName', e.target.value, setRecipientName)}
-                        placeholder="e.g. Ayesha"
-                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                        className={cn(
-                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                          errors.recipientName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
-                        )}
-                      />
-                      {errors.recipientName && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                          <AlertCircle className="size-3 shrink-0" /> {errors.recipientName}
-                        </p>
-                      )}
-                    </div>
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div>
+                          <label className="mb-1.5 block text-xs font-bold text-slate-200">
+                            Player / Squad Name *
+                          </label>
+                          <input
+                            type="text"
+                            value={playerName}
+                            onChange={(e) => handleFieldChange('playerName', e.target.value, setPlayerName)}
+                            placeholder="e.g. ProGamer99 / Team Alpha"
+                            className={cn(
+                              "w-full rounded-2xl border p-3 text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 transition-all",
+                              errors.playerName ? "border-red-500 focus:ring-red-500" : "border-slate-700 focus:ring-amber-400"
+                            )}
+                          />
+                          {errors.playerName && (
+                            <p className="mt-1 text-xs font-semibold text-red-400 flex items-center gap-1">
+                              <AlertCircle className="size-3 shrink-0" /> {errors.playerName}
+                            </p>
+                          )}
+                        </div>
 
-                    <div>
-                      <label className="mb-1.5 block text-xs font-bold text-foreground">
-                        Your Name (Sender) *
-                      </label>
-                      <input
-                        type="text"
-                        value={senderName}
-                        onChange={(e) => handleFieldChange('senderName', e.target.value, setSenderName)}
-                        placeholder="e.g. Tariq & Family"
-                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                        className={cn(
-                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                          errors.senderName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
+                        <div>
+                          <label className="mb-1.5 block text-xs font-bold text-slate-200">
+                            Score / Kill Count <span className="text-slate-400 font-normal">(optional, numbers)</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={killCount}
+                            onChange={(e) => handleFieldChange('killCount', e.target.value, setKillCount)}
+                            placeholder="e.g. 18 or 18 Kills"
+                            className={cn(
+                              "w-full rounded-2xl border p-3 text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 transition-all",
+                              errors.killCount ? "border-red-500 focus:ring-red-500" : "border-slate-700 focus:ring-amber-400"
+                            )}
+                          />
+                          {errors.killCount && (
+                            <p className="mt-1 text-xs font-semibold text-red-400 flex items-center gap-1">
+                              <AlertCircle className="size-3 shrink-0" /> {errors.killCount}
+                            </p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label className="mb-1.5 block text-xs font-bold text-slate-200">
+                            Rank <span className="text-slate-400 font-normal">(e.g. 1, #1)</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={rank}
+                            onChange={(e) => handleFieldChange('rank', e.target.value, setRank)}
+                            placeholder="e.g. 1 or #1"
+                            className={cn(
+                              "w-full rounded-2xl border p-3 text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 transition-all",
+                              errors.rank ? "border-red-500 focus:ring-red-500" : "border-slate-700 focus:ring-amber-400"
+                            )}
+                          />
+                          {errors.rank && (
+                            <p className="mt-1 text-xs font-semibold text-red-400 flex items-center gap-1">
+                              <AlertCircle className="size-3 shrink-0" /> {errors.rank}
+                            </p>
+                          )}
+                        </div>
+
+                        {isNumberDrawOrBingo && (
+                          <div>
+                            <label className="mb-1.5 block text-xs font-bold text-slate-200">
+                              Winning Number <span className="text-slate-400 font-normal">(for Number/Bingo)</span>
+                            </label>
+                            <input
+                              type="text"
+                              value={winningNumber}
+                              onChange={(e) => setWinningNumber(e.target.value)}
+                              placeholder="e.g. #77 / B-12"
+                              className="w-full rounded-2xl border border-slate-700 p-3 text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                            />
+                          </div>
                         )}
-                      />
-                      {errors.senderName && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                          <AlertCircle className="size-3 shrink-0" /> {errors.senderName}
-                        </p>
-                      )}
+
+                        <div className={isNumberDrawOrBingo ? "sm:col-span-2" : ""}>
+                          <label className="mb-1.5 block text-xs font-bold text-slate-200">
+                            Sender Name / Clan <span className="text-slate-400 font-normal">(optional)</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={senderName}
+                            onChange={(e) => setSenderName(e.target.value)}
+                            placeholder="e.g. Victory Squad / Cardzy"
+                            className="w-full rounded-2xl border border-slate-700 p-3 text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <>
+                      {/* Relation Pills */}
+                      <div className="space-y-3">
+                        <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5">
+                          <UserCheck className="size-4" /> 1. WHO IS THIS CARD FOR? (SELECT RELATION)
+                        </h3>
+                        <div className="flex flex-wrap gap-2 pt-1">
+                          {RELATIONS.map((r) => (
+                            <button
+                              key={r.id}
+                              type="button"
+                              onClick={() => setRelation(relation === r.en ? '' : r.en)}
+                              className={`rounded-full border px-4 py-1.5 text-xs font-bold transition-all ${
+                                relation === r.en
+                                  ? 'border-[#7A1E2B] bg-[#7A1E2B] text-white shadow-md ring-2 ring-[#7A1E2B]/25'
+                                  : 'border-[#E5DFD3] bg-white text-[#5A4530] hover:bg-muted/60'
+                              }`}
+                            >
+                              {t(('rel' + r.id) as any) || r.en}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div>
+                          <label className="mb-1.5 block text-xs font-bold text-foreground">
+                            Recipient Name *
+                          </label>
+                          <input
+                            type="text"
+                            value={recipientName}
+                            onChange={(e) => handleFieldChange('recipientName', e.target.value, setRecipientName)}
+                            placeholder="e.g. Ayesha"
+                            dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                            className={cn(
+                              "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                              errors.recipientName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
+                            )}
+                          />
+                          {errors.recipientName && (
+                            <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                              <AlertCircle className="size-3 shrink-0" /> {errors.recipientName}
+                            </p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label className="mb-1.5 block text-xs font-bold text-foreground">
+                            Your Name (Sender) *
+                          </label>
+                          <input
+                            type="text"
+                            value={senderName}
+                            onChange={(e) => handleFieldChange('senderName', e.target.value, setSenderName)}
+                            placeholder="e.g. Tariq & Family"
+                            dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                            className={cn(
+                              "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                              errors.senderName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
+                            )}
+                          />
+                          {errors.senderName && (
+                            <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                              <AlertCircle className="size-3 shrink-0" /> {errors.senderName}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   {/* Message & Pre-written templates */}
                   <div className="space-y-3 pt-3 border-t border-border/60">
@@ -500,10 +638,14 @@ function CreateWishContent() {
                       borderId,
                       bgVariantId,
                       message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : (lang === 'ur' ? 'آپ کو خوشیوں، مسکراہٹوں اور برکتوں سے بھرپور دن مبارک ہو!' : 'Wishing you a day filled with happiness, laughter and immense blessings!')),
-                      senderName: senderName || user?.name || (lang === 'ur' ? 'طارق و اہل خانہ' : 'Tariq & Family'),
-                      recipientName: recipientName || (lang === 'ur' ? 'عائشہ' : 'Ayesha'),
+                      senderName: senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : (lang === 'ur' ? 'طارق و اہل خانہ' : 'Tariq & Family')),
+                      recipientName: (isGamingOccasion && playerName) ? playerName : (recipientName || (lang === 'ur' ? 'عائشہ' : 'Ayesha')),
                       relation: relation || (lang === 'ur' ? 'دوست' : 'Friend'),
                       language,
+                      playerName,
+                      killCount,
+                      rank,
+                      winningNumber,
                     }}
                   />
                         </CardAnimationPreview>
@@ -549,10 +691,14 @@ function CreateWishContent() {
                     borderId,
                     bgVariantId,
                     message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : (lang === 'ur' ? 'آپ کو خوشیوں، مسکراہٹوں اور برکتوں سے بھرپور دن مبارک ہو!' : 'Wishing you a day filled with happiness, laughter and immense blessings!')),
-                    senderName: senderName || user?.name || (lang === 'ur' ? 'طارق و اہل خانہ' : 'Tariq & Family'),
-                    recipientName: recipientName || (lang === 'ur' ? 'عائشہ' : 'Ayesha'),
+                    senderName: senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : (lang === 'ur' ? 'طارق و اہل خانہ' : 'Tariq & Family')),
+                    recipientName: (isGamingOccasion && playerName) ? playerName : (recipientName || (lang === 'ur' ? 'عائشہ' : 'Ayesha')),
                     relation: relation || (lang === 'ur' ? 'دوست' : 'Friend'),
                     language,
+                    playerName,
+                    killCount,
+                    rank,
+                    winningNumber,
                   }}
                 />
               </CardAnimationPreview>

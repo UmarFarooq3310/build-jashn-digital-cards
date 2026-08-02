@@ -26,6 +26,97 @@ export interface WishCardData {
   recipientName?: string
   relation?: string
   language: Language
+  playerName?: string
+  killCount?: string
+  rank?: string
+  winningNumber?: string
+}
+
+function GamingScorecardHUD({ data }: { data: WishCardData }) {
+  const getBannerTitle = (occId: string) => {
+    switch (occId) {
+      case 'pubg-winner': return '🍗 WINNER WINNER CHICKEN DINNER! 🍗'
+      case 'free-fire-winner': return '🔥 BOOYAH! VICTORY ROYALE 🔥'
+      case 'ludo-champion': return '🎲 LUDO CHAMPION OF THE DAY! 🎲'
+      case 'number-draw-winner': return '🔢 WINNING NUMBER HIT! 🔢'
+      case 'bingo-winner': return '🎯 BINGO GRAND WINNER! 🎯'
+      case 'esports-winner': return '🏅 TOURNAMENT CHAMPION! 🏅'
+      default: return '🏆 VICTORY ROYALE CHAMPION 🏆'
+    }
+  }
+
+  const bannerTitle = getBannerTitle(data.occasionId)
+  const playerName = data.playerName || data.recipientName || 'PLAYER #1'
+  const kills = data.killCount || '15'
+  const rank = data.rank || '1'
+  const winningNo = data.winningNumber
+
+  return (
+    <div className="w-full relative rounded-3xl border-2 border-amber-400/60 bg-gradient-to-b from-slate-950 via-slate-900 to-black p-4 sm:p-6 shadow-[0_0_40px_rgba(245,158,11,0.25)] text-white overflow-hidden space-y-4 my-2">
+      {/* Cyber Corner HUD Tech Accents */}
+      <div className="absolute top-2 left-2 size-3 border-t-2 border-l-2 border-amber-400" />
+      <div className="absolute top-2 right-2 size-3 border-t-2 border-r-2 border-amber-400" />
+      <div className="absolute bottom-2 left-2 size-3 border-b-2 border-l-2 border-amber-400" />
+      <div className="absolute bottom-2 right-2 size-3 border-b-2 border-r-2 border-amber-400" />
+
+      {/* Glow Backlight */}
+      <div className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 size-48 rounded-full bg-amber-500/20 blur-2xl" />
+
+      {/* PUBG Style Metallic Victory Banner Header */}
+      <div className="relative z-10 mx-auto max-w-md bg-gradient-to-r from-amber-600 via-yellow-400 to-amber-600 p-0.5 rounded-xl shadow-lg">
+        <div className="bg-slate-950 px-4 py-2 rounded-[10px] text-center">
+          <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-300 italic drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            {bannerTitle}
+          </span>
+        </div>
+      </div>
+
+      {/* Player Gamer Tag Spotlight */}
+      <div className="relative z-10 text-center space-y-1 py-1">
+        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/10 border border-white/15 text-[10px] font-black uppercase tracking-widest text-slate-300">
+          <span>🎮 GAMER TAG / MVP SQUAD</span>
+        </div>
+        <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black italic tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-100 drop-shadow-[0_4px_12px_rgba(245,158,11,0.5)] uppercase">
+          {playerName}
+        </h3>
+      </div>
+
+      {/* PUBG / Esports Victory Stats - Vertical Stack */}
+      <div className="relative z-10 flex flex-col gap-2.5 pt-2 w-full max-w-md mx-auto">
+        {/* Stat Box 1: Kills / Score */}
+        <div className="flex items-center justify-between rounded-2xl border border-emerald-500/40 bg-emerald-950/40 px-5 py-3 text-left backdrop-blur-md shadow-md">
+          <span className="text-xs font-black uppercase tracking-widest text-emerald-400 flex items-center gap-2">
+            🔥 KILLS / SCORE
+          </span>
+          <span className="text-2xl sm:text-3xl font-black text-emerald-300 drop-shadow-md">
+            {kills}
+          </span>
+        </div>
+
+        {/* Stat Box 2: Final Rank */}
+        <div className="flex items-center justify-between rounded-2xl border border-amber-500/40 bg-amber-950/40 px-5 py-3 text-left backdrop-blur-md shadow-md">
+          <span className="text-xs font-black uppercase tracking-widest text-amber-400 flex items-center gap-2">
+            👑 FINAL RANK
+          </span>
+          <span className="text-2xl sm:text-3xl font-black text-amber-300 drop-shadow-md">
+            #{rank}
+          </span>
+        </div>
+
+        {/* Stat Box 3: Winning # (Only rendered if present) */}
+        {winningNo ? (
+          <div className="flex items-center justify-between rounded-2xl border border-purple-500/40 bg-purple-950/40 px-5 py-3 text-left backdrop-blur-md shadow-md">
+            <span className="text-xs font-black uppercase tracking-widest text-purple-400 flex items-center gap-2">
+              🎰 WINNING NUMBER
+            </span>
+            <span className="text-2xl sm:text-3xl font-black text-purple-300 drop-shadow-md">
+              {winningNo}
+            </span>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  )
 }
 
 export const WishCard = forwardRef<HTMLDivElement, {
@@ -37,18 +128,24 @@ export const WishCard = forwardRef<HTMLDivElement, {
   const occasion = getOccasion(data.occasionId)
   const theme = getTheme(data.themeId)
   const isIslamic = occasion?.category === 'Islamic'
+  const isGamingWinner = [
+    'pubg-winner',
+    'free-fire-winner',
+    'ludo-champion',
+    'number-draw-winner',
+    'bingo-winner',
+    'esports-winner',
+  ].includes(data.occasionId)
+
   const categoryPatternClass = getCategoryPatternClass(occasion?.category)
   const patternClass = occasion?.patternOverlay || categoryPatternClass
-  const showEn = data.language === 'en'
-  const showUr = data.language === 'ur'
   const relationType = detectRelation(data.relation)
-  const showAvatar = !!data.relation || !!data.recipientName
+  const showAvatar = (!isGamingWinner) && (!!data.relation || !!data.recipientName)
 
   const wrapRef = useRef<HTMLDivElement>(null)
 
   const getLocalizedRelation = (rel?: string) => {
     if (!rel) return ''
-    // Map relation string like "Best Friend" to translation key "relBestFriend"
     const key = `rel${rel.replace(/\s+/g, '')}`
     return t(key as any) || rel
   }
@@ -56,7 +153,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
   const dearestPrefix = t('dearest') || 'Dearest'
   const localizedRelation = getLocalizedRelation(data.relation)
 
-  const recipientLabel = [
+  const recipientLabel = isGamingWinner ? null : [
     data.relation ? `${dearestPrefix} ${localizedRelation}` : null,
     data.recipientName,
   ]
@@ -65,7 +162,6 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
   const activeVariant = occasion?.bgVariants?.find(v => v.id === data.bgVariantId) || occasion?.bgVariants?.find(v => v.id === 'default')
   const isLight = isLightVariant(activeVariant?.id)
-  // The radial top-glow is layered ABOVE the gradient/image on every variant.
   const radialGlow = `radial-gradient(ellipse 80% 40% at 50% 0%, color-mix(in oklab, var(--c-accent, #f0c060) 20%, transparent), transparent 65%)`
   const backgroundStyle: React.CSSProperties = activeVariant
     ? activeVariant.bgImage
@@ -75,8 +171,6 @@ export const WishCard = forwardRef<HTMLDivElement, {
           backgroundPosition: 'center',
         }
       : {
-          // CSS gradients work on the 'background' shorthand — 'backgroundImage'
-          // would strip the second layer if both are strings.
           background: `${radialGlow}, ${activeVariant.bgGradient}`,
         }
     : {}
@@ -107,7 +201,6 @@ export const WishCard = forwardRef<HTMLDivElement, {
         ease: 'power2.out',
         transformPerspective: 1000,
       })
-      // parallax inner layers
       gsap.to(wrap.querySelectorAll('.parallax-far'), {
         x: dx * -8, y: dy * -8, duration: 0.4, ease: 'power2.out',
       })
@@ -140,7 +233,6 @@ export const WishCard = forwardRef<HTMLDivElement, {
     }
   }, { scope: wrapRef })
 
-  // ── Avatar float animation ─────────────────────────────────────────────
   useGSAP(() => {
     const wrap = wrapRef.current
     if (!wrap) return
@@ -152,7 +244,6 @@ export const WishCard = forwardRef<HTMLDivElement, {
     )
   }, { scope: wrapRef })
 
-  // ── Content stagger entrance ───────────────────────────────────────────
   useGSAP(() => {
     const wrap = wrapRef.current
     if (!wrap) return
@@ -215,14 +306,14 @@ export const WishCard = forwardRef<HTMLDivElement, {
           <span
             className="wc-stagger parallax-mid flex items-center justify-center rounded-full border transition-transform duration-300 hover:scale-105"
             style={{
-              width: 50, height: 50,
+              width: 54, height: 54,
               borderColor: 'var(--c-accent)',
               color: 'var(--c-accent)',
               background: 'color-mix(in oklab, var(--c-accent) 12%, transparent)',
               boxShadow: '0 4px 18px color-mix(in oklab, var(--c-accent) 30%, transparent)',
             }}
           >
-            {occasion ? <JashnIcon name={occasion.icon} className="size-6 md:size-7" /> : null}
+            {occasion ? <JashnIcon name={occasion.icon} className="size-7 md:size-8" /> : null}
           </span>
 
           {occasion && (
@@ -235,6 +326,11 @@ export const WishCard = forwardRef<HTMLDivElement, {
               {t(`occ_${occasion.id.replace(/-/g, '_')}`) || occasion.tagline || occasion.label}
             </h2>
           )}
+
+          {/* 🎮 GAMING WINNER SCOREBOARD DISPLAY 🎮 */}
+          {isGamingWinner ? (
+            <GamingScorecardHUD data={data} />
+          ) : null}
 
           <span
             className="wc-stagger block h-px w-20 md:w-28 parallax-mid"

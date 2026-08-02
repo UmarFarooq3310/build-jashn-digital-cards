@@ -10,6 +10,9 @@ const AdBanner = dynamic(
 const CategoryTabs = dynamic(
   () => import('@/components/home/category-tabs').then((mod) => mod.CategoryTabs)
 )
+const GamingWinnersSection = dynamic(
+  () => import('@/components/home/gaming-winners-section').then((mod) => mod.GamingWinnersSection)
+)
 const InvitationsSection = dynamic(
   () => import('@/components/home/invitations-section').then((mod) => mod.InvitationsSection)
 )
@@ -38,6 +41,9 @@ export default function Page() {
 
         {/* Consolidated categories in tab structure */}
         <CategoryTabs />
+
+        {/* 🎮 Gaming Winner Cards Section */}
+        <GamingWinnersSection />
 
         {/* RSVP feature block */}
         <InvitationsSection />

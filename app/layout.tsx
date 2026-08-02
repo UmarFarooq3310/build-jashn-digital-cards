@@ -58,6 +58,12 @@ export const metadata: Metadata = {
     'RSVP invitation',
     'multilingual card',
     'event invitation',
+    'gaming winner card',
+    'PUBG winner card',
+    'free fire winner card',
+    'ludo winner card',
+    'bingo winner card',
+    'number game winner card',
   ],
   icons: {
     icon: [

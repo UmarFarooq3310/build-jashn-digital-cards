@@ -61,6 +61,14 @@ const RAW_OCCASIONS: any[] = [
   { id: 'shaadi', label: 'Shaadi Mubarak', tagline: 'Shaadi Mubarak', urdu: 'شادی مبارک', category: 'Family', icon: 'Crown', bgImage: '/occasions/shaadi.jpg', bgGradient: 'linear-gradient(160deg,#8e0f24,#4a0510)' },
   { id: 'mehndi', label: 'Mehndi Mubarak', tagline: 'Mehndi Mubarak', urdu: 'مہندی مبارک', category: 'Family', icon: 'Flower2', bgImage: '/occasions/mehndi.jpg', bgGradient: 'linear-gradient(160deg,#2e7d32,#f9a825)' },
   { id: 'baby-shower', label: 'Baby Shower', tagline: 'Congratulations Baby Shower!', urdu: 'بیبی شاور مبارک', category: 'Family', icon: 'Gift', bgImage: '/occasions/new-baby.jpg', bgGradient: 'linear-gradient(160deg,#f48fb1,#81d4fa)' },
+
+  // GAMING & ESPORTS WINNER
+  { id: 'pubg-winner', label: 'PUBG Winner', tagline: 'Winner Winner Chicken Dinner!', urdu: 'ونر ونر چکن ڈنر!', category: 'Gaming', icon: 'Trophy', bgGradient: 'linear-gradient(160deg,#090d16,#1e293b)' },
+  { id: 'free-fire-winner', label: 'Free Fire Winner', tagline: 'Booyah! Victory Royale', urdu: 'بویا! شاندار فتح!', category: 'Gaming', icon: 'Flame', bgGradient: 'linear-gradient(160deg,#1c0a00,#7c2d12)' },
+  { id: 'ludo-champion', label: 'Ludo Champion', tagline: 'Ludo Champion of the Day!', urdu: 'لوڈو چیمپئن آف دی ڈے!', category: 'Gaming', icon: 'Gamepad2', bgGradient: 'linear-gradient(160deg,#1e1b4b,#4338ca)' },
+  { id: 'number-draw-winner', label: 'Number Draw Winner', tagline: 'You Hit the Winning Number!', urdu: 'نمبر ڈرا فاتح!', category: 'Gaming', icon: 'Hash', bgGradient: 'linear-gradient(160deg,#042f2e,#0f766e)' },
+  { id: 'bingo-winner', label: 'Bingo Winner', tagline: 'BINGO! You’re the Winner!', urdu: 'بنگو فاتح!', category: 'Gaming', icon: 'Sparkles', bgGradient: 'linear-gradient(160deg,#311b92,#6a1b9a)' },
+  { id: 'esports-winner', label: 'Esports Tournament Winner', tagline: 'Tournament Champion!', urdu: 'ٹورنامنٹ چیمپئن!', category: 'Gaming', icon: 'Trophy', bgGradient: 'linear-gradient(160deg,#0f172a,#0284c7)' },
 ]
 
 export const OCCASIONS: Occasion[] = RAW_OCCASIONS.map(occ => {
@@ -77,6 +85,10 @@ export const OCCASIONS: Occasion[] = RAW_OCCASIONS.map(occ => {
     soundCategory = 'dholki'
     patternOverlay = 'jashn-pattern-wedding'
     decorations = ['dholak', 'shehnai', 'floral-borders']
+  } else if (cat === 'Gaming') {
+    soundCategory = 'festive'
+    patternOverlay = 'jashn-pattern-personal'
+    decorations = ['trophy', 'star-cluster', 'confetti', 'sparkles']
   } else if (cat === 'Personal') {
     soundCategory = 'festive'
     patternOverlay = 'jashn-pattern-personal'
@@ -219,6 +231,7 @@ export const OCCASION_CATEGORIES = [
   'Achievements',
   'National',
   'Family',
+  'Gaming',
 ] as const
 
 export function getOccasion(id: string | undefined): Occasion | undefined {
@@ -329,6 +342,24 @@ export const MESSAGE_TEMPLATES: Record<string, MessageTemplate[]> = {
   ],
   'milad': [
     { en: "Wishing you and your family a blessed Eid Milad-un-Nabi. May peace and blessings be upon you.", ur: "عید میلاد النبی مبارک ہو! اللہ تعالیٰ آپ کو حضور اکرم ﷺ کے صدقے ڈھیروں رحمتیں اور برکتیں عطا فرمائے۔", es: "Deseándote a ti y a tu familia un bendito Eid Milad-un-Nabi. Que la paz sea contigo.", fr: "En vous souhaitant à vous et votre famille un béni Eid Milad-un-Nabi. Paix sur vous.", ar: "مولد نبوي شريف مبارك! أعاده الله عليكم وعلى الأمة الإسلامية بالخير واليمن والبركات.", hi: "ईद मिलाद-उन-नबी की दिली मुबारकबाद। ईश्वर आप पर अपनी रहमत बरसाए।", zh: "祝您和您的家人圣纪节吉庆！愿平安全知赐予您与您的家庭。", pt: "Desejando a você e sua família um abençoado Eid Milad-un-Nabi. Paz e bênçãos.", ru: "Мавлид ан-Наби Мубарак! Пусть мир и благословение пребывают с вашей семьей.", de: "Eid Milad-un-Nabi Mubarak! Möge Frieden und Segen auf euch ruhen.", ja: "マウリド・アン＝ナビーのお祝いを申し上げます。平安と祝福がありますように。", ko: "마울리드 안 나비 축복을 전합니다. 평화와 축복이 항상 함께하기를 기원합니다.", it: "Eid Milad-un-Nabi Mubarak a te e alla tua famiglia. Che la pace sia con voi.", tr: "Mevlid Kandiliniz Mübarek Olsun! Peygamberimizin nuru evinize dolsun.", id: "Selamat Memperingati Maulid Nabi Muhammad SAW! Semoga kedamaian menyertai Anda.", bn: "ঈদে মিলাদুন্নবী মোবারক! আল্লাহ তাআলা আপনার পরিবারকে শান্তিতে রাখুন।", vi: "Chúc mừng ngày lễ Eid Milad-un-Nabi. Chúc gia đình bạn bình an và nhận nhiều phước lành.", sw: "Heri ya Eid Milad-un-Nabi. Amani na baraka ziwe juu yako na familia yako." },
+  ],
+  'pubg-winner': [
+    { en: "Winner Winner Chicken Dinner! Dominated the battlegrounds with ultimate skills!", ur: "ونر ونر چکن ڈنر! میدانِ جنگ فتح کر لیا!" },
+  ],
+  'free-fire-winner': [
+    { en: "Booyah! Outstanding Victory Royale on the battlefield!", ur: "بویا! زبردست شاندار فتح حاصل کی!" },
+  ],
+  'ludo-champion': [
+    { en: "Ludo Champion of the Day! Mastered every move and conquered the board!", ur: "لوڈو چیمپئن آف دی ڈے! بورڈ پر شاندار فتح!" },
+  ],
+  'number-draw-winner': [
+    { en: "Congratulations! You Hit the Winning Number! Lucky day!", ur: "مبارک ہو! آپ کا لکی نمبر نکل آیا!" },
+  ],
+  'bingo-winner': [
+    { en: "BINGO! You're the Grand Winner! Perfect score!", ur: "بنگو! آپ شاندار فاتح بن گئے!" },
+  ],
+  'esports-winner': [
+    { en: "Tournament Champion! Crowned as the Esports Winner with supreme performance!", ur: "ای سپورٹس ٹورنامنٹ چیمپئن! زبردست فتح مبارک!" },
   ],
 }
 

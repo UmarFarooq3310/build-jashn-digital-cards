@@ -8,7 +8,7 @@ export interface Occasion {
   tagline: string
   /** Urdu script greeting */
   urdu?: string
-  category: 'Personal' | 'Islamic' | 'Achievements' | 'National' | 'Family' | 'Universal'
+  category: 'Personal' | 'Islamic' | 'Achievements' | 'National' | 'Family' | 'Universal' | 'Gaming'
   /** lucide icon name (kebab not needed — we map PascalCase) */
   icon: string
   /** portrait background image path (e.g. '/occasions/birthday.jpg') */
@@ -114,6 +114,11 @@ export interface Wish {
   senderName: string
   recipientName: string
   relation?: string
+  // Gaming Winner Fields
+  playerName?: string
+  killCount?: string
+  rank?: string
+  winningNumber?: string
   viewCount: number
   createdAt: number
 }
