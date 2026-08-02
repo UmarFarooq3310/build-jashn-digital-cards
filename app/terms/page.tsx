@@ -668,6 +668,7 @@ export default function TermsPage() {
           {/* Core Content */}
           <div className="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-xs space-y-8 text-foreground leading-relaxed text-sm sm:text-base">
             
+            <h2 className="text-xl font-extrabold text-foreground mb-4 border-b pb-2">Cardzy Terms of Service & Acceptable Use Policy</h2>
             <p className="text-muted-foreground">
               {t('intro1')}
             </p>
@@ -676,7 +677,7 @@ export default function TermsPage() {
             </p>
 
             <section className="space-y-3 border-t border-border/60 pt-6">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t('s1Title')}</h2>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">{t('s1Title')}</h3>
               <div className="space-y-2 text-muted-foreground">
                 <p>{t('s1p1')}</p>
                 <p>{t('s1p2')}</p>
@@ -685,7 +686,7 @@ export default function TermsPage() {
             </section>
 
             <section className="space-y-3 border-t border-border/60 pt-6">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t('s2Title')}</h2>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">{t('s2Title')}</h3>
               <p className="text-muted-foreground">
                 {t('s2intro')}
               </p>
@@ -702,7 +703,7 @@ export default function TermsPage() {
             </section>
 
             <section className="space-y-3 border-t border-border/60 pt-6">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t('s3Title')}</h2>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">{t('s3Title')}</h3>
               <div className="space-y-2 text-muted-foreground">
                 <p>{t('s3p1')}</p>
                 <p>{t('s3p2')}</p>
@@ -711,7 +712,7 @@ export default function TermsPage() {
             </section>
 
             <section className="space-y-3 border-t border-border/60 pt-6">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t('s4Title')}</h2>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">{t('s4Title')}</h3>
               <div className="space-y-2 text-muted-foreground">
                 <p>{t('s4p1')}</p>
                 <p>{t('s4p2')}</p>
@@ -720,7 +721,7 @@ export default function TermsPage() {
             </section>
 
             <section className="space-y-3 border-t border-border/60 pt-6">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t('s5Title')}</h2>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">{t('s5Title')}</h3>
               <div className="space-y-2 text-muted-foreground">
                 <p>{t('s5p1')}</p>
                 <p>{t('s5p2')}</p>
@@ -729,49 +730,49 @@ export default function TermsPage() {
             </section>
 
             <section className="space-y-3 border-t border-border/60 pt-6">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t('s6Title')}</h2>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">{t('s6Title')}</h3>
               <div className="space-y-2 text-muted-foreground">
                 <p>{t('s6p1')}</p>
               </div>
             </section>
 
             <section className="space-y-3 border-t border-border/60 pt-6">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t('s7Title')}</h2>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">{t('s7Title')}</h3>
               <div className="space-y-2 text-muted-foreground">
                 <p>{t('s7p1')}</p>
               </div>
             </section>
 
             <section className="space-y-3 border-t border-border/60 pt-6">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t('s8Title')}</h2>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">{t('s8Title')}</h3>
               <div className="space-y-2 text-muted-foreground">
                 <p>{t('s8p1')}</p>
               </div>
             </section>
 
             <section className="space-y-3 border-t border-border/60 pt-6">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t('s9Title')}</h2>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">{t('s9Title')}</h3>
               <div className="space-y-2 text-muted-foreground">
                 <p>{t('s9p1')}</p>
               </div>
             </section>
 
             <section className="space-y-3 border-t border-border/60 pt-6">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t('s10Title')}</h2>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">{t('s10Title')}</h3>
               <div className="space-y-2 text-muted-foreground">
                 <p>{t('s10p1')}</p>
               </div>
             </section>
 
             <section className="space-y-3 border-t border-border/60 pt-6">
-              <h2 className="text-lg sm:text-xl font-bold text-foreground">{t('s11Title')}</h2>
+              <h3 className="text-lg sm:text-xl font-bold text-foreground">{t('s11Title')}</h3>
               <div className="space-y-2 text-muted-foreground">
                 <p>{t('s11p1')}</p>
               </div>
             </section>
 
             <section className="space-y-3 border-t border-border/60 pt-6 bg-muted/40 rounded-2xl p-6">
-              <h2 className="text-lg font-bold text-foreground">{t('s12Title')}</h2>
+              <h3 className="text-lg font-bold text-foreground">{t('s12Title')}</h3>
               <p className="text-muted-foreground text-sm">
                 {t('s12p1')}
               </p>

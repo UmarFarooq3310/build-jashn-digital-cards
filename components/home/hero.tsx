@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, MailOpen, Sparkles } from 'lucide-react'
+import { ArrowRight, MailOpen, Sparkles, Heart } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { HeroEmailForm } from './hero-email-form'
 import { HeroStaticCard } from './hero-static-card'
@@ -13,12 +13,22 @@ export function Hero() {
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 lg:grid-cols-2 lg:py-20">
         {/* ── Left column ── */}
         <div>
-          <span
-            className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-bold text-amber-900 dark:text-amber-300 shadow-sm"
-          >
-            <Sparkles className="size-4 text-amber-500 animate-pulse" />
-            Global Digital Cards & Event Invitations 🌍
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span
+              className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-bold text-amber-900 dark:text-amber-300 shadow-sm"
+            >
+              <Sparkles className="size-4 text-amber-500 animate-pulse" />
+              Global Digital Cards & Event Invitations 🌍
+            </span>
+            
+            <Link
+              href="/create-wish"
+              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-sm hover:bg-emerald-500/20 transition-all"
+            >
+              <Sparkles className="size-3.5 text-emerald-500 animate-bounce" />
+              <span>Create Wish Card →</span>
+            </Link>
+          </div>
 
           <h1
             className="mt-5 text-balance font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.15] tracking-tight text-foreground"
@@ -30,17 +40,17 @@ export function Hero() {
           </h1>
 
           <p className="mt-4 max-w-lg text-pretty text-base sm:text-lg leading-relaxed text-muted-foreground">
-            Create animated digital wish cards and event websites for Eid, weddings, birthdays & celebrations with live RSVP & 18 languages.
+            Create animated digital wish cards for Eid, birthdays, weddings, anniversaries & celebrations with live RSVP & 18 languages.
           </p>
 
           {/* CTA buttons */}
           <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
             <Link
               href="/create-wish"
-              className={buttonVariants({ size: 'lg', className: 'h-14 px-7 text-base font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-emerald-950/20 rounded-2xl' })}
+              className={buttonVariants({ size: 'lg', className: 'h-14 px-7 text-base font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-950/20 rounded-2xl' })}
             >
               <Sparkles className="size-5 text-amber-300" />
-              Send a Wish
+              Create Wish Card
               <ArrowRight className="size-4" />
             </Link>
             <Link

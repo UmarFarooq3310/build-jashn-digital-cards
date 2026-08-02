@@ -32,7 +32,7 @@ const RAW_OCCASIONS: any[] = [
   { id: 'fathers-day', label: "Father's Day", tagline: 'Happy Father’s Day', urdu: 'باپ کا دن مبارک', category: 'Universal', icon: 'Crown', bgImage: '/occasions/fathers-day.jpg', bgGradient: 'linear-gradient(160deg,#1a237e,#37474f)' },
   { id: 'st-patricks-day', label: "St. Patrick's Day", tagline: 'Happy St. Patrick’s Day', urdu: 'سینٹ پیٹرک ڈے', category: 'Universal', icon: 'Clover', bgGradient: 'linear-gradient(160deg,#022c22,#059669)' },
   { id: 'earth-day', label: 'Earth Day & Spring', tagline: 'Happy Earth Day & Happy Spring', urdu: 'ارتھ ڈے و بہار', category: 'Universal', icon: 'Globe', bgGradient: 'linear-gradient(160deg,#064e3b,#0d9488)' },
-  { id: 'friendship-day', label: 'Friendship Day', tagline: 'Happy Friendship Day', urdu: 'دوستی کا دن مبارک', category: 'Universal', icon: 'Heart', bgImage: '/occasions/friendship-day.jpg', bgGradient: 'linear-gradient(160deg,#e91e63,#ff9800)' },
+  { id: 'friendship-day', label: 'Friendship Day', tagline: 'Happy Friendship Day', urdu: 'دوستی کا دن مبارک', category: 'Universal', icon: 'Heart', bgGradient: 'linear-gradient(160deg,#e91e63,#ff9800)' },
 
   // ISLAMIC & RELIGIOUS
   { id: 'eid-ul-fitr', label: 'Eid ul Fitr', tagline: 'Eid Mubarak', urdu: 'عید الفطر مبارک', category: 'Islamic', icon: 'Moon', bgImage: '/occasions/eid-ul-fitr.jpg', bgGradient: 'linear-gradient(160deg,#1b5e20,#33691e)' },

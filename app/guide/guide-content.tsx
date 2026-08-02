@@ -95,7 +95,7 @@ export function GuideClientContent() {
                   </span>
                 </div>
 
-                <h2 className={cn(
+                <h3 className={cn(
                   "mt-4 text-xl font-bold text-foreground group-hover:text-primary transition-colors",
                   isUrdu && "font-urdu leading-relaxed py-1"
                 )}>
@@ -103,7 +103,7 @@ export function GuideClientContent() {
                     <span className="absolute inset-0" />
                     {title}
                   </Link>
-                </h2>
+                </h3>
 
                 <p className={cn(
                   "mt-3 text-sm leading-relaxed text-muted-foreground",

@@ -1,17 +1,27 @@
-import { Analytics } from '@vercel/analytics/next'
+import dynamic from 'next/dynamic'
 import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
 import { ToastNotification } from '@/components/ui/toast-notification'
-import { FirebaseAuthListener } from '@/components/firebase-auth-listener'
-import { AdSenseHandler } from '@/components/adsense-handler'
 import { LanguageProvider } from '@/lib/lang/context'
 import './globals.css'
+
+const FirebaseAuthListener = dynamic(
+  () => import('@/components/firebase-auth-listener').then((mod) => mod.FirebaseAuthListener)
+)
+const AdSenseHandler = dynamic(
+  () => import('@/components/adsense-handler').then((mod) => mod.AdSenseHandler)
+)
+const Analytics = dynamic(
+  () => import('@vercel/analytics/next').then((mod) => mod.Analytics)
+)
 
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-poppins',
   display: 'swap',
+  preload: true,
+  adjustFontFallback: true,
 })
 
 export const metadata: Metadata = {
@@ -21,12 +31,17 @@ export const metadata: Metadata = {
     'Create and share animated digital wish cards & event websites for weddings, Eid, birthdays & celebrations with RSVP and 18 languages.',
   generator: 'v0.app',
   alternates: {
-    canonical: 'https://cardzy.online/',
-    languages: {
-      'en': 'https://cardzy.online/',
-      'ur': 'https://cardzy.online/',
-      'ar': 'https://cardzy.online/',
-      'x-default': 'https://cardzy.online/',
+    canonical: 'https://cardzy.online',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
   },
   other: {
@@ -61,7 +76,7 @@ export const metadata: Metadata = {
     siteName: 'Cardzy',
     images: [
       {
-        url: '/post1.svg',
+        url: '/icon.svg',
         width: 1200,
         height: 630,
         alt: 'Cardzy — Beautiful Animated Wish Cards & Invitations',
@@ -75,7 +90,7 @@ export const metadata: Metadata = {
     title: 'Cardzy — Digital Wish Cards & Event Invitations',
     description:
       'Create and share animated digital wish cards & event websites for weddings, Eid, birthdays & celebrations with RSVP and 18 languages.',
-    images: ['/post1.svg'],
+    images: ['/icon.svg'],
   },
 }
 

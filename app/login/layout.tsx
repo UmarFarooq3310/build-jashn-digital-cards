@@ -1,14 +1,18 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
+  title: 'Log In to Cardzy — Digital Cards Account',
+  description: 'Log in to your Cardzy account to manage your digital wish cards, wedding invitations, and RSVP guest responses.',
+  alternates: {
+    canonical: 'https://cardzy.online/login',
+  },
   robots: {
-    index: false,
-    follow: false,
-    nocache: true,
+    index: true,
+    follow: true,
   },
 }
 
-export default function NoIndexLayout({
+export default function LoginLayout({
   children,
 }: {
   children: React.ReactNode

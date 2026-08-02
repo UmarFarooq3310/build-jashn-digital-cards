@@ -93,9 +93,9 @@ export default function EidGuidePage() {
                 If you are creating an Eid card on Cardzy, choosing the right words makes a huge difference. Here is our curated collection of short, formal, and poetic greetings in English and Urdu that you can copy and use directly.
               </p>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
                 1. Classic & Short English Wording
-              </h2>
+              </h3>
               <p>
                 These are perfect for sharing with colleagues, friends, or on your social media status. They are concise yet warm:
               </p>
@@ -105,9 +105,9 @@ export default function EidGuidePage() {
                 <li>&quot;May the guidance and blessings of Allah be with you and your family today and always. Eid Mubarak!&quot;</li>
               </ul>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
                 2. Heartwarming Family Messages
-              </h2>
+              </h3>
               <p>
                 When sending to close relatives, grandparents, or cousins, choose a message that emphasizes togetherness and connection:
               </p>
@@ -117,9 +117,9 @@ export default function EidGuidePage() {
                 </p>
               </blockquote>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
                 3. Urdu Wording & Traditional Poetry (Shayari)
-              </h2>
+              </h3>
               <p>
                 Expressing Eid greetings in Urdu carries a special emotional depth. In Cardzy, our templates render Urdu in the beautiful <strong>Noto Nastaliq Urdu</strong> font, which looks incredibly elegant.
               </p>
@@ -144,9 +144,9 @@ export default function EidGuidePage() {
                 </div>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
                 4. Customizing Your Eid Card on Cardzy
-              </h2>
+              </h3>
               <p>
                 Ready to create your card? Follow these quick steps to make it stand out:
               </p>
@@ -177,7 +177,7 @@ export default function EidGuidePage() {
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-4">
                 <Link
-                  href="/create-wish?occasion=eid-ul-fitr"
+                  href="/create-wish"
                   className="rounded-xl bg-primary px-6 py-3 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm flex items-center gap-1.5"
                 >
                   <Send className="size-4" /> Send an Eid Wish Now

@@ -91,9 +91,9 @@ export function ShareBar({
         {copied ? 'Copied!' : 'Copy link'}
       </Button>
       {captureRef ? (
-        <Button onClick={downloadPng} variant="outline" disabled={downloading}>
-          <Download className="size-4" />
-          {downloading ? 'Saving…' : 'Download PNG'}
+        <Button onClick={downloadPng} variant="outline" disabled={downloading} className="bg-white hover:bg-zinc-100 text-black dark:text-black font-extrabold border-zinc-300 shadow-xs">
+          <Download className="size-4 text-black" />
+          <span className="text-black font-extrabold">{downloading ? 'Saving…' : 'Download PNG'}</span>
         </Button>
       ) : null}
     </div>

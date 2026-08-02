@@ -23,9 +23,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
+  const baseTitle = post.seoTitle.includes('Cardzy') ? post.seoTitle : `${post.seoTitle} — Cardzy`
+  const title = baseTitle.length > 58 ? baseTitle.slice(0, 55) + '...' : baseTitle
+  const description = post.metaDescription.length > 150 ? post.metaDescription.slice(0, 147) + '...' : post.metaDescription
+
   return {
-    title: `${post.seoTitle} | Cardzy`,
-    description: post.metaDescription,
+    title,
+    description,
     keywords: post.tags,
     alternates: {
       canonical: `https://cardzy.online/blog/${post.slug}`,

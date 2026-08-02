@@ -215,7 +215,7 @@ export function BlogIndexClient() {
                 </div>
 
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight group-hover:text-[#D4AF37] transition-colors">
-                  {featuredPost.title}
+                  {featuredPost.seoTitle || featuredPost.title}
                 </h2>
 
                 <p className="text-sm sm:text-base text-zinc-300 leading-relaxed line-clamp-3">
@@ -241,7 +241,10 @@ export function BlogIndexClient() {
               <div className="lg:col-span-5 relative rounded-2xl overflow-hidden aspect-[4/3] border border-white/10 bg-slate-900">
                 <img
                   src={featuredPost.featuredImage}
-                  alt={featuredPost.title}
+                  alt={featuredPost.title.slice(0, 90)}
+                  width={1200}
+                  height={630}
+                  loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
@@ -267,7 +270,10 @@ export function BlogIndexClient() {
                 <div className="relative aspect-[16/9] overflow-hidden bg-slate-900 border-b border-white/10">
                   <img
                     src={post.featuredImage}
-                    alt={post.title}
+                    alt={post.title.slice(0, 90)}
+                    width={1200}
+                    height={630}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#D4AF37] text-slate-950 font-extrabold text-[10px] uppercase tracking-wider shadow-md">

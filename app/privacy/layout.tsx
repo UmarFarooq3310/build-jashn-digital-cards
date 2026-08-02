@@ -1,11 +1,15 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Cardzy Digital Cards',
+  title: 'Privacy Policy & Data Security — Cardzy',
   description:
-    'Read Cardzy Privacy Policy to understand how we handle user data, security, authentication, and Google AdSense compliance.',
+    'Learn how Cardzy protects user privacy, collects data responsibly, enforces AdSense compliance, and secures your digital cards.',
   alternates: {
     canonical: 'https://cardzy.online/privacy',
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 }
 

@@ -1,9 +1,10 @@
 'use client'
 
+import '@/app/invitation-themes-animations.css'
 import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Wand2, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Wand2, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -170,10 +171,10 @@ function CreateWishContent() {
 
     if (editSlug) {
       await updateWish(editSlug, payload)
-      router.push(`/w/${editSlug}`)
+      router.push(`/w/${editSlug}?mode=sender`)
     } else {
       const wish = await createWish(payload)
-      router.push(`/w/${wish.slug}`)
+      router.push(`/w/${wish.slug}?mode=sender`)
     }
   }
 
@@ -193,12 +194,7 @@ function CreateWishContent() {
           </div>
         </div>
 
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-[#7A1E2B] font-serif">
-          {editSlug ? (t('editAnimatedWishCard') || 'Edit Animated Wish Card') : (t('sendAnimatedWishCard') || 'Send an Animated Wish Card')}
-        </h1>
-        <p className="mt-2 text-[#5A4530] text-sm sm:text-base max-w-xl mx-auto font-medium">
-          {t('tagline') || 'Beautiful Animated Wishes & Invitations for Every Celebration'} — Cardzy.online
-        </p>
+
 
         {/* Horizontal 2-Step Stepper */}
         <div className="mt-6 flex items-center justify-center gap-3">
@@ -596,6 +592,31 @@ function CreateWishContent() {
           </div>
         </div>
       )}
+
+      {/* Premium Guide Overview Card */}
+      <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-4xl mx-auto">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+            <Sparkles className="size-3.5" /> Wish Creator Overview
+          </span>
+        </div>
+        <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
+          Personalized 3D Animated Wish Cards with Photo & Name
+        </h2>
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          Cardzy allows you to create interactive, 3D animated greeting cards for Eid Mubarak, Birthdays, Friendship Day, Ramadan, Anniversaries, and Congratulations. Personalize your card with custom photo uploads, warm family messages in Urdu or English, background music tracks, and custom color accents. Share instantly via WhatsApp, Instagram, or email with zero setup required.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className="font-extrabold text-xs text-foreground">Personal Photo & Name Customization</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Upload photos and enter your custom sender name for a truly unique personalized greeting.</p>
+          </div>
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className="font-extrabold text-xs text-foreground">18 Multilingual Pre-written Templates</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Choose from curated Urdu, Arabic, and English wish wording for every special occasion.</p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
@@ -604,7 +625,13 @@ export default function CreateWishPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
-      <main className="flex-1 py-6 md:py-10">
+      <main className="flex-1 py-6 md:py-10 max-w-4xl mx-auto px-4 text-center w-full">
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-[#7A1E2B] font-serif mb-2">
+          Create 3D Animated Wish Cards
+        </h1>
+        <h2 className="text-[#5A4530] text-sm sm:text-base max-w-xl mx-auto font-medium mb-6">
+          Animated Wishes & Event Invitations — Cardzy
+        </h2>
         <Suspense fallback={
           <div className="flex py-20 items-center justify-center">
             <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />

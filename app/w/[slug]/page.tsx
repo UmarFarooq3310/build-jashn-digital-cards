@@ -1,9 +1,10 @@
 'use client'
 
+import '@/app/invitation-themes-animations.css'
 import { useEffect, useRef, useState, use, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { Sparkles, Eye, Loader2, HeartHandshake, Edit3, Trash2 } from 'lucide-react'
+import { Sparkles, Eye, Loader2, HeartHandshake, Edit3, Trash2, Share2, X, ExternalLink } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -12,14 +13,15 @@ import { ThreeDCardWrapper } from '@/components/jashn/three-d-card-wrapper'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { ShareBar } from '@/components/jashn/share-bar'
 import { CardQrCode } from '@/components/jashn/qr-code'
+import { CardzyLogo } from '@/components/ui/logo'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
 import { getOccasion } from '@/lib/jashn/occasions'
-import { decodeShortWish, encodeShortWish } from '@/lib/jashn/codec'
+import { decodeShortWish } from '@/lib/jashn/codec'
 import type { Wish } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
 import { db, isFirebaseConfigured } from '@/lib/firebase'
-import { doc, getDoc, onSnapshot } from 'firebase/firestore'
+import { doc, onSnapshot } from 'firebase/firestore'
 
 function WishPublicContent({ slug }: { slug: string }) {
   const { lang, t } = useLang()
@@ -32,16 +34,11 @@ function WishPublicContent({ slug }: { slug: string }) {
   const [activeWish, setActiveWish] = useState<Wish | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [rainActive, setRainActive] = useState(false)
+  const [showShareModal, setShowShareModal] = useState(false)
   const viewIncrementedRef = useRef<string | null>(null)
 
-
-
-  const isCreator = (() => {
-    const card = wishes.find((w) => w.slug === slug)
-    if (!card) return false
-    if (card.creatorId === 'guest') return !user
-    return !!user && card.creatorId === user.uid
-  })()
+  // Check explicitly if the user opened the page in Sender Mode
+  const isSenderMode = searchParams.get('mode') === 'sender' || searchParams.get('preview') === 'true' || searchParams.get('role') === 'sender'
 
   useEffect(() => {
     setIsMounted(true)
@@ -51,10 +48,8 @@ function WishPublicContent({ slug }: { slug: string }) {
     if (!isMounted) return
 
     let unsubscribe: (() => void) | undefined
-
     setIsLoading(true)
 
-    // Try fetching from Firestore first if configured (with real-time listener)
     if (isFirebaseConfigured && db) {
       try {
         const docRef = doc(db, 'wishes', slug)
@@ -63,7 +58,6 @@ function WishPublicContent({ slug }: { slug: string }) {
             const data = docSnap.data() as Wish
             setActiveWish(data)
             
-            // Increment view count (only once per mount/slug)
             if (viewIncrementedRef.current !== slug) {
               viewIncrementedRef.current = slug
               incrementWishView(slug)
@@ -86,7 +80,6 @@ function WishPublicContent({ slug }: { slug: string }) {
     }
 
     function fallbackToLocalAndUrl() {
-      // Fallback to local storage (Zustand)
       const existing = wishes.find((w) => w.slug === slug)
       if (existing) {
         setActiveWish(existing)
@@ -99,7 +92,6 @@ function WishPublicContent({ slug }: { slug: string }) {
         return
       }
 
-      // Decode short format or full json
       const decoded = decodeShortWish(searchParams, slug)
       if (decoded) {
         setActiveWish(decoded)
@@ -157,19 +149,19 @@ function WishPublicContent({ slug }: { slug: string }) {
 
   if (!isMounted || isLoading) {
     return (
-      <div className="flex flex-1 items-center justify-center p-20 text-center">
-        <Loader2 className="size-8 animate-spin text-primary" />
+      <div className="flex min-h-screen items-center justify-center p-8 text-center bg-slate-950 text-white">
+        <Loader2 className="size-10 animate-spin text-emerald-400" />
       </div>
     )
   }
 
   if (!activeWish) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center p-6 text-center py-20">
-        <h1 className="text-3xl font-bold text-primary">{t('wishNotFoundTitle')}</h1>
-        <p className="mt-2 text-muted-foreground">{t('wishNotFoundDesc')}</p>
-        <Link href="/create-wish" className="mt-6 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground shadow-lg hover:bg-primary/90">
-          Create Your Own Wish Card
+      <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center bg-slate-950 text-white space-y-4">
+        <h1 className="text-3xl font-extrabold text-emerald-400">{t('wishNotFoundTitle') || 'Wish Card Not Found'}</h1>
+        <p className="text-sm text-slate-300 max-w-md">{t('wishNotFoundDesc') || 'This card link may have moved or expired.'}</p>
+        <Link href="/create-wish" className="rounded-2xl bg-emerald-600 px-6 py-3 font-bold text-white shadow-lg hover:bg-emerald-500 transition-all">
+          Create Wish Card
         </Link>
       </div>
     )
@@ -178,142 +170,223 @@ function WishPublicContent({ slug }: { slug: string }) {
   const occasion = getOccasion(activeWish.occasionId)
   const isIslamic = occasion?.category === 'Islamic'
   const isSensitive = activeWish.occasionId === 'condolence'
+  const waMsg = `${activeWish.senderName} sent you a special digital card`
 
-  const waMsg = `${activeWish.senderName} sent you a 0`
-  const cleanUrl = `/w/${activeWish.slug}`
+  // Always share the CLEAN receiver URL without ?mode=sender
+  const receiverUrl = `/w/${activeWish.slug}`
 
+  // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Creator Control Panel) ──
+  if (isSenderMode) {
+    return (
+      <div className="flex min-h-screen flex-col bg-background">
+        <SiteHeader />
+
+        <main className="flex-1 py-8 px-4">
+          <div className="mx-auto max-w-2xl md:max-w-4xl text-center">
+            {/* Celebration Effects Rain */}
+            {!isSensitive && <ConfettiRain active={rainActive} />}
+
+            {/* Creator Control Panel */}
+            <div className="mb-6 rounded-2xl border border-dashed border-primary/30 bg-primary/5 p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-sm">
+              <div>
+                <p className="text-sm font-bold text-primary flex items-center gap-1.5">
+                  <Sparkles className="size-4 text-primary animate-pulse" /> You Created This Wish Card!
+                </p>
+                <p className="text-xs text-muted-foreground">{t('wishOwnerControlDesc') || 'You can edit, share, or delete your card below.'}</p>
+              </div>
+              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                <Link
+                  href={receiverUrl}
+                  target="_blank"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-bold text-xs hover:bg-emerald-500/20 transition-all"
+                >
+                  <ExternalLink className="size-3.5" /> View Receiver Screen
+                </Link>
+                <Button
+                  onClick={handleEdit}
+                  variant="outline"
+                  size="sm"
+                  className="text-xs flex items-center gap-1.5 border-zinc-300 bg-white hover:bg-zinc-100 text-black dark:text-black font-extrabold shadow-xs"
+                >
+                  <Edit3 className="size-3.5 text-black" />
+                  <span className="text-black font-extrabold">Edit Card</span>
+                </Button>
+                <Button
+                  onClick={handleDelete}
+                  variant="destructive"
+                  size="sm"
+                  className="text-xs flex items-center gap-1.5 font-bold"
+                >
+                  <Trash2 className="size-3.5" /> Delete Card
+                </Button>
+              </div>
+            </div>
+
+            {/* Badges & Views Info */}
+            <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
+              <span className={cn(
+                "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1 text-xs font-semibold",
+                isSensitive
+                  ? "border-zinc-700 bg-zinc-800/50 text-zinc-400"
+                  : isIslamic
+                  ? "border-emerald-600/30 bg-emerald-500/10 text-emerald-700"
+                  : "border-primary/20 bg-primary/10 text-primary"
+              )}>
+                {isSensitive ? <HeartHandshake className="size-3.5" /> : <Sparkles className="size-3.5" />}
+                {isSensitive ? t('forwardMessage') : t('specialAnimatedCard')}
+              </span>
+              <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Eye className="size-3.5" /> {activeWish.viewCount ?? 1} views
+              </span>
+            </div>
+
+            {/* 3D Card Display */}
+            <div className="my-6 py-4 flex justify-center">
+              <ThreeDCardWrapper
+                recipientName={activeWish.recipientName}
+                eventTitle={lang === 'ur' ? (occasion?.urdu || occasion?.label || 'مبارک ہو') : (t(`occ_${occasion?.id?.replace(/-/g, '_')}`) || occasion?.label || 'Greetings')}
+                occasionIdOrCategory={activeWish.occasionId}
+                isIslamic={isIslamic}
+                isSensitive={isSensitive}
+                onOpened={() => {
+                  if (!isSensitive) {
+                    setRainActive(true)
+                  }
+                }}
+              >
+                <WishCard ref={cardRef} data={activeWish} watermark={true} />
+              </ThreeDCardWrapper>
+            </div>
+
+            {/* Share & QR Code Panel */}
+            <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col items-center gap-6 text-left">
+              <div className="w-full">
+                <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-muted-foreground text-center sm:text-left">
+                  Share Receiver Link With Friends
+                </h3>
+                <ShareBar url={receiverUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-online-${activeWish.slug}`} />
+              </div>
+
+              <div className="w-full pt-4 border-t border-border flex flex-col items-center text-center space-y-2">
+                <span className="text-xs font-bold text-primary uppercase tracking-wider">
+                  Receiver Shareable QR Code
+                </span>
+                <CardQrCode slug={slug} cardType="w" size={160} showDownloadBtn={true} />
+              </div>
+            </div>
+
+            {/* CTA Banner */}
+            <div className="mt-8 rounded-2xl p-6 text-center border border-border bg-card shadow-sm">
+              <p className="text-base font-bold mb-1 text-foreground">{t('createDigitalCardCTA') || 'Create Another Digital Wish Card'}</p>
+              <Link
+                href="/create-wish"
+                className="mt-3 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"
+              >
+                {t('sendWish') || 'Create Wish Card'} <Sparkles className="size-4" />
+              </Link>
+            </div>
+          </div>
+        </main>
+
+        <SiteFooter />
+      </div>
+    )
+  }
+
+  // ── 2. RECEIVER SCREEN (Clean 100dvh Full-Screen Viewport + Cardzy Make Your Own) ──
   return (
-    <div className="mx-auto max-w-2xl md:max-w-4xl px-4 text-center">
+    <div className="flex min-h-[100dvh] flex-col justify-between items-center relative overflow-hidden px-4 py-4 sm:py-6 w-full select-none">
+      {/* Background Ambient Glow */}
+      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 size-[32rem] rounded-full bg-emerald-500/10 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-40 left-1/2 -translate-x-1/2 size-[32rem] rounded-full bg-amber-500/10 blur-[120px]" />
+
       {/* Celebration Effects Rain */}
       {!isSensitive && <ConfettiRain active={rainActive} />}
 
-      {/* Creator Actions Panel */}
-      {isCreator && (
-        <div className="mb-6 rounded-2xl border border-dashed border-primary/30 bg-primary/5 p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-sm">
-          <div>
-            <p className="text-sm font-bold text-primary flex items-center gap-1.5">
-              <Sparkles className="size-4 text-primary animate-pulse" /> You Created This Card!
-            </p>
-            <p className="text-xs text-muted-foreground">{t('wishOwnerControlDesc')}</p>
-          </div>
-          <div className="flex gap-2 w-full sm:w-auto">
-            <Button
-              onClick={handleEdit}
-              variant="outline"
-              size="sm"
-              className="flex-1 sm:flex-initial text-xs flex items-center justify-center gap-1.5 border-primary/30 hover:bg-primary/10"
-            >
-              <Edit3 className="size-3.5" /> Edit Card
-            </Button>
-            <Button
-              onClick={handleDelete}
-              variant="destructive"
-              size="sm"
-              className="flex-1 sm:flex-initial text-xs flex items-center justify-center gap-1.5"
-            >
-              <Trash2 className="size-3.5" /> Delete Card
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {/* Top badges & Views info */}
-      <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
-        <span className={cn(
-          "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1 text-xs font-semibold",
-          isSensitive
-            ? "border-zinc-700 bg-zinc-800/50 text-zinc-400"
-            : isIslamic
-            ? "border-emerald-600/30 bg-emerald-500/10 text-emerald-700"
-            : "border-primary/20 bg-primary/10 text-primary"
-        )}>
-          {isSensitive ? (
-            <HeartHandshake className="size-3.5" />
-          ) : (
-            <Sparkles className="size-3.5" />
-          )}
-          {isSensitive ? t('forwardMessage') : t('specialAnimatedCard')}
-        </span>
-        <span className="flex items-center gap-1 text-xs text-muted-foreground">
-          <Eye className="size-3.5" /> {activeWish.viewCount ?? 1} views
-        </span>
-      </div>
-
-
-
-      {/* Card Component with 3D Envelope Opening Cover */}
-      <div className="my-6 py-4 flex justify-center">
-        <ThreeDCardWrapper
-          recipientName={activeWish.recipientName}
-          eventTitle={lang === 'ur' ? (occasion?.urdu || occasion?.label || 'مبارک ہو') : (t(`occ_${occasion?.id?.replace(/-/g, '_')}`) || occasion?.label || 'Greetings')}
-          occasionIdOrCategory={activeWish.occasionId}
-          isIslamic={isIslamic}
-          isSensitive={isSensitive}
-          onOpened={() => {
-            if (!isSensitive) {
-              setRainActive(true)
-            }
-          }}
-        >
-          <WishCard ref={cardRef} data={activeWish} watermark={true} />
-        </ThreeDCardWrapper>
-      </div>
-
-      {/* Share Actions with Clean Short Link & External QR Code */}
-      <div className={cn(
-        "mt-8 rounded-2xl border bg-card p-6 shadow-sm flex flex-col items-center gap-6",
-        isSensitive ? "border-zinc-800 bg-zinc-950" : "border-border"
-      )}>
-        <div className="w-full text-center sm:text-left">
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            {isSensitive ? t('forwardMessage') : t('shareThisCard')}
-          </h3>
-          <ShareBar url={cleanUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-online-${activeWish.slug}`} />
-        </div>
-
-        {/* External Scannable & Downloadable QR Code */}
-        <div className="w-full pt-4 border-t border-border flex flex-col items-center text-center space-y-2">
-          <span className="text-xs font-bold text-primary uppercase tracking-wider">
-            Wish Card Shareable QR Code
+      {/* Receiver Screen Top Minimal Bar */}
+      <header className="w-full max-w-2xl flex items-center justify-between z-20 py-2 px-4 rounded-full bg-slate-900/50 backdrop-blur-xl border border-white/10 text-white shadow-xl">
+        <Link href="/" className="flex items-center gap-2 group">
+          <CardzyLogo className="size-7 transition-transform group-hover:scale-105" />
+          <span className="text-sm font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300 bg-clip-text text-transparent">
+            Cardzy
           </span>
-          <CardQrCode slug={slug} cardType="w" size={160} showDownloadBtn={true} />
+        </Link>
+
+        <Link
+          href="/create-wish"
+          className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-4 py-1.5 text-xs font-extrabold shadow-md transition-all hover:scale-105"
+        >
+          <Sparkles className="size-3 text-amber-300 animate-pulse" />
+          <span>Cardzy · Make Your Own</span>
+        </Link>
+      </header>
+
+      {/* Receiver Screen Main Centered 3D Card Display */}
+      <main className="w-full max-w-4xl flex-1 flex flex-col items-center justify-center my-auto py-6 sm:py-10 z-10">
+        <div className="w-full flex justify-center">
+          <ThreeDCardWrapper
+            recipientName={activeWish.recipientName}
+            eventTitle={lang === 'ur' ? (occasion?.urdu || occasion?.label || 'مبارک ہو') : (t(`occ_${occasion?.id?.replace(/-/g, '_')}`) || occasion?.label || 'Greetings')}
+            occasionIdOrCategory={activeWish.occasionId}
+            isIslamic={isIslamic}
+            isSensitive={isSensitive}
+            onOpened={() => {
+              if (!isSensitive) {
+                setRainActive(true)
+              }
+            }}
+          >
+            <WishCard ref={cardRef} data={activeWish} watermark={true} />
+          </ThreeDCardWrapper>
         </div>
-      </div>
+      </main>
 
+      {/* Receiver Screen Footer Control */}
+      <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pb-2 text-center">
+        <div className="flex items-center gap-3 w-full justify-center">
+          <button
+            onClick={() => setShowShareModal((o) => !o)}
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-extrabold py-2.5 px-6 text-xs sm:text-sm border border-white/15 backdrop-blur-md shadow-lg transition-all hover:scale-105"
+          >
+            <Share2 className="size-4 text-emerald-400" />
+            <span>Share This Card</span>
+          </button>
+        </div>
 
-      {/* CTA Banner — solid background so text is always readable */}
-      <div className={cn(
-        "mt-8 rounded-2xl p-6 text-center border",
-        isSensitive
-          ? "bg-zinc-900 border-zinc-700"
-          : "bg-card border-border shadow-sm"
-      )}>
-        {isSensitive ? (
-          <>
-            <p className="text-sm font-medium text-zinc-300">Cardzy — share digital condolence letters respectfully.</p>
-            <Link
-              href="/create-wish"
-              className="mt-4 inline-flex items-center gap-2 rounded-xl bg-zinc-700 px-6 py-2.5 text-sm font-bold text-zinc-100 border border-zinc-600 hover:bg-zinc-600 transition-colors"
-            >
-              Create Free Animated Card
-            </Link>
-          </>
-        ) : (
-          <>
-            <p className={lang === 'ur' ? "font-urdu text-xl mb-1 text-foreground" : "text-base font-bold mb-1 text-foreground"}>
-              {t('createDigitalCardCTA')}
-            </p>
-            <p className="text-sm font-medium text-muted-foreground mt-1">{t('inspiredByWish')}</p>
-            <Link
-              href="/create-wish"
-              className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"
-            >
-              {t('sendWish')} <Sparkles className="size-4" />
-            </Link>
-          </>
+        {/* Share Modal Overlay */}
+        {showShareModal && (
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-emerald-500/30 rounded-3xl p-6 max-w-sm w-full space-y-5 text-white relative shadow-2xl">
+              <button
+                onClick={() => setShowShareModal(false)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
+              >
+                <X className="size-5" />
+              </button>
+
+              <div className="text-center space-y-1">
+                <h3 className="font-extrabold text-lg text-emerald-300">Share Wish Card</h3>
+                <p className="text-xs text-slate-400">Send link or scan QR code</p>
+              </div>
+
+              <ShareBar url={receiverUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-online-${activeWish.slug}`} />
+
+              <div className="pt-3 border-t border-white/10 flex flex-col items-center space-y-2">
+                <span className="text-xs font-bold text-amber-300 uppercase tracking-wider">Shareable QR Code</span>
+                <CardQrCode slug={slug} cardType="w" size={140} showDownloadBtn={true} />
+              </div>
+            </div>
+          </div>
         )}
-      </div>
 
+        <Link
+          href="/create-wish"
+          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors font-medium"
+        >
+          <Sparkles className="size-3 text-amber-400" />
+          <span>Cardzy · Make Your Own</span>
+        </Link>
+      </footer>
     </div>
   )
 }
@@ -325,7 +398,6 @@ export default function WishPublicPage({ params }: { params: Promise<{ slug: str
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    // Basic pre-fetch of occasion to get sensitive status
     const existing = wishes.find((w) => w.slug === slug)
     if (existing) {
       setActiveWish(existing)
@@ -341,20 +413,16 @@ export default function WishPublicPage({ params }: { params: Promise<{ slug: str
 
   return (
     <div className={cn(
-      "flex min-h-screen flex-col transition-colors duration-500",
-      isSensitive ? "bg-zinc-950 text-zinc-400" : "bg-background"
+      "flex min-h-[100dvh] flex-col transition-colors duration-500",
+      isSensitive ? "bg-zinc-950 text-zinc-400" : "bg-gradient-to-b from-slate-950 via-emerald-950/40 to-slate-950 text-white"
     )}>
-      <SiteHeader />
-      <main className="flex-1 py-10 md:py-16 overflow-x-hidden">
-        <Suspense fallback={
-          <div className="flex py-20 items-center justify-center">
-            <Loader2 className="size-8 animate-spin text-primary" />
-          </div>
-        }>
-          <WishPublicContent slug={slug} />
-        </Suspense>
-      </main>
-      <SiteFooter />
+      <Suspense fallback={
+        <div className="flex min-h-[100dvh] items-center justify-center bg-slate-950">
+          <Loader2 className="size-10 animate-spin text-emerald-400" />
+        </div>
+      }>
+        <WishPublicContent slug={slug} />
+      </Suspense>
     </div>
   )
 }

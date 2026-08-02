@@ -1,5 +1,6 @@
 'use client'
 
+import '@/app/invitation-themes-animations.css'
 import '@/app/invitation-themes-wedding.css'
 import '@/app/invitation-themes-religious.css'
 import '@/app/invitation-themes-social.css'
@@ -125,45 +126,10 @@ function CreateInvitationContent() {
   function runValidation() {
     const errs: Record<string, string> = {}
 
-    if (isCouple) {
-      if (!groom.trim()) {
-        errs.groom = t('groomRequired')
-      }
-      if (!bride.trim()) {
-        errs.bride = t('brideRequired')
-      }
-    }
-
-    if (!title.trim()) {
-      errs.title = t('titleRequired') || 'Event Title is required'
-    }
-
-    if (!hostNames.trim()) {
-      errs.hostNames = 'Host Names (Parents / Family) is required'
-    }
-
-    if (!date) {
-      errs.date = t('dateRequired')
-    }
-
-    if (!time) {
-      errs.time = t('timeRequired')
-    }
-
-    if (!venue.trim()) {
-      errs.venue = 'Venue / Hall Address is required'
-    }
-
-    if (!city.trim()) {
-      errs.city = 'City / Location is required'
-    }
-
-    if (!rsvpPhone.trim()) {
-      errs.rsvpPhone = t('rsvpRequired')
-    } else {
+    if (rsvpPhone.trim()) {
       const cleanedPhone = rsvpPhone.trim().replace(/\s+/g, '')
       if (!/^\+?\d{10,14}$/.test(cleanedPhone)) {
-        errs.rsvpPhone = t('invalidPhone')
+        errs.rsvpPhone = t('invalidPhone') || 'Please enter a valid phone number (e.g. +923001234567)'
       }
     }
 
@@ -174,34 +140,19 @@ function CreateInvitationContent() {
     setter(value)
     const tempErrors = { ...errors }
 
-    if (field === 'groom' || field === 'bride' || field === 'title' || field === 'hostNames' || field === 'venue' || field === 'city') {
-      if (!value.trim()) {
-        if (field === 'groom') tempErrors.groom = t('groomRequired')
-        else if (field === 'bride') tempErrors.bride = t('brideRequired')
-        else if (field === 'title') tempErrors.title = t('titleRequired') || 'Event Title is required'
-        else if (field === 'hostNames') tempErrors.hostNames = 'Host Names (Parents / Family) is required'
-        else if (field === 'venue') tempErrors.venue = 'Venue / Hall Address is required'
-        else if (field === 'city') tempErrors.city = 'City / Location is required'
-      } else {
-        delete tempErrors[field]
-      }
-    } else if (field === 'rsvpPhone') {
-      if (!value.trim()) {
-        tempErrors.rsvpPhone = t('rsvpRequired')
-      } else {
+    if (field === 'rsvpPhone') {
+      if (value.trim()) {
         const cleanedPhone = value.trim().replace(/\s+/g, '')
         if (!/^\+?\d{10,14}$/.test(cleanedPhone)) {
-          tempErrors.rsvpPhone = t('invalidPhone')
+          tempErrors.rsvpPhone = t('invalidPhone') || 'Please enter a valid phone number'
         } else {
           delete tempErrors.rsvpPhone
         }
+      } else {
+        delete tempErrors.rsvpPhone
       }
-    } else if (field === 'date') {
-      if (!value) tempErrors.date = t('dateRequired')
-      else delete tempErrors.date
-    } else if (field === 'time') {
-      if (!value) tempErrors.time = t('timeRequired')
-      else delete tempErrors.time
+    } else {
+      delete tempErrors[field]
     }
 
     setErrors(tempErrors)
@@ -211,13 +162,14 @@ function CreateInvitationContent() {
     const errs = runValidation()
     setErrors(errs)
     if (Object.keys(errs).length > 0) {
-      const firstError = Object.values(errs)[0] || 'Please complete all required fields marked in red.'
+      const firstError = Object.values(errs)[0] || 'Please check your input details.'
       showToast(firstError, 'error')
       if (typeof window !== 'undefined' && window.innerWidth < 1024) {
         setMobileTab('details')
       }
       return
     }
+
     // Fallback premium themes/borders for non-pro users so anyone can create without signup
     let finalThemeId = themeId
     let finalBorderId = borderId
@@ -233,13 +185,13 @@ function CreateInvitationContent() {
     const payload = {
       typeId,
       title: title.trim() || selectedType?.label || 'Event Invitation',
-      hostNames: hostNames.trim(),
-      groom: groom.trim(),
-      bride: bride.trim(),
-      date,
-      time,
-      venue,
-      city,
+      hostNames: hostNames.trim() || 'Host & Family',
+      groom: groom.trim() || (isCouple ? 'Groom' : ''),
+      bride: bride.trim() || (isCouple ? 'Bride' : ''),
+      date: date || new Date().toISOString().slice(0, 10),
+      time: time || '7:00 PM',
+      venue: venue.trim() || 'Grand Event Venue',
+      city: city.trim() || 'City',
       mapsLink,
       dressCode,
       notes,
@@ -251,10 +203,10 @@ function CreateInvitationContent() {
 
     if (editSlug) {
       await updateInvitation(editSlug, payload)
-      router.push(`/i/${editSlug}`)
+      router.push(`/i/${editSlug}?mode=sender`)
     } else {
       const inv = await createInvitation(payload)
-      router.push(`/i/${inv.slug}`)
+      router.push(`/i/${inv.slug}?mode=sender`)
     }
   }
 
@@ -274,12 +226,7 @@ function CreateInvitationContent() {
           </Link>
         </div>
 
-        <h1 className="text-2xl font-extrabold tracking-tight sm:text-4xl text-[#7B0D1E]">
-          {editSlug ? t('editAnimatedWishCard') : t('createInvitation')}
-        </h1>
-        <p className="mt-1.5 text-muted-foreground text-xs sm:text-sm max-w-xl mx-auto">
-          {t('tagline')} — Cardzy.online
-        </p>
+
 
         {/* 2-Step Progress Stepper */}
         <div className="mt-5 flex items-center justify-center gap-3">
@@ -824,6 +771,35 @@ function CreateInvitationContent() {
           </div>
         </div>
       )}
+
+      {/* Premium Guide Overview Card */}
+      <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-4xl mx-auto">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+            <Sparkles className="size-3.5" /> Invitation Features
+          </span>
+        </div>
+        <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
+          Royal 4K Animated Wedding Invitations & Online Nikkah Cards
+        </h2>
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          Create breathtaking animated digital wedding invitation websites for Nikkah, Mehndi, Barat, Walima, and Save-The-Date celebrations. Features include custom venue pins with Google Maps directions, background music tracks, custom RSVP form with automatic WhatsApp host notifications, and multiday event itineraries.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className="font-extrabold text-xs text-foreground">Live WhatsApp RSVP Tracking</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Receive guest attendance confirmations and headcount updates directly in WhatsApp.</p>
+          </div>
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className="font-extrabold text-xs text-foreground">Google Maps Venue Pin</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Help guests navigate directly to your marquee or wedding hall with one click.</p>
+          </div>
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className="font-extrabold text-xs text-foreground">Multilingual Wording Support</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Explore pre-written Urdu and English wedding wording, Quranic verses, and host protocols.</p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
@@ -832,7 +808,13 @@ export default function CreateInvitationPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
-      <main className="flex-1 py-6 md:py-10">
+      <main className="flex-1 py-6 md:py-10 max-w-4xl mx-auto px-4 text-center w-full">
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-4xl text-[#7B0D1E] mb-2">
+          Create Digital Wedding Invitations
+        </h1>
+        <h2 className="text-muted-foreground text-xs sm:text-sm max-w-xl mx-auto font-medium mb-6">
+          Design 4K Animated Wedding Invitations — Cardzy
+        </h2>
         <Suspense fallback={
           <div className="flex py-20 items-center justify-center">
             <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />

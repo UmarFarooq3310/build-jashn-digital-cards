@@ -4,11 +4,17 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowRight, Mail } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
+import { useJashn } from '@/lib/jashn/store'
 
 export function HeroEmailForm() {
   const router = useRouter()
   const { t } = useLang()
+  const user = useJashn((s) => s.user)
   const [heroEmail, setHeroEmail] = useState('')
+
+  if (user) {
+    return null
+  }
 
   const handleEmailSignup = (e: React.FormEvent) => {
     e.preventDefault()

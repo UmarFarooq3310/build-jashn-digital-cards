@@ -1,14 +1,18 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
+  title: 'Sign Up Free — Cardzy Digital Cards',
+  description: 'Create your free Cardzy account to start designing animated 3D wish cards, digital wedding invitations, and smart business cards.',
+  alternates: {
+    canonical: 'https://cardzy.online/signup',
+  },
   robots: {
-    index: false,
-    follow: false,
-    nocache: true,
+    index: true,
+    follow: true,
   },
 }
 
-export default function NoIndexLayout({
+export default function SignupLayout({
   children,
 }: {
   children: React.ReactNode

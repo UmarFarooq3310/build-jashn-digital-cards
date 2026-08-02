@@ -27,19 +27,19 @@ function SiteHeaderInner() {
   const currentLang = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0]
 
   return (
-    <header className="sticky top-0 z-[100] border-b border-emerald-900/20 bg-background/95 backdrop-blur-md shadow-sm transition-all">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2.5 group">
+    <header className="sticky top-0 z-[100] border-b border-emerald-900/20 bg-background/95 backdrop-blur-md shadow-sm transition-all w-full">
+      <div className="flex h-16 w-full max-w-full items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
           <CardzyLogo className="size-9 transition-transform group-hover:scale-105" />
           <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-800 to-amber-600 dark:from-emerald-400 dark:to-amber-400 bg-clip-text text-transparent">
             Cardzy
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1.5 md:flex">
+        <nav className="hidden items-center gap-1 xl:gap-2 lg:flex">
           {[
             { href: '/', key: 'home', fallback: 'Home' },
-            { href: '/blog', key: 'blog', fallback: 'Blog' },
+            { href: '/custom-order', key: 'customOrder', fallback: 'WhatsApp Order 💬' },
             { href: '/create-wish', key: 'sendWish', fallback: 'Send Wish' },
             { href: '/create-invitation', key: 'createInvitation', fallback: 'Invitations' },
             { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },
@@ -50,7 +50,7 @@ function SiteHeaderInner() {
               key={item.href}
               href={item.href}
               className={cn(
-                'rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold text-muted-foreground transition-all hover:bg-emerald-950/10 hover:text-emerald-800 dark:hover:text-amber-400',
+                'rounded-xl px-2.5 py-1.5 text-xs xl:text-sm font-semibold text-muted-foreground transition-all hover:bg-emerald-950/10 hover:text-emerald-800 dark:hover:text-amber-400 whitespace-nowrap',
                 pathname === item.href && 'text-emerald-800 dark:text-amber-400 font-bold bg-emerald-950/5',
               )}
             >
@@ -59,12 +59,12 @@ function SiteHeaderInner() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 lg:flex shrink-0">
           {/* Language Switcher */}
           <div className="relative z-[9999]">
             <button
               onClick={() => setLangOpen((o) => !o)}
-              className="flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-100 dark:bg-amber-950/40 px-3.5 py-1.5 text-xs font-bold text-amber-950 dark:text-amber-300 transition-all hover:bg-amber-200 shadow-xs"
+              className="flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-100 dark:bg-amber-950/40 px-3.5 py-1.5 text-xs font-bold text-amber-950 dark:text-amber-300 transition-all hover:bg-amber-200 shadow-xs whitespace-nowrap"
               aria-label="Select language"
             >
               <Globe className="size-3.5 text-amber-600" />
@@ -93,7 +93,7 @@ function SiteHeaderInner() {
             <>
               <Link
                 href="/dashboard"
-                className="flex items-center gap-2 rounded-full border border-amber-500/30 bg-emerald-950/10 px-3.5 py-1 text-sm font-semibold transition-all hover:bg-emerald-950/20"
+                className="flex items-center gap-2 rounded-full border border-amber-500/30 bg-emerald-950/10 px-3.5 py-1 text-sm font-semibold transition-all hover:bg-emerald-950/20 whitespace-nowrap"
               >
                 <span className="flex size-7 items-center justify-center rounded-full bg-gradient-to-r from-emerald-700 to-amber-600 text-xs font-bold text-white uppercase shadow-sm">
                   {(user.name || 'U').charAt(0)}
@@ -104,7 +104,7 @@ function SiteHeaderInner() {
               </Link>
               <button
                 onClick={handleSignOut}
-                className="flex items-center gap-1.5 rounded-full border border-border/60 bg-secondary/40 px-3.5 py-1.5 text-xs font-semibold text-muted-foreground transition-all hover:bg-secondary hover:text-foreground"
+                className="flex items-center gap-1.5 rounded-full border border-border/60 bg-secondary/40 px-3.5 py-1.5 text-xs font-semibold text-muted-foreground transition-all hover:bg-secondary hover:text-foreground whitespace-nowrap"
                 aria-label="Sign out"
               >
                 <LogOut className="size-3.5" />
@@ -113,15 +113,15 @@ function SiteHeaderInner() {
             </>
           ) : (
             <>
-              <Link href="/login" className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'font-semibold' })}>
+              <Link href="/login" className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'font-semibold whitespace-nowrap' })}>
                 {t('logIn')}
               </Link>
-              <Link href="/signup" className={buttonVariants({ variant: 'outline', size: 'sm', className: 'font-bold border-amber-500/30 text-amber-700 hover:bg-amber-500/10' })}>
+              <Link href="/signup" className={buttonVariants({ variant: 'outline', size: 'sm', className: 'font-bold border-amber-500/30 text-amber-700 hover:bg-amber-500/10 whitespace-nowrap' })}>
                 {t('signUpFree')}
               </Link>
             </>
           )}
-          <Link href="/create-wish" className={buttonVariants({ size: 'sm', className: 'font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm rounded-xl' })}>
+          <Link href="/create-wish" className={buttonVariants({ size: 'sm', className: 'font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm rounded-xl whitespace-nowrap' })}>
             {t('getStarted')}
           </Link>
         </div>
@@ -140,7 +140,7 @@ function SiteHeaderInner() {
           <nav className="flex flex-col gap-1">
             {[
               { href: '/', key: 'home', fallback: 'Home' },
-              { href: '/blog', key: 'blog', fallback: 'Blog' },
+              { href: '/custom-order', key: 'customOrder', fallback: 'WhatsApp Order 💬' },
               { href: '/create-wish', key: 'sendWish', fallback: 'Send Wish' },
               { href: '/create-invitation', key: 'createInvitation', fallback: 'Invitations' },
               { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },

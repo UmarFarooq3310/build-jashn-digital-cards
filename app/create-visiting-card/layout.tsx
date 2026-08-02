@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://cardzy.online/create-visiting-card',
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function CreateVisitingCardLayout({

@@ -255,11 +255,11 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
             </div>
 
             <h1
-              className={`font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight ${
+              className={`font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight ${
                 isRtl ? 'dir-rtl font-serif' : ''
               }`}
             >
-              {post.title}
+              {post.seoTitle || post.title}
             </h1>
 
             <p className={`text-base sm:text-lg text-zinc-300 leading-relaxed ${isRtl ? 'dir-rtl' : ''}`}>
@@ -295,7 +295,14 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
         {/* Featured Image */}
         <div className="mx-auto max-w-4xl px-4 py-8">
           <div className="rounded-3xl overflow-hidden border border-[#D4AF37]/30 shadow-2xl aspect-[16/9] bg-slate-900">
-            <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" />
+            <img 
+              src={post.featuredImage} 
+              alt={post.title.slice(0, 90)} 
+              width={1200}
+              height={630}
+              loading="lazy"
+              className="w-full h-full object-cover" 
+            />
           </div>
         </div>
 
@@ -332,10 +339,10 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
             {/* Sections */}
             {post.content.sections.map((section) => (
               <section key={section.id} id={section.id} className="space-y-4 pt-4 border-t border-white/10 scroll-mt-24">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight flex items-center gap-2">
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-[#D4AF37] shrink-0" />
                   <span>{section.title}</span>
-                </h2>
+                </h3>
 
                 <p className="text-sm sm:text-base leading-relaxed text-zinc-300">{section.body}</p>
 
@@ -406,7 +413,14 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
                   className="group flex flex-col rounded-3xl border border-white/10 bg-[#0a0a0c] overflow-hidden hover:border-[#D4AF37]/50 transition-all p-5 space-y-3"
                 >
                   <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-slate-900">
-                    <img src={rel.featuredImage} alt={rel.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    <img
+                      src={rel.featuredImage}
+                      alt={rel.title.slice(0, 90)}
+                      width={1200}
+                      height={630}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    />
                   </div>
                   <div className="text-xs text-[#D4AF37] font-bold uppercase tracking-wider">{rel.category}</div>
                   <h4 className="text-sm font-bold text-white group-hover:text-[#D4AF37] transition-colors leading-snug line-clamp-2">

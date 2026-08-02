@@ -158,7 +158,7 @@ export default function EidMubarakCardsPage() {
               <ul className="space-y-2 text-sm text-foreground">
                 <li className="flex items-center gap-2">
                   <span className="text-emerald-600">→</span>
-                  <Link href="/create-wish?category=ramadan" className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium">
+                  <Link href="/create-wish" className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium">
                     Ramadan Mubarak Greetings
                   </Link> — Send holy month blessings to loved ones before Eid.
                 </li>
@@ -170,7 +170,7 @@ export default function EidMubarakCardsPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-emerald-600">→</span>
-                  <Link href="/create-wish?category=birthday" className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium">
+                  <Link href="/create-wish" className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium">
                     Custom Birthday Wish Cards
                   </Link> — Create animated year-round birthday wishes for family and friends.
                 </li>
@@ -200,7 +200,7 @@ export default function EidMubarakCardsPage() {
               </p>
               <div className="mt-6 flex justify-center">
                 <Link
-                  href="/create-wish?category=eid"
+                  href="/create-wish"
                   className="rounded-xl bg-amber-400 px-6 py-3 text-sm font-bold text-emerald-950 hover:bg-amber-300 transition-colors flex items-center gap-2 shadow-sm"
                 >
                   <Send className="size-4" /> Create Your Eid Card Now

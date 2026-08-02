@@ -164,7 +164,14 @@ END:VCARD`
               <div className={cn('flex items-center gap-4 pt-1', isRtl && 'flex-row-reverse')}>
                 <div className="relative size-20 sm:size-24 shrink-0 rounded-2xl bg-gradient-to-br from-[#D4AF37]/30 via-white/10 to-black/40 border-2 border-[#D4AF37] overflow-hidden flex items-center justify-center shadow-2xl font-black text-3xl uppercase text-[#D4AF37]">
                   {data.avatarUrl ? (
-                    <img src={data.avatarUrl} alt={data.fullName} className="w-full h-full object-cover" />
+                    <img
+                      src={data.avatarUrl}
+                      alt={data.fullName ? data.fullName.slice(0, 90) : 'User Avatar'}
+                      width={200}
+                      height={200}
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <span>{(data.fullName || 'C')[0]}</span>
                   )}

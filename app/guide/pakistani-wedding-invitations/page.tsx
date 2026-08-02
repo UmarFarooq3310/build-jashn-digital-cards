@@ -60,9 +60,9 @@ export default function WeddingGuidePage() {
                 Today, <strong>digital wedding invitations</strong> are revolutionizing how Pakistani couples invite guests. They are environmentally friendly, cost-effective, and provide interactive features like instant RSVP collection, Google Maps directions, and ambient background music.
               </p>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
                 1. The Anatomy of a Pakistani Wedding Invite
-              </h2>
+              </h3>
               <p>
                 Unlike western cards which are single-day affairs, a Pakistani wedding card typically covers multiple functions—chiefly the <strong>Mehndi/Mayun</strong>, the <strong>Baraat (Shaadi)</strong>, and the <strong>Valima</strong>. When building a digital invitation page, make sure the following details are present and clearly structured:
               </p>
@@ -73,9 +73,9 @@ export default function WeddingGuidePage() {
                 <li><strong>Dress Code Guidelines:</strong> Helping guests match the vibe (e.g. festive yellows/greens for Mehndi, formals or traditional sherwanis/lehengas for Shaadi).</li>
               </ul>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
                 2. Traditional Wording Templates (English & Urdu)
-              </h2>
+              </h3>
               <p>
                 Here are a few popular wording layouts you can drop directly into your Cardzy digital invitation setup:
               </p>
@@ -110,9 +110,9 @@ export default function WeddingGuidePage() {
                 </p>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
                 3. Elevating the Invitation with Modern Features
-              </h2>
+              </h3>
               <p>
                 A digital invitation is much more than a static JPEG shared on WhatsApp. By leveraging the interactive features built into platforms like Cardzy, you make guest coordination extremely simple:
               </p>
@@ -141,9 +141,9 @@ export default function WeddingGuidePage() {
                 </div>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
                 4. Etiquette When Sharing on WhatsApp
-              </h2>
+              </h3>
               <p>
                 When sending your Cardzy link, avoid bulk spamming. Personalize your WhatsApp message:
               </p>

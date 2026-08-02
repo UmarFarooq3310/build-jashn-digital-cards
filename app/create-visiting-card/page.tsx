@@ -35,7 +35,7 @@ import { useLang, LANGUAGES } from '@/lib/lang/context'
 import type { Language, VisitingCardCategory, VisitingCard } from '@/lib/jashn/types'
 import { VISITING_CARD_CATEGORIES, VISITING_CARD_THEMES } from '@/lib/jashn/visiting-card-themes'
 import { VisitingCardView } from '@/components/jashn/visiting-card'
-import { cn } from '@/lib/utils'
+import { cn, validateWhatsAppNumber } from '@/lib/utils'
 
 export default function CreateVisitingCardPage() {
   const { t, lang, setLang } = useLang()
@@ -90,6 +90,14 @@ export default function CreateVisitingCardPage() {
       newErrors.phone = 'Phone number is required'
     } else if (!/^[+0-9\s-]{7,18}$/.test(cleanPhone)) {
       newErrors.phone = 'Invalid phone number format (e.g. +92 300 1234567)'
+    }
+
+    // WhatsApp validation (optional but must be valid if provided)
+    if (whatsapp.trim()) {
+      const res = validateWhatsAppNumber(whatsapp)
+      if (!res.isValid) {
+        newErrors.whatsapp = res.error || 'Please enter a valid WhatsApp number (e.g. +92 300 1234567)'
+      }
     }
 
     // Email validation (optional but must be valid if provided)
@@ -404,10 +412,18 @@ export default function CreateVisitingCardPage() {
                       <label className="text-xs font-bold text-foreground">{t('whatsAppLabel') || 'WhatsApp Number'}</label>
                       <Input
                         value={whatsapp}
-                        onChange={(e) => setWhatsapp(e.target.value)}
+                        onChange={(e) => {
+                          setWhatsapp(e.target.value)
+                          if (errors.whatsapp) setErrors({ ...errors, whatsapp: '' })
+                        }}
                         placeholder={t('whatsAppPlaceholder') || 'e.g. +92 300 1234567'}
-                        className="rounded-xl"
+                        className={cn('rounded-xl', errors.whatsapp && 'border-rose-500 ring-1 ring-rose-500/30')}
                       />
+                      {errors.whatsapp && (
+                        <p className="text-[11px] font-bold text-rose-500 flex items-center gap-1">
+                          <AlertCircle className="size-3" /> {errors.whatsapp}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-1.5">
@@ -505,6 +521,41 @@ export default function CreateVisitingCardPage() {
             </div>
           )}
         </div>
+
+        {/* Premium Guide Overview Card */}
+        <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-4xl mx-auto">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+              <Sparkles className="size-3.5" /> vCard Builder Overview
+            </span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
+            Smart Digital Business Cards & Executive vCard Builder
+          </h2>
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            Create smart digital business cards with Cardzy. Share your contact info, social links, WhatsApp, and Google Maps office pins with one tap. Save money on paper cards and network faster.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
+            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+              <h3 className="font-extrabold text-xs text-foreground">One-Tap vCard Download</h3>
+              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
+                Allow clients and prospects to save your phone number, email, address, and website directly to their smartphone contacts with one click.
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+              <h3 className="font-extrabold text-xs text-foreground">Dynamic QR Code Sharing</h3>
+              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
+                Generate high-resolution scannable QR codes for your digital visiting card to feature on physical print materials, email signatures, and badges.
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+              <h3 className="font-extrabold text-xs text-foreground">Zero Printing Expense</h3>
+              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
+                Update your designation, phone number, or company address anytime without spending thousands on reprinting traditional paper cards.
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
 
       <SiteFooter />

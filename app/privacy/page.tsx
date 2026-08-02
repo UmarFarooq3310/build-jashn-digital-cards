@@ -51,6 +51,8 @@ export default function PrivacyPolicyPage() {
           {getText('lastUpdated')}
         </p>
 
+        <h2 className="text-xl font-extrabold text-foreground mb-4 border-b pb-2">Cardzy Privacy & Data Policies</h2>
+
         <Section title={getText('s1Title')}>
           {getText('s1Content')}
         </Section>
@@ -107,7 +109,7 @@ export default function PrivacyPolicyPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mb-8">
-      <h2 className="text-lg font-bold text-foreground mb-2">{title}</h2>
+      <h3 className="text-lg font-bold text-foreground mb-2">{title}</h3>
       <div className="text-sm text-muted-foreground leading-relaxed">{children}</div>
     </section>
   )

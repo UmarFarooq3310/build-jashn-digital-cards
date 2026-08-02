@@ -30,10 +30,10 @@ export function AdBanner({ format = 'display', className }: AdBannerProps) {
 
   if (format === 'multiplex') {
     return (
-      <div className={className}>
+      <div className={className} style={{ minHeight: '120px', textAlign: 'center' }}>
         <ins
           className="adsbygoogle"
-          style={{ display: 'block' }}
+          style={{ display: 'block', minHeight: '120px' }}
           data-ad-client={CLIENT}
           data-ad-slot={SLOTS.multiplex}
           data-ad-format="autorelaxed"
@@ -44,10 +44,10 @@ export function AdBanner({ format = 'display', className }: AdBannerProps) {
 
   // Use responsive auto — Google picks best size
   return (
-    <div className={className} style={{ textAlign: 'center' }}>
+    <div className={className} style={{ textAlign: 'center', minHeight: '90px' }}>
       <ins
         className="adsbygoogle"
-        style={{ display: 'block' }}
+        style={{ display: 'block', minHeight: '90px' }}
         data-ad-client={CLIENT}
         data-ad-slot={SLOTS.display}
         data-ad-format="auto"

@@ -1,11 +1,15 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | Cardzy Digital Cards',
+  title: 'Terms of Service & Usage Policy — Cardzy',
   description:
-    'Terms of service and user agreement for Cardzy digital wish cards and event invitation platform.',
+    'Read Cardzy terms of service, user account agreement, acceptable use guidelines, and digital card creator policies.',
   alternates: {
     canonical: 'https://cardzy.online/terms',
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 }
 

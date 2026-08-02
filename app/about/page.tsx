@@ -81,31 +81,31 @@ const ABOUT_TEXT: Record<string, Record<string, string>> = {
     ja: "Cardzyへようこそ",
     ko: "Cardzy에 오신 것을 환영합니다",
     it: "Benvenuto su Cardzy",
-    tr: "Cardzy'ye Hoş Geldiniz",
+    tr: "Cardzy'ye Hoş Geldiiniz",
     id: "Selamat Datang di Cardzy",
     bn: "Cardzy-তে স্বাগতম",
     vi: "Chào mừng đến với Cardzy",
     sw: "Karibu Cardzy"
   },
   s1Content: {
-    en: "Cardzy (cardzy.online) is a digital wish-card and event-invitation platform crafted to help people celebrate life's special moments and stay connected, no matter where they are in the world. Operating from Islamabad and Rawalpindi, Pakistan, we combine cultural authenticity with modern Web technology.",
-    ur: "کارڈزی (cardzy.online) ایک ڈیجیٹل وش کارڈ اور ایونٹ انویٹیشن پلیٹ فارم ہے جو اسلام آباد اور راولپنڈی، پاکستان سے چلایا جاتا ہے۔ ہم ثقافتی روایات کو جدید ویب ٹیکنالوجی کے ساتھ جوڑتے ہیں۔",
-    es: "Cardzy (cardzy.online) es una plataforma de tarjetas e invitaciones digitales diseñada para ayudar a las personas a celebrar momentos especiales. Con sede en Islamabad y Rawalpindi, Pakistán, combinamos autenticidad cultural con tecnología moderna.",
-    fr: "Cardzy (cardzy.online) est une plateforme de cartes de vœux et d'invitations numériques basée à Islamabad et Rawalpindi, au Pakistan. Nous allions authenticité culturelle et technologie moderne.",
-    ar: "كاردزي (cardzy.online) هي منصة بطاقات ودعوات رقمية تم إنشاؤها لمساعدة الأشخاص على الاحتفال بالمناسبات الخاصة. نعمل من إسلام آباد وراولبندي، باكستان، ونجمع بين الأصالة الثقافية والتقنية الحديثة.",
-    hi: "Cardzy (cardzy.online) एक डिजिटल विश-कार्ड और आमंत्रण प्लेटफॉर्म है। इस्लामाबाद और रावलपिंडी, पाकिस्तान से संचालित, हम सांस्कृतिक प्रामाणिकता को आधुनिक वेब तकनीक के साथ जोड़ते हैं।",
-    zh: "Cardzy (cardzy.online) 是一个数字祝贺卡与活动邀请函平台。总部位于巴基斯坦伊斯兰堡与拉瓦尔品第，我们致力于将传统文化底蕴与现代 Web 科技无缝结合。",
-    pt: "O Cardzy (cardzy.online) é uma plataforma de cartões e convites digitais criada para celebrar momentos especiais. Operando em Islamabad e Rawalpindi, Paquistão, unimos autenticidade cultural e tecnologia moderna.",
-    ru: "Cardzy (cardzy.online) — это платформа цифровых открыток и приглашений. Базируясь в Исламабаде и Равалпинди (Пакистан), мы сочетаем культурную аутентичность с современными веб-технологиями.",
-    de: "Cardzy (cardzy.online) ist eine digitale Plattform für Wunschkarten und Event-Einladungen mit Sitz in Islamabad/Rawalpindi, Pakistan. Wir verbinden kulturelle Authentizität mit moderner Webtechnologie.",
-    ja: "Cardzy（cardzy.online）は、特別な瞬間を祝うためのデジタルカード＆招待状プラットフォームです。パキスタンの イスラマバード/ラワルピンディ から、文化的な伝統と最新のWeb技術を融合させて届けています。",
-    ko: "Cardzy(cardzy.online)는 특별한 순간을 함께 축하할 수 있도록 돕는 디지털 카드 및 초대장 플랫폼입니다. 파키스탄 이슬라마바드/라왈핀디에서 설립되어 전통 문화와 현대적 웹 기술을 결합합니다.",
-    it: "Cardzy (cardzy.online) è una piattaforma di biglietti e inviti digitali creata per celebrare i momenti speciali. Con sede a Islamabad e Rawalpindi, Pakistan, uniamo autenticità culturale e tecnologia moderna.",
-    tr: "Cardzy (cardzy.online), özel anları kutlamanıza yardımcı olan bir dijital kart ve davetiye platformudur. İslamabad ve Rawalpindi, Pakistan merkezli olarak kültürel samimiyeti modern teknolojiyle buluşturuyoruz.",
-    id: "Cardzy (cardzy.online) adalah platform kartu ucapan dan undangan digital berbasis di Islamabad dan Rawalpindi, Pakistan. Kami menggabungkan keotentikan budaya dengan teknologi web modern.",
-    bn: "Cardzy (cardzy.online) হলো একটি ডিজিটাল উইশ-কার্ড এবং ইনভিটেশন প্ল্যাটফর্ম। পাকিস্তান থেকে পরিচালিত, আমরা সাংস্কৃতিক ঐতিহ্যকে আধুনিক ওয়েব প্রযুক্তির সাথে যুক্ত করি।",
-    vi: "Cardzy (cardzy.online) là nền tảng thiệp mừng và thiệp mời kỹ thuật số hoạt động từ Islamabad & Rawalpindi, Pakistan. Chúng tôi kết hợp nét văn hóa bản địa với công nghệ web hiện đại.",
-    sw: "Cardzy (cardzy.online) ni jukwaa la kadi za dijitali na mialiko ya hafla lililopo Islamabad na Rawalpindi, Pakistan. Tunachanganya utamaduni wa asili na teknolojia ya kisasa ya wavuti."
+    en: "Cardzy is a modern digital wish card and invitation builder.",
+    ur: "کارڈزی ایک جدید ڈیجیٹل وش کارڈ اور انویٹیشن بلڈر ہے۔",
+    es: "Cardzy es un moderno creador de tarjetas e invitaciones digitales.",
+    fr: "Cardzy est un créateur moderne de cartes et invitations numériques.",
+    ar: "كاردزي هو منشئ عصري للبطاقات والدعوات الرقمية.",
+    hi: "Cardzy एक आधुनिक डिजिटल विश कार्ड और इनविटेशन बिल्डर है।",
+    zh: "Cardzy 是一个现代化的数字祝贺卡和邀请函生成工具。",
+    pt: "Cardzy é um criador moderno de cartões e convites digitais.",
+    ru: "Cardzy — это современный конструктор цифровых открыток и приглашений.",
+    de: "Cardzy ist ein moderner Ersteller für digitale Karten und Einladungen.",
+    ja: "Cardzyは現代的なデジタルカードと招待状作成ツールです。",
+    ko: "Cardzy는 현대적인 디지털 카드 및 초대장 제작 도구입니다.",
+    it: "Cardzy è un moderno creatore di biglietti e inviti digitali.",
+    tr: "Cardzy modern bir dijital kart ve davetiye oluşturucudur.",
+    id: "Cardzy adalah pembuat kartu dan undangan digital yang modern.",
+    bn: "Cardzy একটি আধুনিক ডিজিটাল উইশ কার্ড এবং ইনভিটেশন বিল্ডার।",
+    vi: "Cardzy là trình tạo thiệp và thiệp mời kỹ thuật số hiện đại.",
+    sw: "Cardzy ni mjenzi wa kisasa wa kadi za dijitali na mialiko."
   },
   s2Title: {
     en: "The Problem We Solve",
@@ -128,24 +128,24 @@ const ABOUT_TEXT: Record<string, Record<string, string>> = {
     sw: "Tatizo Tunalotatua"
   },
   s2Content: {
-    en: "In an interconnected world, sending celebratory wishes or inviting loved ones to special milestones should be seamless, elegant, and personal. Traditional paper invitations can be expensive, slow to deliver, and difficult to manage across international borders. Cardzy replaces costly printed cards with vibrant, interactive digital experiences that reach your guests instantly on WhatsApp and social platforms.",
-    ur: "کاغذی دعوت نامے مہنگے، سست اور بین الاقوامی سرحدوں کے پار پہنچانے میں دشوار ہوتے ہیں۔ کارڈزی مہنگے پرنٹ شدہ کارڈز کی جگہ رنگین اور انٹرایکٹو ڈیجیٹل تجربات فراہم کرتا ہے جو واٹس ایپ پر فوری پہنچتے ہیں۔",
-    es: "Las invitaciones de papel tradicionales son costosas, lentas de entregar y difíciles de gestionar internacionalmente. Cardzy reemplaza las costosas tarjetas impresas por experiencias digitales interactivas que llegan al instante por WhatsApp.",
-    fr: "Les invitations papier sont coûteuses, lentes à livrer et difficiles à gérer à l'international. Cardzy remplace les cartes imprimées par des expériences numériques interactives livrées instantanément via WhatsApp.",
-    ar: "الدعوات الورقية التقليدية مكلفة وبطيئة وصعبة التوزيع عبر الحدود. يستبدل كاردزي البطاقات المطبوعة بتجارب رقمية تفاعلية تصل فوراً عبر واتساب.",
-    hi: "पारंपरिक कागजी निमंत्रण महंगे, धीमे और अंतरराष्ट्रीय सीमाओं पर प्रबंधित करने में कठिन होते हैं। Cardzy महंगे प्रिंटेड कार्ड को व्हाट्सएप पर तुरंत पहुंचने वाले डिजिटल अनुभवों से बदलता है।",
-    zh: "传统纸质请柬成本高昂、寄送缓慢，且难以跨国分发。Cardzy 用生动直观的互动数字体验取代昂贵的纸质印刷品，让您的祝福与邀请瞬间直达亲友的 WhatsApp 与社交软件。",
-    pt: "Convites de papel são caros, demorados e difíceis de enviar para o exterior. O Cardzy substitui cartões impressos por experiências digitais interativas que chegam instantaneamente pelo WhatsApp.",
-    ru: "Традиционные бумажные приглашения стоят дорого, доставляются долго и сложны в международной отправке. Cardzy заменяет их интерактивными цифровыми открытками, моментально приходящими в WhatsApp.",
-    de: "Papiereinladungen sind teuer, langsam und international schwer zu verwalten. Cardzy ersetzt gedruckte Karten durch interaktive digitale Erlebnisse, die sofort über WhatsApp zugestellt werden.",
-    ja: "従来の紙の招待状は高価で配送に時間がかかり、海外への送付も困難です。Cardzyは印刷カードを、WhatsAppで瞬時に届くインタラクティブなデジタル体験へと置き換えます。",
-    ko: "종이 초대장은 비용이 많이 들고 배송이 느리며 해외 전달이 어렵습니다. Cardzy는 expensive한 인쇄 카드를 WhatsApp으로 즉시 전달되는 대화형 디지털 경험으로 대체합니다.",
-    it: "Gli inviti cartacei sono costosi, lenti da consegnare e difficili da gestire all'estero. Cardzy sostituisce i biglietti stampati con esperienze digitali interattive che arrivano all'istante su WhatsApp.",
-    tr: "Geleneksel kağıt davetiyeler pahalıdır, yavaştır ve uluslararası teslimatı zordur. Cardzy, pahalı baskı kartların yerine WhatsApp üzerinden anında ulaşan interaktif dijital deneyimler sunar.",
-    id: "Undangan kertas mahal, lambat, dan sulit dikirim ke luar negeri. Cardzy menggantikan kartu cetak mahal dengan pengalaman digital interaktif yang sampai seketika di WhatsApp.",
-    bn: "কাগজের ইনভিটেশন দামী, ধীরগতির এবং আন্তর্জাতিকভাবে পাঠানো কঠিন। Cardzy প্রস্টেড কার্ডের পরিবর্তে ইন্টারঅ্যাক্টিভ ডিজিটাল অভিজ্ঞতা প্রদান করে যা হোয়াটসঅ্যাপে তাৎক্ষণিক পৌঁছায়।",
-    vi: "Thiệp giấy truyền thống đắt đỏ, giao chậm và khó gửi đi quốc tế. Cardzy thay thế thiệp in bằng trải nghiệm kỹ thuật số tương tác gửi tức thì qua WhatsApp.",
-    sw: "Mialiko ya karatasi ni ghali, inachukua muda na ni vigumu kuisambaza kimataifa. Cardzy inabadilisha kadi za karatasi na kadi za dijitali zinazofika mara moja kupitia WhatsApp."
+    en: "Paper cards are expensive, slow, and hard to manage globally.",
+    ur: "کاغذی کارڈ مہنگے، سست اور عالمی سطح پر سنبھالنا مشکل ہیں۔",
+    es: "Las tarjetas de papel son costosas, lentas y difíciles de gestionar.",
+    fr: "Les cartes papier sont coûteuses, lentes et difficiles à gérer globalement.",
+    ar: "البطاقات الورقية مكلفة وبطيئة ويصعب إدارتها على مستوى العالم.",
+    hi: "कागज के कार्ड महंगे, धीमे और वैश्विक स्तर पर प्रबंधित करने में कठिन हैं।",
+    zh: "纸质卡片成本高、速度慢，且难以在全球范围内进行管理。",
+    pt: "Cartões de papel são caros, lentos e difíceis de gerenciar globalmente.",
+    ru: "Бумажные открытки дорогие, медленные и их сложно управлять глобально.",
+    de: "Papierkarten sind teuer, langsam und weltweit schwer zu verwalten.",
+    ja: "紙のカードは高価で遅く、世界的に管理するのが困難です。",
+    ko: "종이 카드는 비싸고 느리며 전 세계적으로 관리하기 어렵습니다.",
+    it: "I biglietti cartacei sono costosi, lenti e difficili da gestire globalmente.",
+    tr: "Kağıt kartlar pahalı, yavaş ve küresel olarak yönetilmesi zordur.",
+    id: "Kartu kertas mahal, lambat, dan sulit dikelola secara global.",
+    bn: "কাগজের কার্ড দামী, ধীরগতির এবং বিশ্বব্যাপী পরিচালনা করা কঠিন।",
+    vi: "Thiệp giấy đắt đỏ, chậm chạp và khó quản lý trên toàn cầu.",
+    sw: "Kadi za karatasi ni ghali, polepole, na ni vigumu kuzisimamia duniani kote."
   },
   s3Title: {
     en: "What We Do",
@@ -454,29 +454,29 @@ export default function AboutPage() {
 
           {/* Core Content Card */}
           <div className="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-xs space-y-8 text-foreground leading-relaxed">
-            
+            <h2 className="text-xl font-extrabold text-foreground mb-4 border-b pb-2">About Cardzy & Our Mission</h2>
             <section>
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
                 <Heart className="size-5 text-emerald-600 dark:text-emerald-400" /> {t('s1Title')}
-              </h2>
+              </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 {t('s1Content')}
               </p>
             </section>
 
             <section className="border-t border-border/60 pt-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
                 <Globe className="size-5 text-emerald-600 dark:text-emerald-400" /> {t('s2Title')}
-              </h2>
+              </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 {t('s2Content')}
               </p>
             </section>
 
             <section className="border-t border-border/60 pt-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
                 <Zap className="size-5 text-emerald-600 dark:text-emerald-400" /> {t('s3Title')}
-              </h2>
+              </h3>
               <p className="text-sm sm:text-base text-muted-foreground mb-4">
                 {t('s3Content')}
               </p>
@@ -501,9 +501,9 @@ export default function AboutPage() {
             </section>
 
             <section className="border-t border-border/60 pt-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
                 <ShieldCheck className="size-5 text-emerald-600 dark:text-emerald-400" /> {t('s4Title')}
-              </h2>
+              </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 {t('s4Content')}
               </p>

@@ -16,7 +16,6 @@ const firebaseConfig = {
   appId: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_APP_ID),
 }
 
-// Check if Firebase is configured
 const isFirebaseConfigured = !!(
   firebaseConfig.apiKey &&
   firebaseConfig.projectId
@@ -29,17 +28,12 @@ let auth: any = null
 if (isFirebaseConfigured) {
   try {
     app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig)
-    db = getFirestore(app)
-    auth = getAuth(app)
+    if (typeof window !== 'undefined') {
+      try { db = getFirestore(app) } catch (e) {}
+      try { auth = getAuth(app) } catch (e) {}
+    }
   } catch (error) {
-    console.error('Failed to initialize Firebase:', error)
-  }
-} else {
-  if (typeof window !== 'undefined') {
-    console.warn(
-      'Firebase environment variables are missing. Please add them to your .env.local file to enable sharing and database synchronization.',
-      '\nLoaded Config:', firebaseConfig
-    )
+    // Silent catch during build
   }
 }
 

@@ -41,13 +41,13 @@ export const BLOG_POSTS: BlogPost[] = [
     author: {
       name: 'Zara Malik',
       role: 'Senior Cultural Event & Wedding Stylist',
-      avatar: '/images/author-zara.jpg',
+      avatar: '/icon.svg',
     },
     publishedAt: '2026-07-26',
     updatedAt: '2026-07-26',
     readTime: '8 min read',
     wordCount: 950,
-    featuredImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
+    featuredImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ['Pakistani Wedding Wording', 'Nikkah Invitation Text', 'Urdu Wedding Quotes', 'Islamic Card Design', 'Barat Invitation'],
     content: {
       intro: `Weddings in Pakistan and South Asian communities worldwide are sacred, grand celebrations that unite two families in love and faith. The wedding invitation card serves as the official harbinger of this joyous union. It sets the tone for the entire celebration, conveying warmth, respect, religious reverence, and cultural pride. Selecting the appropriate invitation wording in both Urdu and English requires a delicate balance of traditional honorifics, spiritual blessings, and clear event details. Whether you are organizing an intimate Nikkah ceremony or a lavish multiday wedding gala with Mehndi, Barat, and Walima functions, this master guide provides curated wording templates, Quranic quotes, host protocols, and practical advice to make your invitation truly royal.`,
@@ -128,16 +128,16 @@ export const BLOG_POSTS: BlogPost[] = [
     author: {
       name: 'Ali Raza',
       role: 'Tech & Product Strategist',
-      avatar: '/images/author-ali.jpg',
+      avatar: '/icon.svg',
     },
     publishedAt: '2026-07-26',
     updatedAt: '2026-07-26',
     readTime: '9 min read',
     wordCount: 980,
-    featuredImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+    featuredImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ['Digital vs Paper Cards', 'Wedding Expenses Pakistan', 'Eco Friendly Wedding', 'Wedding Budget Savings', 'Digital Card Benefits'],
     content: {
-      intro: `Planning a wedding is one of the most exciting experiences in a person䏭 life, but it also involves significant financial planning and hundreds of logistical decisions. Among these, choosing how to invite your guests is a crucial milestone. For generations, traditional printed paper cards㼆omplete with heavy cardboard boxes, gold foil embossing, silk ribbons, and printed insert sleeves癳ere the standard choice. However, in 2026, the rise of high-speed smartphones, interactive web features, and growing environmental awareness has triggered a massive shift toward **digital wedding invitations**. In this detailed comparison, we analyze the financial costs, environmental impact, convenience factor, and guest experience of paper vs digital cards.`,
+      intro: `Planning a wedding is one of the most exciting experiences in a person's life, but it also involves significant financial planning and hundreds of logistical decisions. Among these, choosing how to invite your guests is a crucial milestone. For generations, traditional printed paper cards—complete with heavy cardboard boxes, gold foil embossing, silk ribbons, and printed insert sleeves—were the standard choice. However, in 2026, the rise of high-speed smartphones, interactive web features, and growing environmental awareness has triggered a massive shift toward **digital wedding invitations**. In this detailed comparison, we analyze the financial costs, environmental impact, convenience factor, and guest experience of paper vs digital cards.`,
       sections: [
         {
           id: 'financial-cost-breakdown',
@@ -147,7 +147,7 @@ export const BLOG_POSTS: BlogPost[] = [
             'Paper Card Expenses: Luxury printed card sets with gold foil stamping and acrylic boxes cost between PKR 350 to PKR 1,200 per card. For 300 cards, printing alone totals PKR 105,000 to PKR 360,000.',
             'Courier & Postal Delivery Costs: Delivering physical cards across multiple cities (Lahore, Karachi, Islamabad) and international airmail (UK, USA, UAE) adds another PKR 35,000 to PKR 80,000.',
             'Reprint Fees for Last-Minute Changes: If a venue, time, or date changes due to hall availability or weather, reprinting physical cards incurs 100% extra cost.',
-            'Digital Card Savings: Creating a luxury 4K animated digital invitation suite on Cardzy costs a flat fraction of a single printing order𤳙aving families up to 90% of their invitation budget.',
+            'Digital Card Savings: Creating a luxury 4K animated digital invitation suite on Cardzy costs a flat fraction of a single printing order—saving families up to 90% of their invitation budget.',
           ],
           highlight: 'Financial Verdict: Switching to digital cards frees up between PKR 100,000 and PKR 300,000 that can be redirected toward your wedding catering, photography, or honeymoon!',
         },
@@ -184,18 +184,23 @@ export const BLOG_POSTS: BlogPost[] = [
             'Global Access: Paper = Expensive courier delays | Digital = Instant 1-click link.',
           ],
         },
+        {
+          id: 'faqs',
+          title: '5. Frequently Asked Questions',
+          body: 'Here are common questions families ask when transitioning from paper to digital invitations.',
+        },
       ],
       faq: [
         {
           question: 'Will older relatives feel comfortable receiving a digital wedding card?',
-          answer: 'Yes! Modern digital cards open directly inside WhatsApp𤤗n app that almost all family elders use daily. The high-resolution gold animations and large Urdu typography make reading easy and enjoyable for grandparents.',
+          answer: 'Yes! Modern digital cards open directly inside WhatsApp—an app that almost all family elders use daily. The high-resolution gold animations and large Urdu typography make reading easy and enjoyable for grandparents.',
         },
         {
           question: 'Can I print a small batch of paper cards for close elders while using digital cards for everyone else?',
           answer: 'Absolutely! Many modern couples print 20-30 keepsake paper cards for immediate grandparents while sending the Cardzy digital link to the remaining 300+ guests.',
         },
       ],
-      conclusion: `Choosing digital wedding invitations is not just a budget-smart decision㻳t is a modern, eco-friendly, and interactive upgrade that elevates how your family celebrates. Design your royal 4K digital wedding card on Cardzy today and experience seamless event hosting.`,
+      conclusion: `Choosing digital wedding invitations is not just a budget-smart decision—it is a modern, eco-friendly, and interactive upgrade that elevates how your family celebrates. Design your royal 4K digital wedding card on Cardzy today and experience seamless event hosting.`,
     },
   },
   {
@@ -208,13 +213,13 @@ export const BLOG_POSTS: BlogPost[] = [
     author: {
       name: 'Hamza Farooq',
       role: 'Digital Content Creator & Cultural Writer',
-      avatar: '/images/author-hamza.jpg',
+      avatar: '/icon.svg',
     },
     publishedAt: '2026-07-26',
     updatedAt: '2026-07-26',
     readTime: '7 min read',
     wordCount: 880,
-    featuredImage: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=80',
+    featuredImage: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ['Eid Mubarak Card Generator', 'Eid Wishes with Name', 'Islamic Greeting Cards', 'Eid Photo Cards', 'WhatsApp Eid Wishes'],
     content: {
       intro: `Eid-ul-Fitr and Eid-ul-Adha are sacred times of immense gratitude, family reunions, delicious feasts, and sharing heartfelt prayers with friends, relatives, and colleagues across the globe. However, during Eid morning, most social media feeds and chat apps become overwhelmed with hundreds of generic, forwarded image clips that lack personal touch. In 2026, thoughtful individuals and businesses are upgrading to **personalized Eid Mubarak digital cards**. Featuring custom name typography, family photos, authentic Urdu or Arabic duas, and 4K animated crescent moon visuals, personalized cards show your loved ones that you truly care. In this step-by-step guide, we walk you through designing your own custom Eid card on Cardzy.online.`,
@@ -278,19 +283,19 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'nfc-digital-business-cards-for-pakistani-entrepreneurs-and-executives',
     title: 'Smart Digital Business Cards for Executives in Pakistan: The Future of Professional Networking',
     subtitle: 'Why CEOs, freelancers, and entrepreneurs in Karachi, Lahore, and Islamabad are replacing paper visiting cards with interactive vCards and smart digital cards.',
-    seoTitle: 'Smart Digital Business Cards Pakistan | Executive vCard Maker',
+    seoTitle: 'Smart Digital Business Cards Pakistan (vCard)',
     metaDescription: 'Discover why executives and business owners in Pakistan use smart digital business cards. One-tap vCard save, QR code sharing, social links, and zero printing cost.',
     category: 'Business & vCards',
     author: {
       name: 'Ali Raza',
       role: 'Tech & Product Strategist',
-      avatar: '/images/author-ali.jpg',
+      avatar: '/icon.svg',
     },
     publishedAt: '2026-07-26',
     updatedAt: '2026-07-26',
     readTime: '8 min read',
     wordCount: 920,
-    featuredImage: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80',
+    featuredImage: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ['Smart Business Card Pakistan', 'Digital Visiting Card', 'vCard Generator', 'Executive Branding', 'Smart Contact Card'],
     content: {
       intro: `In the modern business landscape of Pakistan𨰣rom tech startups in National Incubation Centers to corporate headquarters in Karachi, Lahore, and Islamabad𨰣irst impressions dictate deal closures and strategic partnerships. For decades, the standard tool for exchanging contact information was the paper visiting card. However, paper cards suffer from major flaws: they are easily lost, take up wallet space, cannot be updated when your phone number or title changes, and require constant reprinting. In 2026, forward-thinking CEOs, sales directors, freelancers, and entrepreneurs are switching to **Smart Digital Business Cards (vCards)**. In this comprehensive guide, we explore how digital business cards work, their ROI benefits, and how to create your executive digital contact card on Cardzy.`,
@@ -361,16 +366,16 @@ export const BLOG_POSTS: BlogPost[] = [
     author: {
       name: 'Zara Malik',
       role: 'Senior Cultural Event & Wedding Stylist',
-      avatar: '/images/author-zara.jpg',
+      avatar: '/icon.svg',
     },
     publishedAt: '2026-07-26',
     updatedAt: '2026-07-26',
     readTime: '9 min read',
     wordCount: 960,
-    featuredImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80',
+    featuredImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ['Wedding RSVP Tracker', 'Guest List Management', 'Catering Headcount Calculator', 'WhatsApp Wedding RSVP', 'Event Planning Tips'],
     content: {
-      intro: `Hosting a South Asian wedding is a magnificent celebration of family and tradition, but managing a guest list of 400 to 1,000 people can quickly turn into a logistical nightmare. Between unconfirmed headcounts, last-minute venue inquiries, dietary requirements, and lost guests driving around looking for marquee locations, hosts often find themselves exhausted on the big day. Traditional RSVP phone calls take weeks of manual effort and rarely yield accurate attendance numbers. In 2026, smart event hosts and wedding planners rely on **automated digital RSVP tracking via WhatsApp**. In this host䏭 survival guide, we break down how to organize your guest list, automate attendance confirmations, save money on catering, and run a stress-free wedding celebration.`,
+      intro: `Planning a wedding is exciting, but managing guest lists can be stressful. Calling hundreds of guests manually takes weeks and leads to wrong food headcounts. In 2026, smart hosts use automated WhatsApp RSVP tracking. Cardzy helps you collect RSVPs instantly, save money on catering, and run a smooth event.`,
       sections: [
         {
           id: 'the-rsvp-problem-in-south-asian-weddings',
@@ -437,13 +442,13 @@ export const BLOG_POSTS: BlogPost[] = [
   "author": {
     "name": "Umar Farooq",
     "role": "Lead UI/UX Architect & Cardzy Founder",
-    "avatar": "/placeholder-logo.svg"
+    "avatar": "/icon.svg"
   },
   "publishedAt": "2026-07-26",
   "updatedAt": "2026-07-26",
   "readTime": "10 min read",
   "wordCount": 1350,
-  "featuredImage": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80",
+  "featuredImage": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=750&q=65&fm=webp",
   "tags": [
     "online digital invitation card maker",
     "WhatsApp RSVP tracking",
@@ -453,11 +458,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "wedding invitation wording"
   ],
   "content": {
-    "intro": "In 2026, organizing a wedding or milestone celebration no longer requires spending thousands of dollars on heavy paper invitation boxes, courier delays, or manual phone calls to confirm guest attendance. The modern event hosting revolution is driven by interactive, 4K animated digital invitation cards powered by live WhatsApp RSVP tracking. On Cardzy (https://cardzy.online), couples, families, and professional event coordinators can design breathtaking digital invitation websites in less than 5 minutes—complete with custom background music, Google Maps venue links, countdown timers, and multi-event schedules for Nikkah, Mehndi, Barat, and Walima ceremonies. This ultimate guide explores how to build your own royal online invitation card, manage your guest list with zero stress, and maximize guest response rates.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
         "id": "the-evolution-of-digital-invitations",
-        "title": "1. The Evolution of Event Invitations: Why 4K Digital Cards Are Dominating 2026",
+        "title": "1. The Evolution of Digital Invitations in 2026",
         "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
           "Instant delivery to hundreds of guests globally with 0 shipping costs",
@@ -511,13 +516,13 @@ export const BLOG_POSTS: BlogPost[] = [
   "author": {
     "name": "Umar Farooq",
     "role": "Lead UI/UX Architect & Cardzy Founder",
-    "avatar": "/placeholder-logo.svg"
+    "avatar": "/icon.svg"
   },
   "publishedAt": "2026-07-26",
   "updatedAt": "2026-07-26",
   "readTime": "9 min read",
   "wordCount": 1250,
-  "featuredImage": "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80",
+  "featuredImage": "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=750&q=65&fm=webp",
   "tags": [
     "personalized wish card with photo and name",
     "3D animated birthday wish card maker",

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Mail, Lock, User, Check, X, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react'
+import { Mail, Lock, User, Check, X, ArrowRight, ArrowLeft, Loader2, Sparkles } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -273,17 +273,14 @@ function SignupPageContent() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <>
       <GoogleOneTap redirectTo={redirect} />
-      <SiteHeader />
-
-      <main className="flex flex-1 items-center justify-center py-12 px-4">
-        <div ref={cardRef} className="w-full max-w-md space-y-6 rounded-3xl border border-border bg-card p-8 shadow-xl relative overflow-hidden">
+      <div ref={cardRef} className="w-full max-w-md mx-auto space-y-6 rounded-3xl border border-border bg-card p-8 shadow-xl relative overflow-hidden my-4">
           <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary via-gold to-emerald-500" />
 
           <div className="text-center">
             <CardzyLogo className="mx-auto size-12 mb-3 shadow-md" />
-            <h1 className="text-2xl font-extrabold text-foreground">{t('createFreeAccount')}</h1>
+            <h1 className="text-2xl font-extrabold text-foreground">Create Your Free Cardzy Account</h1>
             <p className="text-xs text-muted-foreground mt-1">Design premium digital cards, invitations & track RSVPs live</p>
           </div>
 
@@ -469,26 +466,59 @@ function SignupPageContent() {
 
           <div className="text-center text-xs text-muted-foreground pt-4 border-t border-border/60">
             {t('alreadyHaveAccount')}{' '}
-            <Link href={`/login?redirect=${encodeURIComponent(redirect)}`} className="text-primary hover:underline font-bold">
+            <Link href="/login" className="text-primary hover:underline font-bold">
               {t('logIn')}
             </Link>
           </div>
         </div>
-      </main>
-
-      <SiteFooter />
-    </div>
+    </>
   )
 }
 
 export default function SignupPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <Loader2 className="size-8 animate-spin text-primary" />
-      </div>
-    }>
-      <SignupPageContent />
-    </Suspense>
+    <div className="flex min-h-screen flex-col bg-background">
+      <SiteHeader />
+      <main className="flex-1 py-6 px-4 max-w-4xl mx-auto w-full">
+        <h1 className="sr-only">Create Your Free Cardzy Account</h1>
+        <Suspense fallback={
+          <div className="flex min-h-[400px] items-center justify-center">
+            <Loader2 className="size-8 animate-spin text-primary" />
+          </div>
+        }>
+          <SignupPageContent />
+        </Suspense>
+
+        {/* Premium Guide Overview Card */}
+        <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+              <Sparkles className="size-3.5" /> Free Account Perks
+            </span>
+          </div>
+          <h2 className="text-xl font-extrabold text-foreground tracking-tight">
+            Create Your Free Cardzy Account Today
+          </h2>
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            Join thousands of users creating 3D animated wish cards, digital wedding invitations, and smart business vCards on Cardzy. Registration is 100% free with no credit card required. Enjoy instant shareable links, real-time WhatsApp RSVP tracking, customizable audio tracks, and multi-language support across 18 languages.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
+            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+              <h3 className="font-extrabold text-xs text-foreground">Free Forever Plan</h3>
+              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">$0 / Rs 0 forever. Create animated wish cards and shareable links instantly.</p>
+            </div>
+            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+              <h3 className="font-extrabold text-xs text-foreground">18 Multilingual Scripts</h3>
+              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Full support for English, Urdu (Nastaliq), Arabic, and global languages.</p>
+            </div>
+            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+              <h3 className="font-extrabold text-xs text-foreground">Instant Share Links</h3>
+              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Send your cards directly via WhatsApp, iMessage, or social platforms.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+      <SiteFooter />
+    </div>
   )
 }
