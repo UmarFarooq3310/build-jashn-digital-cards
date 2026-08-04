@@ -2,8 +2,6 @@
 
 import Link from 'next/link'
 import { Sparkles, Calendar, Clock, ArrowRight, BookOpen, Crown } from 'lucide-react'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { BLOG_POSTS, getLocalizedPost } from '@/lib/blog/data'
 import { useLang } from '@/lib/lang/context'
 
@@ -162,13 +160,10 @@ export function BlogIndexClient() {
   const remainingPosts = posts.slice(1)
 
   return (
-    <div className="min-h-screen bg-[#050507] text-white flex flex-col selection:bg-[#D4AF37] selection:text-slate-950">
-      <SiteHeader />
-
-      <main className="flex-1 pb-20">
+    <div className="min-h-screen bg-[#07080c] text-white pb-20 selection:bg-[#D4AF37] selection:text-slate-950">
         {/* Top Hero Section */}
         <section className="relative py-16 md:py-24 overflow-hidden border-b border-[#D4AF37]/15 bg-[radial-gradient(60%_60%_at_50%_30%,rgba(212,175,55,0.14),transparent_70%)]">
-          <div className="mx-auto max-w-6xl px-4 text-center relative z-10">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#D4AF37]/40 bg-[#D4AF37]/10 text-xs font-extrabold text-[#D4AF37] uppercase tracking-wider mb-4 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
               <BookOpen className="w-4 h-4 text-[#D4AF37]" />
               <span>{tUI('badge')}</span>
@@ -189,7 +184,7 @@ export function BlogIndexClient() {
 
         {/* Featured Article Section */}
         {featuredPost && (
-          <section className="py-12 mx-auto max-w-6xl px-4">
+          <section className="py-12 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="text-xs font-extrabold uppercase tracking-widest text-[#D4AF37] mb-4 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#D4AF37]" />
               <span>{tUI('featuredBadge')}</span>
@@ -254,7 +249,7 @@ export function BlogIndexClient() {
         )}
 
         {/* Grid of Remaining Articles */}
-        <section className="py-8 mx-auto max-w-6xl px-4">
+        <section className="py-8 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="text-xs font-extrabold uppercase tracking-widest text-[#D4AF37] mb-6 flex items-center gap-2">
             <Crown className="w-4 h-4 text-[#D4AF37]" />
             <span>{tUI('allArticles')}</span>
@@ -310,9 +305,6 @@ export function BlogIndexClient() {
             ))}
           </div>
         </section>
-      </main>
-
-      <SiteFooter />
     </div>
   )
 }

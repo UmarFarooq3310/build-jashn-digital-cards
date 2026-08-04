@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
-import { auth, db } from '@/lib/firebase'
+import { auth, db, getFirebaseAuth, getFirebaseDb } from '@/lib/firebase'
 import { useJashn } from '@/lib/jashn/store'
 import type { JashnUser } from '@/lib/jashn/types'
 
@@ -39,7 +39,8 @@ export function GoogleOneTap({ redirectTo = '/dashboard' }: Props) {
   redirectRef.current = redirectTo
 
   useEffect(() => {
-    if (!clientId || !auth) return
+    const authObj = getFirebaseAuth() || auth
+    if (!clientId || !authObj) return
     if (promptActive) return
 
     // FedCM (forced by Chrome) requires HTTPS — skip on localhost to avoid
@@ -77,15 +78,19 @@ export function GoogleOneTap({ redirectTo = '/dashboard' }: Props) {
 
     async function handleCredential(response: { credential: string }) {
       try {
+        const currentAuth = getFirebaseAuth() || auth
+        if (!currentAuth) return
+
         // Sign in with Firebase using the Google ID token
         const credential = GoogleAuthProvider.credential(response.credential)
-        const result = await signInWithCredential(auth!, credential)
+        const result = await signInWithCredential(currentAuth, credential)
         const firebaseUser = result.user
 
         // Sync / create Firestore user doc
         let userData: JashnUser | null = null
-        if (db) {
-          const userRef = doc(db, 'users', firebaseUser.uid)
+        const currentDb = getFirebaseDb() || db
+        if (currentDb) {
+          const userRef = doc(currentDb, 'users', firebaseUser.uid)
           const snap = await getDoc(userRef)
           if (snap.exists()) {
             userData = snap.data() as JashnUser

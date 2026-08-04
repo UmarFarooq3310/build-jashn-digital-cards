@@ -1,8 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { useLang } from '@/lib/lang/context'
 import { Heart, Sparkles, Globe, MapPin, Mail, MessageSquare, ShieldCheck, Zap } from 'lucide-react'
 
@@ -429,15 +427,12 @@ const ABOUT_TEXT: Record<string, Record<string, string>> = {
 }
 
 export default function AboutPage() {
-  const { lang } = useLang()
-  const t = (key: string) => ABOUT_TEXT[key]?.[lang] || ABOUT_TEXT[key]?.en || ''
+  const { lang, t: globalT } = useLang()
+  const t = (key: string) => ABOUT_TEXT[key]?.[lang] || ABOUT_TEXT[key]?.en || globalT(key) || ''
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
-
-      <main className="flex-1 py-12 md:py-20">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
+    <div className="py-12 md:py-20">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           
           {/* Header Badge & Title */}
           <div className="text-center">
@@ -454,7 +449,7 @@ export default function AboutPage() {
 
           {/* Core Content Card */}
           <div className="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-xs space-y-8 text-foreground leading-relaxed">
-            <h2 className="text-xl font-extrabold text-foreground mb-4 border-b pb-2">About Cardzy & Our Mission</h2>
+            <h2 className="text-xl font-extrabold text-foreground mb-4 border-b pb-2">{t('aboutCardzyMissionTitle')}</h2>
             <section>
               <h3 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
                 <Heart className="size-5 text-emerald-600 dark:text-emerald-400" /> {t('s1Title')}
@@ -529,9 +524,6 @@ export default function AboutPage() {
 
           </div>
         </div>
-      </main>
-
-      <SiteFooter />
     </div>
   )
 }

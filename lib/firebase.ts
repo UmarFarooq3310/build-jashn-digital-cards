@@ -1,6 +1,6 @@
-import { initializeApp, getApps, getApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth'
+import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app'
+import { getFirestore, Firestore } from 'firebase/firestore'
+import { getAuth, Auth } from 'firebase/auth'
 
 const cleanEnvVar = (val: string | undefined) => {
   if (!val) return val
@@ -16,25 +16,64 @@ const firebaseConfig = {
   appId: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_APP_ID),
 }
 
-const isFirebaseConfigured = !!(
+export const isFirebaseConfigured = !!(
   firebaseConfig.apiKey &&
   firebaseConfig.projectId
 )
 
-let app: any = null
-let db: any = null
-let auth: any = null
+let app: FirebaseApp | null = null
+let db: Firestore | null = null
+let auth: Auth | null = null
 
-if (isFirebaseConfigured) {
-  try {
-    app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig)
-    if (typeof window !== 'undefined') {
-      try { db = getFirestore(app) } catch (e) {}
-      try { auth = getAuth(app) } catch (e) {}
+export function getFirebaseApp(): FirebaseApp | null {
+  if (!isFirebaseConfigured) return null
+  if (!app) {
+    try {
+      app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig)
+    } catch (e) {
+      console.error('Error initializing Firebase App:', e)
     }
-  } catch (error) {
-    // Silent catch during build
+  }
+  return app
+}
+
+export function getFirebaseAuth(): Auth | null {
+  if (typeof window === 'undefined') return null
+  if (!auth) {
+    const a = getFirebaseApp()
+    if (a) {
+      try { auth = getAuth(a) } catch (e) { console.error('Error initializing Firebase Auth:', e) }
+    }
+  }
+  return auth
+}
+
+export function getFirebaseDb(): Firestore | null {
+  if (typeof window === 'undefined') return null
+  if (!db) {
+    const a = getFirebaseApp()
+    if (a) {
+      try {
+        db = getFirestore(a)
+      } catch (e: any) {
+        console.warn('Firebase Firestore is not enabled or available:', e?.message || e)
+        db = null
+      }
+    }
+  }
+  return db
+}
+
+// Initialize real Firebase instances immediately on client load
+if (typeof window !== 'undefined' && isFirebaseConfigured) {
+  try {
+    app = getFirebaseApp()
+    auth = getFirebaseAuth()
+    db = getFirebaseDb()
+  } catch (e) {
+    console.warn('Firebase initialization notice:', e)
   }
 }
 
-export { app, db, auth, isFirebaseConfigured }
+export { app, db, auth }
+

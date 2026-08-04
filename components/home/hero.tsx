@@ -1,10 +1,16 @@
+'use client'
+
 import Link from 'next/link'
-import { ArrowRight, MailOpen, Sparkles, Heart } from 'lucide-react'
+import { ArrowRight, MailOpen, Sparkles } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
+import { useLang } from '@/lib/lang/context'
 import { HeroEmailForm } from './hero-email-form'
 import { HeroStaticCard } from './hero-static-card'
 
 export function Hero() {
+  const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
+
   return (
     <section
       suppressHydrationWarning
@@ -18,7 +24,7 @@ export function Hero() {
               className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-bold text-amber-900 dark:text-amber-300 shadow-sm"
             >
               <Sparkles className="size-4 text-amber-500 animate-pulse" />
-              Global Digital Cards & Event Invitations 🌍
+              {t('heroTagline') || 'Global Digital Cards & Event Invitations 🌍'}
             </span>
             
             <Link
@@ -26,21 +32,21 @@ export function Hero() {
               className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-sm hover:bg-emerald-500/20 transition-all"
             >
               <Sparkles className="size-3.5 text-emerald-500 animate-bounce" />
-              <span>Create Wish Card →</span>
+              <span>{t('createWishCard')} →</span>
             </Link>
           </div>
 
           <h1
-            className="mt-5 text-balance font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.15] tracking-tight text-foreground"
+            className={`mt-5 text-balance font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.15] tracking-tight text-foreground ${isUrdu ? 'font-urdu leading-[2.2]' : ''}`}
           >
-            Beautiful wishes & invitations,{' '}
+            {t('heroMainTitlePart1') || 'Beautiful wishes & invitations,'}{' '}
             <span className="bg-gradient-to-r from-emerald-700 via-emerald-600 to-amber-600 bg-clip-text text-transparent">
-              made in minutes
+              {t('heroMainTitlePart2') || 'made in minutes'}
             </span>
           </h1>
 
-          <p className="mt-4 max-w-lg text-pretty text-base sm:text-lg leading-relaxed text-muted-foreground">
-            Create animated digital wish cards for Eid, birthdays, weddings, anniversaries & celebrations with live RSVP & 18 languages.
+          <p className={`mt-4 max-w-lg text-pretty text-base sm:text-lg leading-relaxed text-muted-foreground ${isUrdu ? 'font-urdu text-lg sm:text-xl leading-[2.2]' : ''}`}>
+            {t('heroSubText') || 'Create animated digital wish cards for Eid, birthdays, weddings, anniversaries & celebrations with live RSVP & 18 languages.'}
           </p>
 
           {/* CTA buttons */}
@@ -50,7 +56,7 @@ export function Hero() {
               className={buttonVariants({ size: 'lg', className: 'h-14 px-7 text-base font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-950/20 rounded-2xl' })}
             >
               <Sparkles className="size-5 text-amber-300" />
-              Create Wish Card
+              {t('createWishCard')}
               <ArrowRight className="size-4" />
             </Link>
             <Link
@@ -62,7 +68,7 @@ export function Hero() {
               })}
             >
               <MailOpen className="size-5 text-amber-600" />
-              Create Invitation
+              {t('createInvitation')}
             </Link>
           </div>
 

@@ -1,7 +1,5 @@
 'use client'
 
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { useLang } from '@/lib/lang/context'
 
 const PRIVACY_TEXT: Record<string, Record<string, string>> = {
@@ -34,74 +32,70 @@ const PRIVACY_TEXT: Record<string, Record<string, string>> = {
 }
 
 export default function PrivacyPolicyPage() {
-  const { lang } = useLang()
+  const { lang, t } = useLang()
 
   const getText = (key: string) => {
-    return PRIVACY_TEXT[key]?.[lang] || PRIVACY_TEXT[key]?.['en'] || ''
+    return PRIVACY_TEXT[key]?.[lang] || PRIVACY_TEXT[key]?.['en'] || t(key) || ''
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
-      <main className="flex-1 mx-auto max-w-3xl px-4 py-12 md:py-16 w-full">
-        <h1 className="text-3xl font-extrabold text-primary mb-2">
-          {getText('title')}
-        </h1>
-        <p className="text-sm text-muted-foreground mb-8">
-          {getText('lastUpdated')}
-        </p>
+    <div className="mx-auto max-w-3xl px-4 py-12 md:py-16 w-full">
+      <h1 className="text-3xl font-extrabold text-primary mb-2">
+        {getText('title')}
+      </h1>
+      <p className="text-sm text-muted-foreground mb-8">
+        {getText('lastUpdated')}
+      </p>
 
-        <h2 className="text-xl font-extrabold text-foreground mb-4 border-b pb-2">Cardzy Privacy & Data Policies</h2>
+      <h2 className="text-xl font-extrabold text-foreground mb-4 border-b pb-2">{getText('privacyAndDataPoliciesTitle')}</h2>
 
-        <Section title={getText('s1Title')}>
-          {getText('s1Content')}
-        </Section>
+      <Section title={getText('s1Title')}>
+        {getText('s1Content')}
+      </Section>
 
-        <Section title={getText('s2Title')}>
-          <ul className="list-disc pl-5 space-y-1.5">
-            <li>{getText('s2AccInfo')}</li>
-            <li>{getText('s2CardContent')}</li>
-            <li>{getText('s2UsageData')}</li>
-          </ul>
-        </Section>
+      <Section title={getText('s2Title')}>
+        <ul className="list-disc pl-5 space-y-1.5">
+          <li>{getText('s2AccInfo')}</li>
+          <li>{getText('s2CardContent')}</li>
+          <li>{getText('s2UsageData')}</li>
+        </ul>
+      </Section>
 
-        <Section title={getText('s3Title')}>
-          {getText('s3Content')}
-        </Section>
+      <Section title={getText('s3Title')}>
+        {getText('s3Content')}
+      </Section>
 
-        <Section title={getText('s4Title')}>
-          {getText('s4Content')}
-        </Section>
+      <Section title={getText('s4Title')}>
+        {getText('s4Content')}
+      </Section>
 
-        <Section title={getText('s5Title')}>
-          {getText('s5Content')}
-        </Section>
+      <Section title={getText('s5Title')}>
+        {getText('s5Content')}
+      </Section>
 
-        <Section title={getText('s6Title')}>
-          {getText('s6Content')}
-        </Section>
+      <Section title={getText('s6Title')}>
+        {getText('s6Content')}
+      </Section>
 
-        <Section title={getText('s7Title')}>
-          {getText('s7Content')}
-        </Section>
+      <Section title={getText('s7Title')}>
+        {getText('s7Content')}
+      </Section>
 
-        <Section title={getText('s8Title')}>
-          {getText('s8Content')}
-        </Section>
+      <Section title={getText('s8Title')}>
+        {getText('s8Content')}
+      </Section>
 
-        <Section title={getText('s9Title')}>
-          {getText('s9Content')}
-        </Section>
+      <Section title={getText('s9Title')}>
+        {getText('s9Content')}
+      </Section>
 
-        <Section title={getText('s10Title')}>
-          {getText('s10Content')}
-        </Section>
+      <Section title={getText('s10Title')}>
+        {getText('s10Content')}
+      </Section>
 
-        <Section title={getText('s11Title')}>
-          {getText('s11Content')}
-        </Section>
-      </main>
-      <SiteFooter />
+      <Section title={getText('s11Title')}>
+        {getText('s11Content')}
+      </Section>
     </div>
   )
 }

@@ -4,12 +4,27 @@ import Link from 'next/link'
 import { CardzyLogo } from '@/components/ui/logo'
 import { useLang } from '@/lib/lang/context'
 
+import { usePathname } from 'next/navigation'
+import { useState, useEffect } from 'react'
+
 export function SiteFooter() {
   const { t } = useLang()
+  const pathname = usePathname()
+  const [isSenderMode, setIsSenderMode] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const mode = new URLSearchParams(window.location.search).get('mode')
+      setIsSenderMode(mode === 'sender')
+    }
+  }, [pathname])
+
+  const isCardRoute = pathname?.startsWith('/w/') || pathname?.startsWith('/i/') || pathname?.startsWith('/v/')
+  if (isCardRoute && !isSenderMode) return null
 
   return (
     <footer className="border-t border-emerald-900/40 bg-emerald-950 text-emerald-100 overflow-x-hidden" suppressHydrationWarning>
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         <div className="flex flex-col gap-8 md:flex-row md:justify-between">
           <div className="max-w-xs">
             <div className="flex items-center gap-2.5">

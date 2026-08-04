@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { Sparkles, BookOpen } from 'lucide-react'
+import { Sparkles, BookOpen, Volume2, VolumeX } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLang } from '@/lib/lang/context'
+import { celebrationAudio } from '@/lib/jashn/audio-synth'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
@@ -243,11 +244,24 @@ export function ThreeDCardWrapper({
     setTilt({ rx: 0, ry: 0, px: 50, py: 50 })
   }
 
+  const [isAudioActive, setIsAudioActive] = useState(false)
+
+  const handleToggleAudio = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    const active = celebrationAudio.toggle(occasionIdOrCategory)
+    setIsAudioActive(active)
+  }
+
   const handleOpen = () => {
     if (isOpen) return
     setIsOpen(true)
     setHasOpened(true)
     setTilt({ rx: 0, ry: 0, px: 50, py: 50 }) // Reset tilt immediately on open
+
+    if (!isSensitive) {
+      celebrationAudio.playMelody(occasionIdOrCategory)
+      setIsAudioActive(true)
+    }
 
     if (onOpened) {
       onOpened()
@@ -286,10 +300,8 @@ export function ThreeDCardWrapper({
       onMouseLeave={handleMouseLeave}
       onClick={!isOpen ? handleOpen : undefined}
       className={cn(
-        "relative w-full max-w-[420px] mx-auto rounded-[2.5rem] select-none",
-        isOpen ? "cursor-default" : "cursor-pointer",
-        "transition-shadow duration-300",
-        !isOpen && "hover:shadow-[0_45px_70px_-15px_rgba(0,0,0,0.65)]"
+        "relative w-full mx-auto rounded-[2.5rem] select-none transition-all duration-500",
+        isOpen ? "max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl cursor-default" : "max-w-sm sm:max-w-md md:max-w-lg cursor-pointer hover:shadow-[0_45px_70px_-15px_rgba(0,0,0,0.65)]"
       )}
       style={{
         perspective: '1100px', // Stronger 3D perspective depth (closer virtual camera)
@@ -300,7 +312,7 @@ export function ThreeDCardWrapper({
       {/* Envelope Cover Container (determines parent height when closed, transitions out when open) */}
       <div
         className={cn(
-          "w-full aspect-[3/4.4] sm:aspect-[3/4.2] rounded-[2.5rem] transition-all duration-[1.2s] ease-out",
+          "w-full aspect-[3/4.2] max-h-[62vh] sm:max-h-[68vh] rounded-[2.5rem] transition-all duration-[1.2s] ease-out",
           isOpen ? "absolute inset-x-0 top-0 opacity-0 pointer-events-none" : "relative"
         )}
         style={{
@@ -615,7 +627,18 @@ export function ThreeDCardWrapper({
           </div>
         )}
 
-        {/* Global Mute/Unmute Audio button removed */}
+        {/* Floating Sound Toggle Button */}
+        {isOpen && !isSensitive && (
+          <button
+            type="button"
+            onClick={handleToggleAudio}
+            className="absolute top-3 right-3 z-30 flex items-center gap-1.5 rounded-full bg-slate-950/80 px-3 py-1.5 text-xs font-bold text-amber-300 border border-amber-500/40 shadow-lg backdrop-blur-md hover:bg-slate-900 transition-all hover:scale-105"
+            title="Toggle Sound"
+          >
+            {isAudioActive ? <Volume2 className="size-4 text-emerald-400 animate-pulse" /> : <VolumeX className="size-4 text-slate-400" />}
+            <span>{isAudioActive ? (t('soundOn') || 'Sound ON') : (t('soundOff') || 'Sound OFF')}</span>
+          </button>
+        )}
       </div>
     </div>
   )

@@ -24,8 +24,6 @@ import {
   ExternalLink,
   AlertCircle,
 } from 'lucide-react'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { CardQrCode } from '@/components/jashn/qr-code'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -40,6 +38,7 @@ import { cn, validateWhatsAppNumber } from '@/lib/utils'
 export default function CreateVisitingCardPage() {
   const { t, lang, setLang } = useLang()
   const { createVisitingCard, showToast } = useJashn()
+  const isUrdu = lang === 'ur' || lang === 'ar'
 
   const [selectedCategory, setSelectedCategory] = useState<VisitingCardCategory>('business')
   const [selectedThemeId, setSelectedThemeId] = useState<string>('executive-gold')
@@ -182,10 +181,7 @@ export default function CreateVisitingCardPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
-
-      <main className="flex-1 py-10 px-4">
+    <div className="py-10 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl space-y-8">
           {/* Header Banner */}
           <div className="text-center space-y-3 max-w-3xl mx-auto">
@@ -286,22 +282,42 @@ export default function CreateVisitingCardPage() {
                     {t('selectCategorySection') || '1. Select Industry / Profession Category'}
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                    {VISITING_CARD_CATEGORIES.map((cat) => (
-                      <button
-                        key={cat.id}
-                        type="button"
-                        onClick={() => setSelectedCategory(cat.id)}
-                        className={cn(
-                          'flex flex-col items-start gap-1 p-3.5 rounded-2xl border text-left transition-all',
-                          selectedCategory === cat.id
-                            ? 'border-primary bg-primary/10 text-primary shadow-sm font-bold ring-2 ring-primary/20'
-                            : 'border-border bg-card hover:border-primary/40 text-muted-foreground'
-                        )}
-                      >
-                        <span className="text-xs font-bold text-foreground">{cat.label}</span>
-                        <span className="text-[10px] opacity-75 line-clamp-1">{cat.tagline.split(',')[0]}</span>
-                      </button>
-                    ))}
+                    {VISITING_CARD_CATEGORIES.map((cat) => {
+                      const catKey = cat.id === 'business' ? 'catCorporate'
+                        : cat.id === 'creative' ? 'catTech'
+                        : cat.id === 'medical' ? 'catMedical'
+                        : cat.id === 'legal' ? 'catLegal'
+                        : cat.id === 'real-estate' ? 'catRealEstate'
+                        : cat.id === 'beauty' ? 'catFashion'
+                        : cat.id === 'services' ? 'catServices'
+                        : ''
+                      const taglineKey = cat.id === 'business' ? 'taglineCorporate'
+                        : cat.id === 'creative' ? 'taglineTech'
+                        : cat.id === 'medical' ? 'taglineMedical'
+                        : cat.id === 'legal' ? 'taglineLegal'
+                        : cat.id === 'real-estate' ? 'taglineRealEstate'
+                        : cat.id === 'beauty' ? 'taglineFashion'
+                        : cat.id === 'services' ? 'taglineServices'
+                        : ''
+                      const translatedLabel = catKey ? t(catKey) : cat.label
+                      const translatedTagline = taglineKey ? t(taglineKey) : cat.tagline
+                      return (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => setSelectedCategory(cat.id)}
+                          className={cn(
+                            'flex flex-col items-start gap-1 p-3.5 rounded-2xl border text-left transition-all',
+                            selectedCategory === cat.id
+                              ? 'border-primary bg-primary/10 text-primary shadow-sm font-bold ring-2 ring-primary/20'
+                              : 'border-border bg-card hover:border-primary/40 text-muted-foreground'
+                          )}
+                        >
+                          <span className="text-xs font-bold text-foreground">{translatedLabel}</span>
+                          <span className="text-[10px] opacity-75 line-clamp-1">{translatedTagline.split(',')[0]}</span>
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
 
@@ -311,37 +327,47 @@ export default function CreateVisitingCardPage() {
                     {t('selectThemeSection') || '2. Select Card Style & Colors'}
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {VISITING_CARD_THEMES.map((th) => (
-                      <button
-                        key={th.id}
-                        type="button"
-                        onClick={() => setSelectedThemeId(th.id)}
-                        className={cn(
-                          'flex items-center gap-2.5 p-3 rounded-2xl border transition-all text-left',
-                          selectedThemeId === th.id
-                            ? 'border-primary ring-2 ring-primary/20 shadow-md font-bold'
-                            : 'border-border hover:border-primary/40'
-                        )}
-                      >
-                        <div
-                          className="size-6 rounded-full shrink-0 border border-white/20 shadow-sm"
-                          style={{ background: th.bgGradient }}
-                        />
-                        <span className="text-xs font-bold text-foreground line-clamp-1">{th.name}</span>
-                      </button>
-                    ))}
+                    {VISITING_CARD_THEMES.map((th) => {
+                      const styleKey = th.id === 'executive-gold' ? 'styleExecutiveGold'
+                        : th.id === 'tech-dark' ? 'styleCyberTech'
+                        : th.id === 'emerald-luxury' ? 'styleRoyalEmerald'
+                        : th.id === 'corporate-blue' ? 'styleCorporateNavy'
+                        : th.id === 'rose-gold-elegance' ? 'styleRoseGold'
+                        : th.id === 'minimal-clean' ? 'styleCleanPearl'
+                        : ''
+                      const translatedThemeName = styleKey ? t(styleKey) : th.name
+                      return (
+                        <button
+                          key={th.id}
+                          type="button"
+                          onClick={() => setSelectedThemeId(th.id)}
+                          className={cn(
+                            'flex items-center gap-2.5 p-3 rounded-2xl border transition-all text-left',
+                            selectedThemeId === th.id
+                              ? 'border-primary ring-2 ring-primary/20 shadow-md font-bold'
+                              : 'border-border hover:border-primary/40'
+                          )}
+                        >
+                          <div
+                            className="size-6 rounded-full shrink-0 border border-white/20 shadow-sm"
+                            style={{ background: th.bgGradient }}
+                          />
+                          <span className="text-xs font-bold text-foreground line-clamp-1">{translatedThemeName}</span>
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
 
                 {/* 3. Personal & Contact Details */}
                 <div className="bg-card border border-border rounded-3xl p-6 shadow-sm space-y-4">
-                  <label className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground block">
+                  <label className={cn("text-xs font-extrabold uppercase tracking-wider text-muted-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                     {t('contactDetailsSection') || '3. Contact & Business Details'}
                   </label>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-foreground">{t('fullNameLabel') || 'Full Name *'}</label>
+                      <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('fullNameLabel') || 'Full Name *'}</label>
                       <Input
                         value={fullName}
                         onChange={(e) => {
@@ -359,7 +385,7 @@ export default function CreateVisitingCardPage() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-foreground">{t('jobTitleLabel') || 'Job Title / Designation *'}</label>
+                      <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('jobTitleLabel') || 'Job Title / Designation *'}</label>
                       <Input
                         value={title}
                         onChange={(e) => {
@@ -379,7 +405,7 @@ export default function CreateVisitingCardPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-foreground">{t('companyLabel') || 'Company / Clinic / Brand Name'}</label>
+                      <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('companyLabel') || 'Company / Clinic / Brand Name'}</label>
                       <Input
                         value={company}
                         onChange={(e) => setCompany(e.target.value)}
@@ -389,7 +415,7 @@ export default function CreateVisitingCardPage() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-foreground">{t('phoneLabel') || 'Phone Number *'}</label>
+                      <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('phoneLabel') || 'Phone Number *'}</label>
                       <Input
                         value={phone}
                         onChange={(e) => {
@@ -409,7 +435,7 @@ export default function CreateVisitingCardPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-foreground">{t('whatsAppLabel') || 'WhatsApp Number'}</label>
+                      <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('whatsAppLabel') || 'WhatsApp Number'}</label>
                       <Input
                         value={whatsapp}
                         onChange={(e) => {
@@ -427,7 +453,7 @@ export default function CreateVisitingCardPage() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-foreground">{t('emailLabel') || 'Email Address'}</label>
+                      <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('emailLabel') || 'Email Address'}</label>
                       <Input
                         type="email"
                         value={email}
@@ -448,7 +474,7 @@ export default function CreateVisitingCardPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-foreground">{t('websiteLabel') || 'Website URL'}</label>
+                      <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('websiteLabel') || 'Website URL'}</label>
                       <Input
                         value={website}
                         onChange={(e) => {
@@ -466,7 +492,7 @@ export default function CreateVisitingCardPage() {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-foreground">{t('googleMapsLabel') || 'Google Maps Location Link'}</label>
+                      <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('googleMapsLabel') || 'Google Maps Location Link'}</label>
                       <Input
                         value={mapLink}
                         onChange={(e) => setMapLink(e.target.value)}
@@ -477,7 +503,7 @@ export default function CreateVisitingCardPage() {
                   </div>
 
                   <div className="space-y-1.5 pt-1">
-                    <label className="text-xs font-bold text-foreground">{t('officeAddressLabel') || 'Office / Clinic Address'}</label>
+                    <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('officeAddressLabel') || 'Office / Clinic Address'}</label>
                     <Input
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
@@ -487,7 +513,7 @@ export default function CreateVisitingCardPage() {
                   </div>
 
                   <div className="space-y-1.5 pt-1">
-                    <label className="text-xs font-bold text-foreground">{t('shortBioLabel') || 'Short Professional Bio / Services'}</label>
+                    <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('shortBioLabel') || 'Short Professional Bio / Services'}</label>
                     <Textarea
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
@@ -523,42 +549,45 @@ export default function CreateVisitingCardPage() {
         </div>
 
         {/* Premium Guide Overview Card */}
-        <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-4xl mx-auto">
+        <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-6xl mx-auto">
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-              <Sparkles className="size-3.5" /> vCard Builder Overview
+              <Sparkles className="size-3.5" /> {t('vcardOverviewBadge') || 'vCard Builder Overview'}
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
-            Smart Digital Business Cards & Executive vCard Builder
+          <h2 className={`text-xl sm:text-2xl font-extrabold text-foreground tracking-tight ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+            {t('smartDigitalBusinessCardsTitle') || 'Smart Digital Business Cards & Executive vCard Builder'}
           </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            Create smart digital business cards with Cardzy. Share your contact info, social links, WhatsApp, and Google Maps office pins with one tap. Save money on paper cards and network faster.
+          <p className={`text-xs sm:text-sm text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-sm sm:text-base leading-relaxed' : ''}`}>
+            {t('smartDigitalBusinessCardsDesc') || 'Create smart digital business cards with Cardzy. Share your contact info, social links, WhatsApp, and Google Maps office pins with one tap. Save money on paper cards and network faster.'}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
             <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">One-Tap vCard Download</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
-                Allow clients and prospects to save your phone number, email, address, and website directly to their smartphone contacts with one click.
+              <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+                {t('oneTapVCardDownloadTitle') || 'One-Tap vCard Download'}
+              </h3>
+              <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+                {t('oneTapVCardDownloadDesc') || 'Allow clients and prospects to save your phone number, email, address, and website directly to their smartphone contacts with one click.'}
               </p>
             </div>
             <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">Dynamic QR Code Sharing</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
-                Generate high-resolution scannable QR codes for your digital visiting card to feature on physical print materials, email signatures, and badges.
+              <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+                {t('dynamicQrCodeSharingTitle') || 'Dynamic QR Code Sharing'}
+              </h3>
+              <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+                {t('dynamicQrCodeSharingDesc') || 'Generate high-resolution scannable QR codes for your digital visiting card to feature on physical print materials, email signatures, and badges.'}
               </p>
             </div>
             <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">Zero Printing Expense</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
-                Update your designation, phone number, or company address anytime without spending thousands on reprinting traditional paper cards.
+              <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+                {t('zeroPrintingExpenseTitle') || 'Zero Printing Expense'}
+              </h3>
+              <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+                {t('zeroPrintingExpenseDesc') || 'Update your designation, phone number, or company address anytime without spending thousands on reprinting traditional paper cards.'}
               </p>
             </div>
           </div>
         </section>
-      </main>
-
-      <SiteFooter />
     </div>
   )
 }

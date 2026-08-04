@@ -1,8 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { useLang } from '@/lib/lang/context'
 import { Shield } from 'lucide-react'
 
@@ -642,15 +640,12 @@ const TERMS_TEXT: Record<string, Record<string, string>> = {
 }
 
 export default function TermsPage() {
-  const { lang } = useLang()
-  const t = (key: string) => TERMS_TEXT[key]?.[lang] || TERMS_TEXT[key]?.en || ''
+  const { lang, t: globalT } = useLang()
+  const t = (key: string) => TERMS_TEXT[key]?.[lang] || TERMS_TEXT[key]?.en || globalT(key) || ''
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
-
-      <main className="flex-1 py-12 md:py-20">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
+    <div className="py-12 md:py-20">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
           
           {/* Header */}
           <div className="text-center">
@@ -668,7 +663,7 @@ export default function TermsPage() {
           {/* Core Content */}
           <div className="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-xs space-y-8 text-foreground leading-relaxed text-sm sm:text-base">
             
-            <h2 className="text-xl font-extrabold text-foreground mb-4 border-b pb-2">Cardzy Terms of Service & Acceptable Use Policy</h2>
+            <h2 className="text-xl font-extrabold text-foreground mb-4 border-b pb-2">{t('termsAndAcceptableUseTitle')}</h2>
             <p className="text-muted-foreground">
               {t('intro1')}
             </p>
@@ -785,9 +780,6 @@ export default function TermsPage() {
 
           </div>
         </div>
-      </main>
-
-      <SiteFooter />
     </div>
   )
 }

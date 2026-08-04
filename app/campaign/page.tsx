@@ -68,46 +68,48 @@ const SLIDES = [
   },
 ]
 
-const INSTAGRAM_CAPTION = `✨ Say It Beautifully with Cardzy! ✨
+const INSTAGRAM_CAPTION = `✨ Say it beautifully with Cardzy! ✨
 
-Looking for the perfect way to invite guests or send animated wishes to your loved ones worldwide? 🌍
+Create 3D animated wish cards & event invitations with custom photo upload, background music, and 18 languages (including Nastaliq Urdu!).
 
-💌 50+ Beautiful Animated Templates (Eid, Birthdays, Weddings, Diwali & more)
-📱 1-Click WhatsApp RSVP & Live Event Countdowns
-📍 Integrated Google Maps Directions for Guests
-🌐 Send Wishes in 18 Global Languages
+📲 Features:
+• 1-Click WhatsApp RSVP Tracking
+• Google Maps Location Direct Link
+• Live Event Countdown Timers
+• 18 Multilingual Fonts & Pre-written Wishes
+• 100% Free Forever Plan Available!
 
-Create yours in minutes for FREE! Click the link in bio to get started ➡️ cardzy.online
+👉 Tap link in bio to craft your card now: cardzy.online
 
-#Cardzy #DigitalInvitations #WishCards #RSVP #WeddingInvitations #EidMubarak #FreeInvitations #CardzyOnline`
+#Cardzy #DigitalInvitation #EidMubarakCard #WeddingInvitation #DigitalCard #UrduCard #WishCard #RSVP`
 
 export default function CampaignPage() {
-  const { t } = useLang()
   const [activeSlide, setActiveSlide] = useState(0)
   const [copiedCaption, setCopiedCaption] = useState(false)
   const [downloading, setDownloading] = useState(false)
-  const renderCardRef = useRef<HTMLDivElement>(null)
 
   const nextSlide = () => setActiveSlide((prev) => (prev + 1) % SLIDES.length)
   const prevSlide = () => setActiveSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length)
 
+  const renderCardRef = useRef<HTMLDivElement>(null)
+
   const copyCaption = () => {
     navigator.clipboard.writeText(INSTAGRAM_CAPTION)
     setCopiedCaption(true)
-    setTimeout(() => setCopiedCaption(false), 2000)
+    setTimeout(() => setCopiedCaption(false), 2500)
   }
 
   const exportSlidePng = async () => {
-    if (!renderCardRef.current) return
+    if (!renderCardRef.current || downloading) return
     setDownloading(true)
     try {
-      const { toPng } = await import('html-to-image')
-      const dataUrl = await toPng(renderCardRef.current, {
-        width: 1080,
-        height: 1080,
-        pixelRatio: 1,
-        cacheBust: true,
+      const html2canvas = (await import('html2canvas')).default
+      const canvas = await html2canvas(renderCardRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: null,
       })
+      const dataUrl = canvas.toDataURL('image/png')
       const link = document.createElement('a')
       link.download = `cardzy-carousel-slide-${activeSlide + 1}.png`
       link.href = dataUrl
@@ -122,10 +124,7 @@ export default function CampaignPage() {
   const current = SLIDES[activeSlide]
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
-
-      <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex-1 py-12 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           {/* Header Badge & Title */}
           <div className="text-center mb-10">
@@ -467,9 +466,6 @@ export default function CampaignPage() {
             </pre>
           </div>
         </div>
-      </main>
-
-      <SiteFooter />
     </div>
   )
 }

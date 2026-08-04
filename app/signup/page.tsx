@@ -4,8 +4,6 @@ import { useState, useEffect, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Mail, Lock, User, Check, X, ArrowRight, ArrowLeft, Loader2, Sparkles } from 'lucide-react'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { cn } from '@/lib/utils'
@@ -156,16 +154,24 @@ function SignupPageContent() {
   const [confirmPassword, setConfirmPassword] = useState('')
 
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+  const redirect = searchParams.get('redirect') || '/dashboard'
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true)
-    const success = await signInWithGoogle()
-    if (success) {
-      const currentUser = useJashn.getState().user
-      if (currentUser) await migrateGuestCards(currentUser.uid)
-      window.location.href = redirect
+    setGeneralError(null)
+    try {
+      const success = await signInWithGoogle()
+      if (success) {
+        const currentUser = useJashn.getState().user
+        if (currentUser) await migrateGuestCards(currentUser.uid)
+        window.location.href = redirect
+      }
+    } catch (e: any) {
+      console.error('Google sign-in error:', e)
+      setGeneralError('Google sign-in could not be completed. Please try again.')
+    } finally {
+      setIsGoogleLoading(false)
     }
-    setIsGoogleLoading(false)
   }
 
   const cardRef = useRef<HTMLDivElement>(null)
@@ -192,18 +198,16 @@ function SignupPageContent() {
   if (hasNumber) strengthScore += 25
   if (hasSpecial) strengthScore += 25
 
-  const redirect = searchParams.get('redirect') || '/dashboard'
-
   useEffect(() => {
-    if (user) router.push(redirect)
-  }, [user, router, redirect])
+    if (user) window.location.href = redirect
+  }, [user, redirect])
 
   const validateEmail = (val: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)
 
   useEffect(() => {
     if (!email) return
     if (!validateEmail(email)) {
-      setErrors((prev) => ({ ...prev, email: 'Enter a valid email address' }))
+      setErrors((prev) => ({ ...prev, email: t('enterValidEmail') || 'Enter a valid email address' }))
     } else {
       setErrors((prev) => { const c = { ...prev }; delete c.email; return c })
     }
@@ -212,7 +216,7 @@ function SignupPageContent() {
   useEffect(() => {
     if (!name) return
     if (name.trim().length < 2) {
-      setErrors((prev) => ({ ...prev, name: 'Name must be at least 2 characters' }))
+      setErrors((prev) => ({ ...prev, name: t('nameTooShort') || 'Name must be at least 2 characters' }))
     } else {
       setErrors((prev) => { const c = { ...prev }; delete c.name; return c })
     }
@@ -221,7 +225,7 @@ function SignupPageContent() {
   useEffect(() => {
     if (!confirmPassword) return
     if (confirmPassword !== password) {
-      setErrors((prev) => ({ ...prev, confirmPassword: 'Passwords do not match' }))
+      setErrors((prev) => ({ ...prev, confirmPassword: t('passwordsDoNotMatch') || 'Passwords do not match' }))
     } else {
       setErrors((prev) => { const c = { ...prev }; delete c.confirmPassword; return c })
     }
@@ -268,7 +272,7 @@ function SignupPageContent() {
       if (currentUser) await migrateGuestCards(currentUser.uid)
       router.push(redirect)
     } else {
-      setGeneralError('This email is already registered. Please sign in instead.')
+      setGeneralError(t('emailAlreadyRegistered') || 'This email is already registered. Please sign in instead.')
     }
   }
 
@@ -280,8 +284,8 @@ function SignupPageContent() {
 
           <div className="text-center">
             <CardzyLogo className="mx-auto size-12 mb-3 shadow-md" />
-            <h1 className="text-2xl font-extrabold text-foreground">Create Your Free Cardzy Account</h1>
-            <p className="text-xs text-muted-foreground mt-1">Design premium digital cards, invitations & track RSVPs live</p>
+            <h1 className="text-2xl font-extrabold text-foreground">{t('createFreeCardzyAccount') || 'Create Your Free Cardzy Account'}</h1>
+            <p className="text-xs text-muted-foreground mt-1">{t('createFreeCardzyAccountSubtitle') || 'Design premium digital cards, invitations & track RSVPs live'}</p>
           </div>
 
           {generalError && (
@@ -292,16 +296,16 @@ function SignupPageContent() {
 
           {/* Step indicator */}
           <div className="flex items-center justify-between mb-4 px-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-            <span className={cn(signupStep === 1 ? 'text-primary' : 'text-muted-foreground')}>1. Basic Info</span>
+            <span className={cn(signupStep === 1 ? 'text-primary' : 'text-muted-foreground')}>{t('stepBasicInfo') || '1. Basic Info'}</span>
             <span className="h-px bg-border flex-1 mx-3" />
-            <span className={cn(signupStep === 2 ? 'text-primary' : 'text-muted-foreground')}>2. Password</span>
+            <span className={cn(signupStep === 2 ? 'text-primary' : 'text-muted-foreground')}>{t('stepPasswordLabel') || '2. Password'}</span>
           </div>
 
           {/* Step 1 */}
           {signupStep === 1 && (
             <form onSubmit={handleNextStep} className="signup-step-fields space-y-4">
               <div>
-                <label className="block text-xs font-medium text-foreground mb-1">Full Name</label>
+                <label className="block text-xs font-medium text-foreground mb-1">{t('fullName')}</label>
                 <div className="relative">
                   <input
                     type="text"
@@ -320,7 +324,7 @@ function SignupPageContent() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-foreground mb-1">Email Address</label>
+                <label className="block text-xs font-medium text-foreground mb-1">{t('emailAddress')}</label>
                 <EmailSuggestInput
                   value={email}
                   onChange={setEmail}
@@ -334,7 +338,7 @@ function SignupPageContent() {
                 disabled={!isStep1Valid}
                 className="w-full py-5 bg-primary hover:bg-primary/90 font-bold text-primary-foreground rounded-xl disabled:opacity-50 disabled:cursor-not-allowed mt-2"
               >
-                Continue <ArrowRight className="ml-2 size-4" />
+                {t('continueBtn') || 'Continue'} <ArrowRight className="ml-2 size-4" />
               </Button>
 
               {/* Divider */}
@@ -361,7 +365,7 @@ function SignupPageContent() {
                     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                   </svg>
                 )}
-                {t('continueWithGoogle')}
+                {t('signUpWithGoogle') || 'Sign up with Google'}
               </button>
             </form>
           )}
@@ -387,15 +391,15 @@ function SignupPageContent() {
               {/* Strength meter */}
               <div className="space-y-2 p-3 rounded-2xl bg-muted/50 border border-border/50">
                 <div className="flex justify-between items-center text-xs font-semibold">
-                  <span className="text-muted-foreground">Strength:</span>
+                  <span className="text-muted-foreground">{t('passwordStrength') || 'Strength:'}</span>
                   <span className={cn(
                     strengthScore <= 50 ? 'text-destructive' : strengthScore === 75 ? 'text-amber-600' : 'text-emerald-700'
                   )}>
-                    {strengthScore === 0 && 'None'}
-                    {strengthScore === 25 && 'Very Weak'}
-                    {strengthScore === 50 && 'Weak'}
-                    {strengthScore === 75 && 'Moderate'}
-                    {strengthScore === 100 && 'Strong'}
+                    {strengthScore === 0 && (t('strengthNone') || 'None')}
+                    {strengthScore === 25 && (t('strengthVeryWeak') || 'Very Weak')}
+                    {strengthScore === 50 && (t('strengthWeak') || 'Weak')}
+                    {strengthScore === 75 && (t('strengthModerate') || 'Moderate')}
+                    {strengthScore === 100 && (t('strengthStrong') || 'Strong')}
                   </span>
                 </div>
                 <div className="h-2 w-full rounded-full bg-border overflow-hidden flex gap-0.5">
@@ -412,10 +416,10 @@ function SignupPageContent() {
                 </div>
                 <div className="grid grid-cols-2 gap-1.5 pt-1 text-[10px] font-medium">
                   {[
-                    { ok: hasMinLength, label: 'Min 8 characters' },
-                    { ok: hasMixedCase, label: 'Upper & lower case' },
-                    { ok: hasNumber, label: 'At least 1 number' },
-                    { ok: hasSpecial, label: 'Special character' },
+                    { ok: hasMinLength, label: t('pwdMin8') || 'Min 8 characters' },
+                    { ok: hasMixedCase, label: t('pwdUpperLower') || 'Upper & lower case' },
+                    { ok: hasNumber, label: t('pwdNumber') || 'At least 1 number' },
+                    { ok: hasSpecial, label: t('pwdSpecial') || 'Special character' },
                   ].map(({ ok, label }) => (
                     <div key={label} className="flex items-center gap-1.5">
                       {ok ? <Check className="size-3.5 text-emerald-600" /> : <X className="size-3.5 text-muted-foreground" />}
@@ -477,48 +481,44 @@ function SignupPageContent() {
 
 export default function SignupPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
-      <main className="flex-1 py-6 px-4 max-w-4xl mx-auto w-full">
-        <h1 className="sr-only">Create Your Free Cardzy Account</h1>
-        <Suspense fallback={
-          <div className="flex min-h-[400px] items-center justify-center">
-            <Loader2 className="size-8 animate-spin text-primary" />
-          </div>
-        }>
-          <SignupPageContent />
-        </Suspense>
+    <div className="py-6 px-4 max-w-4xl mx-auto w-full">
+      <h1 className="sr-only">Create Your Free Cardzy Account</h1>
+      <Suspense fallback={
+        <div className="flex min-h-[400px] items-center justify-center">
+          <Loader2 className="size-8 animate-spin text-primary" />
+        </div>
+      }>
+        <SignupPageContent />
+      </Suspense>
 
-        {/* Premium Guide Overview Card */}
-        <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-              <Sparkles className="size-3.5" /> Free Account Perks
-            </span>
+      {/* Premium Guide Overview Card */}
+      <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+            <Sparkles className="size-3.5" /> Free Account Perks
+          </span>
+        </div>
+        <h2 className="text-xl font-extrabold text-foreground tracking-tight">
+          Create Your Free Cardzy Account Today
+        </h2>
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          Join thousands of users creating 3D animated wish cards, digital wedding invitations, and smart business vCards on Cardzy. Registration is 100% free with no credit card required. Enjoy instant shareable links, real-time WhatsApp RSVP tracking, customizable audio tracks, and multi-language support across 18 languages.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className="font-extrabold text-xs text-foreground">Free Forever Plan</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">$0 / Rs 0 forever. Create animated wish cards and shareable links instantly.</p>
           </div>
-          <h2 className="text-xl font-extrabold text-foreground tracking-tight">
-            Create Your Free Cardzy Account Today
-          </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            Join thousands of users creating 3D animated wish cards, digital wedding invitations, and smart business vCards on Cardzy. Registration is 100% free with no credit card required. Enjoy instant shareable links, real-time WhatsApp RSVP tracking, customizable audio tracks, and multi-language support across 18 languages.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
-            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">Free Forever Plan</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">$0 / Rs 0 forever. Create animated wish cards and shareable links instantly.</p>
-            </div>
-            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">18 Multilingual Scripts</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Full support for English, Urdu (Nastaliq), Arabic, and global languages.</p>
-            </div>
-            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">Instant Share Links</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Send your cards directly via WhatsApp, iMessage, or social platforms.</p>
-            </div>
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className="font-extrabold text-xs text-foreground">18 Multilingual Scripts</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Full support for English, Urdu (Nastaliq), Arabic, and global languages.</p>
           </div>
-        </section>
-      </main>
-      <SiteFooter />
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className="font-extrabold text-xs text-foreground">Instant Share Links</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Send your cards directly via WhatsApp, iMessage, or social platforms.</p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

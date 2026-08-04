@@ -11,8 +11,6 @@ import { useEffect, useRef, useState, use, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Sparkles, MapPin, CheckCircle2, MessageCircle, Heart, Loader2, Edit3, Trash2, Eye, Share2, X, ExternalLink } from 'lucide-react'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { InvitationCard } from '@/components/jashn/invitation-card'
 import { ThreeDCardWrapper } from '@/components/jashn/three-d-card-wrapper'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
@@ -205,11 +203,8 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Creator Control Panel) ──
   if (isSenderMode) {
     return (
-      <div className="flex min-h-screen flex-col bg-background">
-        <SiteHeader />
-
-        <main className="flex-1 py-8 px-4">
-          <div className="mx-auto max-w-2xl md:max-w-4xl text-center">
+      <div className="py-8 px-4">
+        <div className="mx-auto max-w-2xl md:max-w-4xl text-center">
             <ConfettiRain active={rainActive} />
 
             {/* Creator Control Panel */}
@@ -329,10 +324,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
               </Link>
             </div>
           </div>
-        </main>
-
-        <SiteFooter />
-      </div>
+        </div>
     )
   }
 

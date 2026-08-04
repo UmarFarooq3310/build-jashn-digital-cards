@@ -119,6 +119,9 @@ export interface Wish {
   killCount?: string
   rank?: string
   winningNumber?: string
+  // Custom Photo & Audio Features
+  photoUrl?: string
+  audioTrack?: string
   viewCount: number
   createdAt: number
 }
@@ -143,6 +146,9 @@ export interface Invitation {
   themeId: string
   borderId?: string
   bgVariantId?: string
+  photoUrl?: string
+  photoUrl2?: string
+  audioTrack?: string
   rsvpCount: number
   viewCount?: number
   createdAt: number

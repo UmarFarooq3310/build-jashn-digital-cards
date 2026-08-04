@@ -30,6 +30,8 @@ export interface WishCardData {
   killCount?: string
   rank?: string
   winningNumber?: string
+  photoUrl?: string
+  audioTrack?: string
 }
 
 function GamingScorecardHUD({ data }: { data: WishCardData }) {
@@ -265,7 +267,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
       <div
         ref={ref}
-        className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl rounded-3xl px-4 py-5 sm:px-6 sm:py-6 text-center shadow-xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
+        className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl px-4 py-4 sm:px-6 sm:py-5 lg:py-6 text-center shadow-xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
         style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
       >
         <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId} decorations={occasion?.decorations} />
@@ -282,7 +284,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
         <div className="card-shimmer-sweep pointer-events-none parallax-mid" aria-hidden="true" />
 
-        <div className="relative z-10 mx-auto flex w-full max-w-sm sm:max-w-md md:max-w-lg flex-col items-center gap-3 sm:gap-4 px-3 py-3">
+        <div className="relative z-10 mx-auto flex w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl flex-col items-center gap-3 sm:gap-5 px-3 py-3">
 
           {recipientLabel ? (
             <p
@@ -293,7 +295,18 @@ export const WishCard = forwardRef<HTMLDivElement, {
             </p>
           ) : null}
 
-          {showAvatar && (
+          {data.photoUrl ? (
+            <div className="avatar-float-anim relative my-1" style={{ filter: 'drop-shadow(0 8px 22px rgba(0,0,0,0.4))' }}>
+              <span
+                className="parallax-near absolute inset-0 -z-10 rounded-full blur-xl opacity-75"
+                style={{ background: 'radial-gradient(circle, var(--c-glow, #ffd700) 0%, transparent 75%)', transform: 'scale(1.5)' }}
+              />
+              <div className="relative size-24 md:size-28 rounded-full border-4 border-[#D4AF37] overflow-hidden shadow-2xl bg-black">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={data.photoUrl} alt="Uploaded Card Photo" className="size-full object-cover" />
+              </div>
+            </div>
+          ) : showAvatar ? (
             <div className="avatar-float-anim relative" style={{ filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.32))' }}>
               <span
                 className="parallax-near absolute inset-0 -z-10 rounded-full blur-lg opacity-60"
@@ -301,7 +314,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
               />
               <RelationAvatar relation={data.relation || data.recipientName} size={68} />
             </div>
-          )}
+          ) : null}
 
           <span
             className="wc-stagger parallax-mid flex items-center justify-center rounded-full border transition-transform duration-300 hover:scale-105"
@@ -343,7 +356,10 @@ export const WishCard = forwardRef<HTMLDivElement, {
             const isRtlScript = lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(localizedMsg)
             return (
               <div
-                className="wc-stagger w-full rounded-2xl p-3 sm:p-4 text-center shadow-inner parallax-near transition-all"
+                className={cn(
+                  "wc-stagger w-full rounded-2xl p-3 sm:p-4 shadow-inner parallax-near transition-all",
+                  isRtlScript ? "text-right" : "text-left"
+                )}
                 style={{
                   background: 'color-mix(in oklab, var(--c-accent) 8%, transparent)',
                   border: '1px solid color-mix(in oklab, var(--c-accent) 18%, transparent)',
@@ -352,8 +368,8 @@ export const WishCard = forwardRef<HTMLDivElement, {
                 <p className={cn(
                   "text-balance transition-all",
                   isRtlScript
-                    ? "font-urdu text-base sm:text-lg md:text-xl leading-loose"
-                    : "text-sm sm:text-base leading-relaxed opacity-95"
+                    ? "font-urdu text-base sm:text-lg md:text-xl leading-loose text-right"
+                    : "text-sm sm:text-base leading-relaxed opacity-95 text-left"
                 )}
                 style={{ color: 'var(--c-ink)' }}
                 >

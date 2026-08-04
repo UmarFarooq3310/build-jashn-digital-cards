@@ -43,7 +43,42 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://adservice.google.com https://www.googletagmanager.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https: wss:; frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com;",
+            // Firebase Auth (popup & redirect) needs:
+            //   script-src:  apis.google.com, accounts.google.com
+            //   frame-src:   accounts.google.com, *.firebaseapp.com (OAuth iframe)
+            //   connect-src: *.googleapis.com, *.firebaseio.com, *.firestore.googleapis.com,
+            //                identitytoolkit.googleapis.com, securetoken.googleapis.com
+            value: [
+              "default-src 'self'",
+              // Scripts — added apis.google.com + accounts.google.com for Firebase Auth popup
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'" +
+                " https://apis.google.com" +
+                " https://accounts.google.com" +
+                " https://pagead2.googlesyndication.com" +
+                " https://adservice.google.com" +
+                " https://www.googletagmanager.com" +
+                " https://va.vercel-scripts.com" +
+                " https://translate.google.com" +
+                " https://translate.googleapis.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://translate.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com data:",
+              "img-src 'self' data: blob: https:",
+              // Network — added all Firebase backend hosts
+              "connect-src 'self' https: wss:" +
+                " https://*.googleapis.com" +
+                " https://*.firebaseio.com" +
+                " https://*.firestore.googleapis.com" +
+                " https://identitytoolkit.googleapis.com" +
+                " https://securetoken.googleapis.com",
+              // Frames — added accounts.google.com + *.firebaseapp.com for OAuth popup iframe
+              "frame-src 'self'" +
+                " https://accounts.google.com" +
+                " https://*.firebaseapp.com" +
+                " https://googleads.g.doubleclick.net" +
+                " https://tpc.googlesyndication.com" +
+                " https://www.google.com" +
+                " https://translate.google.com",
+            ].join('; '),
           },
         ],
       },

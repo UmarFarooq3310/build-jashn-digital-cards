@@ -1,6 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/lang/context'
 
 interface BgVariant {
   id: string
@@ -18,6 +19,32 @@ export function BackgroundPicker({
   onChange: (id: string) => void
   variants?: BgVariant[]
 }) {
+  const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
+
+  const getVariantTranslationKey = (id: string) => {
+    switch (id) {
+      case 'default': return 'bgDefaultGradient'
+      case 'wedding-crimson': return 'bgCrimsonVelvet'
+      case 'wedding-gold': return 'bgMughalGold'
+      case 'wedding-teal': return 'bgFerozaTeal'
+      case 'wedding-royal': return 'bgRoyalIndigo'
+      case 'wedding-emerald-gold': return 'bgEmeraldGold'
+      case 'wedding-royal-plum': return 'bgRoyalPlumGold'
+      case 'wedding-champagne-pink': return 'bgRoseChampagne'
+      case 'islamic-teal':
+      case 'festive-teal': return 'colorDeepTeal'
+      case 'festive-navy': return 'colorMidnightNavy'
+      case 'festive-amber': return 'colorAmberSunset'
+      case 'festive-violet': return 'colorDeepViolet'
+      case 'festive-rose': return 'colorCrimsonRose'
+      case 'festive-aurora': return 'colorAuroraTeal'
+      case 'festive-peach-cream': return 'colorPeachCream'
+      case 'festive-midnight-glimmer': return 'colorMidnightGlimmer'
+      default: return ''
+    }
+  }
+
   if (!variants || variants.length <= 1) {
     return (
       <p className="text-xs text-muted-foreground italic">
@@ -30,6 +57,8 @@ export function BackgroundPicker({
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
       {variants.map((v) => {
         const active = value === v.id || (!value && v.id === 'default')
+        const key = getVariantTranslationKey(v.id)
+        const translatedName = key ? t(key) : v.name
 
         // CSS gradients must go on the 'background' shorthand property, not
         // 'backgroundImage', otherwise React treats the string as a URL reference.
@@ -58,8 +87,8 @@ export function BackgroundPicker({
               {/* Gradient scrim so the label is always legible over any colour */}
               <span className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
               {/* Variant name printed inside the swatch for immediate context */}
-              <span className="relative z-10 w-full truncate px-1.5 pb-1 text-[10px] font-bold leading-tight text-white drop-shadow-sm">
-                {v.name}
+              <span className={cn("relative z-10 w-full truncate px-1.5 pb-1 text-[10px] font-bold leading-tight text-white drop-shadow-sm", isUrdu && "font-urdu text-xs")}>
+                {translatedName}
               </span>
             </span>
 

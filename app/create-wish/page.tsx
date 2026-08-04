@@ -4,7 +4,9 @@ import '@/app/invitation-themes-animations.css'
 import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Wand2, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Wand2, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, X } from 'lucide-react'
+import { AUDIO_TRACKS } from '@/lib/jashn/audio'
+import { generateAIWish, type AITone } from '@/lib/jashn/ai-generator'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -39,6 +41,7 @@ function CreateWishContent() {
   const searchParams = useSearchParams()
   const { user, createWish, updateWish, wishes, showToast } = useJashn()
   const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
 
   const editSlug = searchParams.get('edit')
 
@@ -62,6 +65,11 @@ function CreateWishContent() {
   const [rank, setRank] = useState('')
   const [winningNumber, setWinningNumber] = useState('')
 
+  // Custom Photo, Audio & AI Generator State
+  const [photoUrl, setPhotoUrl] = useState('')
+  const [audioTrack, setAudioTrack] = useState('birthday-festive')
+  const [showAiModal, setShowAiModal] = useState(false)
+
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const isGamingOccasion = [
@@ -78,6 +86,33 @@ function CreateWishContent() {
   const templates = getTemplates(occasionId)
   const selectedOccasion = getOccasion(occasionId)
   const isPro = user?.plan === 'pro' || user?.plan === 'business'
+
+  function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('Image size must be under 5MB', 'error')
+      return
+    }
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setPhotoUrl(reader.result as string)
+      showToast('Photo uploaded successfully! ✨', 'info')
+    }
+    reader.readAsDataURL(file)
+  }
+
+  function handleGenerateAIWish(tone: AITone) {
+    const aiText = generateAIWish({
+      occasionLabel: selectedOccasion?.label || 'Special Occasion',
+      recipientName: playerName || recipientName || 'Friend',
+      relation,
+      tone,
+    })
+    setMessage(aiText)
+    setShowAiModal(false)
+    showToast('AI Wish Generated! ✨', 'info')
+  }
 
   useEffect(() => {
     if (editSlug) {
@@ -96,6 +131,8 @@ function CreateWishContent() {
         setKillCount(existing.killCount || '')
         setRank(existing.rank || '')
         setWinningNumber(existing.winningNumber || '')
+        setPhotoUrl(existing.photoUrl || '')
+        setAudioTrack(existing.audioTrack || 'birthday-festive')
         setStep(2)
       }
     } else {
@@ -146,6 +183,9 @@ function CreateWishContent() {
       } else {
         if (!recipientName.trim()) {
           errs.recipientName = 'Recipient Name is required'
+        }
+        if (!senderName.trim()) {
+          errs.senderName = 'Your Name (Sender) is required'
         }
       }
       if (!message.trim()) {
@@ -202,6 +242,8 @@ function CreateWishContent() {
       killCount: killCount.trim(),
       rank: rank.trim(),
       winningNumber: winningNumber.trim(),
+      photoUrl,
+      audioTrack,
     }
 
     if (editSlug) {
@@ -214,7 +256,7 @@ function CreateWishContent() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-3 sm:px-4 pb-20">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-20">
       <div className="mb-8 text-center">
         {/* Card Studio Mode Switcher */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
@@ -354,16 +396,16 @@ function CreateWishContent() {
                 </div>
 
                 {/* 📝 Details Tab Content */}
-                <div className={cn(mobileTab !== 'details' && 'hidden lg:block', 'space-y-5')}>
+                <div className={cn(mobileTab !== 'details' && 'hidden lg:block', 'space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
                   {isGamingOccasion ? (
                     <div className="space-y-4 rounded-2xl border border-amber-500/30 bg-slate-950/40 p-4 text-slate-100">
                       <h3 className="text-xs font-extrabold uppercase tracking-wider text-amber-400 flex items-center gap-1.5 border-b border-amber-500/20 pb-2">
-                        <Trophy className="size-4 text-amber-400" /> GAMING WINNER PERSONALIZATION
+                        <Trophy className="size-4 text-amber-400" /> {t('gamingWinnerPersonalization')}
                       </h3>
 
                       <div className="grid gap-4 sm:grid-cols-2">
                         <div>
-                          <label className="mb-1.5 block text-xs font-bold text-slate-200">
+                          <label className={cn("mb-1.5 block text-xs font-bold text-slate-200", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                             Player / Squad Name *
                           </label>
                           <input
@@ -384,7 +426,7 @@ function CreateWishContent() {
                         </div>
 
                         <div>
-                          <label className="mb-1.5 block text-xs font-bold text-slate-200">
+                          <label className={cn("mb-1.5 block text-xs font-bold text-slate-200", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                             Score / Kill Count <span className="text-slate-400 font-normal">(optional, numbers)</span>
                           </label>
                           <input
@@ -405,7 +447,7 @@ function CreateWishContent() {
                         </div>
 
                         <div>
-                          <label className="mb-1.5 block text-xs font-bold text-slate-200">
+                          <label className={cn("mb-1.5 block text-xs font-bold text-slate-200", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                             Rank <span className="text-slate-400 font-normal">(e.g. 1, #1)</span>
                           </label>
                           <input
@@ -427,7 +469,7 @@ function CreateWishContent() {
 
                         {isNumberDrawOrBingo && (
                           <div>
-                            <label className="mb-1.5 block text-xs font-bold text-slate-200">
+                            <label className={cn("mb-1.5 block text-xs font-bold text-slate-200", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                               Winning Number <span className="text-slate-400 font-normal">(for Number/Bingo)</span>
                             </label>
                             <input
@@ -441,7 +483,7 @@ function CreateWishContent() {
                         )}
 
                         <div className={isNumberDrawOrBingo ? "sm:col-span-2" : ""}>
-                          <label className="mb-1.5 block text-xs font-bold text-slate-200">
+                          <label className={cn("mb-1.5 block text-xs font-bold text-slate-200", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                             Sender Name / Clan <span className="text-slate-400 font-normal">(optional)</span>
                           </label>
                           <input
@@ -458,10 +500,10 @@ function CreateWishContent() {
                     <>
                       {/* Relation Pills */}
                       <div className="space-y-3">
-                        <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5">
-                          <UserCheck className="size-4" /> 1. WHO IS THIS CARD FOR? (SELECT RELATION)
+                        <h3 className={cn("text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                          <UserCheck className="size-4" /> {t('whoIsCardForHeader') || '1. WHO IS THIS CARD FOR? (SELECT RELATION)'}
                         </h3>
-                        <div className="flex flex-wrap gap-2 pt-1">
+                        <div className={cn("flex flex-wrap gap-2 pt-1", (lang === 'ur' || lang === 'ar') && "justify-end")}>
                           {RELATIONS.map((r) => (
                             <button
                               key={r.id}
@@ -481,18 +523,19 @@ function CreateWishContent() {
 
                       <div className="grid gap-4 sm:grid-cols-2">
                         <div>
-                          <label className="mb-1.5 block text-xs font-bold text-foreground">
-                            Recipient Name *
+                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            {t('recipientNameLabel') || 'Recipient Name *'}
                           </label>
                           <input
                             type="text"
                             value={recipientName}
                             onChange={(e) => handleFieldChange('recipientName', e.target.value, setRecipientName)}
-                            placeholder="e.g. Ayesha"
-                            dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                            placeholder={t('placeholderRecipient') || 'e.g. Ayesha'}
+                            dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
                             className={cn(
                               "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                              errors.recipientName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
+                              errors.recipientName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]",
+                              (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
                             )}
                           />
                           {errors.recipientName && (
@@ -503,18 +546,19 @@ function CreateWishContent() {
                         </div>
 
                         <div>
-                          <label className="mb-1.5 block text-xs font-bold text-foreground">
-                            Your Name (Sender) *
+                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            {t('senderNameLabel') || 'Your Name (Sender) *'}
                           </label>
                           <input
                             type="text"
                             value={senderName}
                             onChange={(e) => handleFieldChange('senderName', e.target.value, setSenderName)}
-                            placeholder="e.g. Tariq & Family"
-                            dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                            placeholder={t('placeholderSender') || 'e.g. Tariq & Family'}
+                            dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
                             className={cn(
                               "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                              errors.senderName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
+                              errors.senderName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]",
+                              (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
                             )}
                           />
                           {errors.senderName && (
@@ -527,18 +571,45 @@ function CreateWishContent() {
                     </>
                   )}
 
+                  {/* Photo Upload Section */}
+                  <div className="space-y-2 pt-2 border-t border-border/60">
+                    <div className="flex items-center justify-between">
+                      <label className={cn("text-xs font-bold text-[#7A1E2B] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                        <Camera className="size-4" /> {t('customCardPhotoLabel') || 'Custom Card Photo (Optional)'}
+                      </label>
+                      {photoUrl && (
+                        <button type="button" onClick={() => setPhotoUrl('')} className="text-[11px] text-red-500 font-bold hover:underline">
+                          {t('removePhotoBtn') || 'Remove Photo'}
+                        </button>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <label className="flex items-center gap-2 rounded-2xl border border-input bg-background px-4 py-2.5 text-xs font-bold hover:bg-muted cursor-pointer transition-all shadow-xs">
+                        <Camera className="size-4 text-[#7A1E2B]" />
+                        <span>{photoUrl ? (t('changePhoto') || 'Change Photo') : (t('uploadPhoto') || 'Upload Photo')}</span>
+                        <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+                      </label>
+                      {photoUrl && (
+                        <div className="relative size-12 rounded-full overflow-hidden border-2 border-[#D4AF37] shadow-md">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={photoUrl} alt="Preview" className="size-full object-cover" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
                   {/* Message & Pre-written templates */}
                   <div className="space-y-3 pt-3 border-t border-border/60">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5">
-                        <Heart className="size-4" /> 2. CARD MESSAGE
+                      <h3 className={cn("text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                        <Heart className="size-4" /> {t('cardMessageHeader') || '2. CARD MESSAGE'}
                       </h3>
                     </div>
 
                     {templates.length > 0 && (
                       <div>
-                        <label className="mb-2 block text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
-                          CHOOSE PRE-WRITTEN WISH TEMPLATE
+                        <label className={cn("mb-2 block text-[11px] font-bold text-muted-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                          {t('choosePrewrittenWishTemplate') || 'CHOOSE PRE-WRITTEN WISH TEMPLATE'}
                         </label>
                         <div className="flex flex-wrap gap-2">
                           {templates.map((tmpl, idx) => (
@@ -548,7 +619,7 @@ function CreateWishContent() {
                               onClick={() => applyTemplate(idx)}
                               className="flex items-center gap-1.5 rounded-xl border border-[#7A1E2B]/20 bg-[#7A1E2B]/5 px-3 py-1.5 text-xs font-bold text-[#7A1E2B] hover:bg-[#7A1E2B]/15 transition-all"
                             >
-                              🎁 Template {idx + 1}
+                              🎁 {t('templatePrefix') || 'Template'} {idx + 1}
                             </button>
                           ))}
                         </div>
@@ -579,13 +650,13 @@ function CreateWishContent() {
 
                 {/* 🎨 Design Tab Content */}
                 <div className={cn(mobileTab !== 'design' && 'hidden lg:block', 'space-y-6 pt-4 border-t border-border')}>
-                  <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5">
-                    <Palette className="size-4" /> 3. CARD THEME &amp; ARTWORK
+                  <h3 className={cn("text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                    <Palette className="size-4" /> {t('cardThemeArtworkHeader') || '3. CARD THEME & ARTWORK'}
                   </h3>
 
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      SELECT THEME STYLE
+                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                      {t('selectThemeStyleLabel') || 'SELECT THEME STYLE'}
                     </label>
                     <ThemePicker
                       value={themeId}
@@ -596,8 +667,8 @@ function CreateWishContent() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      SELECT BORDER FRAME
+                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                      {t('selectBorderFrameLabel') || 'SELECT BORDER FRAME'}
                     </label>
                     <BorderPicker
                       value={borderId}
@@ -608,8 +679,8 @@ function CreateWishContent() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      SELECT CANVAS TEXTURE
+                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                      {t('selectCanvasTextureLabel') || 'SELECT CANVAS TEXTURE'}
                     </label>
                     <BackgroundPicker
                       value={bgVariantId}
@@ -624,7 +695,7 @@ function CreateWishContent() {
                   <div className="rounded-3xl border border-border bg-gradient-to-b from-muted/20 to-card p-4 text-center shadow-md">
                     <div className="flex items-center justify-between mb-3 px-1">
                       <span className="text-xs font-extrabold uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5">
-                        ♡ LIVE PREVIEW
+                        ♡ {t('livePreview') || 'LIVE PREVIEW'}
                       </span>
                     </div>
 
@@ -661,13 +732,13 @@ function CreateWishContent() {
                     onClick={() => setStep(1)}
                     className="w-full sm:w-auto rounded-full h-11 px-6 border-[#E5DFD3]"
                   >
-                    ← Change Occasion
+                    ← {t('viewOccasions') || 'Change Occasion'}
                   </Button>
                   <Button
                     onClick={handleFinish}
                     className="w-full sm:w-auto bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold h-11 px-8 rounded-full shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
                   >
-                    Create &amp; Share Wish Card 🚀
+                    {t('createAndShareWishCardBtn') || 'Create & Share Wish Card 🚀'}
                   </Button>
                 </div>
               </div>
@@ -699,6 +770,7 @@ function CreateWishContent() {
                     killCount,
                     rank,
                     winningNumber,
+                    photoUrl,
                   }}
                 />
               </CardAnimationPreview>
@@ -740,26 +812,34 @@ function CreateWishContent() {
       )}
 
       {/* Premium Guide Overview Card */}
-      <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-4xl mx-auto">
+      <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-6xl mx-auto">
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-            <Sparkles className="size-3.5" /> Wish Creator Overview
+            <Sparkles className="size-3.5" /> {t('wishCreatorOverviewBadge') || 'Wish Creator Overview'}
           </span>
         </div>
-        <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
-          Personalized 3D Animated Wish Cards with Photo & Name
+        <h2 className={`text-xl sm:text-2xl font-extrabold text-foreground tracking-tight ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+          {t('personalizedWishCardsTitle') || 'Personalized 3D Animated Wish Cards with Photo & Name'}
         </h2>
-        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-          Cardzy allows you to create interactive, 3D animated greeting cards for Eid Mubarak, Birthdays, Friendship Day, Ramadan, Anniversaries, and Congratulations. Personalize your card with custom photo uploads, warm family messages in Urdu or English, background music tracks, and custom color accents. Share instantly via WhatsApp, Instagram, or email with zero setup required.
+        <p className={`text-xs sm:text-sm text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-sm sm:text-base leading-relaxed' : ''}`}>
+          {t('personalizedWishCardsDesc') || 'Cardzy allows you to create interactive, 3D animated greeting cards for Eid Mubarak, Birthdays, Friendship Day, Ramadan, Anniversaries, and Congratulations. Personalize your card with custom photo uploads, warm family messages in Urdu or English, background music tracks, and custom color accents. Share instantly via WhatsApp, Instagram, or email with zero setup required.'}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-            <h3 className="font-extrabold text-xs text-foreground">Personal Photo & Name Customization</h3>
-            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Upload photos and enter your custom sender name for a truly unique personalized greeting.</p>
+            <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+              {t('personalPhotoNameCustomizationTitle') || 'Personal Photo & Name Customization'}
+            </h3>
+            <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+              {t('personalPhotoNameCustomizationDesc') || 'Upload photos and enter your custom sender name for a truly unique personalized greeting.'}
+            </p>
           </div>
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-            <h3 className="font-extrabold text-xs text-foreground">18 Multilingual Pre-written Templates</h3>
-            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Choose from curated Urdu, Arabic, and English wish wording for every special occasion.</p>
+            <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+              {t('multilingualTemplatesTitle') || '18 Multilingual Pre-written Templates'}
+            </h3>
+            <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+              {t('multilingualTemplatesDesc') || 'Choose from curated Urdu, Arabic, and English wish wording for every special occasion.'}
+            </p>
           </div>
         </div>
       </section>
@@ -768,25 +848,24 @@ function CreateWishContent() {
 }
 
 export default function CreateWishPage() {
+  const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
+
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
-      <main className="flex-1 py-6 md:py-10 max-w-4xl mx-auto px-4 text-center w-full">
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-[#7A1E2B] font-serif mb-2">
-          Create 3D Animated Wish Cards
-        </h1>
-        <h2 className="text-[#5A4530] text-sm sm:text-base max-w-xl mx-auto font-medium mb-6">
-          Animated Wishes & Event Invitations — Cardzy
-        </h2>
-        <Suspense fallback={
-          <div className="flex py-20 items-center justify-center">
-            <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />
-          </div>
-        }>
-          <CreateWishContent />
-        </Suspense>
-      </main>
-      <SiteFooter />
+    <div className="py-4 md:py-6 max-w-7xl mx-auto px-4 text-center w-full">
+      <h1 className={`text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-[#7A1E2B] font-serif mb-2 ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+        {t('create3dAnimatedWishCardsTitle') || 'Create 3D Animated Wish Cards'}
+      </h1>
+      <h2 className={`text-[#5A4530] text-sm sm:text-base max-w-xl mx-auto font-medium mb-6 ${isUrdu ? 'font-urdu text-base leading-relaxed' : ''}`}>
+        {t('createWishSubTitle') || 'Animated Wishes & Event Invitations — Cardzy'}
+      </h2>
+      <Suspense fallback={
+        <div className="flex py-20 items-center justify-center">
+          <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />
+        </div>
+      }>
+        <CreateWishContent />
+      </Suspense>
     </div>
   )
 }

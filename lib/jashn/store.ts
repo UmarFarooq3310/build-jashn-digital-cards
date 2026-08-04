@@ -3,7 +3,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Invitation, JashnUser, Plan, Wish, RsvpGuest, VisitingCard } from './types'
-import { db, auth, isFirebaseConfigured } from '../firebase'
+import { db, auth, isFirebaseConfigured, getFirebaseAuth, getFirebaseDb } from '../firebase'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -26,6 +26,15 @@ import {
   query,
   where,
 } from 'firebase/firestore'
+
+function setAuthCookie(authed: boolean) {
+  if (typeof document === 'undefined') return
+  if (authed) {
+    document.cookie = 'jashn_authed=1; path=/; max-age=1209600; SameSite=Lax'
+  } else {
+    document.cookie = 'jashn_authed=; path=/; max-age=0; SameSite=Lax'
+  }
+}
 
 /**
  * Client-side data layer for Jashn.
@@ -90,6 +99,7 @@ interface JashnState {
   hideToast: () => void
   rsvps: RsvpGuest[]
   adminUpdateUserPlan: (uid: string, plan: Plan, durationDays?: number) => Promise<void>
+  adminDeleteUser: (uid: string) => Promise<void>
   addRsvp: (guestData: Omit<RsvpGuest, 'id' | 'createdAt'>) => Promise<void>
   getInvitationRsvps: (invitationSlug: string) => RsvpGuest[]
   downloadAllGuestsCsv: (invitationSlug?: string) => void
@@ -116,9 +126,10 @@ export const useJashn = create<JashnState>()(
       hideToast: () => set({ toast: null }),
 
       signUp: async (name, email, phone, password) => {
-        if (!auth) return false
+        const activeAuth = getFirebaseAuth() || auth
+        if (!activeAuth) return false
         try {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+          const userCredential = await createUserWithEmailAndPassword(activeAuth, email, password)
           const firebaseUser = userCredential.user
           await updateProfile(firebaseUser, { displayName: name })
           
@@ -131,19 +142,21 @@ export const useJashn = create<JashnState>()(
             createdAt: Date.now(),
           }
 
-          if (db) {
+          const activeDb = getFirebaseDb() || db
+          if (activeDb) {
             try {
-              await setDoc(doc(db, 'users', firebaseUser.uid), newUser)
+              await setDoc(doc(activeDb, 'users', firebaseUser.uid), newUser)
             } catch (e) {
               console.error('Failed to save user profile to Firestore:', e)
             }
           }
 
+          setAuthCookie(true)
           set((s) => {
             const existing = s.registeredUsers || []
             const idx = existing.findIndex((u) => u.uid === newUser.uid || (u.email && u.email.toLowerCase() === newUser.email?.toLowerCase()))
             const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...newUser } : u)) : [newUser, ...existing]
-            return { user: newUser, registeredUsers: updated }
+            return { user: newUser, registeredUsers: updated, isAuthLoading: false }
           })
           await get().fetchUserCards()
           return true
@@ -154,15 +167,17 @@ export const useJashn = create<JashnState>()(
       },
 
       signIn: async (email, password) => {
-        if (!auth) return false
+        const activeAuth = getFirebaseAuth() || auth
+        if (!activeAuth) return false
         try {
-          const userCredential = await signInWithEmailAndPassword(auth, email, password)
+          const userCredential = await signInWithEmailAndPassword(activeAuth, email, password)
           const firebaseUser = userCredential.user
 
           let userData: JashnUser | null = null
-          if (db) {
+          const activeDb = getFirebaseDb() || db
+          if (activeDb) {
             try {
-              const userSnap = await getDoc(doc(db, 'users', firebaseUser.uid))
+              const userSnap = await getDoc(doc(activeDb, 'users', firebaseUser.uid))
               if (userSnap.exists()) {
                 userData = userSnap.data() as JashnUser
               }
@@ -181,11 +196,12 @@ export const useJashn = create<JashnState>()(
             }
           }
 
+          setAuthCookie(true)
           set((s) => {
             const existing = s.registeredUsers || []
             const idx = existing.findIndex((u) => u.uid === userData.uid || (u.email && u.email.toLowerCase() === userData.email?.toLowerCase()))
             const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
-            return { user: userData, registeredUsers: updated }
+            return { user: userData, registeredUsers: updated, isAuthLoading: false }
           })
           await get().fetchUserCards()
           return true
@@ -206,90 +222,110 @@ export const useJashn = create<JashnState>()(
       },
 
       signInWithGoogle: async () => {
-        if (!auth) return false
-        try {
-          const provider = new GoogleAuthProvider()
-          provider.setCustomParameters({ prompt: 'select_account' })
-
-          let firebaseUser: any = null
-          try {
-            const result = await signInWithPopup(auth, provider)
-            firebaseUser = result.user
-          } catch (popupErr: any) {
-            if (
-              popupErr?.code === 'auth/popup-blocked' ||
-              popupErr?.code === 'auth/popup-closed-by-user' ||
-              popupErr?.code === 'auth/cancelled-popup-request' ||
-              popupErr?.code === 'auth/internal-error'
-            ) {
-              await signInWithRedirect(auth, provider)
-              return false
-            }
-            // Fallback for Android/mobile devices where popup is not supported
-            await signInWithRedirect(auth, provider)
-            return false
-          }
-
-          if (firebaseUser) {
-            let userData: JashnUser | null = null
-            if (db) {
-              try {
-                const userRef = doc(db, 'users', firebaseUser.uid)
-                const userSnap = await getDoc(userRef)
-                if (userSnap.exists()) {
-                  userData = userSnap.data() as JashnUser
-                } else {
-                  userData = {
-                    uid: firebaseUser.uid,
-                    name: firebaseUser.displayName || 'Cardzy User',
-                    email: firebaseUser.email || '',
-                    plan: 'free',
-                    createdAt: Date.now(),
-                  }
-                  await setDoc(userRef, userData)
-                }
-              } catch (e) {
-                console.error('Failed to sync Google user to Firestore:', e)
-              }
-            }
-
-            if (!userData) {
-              userData = {
-                uid: firebaseUser.uid,
-                name: firebaseUser.displayName || 'Cardzy User',
-                email: firebaseUser.email || '',
-                plan: 'free',
-                createdAt: Date.now(),
-              }
-            }
-
-            set((s) => {
-              const existing = s.registeredUsers || []
-              const idx = existing.findIndex((u) => u.uid === userData.uid || (u.email && u.email.toLowerCase() === userData.email?.toLowerCase()))
-              const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
-              return { user: userData, registeredUsers: updated }
-            })
-            await get().fetchUserCards()
-            return true
-          }
-
+        const activeAuth = getFirebaseAuth() || auth
+        if (!activeAuth) {
+          console.error('Firebase Auth is not available')
           return false
-        } catch (error: any) {
+        }
+
+        const provider = new GoogleAuthProvider()
+        provider.setCustomParameters({ prompt: 'select_account' })
+        provider.addScope('email')
+        provider.addScope('profile')
+
+        // ── Helper: turn a Firebase user into our JashnUser and persist it ──
+        const finalizeUser = async (firebaseUser: any): Promise<boolean> => {
+          let userData: JashnUser | null = null
+          const activeDb = getFirebaseDb() || db
+          if (activeDb) {
+            try {
+              const userRef = doc(activeDb, 'users', firebaseUser.uid)
+              const userSnap = await getDoc(userRef)
+              if (userSnap.exists()) {
+                userData = userSnap.data() as JashnUser
+              } else {
+                userData = {
+                  uid: firebaseUser.uid,
+                  name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Cardzy User',
+                  email: firebaseUser.email || '',
+                  plan: 'free',
+                  createdAt: Date.now(),
+                }
+                await setDoc(userRef, userData)
+              }
+            } catch (e) {
+              console.error('Failed to sync Google user to Firestore:', e)
+            }
+          }
+
+          if (!userData) {
+            userData = {
+              uid: firebaseUser.uid,
+              name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Cardzy User',
+              email: firebaseUser.email || '',
+              plan: 'free',
+              createdAt: Date.now(),
+            }
+          }
+
+          setAuthCookie(true)
+          set((s) => {
+            const existing = s.registeredUsers || []
+            const idx = existing.findIndex((u) => u.uid === userData!.uid || (u.email && u.email.toLowerCase() === userData!.email?.toLowerCase()))
+            const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData!, ...existing]
+            return { user: userData, registeredUsers: updated, isAuthLoading: false }
+          })
+          await get().fetchUserCards()
+          return true
+        }
+
+        // ── Try popup first ──
+        try {
+          const result = await signInWithPopup(activeAuth, provider)
+          if (result?.user) {
+            return await finalizeUser(result.user)
+          }
+          return false
+        } catch (popupErr: any) {
+          const code = popupErr?.code || ''
+          console.warn('[Google Sign-In] popup error:', code, popupErr?.message)
+
+          // User deliberately closed or cancelled → don't show an error
           if (
-            error?.code === 'auth/popup-closed-by-user' ||
-            error?.code === 'auth/cancelled-popup-request'
+            code === 'auth/popup-closed-by-user' ||
+            code === 'auth/cancelled-popup-request'
           ) {
             return false
           }
-          console.error('Google sign-in error:', error)
-          return false
+
+          // Popup was blocked, COOP restricted, or encountered an internal error → fall back to redirect
+          if (
+            code === 'auth/popup-blocked' ||
+            code === 'auth/internal-error' ||
+            code === 'auth/operation-not-supported-in-this-environment'
+          ) {
+            console.info('[Google Sign-In] popup error (' + code + '), falling back to redirect')
+            try {
+              await signInWithRedirect(activeAuth, provider)
+              // Page navigates away — this line never executes
+              return false
+            } catch (redirErr: any) {
+              console.error('[Google Sign-In] redirect fallback error:', redirErr?.code, redirErr?.message)
+              throw redirErr // Bubble up so the login page can show the error
+            }
+          }
+
+          // Any other error (unauthorized-domain, network, etc.) — surface it
+          console.error('[Google Sign-In] unexpected error:', code, popupErr?.message)
+          throw popupErr
         }
       },
 
       resetPassword: async (email) => {
-        if (!auth) return false
+        const activeAuth = getFirebaseAuth() || auth
+        if (!activeAuth) return false
         try {
-          await sendPasswordResetEmail(auth, email)
+          await sendPasswordResetEmail(activeAuth, email)
           return true
         } catch (error) {
           console.error('Reset password error:', error)
@@ -298,13 +334,15 @@ export const useJashn = create<JashnState>()(
       },
 
       signInOAuth: async (name, email) => {
-        if (!auth) return
-        const uidToUse = auth.currentUser?.uid || uid()
+        const activeAuth = getFirebaseAuth() || auth
+        if (!activeAuth) return
+        const uidToUse = activeAuth.currentUser?.uid || uid()
         let userData: JashnUser | null = null
 
-        if (db) {
+        const activeDb = getFirebaseDb() || db
+        if (activeDb) {
           try {
-            const userRef = doc(db, 'users', uidToUse)
+            const userRef = doc(activeDb, 'users', uidToUse)
             const userSnap = await getDoc(userRef)
             if (userSnap.exists()) {
               userData = userSnap.data() as JashnUser
@@ -344,9 +382,10 @@ export const useJashn = create<JashnState>()(
       },
 
       signOut: async () => {
-        if (auth) {
+        const activeAuth = getFirebaseAuth() || auth
+        if (activeAuth) {
           try {
-            await firebaseSignOut(auth)
+            await firebaseSignOut(activeAuth)
           } catch (e) {
             console.error('Sign out error:', e)
           }
@@ -715,6 +754,63 @@ export const useJashn = create<JashnState>()(
         }
       },
 
+      adminDeleteUser: async (uidToDelete) => {
+        // 1. Remove from Zustand state immediately (optimistic update)
+        set((s) => ({
+          registeredUsers: s.registeredUsers.filter((u) => u.uid !== uidToDelete),
+          // If the deleted user is somehow the current session user, sign them out too
+          user: s.user?.uid === uidToDelete ? null : s.user,
+        }))
+
+        // 2. Delete from Firestore: user doc + all their cards/wishes/invitations
+        const activeDb = getFirebaseDb() || db
+        if (activeDb) {
+          try {
+            // Delete user document
+            await deleteDoc(doc(activeDb, 'users', uidToDelete))
+          } catch (e) {
+            console.error('Failed to delete user doc from Firestore:', e)
+          }
+
+          // Delete all invitations belonging to this user
+          try {
+            const { query, where, getDocs: getDocsQ, collection: col } = await import('firebase/firestore')
+            const invSnap = await getDocsQ(query(col(activeDb, 'invitations'), where('creatorId', '==', uidToDelete)))
+            const invDeletes = invSnap.docs.map((d) => deleteDoc(d.ref))
+            await Promise.all(invDeletes)
+          } catch (e) {
+            console.error('Failed to delete user invitations from Firestore:', e)
+          }
+
+          // Delete all wishes belonging to this user
+          try {
+            const { query, where, getDocs: getDocsQ, collection: col } = await import('firebase/firestore')
+            const wishSnap = await getDocsQ(query(col(activeDb, 'wishes'), where('creatorId', '==', uidToDelete)))
+            const wishDeletes = wishSnap.docs.map((d) => deleteDoc(d.ref))
+            await Promise.all(wishDeletes)
+          } catch (e) {
+            console.error('Failed to delete user wishes from Firestore:', e)
+          }
+
+          // Delete all visiting cards belonging to this user
+          try {
+            const { query, where, getDocs: getDocsQ, collection: col } = await import('firebase/firestore')
+            const vcSnap = await getDocsQ(query(col(activeDb, 'visitingCards'), where('creatorId', '==', uidToDelete)))
+            const vcDeletes = vcSnap.docs.map((d) => deleteDoc(d.ref))
+            await Promise.all(vcDeletes)
+          } catch (e) {
+            console.error('Failed to delete user visiting cards from Firestore:', e)
+          }
+        }
+
+        // 3. Also clean up from local Zustand lists (invitations/wishes/visitingCards)
+        set((s) => ({
+          invitations: s.invitations.filter((i) => i.creatorId !== uidToDelete),
+          wishes: s.wishes.filter((w) => w.creatorId !== uidToDelete),
+          visitingCards: s.visitingCards.filter((vc) => vc.creatorId !== uidToDelete),
+        }))
+      },
+
       addRsvp: async (guestData) => {
         const newRsvp: RsvpGuest = {
           ...guestData,
@@ -867,6 +963,13 @@ export const useJashn = create<JashnState>()(
         printWindow.document.close()
       },
     }),
-    { name: 'jashn-store' },
+    {
+      name: 'jashn-store',
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.isAuthLoading = false
+        }
+      },
+    },
   ),
 )

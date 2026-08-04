@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu, X, LogOut, Globe, ChevronDown } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
@@ -19,17 +19,77 @@ function SiteHeaderInner() {
   const [langOpen, setLangOpen] = useState(false)
   const { lang, setLang, t } = useLang()
 
+  const currentLang = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0]
+
+  // Enforce zero top offset on client-side route navigation
+  useEffect(() => {
+    const forceZero = () => {
+      if (typeof document === 'undefined') return
+      try {
+        if (document.body) {
+          document.body.style.setProperty('top', '0px', 'important')
+          document.body.style.setProperty('margin-top', '0px', 'important')
+          document.body.style.setProperty('padding-top', '0px', 'important')
+        }
+        if (document.documentElement) {
+          document.documentElement.style.setProperty('top', '0px', 'important')
+          document.documentElement.style.setProperty('margin-top', '0px', 'important')
+          document.documentElement.style.setProperty('padding-top', '0px', 'important')
+        }
+        const topAds = document.querySelectorAll('body > .google-auto-placed, body > iframe[name^="google_ads_"], .goog-te-banner-frame')
+        topAds.forEach((node) => {
+          ;(node as HTMLElement).style.setProperty('display', 'none', 'important')
+          ;(node as HTMLElement).style.setProperty('height', '0px', 'important')
+        })
+      } catch (e) {}
+    }
+    forceZero()
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    const timers = [10, 50, 150, 300, 600].map((ms) => setTimeout(forceZero, ms))
+    return () => {
+      timers.forEach(clearTimeout)
+    }
+  }, [pathname])
+
+  const [isSenderMode, setIsSenderMode] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const mode = new URLSearchParams(window.location.search).get('mode')
+      setIsSenderMode(mode === 'sender')
+    }
+  }, [pathname])
+
+  // Hide Navbar on receiver card pages (/w/[slug], /i/[slug], /v/[slug]) unless mode=sender
+  const isCardRoute = pathname?.startsWith('/w/') || pathname?.startsWith('/i/') || pathname?.startsWith('/v/')
+  if (isCardRoute && !isSenderMode) return null
+
   const handleSignOut = async () => {
     await signOut()
     router.push('/')
   }
 
-  const currentLang = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0]
+  const handleNavClick = () => {
+    setOpen(false)
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+      if (document.body) {
+        document.body.style.setProperty('top', '0px', 'important')
+        document.body.style.setProperty('margin-top', '0px', 'important')
+        document.body.style.setProperty('padding-top', '0px', 'important')
+      }
+      if (document.documentElement) {
+        document.documentElement.style.setProperty('top', '0px', 'important')
+        document.documentElement.style.setProperty('margin-top', '0px', 'important')
+        document.documentElement.style.setProperty('padding-top', '0px', 'important')
+      }
+    }
+  }
 
   return (
     <header className="sticky top-0 z-[100] border-b border-emerald-900/20 bg-background/95 backdrop-blur-md shadow-sm transition-all w-full">
       <div className="flex h-16 w-full max-w-full items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+        <Link href="/" onClick={handleNavClick} className="flex items-center gap-2.5 group shrink-0">
           <CardzyLogo className="size-9 transition-transform group-hover:scale-105" />
           <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-800 to-amber-600 dark:from-emerald-400 dark:to-amber-400 bg-clip-text text-transparent">
             Cardzy
@@ -39,7 +99,7 @@ function SiteHeaderInner() {
         <nav className="hidden items-center gap-1 xl:gap-2 lg:flex">
           {[
             { href: '/', key: 'home', fallback: 'Home' },
-            { href: '/custom-order', key: 'customOrder', fallback: 'WhatsApp Order 💬' },
+            { href: '/custom-order', key: 'customOrder', fallback: 'WhatsApp Order' },
             { href: '/create-wish', key: 'sendWish', fallback: 'Send Wish' },
             { href: '/create-invitation', key: 'createInvitation', fallback: 'Invitations' },
             { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },
@@ -49,6 +109,7 @@ function SiteHeaderInner() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={handleNavClick}
               className={cn(
                 'rounded-xl px-2.5 py-1.5 text-xs xl:text-sm font-semibold text-muted-foreground transition-all hover:bg-emerald-950/10 hover:text-emerald-800 dark:hover:text-amber-400 whitespace-nowrap',
                 pathname === item.href && 'text-emerald-800 dark:text-amber-400 font-bold bg-emerald-950/5',
@@ -140,7 +201,7 @@ function SiteHeaderInner() {
           <nav className="flex flex-col gap-1">
             {[
               { href: '/', key: 'home', fallback: 'Home' },
-              { href: '/custom-order', key: 'customOrder', fallback: 'WhatsApp Order 💬' },
+              { href: '/custom-order', key: 'customOrder', fallback: 'WhatsApp Order' },
               { href: '/create-wish', key: 'sendWish', fallback: 'Send Wish' },
               { href: '/create-invitation', key: 'createInvitation', fallback: 'Invitations' },
               { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },

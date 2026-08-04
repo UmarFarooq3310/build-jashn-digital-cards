@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { ArrowLeft, Sparkles, Send, Globe, MessageSquare, MapPin, Clock, HelpCircle, CheckCircle2 } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -38,15 +36,12 @@ const faqSchema = {
 
 export default function EidMubarakCardsPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="py-10 md:py-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <SiteHeader />
-
-      <main className="flex-1 py-10 md:py-16">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
           
           {/* Breadcrumb */}
           <Link
@@ -210,9 +205,6 @@ export default function EidMubarakCardsPage() {
 
           </article>
         </div>
-      </main>
-
-      <SiteFooter />
     </div>
   )
 }

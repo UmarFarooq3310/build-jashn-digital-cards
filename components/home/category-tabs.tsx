@@ -38,7 +38,8 @@ function getGlobalCardTheme(id: string) {
   switch (id) {
     case 'christmas':
       return {
-        badge: '🎄 Christmas',
+        badgeKey: 'badge_christmas',
+        badgeFallback: '🎄 Christmas',
         bg: 'from-rose-500/10 via-emerald-500/5 to-card border-rose-500/20 hover:border-rose-500/50 shadow-xs hover:shadow-rose-500/10',
         iconBg: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 group-hover:bg-rose-600 group-hover:text-white',
         badgeColor: 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/20',
@@ -46,7 +47,8 @@ function getGlobalCardTheme(id: string) {
       }
     case 'diwali':
       return {
-        badge: '🪔 Festival of Lights',
+        badgeKey: 'badge_diwali',
+        badgeFallback: '🪔 Festival of Lights',
         bg: 'from-amber-500/10 via-orange-500/5 to-card border-amber-500/20 hover:border-amber-500/50 shadow-xs hover:shadow-amber-500/10',
         iconBg: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 group-hover:bg-amber-600 group-hover:text-white',
         badgeColor: 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/20',
@@ -54,7 +56,8 @@ function getGlobalCardTheme(id: string) {
       }
     case 'new-year':
       return {
-        badge: '🎆 New Year 2026',
+        badgeKey: 'badge_newyear',
+        badgeFallback: '🎆 New Year 2026',
         bg: 'from-indigo-500/10 via-purple-500/5 to-card border-indigo-500/20 hover:border-indigo-500/50 shadow-xs hover:shadow-indigo-500/10',
         iconBg: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white',
         badgeColor: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border-indigo-500/20',
@@ -62,7 +65,8 @@ function getGlobalCardTheme(id: string) {
       }
     case 'thanksgiving':
       return {
-        badge: '🍁 Thanksgiving',
+        badgeKey: 'badge_thanksgiving',
+        badgeFallback: '🍁 Thanksgiving',
         bg: 'from-orange-500/10 via-amber-500/5 to-card border-orange-500/20 hover:border-orange-500/50 shadow-xs hover:shadow-orange-500/10',
         iconBg: 'bg-orange-500/10 text-orange-600 dark:text-orange-400 group-hover:bg-orange-600 group-hover:text-white',
         badgeColor: 'bg-orange-500/10 text-orange-800 dark:text-orange-300 border-orange-500/20',
@@ -70,7 +74,8 @@ function getGlobalCardTheme(id: string) {
       }
     case 'lunar-new-year':
       return {
-        badge: '🧧 Lunar New Year',
+        badgeKey: 'badge_lunarnewyear',
+        badgeFallback: '🧧 Lunar New Year',
         bg: 'from-red-500/10 via-rose-500/5 to-card border-red-500/20 hover:border-red-500/50 shadow-xs hover:shadow-red-500/10',
         iconBg: 'bg-red-500/10 text-red-600 dark:text-red-400 group-hover:bg-red-600 group-hover:text-white',
         badgeColor: 'bg-red-500/10 text-red-700 dark:text-red-300 border-red-500/20',
@@ -78,7 +83,8 @@ function getGlobalCardTheme(id: string) {
       }
     case 'hanukkah':
       return {
-        badge: '🕎 Hanukkah',
+        badgeKey: 'badge_hanukkah',
+        badgeFallback: '🕎 Hanukkah',
         bg: 'from-sky-500/10 via-blue-500/5 to-card border-sky-500/20 hover:border-sky-500/50 shadow-xs hover:shadow-sky-500/10',
         iconBg: 'bg-sky-500/10 text-sky-600 dark:text-sky-400 group-hover:bg-sky-600 group-hover:text-white',
         badgeColor: 'bg-sky-500/10 text-sky-700 dark:text-sky-300 border-sky-500/20',
@@ -86,7 +92,8 @@ function getGlobalCardTheme(id: string) {
       }
     case 'valentines':
       return {
-        badge: '💖 Valentine’s',
+        badgeKey: 'badge_valentines',
+        badgeFallback: '💖 Valentine’s',
         bg: 'from-rose-500/10 via-pink-500/5 to-card border-rose-500/20 hover:border-rose-500/50 shadow-xs hover:shadow-rose-500/10',
         iconBg: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 group-hover:bg-rose-600 group-hover:text-white',
         badgeColor: 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/20',
@@ -94,7 +101,8 @@ function getGlobalCardTheme(id: string) {
       }
     case 'easter':
       return {
-        badge: '🐣 Easter',
+        badgeKey: 'badge_easter',
+        badgeFallback: '🐣 Easter',
         bg: 'from-purple-500/10 via-violet-500/5 to-card border-purple-500/20 hover:border-purple-500/50 shadow-xs hover:shadow-purple-500/10',
         iconBg: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white',
         badgeColor: 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20',
@@ -102,7 +110,8 @@ function getGlobalCardTheme(id: string) {
       }
     default:
       return {
-        badge: '🌍 Global Holiday',
+        badgeKey: 'badge_globalholiday',
+        badgeFallback: '🌍 Global Holiday',
         bg: 'from-emerald-500/10 via-teal-500/5 to-card border-emerald-500/20 hover:border-emerald-500/50 shadow-xs hover:shadow-emerald-500/10',
         iconBg: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white',
         badgeColor: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/20',
@@ -115,7 +124,8 @@ function getFriendshipCardTheme(id: string) {
   switch (id) {
     case 'friendship-day':
       return {
-        badge: '💕 Best Friends',
+        badgeKey: 'badge_bestfriends',
+        badgeFallback: '💕 Best Friends',
         bg: 'from-pink-500/10 via-rose-500/5 to-card border-pink-500/20 hover:border-pink-500/50 shadow-xs hover:shadow-pink-500/10',
         iconBg: 'bg-pink-500/10 text-pink-600 dark:text-pink-400 group-hover:bg-pink-600 group-hover:text-white',
         badgeColor: 'bg-pink-500/10 text-pink-700 dark:text-pink-300 border-pink-500/20',
@@ -123,7 +133,8 @@ function getFriendshipCardTheme(id: string) {
       }
     case 'thank-you':
       return {
-        badge: '🙏 Gratitude',
+        badgeKey: 'badge_gratitude',
+        badgeFallback: '🙏 Gratitude',
         bg: 'from-emerald-500/10 via-teal-500/5 to-card border-emerald-500/20 hover:border-emerald-500/50 shadow-xs hover:shadow-emerald-500/10',
         iconBg: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white',
         badgeColor: 'bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border-emerald-500/20',
@@ -131,7 +142,8 @@ function getFriendshipCardTheme(id: string) {
       }
     case 'miss-you':
       return {
-        badge: '💌 Heartfelt Note',
+        badgeKey: 'badge_heartfeltnote',
+        badgeFallback: '💌 Heartfelt Note',
         bg: 'from-purple-500/10 via-violet-500/5 to-card border-purple-500/20 hover:border-purple-500/50 shadow-xs hover:shadow-purple-500/10',
         iconBg: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white',
         badgeColor: 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20',
@@ -139,7 +151,8 @@ function getFriendshipCardTheme(id: string) {
       }
     default:
       return {
-        badge: '🌸 Warm Wish',
+        badgeKey: 'badge_warmwish',
+        badgeFallback: '🌸 Warm Wish',
         bg: 'from-rose-500/10 via-pink-500/5 to-card border-rose-500/20 hover:border-rose-500/50 shadow-xs hover:shadow-rose-500/10',
         iconBg: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 group-hover:bg-rose-600 group-hover:text-white',
         badgeColor: 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/20',
@@ -224,13 +237,13 @@ export function CategoryTabs() {
               },
               {
                 id: 'visiting',
-                label: '💼 Digital Business Cards',
+                label: t('digitalBusinessCardsCategory') || '💼 Digital Business Cards',
                 icon: Sparkles,
                 activeClass: 'bg-gradient-to-r from-slate-900 via-slate-800 to-teal-800 text-white shadow-lg shadow-teal-500/20 border-amber-400/30',
               },
               {
                 id: 'friendship',
-                label: '💕 Friendship Day',
+                label: t('friendshipDayCategory') || '💕 Friendship Day',
                 icon: Heart,
                 activeClass: 'bg-gradient-to-r from-pink-600 via-rose-600 to-amber-600 text-white shadow-lg shadow-pink-500/20 border-pink-400/30',
               },
@@ -299,7 +312,7 @@ export function CategoryTabs() {
                             <JashnIcon name={o.icon} className="size-6" />
                           </div>
                           <span className={cn("px-3 py-1 rounded-full text-[11px] font-extrabold uppercase border tracking-wider", theme.badgeColor)}>
-                            {theme.badge}
+                            {t(theme.badgeKey) || theme.badgeFallback}
                           </span>
                         </div>
 
@@ -317,7 +330,7 @@ export function CategoryTabs() {
                           <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
                         </span>
                         <span className="text-[10px] font-bold text-muted-foreground/70 uppercase">
-                          Animated Card
+                          {t('animatedCardBadge') || 'Animated Card'}
                         </span>
                       </div>
                     </Link>
@@ -347,7 +360,7 @@ export function CategoryTabs() {
                 {weddingOccasions.map((o) => {
                   const isNikah = o.id === 'nikah'
                   const isMehndi = o.id === 'mehndi'
-                  const badgeText = isNikah ? '💍 Royal Nikah' : isMehndi ? '🪔 Mehndi & Dholki' : '💐 Wedding'
+                  const badgeText = isNikah ? (t('royalNikahBadge') || '💍 Royal Nikah') : isMehndi ? (t('mehndiDholkiBadge') || '🪔 Mehndi & Dholki') : (t('weddingBadge') || '💐 Wedding')
                   const bgClass = isNikah
                     ? 'from-amber-500/10 via-yellow-500/5 to-card border-amber-500/20 hover:border-amber-500/50 shadow-xs'
                     : isMehndi
@@ -381,7 +394,7 @@ export function CategoryTabs() {
                           {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
                         </h4>
                         <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                          {t('cardDescriptionText') || 'Animated card with customizable music, couple names & royal themes.'}
+                          {t('weddingCardDescriptionText') || 'Animated card with customizable music, couple names & royal themes.'}
                         </p>
                       </div>
 
@@ -390,7 +403,7 @@ export function CategoryTabs() {
                           {t('orderCardBtn') || 'Create Wedding Card'} <ArrowRight className="size-3.5" />
                         </span>
                         <span className="text-[10px] font-bold text-muted-foreground/70 uppercase">
-                          RSVP + Maps
+                          {t('rsvpPlusMapsBadge') || 'RSVP + Maps'}
                         </span>
                       </div>
                     </Link>
@@ -409,7 +422,7 @@ export function CategoryTabs() {
                         <Gem className="size-6 text-amber-600" />
                       </div>
                       <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-500 text-slate-950 shadow-xs">
-                        ★ Premium Full Invite
+                        {t('premiumFullInviteBadge') || '★ Premium Full Invite'}
                       </span>
                     </div>
 
@@ -426,7 +439,7 @@ export function CategoryTabs() {
                       {t('buildInvitation') || 'Build Full Invitation'} <ArrowRight className="size-3.5" />
                     </span>
                     <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase">
-                      Live RSVP Web Link
+                      {t('liveRsvpWebLinkBadge') || 'Live RSVP Web Link'}
                     </span>
                   </div>
                 </Link>
@@ -456,43 +469,43 @@ export function CategoryTabs() {
                 <div className="lg:col-span-7 space-y-6 relative z-10">
                   <div className="space-y-3">
                     <div className="inline-flex items-center gap-2 text-xs font-black text-pink-600 dark:text-pink-400 uppercase tracking-widest">
-                      <Sparkles className="size-4 text-amber-500" /> Celebratory Features Included:
+                      <Sparkles className="size-4 text-amber-500" /> {t('celebratoryFeaturesIncluded') || 'Celebratory Features Included:'}
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-500/10 via-rose-500/5 to-card border border-amber-500/30 hover:border-amber-500 transition-all shadow-xs">
                         <div className="flex items-center gap-2 font-extrabold text-xs text-amber-700 dark:text-amber-300">
-                          <span>🎂 Animated Cake & Candles</span>
+                          <span>{t('animatedCakeCandles') || '🎂 Animated Cake & Candles'}</span>
                         </div>
                         <p className="text-[11px] text-muted-foreground mt-1 leading-snug">
-                          Flashing candle flames, party poppers & cake cutting animations.
+                          {t('animatedCakeCandlesDesc') || 'Flashing candle flames, party poppers & cake cutting animations.'}
                         </p>
                       </div>
 
                       <div className="p-3.5 rounded-2xl bg-gradient-to-br from-purple-500/10 via-pink-500/5 to-card border border-purple-500/30 hover:border-purple-500 transition-all shadow-xs">
                         <div className="flex items-center gap-2 font-extrabold text-xs text-purple-700 dark:text-purple-300">
-                          <span>🎆 Sparkles & Fireworks</span>
+                          <span>{t('sparklesFireworks') || '🎆 Sparkles & Fireworks'}</span>
                         </div>
                         <p className="text-[11px] text-muted-foreground mt-1 leading-snug">
-                          Joyful balloon bursts, confetti rain & magical sparkle effects.
+                          {t('sparklesFireworksDesc') || 'Joyful balloon bursts, confetti rain & magical sparkle effects.'}
                         </p>
                       </div>
 
                       <div className="p-3.5 rounded-2xl bg-gradient-to-br from-indigo-500/10 via-sky-500/5 to-card border border-indigo-500/30 hover:border-indigo-500 transition-all shadow-xs">
                         <div className="flex items-center gap-2 font-extrabold text-xs text-indigo-700 dark:text-indigo-300">
-                          <span>🎵 Birthday Songs & Beats</span>
+                          <span>{t('birthdaySongsBeats') || '🎵 Birthday Songs & Beats'}</span>
                         </div>
                         <p className="text-[11px] text-muted-foreground mt-1 leading-snug">
-                          Custom background music & cheerful happy birthday tunes.
+                          {t('birthdaySongsBeatsDesc') || 'Custom background music & cheerful happy birthday tunes.'}
                         </p>
                       </div>
 
                       <div className="p-3.5 rounded-2xl bg-gradient-to-br from-rose-500/10 via-pink-500/5 to-card border border-rose-500/30 hover:border-rose-500 transition-all shadow-xs">
                         <div className="flex items-center gap-2 font-extrabold text-xs text-rose-700 dark:text-rose-300">
-                          <span>👑 Milestone Celebrations</span>
+                          <span>{t('milestoneCelebrations') || '👑 Milestone Celebrations'}</span>
                         </div>
                         <p className="text-[11px] text-muted-foreground mt-1 leading-snug">
-                          Crown badges & luxury themes for 18th, 21st, 50th & 60th birthdays.
+                          {t('milestoneCelebrationsDesc') || 'Crown badges & luxury themes for 18th, 21st, 50th & 60th birthdays.'}
                         </p>
                       </div>
                     </div>
@@ -503,14 +516,14 @@ export function CategoryTabs() {
                       href="/create-wish"
                       className="inline-flex h-12 items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:opacity-95 px-7 text-xs sm:text-sm font-black text-white transition-all shadow-lg hover:shadow-pink-500/25 active:scale-98"
                     >
-                      <span>Create Birthday Card</span>
+                      <span>{t('createBirthdayCard') || 'Create Birthday Card'}</span>
                       <ArrowRight className="size-4" />
                     </Link>
                     <Link
                       href="/create-wish"
                       className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 px-5 text-xs sm:text-sm font-extrabold text-purple-700 dark:text-purple-300 transition-all"
                     >
-                      <span>Milestone Birthday (18th/21st/50th)</span>
+                      <span>{t('milestoneBirthdayBtn') || 'Milestone Birthday (18th/21st/50th)'}</span>
                     </Link>
                   </div>
                 </div>
@@ -544,13 +557,13 @@ export function CategoryTabs() {
             <div className="space-y-6 animate-fadeIn">
               <div className="max-w-2xl space-y-1">
                 <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-extrabold tracking-wider bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 uppercase">
-                  💼 Digital Business & Visiting Cards
+                  {t('digitalBusinessVisitingCards') || '💼 Digital Business & Visiting Cards'}
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground pt-1">
-                  Smart Digital Visiting Cards with 1-Click Contact Download (.vcf)
+                  {t('smartDigitalVisitingCardsTitle') || 'Smart Digital Visiting Cards with 1-Click Contact Download (.vcf)'}
                 </h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  Create executive, tech, medical, legal, and real estate digital business cards. Include phone, WhatsApp, Google Maps pin, social profiles, and 1-click <strong>Save Contact</strong> feature!
+                  {t('smartDigitalVisitingCardsDesc') || 'Create executive, tech, medical, legal, and real estate digital business cards. Include phone, WhatsApp, Google Maps pin, social profiles, and 1-click Save Contact feature!'}
                 </p>
               </div>
 
@@ -558,16 +571,16 @@ export function CategoryTabs() {
                 <div className="lg:col-span-7 space-y-5">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {[
-                      { title: 'Corporate & Business', desc: 'CEOs, Managers & Founders' },
-                      { title: 'Tech & Freelancers', desc: 'Developers, Designers & Creators' },
-                      { title: 'Medical & Healthcare', desc: 'Doctors, Dentists & Clinics' },
-                      { title: 'Legal & Advocate', desc: 'Lawyers & Consultants' },
-                      { title: 'Real Estate', desc: 'Realtors & Property Agents' },
-                      { title: 'Beauty & Fashion', desc: 'Salons & Makeup Artists' },
+                      { key: 'catCorporate', defaultTitle: 'Corporate & Business', descKey: 'cat_corporate_desc', defaultDesc: 'CEOs, Managers & Founders' },
+                      { key: 'catTech', defaultTitle: 'Tech & Freelancers', descKey: 'cat_tech_desc', defaultDesc: 'Developers, Designers & Creators' },
+                      { key: 'catMedical', defaultTitle: 'Medical & Healthcare', descKey: 'cat_medical_desc', defaultDesc: 'Doctors, Dentists & Clinics' },
+                      { key: 'catLegal', defaultTitle: 'Legal & Advocate', descKey: 'cat_legal_desc', defaultDesc: 'Lawyers & Consultants' },
+                      { key: 'catRealEstate', defaultTitle: 'Real Estate & Builders', descKey: 'cat_realestate_desc', defaultDesc: 'Realtors & Property Agents' },
+                      { key: 'catFashion', defaultTitle: 'Fashion & Beauty Salon', descKey: 'cat_beauty_desc', defaultDesc: 'Salons & Makeup Artists' },
                     ].map((cat, i) => (
                       <div key={i} className="p-3.5 rounded-2xl bg-muted/40 border border-border text-left hover:border-emerald-500/40 transition-colors">
-                        <div className="text-xs font-extrabold text-foreground">{cat.title}</div>
-                        <div className="text-[10px] text-muted-foreground mt-0.5">{cat.desc}</div>
+                        <div className="text-xs font-extrabold text-foreground">{t(cat.key) || cat.defaultTitle}</div>
+                        <div className="text-[10px] text-muted-foreground mt-0.5">{t(cat.descKey) || cat.defaultDesc}</div>
                       </div>
                     ))}
                   </div>
@@ -577,7 +590,7 @@ export function CategoryTabs() {
                       href="/create-visiting-card"
                       className="inline-flex h-11 items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 px-6 text-xs sm:text-sm font-black text-white hover:opacity-90 transition-all shadow-lg active:scale-98"
                     >
-                      <span>Create Digital Visiting Card</span>
+                      <span>{t('createDigitalVisitingCardBtn') || 'Create Digital Visiting Card'}</span>
                       <ArrowRight className="size-4" />
                     </Link>
                   </div>
@@ -587,7 +600,7 @@ export function CategoryTabs() {
                   <div className="w-full max-w-xs p-6 rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white shadow-2xl border border-amber-500/40 space-y-4 transition-transform hover:scale-102 duration-300">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] uppercase font-extrabold tracking-widest text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/20">
-                        Executive Gold
+                        {t('executiveGoldBadge') || 'Executive Gold'}
                       </span>
                       <span className="text-[10px] font-bold opacity-75">Cardzy.online</span>
                     </div>
@@ -599,12 +612,12 @@ export function CategoryTabs() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 pt-1 text-[11px] font-bold">
-                      <div className="p-2.5 rounded-xl bg-white/10 text-center">📞 Call Direct</div>
-                      <div className="p-2.5 rounded-xl bg-emerald-600 text-center text-white">💬 WhatsApp</div>
+                      <div className="p-2.5 rounded-xl bg-white/10 text-center">{t('callDirectBtn') || '📞 Call Direct'}</div>
+                      <div className="p-2.5 rounded-xl bg-emerald-600 text-center text-white">{t('whatsAppChatBtn') || '💬 WhatsApp'}</div>
                     </div>
 
                     <div className="p-3 rounded-2xl bg-amber-500 text-slate-950 font-black text-xs text-center shadow-md">
-                      📥 Save Contact (.vcf)
+                      {t('saveContactVcfBtn') || '📥 Save Contact (.vcf)'}
                     </div>
                   </div>
                 </div>
@@ -618,13 +631,13 @@ export function CategoryTabs() {
               <div className="max-w-2xl space-y-1">
                 <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-extrabold tracking-wider bg-pink-500/10 text-pink-700 dark:text-pink-300 border border-pink-500/30 uppercase">
                   <Heart className="size-3.5 text-pink-500 fill-pink-500 animate-pulse" />
-                  💕 International Friendship Day 💖
+                  {t('internationalFriendshipDay') || '💕 International Friendship Day 💖'}
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight pt-1">
-                  Celebrate Friendship Day!
+                  {t('celebrateFriendshipDayTitle') || 'Celebrate Friendship Day!'}
                 </h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  Send personalized 3D animated wish cards, family & friend photo frames, custom music, and heartfelt messages to your best friends on WhatsApp, Instagram, or email.
+                  {t('celebrateFriendshipDayDesc') || 'Send personalized 3D animated wish cards, family & friend photo frames, custom music, and heartfelt messages to your best friends on WhatsApp, Instagram, or email.'}
                 </p>
               </div>
 
@@ -647,7 +660,7 @@ export function CategoryTabs() {
                             <JashnIcon name={o.icon} className="size-6" />
                           </div>
                           <span className={cn("px-3 py-1 rounded-full text-[11px] font-extrabold uppercase border tracking-wider", theme.badgeColor)}>
-                            {theme.badge}
+                            {t(theme.badgeKey) || theme.badgeFallback}
                           </span>
                         </div>
 
@@ -664,7 +677,7 @@ export function CategoryTabs() {
                           {t('writeNote') || 'Write Heartfelt Note'} <ArrowRight className="size-3.5" />
                         </span>
                         <span className="text-[10px] font-bold text-muted-foreground/70 uppercase">
-                          Heartfelt Card
+                          {t('heartfeltCardBadge') || 'Heartfelt Card'}
                         </span>
                       </div>
                     </Link>
@@ -693,7 +706,7 @@ export function CategoryTabs() {
               {/* Group A: Religious Occasions */}
               <div className="space-y-4">
                 <div className="text-xs uppercase font-extrabold tracking-wider text-emerald-700 dark:text-emerald-300 border-b border-emerald-500/20 pb-2 flex items-center gap-2">
-                  <Moon className="size-4 text-emerald-600" /> Religious & Cultural Festivals
+                  <Moon className="size-4 text-emerald-600" /> {t('religiousCulturalFestivals') || 'Religious & Cultural Festivals'}
                 </div>
                 <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4">
                   {religiousOccasions.map((o) => (
@@ -710,7 +723,7 @@ export function CategoryTabs() {
                         <span className="text-xs font-bold text-foreground leading-tight block group-hover:text-emerald-600 truncate">
                           {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
                         </span>
-                        <span className="text-[10px] text-muted-foreground font-medium">Send Wish Card</span>
+                        <span className="text-[10px] text-muted-foreground font-medium">{t('sendWishCardSub') || 'Send Wish Card'}</span>
                       </div>
                     </Link>
                   ))}
@@ -720,7 +733,7 @@ export function CategoryTabs() {
               {/* Group B: Milestones & Achievements */}
               <div className="space-y-4 pt-2">
                 <div className="text-xs uppercase font-extrabold tracking-wider text-amber-700 dark:text-amber-300 border-b border-amber-500/20 pb-2 flex items-center gap-2">
-                  <Award className="size-4 text-amber-600" /> Milestones & Life Achievements
+                  <Award className="size-4 text-amber-600" /> {t('milestonesLifeAchievements') || 'Milestones & Life Achievements'}
                 </div>
                 <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4">
                   {milestoneOccasions.map((o) => (
@@ -737,7 +750,7 @@ export function CategoryTabs() {
                         <span className="text-xs font-bold text-foreground leading-tight block group-hover:text-amber-600 truncate">
                           {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
                         </span>
-                        <span className="text-[10px] text-muted-foreground font-medium">Congratulate</span>
+                        <span className="text-[10px] text-muted-foreground font-medium">{t('congratulateSub') || 'Congratulate'}</span>
                       </div>
                     </Link>
                   ))}

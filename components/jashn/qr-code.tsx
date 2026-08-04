@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { Download, Check, Sparkles, Link2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/lang/context'
 
 interface CardQrCodeProps {
   shareUrl?: string
@@ -32,6 +33,7 @@ export function CardQrCode({
   showDownloadBtn = true,
   className,
 }: CardQrCodeProps) {
+  const { t } = useLang()
   const [downloaded, setDownloaded] = useState(false)
   const [resolvedShareUrl, setResolvedShareUrl] = useState('')
 
@@ -71,9 +73,9 @@ export function CardQrCode({
         <div className="size-8 rounded-full bg-[#D4AF37]/10 text-[#D4AF37] flex items-center justify-center">
           <Link2 className="size-4" />
         </div>
-        <span className="text-xs font-bold text-white">QR Code & Shareable Link</span>
+        <span className="text-xs font-bold text-white">{t('qrCodeAndLink') || 'QR Code & Shareable Link'}</span>
         <p className="text-[11px] text-zinc-400 leading-snug">
-          Save/publish your card to generate your unique scannable QR Code and shareable URL.
+          {t('qrCodeDraftNote') || 'Save/publish your card to generate your unique scannable QR Code and shareable URL.'}
         </p>
       </div>
     )
@@ -147,7 +149,7 @@ export function CardQrCode({
           className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#D4AF37] hover:bg-[#E5C35A] text-slate-950 font-extrabold text-[11px] uppercase tracking-wider shadow-md active:scale-95 transition-all"
         >
           {downloaded ? <Check className="size-3.5 text-slate-950" /> : <Download className="size-3.5 text-slate-950" />}
-          <span>{downloaded ? 'QR Downloaded!' : 'Download QR Code'}</span>
+          <span>{downloaded ? (t('qrDownloaded') || 'QR Downloaded!') : (t('downloadQrCode') || 'Download QR Code')}</span>
         </button>
       )}
     </div>

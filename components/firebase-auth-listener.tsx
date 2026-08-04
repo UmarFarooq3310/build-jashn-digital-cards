@@ -24,8 +24,13 @@ export function FirebaseAuthListener() {
       if (isCancelled) return
 
       try {
-        const { auth, db } = await import('@/lib/firebase')
-        if (!auth || isCancelled) return
+        const { getFirebaseAuth, getFirebaseDb } = await import('@/lib/firebase')
+        const auth = getFirebaseAuth()
+        const db = getFirebaseDb()
+        if (!auth || isCancelled) {
+          useJashn.setState({ isAuthLoading: false })
+          return
+        }
 
         const { onAuthStateChanged, getRedirectResult } = await import('firebase/auth')
 
@@ -73,10 +78,11 @@ export function FirebaseAuthListener() {
           return userData
         }
 
-        // Handle Google Auth redirect result immediately on Mobile / Android
-        getRedirectResult(auth).then(async (result) => {
-          if (result?.user && !isCancelled) {
-            const userData = await syncFirestoreUser(result.user)
+        // 1. Check for Google Auth redirect result immediately
+        try {
+          const redirectResult = await getRedirectResult(auth)
+          if (redirectResult?.user && !isCancelled) {
+            const userData = await syncFirestoreUser(redirectResult.user)
             setAuthCookie(true)
             useJashn.setState((s) => {
               const existing = s.registeredUsers || []
@@ -84,12 +90,28 @@ export function FirebaseAuthListener() {
               const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
               return { user: userData, registeredUsers: updated, isAuthLoading: false }
             })
-            useJashn.getState().fetchUserCards()
-          }
-        }).catch((err) => {
-          console.error('Redirect auth result error:', err)
-        })
+            await useJashn.getState().migrateGuestCards(userData.uid)
+            await useJashn.getState().fetchUserCards()
 
+            // Auto-redirect if user landed on /login or /signup after Google OAuth selection
+            if (typeof window !== 'undefined') {
+              const pathname = window.location.pathname
+              if (pathname === '/login' || pathname === '/signup') {
+                const searchParams = new URLSearchParams(window.location.search)
+                const targetRedirect = searchParams.get('redirect') || '/dashboard'
+                window.location.href = targetRedirect
+                return
+              }
+            }
+          }
+        } catch (err: any) {
+          const code = err?.code || ''
+          if (code !== 'auth/internal-error' && code !== 'auth/null-user' && code !== 'auth/no-auth-event') {
+            console.warn('Redirect auth result info:', err?.message || err)
+          }
+        }
+
+        // 2. Set up auth state change listener
         unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
           if (isCancelled) return
           if (firebaseUser) {
@@ -101,23 +123,36 @@ export function FirebaseAuthListener() {
               const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
               return { user: userData, registeredUsers: updated, isAuthLoading: false }
             })
+            await useJashn.getState().migrateGuestCards(userData.uid)
             fetchUserCards()
+
+            // Auto-redirect if user landed on /login or /signup after Google OAuth selection
+            if (typeof window !== 'undefined') {
+              const pathname = window.location.pathname
+              if (pathname === '/login' || pathname === '/signup') {
+                const searchParams = new URLSearchParams(window.location.search)
+                const targetRedirect = searchParams.get('redirect') || '/dashboard'
+                window.location.href = targetRedirect
+              }
+            }
           } else {
-            setAuthCookie(false)
-            useJashn.setState({ user: null, isAuthLoading: false })
+            useJashn.setState({ isAuthLoading: false })
+            const currentUser = useJashn.getState().user
+            if (!currentUser) {
+              setAuthCookie(false)
+            }
           }
         })
       } catch (e) {
         console.error('Error in initAuth:', e)
+        useJashn.setState({ isAuthLoading: false })
       }
     }
 
-    // Delay Firebase auth initialization so it doesn't block initial page load / LCP
-    const timer = setTimeout(initAuth, 1500)
+    initAuth()
 
     return () => {
       isCancelled = true
-      clearTimeout(timer)
       if (unsubscribe) unsubscribe()
     }
   }, [fetchUserCards])

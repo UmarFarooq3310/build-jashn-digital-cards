@@ -32,6 +32,8 @@ export interface InvitationCardData {
   notes: string
   themeId: string
   borderId?: string
+  photoUrl?: string
+  photoUrl2?: string
 }
 
 const LOCALE_MAP: Record<string, string> = {
@@ -263,9 +265,15 @@ function CardAnimLayers({ typeId }: { typeId: string }) {
 
 /** A single detail row with a tinted pill background */
 function DetailPill({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+  const { lang } = useLang()
+  const isRtl = lang === 'ur' || lang === 'ar'
+
   return (
     <div
-      className="flex items-center gap-2 rounded-xl px-3 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-semibold w-full justify-center transition-all shadow-xs backdrop-blur-md"
+      className={cn(
+        "flex items-center gap-2.5 rounded-2xl px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold w-full transition-all shadow-xs backdrop-blur-md",
+        isRtl ? "flex-row-reverse text-right" : "text-left"
+      )}
       style={{
         background: 'color-mix(in oklab, var(--c-accent) 10%, transparent)',
         border: '1px solid color-mix(in oklab, var(--c-accent) 22%, transparent)',
@@ -273,7 +281,9 @@ function DetailPill({ icon, children }: { icon: React.ReactNode; children: React
       }}
     >
       <span style={{ color: 'var(--c-accent)', flexShrink: 0 }}>{icon}</span>
-      <span className="leading-snug text-center break-words">{children}</span>
+      <span className={cn("leading-snug flex-1 break-words font-medium", isRtl ? "text-right font-urdu" : "text-left")}>
+        {children}
+      </span>
     </div>
   )
 }
@@ -552,12 +562,18 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
             </div>
           )}
 
-          {/* ── Couple avatars ── */}
+          {/* ── Couple avatars or Custom Uploaded Photos ── */}
           {isCouple ? (
             <div className="flex items-center justify-center gap-3 sm:gap-5 inv-parallax-near py-1">
               <div className="flex flex-col items-center gap-1">
                 <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
-                  <RelationAvatar relation="bride" size={60} />
+                  {data.photoUrl ? (
+                    <div className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] overflow-hidden shadow-lg bg-black/40">
+                      <img src={data.photoUrl} alt={data.bride || "Photo 1"} className="size-full object-cover" />
+                    </div>
+                  ) : (
+                    <RelationAvatar relation="bride" size={60} />
+                  )}
                 </div>
                 {data.bride && (
                   <p className="text-[11px] sm:text-xs opacity-80 font-bold tracking-wide">{data.bride}</p>
@@ -577,11 +593,24 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
               <div className="flex flex-col items-center gap-1">
                 <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
-                  <RelationAvatar relation="groom" size={60} />
+                  {data.photoUrl2 ? (
+                    <div className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] overflow-hidden shadow-lg bg-black/40">
+                      <img src={data.photoUrl2} alt={data.groom || "Photo 2"} className="size-full object-cover" />
+                    </div>
+                  ) : (
+                    <RelationAvatar relation="groom" size={60} />
+                  )}
                 </div>
                 {data.groom && (
                   <p className="text-[11px] sm:text-xs opacity-80 font-bold tracking-wide">{data.groom}</p>
                 )}
+              </div>
+            </div>
+          ) : (data.photoUrl || data.photoUrl2) ? (
+            /* ── Custom Event Photo (Single / Non-couple) ── */
+            <div className="flex items-center justify-center my-2 inv-parallax-near">
+              <div className="size-20 sm:size-24 rounded-2xl border-2 border-[#D4AF37] overflow-hidden shadow-xl bg-black/40">
+                <img src={data.photoUrl || data.photoUrl2} alt="Event Photo" className="size-full object-cover" />
               </div>
             </div>
           ) : (
@@ -664,14 +693,20 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
           {/* Personal notes / message */}
           {data.notes && (
             <div
-              className="ic-stagger w-full rounded-xl px-3.5 py-2.5 sm:px-5 sm:py-3 text-center shadow-xs backdrop-blur-md"
+              className={cn(
+                "ic-stagger w-full rounded-xl px-3.5 py-2.5 sm:px-5 sm:py-3 shadow-xs backdrop-blur-md",
+                (lang === 'ur' || lang === 'ar') ? "text-right" : "text-left"
+              )}
               style={{
                 background: 'color-mix(in oklab,var(--c-accent) 7%,transparent)',
                 border: '1px solid color-mix(in oklab,var(--c-accent) 15%,transparent)',
               }}
             >
               <p
-                className="text-xs sm:text-sm italic leading-relaxed opacity-90"
+                className={cn(
+                  "text-xs sm:text-sm italic leading-relaxed opacity-90 whitespace-pre-line",
+                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-right" : "text-left"
+                )}
                 style={{ fontStyle: 'italic' }}
               >
                 &ldquo;{data.notes}&rdquo;

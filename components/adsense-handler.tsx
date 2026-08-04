@@ -20,6 +20,23 @@ export function AdSenseHandler() {
   useEffect(() => {
     if (typeof document === 'undefined') return
 
+    const cleanStyles = () => {
+      try {
+        if (document.body) {
+          document.body.style.setProperty('top', '0px', 'important')
+          document.body.style.setProperty('margin-top', '0px', 'important')
+          document.body.style.setProperty('padding-top', '0px', 'important')
+        }
+        if (document.documentElement) {
+          document.documentElement.style.setProperty('top', '0px', 'important')
+          document.documentElement.style.setProperty('margin-top', '0px', 'important')
+          document.documentElement.style.setProperty('padding-top', '0px', 'important')
+        }
+      } catch (e) {}
+    }
+
+    cleanStyles()
+
     if (!allowed) {
       // 1. Apply safety CSS class to immediately suppress any ad rendering
       document.documentElement.classList.add('no-ads')
@@ -27,7 +44,7 @@ export function AdSenseHandler() {
       
       // 2. Proactively clear any AdSense elements that were dynamically inserted
       const adElements = document.querySelectorAll(
-        '.google-auto-placed, ins.adsbygoogle, [id^="google_ads_"], iframe[id^="aswift_"]'
+        '.google-auto-placed, ins.adsbygoogle:not(main ins), [id^="google_ads_"], iframe[id^="aswift_"]'
       )
       adElements.forEach((el) => el.remove())
 

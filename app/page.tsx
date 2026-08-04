@@ -1,6 +1,4 @@
 import dynamic from 'next/dynamic'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { Hero } from '@/components/home/hero'
 import { HowItWorks } from '@/components/home/how-it-works'
 
@@ -12,6 +10,9 @@ const CategoryTabs = dynamic(
 )
 const GamingWinnersSection = dynamic(
   () => import('@/components/home/gaming-winners-section').then((mod) => mod.GamingWinnersSection)
+)
+const SocialProofSection = dynamic(
+  () => import('@/components/home/social-proof').then((mod) => mod.SocialProofSection)
 )
 const InvitationsSection = dynamic(
   () => import('@/components/home/invitations-section').then((mod) => mod.InvitationsSection)
@@ -28,37 +29,35 @@ const FloatingCTA = dynamic(
 
 export default function Page() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-      <main className="flex-1">
-        <Hero />
-        
-        {/* How it works right below Hero */}
-        <HowItWorks />
+    <>
+      <Hero />
+      
+      {/* How it works right below Hero */}
+      <HowItWorks />
 
-        {/* Ad between sections */}
-        <AdBanner format="display" className="mx-auto max-w-4xl px-4 py-2" />
+      {/* Ad between sections */}
+      <AdBanner format="display" className="mx-auto max-w-4xl px-4 py-2" />
 
-        {/* Consolidated categories in tab structure */}
-        <CategoryTabs />
+      {/* Consolidated categories in tab structure */}
+      <CategoryTabs />
 
-        {/* 🎮 Gaming Winner Cards Section */}
-        <GamingWinnersSection />
+      {/* 🎮 Gaming Winner Cards Section */}
+      <GamingWinnersSection />
 
-        {/* RSVP feature block */}
-        <InvitationsSection />
+      {/* 🌟 Social Proof & Testimonials Section */}
+      <SocialProofSection />
 
-        {/* Concierge Custom Card Creation Service */}
-        <ConciergeService />
+      {/* RSVP feature block */}
+      <InvitationsSection />
 
-        {/* Final CTA block */}
-        <HomeCTA />
-      </main>
+      {/* Concierge Custom Card Creation Service */}
+      <ConciergeService />
+
+      {/* Final CTA block */}
+      <HomeCTA />
 
       {/* Sticky Mobile Floating Button */}
       <FloatingCTA />
-
-      <SiteFooter />
-    </div>
+    </>
   )
 }

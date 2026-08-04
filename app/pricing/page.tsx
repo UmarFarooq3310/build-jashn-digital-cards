@@ -3,8 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Check, Crown, Sparkles } from 'lucide-react'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
@@ -21,6 +19,7 @@ export default function PricingPage() {
   const router = useRouter()
   const { user, upgrade } = useJashn()
   const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
 
   // Modal state
   const [paymentModalPlan, setPaymentModalPlan] = useState<Exclude<Plan, 'free'> | null>(null)
@@ -60,11 +59,8 @@ export default function PricingPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
-
-      <main className="flex-1 py-12 md:py-20">
-        <div className="mx-auto max-w-5xl px-4 text-center">
+    <div className="py-12 md:py-20">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
 
           {/* ── Header ────────────────────────────────────────────────────── */}
           <div className="mb-12">
@@ -264,33 +260,42 @@ export default function PricingPage() {
         <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 w-full">
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-              <Sparkles className="size-3.5" /> Pricing Overview
+              <Sparkles className="size-3.5" /> {t('simpleTransparentPricing') || 'Pricing Overview'}
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
-            Transparent Pricing Plans — Cardzy
+          <h2 className={`text-xl sm:text-2xl font-extrabold text-foreground tracking-tight ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+            {t('choosePerfectPlan') || 'Transparent Pricing Plans — Cardzy'}
           </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            Cardzy offers flexible, transparent pricing tiers designed for individuals, families, corporate teams, and event hosts. Start completely free with our Free Forever Plan to create animated wish cards and digital invitations. Upgrade to Pro or Enterprise for unlimited card creations, custom branding, high-speed WhatsApp RSVP tracking, and priority customer support.
+          <p className={`text-xs sm:text-sm text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-sm sm:text-base leading-relaxed' : ''}`}>
+            {t('pricingOverviewDesc') || 'Cardzy offers flexible, transparent pricing tiers designed for individuals, families, corporate teams, and event hosts. Start completely free with our Free Forever Plan to create animated wish cards and digital invitations. Upgrade to Pro or Enterprise for unlimited card creations, custom branding, high-speed WhatsApp RSVP tracking, and priority customer support.'}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
             <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">Free Forever Plan</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">$0 / Rs 0 forever. Create 3D animated wish cards, custom photo cards, and shareable links with zero hidden fees.</p>
+              <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+                {t('freeForeverPlanTitle') || 'Free Forever Plan'}
+              </h3>
+              <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+                {t('freeForeverPlanDesc') || '$0 / Rs 0 forever. Create 3D animated wish cards, custom photo cards, and shareable links with zero hidden fees.'}
+              </p>
             </div>
             <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">Pro Plan</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">$4 / Rs 1,100 per month. Unlock royal wedding invitation themes, executive digital business cards, and automated WhatsApp guest RSVP tracking.</p>
+              <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+                {t('proPlan') || 'Pro Plan'}
+              </h3>
+              <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+                {t('proPlanDesc') || '$4 / Rs 1,100 per month. Unlock royal wedding invitation themes, executive digital business cards, and automated WhatsApp guest RSVP tracking.'}
+              </p>
             </div>
             <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">Enterprise Plan</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Custom corporate pricing. Includes custom domain setup, bulk team vCard management, and dedicated event manager support.</p>
+              <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+                {t('enterprisePlan') || 'Enterprise Plan'}
+              </h3>
+              <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+                {t('enterprisePlanDesc') || 'Custom corporate pricing. Includes custom domain setup, bulk team vCard management, and dedicated event manager support.'}
+              </p>
             </div>
           </div>
         </section>
-      </main>
-
-      <SiteFooter />
     </div>
   )
 }

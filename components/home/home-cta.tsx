@@ -34,7 +34,7 @@ export function HomeCTA() {
     <section ref={sectionRef} className="border-t border-teal-500/20 bg-gradient-to-br from-teal-600 to-teal-900 text-[#f5f3ff] py-10 md:py-12 relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(#f5f3ff_1.5px,transparent_1.5px)] [background-size:16px_16px] pointer-events-none" />
       
-      <div className="mx-auto max-w-4xl px-4 py-8 text-center relative z-10 space-y-6">
+      <div className="mx-auto max-w-6xl px-4 py-8 text-center relative z-10 space-y-6">
         <h2 className="cta-item text-balance text-3xl font-extrabold tracking-tight sm:text-4xl text-white">
           {t('spreadJoy')}
         </h2>

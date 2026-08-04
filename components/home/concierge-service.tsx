@@ -23,10 +23,10 @@ export function ConciergeService() {
   const buildMessage = () => {
     const typeLabel =
       cardType === 'wish'
-        ? 'Wish / Greeting Card'
+        ? t('wishGreetingCardType') || 'Wish / Greeting Card'
         : cardType === 'invitation'
-        ? 'Event Invitation Card'
-        : 'Digital Visiting / Business Card'
+        ? t('eventInvitationCardType') || 'Event Invitation Card'
+        : t('digitalVisitingCardType') || 'Digital Visiting / Business Card'
 
     return (
       `Hi Cardzy Team! I want a custom card created for me.\n\n` +
@@ -84,12 +84,12 @@ export function ConciergeService() {
   }
 
   return (
-    <section id="concierge-section" className="bg-gradient-to-b from-slate-950 via-emerald-950 to-slate-950 text-white py-12 md:py-16 px-4 relative overflow-hidden my-6 md:my-10 rounded-3xl max-w-6xl mx-auto border border-emerald-500/20 shadow-2xl">
+    <section id="concierge-section" className="bg-gradient-to-b from-slate-950 via-emerald-950 to-slate-950 text-white py-12 md:py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden my-6 md:my-10 rounded-3xl max-w-6xl mx-auto border border-emerald-500/20 shadow-2xl">
       {/* Background glow animations */}
       <div className="absolute -top-32 -left-32 size-[28rem] rounded-full bg-emerald-500/15 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-32 -right-32 size-[28rem] rounded-full bg-amber-500/15 blur-3xl pointer-events-none" />
 
-      <div className="mx-auto max-w-4xl relative z-10 space-y-8">
+      <div className="mx-auto w-full relative z-10 space-y-8">
         {/* Header */}
         <div className="text-center space-y-4">
           <div className="flex flex-wrap justify-center gap-2">
@@ -99,7 +99,7 @@ export function ConciergeService() {
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3.5 py-1 border border-amber-500/30 text-amber-300 font-bold text-xs uppercase tracking-widest shadow-xs">
               <Globe className="size-3.5 text-amber-400" />
-              <span>Global Digital Cards & 18 Languages 🌍</span>
+              <span>{t('globalDigitalCards18Langs') || 'Global Digital Cards & 18 Languages 🌍'}</span>
             </span>
           </div>
 
@@ -114,21 +114,21 @@ export function ConciergeService() {
           {/* Service Highlights Badges */}
           <div className="flex flex-wrap justify-center items-center gap-2 pt-1 text-xs">
             <span className="bg-white/10 px-3 py-1 rounded-full text-emerald-300 border border-emerald-500/20 font-semibold">
-              ✨ Wish & Greeting Cards
+              {t('wishGreetingCardsBadge') || '✨ Wish & Greeting Cards'}
             </span>
             <span className="bg-white/10 px-3 py-1 rounded-full text-amber-300 border border-amber-500/20 font-semibold">
-              💌 Event Invitations (RSVP & Maps)
+              {t('eventInvitationsRsvpBadge') || '💌 Event Invitations (RSVP & Maps)'}
             </span>
             <span className="bg-white/10 px-3 py-1 rounded-full text-teal-300 border border-teal-500/20 font-semibold">
-              🪪 Digital Visiting Cards (.vcf)
+              {t('digitalVisitingCardsVcfBadge') || '🪪 Digital Visiting Cards (.vcf)'}
             </span>
             <Link href="/pricing" className="bg-emerald-500/20 hover:bg-emerald-500/30 text-white px-3 py-1 rounded-full border border-emerald-400/30 font-bold transition-all flex items-center gap-1">
               <Tag className="size-3 text-amber-400" />
-              <span>Pricing</span>
+              <span>{t('pricingTitle') || 'Pricing'}</span>
             </Link>
             <Link href="/faq" className="bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white px-3 py-1 rounded-full border border-white/20 font-semibold transition-all flex items-center gap-1">
               <HelpCircle className="size-3" />
-              <span>FAQs</span>
+              <span>{t('faqNav') || 'FAQs'}</span>
             </Link>
           </div>
         </div>
@@ -146,7 +146,7 @@ export function ConciergeService() {
               )}
             >
               <FileText className="size-4" />
-              <span>Fill Quick Form</span>
+              <span>{t('fillQuickForm') || 'Fill Quick Form'}</span>
             </button>
             <button
               onClick={() => setMode('direct')}
@@ -158,7 +158,7 @@ export function ConciergeService() {
               )}
             >
               <MessageSquare className="size-4" />
-              <span>Direct WhatsApp & Email</span>
+              <span>{t('directWhatsappEmail') || 'Direct WhatsApp & Email'}</span>
             </button>
           </div>
         </div>
@@ -169,17 +169,17 @@ export function ConciergeService() {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-white/10">
               <h3 className="text-lg font-extrabold text-emerald-300 flex items-center gap-2">
                 <Sparkles className="size-5 text-amber-400" />
-                <span>Simple Details Form (No design selection needed)</span>
+                <span>{t('simpleDetailsFormTitle') || 'Simple Details Form (No design selection needed)'}</span>
               </h3>
               <span className="text-xs text-slate-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">
-                100% Free Custom Creation
+                {t('freeCustomCreationBadge') || '100% Free Custom Creation'}
               </span>
             </div>
 
             {/* Card Type Selection */}
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-                1. Select Card Type
+                {t('selectCardTypeLabel') || '1. Select Card Type'}
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button
@@ -193,7 +193,7 @@ export function ConciergeService() {
                   )}
                 >
                   <Gift className="size-4 text-emerald-400" />
-                  <span>Wish / Greeting Card</span>
+                  <span>{t('wishGreetingCardType') || 'Wish / Greeting Card'}</span>
                 </button>
 
                 <button
@@ -207,7 +207,7 @@ export function ConciergeService() {
                   )}
                 >
                   <Calendar className="size-4 text-amber-400" />
-                  <span>Event Invitation Card</span>
+                  <span>{t('eventInvitationCardType') || 'Event Invitation Card'}</span>
                 </button>
 
                 <button
@@ -221,7 +221,7 @@ export function ConciergeService() {
                   )}
                 >
                   <Contact2 className="size-4 text-teal-400" />
-                  <span>Digital Visiting Card</span>
+                  <span>{t('digitalVisitingCardType') || 'Digital Visiting Card'}</span>
                 </button>
               </div>
             </div>
@@ -233,10 +233,10 @@ export function ConciergeService() {
                   <Sparkles className="size-3.5 text-emerald-400" />
                   <span>
                     {cardType === 'wish'
-                      ? 'Wish Occasion / Purpose *'
+                      ? (t('wishOccasionPurposeLabel') || 'Wish Occasion / Purpose *')
                       : cardType === 'invitation'
-                      ? 'Event Type / Occasion *'
-                      : 'Profession / Business Category *'}
+                      ? (t('eventTypeOccasionLabel') || 'Event Type / Occasion *')
+                      : (t('professionCategoryLabel') || 'Profession / Business Category *')}
                   </span>
                 </label>
                 <input
@@ -245,10 +245,10 @@ export function ConciergeService() {
                   onChange={(e) => setOccasion(e.target.value)}
                   placeholder={
                     cardType === 'wish'
-                      ? "e.g. Birthday, Eid Mubarak, Anniversary, Friendship, General Wish"
+                      ? (t('wishOccasionPlaceholder') || "e.g. Birthday, Eid Mubarak, Anniversary, Friendship, General Wish")
                       : cardType === 'invitation'
-                      ? "e.g. Wedding / Barat, Nikah, Birthday Party, Walima, Corporate Event"
-                      : "e.g. Doctor, CEO, Lawyer, Real Estate Agent, IT Consultant, Clinic"
+                      ? (t('eventOccasionPlaceholder') || "e.g. Wedding / Barat, Nikah, Birthday Party, Walima, Corporate Event")
+                      : (t('professionPlaceholder') || "e.g. Doctor, CEO, Lawyer, Real Estate Agent, IT Consultant, Clinic")
                   }
                   className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
                 />
@@ -259,10 +259,10 @@ export function ConciergeService() {
                   <User className="size-3.5 text-emerald-400" />
                   <span>
                     {cardType === 'wish'
-                      ? 'Recipient / Sender Name(s) *'
+                      ? (t('recipientSenderNameLabel') || 'Recipient / Sender Name(s) *')
                       : cardType === 'invitation'
-                      ? 'Host / Couple Name(s) *'
-                      : 'Full Name & Designation *'}
+                      ? (t('hostCoupleNameLabel') || 'Host / Couple Name(s) *')
+                      : (t('fullNameDesignationLabel') || 'Full Name & Designation *')}
                   </span>
                 </label>
                 <input
@@ -271,10 +271,10 @@ export function ConciergeService() {
                   onChange={(e) => setNames(e.target.value)}
                   placeholder={
                     cardType === 'wish'
-                      ? "e.g. To: Sarah OR From: Usman & Family"
+                      ? (t('wishRecipientPlaceholder') || "e.g. To: Sarah OR From: Usman & Family")
                       : cardType === 'invitation'
-                      ? "e.g. Bride & Groom: Fatima & Zaryab"
-                      : "e.g. Dr. Zaryab Malik - Chief Executive Officer"
+                      ? (t('coupleNamePlaceholder') || "e.g. Bride & Groom: Fatima & Zaryab")
+                      : (t('designationPlaceholder') || "e.g. Dr. Zaryab Malik - Chief Executive Officer")
                   }
                   className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
                 />
@@ -286,10 +286,10 @@ export function ConciergeService() {
                 <FileText className="size-3.5 text-emerald-400" />
                 <span>
                   {cardType === 'wish'
-                    ? 'Wish Message & Personal Note *'
+                    ? (t('wishMessageLabel') || 'Wish Message & Personal Note *')
                     : cardType === 'invitation'
-                    ? 'Event Date, Time, Venue & RSVP Details *'
-                    : 'Business Details, Address, Phone & Website *'}
+                    ? (t('eventDetailsLabel') || 'Event Date, Time, Venue & RSVP Details *')
+                    : (t('businessDetailsLabel') || 'Business Details, Address, Phone & Website *')}
                 </span>
               </label>
               <textarea
@@ -298,10 +298,10 @@ export function ConciergeService() {
                 onChange={(e) => setEventDetails(e.target.value)}
                 placeholder={
                   cardType === 'wish'
-                    ? "e.g. Wishing you a happy birthday filled with joy and blessings! From your friend Usman."
+                    ? (t('wishMessagePlaceholder') || "e.g. Wishing you a happy birthday filled with joy and blessings! From your friend Usman.")
                     : cardType === 'invitation'
-                    ? "e.g. Date: 15th August, Time: 7 PM, Venue: PC Hotel Lahore. RSVP: 0300-1234567"
-                    : "e.g. Phone: +92 300 1234567, Address: Gulberg Lahore, Services: Dental Clinic, Website: clinic.com"
+                    ? (t('eventDetailsPlaceholder') || "e.g. Date: 15th August, Time: 7 PM, Venue: PC Hotel Lahore. RSVP: 0300-1234567")
+                    : (t('businessDetailsPlaceholder') || "e.g. Phone: +92 300 1234567, Address: Gulberg Lahore, Services: Dental Clinic, Website: clinic.com")
                 }
                 className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all resize-none"
               />
@@ -310,7 +310,7 @@ export function ConciergeService() {
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
                 <Phone className="size-3.5 text-emerald-400" />
-                <span>Your WhatsApp Number / Contact (To receive live link)</span>
+                <span>{t('yourWhatsappContactLabel') || 'Your WhatsApp Number / Contact (To receive live link)'}</span>
               </label>
               <input
                 type="text"
@@ -319,7 +319,7 @@ export function ConciergeService() {
                   setContactInfo(e.target.value)
                   if (phoneError) setPhoneError('')
                 }}
-                placeholder="e.g. +92 309 3518796 or 0309 3518796"
+                placeholder={t('contactInfoPlaceholder') || "e.g. +92 309 3518796 or 0309 3518796"}
                 className={cn(
                   "w-full rounded-2xl border bg-white/5 px-4 py-3 text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 transition-all",
                   phoneError
@@ -342,7 +342,7 @@ export function ConciergeService() {
                 className="w-full sm:w-1/2 inline-flex items-center justify-center gap-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-6 py-3.5 text-sm shadow-xl shadow-emerald-950/50 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 <MessageSquare className="size-5 fill-white/20" />
-                <span>Send via WhatsApp 🟢</span>
+                <span>{t('sendViaWhatsappBtn') || 'Send via WhatsApp 🟢'}</span>
                 <ArrowRight className="size-4" />
               </button>
 
@@ -352,14 +352,14 @@ export function ConciergeService() {
                 className="w-full sm:w-1/2 inline-flex items-center justify-center gap-2.5 rounded-2xl border border-white/20 bg-white/10 hover:bg-white/20 text-white font-bold px-6 py-3.5 text-sm shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Mail className="size-5" />
-                <span>Send via Email ✉️</span>
+                <span>{t('sendViaEmailBtn') || 'Send via Email ✉️'}</span>
               </button>
             </div>
 
             {submitted && (
               <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400 bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/20">
                 <CheckCircle2 className="size-4" />
-                <span>Opening messaging app with your formatted details... Our team will send your live card link shortly!</span>
+                <span>{t('formattingRedirectSuccess') || 'Opening messaging app with your formatted details... Our team will send your live card link shortly!'}</span>
               </div>
             )}
           </div>
@@ -414,7 +414,7 @@ export function ConciergeService() {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-8 py-4 text-sm sm:text-base shadow-xl shadow-emerald-950/50 transition-all hover:scale-105"
               >
                 <MessageSquare className="size-5 fill-white/20" />
-                <span>Chat Directly on WhatsApp 💬</span>
+                <span>{t('chatDirectlyWhatsappBtn') || 'Chat Directly on WhatsApp 💬'}</span>
                 <ArrowRight className="size-5" />
               </a>
 

@@ -10,7 +10,7 @@ import '@/app/invitation-themes-premium.css'
 import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Sparkles, Grid, Loader2, AlertCircle, Heart, Check, Edit3, Palette, Eye } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Sparkles, Grid, Loader2, AlertCircle, Heart, Check, Edit3, Palette, Eye, Camera, X } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -23,6 +23,7 @@ import { InvitationTypePicker } from '@/components/jashn/invitation-type-picker'
 import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
 import { useJashn } from '@/lib/jashn/store'
 import { INVITATION_TYPES, getInvitationType } from '@/lib/jashn/invitations'
+import { getInvitationWordingTemplates, type InvitationWordingTemplate } from '@/lib/jashn/invitation-templates'
 import { useLang } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
 
@@ -31,6 +32,7 @@ function CreateInvitationContent() {
   const searchParams = useSearchParams()
   const { user, createInvitation, updateInvitation, invitations, isAuthLoading, showToast } = useJashn()
   const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
 
   const editSlug = searchParams.get('edit')
 
@@ -68,11 +70,32 @@ function CreateInvitationContent() {
   const [themeId, setThemeId] = useState('mehndi-red')
   const [borderId, setBorderId] = useState('mehndi')
   const [bgVariantId, setBgVariantId] = useState('default')
+  const [photoUrl, setPhotoUrl] = useState('')
+  const [photoUrl2, setPhotoUrl2] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const selectedType = getInvitationType(typeId)
   const isCouple = selectedType?.couple
   const isPro = user?.plan === 'pro' || user?.plan === 'business'
+
+  const wordingTemplates = getInvitationWordingTemplates(typeId, lang)
+
+  function applyWordingTemplate(tmpl: InvitationWordingTemplate) {
+    if (!isCouple && tmpl.title) {
+      setTitle(tmpl.title)
+    }
+    if (tmpl.hostNames) setHostNames(tmpl.hostNames)
+    if (tmpl.notes) setNotes(tmpl.notes)
+    if (tmpl.dressCode) setDressCode(tmpl.dressCode)
+
+    const newErrors = { ...errors }
+    delete newErrors.title
+    delete newErrors.hostNames
+    delete newErrors.notes
+    setErrors(newErrors)
+
+    showToast('Pre-written invitation template applied! ✨', 'info')
+  }
 
   // Free creation for everyone - no login required to send invitations
 
@@ -96,6 +119,8 @@ function CreateInvitationContent() {
         setThemeId(existing.themeId || 'mehndi-red')
         setBorderId(existing.borderId || 'mehndi')
         setBgVariantId(existing.bgVariantId || 'default')
+        setPhotoUrl(existing.photoUrl || '')
+        setPhotoUrl2(existing.photoUrl2 || '')
         setStep(2)
       }
     } else {
@@ -106,6 +131,36 @@ function CreateInvitationContent() {
       }
     }
   }, [searchParams, editSlug, invitations])
+
+  function handlePhotoUpload1(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('Photo 1 size must be less than 5MB', 'error')
+      return
+    }
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setPhotoUrl(reader.result as string)
+      showToast('Photo 1 uploaded! ✨', 'info')
+    }
+    reader.readAsDataURL(file)
+  }
+
+  function handlePhotoUpload2(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('Photo 2 size must be less than 5MB', 'error')
+      return
+    }
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setPhotoUrl2(reader.result as string)
+      showToast('Photo 2 uploaded! ✨', 'info')
+    }
+    reader.readAsDataURL(file)
+  }
 
   if (isAuthLoading) {
     return (
@@ -126,10 +181,47 @@ function CreateInvitationContent() {
   function runValidation() {
     const errs: Record<string, string> = {}
 
-    if (rsvpPhone.trim()) {
-      const cleanedPhone = rsvpPhone.trim().replace(/\s+/g, '')
-      if (!/^\+?\d{10,14}$/.test(cleanedPhone)) {
-        errs.rsvpPhone = t('invalidPhone') || 'Please enter a valid phone number (e.g. +923001234567)'
+    if (step === 2) {
+      if (isCouple) {
+        if (!groom.trim()) {
+          errs.groom = t('groomRequired') || 'Groom Name is required'
+        }
+        if (!bride.trim()) {
+          errs.bride = t('brideRequired') || 'Bride Name is required'
+        }
+      } else {
+        if (!title.trim()) {
+          errs.title = t('eventTitleRequired') || 'Event Title is required'
+        }
+      }
+
+      if (!hostNames.trim()) {
+        errs.hostNames = t('hostNamesRequired') || 'Host Name(s) is required'
+      }
+
+      if (!date.trim()) {
+        errs.date = t('eventDateRequired') || 'Event Date is required'
+      }
+
+      if (!time.trim()) {
+        errs.time = t('eventTimeRequired') || 'Event Time is required'
+      }
+
+      if (!venue.trim()) {
+        errs.venue = t('venueRequired') || 'Venue is required'
+      }
+
+      if (!city.trim()) {
+        errs.city = t('cityRequired') || 'City is required'
+      }
+
+      if (!rsvpPhone.trim()) {
+        errs.rsvpPhone = 'WhatsApp RSVP Phone Number is required'
+      } else {
+        const cleanedPhone = rsvpPhone.trim().replace(/\s+/g, '')
+        if (!/^\+?\d{10,14}$/.test(cleanedPhone)) {
+          errs.rsvpPhone = t('invalidPhone') || 'Please enter a valid phone number (e.g. +923001234567)'
+        }
       }
     }
 
@@ -141,18 +233,20 @@ function CreateInvitationContent() {
     const tempErrors = { ...errors }
 
     if (field === 'rsvpPhone') {
-      if (value.trim()) {
+      if (!value.trim()) {
+        tempErrors.rsvpPhone = 'WhatsApp RSVP Phone Number is required'
+      } else {
         const cleanedPhone = value.trim().replace(/\s+/g, '')
         if (!/^\+?\d{10,14}$/.test(cleanedPhone)) {
           tempErrors.rsvpPhone = t('invalidPhone') || 'Please enter a valid phone number'
         } else {
           delete tempErrors.rsvpPhone
         }
-      } else {
-        delete tempErrors.rsvpPhone
       }
     } else {
-      delete tempErrors[field]
+      if (value.trim()) {
+        delete tempErrors[field]
+      }
     }
 
     setErrors(tempErrors)
@@ -199,6 +293,8 @@ function CreateInvitationContent() {
       themeId: finalThemeId,
       borderId: finalBorderId,
       bgVariantId,
+      photoUrl,
+      photoUrl2,
     }
 
     if (editSlug) {
@@ -211,7 +307,7 @@ function CreateInvitationContent() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-3 sm:px-4 pb-20">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-20">
       <div className="mb-6 text-center">
         {/* Card Studio Mode Switcher */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-5">
@@ -351,7 +447,7 @@ function CreateInvitationContent() {
                 </div>
 
                 {/* 📝 Details Tab Content (Mobile details or Desktop always) */}
-                <div className={cn(mobileTab !== 'details' && 'hidden lg:block', 'space-y-5')}>
+                <div className={cn(mobileTab !== 'details' && 'hidden lg:block', 'space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
                   <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
                     <Edit3 className="size-4" /> 1. {t('cardDetailsHeading')}
                   </h3>
@@ -359,7 +455,7 @@ function CreateInvitationContent() {
                   {isCouple ? (
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="mb-1.5 block text-xs font-bold text-foreground">
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                           {t('groomName') === 'groomName' ? 'Groom Name' : t('groomName')} *
                         </label>
                         <input
@@ -368,10 +464,11 @@ function CreateInvitationContent() {
                           value={groom}
                           onChange={(e) => handleFieldChange('groom', e.target.value, setGroom)}
                           placeholder={t('placeholderGroom')}
-                          dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                          dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
                           className={cn(
                             "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                            errors.groom ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                            errors.groom ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
+                            (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
                           )}
                         />
                         {errors.groom && (
@@ -381,7 +478,7 @@ function CreateInvitationContent() {
                         )}
                       </div>
                       <div>
-                        <label className="mb-1.5 block text-xs font-bold text-foreground">
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                           {t('brideName') === 'brideName' ? 'Bride Name' : t('brideName')} *
                         </label>
                         <input
@@ -390,10 +487,11 @@ function CreateInvitationContent() {
                           value={bride}
                           onChange={(e) => handleFieldChange('bride', e.target.value, setBride)}
                           placeholder={t('placeholderBride')}
-                          dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                          dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
                           className={cn(
                             "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                            errors.bride ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                            errors.bride ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
+                            (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
                           )}
                         />
                         {errors.bride && (
@@ -405,7 +503,7 @@ function CreateInvitationContent() {
                     </div>
                   ) : (
                     <div>
-                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('eventTitle')} *
                       </label>
                       <input
@@ -429,7 +527,7 @@ function CreateInvitationContent() {
                   )}
 
                   <div>
-                    <label className="mb-1.5 block text-xs font-bold text-foreground">
+                    <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                       {t('hostNamesLabel')} *
                     </label>
                     <input
@@ -453,7 +551,7 @@ function CreateInvitationContent() {
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('eventDateLabel')} *
                       </label>
                       <input
@@ -473,7 +571,7 @@ function CreateInvitationContent() {
                       )}
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('eventTimeLabel')} *
                       </label>
                       <input
@@ -496,7 +594,7 @@ function CreateInvitationContent() {
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('venueLabel')} *
                       </label>
                       <input
@@ -518,7 +616,7 @@ function CreateInvitationContent() {
                       )}
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('cityLabel')} *
                       </label>
                       <input
@@ -542,7 +640,7 @@ function CreateInvitationContent() {
                   </div>
 
                   <div>
-                    <label className="mb-1.5 block text-xs font-bold text-foreground">
+                    <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                       {t('rsvpPhoneLabel')} *
                     </label>
                     <input
@@ -568,7 +666,7 @@ function CreateInvitationContent() {
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('mapsLinkLabel')}
                       </label>
                       <input
@@ -580,7 +678,7 @@ function CreateInvitationContent() {
                       />
                     </div>
                     <div>
-                      <label className="mb-1.5 block text-xs font-bold text-foreground">
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('dressCodeLabel')}
                       </label>
                       <input
@@ -594,18 +692,101 @@ function CreateInvitationContent() {
                     </div>
                   </div>
 
+                  {/* 📝 CHOOSE PRE-WRITTEN INVITATION TEMPLATE (Placed on top of Special Notes / Message) */}
+                  {wordingTemplates.length > 0 && (
+                    <div className="rounded-2xl border border-input bg-card p-4 space-y-2.5 shadow-xs">
+                      <label className={cn("text-xs font-bold text-[#7B0D1E] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                        <Sparkles className="size-4 text-amber-500" /> {t('selectWordingTemplateLabel') || t('choosePrewrittenTemplate') || 'CHOOSE PRE-WRITTEN INVITATION TEMPLATE:'}
+                      </label>
+                      <div className="flex flex-wrap gap-2">
+                        {wordingTemplates.map((tmpl, idx) => (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => applyWordingTemplate(tmpl)}
+                            className="flex items-center gap-1.5 rounded-xl border border-[#7B0D1E]/20 bg-[#7B0D1E]/5 px-3 py-1.5 text-xs font-bold text-[#7B0D1E] hover:bg-[#7B0D1E]/15 transition-all active:scale-95 shadow-xs"
+                          >
+                            📜 <span>{tmpl.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   <div>
-                    <label className="mb-1.5 block text-xs font-bold text-foreground">
+                    <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                       {t('notesLabel')}
                     </label>
-                    <input
-                      type="text"
+                    <textarea
+                      rows={3}
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
-                      placeholder="e.g. Children welcome / No gifts"
-                      dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                      className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
+                      placeholder={t('placeholderNotes')}
+                      dir={lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(notes) ? 'rtl' : 'ltr'}
+                      className={cn(
+                        "w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all leading-relaxed",
+                        (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(notes)) && "font-urdu text-base text-right"
+                      )}
                     />
+                  </div>
+
+                  {/* Photo Upload Section */}
+                  <div className="rounded-2xl border border-input bg-card p-4 space-y-3">
+                    <label className={cn("text-xs font-bold text-[#7B0D1E] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                      <Camera className="size-4" /> {isCouple ? t('couplePhotosLabel') : t('eventPhotoLabel')}
+                    </label>
+
+                    <div className={cn("grid gap-3", isCouple ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1")}>
+                      {/* Photo 1 Upload Box */}
+                      <div className="flex flex-col items-center justify-center p-3 rounded-2xl border border-dashed border-input bg-background/50 space-y-2 text-center">
+                        <span className="text-[11px] font-semibold text-muted-foreground">
+                          {isCouple ? t('bridePhoto') : t('customCardPhoto')}
+                        </span>
+                        {photoUrl ? (
+                          <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm">
+                            <img src={photoUrl} alt="Photo 1 Preview" className="size-full object-cover" />
+                            <button
+                              type="button"
+                              onClick={() => setPhotoUrl('')}
+                              className="absolute top-0.5 right-0.5 bg-red-600 text-white rounded-full p-0.5 hover:bg-red-700 transition-all"
+                            >
+                              <X className="size-3" />
+                            </button>
+                          </div>
+                        ) : null}
+                        <label className="flex items-center gap-2 rounded-xl border border-input bg-background px-3 py-1.5 text-xs font-bold hover:bg-muted cursor-pointer transition-all shadow-xs">
+                          <Camera className="size-3.5 text-[#7B0D1E]" />
+                          <span>{photoUrl ? t('changePhoto') : t('uploadPhoto')}</span>
+                          <input type="file" accept="image/*" onChange={handlePhotoUpload1} className="hidden" />
+                        </label>
+                      </div>
+
+                      {/* Photo 2 Upload Box (Only for couple invitations e.g. Groom Photo) */}
+                      {isCouple ? (
+                        <div className="flex flex-col items-center justify-center p-3 rounded-2xl border border-dashed border-input bg-background/50 space-y-2 text-center">
+                          <span className="text-[11px] font-semibold text-muted-foreground">
+                            {t('groomPhoto')}
+                          </span>
+                          {photoUrl2 ? (
+                            <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm">
+                              <img src={photoUrl2} alt="Photo 2 Preview" className="size-full object-cover" />
+                              <button
+                                type="button"
+                                onClick={() => setPhotoUrl2('')}
+                                className="absolute top-0.5 right-0.5 bg-red-600 text-white rounded-full p-0.5 hover:bg-red-700 transition-all"
+                              >
+                                <X className="size-3" />
+                              </button>
+                            </div>
+                          ) : null}
+                          <label className="flex items-center gap-2 rounded-xl border border-input bg-background px-3 py-1.5 text-xs font-bold hover:bg-muted cursor-pointer transition-all shadow-xs">
+                            <Camera className="size-3.5 text-[#7B0D1E]" />
+                            <span>{photoUrl2 ? t('changePhoto') : t('uploadPhoto')}</span>
+                            <input type="file" accept="image/*" onChange={handlePhotoUpload2} className="hidden" />
+                          </label>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
 
@@ -616,7 +797,7 @@ function CreateInvitationContent() {
                   </h3>
 
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                       {t('selectTheme')}
                     </label>
                     <ThemePicker
@@ -628,8 +809,8 @@ function CreateInvitationContent() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      {t('selectBorder')}
+                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                      {t('selectBorderFrame')}
                     </label>
                     <BorderPicker
                       value={borderId}
@@ -640,8 +821,8 @@ function CreateInvitationContent() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      {t('selectBackground')}
+                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                      {t('selectCardBackgroundStyle')}
                     </label>
                     <BackgroundPicker
                       value={bgVariantId}
@@ -679,6 +860,8 @@ function CreateInvitationContent() {
                               themeId,
                               borderId,
                               bgVariantId,
+                              photoUrl,
+                              photoUrl2,
                             }}
                           />
                         </CardAnimationPreview>
@@ -694,7 +877,7 @@ function CreateInvitationContent() {
                     onClick={() => setStep(1)}
                     className="w-full sm:w-auto rounded-2xl h-11"
                   >
-                    <ArrowLeft className="mr-2 size-4" /> Change Event Type
+                    <ArrowLeft className="mr-2 size-4" /> {t('changeEventType')}
                   </Button>
                   <Button
                     onClick={handleFinish}
@@ -732,6 +915,8 @@ function CreateInvitationContent() {
                     themeId,
                     borderId,
                     bgVariantId,
+                    photoUrl,
+                    photoUrl2,
                   }}
                 />
               </CardAnimationPreview>
@@ -773,30 +958,42 @@ function CreateInvitationContent() {
       )}
 
       {/* Premium Guide Overview Card */}
-      <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-4xl mx-auto">
+      <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-6xl mx-auto">
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-            <Sparkles className="size-3.5" /> Invitation Features
+            <Sparkles className="size-3.5" /> {t('invitationFeaturesBadge') || 'Invitation Features'}
           </span>
         </div>
-        <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
-          Royal 4K Animated Wedding Invitations & Online Nikkah Cards
+        <h2 className={`text-xl sm:text-2xl font-extrabold text-foreground tracking-tight ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+          {t('royalWeddingInvitationsTitle') || 'Royal 4K Animated Wedding Invitations & Online Nikkah Cards'}
         </h2>
-        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-          Create breathtaking animated digital wedding invitation websites for Nikkah, Mehndi, Barat, Walima, and Save-The-Date celebrations. Features include custom venue pins with Google Maps directions, background music tracks, custom RSVP form with automatic WhatsApp host notifications, and multiday event itineraries.
+        <p className={`text-xs sm:text-sm text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-sm sm:text-base leading-relaxed' : ''}`}>
+          {t('royalWeddingInvitationsDesc') || 'Create breathtaking animated digital wedding invitation websites for Nikkah, Mehndi, Barat, Walima, and Save-The-Date celebrations. Features include custom venue pins with Google Maps directions, background music tracks, custom RSVP form with automatic WhatsApp host notifications, and multiday event itineraries.'}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-            <h3 className="font-extrabold text-xs text-foreground">Live WhatsApp RSVP Tracking</h3>
-            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Receive guest attendance confirmations and headcount updates directly in WhatsApp.</p>
+            <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+              {t('liveWhatsappRsvpTitle') || 'Live WhatsApp RSVP Tracking'}
+            </h3>
+            <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+              {t('liveWhatsappRsvpDesc') || 'Receive guest attendance confirmations and headcount updates directly in WhatsApp.'}
+            </p>
           </div>
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-            <h3 className="font-extrabold text-xs text-foreground">Google Maps Venue Pin</h3>
-            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Help guests navigate directly to your marquee or wedding hall with one click.</p>
+            <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+              {t('googleMapsVenuePinTitle') || 'Google Maps Venue Pin'}
+            </h3>
+            <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+              {t('googleMapsVenuePinDesc') || 'Help guests navigate directly to your marquee or wedding hall with one click.'}
+            </p>
           </div>
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-            <h3 className="font-extrabold text-xs text-foreground">Multilingual Wording Support</h3>
-            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Explore pre-written Urdu and English wedding wording, Quranic verses, and host protocols.</p>
+            <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+              {t('multilingualWordingTitle') || 'Multilingual Wording Support'}
+            </h3>
+            <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+              {t('multilingualWordingDesc') || 'Explore pre-written Urdu and English wedding wording, Quranic verses, and host protocols.'}
+            </p>
           </div>
         </div>
       </section>
@@ -805,25 +1002,24 @@ function CreateInvitationContent() {
 }
 
 export default function CreateInvitationPage() {
+  const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
+
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
-      <main className="flex-1 py-6 md:py-10 max-w-4xl mx-auto px-4 text-center w-full">
-        <h1 className="text-2xl font-extrabold tracking-tight sm:text-4xl text-[#7B0D1E] mb-2">
-          Create Digital Wedding Invitations
-        </h1>
-        <h2 className="text-muted-foreground text-xs sm:text-sm max-w-xl mx-auto font-medium mb-6">
-          Design 4K Animated Wedding Invitations — Cardzy
-        </h2>
-        <Suspense fallback={
-          <div className="flex py-20 items-center justify-center">
-            <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />
-          </div>
-        }>
-          <CreateInvitationContent />
-        </Suspense>
-      </main>
-      <SiteFooter />
+    <div className="py-4 md:py-6 max-w-7xl mx-auto px-4 text-center w-full">
+      <h1 className={`text-2xl font-extrabold tracking-tight sm:text-4xl text-[#7B0D1E] mb-2 ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+        {t('createDigitalWeddingInvitationsHeader') || 'Create Digital Wedding Invitations'}
+      </h1>
+      <h2 className={`text-muted-foreground text-xs sm:text-sm max-w-xl mx-auto font-medium mb-6 ${isUrdu ? 'font-urdu text-sm sm:text-base leading-relaxed' : ''}`}>
+        {t('design4kAnimatedWeddingInvitationsSubHeader') || 'Design 4K Animated Wedding Invitations — Cardzy'}
+      </h2>
+      <Suspense fallback={
+        <div className="flex py-20 items-center justify-center">
+          <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />
+        </div>
+      }>
+        <CreateInvitationContent />
+      </Suspense>
     </div>
   )
 }

@@ -8,8 +8,6 @@ import { doc, getDoc, updateDoc, increment } from 'firebase/firestore'
 import { useJashn } from '@/lib/jashn/store'
 import type { VisitingCard } from '@/lib/jashn/types'
 import { VisitingCardView } from '@/components/jashn/visiting-card'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { ShareBar } from '@/components/jashn/share-bar'
 import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
@@ -133,10 +131,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
   // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Creator Control Panel) ──
   if (isSenderMode) {
     return (
-      <div className="flex min-h-screen flex-col bg-[#050507] text-white">
-        <SiteHeader />
-
-        <main className="flex-1 py-10 px-4 flex flex-col items-center">
+      <div className="py-10 px-4 flex flex-col items-center">
           <div className="w-full max-w-lg space-y-6">
             <div className="flex items-center justify-between">
               <Link
@@ -160,9 +155,9 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
             <div className="rounded-2xl border border-dashed border-[#D4AF37]/40 bg-[#D4AF37]/10 p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-md backdrop-blur-md">
               <div>
                 <p className="text-sm font-bold text-[#D4AF37] flex items-center gap-1.5">
-                  <Sparkles className="size-4 text-[#D4AF37] animate-pulse" /> You Created This vCard!
+                  <Sparkles className="size-4 text-[#D4AF37] animate-pulse" /> {t('youCreatedThisVcard')}
                 </p>
-                <p className="text-xs text-zinc-300">Manage, edit or share your digital business profile.</p>
+                <p className="text-xs text-zinc-300">{t('manageEditShareVcard')}</p>
               </div>
               <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                 <Link
@@ -170,7 +165,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
                   target="_blank"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#D4AF37]/50 bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-xs hover:bg-[#D4AF37]/30 transition-all"
                 >
-                  <ExternalLink className="size-3.5" /> View Receiver Screen
+                  <ExternalLink className="size-3.5" /> {t('viewReceiverScreen')}
                 </Link>
                 <Button
                   onClick={handleEdit}
@@ -179,7 +174,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
                   className="text-xs flex items-center gap-1.5 border-zinc-300 bg-white hover:bg-zinc-100 text-black dark:text-black font-extrabold shadow-xs"
                 >
                   <Edit3 className="size-3.5 text-black" />
-                  <span className="text-black font-extrabold">Edit Card</span>
+                  <span className="text-black font-extrabold">{t('editCard')}</span>
                 </Button>
                 <Button
                   onClick={handleDelete}
@@ -187,7 +182,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
                   size="sm"
                   className="text-xs flex items-center gap-1.5 font-bold"
                 >
-                  <Trash2 className="size-3.5" /> Delete Card
+                  <Trash2 className="size-3.5" /> {t('deleteCard')}
                 </Button>
               </div>
             </div>
@@ -195,13 +190,22 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
             {/* Badges */}
             <div className="flex flex-wrap items-center justify-center gap-3">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3.5 py-1 text-xs font-extrabold text-[#D4AF37]">
-                <Cpu className="size-3.5 text-[#D4AF37]" /> {card.category || 'Executive Profile'}
+                <Cpu className="size-3.5 text-[#D4AF37]" /> {
+                  card.category === 'business' ? t('catCorporate')
+                  : card.category === 'creative' ? t('catTech')
+                  : card.category === 'medical' ? t('catMedical')
+                  : card.category === 'legal' ? t('catLegal')
+                  : card.category === 'real-estate' ? t('catRealEstate')
+                  : card.category === 'beauty' ? t('catFashion')
+                  : card.category === 'services' ? t('catServices')
+                  : (card.category || 'Executive Profile')
+                }
               </span>
               <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-400">
-                <ShieldCheck className="size-3.5" /> Verified vCard
+                <ShieldCheck className="size-3.5" /> {t('verifiedVCard')}
               </span>
               <span className="flex items-center gap-1 text-xs font-medium text-zinc-400">
-                <Eye className="size-3.5" /> {card.viewCount ?? 1} views
+                <Eye className="size-3.5" /> {card.viewCount ?? 1} {t('viewsLabel')}
               </span>
             </div>
 
@@ -214,14 +218,14 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
             <div className="mt-8 rounded-3xl border border-[#D4AF37]/30 bg-[#0a0a0c] p-6 shadow-2xl flex flex-col items-center gap-6 backdrop-blur-xl">
               <div className="w-full text-center sm:text-left">
                 <h3 className="mb-4 text-xs font-extrabold uppercase tracking-wider text-[#D4AF37]">
-                  Share Receiver Link With Contacts
+                  {t('shareReceiverLink')}
                 </h3>
                 <ShareBar url={receiverUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-vcard-${card.slug}`} />
               </div>
 
               <div className="w-full pt-4 border-t border-white/10 flex flex-col items-center text-center space-y-2">
                 <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
-                  Receiver Shareable QR Code
+                  {t('receiverQrCode')}
                 </span>
                 <CardQrCode slug={slug} cardType="v" size={170} showDownloadBtn={true} />
               </div>
@@ -229,19 +233,16 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
 
             {/* CTA Banner */}
             <div className="mt-8 rounded-3xl p-6 text-center border border-[#D4AF37]/30 bg-[#0a0a0c] shadow-lg space-y-2">
-              <p className="text-lg font-extrabold text-white">Create Another Business Card</p>
+              <p className="text-lg font-extrabold text-white">{t('createAnotherBusinessCard')}</p>
               <Link
                 href="/create-visiting-card"
                 className="mt-3 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#FFF8DC] to-[#E5C35A] px-6 py-2.5 text-xs font-black text-slate-950 shadow-lg hover:brightness-110 transition-all"
               >
-                Build Your vCard <Sparkles className="size-4" />
+                {t('buildYourVcard')} <Sparkles className="size-4" />
               </Link>
             </div>
           </div>
-        </main>
-
-        <SiteFooter />
-      </div>
+        </div>
     )
   }
 
@@ -265,7 +266,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
           className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#E5C35A] text-slate-950 px-3.5 py-1.5 text-xs font-black shadow-md hover:brightness-110 transition-all hover:scale-105"
         >
           <Sparkles className="size-3" />
-          <span>Cardzy · Make Your Own</span>
+          <span>{t('makeYourOwn')}</span>
         </Link>
       </header>
 
@@ -283,7 +284,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
           className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#D4AF37]/40 bg-zinc-900/90 hover:bg-zinc-800 text-[#D4AF37] font-extrabold py-2.5 px-6 text-xs sm:text-sm shadow-xl transition-all hover:scale-105"
         >
           <Share2 className="size-4" />
-          <span>Share vCard</span>
+          <span>{t('shareVCard')}</span>
         </button>
 
         {/* Share Modal */}

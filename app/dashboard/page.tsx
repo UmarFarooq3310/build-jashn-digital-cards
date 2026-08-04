@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Plus, Sparkles, Eye, Users, Crown, Calendar, Send, ExternalLink, LogOut, FileText, CheckCircle2, Loader2 } from 'lucide-react'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { getOccasion } from '@/lib/jashn/occasions'
@@ -83,10 +81,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
-
-      <main className="flex-1 py-10">
+    <div className="py-10">
         <div className="mx-auto max-w-6xl px-4">
           {/* Host Welcome Banner */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 rounded-3xl border border-border bg-card p-6 shadow-sm mb-8">
@@ -216,7 +211,7 @@ export default function DashboardPage() {
                   <Calendar className="size-5 text-emerald-600" /> {t('hostedInvitations')} ({hostInvitations.length})
                 </h2>
                 <Link href="/create-invitation" className="text-xs font-bold text-emerald-600 hover:underline flex items-center gap-1">
-                  New Invitation <Plus className="size-3" />
+                  {t('newInvitation')} <Plus className="size-3" />
                 </Link>
               </div>
 
@@ -297,9 +292,6 @@ export default function DashboardPage() {
             </div>
           )}
         </div>
-      </main>
-
-      <SiteFooter />
     </div>
   )
 }

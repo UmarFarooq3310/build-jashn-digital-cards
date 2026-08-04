@@ -62,6 +62,27 @@ export const VisitingCardView = forwardRef<HTMLDivElement, VisitingCardProps>(fu
   const langConfig = LANGUAGE_LABELS[cardLang] || { label: 'English', dir: 'ltr' }
   const isRtl = langConfig.dir === 'rtl' || cardLang === 'ur' || cardLang === 'ar'
 
+  // Translate category & title if matching known keys
+  const catKey = data.category === 'business' ? 'catCorporate'
+    : data.category === 'creative' ? 'catTech'
+    : data.category === 'medical' ? 'catMedical'
+    : data.category === 'legal' ? 'catLegal'
+    : data.category === 'real-estate' ? 'catRealEstate'
+    : data.category === 'beauty' ? 'catFashion'
+    : data.category === 'services' ? 'catServices'
+    : ''
+  const translatedCategory = catKey ? t(catKey) : (data.category || 'Executive NFC Card')
+
+  const roleKey = data.title === 'Software Developer' ? 'roleSoftwareDeveloper'
+    : data.title === 'Executive' ? 'roleExecutive'
+    : data.title === 'Doctor' ? 'roleDoctor'
+    : data.title === 'Lawyer' ? 'roleLawyer'
+    : data.title === 'Realtor' ? 'roleRealtor'
+    : data.title === 'Makeup Artist' ? 'roleMakeupArtist'
+    : data.title === 'Chef' ? 'roleChef'
+    : ''
+  const translatedTitle = roleKey ? t(roleKey) : (data.title || 'Professional Title / Designation')
+
   // Generate VCard (.vcf file content)
   const downloadVCard = () => {
     const vcardData = `BEGIN:VCARD
@@ -150,7 +171,7 @@ END:VCARD`
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-950/80 px-3.5 py-1 text-[10px] font-extrabold uppercase tracking-widest border border-[#D4AF37]/40 text-[#D4AF37] shadow-sm backdrop-blur-md">
                     <Cpu className="size-3 text-[#D4AF37]" />
-                    <span>{data.category || 'Executive NFC Card'}</span>
+                    <span>{translatedCategory}</span>
                   </span>
 
                   <span className="inline-flex items-center gap-1 text-[9px] font-extrabold text-emerald-300 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/40 uppercase tracking-wider backdrop-blur-md">
@@ -187,7 +208,7 @@ END:VCARD`
 
                   <p className={cn('text-xs sm:text-sm font-bold text-[#F5E6A8] flex items-center gap-1.5 leading-snug break-words', isRtl && 'flex-row-reverse font-urdu')}>
                     <Briefcase className="size-3.5 shrink-0 text-[#D4AF37]" />
-                    <span>{data.title || 'Professional Title / Designation'}</span>
+                    <span>{translatedTitle}</span>
                   </p>
 
                   {data.company && (

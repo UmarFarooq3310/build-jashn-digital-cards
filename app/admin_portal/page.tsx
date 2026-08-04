@@ -28,8 +28,6 @@ import {
   ExternalLink,
   FileText,
 } from 'lucide-react'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useJashn } from '@/lib/jashn/store'
@@ -37,6 +35,7 @@ import { db } from '@/lib/firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import { cn } from '@/lib/utils'
 import type { JashnUser, Plan, Invitation, Wish, VisitingCard, RsvpGuest } from '@/lib/jashn/types'
+import { SiteHeader } from '@/components/site-header'
 
 function formatDateStandard(timestamp?: number): string {
   if (!timestamp) return '—'
@@ -62,6 +61,7 @@ export default function AdminPortalPage() {
     visitingCards: storeVisitingCards,
     rsvps: storeRsvps,
     adminUpdateUserPlan,
+    adminDeleteUser,
     downloadAllGuestsCsv,
     downloadAllGuestsPdf,
     deleteInvitation,
@@ -72,6 +72,12 @@ export default function AdminPortalPage() {
 
   const [adminSection, setAdminSection] = useState<'all' | 'invitations' | 'wishes' | 'visiting_cards' | 'rsvps' | 'users'>('all')
   const [searchTerm, setSearchTerm] = useState('')
+  // Which invitation's RSVPs to show — null means all
+  const [rsvpFilterSlug, setRsvpFilterSlug] = useState<string | null>(null)
+
+  // ── Delete User Modal state ──────────────────────────────────────────────
+  const [deleteUserTarget, setDeleteUserTarget] = useState<{ uid: string; name: string; email: string } | null>(null)
+  const [isDeletingUser, setIsDeletingUser] = useState(false)
 
   function handleDeleteInv(slug: string) {
     if (confirm(`Are you sure you want to delete invitation "${slug}"? This action cannot be undone.`)) {
@@ -97,12 +103,39 @@ export default function AdminPortalPage() {
     }
   }
 
+  async function handleConfirmDeleteUser() {
+    if (!deleteUserTarget) return
+    setIsDeletingUser(true)
+    try {
+      await adminDeleteUser(deleteUserTarget.uid)
+      // Also remove from local firestore list
+      setFirestoreUsers((prev) => prev.filter((u) => u.uid !== deleteUserTarget.uid))
+      showToast(`User "${deleteUserTarget.name}" deleted permanently.`, 'info')
+    } catch (e) {
+      console.error('Failed to delete user:', e)
+      showToast('Failed to delete user. Please try again.', 'error')
+    } finally {
+      setIsDeletingUser(false)
+      setDeleteUserTarget(null)
+    }
+  }
+
   useEffect(() => {
     setMounted(true)
     if (typeof window !== 'undefined') {
-      const isAuthed = sessionStorage.getItem('cardzy_admin_session') === 'true'
-      if (isAuthed) {
-        setIsAdminAuthorized(true)
+      const sessionData = sessionStorage.getItem('cardzy_admin_session')
+      if (sessionData) {
+        try {
+          const { authed, expiresAt } = JSON.parse(sessionData)
+          if (authed && expiresAt && Date.now() < expiresAt) {
+            setIsAdminAuthorized(true)
+          } else {
+            // Session expired — clear it
+            sessionStorage.removeItem('cardzy_admin_session')
+          }
+        } catch {
+          sessionStorage.removeItem('cardzy_admin_session')
+        }
       }
     }
   }, [])
@@ -114,23 +147,55 @@ export default function AdminPortalPage() {
     }
   }, [currentUser])
 
+  // Auto-lock when the 30-minute session window expires
+  useEffect(() => {
+    if (!isAdminAuthorized) return
+    const checkExpiry = setInterval(() => {
+      const sessionData = sessionStorage.getItem('cardzy_admin_session')
+      if (!sessionData) {
+        setIsAdminAuthorized(false)
+        return
+      }
+      try {
+        const { expiresAt } = JSON.parse(sessionData)
+        if (expiresAt && Date.now() >= expiresAt) {
+          sessionStorage.removeItem('cardzy_admin_session')
+          setIsAdminAuthorized(false)
+          showToast('Admin session expired. Please log in again.', 'info')
+        }
+      } catch {
+        setIsAdminAuthorized(false)
+      }
+    }, 60_000) // Check every 60 seconds
+    return () => clearInterval(checkExpiry)
+  }, [isAdminAuthorized, showToast])
+
   function handleAdminLogin(e: React.FormEvent) {
     e.preventDefault()
     const email = adminEmailInput.trim().toLowerCase()
     const pass = adminPasswordInput.trim()
 
+    // ─── Admin Credentials ───────────────────────────────────────────────
+    // Username (email): cardzyonline@gmail.com
+    // Password:         CardzyAdmin2026!
+    // ────────────────────────────────────────────────────────────────────
     const ALLOWED_EMAILS = ['admin@cardzy.online', 'cardzyonline@gmail.com', 'admin@jashn.online']
-    const SECRET_KEY = 'CardzyAdmin2026!'
+    const ADMIN_PASSWORD = 'CardzyAdmin2026!'
 
-    if (ALLOWED_EMAILS.includes(email) || pass === SECRET_KEY) {
+    const emailOk = ALLOWED_EMAILS.includes(email)
+    const passOk = pass === ADMIN_PASSWORD
+
+    if (emailOk && passOk) {
       setIsAdminAuthorized(true)
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem('cardzy_admin_session', 'true')
+        // Session valid for 30 minutes
+        const expiresAt = Date.now() + 30 * 60 * 1000
+        sessionStorage.setItem('cardzy_admin_session', JSON.stringify({ authed: true, expiresAt }))
       }
       setAdminError('')
-      showToast('Admin Portal Unlocked', 'success')
+      showToast('Admin Portal Unlocked — session valid for 30 min', 'success')
     } else {
-      setAdminError('Access denied: Invalid Admin email or secret passcode.')
+      setAdminError('Access denied: Invalid admin email or password.')
     }
   }
 
@@ -139,6 +204,8 @@ export default function AdminPortalPage() {
     if (typeof window !== 'undefined') {
       sessionStorage.removeItem('cardzy_admin_session')
     }
+    setAdminEmailInput('')
+    setAdminPasswordInput('')
     showToast('Admin Portal Locked', 'info')
   }
 
@@ -274,6 +341,18 @@ export default function AdminPortalPage() {
     return Array.from(map.values())
   }, [storeRsvps, firestoreRsvps])
 
+  // RSVPs filtered by the selected invitation slug (or all if none selected)
+  const filteredRsvps = useMemo(() => {
+    if (!rsvpFilterSlug) return rsvps
+    return rsvps.filter((r) => r.invitationSlug === rsvpFilterSlug)
+  }, [rsvps, rsvpFilterSlug])
+
+  // The invitation object for the currently filtered event (for the header banner)
+  const rsvpFilterInvitation = useMemo(() => {
+    if (!rsvpFilterSlug) return null
+    return invitations.find((i) => i.slug === rsvpFilterSlug) ?? null
+  }, [invitations, rsvpFilterSlug])
+
   // Merge registered list, firestore list, current user, and card creators
   const allUsersList = useMemo(() => {
     const map = new Map<string, JashnUser>()
@@ -395,74 +474,70 @@ export default function AdminPortalPage() {
 
   if (!isAdminAuthorized) {
     return (
-      <div className="min-h-screen bg-background flex flex-col justify-between">
-        <SiteHeader />
-        <main className="flex-1 flex items-center justify-center p-4 py-16">
-          <div className="w-full max-w-md rounded-3xl border border-border bg-card p-8 shadow-2xl space-y-6 text-left">
-            <div className="text-center space-y-2">
-              <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 shadow-inner">
-                <Lock className="size-7 text-indigo-600 animate-pulse" />
-              </div>
-              <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Admin Security Portal</h1>
-              <p className="text-xs text-muted-foreground">
-                Enter authorized admin email or master passcode to access system administration.
-              </p>
+      <div className="flex items-center justify-center p-4 py-16 min-h-[60vh]">
+        <div className="w-full max-w-md rounded-3xl border border-border bg-card p-8 shadow-2xl space-y-6 text-left">
+          <div className="text-center space-y-2">
+            <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 shadow-inner">
+              <Lock className="size-7 text-indigo-600 animate-pulse" />
             </div>
-
-            {adminError && (
-              <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs font-semibold text-red-600 flex items-center gap-2">
-                <AlertCircle className="size-4 shrink-0 text-red-600" />
-                <span>{adminError}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleAdminLogin} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
-                  Admin Email Address
-                </label>
-                <div className="relative">
-                  <Input
-                    type="email"
-                    required
-                    placeholder="e.g. cardzyonline@gmail.com"
-                    value={adminEmailInput}
-                    onChange={(e) => setAdminEmailInput(e.target.value)}
-                    className="rounded-2xl pl-3 pr-3"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
-                  Admin Master Passcode / Secret
-                </label>
-                <div className="relative">
-                  <Input
-                    type="password"
-                    required
-                    placeholder="••••••••••••"
-                    value={adminPasswordInput}
-                    onChange={(e) => setAdminPasswordInput(e.target.value)}
-                    className="rounded-2xl pl-3 pr-3"
-                  />
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold rounded-2xl py-3 shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
-              >
-                <Key className="size-4" /> Unlock Admin Hub
-              </Button>
-            </form>
-
-            <p className="text-[11px] text-muted-foreground text-center">
-              Restricted Area • Unauthorized access attempts are monitored.
+            <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Admin Security Portal</h1>
+            <p className="text-xs text-muted-foreground">
+              Enter authorized admin email or master passcode to access system administration.
             </p>
           </div>
-        </main>
-        <SiteFooter />
+
+          {adminError && (
+            <div className="p-3 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs font-semibold text-red-600 flex items-center gap-2">
+              <AlertCircle className="size-4 shrink-0 text-red-600" />
+              <span>{adminError}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleAdminLogin} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+                Admin Email Address
+              </label>
+              <div className="relative">
+                <Input
+                  type="email"
+                  required
+                  placeholder="e.g. cardzyonline@gmail.com"
+                  value={adminEmailInput}
+                  onChange={(e) => setAdminEmailInput(e.target.value)}
+                  className="rounded-2xl pl-3 pr-3"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
+                Admin Master Passcode / Secret
+              </label>
+              <div className="relative">
+                <Input
+                  type="password"
+                  required
+                  placeholder="••••••••••••"
+                  value={adminPasswordInput}
+                  onChange={(e) => setAdminPasswordInput(e.target.value)}
+                  className="rounded-2xl pl-3 pr-3"
+                />
+              </div>
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold rounded-2xl py-3 shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
+            >
+              <Key className="size-4" /> Unlock Admin Hub
+            </Button>
+          </form>
+
+          <p className="text-[11px] text-muted-foreground text-center">
+            Restricted Area • Unauthorized access attempts are monitored.
+          </p>
+        </div>
       </div>
     )
   }
@@ -625,10 +700,7 @@ export default function AdminPortalPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background font-sans flex flex-col">
-      <SiteHeader />
-
-      <main className="flex-1 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-8">
+    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-8">
         {/* Secret Admin Banner */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 sm:p-8 shadow-2xl border border-indigo-500/20">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
@@ -929,6 +1001,15 @@ export default function AdminPortalPage() {
                                   Revoke
                                 </Button>
                               )}
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => setDeleteUserTarget({ uid: u.uid, name: u.name || 'Unknown', email: u.email || '' })}
+                                className="text-xs h-8 rounded-xl text-rose-700 hover:bg-rose-500/15 hover:text-rose-800 border border-rose-500/20"
+                                title="Delete user permanently"
+                              >
+                                <Trash2 className="size-3.5" />
+                              </Button>
                             </div>
                           </td>
                         </tr>
@@ -1013,6 +1094,19 @@ export default function AdminPortalPage() {
                         </td>
                         <td className="py-4 px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setRsvpFilterSlug(inv.slug)
+                                setAdminSection('rsvps')
+                                // Scroll to top so the RSVP section is visible
+                                window.scrollTo({ top: 0, behavior: 'smooth' })
+                              }}
+                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1"
+                              title={`View RSVPs for this event (${inv.rsvpCount})`}
+                            >
+                              <Users className="size-3.5" /> RSVPs ({inv.rsvpCount})
+                            </button>
                             <Link
                               href={`/i/${inv.slug}`}
                               target="_blank"
@@ -1224,66 +1318,186 @@ export default function AdminPortalPage() {
         {/* 4. GUEST RSVPs SECTION */}
         {(adminSection === 'all' || adminSection === 'rsvps') && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden space-y-4">
-            <div className="p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
-                  <FileSpreadsheet className="size-5 text-indigo-600" /> Recorded Guest RSVPs ({rsvps?.length || 0})
-                </h2>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Guest list responses submitted for event invitations.
-                </p>
+            <div className="p-6 border-b border-border space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+                    <FileSpreadsheet className="size-5 text-indigo-600" />
+                    {rsvpFilterSlug
+                      ? <>RSVPs for: <span className="text-indigo-600">{rsvpFilterInvitation?.title || rsvpFilterSlug}</span></>
+                      : <>Recorded Guest RSVPs ({rsvps?.length || 0})</>}
+                  </h2>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {rsvpFilterSlug
+                      ? `Showing ${filteredRsvps.length} response${filteredRsvps.length !== 1 ? 's' : ''} for this event only.`
+                      : 'Guest list responses submitted for all event invitations.'}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button
+                    onClick={() => downloadAllGuestsPdf(rsvpFilterSlug ?? undefined)}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-md transition-all flex items-center gap-1.5 text-xs"
+                  >
+                    <Download className="size-4" /> PDF Report
+                  </Button>
+                  <Button
+                    onClick={() => downloadAllGuestsCsv(rsvpFilterSlug ?? undefined)}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md transition-all flex items-center gap-1.5 text-xs"
+                  >
+                    <FileSpreadsheet className="size-4" /> Export CSV
+                  </Button>
+                </div>
               </div>
 
+              {/* Event filter bar */}
               <div className="flex flex-wrap items-center gap-2">
-                <Button
-                  onClick={() => downloadAllGuestsPdf()}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-md transition-all flex items-center gap-1.5 text-xs"
+                {/* "All events" chip */}
+                <button
+                  onClick={() => setRsvpFilterSlug(null)}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all border',
+                    !rsvpFilterSlug
+                      ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                      : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
+                  )}
                 >
-                  <Download className="size-4" /> Download PDF Report
-                </Button>
-                <Button
-                  onClick={() => downloadAllGuestsCsv()}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md transition-all flex items-center gap-1.5 text-xs"
-                >
-                  <FileSpreadsheet className="size-4" /> Export CSV
-                </Button>
+                  <Users className="size-3.5" /> All Events ({rsvps.length})
+                </button>
+
+                {/* One chip per invitation that has RSVPs */}
+                {invitations
+                  .filter((inv) => (inv.rsvpCount || 0) > 0 || rsvps.some((r) => r.invitationSlug === inv.slug))
+                  .sort((a, b) => (b.rsvpCount || 0) - (a.rsvpCount || 0))
+                  .map((inv) => {
+                    const count = rsvps.filter((r) => r.invitationSlug === inv.slug).length
+                    const isActive = rsvpFilterSlug === inv.slug
+                    return (
+                      <button
+                        key={inv.slug}
+                        onClick={() => setRsvpFilterSlug(inv.slug)}
+                        className={cn(
+                          'flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all border max-w-[200px]',
+                          isActive
+                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                            : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
+                        )}
+                        title={inv.slug}
+                      >
+                        <Calendar className="size-3.5 shrink-0" />
+                        <span className="truncate">{inv.title || inv.slug}</span>
+                        <span className={cn(
+                          'shrink-0 px-1.5 py-0.5 rounded-full text-[10px] font-extrabold',
+                          isActive ? 'bg-white/20 text-white' : 'bg-indigo-500/15 text-indigo-700'
+                        )}>
+                          {count}
+                        </span>
+                      </button>
+                    )
+                  })}
               </div>
+
+              {/* Selected event info banner */}
+              {rsvpFilterInvitation && (
+                <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-indigo-500/5 border border-indigo-500/20">
+                  <div className="size-8 rounded-xl bg-indigo-500/10 flex items-center justify-center shrink-0">
+                    <Calendar className="size-4 text-indigo-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-bold text-sm text-foreground truncate">{rsvpFilterInvitation.title || 'Event'}</div>
+                    <div className="text-[11px] text-muted-foreground mt-0.5 space-x-3">
+                      {rsvpFilterInvitation.date && <span>📅 {rsvpFilterInvitation.date}{rsvpFilterInvitation.time ? ` • ${rsvpFilterInvitation.time}` : ''}</span>}
+                      {(rsvpFilterInvitation.venue || rsvpFilterInvitation.city) && <span>📍 {rsvpFilterInvitation.venue || rsvpFilterInvitation.city}</span>}
+                      {rsvpFilterInvitation.hostNames && <span>👤 {rsvpFilterInvitation.hostNames}</span>}
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="text-xl font-extrabold text-indigo-600">{filteredRsvps.length}</div>
+                    <div className="text-[10px] text-muted-foreground">responses</div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead className="bg-muted/40 border-b border-border text-xs uppercase font-semibold text-muted-foreground">
                   <tr>
+                    <th className="py-3.5 px-4">#</th>
                     <th className="py-3.5 px-4">Guest Name</th>
                     <th className="py-3.5 px-4">Phone Number</th>
                     <th className="py-3.5 px-4">RSVP Status</th>
                     <th className="py-3.5 px-4">Guest Count</th>
                     <th className="py-3.5 px-4">Special Note</th>
-                    <th className="py-3.5 px-4">Invitation Slug</th>
+                    {!rsvpFilterSlug && <th className="py-3.5 px-4">Event</th>}
                     <th className="py-3.5 px-4">Date Submitted</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
-                  {(!rsvps || rsvps.length === 0) ? (
+                  {filteredRsvps.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="py-8 text-center text-muted-foreground">No guest RSVPs recorded yet.</td>
+                      <td colSpan={rsvpFilterSlug ? 7 : 8} className="py-10 text-center">
+                        <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                          <Users className="size-8 opacity-30" />
+                          <p className="text-sm font-semibold">
+                            {rsvpFilterSlug ? 'No RSVPs recorded for this event yet.' : 'No guest RSVPs recorded yet.'}
+                          </p>
+                          {rsvpFilterSlug && (
+                            <button onClick={() => setRsvpFilterSlug(null)} className="text-xs text-indigo-600 hover:underline font-bold mt-1">
+                              ← View all RSVPs
+                            </button>
+                          )}
+                        </div>
+                      </td>
                     </tr>
                   ) : (
-                    rsvps.map((r, idx) => (
+                    filteredRsvps.map((r, idx) => (
                       <tr key={r.id || idx} className="hover:bg-muted/20 transition-colors">
-                        <td className="py-4 px-4 font-bold text-foreground">{r.guestName || 'Anonymous'}</td>
-                        <td className="py-4 px-4 text-xs font-mono text-muted-foreground">{r.phone || '—'}</td>
-                        <td className="py-4 px-4"><span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 text-xs font-bold">{r.attending || 'Yes'}</span></td>
-                        <td className="py-4 px-4 text-xs font-bold text-foreground">{r.guestCount || 1}</td>
-                        <td className="py-4 px-4 text-xs text-muted-foreground">{r.note || '—'}</td>
-                        <td className="py-4 px-4 text-xs font-mono text-muted-foreground">{r.invitationSlug}</td>
-                        <td className="py-4 px-4 text-xs text-muted-foreground">{new Date(r.createdAt || Date.now()).toLocaleString()}</td>
+                        <td className="py-3.5 px-4 text-xs text-muted-foreground font-mono">{idx + 1}</td>
+                        <td className="py-3.5 px-4 font-bold text-foreground">{r.guestName || 'Anonymous'}</td>
+                        <td className="py-3.5 px-4 text-xs font-mono text-muted-foreground">{r.phone || '—'}</td>
+                        <td className="py-3.5 px-4">
+                          <span className={cn(
+                            'px-2 py-0.5 rounded-full text-xs font-bold',
+                            String(r.attending).toLowerCase() === 'no'
+                              ? 'bg-rose-500/10 text-rose-600'
+                              : String(r.attending).toLowerCase() === 'maybe'
+                              ? 'bg-amber-500/10 text-amber-700'
+                              : 'bg-emerald-500/10 text-emerald-700'
+                          )}>
+                            {r.attending || 'Yes'}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4 text-xs font-bold text-foreground">{r.guestCount || 1}</td>
+                        <td className="py-3.5 px-4 text-xs text-muted-foreground max-w-[150px] truncate">{r.note || '—'}</td>
+                        {!rsvpFilterSlug && (
+                          <td className="py-3.5 px-4">
+                            <button
+                              onClick={() => { setRsvpFilterSlug(r.invitationSlug); setAdminSection('rsvps') }}
+                              className="text-xs font-mono text-indigo-600 hover:underline truncate max-w-[120px] block"
+                              title={r.invitationSlug}
+                            >
+                              {invitations.find(i => i.slug === r.invitationSlug)?.title || r.invitationSlug}
+                            </button>
+                          </td>
+                        )}
+                        <td className="py-3.5 px-4 text-xs text-muted-foreground">{new Date(r.createdAt || Date.now()).toLocaleString()}</td>
                       </tr>
                     ))
                   )}
                 </tbody>
               </table>
             </div>
+
+            {/* Summary footer */}
+            {filteredRsvps.length > 0 && (
+              <div className="px-6 pb-5 pt-1 flex flex-wrap items-center gap-4 text-xs text-muted-foreground border-t border-border/60">
+                <span>Total responses: <strong className="text-foreground">{filteredRsvps.length}</strong></span>
+                <span>Attending: <strong className="text-emerald-600">{filteredRsvps.filter(r => !r.attending || String(r.attending).toLowerCase() === 'yes').length}</strong></span>
+                <span>Not attending: <strong className="text-rose-600">{filteredRsvps.filter(r => String(r.attending).toLowerCase() === 'no').length}</strong></span>
+                <span>Total guests: <strong className="text-foreground">{filteredRsvps.reduce((sum, r) => sum + (r.guestCount || 1), 0)}</strong></span>
+              </div>
+            )}
           </div>
         )}
 
@@ -1321,9 +1535,58 @@ export default function AdminPortalPage() {
             <span>Total Recorded Guest RSVPs: <strong className="text-emerald-600">{rsvps?.length || 0}</strong></span>
           </div>
         </div>
-      </main>
 
-      <SiteFooter />
+        {/* ── Delete User Confirmation Modal ─────────────────────────────── */}
+        {deleteUserTarget && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+            <div className="w-full max-w-md rounded-3xl border border-rose-500/30 bg-card shadow-2xl p-7 space-y-5">
+              {/* Icon + Title */}
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="size-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center">
+                  <Trash2 className="size-7 text-rose-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-extrabold text-foreground">Delete User Account?</h2>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                    This will <strong className="text-rose-600">permanently delete</strong> the user and all their cards, invitations, and wishes. This cannot be undone.
+                  </p>
+                </div>
+              </div>
+
+              {/* User preview */}
+              <div className="rounded-2xl border border-border bg-muted/40 p-4 space-y-1">
+                <div className="text-sm font-bold text-foreground">{deleteUserTarget.name}</div>
+                <div className="text-xs text-muted-foreground font-mono">{deleteUserTarget.email}</div>
+                <div className="text-[11px] text-muted-foreground/70 font-mono">UID: {deleteUserTarget.uid}</div>
+              </div>
+
+              {/* Action buttons */}
+              <div className="flex items-center gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={isDeletingUser}
+                  onClick={() => setDeleteUserTarget(null)}
+                  className="flex-1 rounded-2xl font-bold"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  disabled={isDeletingUser}
+                  onClick={handleConfirmDeleteUser}
+                  className="flex-1 rounded-2xl font-extrabold bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center gap-2"
+                >
+                  {isDeletingUser ? (
+                    <><RefreshCw className="size-4 animate-spin" /> Deleting…</>
+                  ) : (
+                    <><Trash2 className="size-4" /> Yes, Delete</>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   )
 }

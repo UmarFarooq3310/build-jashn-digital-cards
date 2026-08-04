@@ -2,6 +2,7 @@
 
 import { Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useLang } from '@/lib/lang/context'
 
 export const BORDERS = [
   {
@@ -175,11 +176,32 @@ export function BorderPicker({
   isPro: boolean
   onLockedClick?: () => void
 }) {
+  const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
+
+  const getBorderTranslationKeys = (id: string) => {
+    switch (id) {
+      case 'mehndi': return { nameKey: 'borderNameMehndi', descKey: 'borderDescMehndi' }
+      case 'corners': return { nameKey: 'borderNameCorners', descKey: 'borderDescCorners' }
+      case 'floral-frame': return { nameKey: 'borderNameDashed', descKey: 'borderDescDashed' }
+      case 'diamond-strip': return { nameKey: 'borderNameDiamondStrip', descKey: 'borderDescDiamondStrip' }
+      case 'mughal-arch': return { nameKey: 'borderNameMughalArch', descKey: 'borderDescMughalArch' }
+      case 'royal-gold': return { nameKey: 'borderNameRoyalGold', descKey: 'borderDescRoyalGold' }
+      case 'double-frame': return { nameKey: 'borderNameDoubleFrame', descKey: 'borderDescDoubleFrame' }
+      case 'woven': return { nameKey: 'borderNameWoven', descKey: 'borderDescWoven' }
+      default: return { nameKey: '', descKey: '' }
+    }
+  }
+
   return (
     <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
       {BORDERS.map((b) => {
         const locked = b.isPremium && !isPro
         const active = value === b.id
+        const { nameKey, descKey } = getBorderTranslationKeys(b.id)
+        const translatedName = nameKey ? (t(nameKey as any) || b.name) : b.name
+        const translatedDesc = descKey ? (t(descKey as any) || b.desc) : b.desc
+
         return (
           <button
             key={b.id}
@@ -204,21 +226,21 @@ export function BorderPicker({
             </span>
 
             <div className="space-y-0.5 w-full">
-              <span className="text-[11px] font-semibold leading-tight text-foreground block truncate">
-                {b.name}
+              <span className={cn("text-[11px] font-semibold leading-tight text-foreground block truncate", isUrdu && "font-urdu text-xs")}>
+                {translatedName}
               </span>
-              <span className="text-[9px] text-muted-foreground line-clamp-2 leading-tight">
-                {b.desc}
+              <span className={cn("text-[9px] text-muted-foreground line-clamp-2 leading-tight", isUrdu && "font-urdu text-[10px]")}>
+                {translatedDesc}
               </span>
             </div>
 
             {b.isPremium ? (
-              <span className="text-[8px] font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded">
-                Pro
+              <span className={cn("text-[8px] font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded", isUrdu && "font-urdu")}>
+                {t('badgePro') || 'Pro'}
               </span>
             ) : (
-              <span className="text-[8px] font-medium uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                Free
+              <span className={cn("text-[8px] font-medium uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded", isUrdu && "font-urdu")}>
+                {t('badgeFree') || 'Free'}
               </span>
             )}
           </button>

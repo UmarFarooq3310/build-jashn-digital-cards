@@ -55,7 +55,7 @@ export function HowItWorks() {
         />
 
         {/* 2-Step Horizontal Stepper */}
-        <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto mb-12">
+        <div className="grid gap-6 md:grid-cols-2 max-w-6xl mx-auto mb-12">
           {/* Step 1 */}
           <div className="hiw-step relative rounded-2xl border border-teal-500/10 bg-card p-6 shadow-sm flex gap-4 items-start">
             <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-teal-100 text-teal-600 font-bold text-lg">
@@ -88,7 +88,7 @@ export function HowItWorks() {
         </div>
 
         {/* Free vs Premium Pricing Indicator */}
-        <div className="pricing-box max-w-4xl mx-auto rounded-3xl border border-teal-500/15 bg-gradient-to-br from-violet-50 via-card to-violet-100 p-6 sm:p-8 shadow-md">
+        <div className="pricing-box max-w-6xl mx-auto rounded-3xl border border-teal-500/15 bg-gradient-to-br from-violet-50 via-card to-violet-100 p-6 sm:p-8 shadow-md">
           <div className="text-center mb-6">
             <span className="inline-block bg-teal-800 text-white px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase mb-1">
               {t('pricing')}

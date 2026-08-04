@@ -3,6 +3,7 @@
 import { useState, type RefObject } from 'react'
 import { Check, Copy, Download, MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useLang } from '@/lib/lang/context'
 
 export function ShareBar({
   url,
@@ -15,6 +16,7 @@ export function ShareBar({
   captureRef?: RefObject<HTMLElement | null>
   fileName?: string
 }) {
+  const { t } = useLang()
   const [copied, setCopied] = useState(false)
   const [downloading, setDownloading] = useState(false)
 
@@ -77,12 +79,12 @@ export function ShareBar({
       </Button>
       <Button onClick={copyLink} variant="secondary">
         {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-        {copied ? 'Copied!' : 'Copy link'}
+        {copied ? (t('copied') || 'Copied!') : (t('copyLink') || 'Copy link')}
       </Button>
       {captureRef ? (
         <Button onClick={downloadPng} variant="outline" disabled={downloading} className="bg-white hover:bg-zinc-100 text-black dark:text-black font-extrabold border-zinc-300 shadow-xs">
           <Download className="size-4 text-black" />
-          <span className="text-black font-extrabold">{downloading ? 'Saving…' : 'Download PNG'}</span>
+          <span className="text-black font-extrabold">{downloading ? (t('saving') || 'Saving…') : (t('downloadPng') || 'Download PNG')}</span>
         </Button>
       ) : null}
     </div>

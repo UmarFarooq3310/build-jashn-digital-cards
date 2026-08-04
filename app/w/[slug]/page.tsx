@@ -5,8 +5,6 @@ import { useEffect, useRef, useState, use, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Sparkles, Eye, Loader2, HeartHandshake, Edit3, Trash2, Share2, X, ExternalLink } from 'lucide-react'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
 import { WishCard } from '@/components/jashn/wish-card'
 import { ThreeDCardWrapper } from '@/components/jashn/three-d-card-wrapper'
@@ -178,11 +176,8 @@ function WishPublicContent({ slug }: { slug: string }) {
   // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Creator Control Panel) ──
   if (isSenderMode) {
     return (
-      <div className="flex min-h-screen flex-col bg-background">
-        <SiteHeader />
-
-        <main className="flex-1 py-8 px-4">
-          <div className="mx-auto max-w-2xl md:max-w-4xl text-center">
+      <div className="py-8 px-4">
+        <div className="mx-auto max-w-2xl md:max-w-4xl text-center">
             {/* Celebration Effects Rain */}
             {!isSensitive && <ConfettiRain active={rainActive} />}
 
@@ -286,16 +281,13 @@ function WishPublicContent({ slug }: { slug: string }) {
               </Link>
             </div>
           </div>
-        </main>
-
-        <SiteFooter />
       </div>
     )
   }
 
   // ── 2. RECEIVER SCREEN (Clean 100dvh Full-Screen Viewport + Cardzy Make Your Own) ──
   return (
-    <div className="flex min-h-[100dvh] flex-col justify-between items-center relative overflow-hidden px-4 py-4 sm:py-6 w-full select-none">
+    <div className="flex min-h-[100dvh] md:h-screen flex-col justify-between items-center relative px-4 py-3 sm:py-4 w-full select-none">
       {/* Background Ambient Glow */}
       <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 size-[32rem] rounded-full bg-emerald-500/10 blur-[120px]" />
       <div className="pointer-events-none absolute -bottom-40 left-1/2 -translate-x-1/2 size-[32rem] rounded-full bg-amber-500/10 blur-[120px]" />
@@ -322,7 +314,7 @@ function WishPublicContent({ slug }: { slug: string }) {
       </header>
 
       {/* Receiver Screen Main Centered 3D Card Display */}
-      <main className="w-full max-w-4xl flex-1 flex flex-col items-center justify-center my-auto py-6 sm:py-10 z-10">
+      <main className="w-full max-w-4xl lg:max-w-5xl flex-1 flex flex-col items-center justify-center my-auto py-2 sm:py-4 z-10">
         <div className="w-full flex justify-center">
           <ThreeDCardWrapper
             recipientName={activeWish.recipientName}

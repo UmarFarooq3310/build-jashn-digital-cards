@@ -4,8 +4,6 @@ import { useState, useEffect, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Mail, Lock, User, Check, X, ArrowRight, ArrowLeft, Loader2, KeyRound, CheckCircle2, Sparkles } from 'lucide-react'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { cn } from '@/lib/utils'
@@ -139,7 +137,7 @@ function EmailSuggestInput({ value, onChange, placeholder, hasError, autoFocus }
 function LoginPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { user, signUp, signIn, resetPassword, signInWithGoogle, migrateGuestCards } = useJashn()
+  const { user, signUp, signIn, resetPassword, signInWithGoogle, migrateGuestCards, isAuthLoading } = useJashn()
 
   const tabParam = searchParams.get('tab')
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(tabParam === 'signup' ? 'signup' : 'login')
@@ -190,8 +188,10 @@ function LoginPageContent() {
   const redirect = searchParams.get('redirect') || '/dashboard'
 
   useEffect(() => {
-    if (user) router.push(redirect)
-  }, [user, router, redirect])
+    if (user) {
+      window.location.href = redirect
+    }
+  }, [user, redirect])
 
   const validateEmail = (val: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)
 
@@ -227,16 +227,60 @@ function LoginPageContent() {
 
   // --- Google Sign-In ---
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+  // Detect if we returned from a Google signInWithRedirect — show loading overlay
+  const [isGoogleRedirecting, setIsGoogleRedirecting] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return sessionStorage.getItem('google_redirect_pending') === '1'
+  })
+
+  // Clear the flag once auth resolves (user set or auth done loading)
+  useEffect(() => {
+    if (!isAuthLoading || user) {
+      sessionStorage.removeItem('google_redirect_pending')
+      setIsGoogleRedirecting(false)
+    }
+  }, [isAuthLoading, user])
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true)
-    const success = await signInWithGoogle()
-    if (success) {
-      const currentUser = useJashn.getState().user
-      if (currentUser) await migrateGuestCards(currentUser.uid)
-      window.location.href = redirect
+    setGeneralError(null)
+    try {
+      const success = await signInWithGoogle()
+      if (success) {
+        // Popup flow succeeded — user is signed in, redirect now
+        const currentUser = useJashn.getState().user
+        if (currentUser) await migrateGuestCards(currentUser.uid)
+        window.location.href = redirect
+      } else {
+        // success === false means:
+        // 1. User cancelled the popup → just stop loading
+        // 2. signInWithRedirect was triggered → page will navigate away to Google
+        //    Set a sessionStorage flag so when the page returns we show a loading overlay.
+        sessionStorage.setItem('google_redirect_pending', '1')
+        setIsGoogleRedirecting(true)
+        // If we're still on this page after 700ms, the popup was just cancelled (no redirect)
+        setTimeout(() => {
+          sessionStorage.removeItem('google_redirect_pending')
+          setIsGoogleLoading(false)
+          setIsGoogleRedirecting(false)
+        }, 700)
+      }
+    } catch (e: any) {
+      // Real errors (unauthorized-domain, network, etc.) bubble up here
+      const code = e?.code || ''
+      let msg = 'Google sign-in failed. Please try again.'
+      if (code === 'auth/unauthorized-domain') {
+        msg = 'This domain is not authorized for Google sign-in. Please check Firebase Console → Authentication → Authorized domains.'
+      } else if (code === 'auth/network-request-failed') {
+        msg = 'Network error. Please check your internet connection and try again.'
+      } else if (e?.message) {
+        msg = e.message
+      }
+      console.error('[Google Sign-In] error:', code, e?.message)
+      setGeneralError(msg)
+      setIsGoogleLoading(false)
+      setIsGoogleRedirecting(false)
     }
-    setIsGoogleLoading(false)
   }
 
   // --- Forgot Password ---
@@ -271,7 +315,7 @@ function LoginPageContent() {
     if (success) {
       const currentUser = useJashn.getState().user
       if (currentUser) await migrateGuestCards(currentUser.uid)
-      router.push(redirect)
+      window.location.href = redirect
     } else {
       setGeneralError('Invalid email or password. If you do not have an account yet, please click "Sign Up Free" above to create one.')
     }
@@ -306,7 +350,7 @@ function LoginPageContent() {
     if (success) {
       const currentUser = useJashn.getState().user
       if (currentUser) await migrateGuestCards(currentUser.uid)
-      router.push(redirect)
+      window.location.href = redirect
     } else {
       setGeneralError('This email is already registered. Please sign in instead.')
     }
@@ -315,12 +359,25 @@ function LoginPageContent() {
   return (
     <>
       <GoogleOneTap redirectTo={redirect} />
+
+      {/* Full-page loading overlay — shown when:
+           1. We triggered Google redirect (signInWithRedirect) and page is still here briefly
+           2. Page reloaded after Google auth (sessionStorage flag set) and auth is resolving */}
+      {isGoogleRedirecting && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/90 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-4 p-8 rounded-3xl border border-border bg-card shadow-xl">
+            <Loader2 className="size-10 animate-spin text-primary" />
+            <p className="text-sm font-semibold text-foreground">Signing you in with Google…</p>
+            <p className="text-xs text-muted-foreground">Please wait, do not close this page.</p>
+          </div>
+        </div>
+      )}
       <div ref={cardRef} className="w-full max-w-md mx-auto space-y-6 rounded-3xl border border-border bg-card p-8 shadow-xl relative overflow-hidden my-4">
           <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary via-gold to-emerald-500" />
 
           <div className="text-center">
             <CardzyLogo className="mx-auto size-12 mb-3 shadow-md" />
-            <h1 className="text-2xl font-extrabold text-foreground">Log In to Cardzy</h1>
+            <h1 className="text-2xl font-extrabold text-foreground">{t('loginToCardzyTitle') || 'Log In to Cardzy'}</h1>
             <p className="text-xs text-muted-foreground mt-1">{t('signInToContinue')}</p>
           </div>
 
@@ -666,48 +723,44 @@ function LoginPageContent() {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <SiteHeader />
-      <main className="flex-1 py-6 px-4 max-w-4xl mx-auto w-full">
-        <h1 className="sr-only">Log In to Cardzy</h1>
-        <Suspense fallback={
-          <div className="flex min-h-[400px] items-center justify-center">
-            <Loader2 className="size-8 animate-spin text-primary" />
-          </div>
-        }>
-          <LoginPageContent />
-        </Suspense>
+    <div className="py-6 px-4 max-w-4xl mx-auto w-full">
+      <h1 className="sr-only">Log In to Cardzy</h1>
+      <Suspense fallback={
+        <div className="flex min-h-[400px] items-center justify-center">
+          <Loader2 className="size-8 animate-spin text-primary" />
+        </div>
+      }>
+        <LoginPageContent />
+      </Suspense>
 
-        {/* Premium Guide Overview Card */}
-        <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-              <Sparkles className="size-3.5" /> Account Features
-            </span>
+      {/* Premium Guide Overview Card */}
+      <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+            <Sparkles className="size-3.5" /> Account Features
+          </span>
+        </div>
+        <h2 className="text-xl font-extrabold text-foreground tracking-tight">
+          Manage Your Digital Card & Invitation Account
+        </h2>
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          Welcome to Cardzy. Log in to your personal dashboard to view your published 3D animated wish cards, digital wedding invitations, and smart business vCards. Track real-time guest attendance through automated WhatsApp RSVP confirmations, view headcount analytics, update event dates or venue locations, and download high-resolution QR codes for easy sharing.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className="font-extrabold text-xs text-foreground">Real-Time WhatsApp RSVPs</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Monitor guest responses instantly in your account dashboard.</p>
           </div>
-          <h2 className="text-xl font-extrabold text-foreground tracking-tight">
-            Manage Your Digital Card & Invitation Account
-          </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            Welcome to Cardzy. Log in to your personal dashboard to view your published 3D animated wish cards, digital wedding invitations, and smart business vCards. Track real-time guest attendance through automated WhatsApp RSVP confirmations, view headcount analytics, update event dates or venue locations, and download high-resolution QR codes for easy sharing.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
-            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">Real-Time WhatsApp RSVPs</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Monitor guest responses instantly in your account dashboard.</p>
-            </div>
-            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">Edit Cards Anytime</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Update venue pins, timings, or wording without reprinting.</p>
-            </div>
-            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-              <h3 className="font-extrabold text-xs text-foreground">Instant Share Links</h3>
-              <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Copy card URLs or download custom QR codes in 1 click.</p>
-            </div>
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className="font-extrabold text-xs text-foreground">Edit Cards Anytime</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Update venue pins, timings, or wording without reprinting.</p>
           </div>
-        </section>
-      </main>
-      <SiteFooter />
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className="font-extrabold text-xs text-foreground">Instant Share Links</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Copy card URLs or download custom QR codes in 1 click.</p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

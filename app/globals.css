@@ -1132,3 +1132,90 @@ p {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ----------------------------------------------------------------------------
+   Google Translate, AdSense & Navigation Zero Top Gap Enforcement
+---------------------------------------------------------------------------- */
+html,
+body,
+html body,
+body[style],
+html[style] {
+  top: 0px !important;
+  margin-top: 0px !important;
+  padding-top: 0px !important;
+  position: static !important;
+  transform: none !important;
+}
+
+body > .google-auto-placed,
+body > div.google-auto-placed,
+body > iframe[name^="google_ads_"],
+body > ins.adsbygoogle:not(main ins),
+.google-auto-placed-top,
+[class*="google-auto-placed-top"],
+iframe.goog-te-banner-frame,
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt,
+.goog-te-spinner-pos,
+.goog-te-banner,
+#google_translate_element,
+.skiptranslate,
+body > .skiptranslate,
+div.skiptranslate {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0px !important;
+  width: 0px !important;
+  max-height: 0px !important;
+  margin: 0px !important;
+  padding: 0px !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  pointer-events: none !important;
+}
+
+/* Force overlay & anchor ads strictly to the bottom */
+ins.adsbygoogle-noablate,
+.adsbygoogle-noablate,
+div[class*="adsbygoogle-noablate"] {
+  top: auto !important;
+  bottom: 0 !important;
+}
+
+header {
+  top: 0px !important;
+  margin-top: 0px !important;
+}
+
+.app-root-layout {
+  position: relative !important;
+  top: 0px !important;
+  margin-top: 0px !important;
+  padding-top: 0px !important;
+}
+
+body > *:not(.app-root-layout):not(script):not(style):not(link) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0px !important;
+  width: 0px !important;
+  max-height: 0px !important;
+  margin: 0px !important;
+  padding: 0px !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  pointer-events: none !important;
+}
+
+font {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+
