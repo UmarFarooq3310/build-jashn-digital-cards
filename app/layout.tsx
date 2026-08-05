@@ -36,7 +36,7 @@ const poppins = Poppins({
 })
 
 export const viewport: Viewport = {
-  themeColor: '#0d9488',
+  themeColor: '#064e3b',
   width: 'device-width',
   initialScale: 1,
 }
@@ -61,6 +61,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: 'google8c02e6f18e222682',
+  },
   other: {
     'google-adsense-account': 'ca-pub-8899224608517833',
   },
@@ -84,7 +87,16 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico?v=4', sizes: 'any' },
+      { url: '/favicon-32x32.png?v=4', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon-16x16.png?v=4', type: 'image/png', sizes: '16x16' },
+      { url: '/favicon.svg?v=4', type: 'image/svg+xml' },
+      { url: '/icon.svg?v=4', type: 'image/svg+xml' },
+    ],
+    shortcut: ['/favicon.ico?v=4'],
+    apple: [
+      { url: '/apple-touch-icon.png?v=4', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-icon.svg?v=4', type: 'image/svg+xml' },
     ],
   },
   openGraph: {
@@ -113,19 +125,29 @@ export const metadata: Metadata = {
   },
 }
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Cardzy',
-  url: 'https://cardzy.online',
-  description:
-    'Create stunning 3D animated digital wish cards, digital wedding invitations with WhatsApp RSVP tracking, and executive digital visiting cards.',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: 'https://cardzy.online/search?q={search_term_string}',
-    'query-input': 'required name=search_term_string',
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Cardzy',
+    url: 'https://cardzy.online',
+    logo: 'https://cardzy.online/android-chrome-512x512.png',
+    image: 'https://cardzy.online/android-chrome-512x512.png',
   },
-}
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Cardzy',
+    url: 'https://cardzy.online',
+    description:
+      'Create stunning 3D animated digital wish cards, digital wedding invitations with WhatsApp RSVP tracking, and executive digital visiting cards.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://cardzy.online/search?q={search_term_string}',
+      'query-input': 'required name=search_term_string',
+    },
+  },
+]
 
 export default function RootLayout({
   children,
@@ -135,6 +157,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head suppressHydrationWarning>
+        <link rel="icon" href="/favicon.ico?v=4" sizes="any" />
+        <link rel="icon" href="/favicon-32x32.png?v=4" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon-16x16.png?v=4" type="image/png" sizes="16x16" />
+        <link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" sizes="180x180" />
+        <link rel="shortcut icon" href="/favicon.ico?v=4" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://jashn-app-e3888.firebaseapp.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://jashn-app-e3888.firebaseapp.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
@@ -144,7 +174,6 @@ export default function RootLayout({
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
           crossOrigin="anonymous"
-          suppressHydrationWarning
         />
         <script
           type="application/ld+json"

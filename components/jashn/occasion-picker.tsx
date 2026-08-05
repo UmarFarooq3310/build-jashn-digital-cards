@@ -18,6 +18,7 @@ function OccasionCard({
   icon,
   bgImage,
   bgGradient,
+  priority,
   active,
   onClick,
 }: {
@@ -29,6 +30,7 @@ function OccasionCard({
   icon: string
   bgImage?: string
   bgGradient?: string
+  priority?: boolean
   active: boolean
   onClick: () => void
 }) {
@@ -59,6 +61,7 @@ function OccasionCard({
           src={bgImage}
           alt={displayLabel}
           fill
+          priority={priority}
           sizes="(max-width: 640px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-110"
           onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
@@ -78,13 +81,9 @@ function OccasionCard({
         <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-black/50 text-white/90 border border-white/20 backdrop-blur-md">
           {catText}
         </span>
-        {active ? (
+        {active && (
           <span className="flex size-6 items-center justify-center rounded-full bg-emerald-500 text-slate-950 font-bold shadow-md animate-scaleIn">
             <CheckCircle2 className="size-4" />
-          </span>
-        ) : (
-          <span className="flex size-6 items-center justify-center rounded-full bg-black/40 text-white/80 border border-white/20 backdrop-blur-md group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-            <Sparkles className="size-3" />
           </span>
         )}
       </div>
@@ -154,7 +153,7 @@ export function OccasionPicker({
 
       {/* Portrait grid */}
       <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3">
-        {list.map((o) => (
+        {list.map((o, idx) => (
           <OccasionCard
             key={o.id}
             id={o.id}
@@ -165,6 +164,7 @@ export function OccasionPicker({
             icon={o.icon}
             bgImage={o.bgImage}
             bgGradient={o.bgGradient}
+            priority={idx < 6}
             active={value === o.id}
             onClick={() => onChange(o.id)}
           />

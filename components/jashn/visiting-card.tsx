@@ -400,20 +400,20 @@ END:VCARD`
           </button>
 
           <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-[#0a0a0c] border border-[#D4AF37]/30 shadow-sm">
-            <span className="text-[11px] font-bold text-zinc-300 pl-1">Share Card Link:</span>
+            <span className="text-[11px] font-bold text-zinc-300 pl-1">{t('shareCardLink') || 'Share Card Link:'}</span>
             <button
               onClick={handleShareLink}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#D4AF37] text-slate-950 text-[11px] font-bold shadow-sm active:scale-95 transition-all hover:bg-[#E5C35A]"
             >
               {copied ? <Check className="size-3 text-slate-950" /> : <Share2 className="size-3 text-slate-950" />}
-              <span>{copied ? 'Copied!' : 'Copy Share Link'}</span>
+              <span>{copied ? (t('copied') || 'Copied!') : (t('copyShareLink') || 'Copy Share Link')}</span>
             </button>
           </div>
 
           {/* External QR Code Block (Outside Card Canvas) */}
           <div className="p-4 rounded-3xl bg-[#0a0a0c]/90 border border-[#D4AF37]/30 shadow-lg text-center space-y-2 backdrop-blur-md">
             <span className="text-[10px] uppercase font-extrabold tracking-widest text-[#D4AF37]">
-              Digital Profile QR Code (Outside Card)
+              {t('digitalProfileQrCodeLabel') || 'Digital Profile QR Code'}
             </span>
             <CardQrCode
               slug={data.slug}
@@ -439,8 +439,8 @@ END:VCARD`
             </button>
 
             <div className="space-y-1">
-              <h3 className="text-xl font-extrabold text-white">Scan Digital Visiting Card</h3>
-              <p className="text-xs text-zinc-400">Scan with phone camera to open live profile</p>
+              <h3 className="text-xl font-extrabold text-white">{t('scanDigitalVisitingCard') || 'Scan Digital Visiting Card'}</h3>
+              <p className="text-xs text-zinc-400">{t('scanPhoneCameraDesc') || 'Scan with phone camera to open live profile'}</p>
             </div>
 
             <div className="flex justify-center my-2">

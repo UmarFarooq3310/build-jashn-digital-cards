@@ -70,32 +70,32 @@ export default function CreateVisitingCardPage() {
     return clean
   }
 
-  const validateForm = (): boolean => {
+  const runValidation = (): Record<string, string> => {
     const newErrors: Record<string, string> = {}
 
     // Name validation
     if (!fullName.trim() || fullName.trim().length < 2) {
-      newErrors.fullName = 'Full Name is required (minimum 2 characters)'
+      newErrors.fullName = t('fullNameRequired', 'Full Name is required')
     }
 
     // Title validation
     if (!title.trim()) {
-      newErrors.title = 'Job Title / Role is required'
+      newErrors.title = t('jobTitleRequired', 'Job Title / Role is required')
     }
 
     // Phone validation
     const cleanPhone = phone.trim()
     if (!cleanPhone) {
-      newErrors.phone = 'Phone number is required'
+      newErrors.phone = t('phoneRequired', 'Phone number is required')
     } else if (!/^[+0-9\s-]{7,18}$/.test(cleanPhone)) {
-      newErrors.phone = 'Invalid phone number format (e.g. +92 300 1234567)'
+      newErrors.phone = t('invalidPhone', 'Please enter a valid phone number')
     }
 
     // WhatsApp validation (optional but must be valid if provided)
     if (whatsapp.trim()) {
       const res = validateWhatsAppNumber(whatsapp)
       if (!res.isValid) {
-        newErrors.whatsapp = res.error || 'Please enter a valid WhatsApp number (e.g. +92 300 1234567)'
+        newErrors.whatsapp = res.error || t('invalidPhone', 'Please enter a valid WhatsApp number')
       }
     }
 
@@ -103,7 +103,7 @@ export default function CreateVisitingCardPage() {
     if (email.trim()) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       if (!emailRegex.test(email.trim())) {
-        newErrors.email = 'Please enter a valid email address (e.g. name@domain.com)'
+        newErrors.email = t('validEmailRequired', 'Please enter a valid email address')
       }
     }
 
@@ -113,18 +113,23 @@ export default function CreateVisitingCardPage() {
       try {
         new URL(normUrl)
       } catch (e) {
-        newErrors.website = 'Invalid website URL format'
+        newErrors.website = t('invalidWebsite', 'Invalid website URL format')
       }
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    return newErrors
+  }
+
+  const validateForm = (): boolean => {
+    const errsMap = runValidation()
+    setErrors(errsMap)
+    return Object.keys(errsMap).length === 0
   }
 
   const previewData: Partial<VisitingCard> = {
-    fullName: fullName.trim() || (lang === 'ur' ? 'ڈاکٹر زریاب ملک' : 'Dr. Zaryab Malik'),
-    title: title.trim() || (lang === 'ur' ? 'چیف ایگزیکٹو آفیسر' : 'Chief Executive Officer'),
-    company: company.trim() || (lang === 'ur' ? 'ملک گلوبل انٹرپرائزز' : 'Malik Global Enterprises'),
+    fullName: fullName.trim() || t('defaultVisitingName', 'Dr. Zaryab Malik'),
+    title: title.trim() || t('defaultVisitingTitle', 'Chief Executive Officer'),
+    company: company.trim() || t('defaultVisitingCompany', 'Malik Global Enterprises'),
     category: selectedCategory,
     phone: phone.trim() || '+92 300 1234567',
     whatsapp: whatsapp.trim() || phone.trim() || '+92 300 1234567',
@@ -132,15 +137,18 @@ export default function CreateVisitingCardPage() {
     website: website.trim() ? formatWebsiteUrl(website) : 'malikglobal.com',
     address: address.trim() || 'Suite 402, Blue Area, Islamabad',
     mapLink: mapLink.trim() || 'https://maps.google.com',
-    bio: bio.trim() || 'Leading digital innovations & global business solutions.',
+    bio: bio.trim() || t('defaultVisitingBio', 'Leading digital innovations & global business solutions.'),
     themeId: selectedThemeId,
     language: lang,
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!validateForm()) {
-      showToast('Please correct the highlighted errors in the form', 'error')
+    const errsMap = runValidation()
+    setErrors(errsMap)
+    if (Object.keys(errsMap).length > 0) {
+      const firstErr = Object.values(errsMap)[0] || t('completeAllRequiredFields', 'Please correct the highlighted errors in the form')
+      showToast(firstErr, 'error')
       return
     }
 

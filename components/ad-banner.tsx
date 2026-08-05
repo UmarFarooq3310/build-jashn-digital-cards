@@ -96,7 +96,7 @@ export function AdBanner({ format = 'display', className }: AdBannerProps) {
 
   if (format === 'multiplex') {
     return (
-      <div className={className} style={{ minHeight: '120px', textAlign: 'center' }}>
+      <div className={className} style={{ minHeight: '120px', textAlign: 'center', contain: 'layout style' }}>
         <ins
           ref={insRef}
           className="adsbygoogle"
@@ -111,7 +111,7 @@ export function AdBanner({ format = 'display', className }: AdBannerProps) {
 
   // Use responsive auto — Google picks best size
   return (
-    <div className={className} style={{ textAlign: 'center', minHeight: '90px' }}>
+    <div className={className} style={{ textAlign: 'center', minHeight: '90px', contain: 'layout style' }}>
       <ins
         ref={insRef}
         className="adsbygoogle"

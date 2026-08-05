@@ -61,8 +61,8 @@ function formatTime12h(timeStr: string, lang: string = 'en') {
   const isPm = hours >= 12
   hours = hours % 12 || 12
   const ampm = isPm
-    ? (lang === 'ur' ? 'شام/رات' : 'PM')
-    : (lang === 'ur' ? 'صبح/دوپہر' : 'AM')
+    ? (t('pmLabel') || 'PM')
+    : (t('amLabel') || 'AM')
   return `${hours}:${minutes} ${ampm}`
 }
 
@@ -636,7 +636,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                 "shimmer-text font-extrabold tracking-tight",
                 (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose" : "text-xl sm:text-2xl md:text-4xl leading-tight"
               )}>
-                {data.groom || t('groom')} <span style={{ color: 'var(--c-accent)', opacity: 0.7 }}>{lang === 'ur' ? 'اور' : '&'}</span> {data.bride || t('bride')}
+                {data.groom || t('groom', 'Groom')} <span style={{ color: 'var(--c-accent)', opacity: 0.7 }}>{t('andWord', '&')}</span> {data.bride || t('bride', 'Bride')}
               </p>
               {data.hostNames && (
                 <p className={cn(

@@ -1,36 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+<svg viewBox="0 0 512 512" width="512" height="512" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0d9488"/>
-      <stop offset="100%" stop-color="#0f766e"/>
+    <linearGradient id="cz-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" />
+      <stop offset="100%" stop-color="#022c22" />
     </linearGradient>
-    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    <linearGradient id="cz-shine" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#d97706" stop-opacity="0" />
     </linearGradient>
-    <linearGradient id="spark" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fbbf24"/>
-      <stop offset="100%" stop-color="#f59e0b"/>
+    <linearGradient id="cz-spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
     </linearGradient>
   </defs>
 
-  <!-- Rounded square background -->
-  <rect width="180" height="180" rx="42" fill="url(#bg)"/>
-  <!-- Top-left shine overlay -->
-  <rect width="180" height="180" rx="42" fill="url(#shine)"/>
+  <rect width="512" height="512" rx="120" fill="url(#cz-bg)" />
+  <rect width="512" height="512" rx="120" fill="url(#cz-shine)" />
 
-  <!-- Card body -->
-  <rect x="32" y="54" width="116" height="76" rx="14" fill="white" fill-opacity="0.15" stroke="white" stroke-width="5" stroke-linejoin="round"/>
+  <rect
+    x="92" y="154" width="328" height="215"
+    rx="40"
+    fill="white" fill-opacity="0.15"
+    stroke="white" stroke-width="15" stroke-linejoin="round"
+  />
 
-  <!-- Envelope flap line -->
-  <path d="M32 68 L90 97 L148 68" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path
+    d="M92 195 L256 277 L420 195"
+    stroke="white" stroke-width="15"
+    stroke-linecap="round" stroke-linejoin="round"
+    fill="none"
+  />
 
-  <!-- Heart centred on card -->
-  <path d="M90 117 C90 117 72 102 72 91 C72 84 77 79 84 79 C87 79 89 81 90 83 C91 81 93 79 96 79 C103 79 108 84 108 91 C108 102 90 117 90 117Z" fill="white" fill-opacity="0.85"/>
+  <path
+    d="M256 333 C256 333 205 292 205 261 C205 244 219 230 236 230 C245 230 253 235 256 241 C259 235 267 230 276 230 C293 230 307 244 307 261 C307 292 256 333 256 333 Z"
+    fill="white" fill-opacity="0.9"
+  />
 
-  <!-- Sparkle top-right -->
-  <path d="M137 36 C137 41 140 44 145 44 C140 44 137 47 137 52 C137 47 134 44 129 44 C134 44 137 41 137 36Z" fill="url(#spark)"/>
-
-  <!-- Small sparkle bottom-left -->
-  <path d="M44 137 C44 141 46 142 49 142 C46 142 44 144 44 148 C44 144 42 142 39 142 C42 142 44 141 44 137Z" fill="url(#spark)" opacity="0.7"/>
+  <path
+    d="M389 82 C389 100 398 108 417 108 C398 108 389 116 389 135 C389 116 380 108 361 108 C380 108 389 100 389 82 Z"
+    fill="url(#cz-spark)"
+  />
 </svg>

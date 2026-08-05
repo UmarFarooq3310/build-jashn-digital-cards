@@ -45,10 +45,16 @@ export function FirebaseAuthListener() {
           if (db) {
             try {
               const { doc, getDoc, setDoc } = await import('firebase/firestore')
-              const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid))
-              if (userDoc.exists()) {
+              
+              // 3.5s timeout race to prevent long 10s offline hangs
+              const fetchPromise = getDoc(doc(db, 'users', firebaseUser.uid))
+              const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 3500))
+              
+              const userDoc = await Promise.race([fetchPromise, timeoutPromise])
+
+              if (userDoc && 'exists' in userDoc && userDoc.exists()) {
                 userData = userDoc.data() as JashnUser
-              } else {
+              } else if (userDoc && 'exists' in userDoc) {
                 userData = {
                   uid: firebaseUser.uid,
                   name: firebaseUser.displayName || firebaseUser.phoneNumber || 'Cardzy User',
@@ -57,10 +63,12 @@ export function FirebaseAuthListener() {
                   plan: 'free',
                   createdAt: Date.now(),
                 }
-                await setDoc(doc(db, 'users', firebaseUser.uid), userData)
+                setDoc(doc(db, 'users', firebaseUser.uid), userData).catch((err: any) => {
+                  console.warn('Firestore setDoc notice (operating offline):', err?.message || err)
+                })
               }
-            } catch (err) {
-              console.error('Failed to sync user with Firestore:', err)
+            } catch (err: any) {
+              console.warn('Firestore user sync notice (operating offline):', err?.message || err)
             }
           }
 

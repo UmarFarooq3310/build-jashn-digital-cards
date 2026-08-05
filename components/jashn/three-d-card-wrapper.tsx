@@ -272,23 +272,23 @@ export function ThreeDCardWrapper({
   let coverBg = 'linear-gradient(145deg, #8e0f24 0%, #4a0510 100%)' // Wedding Red
   let coverBorderColor = '#e6b54a' // Gold
   let coverTextColor = '#fff4e6'
-  let badgeLabel = t(`type_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t(`occ_${occasionIdOrCategory?.replace(/-/g, '_')}`) || (lang === 'ur' ? 'مبارک ہو' : 'Mubarak ho')
+  let badgeLabel = t(`type_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t(`occ_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t('mubarakHo')
 
   if (isSensitive) {
     coverBg = 'linear-gradient(145deg, #27272a 0%, #18181b 100%)' // Muted Zinc
     coverBorderColor = '#52525b'
     coverTextColor = '#e4e4e7'
-    badgeLabel = t('badgeCondolences') || (lang === 'ur' ? 'تعزیت' : 'Condolences')
+    badgeLabel = t('badgeCondolences')
   } else if (isIslamic) {
     coverBg = 'linear-gradient(145deg, #1B5E20 0%, #08300c 100%)' // Islamic Emerald
     coverBorderColor = '#e6c45a'
     coverTextColor = '#f1fff0'
-    badgeLabel = t(`type_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t(`occ_${occasionIdOrCategory?.replace(/-/g, '_')}`) || (lang === 'ur' ? 'عید مبارک' : 'Eid Mubarak')
+    badgeLabel = t(`type_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t(`occ_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t('tag_eid_ul_fitr')
   } else if (occasionIdOrCategory === 'birthday' || occasionIdOrCategory === 'birthday-party') {
     coverBg = 'linear-gradient(145deg, #1a237e 0%, #0a0e3d 100%)' // Birthday Royal Blue
     coverBorderColor = '#aab4ff'
     coverTextColor = '#eef1ff'
-    badgeLabel = t('occ_birthday') || t('type_birthday_party') || (lang === 'ur' ? 'سالگرہ' : 'Birthday')
+    badgeLabel = t('occ_birthday') || t('type_birthday_party')
   }
 
   const SealIcon = isSensitive ? BookOpen : Sparkles
@@ -492,7 +492,7 @@ export function ThreeDCardWrapper({
         >
           {recipientName ? (
             <p className="text-[11px] font-semibold line-clamp-1 max-w-[200px] mb-2 drop-shadow-sm" style={{ color: coverTextColor }}>
-              {lang === 'ur' ? `${recipientName} ${t('forRecipient')}` : `${t('forRecipient')} ${recipientName}`}
+              {(lang === 'ur' || lang === 'ar' || lang === 'bn') ? `${recipientName} ${t('forRecipient')}` : `${t('forRecipient')} ${recipientName}`}
             </p>
           ) : null}
           

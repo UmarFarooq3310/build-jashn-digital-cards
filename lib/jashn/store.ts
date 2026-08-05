@@ -121,7 +121,11 @@ export const useJashn = create<JashnState>()(
       isAuthLoading: true,
 
       showToast: (message, type = 'success') => {
-        set({ toast: { message, type } })
+        const toastObj = { message, type, id: Date.now() + Math.random() }
+        set({ toast: toastObj as any })
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('jashn-toast', { detail: toastObj }))
+        }
       },
       hideToast: () => set({ toast: null }),
 
@@ -146,8 +150,8 @@ export const useJashn = create<JashnState>()(
           if (activeDb) {
             try {
               await setDoc(doc(activeDb, 'users', firebaseUser.uid), newUser)
-            } catch (e) {
-              console.error('Failed to save user profile to Firestore:', e)
+            } catch (e: any) {
+              console.warn('Firestore setDoc notice (operating offline):', e?.message || e)
             }
           }
 
@@ -177,12 +181,14 @@ export const useJashn = create<JashnState>()(
           const activeDb = getFirebaseDb() || db
           if (activeDb) {
             try {
-              const userSnap = await getDoc(doc(activeDb, 'users', firebaseUser.uid))
-              if (userSnap.exists()) {
+              const fetchPromise = getDoc(doc(activeDb, 'users', firebaseUser.uid))
+              const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 3500))
+              const userSnap = await Promise.race([fetchPromise, timeoutPromise])
+              if (userSnap && 'exists' in userSnap && userSnap.exists()) {
                 userData = userSnap.data() as JashnUser
               }
-            } catch (e) {
-              console.error('Failed to fetch user from Firestore:', e)
+            } catch (e: any) {
+              console.warn('Firestore getDoc notice (operating offline):', e?.message || e)
             }
           }
 

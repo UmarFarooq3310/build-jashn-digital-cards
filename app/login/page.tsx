@@ -137,7 +137,7 @@ function EmailSuggestInput({ value, onChange, placeholder, hasError, autoFocus }
 function LoginPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { user, signUp, signIn, resetPassword, signInWithGoogle, migrateGuestCards, isAuthLoading } = useJashn()
+  const { user, signUp, signIn, resetPassword, signInWithGoogle, migrateGuestCards, isAuthLoading, showToast } = useJashn()
 
   const tabParam = searchParams.get('tab')
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(tabParam === 'signup' ? 'signup' : 'login')
@@ -250,15 +250,11 @@ function LoginPageContent() {
         // Popup flow succeeded — user is signed in, redirect now
         const currentUser = useJashn.getState().user
         if (currentUser) await migrateGuestCards(currentUser.uid)
+        showToast('Signed in with Google successfully!', 'success')
         window.location.href = redirect
       } else {
-        // success === false means:
-        // 1. User cancelled the popup → just stop loading
-        // 2. signInWithRedirect was triggered → page will navigate away to Google
-        //    Set a sessionStorage flag so when the page returns we show a loading overlay.
         sessionStorage.setItem('google_redirect_pending', '1')
         setIsGoogleRedirecting(true)
-        // If we're still on this page after 700ms, the popup was just cancelled (no redirect)
         setTimeout(() => {
           sessionStorage.removeItem('google_redirect_pending')
           setIsGoogleLoading(false)
@@ -266,18 +262,18 @@ function LoginPageContent() {
         }, 700)
       }
     } catch (e: any) {
-      // Real errors (unauthorized-domain, network, etc.) bubble up here
       const code = e?.code || ''
       let msg = 'Google sign-in failed. Please try again.'
       if (code === 'auth/unauthorized-domain') {
-        msg = 'This domain is not authorized for Google sign-in. Please check Firebase Console → Authentication → Authorized domains.'
+        msg = 'This domain is not authorized for Google sign-in. Please check Firebase Console.'
       } else if (code === 'auth/network-request-failed') {
-        msg = 'Network error. Please check your internet connection and try again.'
+        msg = 'Network error. Please check your internet connection.'
       } else if (e?.message) {
         msg = e.message
       }
       console.error('[Google Sign-In] error:', code, e?.message)
       setGeneralError(msg)
+      showToast(msg, 'error')
       setIsGoogleLoading(false)
       setIsGoogleRedirecting(false)
     }
@@ -288,7 +284,9 @@ function LoginPageContent() {
     e.preventDefault()
     setResetError(null)
     if (!validateEmail(resetEmail)) {
-      setResetError('Please enter a valid email address.')
+      const msg = 'Please enter a valid email address.'
+      setResetError(msg)
+      showToast(msg, 'error')
       return
     }
     setIsResetting(true)
@@ -296,8 +294,11 @@ function LoginPageContent() {
     setIsResetting(false)
     if (success) {
       setResetSent(true)
+      showToast('Password reset link sent to your email!', 'success')
     } else {
-      setResetError('Could not send reset email. Please check the address and try again.')
+      const msg = 'Could not send reset email. Please check the address.'
+      setResetError(msg)
+      showToast(msg, 'error')
     }
   }
 
@@ -306,7 +307,9 @@ function LoginPageContent() {
     e.preventDefault()
     setGeneralError(null)
     if (!validateEmail(loginEmail)) {
-      setGeneralError('Please enter a valid email address.')
+      const msg = 'Please enter a valid email address.'
+      setGeneralError(msg)
+      showToast(msg, 'error')
       return
     }
     setIsSubmitting(true)
@@ -315,9 +318,12 @@ function LoginPageContent() {
     if (success) {
       const currentUser = useJashn.getState().user
       if (currentUser) await migrateGuestCards(currentUser.uid)
+      showToast('Signed in successfully!', 'success')
       window.location.href = redirect
     } else {
-      setGeneralError('Invalid email or password. If you do not have an account yet, please click "Sign Up Free" above to create one.')
+      const msg = 'Invalid email or password.'
+      setGeneralError(msg)
+      showToast(msg, 'error')
     }
   }
 
@@ -333,14 +339,18 @@ function LoginPageContent() {
         })
       }, 20)
     } else {
-      setGeneralError('Please fix the errors above.')
+      const msg = 'Please fix the errors in the form before continuing.'
+      setGeneralError(msg)
+      showToast(msg, 'error')
     }
   }
 
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!isStep2Valid) {
-      setGeneralError('Please ensure your password is secure and matching.')
+      const msg = 'Please ensure your password is secure and matching.'
+      setGeneralError(msg)
+      showToast(msg, 'error')
       return
     }
     setGeneralError(null)
@@ -350,9 +360,12 @@ function LoginPageContent() {
     if (success) {
       const currentUser = useJashn.getState().user
       if (currentUser) await migrateGuestCards(currentUser.uid)
+      showToast('Account created successfully!', 'success')
       window.location.href = redirect
     } else {
-      setGeneralError('This email is already registered. Please sign in instead.')
+      const msg = 'This email is already registered. Please sign in instead.'
+      setGeneralError(msg)
+      showToast(msg, 'error')
     }
   }
 

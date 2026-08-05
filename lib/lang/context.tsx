@@ -1,6 +1,7 @@
 'use client'
 import { createContext, useContext, useState, useEffect } from 'react'
 import { EXTRA_T } from './extra-translations'
+import { VALIDATION_T } from './validation-translations'
 
 export const LANGUAGES = [
   { code: 'en', label: 'English' },
@@ -560,6 +561,10 @@ export const T: Record<string, Record<LangCode, string>> = {
   wedding: { en: "Wedding", ur: "شادی", ar: "الزفاف", es: "Boda", fr: "Mariage", hi: "विवाह", zh: "婚礼", pt: "Casamento", ru: "Свадьба", de: "Hochzeit", ja: "結婚式", ko: "결혼", it: "Matrimonio", tr: "Düğün", id: "Pernikahan", bn: "বিবাহ", vi: "Đám cưới", sw: "Harusi" },
   social: { en: "Social", ur: "سماجی", ar: "اجتماعي", es: "Social", fr: "Social", hi: "सामाजिक", zh: "社交", pt: "Social", ru: "Социальные", de: "Sozial", ja: "ソーシャル", ko: "소셜", it: "Sociale", tr: "Sosyal", id: "Sosial", bn: "সামাজিক", vi: "Xã hội", sw: "Kijamii" },
   professional: { en: "Professional", ur: "پیشہ ورانہ", ar: "مهني", es: "Profesional", fr: "Professionnel", hi: "व्यावसायिक", zh: "商务", pt: "Profissional", ru: "Профессиональный", de: "Beruflich", ja: "プロ", ko: "비즈니스", it: "Professionale", tr: "Profesyonel", id: "Profesional", bn: "পেশাদার", vi: "Chuyên nghiệp", sw: "Kitalaamu" },
+  defaultWishSender: { en: "Tariq & Family", ur: "طارق و اہل خانہ", es: "Tariq y familia", fr: "Tariq et sa famille", ar: "طارق وعائلته", hi: "तारिक और परिवार", zh: "塔里克和家人", pt: "Tariq e família", ru: "Тарик и семья", de: "Tariq & Familie", ja: "タリク＆ファミリー", ko: "타리크와 가족들", it: "Tariq e famiglia", tr: "Tarik ve Ailesi", id: "Tariq & Keluarga", bn: "তারিক এবং পরিবার", vi: "Tariq & Gia đình", sw: "Tariq na Familia" },
+  defaultWishRecipient: { en: "Ayesha", ur: "عائشہ", es: "Ayesha", fr: "Ayesha", ar: "عائشة", hi: "आयशा", zh: "艾莎", pt: "Ayesha", ru: "Аиша", de: "Ayesha", ja: "アイシャ", ko: "아아샤", it: "Ayesha", tr: "Ayşe", id: "Ayesha", bn: "আয়েশা", vi: "Ayesha", sw: "Ayesha" },
+  defaultWishRelation: { en: "Friend", ur: "دوست", es: "Amigo/a", fr: "Ami(e)", ar: "صديق", hi: "मित्र", zh: "朋友", pt: "Amigo(a)", ru: "Друг", de: "Freund(in)", ja: "友達", ko: "친구", it: "Amico/a", tr: "Arkadaş", id: "Sahabat", bn: "বন্ধু", vi: "Bạn bè", sw: "Rafiki" },
+  defaultWishDefaultMessage: { en: "Wishing you a day filled with happiness, laughter and immense blessings!", ur: "آپ کو خوشیوں، مسکراہٹوں اور برکتوں سے بھرپور دن مبارک ہو!", es: "¡Deseándote un día lleno de felicidad, risas y bendiciones!", fr: "En vous souhaitant une journée remplie de bonheur et de rires !", ar: "أتمنى لك يوماً مليئاً بالسعادة والضحك والبركات!", hi: "आपको खुशियों, हंसी और ढेर सारे आशीर्वाद से भरे दिन की शुभकामनाएं!", zh: "愿您度过充满了欢笑与祝福的美好一天！", pt: "Desejando a você um dia cheio de felicidade e bênçãos!", ru: "Желаем вам дня, наполненного счастьем и благословениями!", de: "Wir wünschen Ihnen einen Tag voller Glück und Segen!", ja: "笑顔と幸せに満ちあふれた素晴らしい一日になりますように！", ko: "행복과 웃음, 축복으로 가득 찬 하루가 되기를 바랍니다!", it: "Ti auguro una giornata ricca di felicità e benedizioni!", tr: "Mutluluk ve bereket dolu bir gün dileriz!", id: "Semoga hari Anda dipenuhi dengan kebahagiaan dan tawa!", bn: "আপনার দিনটি সুখ, হাসি এবং আশীর্বাদে ভরে উঠুক!", vi: "Chúc bạn một ngày tràn ngập niềm vui và hạnh phúc!", sw: "Kukutakia siku iliyojaa furaha na baraka kibao!" },
 };
 
 interface LangCtx {
@@ -674,7 +679,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   }
 
   const t = (key: string, fallback?: string) => {
-    const entry = (T as any)[key] || (EXTRA_T as any)[key]
+    const entry = (VALIDATION_T as any)[key] || (T as any)[key] || (EXTRA_T as any)[key]
     if (!entry) return fallback ?? key
     return entry[lang] ?? entry.en ?? fallback ?? key
   }

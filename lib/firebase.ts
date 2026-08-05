@@ -1,10 +1,11 @@
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app'
-import { getFirestore, Firestore } from 'firebase/firestore'
+import { getFirestore, initializeFirestore, Firestore } from 'firebase/firestore'
 import { getAuth, Auth } from 'firebase/auth'
 
-const cleanEnvVar = (val: string | undefined) => {
-  if (!val) return val
-  return val.replace(/^["']|["']$/g, '').trim()
+const cleanEnvVar = (val: string | undefined): string | undefined => {
+  if (!val) return undefined
+  const cleaned = val.replace(/^["']|["']$/g, '').trim()
+  return cleaned || undefined
 }
 
 const firebaseConfig = {
@@ -32,6 +33,7 @@ export function getFirebaseApp(): FirebaseApp | null {
       app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig)
     } catch (e) {
       console.error('Error initializing Firebase App:', e)
+      return null
     }
   }
   return app
@@ -40,9 +42,13 @@ export function getFirebaseApp(): FirebaseApp | null {
 export function getFirebaseAuth(): Auth | null {
   if (typeof window === 'undefined') return null
   if (!auth) {
-    const a = getFirebaseApp()
-    if (a) {
-      try { auth = getAuth(a) } catch (e) { console.error('Error initializing Firebase Auth:', e) }
+    const activeApp = getFirebaseApp()
+    if (activeApp) {
+      try {
+        auth = getAuth(activeApp)
+      } catch (e) {
+        console.error('Error initializing Firebase Auth:', e)
+      }
     }
   }
   return auth
@@ -51,29 +57,35 @@ export function getFirebaseAuth(): Auth | null {
 export function getFirebaseDb(): Firestore | null {
   if (typeof window === 'undefined') return null
   if (!db) {
-    const a = getFirebaseApp()
-    if (a) {
+    const activeApp = getFirebaseApp()
+    if (activeApp) {
       try {
-        db = getFirestore(a)
+        db = getFirestore(activeApp)
       } catch (e: any) {
-        console.warn('Firebase Firestore is not enabled or available:', e?.message || e)
-        db = null
+        try {
+          db = initializeFirestore(activeApp, {})
+        } catch (initErr: any) {
+          console.warn(
+            'Firebase Firestore notice:',
+            initErr?.message || e?.message || initErr || e
+          )
+          db = null
+        }
       }
     }
   }
   return db
 }
 
-// Initialize real Firebase instances immediately on client load
+// Pre-initialize client instances on module evaluation safely
 if (typeof window !== 'undefined' && isFirebaseConfigured) {
   try {
-    app = getFirebaseApp()
-    auth = getFirebaseAuth()
-    db = getFirebaseDb()
+    getFirebaseApp()
+    getFirebaseAuth()
+    getFirebaseDb()
   } catch (e) {
-    console.warn('Firebase initialization notice:', e)
+    // Ignore client boot notice
   }
 }
 
 export { app, db, auth }
-

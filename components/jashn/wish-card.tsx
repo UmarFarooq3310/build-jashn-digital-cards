@@ -203,15 +203,24 @@ export const WishCard = forwardRef<HTMLDivElement, {
         ease: 'power2.out',
         transformPerspective: 1000,
       })
-      gsap.to(wrap.querySelectorAll('.parallax-far'), {
-        x: dx * -8, y: dy * -8, duration: 0.4, ease: 'power2.out',
-      })
-      gsap.to(wrap.querySelectorAll('.parallax-mid'), {
-        x: dx * -4, y: dy * -4, duration: 0.4, ease: 'power2.out',
-      })
-      gsap.to(wrap.querySelectorAll('.parallax-near'), {
-        x: dx * 6, y: dy * 6, duration: 0.4, ease: 'power2.out',
-      })
+      const far = wrap.querySelectorAll('.parallax-far')
+      if (far.length > 0) {
+        gsap.to(far, {
+          x: dx * -8, y: dy * -8, duration: 0.4, ease: 'power2.out',
+        })
+      }
+      const mid = wrap.querySelectorAll('.parallax-mid')
+      if (mid.length > 0) {
+        gsap.to(mid, {
+          x: dx * -4, y: dy * -4, duration: 0.4, ease: 'power2.out',
+        })
+      }
+      const near = wrap.querySelectorAll('.parallax-near')
+      if (near.length > 0) {
+        gsap.to(near, {
+          x: dx * 6, y: dy * 6, duration: 0.4, ease: 'power2.out',
+        })
+      }
     }
 
     const onLeave = () => {
@@ -219,9 +228,12 @@ export const WishCard = forwardRef<HTMLDivElement, {
       gsap.to(card, {
         rotateY: 0, rotateX: 0, duration: 0.6, ease: 'power2.out',
       })
-      gsap.to(wrap.querySelectorAll('.parallax-far, .parallax-mid, .parallax-near'), {
-        x: 0, y: 0, duration: 0.6, ease: 'power2.out',
-      })
+      const parallaxEls = wrap.querySelectorAll('.parallax-far, .parallax-mid, .parallax-near')
+      if (parallaxEls.length > 0) {
+        gsap.to(parallaxEls, {
+          x: 0, y: 0, duration: 0.6, ease: 'power2.out',
+        })
+      }
     }
 
     wrap.addEventListener('mouseenter', onEnter)

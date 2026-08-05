@@ -184,43 +184,43 @@ function CreateInvitationContent() {
     if (step === 2) {
       if (isCouple) {
         if (!groom.trim()) {
-          errs.groom = t('groomRequired') || 'Groom Name is required'
+          errs.groom = t('groomRequired', 'Groom Name is required')
         }
         if (!bride.trim()) {
-          errs.bride = t('brideRequired') || 'Bride Name is required'
+          errs.bride = t('brideRequired', 'Bride Name is required')
         }
       } else {
         if (!title.trim()) {
-          errs.title = t('eventTitleRequired') || 'Event Title is required'
+          errs.title = t('eventTitleRequired', 'Event Title is required')
         }
       }
 
       if (!hostNames.trim()) {
-        errs.hostNames = t('hostNamesRequired') || 'Host Name(s) is required'
+        errs.hostNames = t('hostNamesRequired', 'Host Name(s) is required')
       }
 
       if (!date.trim()) {
-        errs.date = t('eventDateRequired') || 'Event Date is required'
+        errs.date = t('eventDateRequired', 'Event Date is required')
       }
 
       if (!time.trim()) {
-        errs.time = t('eventTimeRequired') || 'Event Time is required'
+        errs.time = t('eventTimeRequired', 'Event Time is required')
       }
 
       if (!venue.trim()) {
-        errs.venue = t('venueRequired') || 'Venue is required'
+        errs.venue = t('venueRequired', 'Venue is required')
       }
 
       if (!city.trim()) {
-        errs.city = t('cityRequired') || 'City is required'
+        errs.city = t('cityRequired', 'City is required')
       }
 
       if (!rsvpPhone.trim()) {
-        errs.rsvpPhone = 'WhatsApp RSVP Phone Number is required'
+        errs.rsvpPhone = t('rsvpPhoneRequired', 'WhatsApp RSVP Phone Number is required')
       } else {
         const cleanedPhone = rsvpPhone.trim().replace(/\s+/g, '')
         if (!/^\+?\d{10,14}$/.test(cleanedPhone)) {
-          errs.rsvpPhone = t('invalidPhone') || 'Please enter a valid phone number (e.g. +923001234567)'
+          errs.rsvpPhone = t('invalidPhone', 'Please enter a valid phone number (e.g. +923001234567)')
         }
       }
     }
@@ -234,11 +234,11 @@ function CreateInvitationContent() {
 
     if (field === 'rsvpPhone') {
       if (!value.trim()) {
-        tempErrors.rsvpPhone = 'WhatsApp RSVP Phone Number is required'
+        tempErrors.rsvpPhone = t('rsvpPhoneRequired', 'WhatsApp RSVP Phone Number is required')
       } else {
         const cleanedPhone = value.trim().replace(/\s+/g, '')
         if (!/^\+?\d{10,14}$/.test(cleanedPhone)) {
-          tempErrors.rsvpPhone = t('invalidPhone') || 'Please enter a valid phone number'
+          tempErrors.rsvpPhone = t('invalidPhone', 'Please enter a valid phone number')
         } else {
           delete tempErrors.rsvpPhone
         }
@@ -256,7 +256,7 @@ function CreateInvitationContent() {
     const errs = runValidation()
     setErrors(errs)
     if (Object.keys(errs).length > 0) {
-      const firstError = Object.values(errs)[0] || 'Please check your input details.'
+      const firstError = Object.values(errs)[0] || t('checkInputDetails', 'Please check your input details.')
       showToast(firstError, 'error')
       if (typeof window !== 'undefined' && window.innerWidth < 1024) {
         setMobileTab('details')
@@ -327,8 +327,8 @@ function CreateInvitationContent() {
         {/* 2-Step Progress Stepper */}
         <div className="mt-5 flex items-center justify-center gap-3">
           {[
-            { s: 1, label: t('stepChooseOccasion') || (lang === 'ur' ? '1. تقریب منتخب کریں' : '1. Choose Occasion') },
-            { s: 2, label: t('stepPersonalizeShare') || t('personalizeShare') || (lang === 'ur' ? '2. تفصیلات لکھیں اور شیئر کریں' : '2. Personalize & Share') },
+            { s: 1, label: t('stepChooseOccasion') || 'Choose Occasion' },
+            { s: 2, label: t('stepPersonalizeShare') || 'Personalize & Share' },
           ].map(({ s, label }) => (
             <div key={s} className="flex items-center gap-2">
               <button
@@ -349,13 +349,6 @@ function CreateInvitationContent() {
           ))}
         </div>
       </div>
-
-      {Object.keys(errors).length > 0 && (
-        <div className="mb-5 mx-auto max-w-xl rounded-2xl border border-red-500/30 bg-red-500/10 p-3.5 text-xs font-semibold text-red-600 flex items-center gap-2 shadow-sm">
-          <AlertCircle className="size-4 shrink-0 text-red-600" />
-          <span>{t('validationErrorsNotice')}</span>
-        </div>
-      )}
 
       {/* 📱 Mobile Tabs (Only visible on Step 2 & Mobile < 1024px) */}
       {step === 2 && (
@@ -847,16 +840,16 @@ function CreateInvitationContent() {
                           <InvitationCard
                             data={{
                               typeId,
-                              title: title || selectedType?.label || (lang === 'ur' ? 'دعوت نامہ' : 'Invitation'),
-                              hostNames: hostNames || (lang === 'ur' ? 'خاندانِ احمد و ملک' : 'The Families of Hassan & Ayesha'),
-                              groom: groom || (lang === 'ur' ? 'حسن' : 'Hassan'),
-                              bride: bride || (lang === 'ur' ? 'عائشہ' : 'Ayesha'),
+                              title: title || selectedType?.label || t('invitation', 'Invitation'),
+                              hostNames: hostNames || t('defaultHostNames', 'The Families of Hassan & Ayesha'),
+                              groom: groom || t('defaultGroom', 'Hassan'),
+                              bride: bride || t('defaultBride', 'Ayesha'),
                               date: date || '2026-12-14',
                               time: time || '07:00 PM',
-                              venue: venue || (lang === 'ur' ? 'پرل کانٹینینٹل، گراں ہال' : 'Pearl Continental, Grand Ballroom'),
-                              city: city || (lang === 'ur' ? 'لاہور' : 'Lahore'),
-                              dressCode: dressCode || (lang === 'ur' ? 'رواینی شاہی لباس' : 'Traditional Royal / Formal'),
-                              notes: notes || (lang === 'ur' ? 'آپ کی آمد ہمارے لیے باعثِ مسرت و افتخار ہوگی۔' : 'Your gracious presence will double our joy and happiness.'),
+                              venue: venue || t('defaultVenue', 'Pearl Continental, Grand Ballroom'),
+                              city: city || t('defaultCity', 'Lahore'),
+                              dressCode: dressCode || t('defaultDressCode', 'Traditional Royal / Formal'),
+                              notes: notes || t('defaultNotes', 'Your gracious presence will double our joy and happiness.'),
                               themeId,
                               borderId,
                               bgVariantId,
@@ -875,9 +868,10 @@ function CreateInvitationContent() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(1)}
-                    className="w-full sm:w-auto rounded-2xl h-11"
+                    className="w-full sm:w-auto rounded-2xl h-11 flex items-center justify-center gap-2"
                   >
-                    <ArrowLeft className="mr-2 size-4" /> {t('changeEventType')}
+                    <ArrowLeft className={cn("size-4", (lang === 'ur' || lang === 'ar') && "rotate-180")} />
+                    <span>{t('changeEventType', 'Change Occasion')}</span>
                   </Button>
                   <Button
                     onClick={handleFinish}
@@ -902,16 +896,16 @@ function CreateInvitationContent() {
                 <InvitationCard
                   data={{
                     typeId,
-                    title: title || selectedType?.label || (lang === 'ur' ? 'دعوت نامہ' : 'Invitation'),
-                    hostNames: hostNames || (lang === 'ur' ? 'خاندانِ احمد و ملک' : 'The Families of Hassan & Ayesha'),
-                    groom: groom || (lang === 'ur' ? 'حسن' : 'Hassan'),
-                    bride: bride || (lang === 'ur' ? 'عائشہ' : 'Ayesha'),
+                    title: title || selectedType?.label || t('invitation', 'Invitation'),
+                    hostNames: hostNames || t('defaultHostNames', 'The Families of Hassan & Ayesha'),
+                    groom: groom || t('defaultGroom', 'Hassan'),
+                    bride: bride || t('defaultBride', 'Ayesha'),
                     date: date || '2026-12-14',
                     time: time || '07:00 PM',
-                    venue: venue || (lang === 'ur' ? 'پرل کانٹینینٹل، گراں ہال' : 'Pearl Continental, Grand Ballroom'),
-                    city: city || (lang === 'ur' ? 'لاہور' : 'Lahore'),
-                    dressCode: dressCode || (lang === 'ur' ? 'رواینی شاہی لباس' : 'Traditional Royal / Formal'),
-                    notes: notes || (lang === 'ur' ? 'آپ کی آمد ہمارے لیے باعثِ مسرت و افتخار ہوگی۔' : 'Your gracious presence will double our joy and happiness.'),
+                    venue: venue || t('defaultVenue', 'Pearl Continental, Grand Ballroom'),
+                    city: city || t('defaultCity', 'Lahore'),
+                    dressCode: dressCode || t('defaultDressCode', 'Traditional Royal / Formal'),
+                    notes: notes || t('defaultNotes', 'Your gracious presence will double our joy and happiness.'),
                     themeId,
                     borderId,
                     bgVariantId,

@@ -4,7 +4,7 @@ import '@/app/invitation-themes-animations.css'
 import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Wand2, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, X } from 'lucide-react'
 import { AUDIO_TRACKS } from '@/lib/jashn/audio'
 import { generateAIWish, type AITone } from '@/lib/jashn/ai-generator'
 import { SiteHeader } from '@/components/site-header'
@@ -172,24 +172,24 @@ function CreateWishContent() {
     if (step === 2) {
       if (isGamingOccasion) {
         if (!playerName.trim() && !recipientName.trim()) {
-          errs.playerName = 'Player / Squad Name is required'
+          errs.playerName = t('playerNameRequired', 'Player / Squad Name is required')
         }
         if (killCount.trim() && !/\d+/.test(killCount.trim())) {
-          errs.killCount = 'Score / Kill Count must contain a number (e.g. 15 or 15 Kills)'
+          errs.killCount = t('killCountNumber', 'Score / Kill Count must contain a number (e.g. 15 or 15 Kills)')
         }
         if (rank.trim() && !/\d+/.test(rank.trim())) {
-          errs.rank = 'Rank must contain a number (e.g. 1 or #1)'
+          errs.rank = t('rankNumber', 'Rank must contain a number (e.g. 1 or #1)')
         }
       } else {
         if (!recipientName.trim()) {
-          errs.recipientName = 'Recipient Name is required'
+          errs.recipientName = t('recipientNameRequired', 'Recipient Name is required')
         }
         if (!senderName.trim()) {
-          errs.senderName = 'Your Name (Sender) is required'
+          errs.senderName = t('senderNameRequired', 'Your Name (Sender) is required')
         }
       }
       if (!message.trim()) {
-        errs.message = 'Wish message is required'
+        errs.message = t('wishMessageRequired', 'Wish message is required')
       }
     }
 
@@ -209,7 +209,7 @@ function CreateWishContent() {
     const errs = runValidation()
     setErrors(errs)
     if (Object.keys(errs).length > 0) {
-      const firstError = Object.values(errs)[0] || 'Please complete all required fields marked in red.'
+      const firstError = Object.values(errs)[0] || t('completeAllRequiredFields', 'Please complete all required fields marked in red.')
       showToast(firstError, 'error')
       if (typeof window !== 'undefined' && window.innerWidth < 1024) {
         setMobileTab('details')
@@ -276,8 +276,8 @@ function CreateWishContent() {
         {/* Horizontal 2-Step Stepper */}
         <div className="mt-6 flex items-center justify-center gap-3">
           {[
-            { s: 1, label: t('stepChooseOccasion') || (lang === 'ur' ? '1. تقریب منتخب کریں' : '1. Choose Occasion') },
-            { s: 2, label: t('stepPersonalizeShare') || t('personalizeShare') || (lang === 'ur' ? '2. تفصیلات لکھیں اور شیئر کریں' : '2. Personalize & Share') },
+            { s: 1, label: t('stepChooseOccasion') || 'Choose Occasion' },
+            { s: 2, label: t('stepPersonalizeShare') || 'Personalize & Share' },
           ].map(({ s, label }, idx) => (
             <div key={s} className="flex items-center gap-3">
               <button
@@ -302,13 +302,6 @@ function CreateWishContent() {
           ))}
         </div>
       </div>
-
-      {Object.keys(errors).length > 0 && (
-        <div className="mb-5 mx-auto max-w-xl rounded-2xl border border-red-500/30 bg-red-500/10 p-3.5 text-xs font-semibold text-red-600 flex items-center gap-2 shadow-sm">
-          <AlertCircle className="size-4 shrink-0 text-red-600" />
-          <span>{t('validationErrorsNotice')}</span>
-        </div>
-      )}
 
       {/* 📱 Mobile Tabs (Only visible on Step 2 & Mobile < 1024px) */}
       {step === 2 && (
@@ -539,7 +532,7 @@ function CreateWishContent() {
                             )}
                           />
                           {errors.recipientName && (
-                            <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                            <p className={cn("mt-1 text-xs font-semibold text-red-500 flex items-center gap-1", (lang === 'ur' || lang === 'ar') && "flex-row-reverse text-right font-urdu")}>
                               <AlertCircle className="size-3 shrink-0" /> {errors.recipientName}
                             </p>
                           )}
@@ -562,7 +555,7 @@ function CreateWishContent() {
                             )}
                           />
                           {errors.senderName && (
-                            <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                            <p className={cn("mt-1 text-xs font-semibold text-red-500 flex items-center gap-1", (lang === 'ur' || lang === 'ar') && "flex-row-reverse text-right font-urdu")}>
                               <AlertCircle className="size-3 shrink-0" /> {errors.senderName}
                             </p>
                           )}
@@ -640,7 +633,7 @@ function CreateWishContent() {
                         )}
                       />
                       {errors.message && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                        <p className={cn("mt-1 text-xs font-semibold text-red-500 flex items-center gap-1", (lang === 'ur' || lang === 'ar') && "flex-row-reverse text-right font-urdu")}>
                           <AlertCircle className="size-3 shrink-0" /> {errors.message}
                         </p>
                       )}
@@ -702,23 +695,24 @@ function CreateWishContent() {
                     <div className="flex justify-center overflow-hidden py-2">
                       <div className="w-full">
                         <CardAnimationPreview occasionId={occasionId} animationKey={occasionId} className="max-w-md mx-auto" roundedClass="rounded-[2.5rem]">
-                  <WishCard
-                    data={{
-                      occasionId,
-                      themeId,
-                      borderId,
-                      bgVariantId,
-                      message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : (lang === 'ur' ? 'آپ کو خوشیوں، مسکراہٹوں اور برکتوں سے بھرپور دن مبارک ہو!' : 'Wishing you a day filled with happiness, laughter and immense blessings!')),
-                      senderName: senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : (lang === 'ur' ? 'طارق و اہل خانہ' : 'Tariq & Family')),
-                      recipientName: (isGamingOccasion && playerName) ? playerName : (recipientName || (lang === 'ur' ? 'عائشہ' : 'Ayesha')),
-                      relation: relation || (lang === 'ur' ? 'دوست' : 'Friend'),
-                      language,
-                      playerName,
-                      killCount,
-                      rank,
-                      winningNumber,
-                    }}
-                  />
+                          <WishCard
+                            data={{
+                              occasionId,
+                              themeId,
+                              borderId,
+                              bgVariantId,
+                              message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : t('defaultWishDefaultMessage', 'Wishing you a day filled with happiness, laughter and immense blessings!')),
+                              senderName: senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : t('defaultWishSender', 'Tariq & Family')),
+                              recipientName: (isGamingOccasion && playerName) ? playerName : (recipientName || t('defaultWishRecipient', 'Ayesha')),
+                              relation: relation || t('defaultWishRelation', 'Friend'),
+                              language,
+                              playerName,
+                              killCount,
+                              rank,
+                              winningNumber,
+                              photoUrl,
+                            }}
+                          />
                         </CardAnimationPreview>
                       </div>
                     </div>
@@ -730,9 +724,10 @@ function CreateWishContent() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(1)}
-                    className="w-full sm:w-auto rounded-full h-11 px-6 border-[#E5DFD3]"
+                    className="w-full sm:w-auto rounded-full h-11 px-6 border-[#E5DFD3] flex items-center justify-center gap-2"
                   >
-                    ← {t('viewOccasions') || 'Change Occasion'}
+                    <ArrowLeft className={cn("size-4", (lang === 'ur' || lang === 'ar') && "rotate-180")} />
+                    <span>{t('viewOccasions', 'Change Occasion')}</span>
                   </Button>
                   <Button
                     onClick={handleFinish}
@@ -761,10 +756,10 @@ function CreateWishContent() {
                     themeId,
                     borderId,
                     bgVariantId,
-                    message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : (lang === 'ur' ? 'آپ کو خوشیوں، مسکراہٹوں اور برکتوں سے بھرپور دن مبارک ہو!' : 'Wishing you a day filled with happiness, laughter and immense blessings!')),
-                    senderName: senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : (lang === 'ur' ? 'طارق و اہل خانہ' : 'Tariq & Family')),
-                    recipientName: (isGamingOccasion && playerName) ? playerName : (recipientName || (lang === 'ur' ? 'عائشہ' : 'Ayesha')),
-                    relation: relation || (lang === 'ur' ? 'دوست' : 'Friend'),
+                    message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : t('defaultWishDefaultMessage', 'Wishing you a day filled with happiness, laughter and immense blessings!')),
+                    senderName: senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : t('defaultWishSender', 'Tariq & Family')),
+                    recipientName: (isGamingOccasion && playerName) ? playerName : (recipientName || t('defaultWishRecipient', 'Ayesha')),
+                    relation: relation || t('defaultWishRelation', 'Friend'),
                     language,
                     playerName,
                     killCount,

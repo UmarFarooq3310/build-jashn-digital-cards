@@ -17,6 +17,7 @@ function InvitationTypeCard({
   bgImage,
   bgGradient,
   isCouple,
+  priority,
   active,
   onClick,
 }: {
@@ -28,16 +29,17 @@ function InvitationTypeCard({
   bgImage?: string
   bgGradient?: string
   isCouple?: boolean
+  priority?: boolean
   active: boolean
   onClick: () => void
 }) {
   const { lang, t } = useLang()
   const fallback = bgGradient ?? 'linear-gradient(160deg,#8e0f24,#4a0510)'
-  const displayLabel = lang === 'ur' && urdu ? urdu : (t(`type_${id.replace(/-/g, '_')}`) || label)
+  const displayLabel = t(`type_${id.replace(/-/g, '_')}`) || (lang === 'ur' && urdu ? urdu : label)
 
   const catKey = category ? category.toLowerCase() : 'wedding'
   const catText = isCouple 
-    ? (t('coupleBadge') || (lang === 'ur' ? 'جوڑا' : 'Couple')) 
+    ? (t('coupleBadge') || 'Couple') 
     : (t(catKey) || category || 'Event')
 
   return (
@@ -60,6 +62,7 @@ function InvitationTypeCard({
           src={bgImage}
           alt={displayLabel}
           fill
+          priority={priority}
           sizes="(max-width: 640px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-110"
           onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
@@ -79,13 +82,9 @@ function InvitationTypeCard({
         <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-black/50 text-white/90 border border-white/20 backdrop-blur-md">
           {catText}
         </span>
-        {active ? (
+        {active && (
           <span className="flex size-6 items-center justify-center rounded-full bg-emerald-500 text-slate-950 font-bold shadow-md animate-scaleIn">
             <CheckCircle2 className="size-4" />
-          </span>
-        ) : (
-          <span className="flex size-6 items-center justify-center rounded-full bg-black/40 text-white/80 border border-white/20 backdrop-blur-md group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-            <Sparkles className="size-3" />
           </span>
         )}
       </div>
@@ -152,7 +151,7 @@ export function InvitationTypePicker({
 
       {/* Portrait grid */}
       <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3">
-        {list.map((t) => (
+        {list.map((t, idx) => (
           <InvitationTypeCard
             key={t.id}
             id={t.id}
@@ -163,6 +162,7 @@ export function InvitationTypePicker({
             bgImage={t.bgImage}
             bgGradient={t.bgGradient}
             isCouple={t.couple}
+            priority={idx < 6}
             active={value === t.id}
             onClick={() => onChange(t.id)}
           />
