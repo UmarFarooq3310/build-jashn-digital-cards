@@ -10,6 +10,7 @@ export function HeroEmailForm() {
   const router = useRouter()
   const { t } = useLang()
   const user = useJashn((s) => s.user)
+  const showToast = useJashn((s) => s.showToast)
   const [heroEmail, setHeroEmail] = useState('')
 
   if (user) {
@@ -18,7 +19,10 @@ export function HeroEmailForm() {
 
   const handleEmailSignup = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!heroEmail.trim()) return
+    if (!heroEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(heroEmail.trim())) {
+      showToast(t('enterValidEmail') || 'Please enter a valid email address', 'error')
+      return
+    }
     router.push(`/signup?email=${encodeURIComponent(heroEmail.trim())}`)
   }
 

@@ -152,35 +152,35 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
             </div>
 
             {/* Creator Control Panel */}
-            <div className="rounded-2xl border border-dashed border-[#D4AF37]/40 bg-[#D4AF37]/10 p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-md backdrop-blur-md">
+            <div className="rounded-2xl border border-[#D4AF37]/40 bg-slate-900 text-white p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-xl">
               <div>
-                <p className="text-sm font-bold text-[#D4AF37] flex items-center gap-1.5">
-                  <Sparkles className="size-4 text-[#D4AF37] animate-pulse" /> {t('youCreatedThisVcard')}
+                <p className="text-base font-extrabold text-white flex items-center gap-2">
+                  <Sparkles className="size-5 text-[#D4AF37] animate-pulse" /> {t('youCreatedThisVcard')}
                 </p>
-                <p className="text-xs text-zinc-300">{t('manageEditShareVcard')}</p>
+                <p className="text-xs text-zinc-300 mt-1">{t('manageEditShareVcard')}</p>
               </div>
-              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+              <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
                 <Link
                   href={receiverUrl}
                   target="_blank"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#D4AF37]/50 bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-xs hover:bg-[#D4AF37]/30 transition-all"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-md transition-all border border-emerald-400/30"
                 >
-                  <ExternalLink className="size-3.5" /> {t('viewReceiverScreen')}
+                  <ExternalLink className="size-3.5 text-white" /> {t('viewReceiverScreen')}
                 </Link>
                 <Button
                   onClick={handleEdit}
                   variant="outline"
                   size="sm"
-                  className="text-xs flex items-center gap-1.5 border-zinc-300 bg-white hover:bg-zinc-100 text-black dark:text-black font-extrabold shadow-xs"
+                  className="text-xs flex items-center gap-1.5 border-amber-300/40 bg-[#D4AF37] hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl shadow-md transition-all px-4 py-2"
                 >
-                  <Edit3 className="size-3.5 text-black" />
-                  <span className="text-black font-extrabold">{t('editCard')}</span>
+                  <Edit3 className="size-3.5 text-slate-950" />
+                  <span>{t('editCard')}</span>
                 </Button>
                 <Button
                   onClick={handleDelete}
                   variant="destructive"
                   size="sm"
-                  className="text-xs flex items-center gap-1.5 font-bold"
+                  className="text-xs flex items-center gap-1.5 font-extrabold rounded-xl bg-red-600 hover:bg-red-500 text-white shadow-md transition-all px-4 py-2 border border-red-400/30"
                 >
                   <Trash2 className="size-3.5" /> {t('deleteCard')}
                 </Button>
@@ -189,8 +189,8 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
 
             {/* Badges */}
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3.5 py-1 text-xs font-extrabold text-[#D4AF37]">
-                <Cpu className="size-3.5 text-[#D4AF37]" /> {
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D4AF37]/50 bg-amber-950/80 px-4 py-1.5 text-xs font-extrabold text-[#D4AF37] shadow-sm">
+                <Cpu className="size-4 text-[#D4AF37]" /> {
                   card.category === 'business' ? t('catCorporate')
                   : card.category === 'creative' ? t('catTech')
                   : card.category === 'medical' ? t('catMedical')
@@ -201,11 +201,11 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
                   : (card.category || 'Executive Profile')
                 }
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-400">
-                <ShieldCheck className="size-3.5" /> {t('verifiedVCard')}
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-900/80 px-4 py-1.5 text-xs font-extrabold text-emerald-300 shadow-sm">
+                <ShieldCheck className="size-4 text-emerald-400" /> {t('verifiedVCard')}
               </span>
-              <span className="flex items-center gap-1 text-xs font-medium text-zinc-400">
-                <Eye className="size-3.5" /> {card.viewCount ?? 1} {t('viewsLabel')}
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/90 px-4 py-1.5 text-xs font-extrabold text-slate-200 shadow-sm">
+                <Eye className="size-4 text-emerald-400" /> {card.viewCount ?? 1} {t('viewsLabel')}
               </span>
             </div>
 

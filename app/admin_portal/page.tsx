@@ -493,7 +493,7 @@ export default function AdminPortalPage() {
             </div>
           )}
 
-          <form onSubmit={handleAdminLogin} className="space-y-4">
+          <form noValidate onSubmit={handleAdminLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
                 Admin Email Address

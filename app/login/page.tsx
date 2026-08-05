@@ -418,7 +418,7 @@ function LoginPageContent() {
 
           {/* ── LOGIN TAB ── */}
           {activeTab === 'login' && !forgotMode && (
-            <form onSubmit={handleLoginSubmit} className="space-y-4">
+            <form noValidate onSubmit={handleLoginSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-medium text-foreground mb-1">{t('emailAddress')}</label>
                 <EmailSuggestInput
@@ -524,7 +524,7 @@ function LoginPageContent() {
                 </div>
               ) : (
                 /* Reset form */
-                <form onSubmit={handleResetPassword} className="space-y-4">
+                <form noValidate onSubmit={handleResetPassword} className="space-y-4">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="size-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                       <KeyRound className="size-4 text-primary" />
@@ -583,7 +583,7 @@ function LoginPageContent() {
 
               {/* Step 1 */}
               {signupStep === 1 && (
-                <form onSubmit={handleNextStep} className="login-step-fields space-y-4">
+                <form noValidate onSubmit={handleNextStep} className="login-step-fields space-y-4">
                   <div>
                     <label className="block text-xs font-medium text-foreground mb-1">{t('fullName')}</label>
                     <div className="relative">
@@ -652,7 +652,7 @@ function LoginPageContent() {
 
               {/* Step 2 */}
               {signupStep === 2 && (
-                <form onSubmit={handleSignupSubmit} className="login-step-fields space-y-4">
+                <form noValidate onSubmit={handleSignupSubmit} className="login-step-fields space-y-4">
                   <div>
                     <label className="block text-xs font-medium text-foreground mb-1">Password</label>
                     <div className="relative">

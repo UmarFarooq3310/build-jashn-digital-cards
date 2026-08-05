@@ -182,35 +182,35 @@ function WishPublicContent({ slug }: { slug: string }) {
             {!isSensitive && <ConfettiRain active={rainActive} />}
 
             {/* Creator Control Panel */}
-            <div className="mb-6 rounded-2xl border border-dashed border-primary/30 bg-primary/5 p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-sm">
+            <div className="mb-6 rounded-2xl border border-emerald-500/30 bg-slate-900 text-white p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-xl">
               <div>
-                <p className="text-sm font-bold text-primary flex items-center gap-1.5">
-                  <Sparkles className="size-4 text-primary animate-pulse" /> You Created This Wish Card!
+                <p className="text-base font-extrabold text-white flex items-center gap-2">
+                  <Sparkles className="size-5 text-amber-400 animate-pulse" /> You Created This Wish Card!
                 </p>
-                <p className="text-xs text-muted-foreground">{t('wishOwnerControlDesc') || 'You can edit, share, or delete your card below.'}</p>
+                <p className="text-xs text-slate-300 mt-1">{t('wishOwnerControlDesc') || 'You can edit, share, or delete your card below.'}</p>
               </div>
-              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+              <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
                 <Link
                   href={receiverUrl}
                   target="_blank"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-bold text-xs hover:bg-emerald-500/20 transition-all"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-md transition-all border border-emerald-400/30"
                 >
-                  <ExternalLink className="size-3.5" /> View Receiver Screen
+                  <ExternalLink className="size-3.5 text-white" /> View Receiver Screen
                 </Link>
                 <Button
                   onClick={handleEdit}
                   variant="outline"
                   size="sm"
-                  className="text-xs flex items-center gap-1.5 border-zinc-300 bg-white hover:bg-zinc-100 text-black dark:text-black font-extrabold shadow-xs"
+                  className="text-xs flex items-center gap-1.5 border-amber-300/40 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl shadow-md transition-all px-4 py-2"
                 >
-                  <Edit3 className="size-3.5 text-black" />
-                  <span className="text-black font-extrabold">Edit Card</span>
+                  <Edit3 className="size-3.5 text-slate-950" />
+                  <span>Edit Card</span>
                 </Button>
                 <Button
                   onClick={handleDelete}
                   variant="destructive"
                   size="sm"
-                  className="text-xs flex items-center gap-1.5 font-bold"
+                  className="text-xs flex items-center gap-1.5 font-extrabold rounded-xl bg-red-600 hover:bg-red-500 text-white shadow-md transition-all px-4 py-2 border border-red-400/30"
                 >
                   <Trash2 className="size-3.5" /> Delete Card
                 </Button>
@@ -220,18 +220,18 @@ function WishPublicContent({ slug }: { slug: string }) {
             {/* Badges & Views Info */}
             <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
               <span className={cn(
-                "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1 text-xs font-semibold",
+                "inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-xs font-extrabold shadow-sm",
                 isSensitive
-                  ? "border-zinc-700 bg-zinc-800/50 text-zinc-400"
+                  ? "border-zinc-700 bg-zinc-800 text-zinc-200"
                   : isIslamic
-                  ? "border-emerald-600/30 bg-emerald-500/10 text-emerald-700"
-                  : "border-primary/20 bg-primary/10 text-primary"
+                  ? "border-emerald-500/40 bg-emerald-900/80 text-emerald-300"
+                  : "border-amber-500/40 bg-amber-950/80 text-amber-300"
               )}>
-                {isSensitive ? <HeartHandshake className="size-3.5" /> : <Sparkles className="size-3.5" />}
+                {isSensitive ? <HeartHandshake className="size-4 text-zinc-300" /> : <Sparkles className="size-4 text-amber-400" />}
                 {isSensitive ? t('forwardMessage') : t('specialAnimatedCard')}
               </span>
-              <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                <Eye className="size-3.5" /> {activeWish.viewCount ?? 1} views
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/90 px-4 py-1.5 text-xs font-extrabold text-slate-200 shadow-sm">
+                <Eye className="size-4 text-emerald-400" /> {activeWish.viewCount ?? 1} views
               </span>
             </div>
 

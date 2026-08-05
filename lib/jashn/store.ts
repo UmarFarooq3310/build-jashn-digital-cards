@@ -971,9 +971,14 @@ export const useJashn = create<JashnState>()(
     }),
     {
       name: 'jashn-store',
+      partialize: (state) => {
+        const { toast, ...rest } = state
+        return rest
+      },
       onRehydrateStorage: () => (state) => {
         if (state) {
           state.isAuthLoading = false
+          state.toast = null
         }
       },
     },

@@ -282,7 +282,7 @@ export default function CreateVisitingCardPage() {
             /* Builder Form + Live Preview Grid */
             <div className="grid gap-8 lg:grid-cols-12 items-start">
               {/* Form Column */}
-              <form onSubmit={handleSubmit} className="lg:col-span-7 space-y-6">
+              <form noValidate onSubmit={handleSubmit} className="lg:col-span-7 space-y-6">
 
                 {/* 1. Category Selection */}
                 <div className="bg-card border border-border rounded-3xl p-6 shadow-sm space-y-4">

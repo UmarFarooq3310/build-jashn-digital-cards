@@ -69,6 +69,15 @@ export const metadata: Metadata = {
   },
   keywords: [
     'Cardzy',
+    'urdu eid mubarak wishes',
+    'eid mubarak to you too meaning in urdu',
+    'send animated art greetings online',
+    'eid greetings in urdu',
+    'pakistani wedding card text',
+    'eid mubarak greetings in urdu',
+    'eid greeting messages in urdu',
+    'eid mubarak in urdu words',
+    'eid card in urdu',
     'digital invitation',
     'animated wish card',
     'online invitation',
@@ -79,11 +88,6 @@ export const metadata: Metadata = {
     'multilingual card',
     'event invitation',
     'gaming winner card',
-    'PUBG winner card',
-    'free fire winner card',
-    'ludo winner card',
-    'bingo winner card',
-    'number game winner card',
   ],
   icons: {
     icon: [

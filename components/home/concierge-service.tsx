@@ -5,9 +5,11 @@ import { Sparkles, ArrowRight, Mail, MessageSquare, CheckCircle2, Gift, Calendar
 import Link from 'next/link'
 import { cn, validateWhatsAppNumber } from '@/lib/utils'
 import { useLang } from '@/lib/lang/context'
+import { useJashn } from '@/lib/jashn/store'
 
 export function ConciergeService() {
   const { t, lang } = useLang()
+  const showToast = useJashn((s) => s.showToast)
   const isUrdu = lang === 'ur' || lang === 'ar'
 
   const [mode, setMode] = useState<'form' | 'direct'>('form')
@@ -70,7 +72,9 @@ export function ConciergeService() {
     if (target === 'whatsapp' && contactInfo.trim()) {
       const res = validateWhatsAppNumber(contactInfo)
       if (!res.isValid) {
-        setPhoneError(res.error || 'Please enter a valid WhatsApp number')
+        const errMsg = res.error || 'Please enter a valid WhatsApp number'
+        setPhoneError(errMsg)
+        showToast(errMsg, 'error')
         return
       }
     }

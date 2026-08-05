@@ -143,7 +143,7 @@ function EmailSuggestInput({ value, onChange, placeholder, hasError, id }: Email
 function SignupPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { user, signUp, signInWithGoogle, migrateGuestCards } = useJashn()
+  const { user, signUp, signInWithGoogle, migrateGuestCards, showToast } = useJashn()
 
   const [signupStep, setSignupStep] = useState<1 | 2>(1)
   const { t } = useLang()
@@ -164,11 +164,14 @@ function SignupPageContent() {
       if (success) {
         const currentUser = useJashn.getState().user
         if (currentUser) await migrateGuestCards(currentUser.uid)
+        showToast('Signed in with Google successfully!', 'success')
         window.location.href = redirect
       }
     } catch (e: any) {
       console.error('Google sign-in error:', e)
-      setGeneralError('Google sign-in could not be completed. Please try again.')
+      const msg = 'Google sign-in could not be completed. Please try again.'
+      setGeneralError(msg)
+      showToast(msg, 'error')
     } finally {
       setIsGoogleLoading(false)
     }
@@ -253,14 +256,18 @@ function SignupPageContent() {
         })
       }, 20)
     } else {
-      setGeneralError('Please fix the errors above before continuing.')
+      const msg = errors.name || errors.email || 'Please fix the errors above before continuing.'
+      setGeneralError(msg)
+      showToast(msg, 'error')
     }
   }
 
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!isStep2Valid) {
-      setGeneralError('Please ensure your password is secure and matching.')
+      const msg = errors.confirmPassword || 'Please ensure your password is secure and matching.'
+      setGeneralError(msg)
+      showToast(msg, 'error')
       return
     }
     setGeneralError(null)
@@ -270,9 +277,12 @@ function SignupPageContent() {
     if (success) {
       const currentUser = useJashn.getState().user
       if (currentUser) await migrateGuestCards(currentUser.uid)
+      showToast('Account created successfully!', 'success')
       router.push(redirect)
     } else {
-      setGeneralError(t('emailAlreadyRegistered') || 'This email is already registered. Please sign in instead.')
+      const msg = t('emailAlreadyRegistered') || 'This email is already registered. Please sign in instead.'
+      setGeneralError(msg)
+      showToast(msg, 'error')
     }
   }
 
@@ -303,7 +313,7 @@ function SignupPageContent() {
 
           {/* Step 1 */}
           {signupStep === 1 && (
-            <form onSubmit={handleNextStep} className="signup-step-fields space-y-4">
+            <form noValidate onSubmit={handleNextStep} className="signup-step-fields space-y-4">
               <div>
                 <label className="block text-xs font-medium text-foreground mb-1">{t('fullName')}</label>
                 <div className="relative">
@@ -372,7 +382,7 @@ function SignupPageContent() {
 
           {/* Step 2 */}
           {signupStep === 2 && (
-            <form onSubmit={handleSignupSubmit} className="signup-step-fields space-y-4">
+            <form noValidate onSubmit={handleSignupSubmit} className="signup-step-fields space-y-4">
               <div>
                 <label className="block text-xs font-medium text-foreground mb-1">{t('password')}</label>
                 <div className="relative">

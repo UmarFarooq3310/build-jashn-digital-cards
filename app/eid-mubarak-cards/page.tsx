@@ -4,17 +4,24 @@ import Image from 'next/image'
 import { ArrowLeft, Sparkles, Send, Globe, MessageSquare, MapPin, Clock, HelpCircle, CheckCircle2 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Eid Mubarak Cards: Digital Greetings | Cardzy',
+  title: 'Urdu Eid Mubarak Wishes & Digital Cards | Cardzy',
   description:
-    'Create interactive Eid Mubarak digital cards with Cardzy. Personalize greetings in 18 languages, track RSVPs, and share via WhatsApp in seconds.',
+    'Create animated Eid Mubarak cards & send Urdu Eid Mubarak wishes online. Discover "Eid Mubarak to you too" in Urdu words (خیر مبارک) & share instant WhatsApp greetings.',
   alternates: {
     canonical: 'https://cardzy.online/eid-mubarak-cards',
   },
   keywords: [
+    'urdu eid mubarak wishes',
+    'eid mubarak to you too meaning in urdu',
+    'eid greetings in urdu',
+    'eid mubarak greetings in urdu',
+    'eid greeting messages in urdu',
+    'eid mubarak in urdu words',
+    'eid card in urdu',
+    'send animated art greetings online',
     'Eid Mubarak cards',
     'digital Eid greetings',
     'personalized Eid wish card',
-    'online Eid invitation card',
     'WhatsApp Eid cards',
   ],
 }
@@ -25,10 +32,18 @@ const faqSchema = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'Can I send Eid Mubarak digital cards in Arabic or Urdu via WhatsApp?',
+      name: 'What does "Eid Mubarak to you too" mean in Urdu words?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes! Cardzy supports 18 languages, including full right-to-left (RTL) typography for Arabic and Urdu. You can customize your message in your preferred script and share the card link directly to WhatsApp contacts or group chats instantly.',
+        text: 'In Urdu, the most common response to "Eid Mubarak" is "Khair Mubarak" (خیر مبارک), which means "May goodness and blessings be upon you too." You can also say "Aap ko bhi Eid Mubarak" (آپ کو بھی عید مبارک). You can easily customize these Urdu Eid wishes on Cardzy 3D animated cards.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I send Eid Mubarak digital cards in Urdu via WhatsApp?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes! Cardzy supports authentic Urdu Nasta\'liq script and 18 international languages with full right-to-left (RTL) typography. You can personalize your Urdu Eid greeting message, add a custom photo or audio track, and share the live animated card link on WhatsApp instantly.',
       },
     },
   ],

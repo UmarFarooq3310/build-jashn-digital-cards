@@ -1,11 +1,17 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { BLOG_POSTS, getBlogPost } from '@/lib/blog/data'
+import { BLOG_POSTS, getBlogPost, getLocalizedPost } from '@/lib/blog/data'
 import { BlogPostClient } from '@/components/blog/blog-post-client'
 
 interface PageProps {
   params: Promise<{ slug: string }>
+  searchParams?: Promise<{ lang?: string }>
 }
+
+const SUPPORTED_LANGS = [
+  'en', 'es', 'fr', 'ar', 'hi', 'zh', 'pt', 'ru', 'de',
+  'ja', 'ko', 'it', 'tr', 'id', 'ur', 'bn', 'vi', 'sw'
+]
 
 export async function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({
@@ -13,31 +19,43 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const post = getBlogPost(slug)
+  const resolvedSearchParams = searchParams ? await searchParams : {}
+  const lang = resolvedSearchParams.lang || 'en'
+  const rawPost = getBlogPost(slug)
 
-  if (!post) {
+  if (!rawPost) {
     return {
       title: 'Article Not Found | Cardzy Blog',
     }
   }
 
+  const post = getLocalizedPost(rawPost, lang)
+
   const baseTitle = post.seoTitle.includes('Cardzy') ? post.seoTitle : `${post.seoTitle} — Cardzy`
-  const title = baseTitle.length > 58 ? baseTitle.slice(0, 55) + '...' : baseTitle
-  const description = post.metaDescription.length > 150 ? post.metaDescription.slice(0, 147) + '...' : post.metaDescription
+  const title = baseTitle.length > 68 ? baseTitle.slice(0, 65) + '...' : baseTitle
+  const description = post.metaDescription.length > 165 ? post.metaDescription.slice(0, 162) + '...' : post.metaDescription
+
+  const languageAlternates: Record<string, string> = {}
+  SUPPORTED_LANGS.forEach((l) => {
+    languageAlternates[l] = l === 'en' 
+      ? `https://cardzy.online/blog/${post.slug}` 
+      : `https://cardzy.online/blog/${post.slug}?lang=${l}`
+  })
 
   return {
     title,
     description,
     keywords: post.tags,
     alternates: {
-      canonical: `https://cardzy.online/blog/${post.slug}`,
+      canonical: `https://cardzy.online/blog/${post.slug}${lang !== 'en' ? `?lang=${lang}` : ''}`,
+      languages: languageAlternates,
     },
     openGraph: {
       title: post.title,
       description: post.metaDescription,
-      url: `https://cardzy.online/blog/${post.slug}`,
+      url: `https://cardzy.online/blog/${post.slug}${lang !== 'en' ? `?lang=${lang}` : ''}`,
       siteName: 'Cardzy Digital Cards',
       images: [{ url: post.featuredImage, width: 1200, height: 630 }],
       type: 'article',
@@ -54,13 +72,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function BlogPostPage({ params }: PageProps) {
+export default async function BlogPostPage({ params, searchParams }: PageProps) {
   const { slug } = await params
-  const post = getBlogPost(slug)
+  const resolvedSearchParams = searchParams ? await searchParams : {}
+  const lang = resolvedSearchParams.lang || 'en'
+  const rawPost = getBlogPost(slug)
 
-  if (!post) {
+  if (!rawPost) {
     notFound()
   }
+
+  const post = getLocalizedPost(rawPost, lang)
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -70,6 +92,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     image: [post.featuredImage],
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
+    inLanguage: lang,
     author: {
       '@type': 'Person',
       name: post.author.name,
@@ -85,7 +108,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://cardzy.online/blog/${post.slug}`,
+      '@id': `https://cardzy.online/blog/${post.slug}${lang !== 'en' ? `?lang=${lang}` : ''}`,
     },
   }
 

@@ -513,14 +513,14 @@ export function CategoryTabs() {
 
                   <div className="pt-2 flex flex-wrap items-center gap-3">
                     <Link
-                      href="/create-wish"
+                      href="/create-wish?occasion=birthday"
                       className="inline-flex h-12 items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:opacity-95 px-7 text-xs sm:text-sm font-black text-white transition-all shadow-lg hover:shadow-pink-500/25 active:scale-98"
                     >
                       <span>{t('createBirthdayCard') || 'Create Birthday Card'}</span>
                       <ArrowRight className="size-4" />
                     </Link>
                     <Link
-                      href="/create-wish"
+                      href="/create-wish?occasion=birthday"
                       className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 px-5 text-xs sm:text-sm font-extrabold text-purple-700 dark:text-purple-300 transition-all"
                     >
                       <span>{t('milestoneBirthdayBtn') || 'Milestone Birthday (18th/21st/50th)'}</span>
@@ -647,7 +647,7 @@ export function CategoryTabs() {
                   return (
                     <Link
                       key={o.id}
-                      href="/create-wish"
+                      href={`/create-wish?occasion=${o.id}`}
                       rel="nofollow"
                       className={cn(
                         "group relative flex flex-col justify-between p-6 rounded-3xl border bg-gradient-to-br transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl overflow-hidden",

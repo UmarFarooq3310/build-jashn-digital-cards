@@ -1,9 +1,17 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Pakistani & Islamic Wedding Wording Guide — Cardzy',
+  title: 'Pakistani Wedding Card Text & Invitation Wording (Urdu & English) | Cardzy',
   description:
-    'Complete guide to Pakistani wedding invitation wording in Urdu and English for Nikkah, Mehndi, Barat, and Walima with Quranic verses and RSVP etiquette.',
+    'Explore 50+ Pakistani wedding card text examples in Urdu and English for Nikkah, Mehndi, Barat, and Walima cards with Bismillah calligraphy and WhatsApp RSVP links.',
+  keywords: [
+    'pakistani wedding card text',
+    'pakistani wedding card wording in urdu',
+    'nikkah card text urdu english',
+    'walima invitation text',
+    'mehndi card text',
+    'pakistani wedding invitations',
+  ],
   alternates: {
     canonical: 'https://cardzy.online/guide/pakistani-wedding-invitations',
   },

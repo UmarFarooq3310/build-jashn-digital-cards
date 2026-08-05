@@ -1,3 +1,5 @@
+import { ALL_MULTILINGUAL_BLOG_DATA, ALL_MULTILINGUAL_BLOG_CONTENTS } from './translations'
+
 export interface BlogPost {
   slug: string
   title: string
@@ -34,12 +36,12 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'complete-guide-to-pakistani-wedding-invitation-wording-urdu-english',
     title: 'The Complete Guide to Pakistani & Islamic Wedding Invitation Wording (Urdu & English Examples)',
-    subtitle: 'Comprehensive wording examples for Nikkah, Mehndi, Barat, and Walima cards with authentic Bismillah calligraphy, Quranic verses, host etiquette, and RSVP notes.',
+    subtitle: 'Comprehensive wording examples for Nikkah, Mehndi, Barat, and Walima cards with authentic Bismillah calligraphy, inspiring quotes by celebrated authors, host etiquette, and RSVP notes.',
     seoTitle: 'Pakistani & Islamic Wedding Invitation Wording Guide (Urdu & English)',
-    metaDescription: 'Explore 50+ Pakistani and Islamic wedding invitation wording examples in Urdu & English for Nikkah, Mehndi, Barat & Walima cards. Includes Quranic verses and RSVP etiquette.',
+    metaDescription: 'Explore 50+ Pakistani and Islamic wedding invitation wording examples in Urdu & English for Nikkah, Mehndi, Barat & Walima cards. Includes inspiring quotes by celebrated authors and RSVP etiquette.',
     category: 'Wedding & Nikkah',
     author: {
-      name: 'Zara Malik',
+      name: 'Umar Farooq',
       role: 'Senior Cultural Event & Wedding Stylist',
       avatar: '/icon.svg',
     },
@@ -50,17 +52,17 @@ export const BLOG_POSTS: BlogPost[] = [
     featuredImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ['Pakistani Wedding Wording', 'Nikkah Invitation Text', 'Urdu Wedding Quotes', 'Islamic Card Design', 'Barat Invitation'],
     content: {
-      intro: `Weddings in Pakistan and South Asian communities worldwide are sacred, grand celebrations that unite two families in love and faith. The wedding invitation card serves as the official harbinger of this joyous union. It sets the tone for the entire celebration, conveying warmth, respect, religious reverence, and cultural pride. Selecting the appropriate invitation wording in both Urdu and English requires a delicate balance of traditional honorifics, spiritual blessings, and clear event details. Whether you are organizing an intimate Nikkah ceremony or a lavish multiday wedding gala with Mehndi, Barat, and Walima functions, this master guide provides curated wording templates, Quranic quotes, host protocols, and practical advice to make your invitation truly royal.`,
+      intro: `Weddings in Pakistan and South Asian communities worldwide are sacred, grand celebrations that unite two families in love and faith. The wedding invitation card serves as the official harbinger of this joyous union. It sets the tone for the entire celebration, conveying warmth, respect, religious reverence, and cultural pride. Selecting the appropriate invitation wording in both Urdu and English requires a delicate balance of traditional honorifics, spiritual blessings, and clear event details. Whether you are organizing an intimate Nikkah ceremony or a lavish multiday wedding gala with Mehndi, Barat, and Walima functions, this master guide provides curated wording templates, inspirational quotes, host protocols, and practical advice to make your invitation truly royal.`,
       sections: [
         {
           id: 'significance-of-islamic-opening',
-          title: '1. The Sacred Opening: Bismillah Calligraphy & Quranic Blessings',
-          body: `Every Islamic wedding invitation begins with the sacred invocation of Almighty Allah. Incorporating elegant Arabic or Urdu Bismillah calligraphy at the crown of your card infuses spiritual sanctity into your invitation. Following the Bismillah, it is traditional to feature a Quranic verse that reflects the divine wisdom of marriage and partnership. Here are the most beloved verses used in South Asian wedding invitations:`,
+          title: '1. The Timeless Opening: Elegant Calligraphy & Celebrated Quotes',
+          body: `Every Islamic wedding invitation begins with the sacred invocation of Almighty Allah. Incorporating elegant Arabic or Urdu Bismillah calligraphy at the crown of your card infuses spiritual sanctity into your invitation. Following the opening, it is popular to feature celebrated quotes from timeless poets and leaders that reflect the beauty of love, marriage, and partnership. Here are iconic quotes frequently featured in elegant wedding invitations:`,
           bulletPoints: [
-            'Quran 78:8 (Surah An-Naba): "堮塈 堧堬塈堿塈"  "And We created you in pairs." This concise and powerful verse highlights divine harmony.',
-            'Quran 30:21 (Surah Ar-Rum): "And among His Signs is this, that He created for you mates from among yourselves, that ye may dwell in tranquility with them, and He has put love and mercy between your hearts."',
-            'Quran 25:74 (Surah Al-Furqan): "Our Lord! Grant unto us spouses and offspring who will be the comfort of our eyes."',
-            'Urdu Poetic Invocation: "塈 琠 媔  琠堭 堻  塈椈 堥椐/堥椐 琠 奡塈堹 琠塈 椈堭堮媯 堹媢堛 塈 椈奡 琠堭堛 睆" (By the grace of Allah, we extend our heartfelt invitation to the wedding of our daughter/son).',
+            'Rumi: "Love is the bridge between you and everything."',
+            'Kahlil Gibran: "Let there be spaces in your togetherness, and let the winds of the heavens dance between you."',
+            'Maya Angelou: "Love recognizes no barriers. It jumps hurdles, leaps fences, penetrates walls to arrive at its destination full of hope."',
+            'Urdu Poetic Invocation: "بفضلِ تعالیٰ، ہم اپنی بیٹی/بیٹے کی شادی مبارک کے اس پرمسرت موقع پر آپ کو شرکت کی دلی دعوت دیتے ہیں۔" (By the grace of Almighty Allah, we extend our heartfelt invitation to the wedding of our daughter/son).',
           ],
           highlight: 'Styling Tip: On Cardzy digital cards, you can display high-resolution gold foil Bismillah calligraphy that shines subtly as guests open the card on their mobile screen.',
         },
@@ -70,7 +72,7 @@ export const BLOG_POSTS: BlogPost[] = [
           body: `The Nikkah is the solemn, sacred Islamic contract where the bride and groom officially accept each other in marriage. The wording for a Nikkah invitation should convey dignity, purity, and spiritual joy. Below are formal bilingual templates:`,
           bulletPoints: [
             'English Template 1: "Together with their families, [Groom䏭 Name] & [Bride䏭 Name] request the honor of your presence and blessings at their Nikkah ceremony. As two lives unite under Allah䏭 grace, your presence will make our joy complete."',
-            'Urdu Template 1: "堿塈堥  堶堛堭 [塈堹 琠塈 塈] 堞椈 琠 塈椈 媢堬堬 堥椐 [堹塈 琠塈 塈] 塈堭 堥椐 [堹 琠塈 塈] 琠 媢堹 琠塈堶 琠 堥塈堭琠 堛堭堥 睆 奡堭琠堛 琠 堹 堹媢堛 堹堛 睆"',
+            'Urdu Template 1: "بفضلِ تعالیٰ [دولہا کا نام] اور [دلہن کا نام] کے رشتہ ازدواج میں منسلک ہونے کی مسرت میں آپ کی شرکت کے خواہش مند ہیں۔"',
             'Bilingual Hybrid Template: "In the name of Allah, the Most Gracious, the Most Merciful. Chaudhry [Family Name] & Malik [Family Name] cordially invite you to share in the divine blessings of the Nikkah Ceremony uniting [Groom Name] & [Bride Name]."',
           ],
         },
@@ -80,7 +82,7 @@ export const BLOG_POSTS: BlogPost[] = [
           body: `Unlike the solemn Nikkah, the Mehndi and Dholki celebrations are packed with music, henna, dholak beats, and lively dancing. The wording for these events should feel playful, celebratory, and festive:`,
           bulletPoints: [
             'Festive English Template: "Henna, Beats & Festive Feasts! Join us for an enchanting night of music, dholki, and henna as we celebrate the Mehndi ceremony of [Bride/Groom Name]. Bring your best dance moves and brightest smiles!"',
-            'Urdu Festive Template: "睅琠 琠 堹睅 塈堭 堹 琠 堭痧堛! 堞椈 堛塈 塈堶堥塈堥 琠 堹 琠 椈堭堭 塈堭 塈堹痧塈堭 奡塈 睆 奡堭琠堛 琠 堥塈塈堹堥 堹媢堛 堹 堿塈堛 "',
+            'Urdu Festive Template: "مہندی کی رات، خوشیوں کی برسات! آپ تمام احباب کو مہندی اور ڈھولکی کی تقریب میں شرکت کی دلی دعوت دی جاتی ہے۔"',
             'Dress Code Highlight: "Dress Theme: Shades of Yellow, Mustard, Emerald Green & Magenta. Let䏭 brighten the night together!"',
           ],
         },
@@ -115,7 +117,7 @@ export const BLOG_POSTS: BlogPost[] = [
           answer: 'Cardzy supports full Urdu and Arabic fonts out of the box. Simply type or paste your Urdu text into the invitation generator form and the live preview will instantly render it in elegant calligraphic script.',
         },
       ],
-      conclusion: `Your wedding invitation is the first cherished memory of your new journey together. By combining divine Quranic blessings, respectful host protocols, vibrant event wording, and modern digital features on Cardzy, you ensure your guests feel honored from the moment they open your invitation.`,
+      conclusion: `Your wedding invitation is the first cherished memory of your new journey together. By combining divine heartfelt quotes and blessings, respectful host protocols, vibrant event wording, and modern digital features on Cardzy, you ensure your guests feel honored from the moment they open your invitation.`,
     },
   },
   {
@@ -126,7 +128,7 @@ export const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Compare digital vs paper wedding invitations. Detailed cost breakdown (PKR/USD savings), eco-friendly environmental impact, live WhatsApp RSVPs, and global delivery benefits.',
     category: 'Event Planning',
     author: {
-      name: 'Ali Raza',
+      name: 'Kainat',
       role: 'Tech & Product Strategist',
       avatar: '/icon.svg',
     },
@@ -211,7 +213,7 @@ export const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Learn how to create custom Eid Mubarak digital wish cards with your name and family photo. Includes animated Islamic moon templates, Urdu/English duas, and WhatsApp sharing.',
     category: 'Eid & Holidays',
     author: {
-      name: 'Hamza Farooq',
+      name: 'Zayn Ali',
       role: 'Digital Content Creator & Cultural Writer',
       avatar: '/icon.svg',
     },
@@ -260,7 +262,7 @@ export const BLOG_POSTS: BlogPost[] = [
           title: '4. Curated Eid Duas & Bilingual Wording Ideas',
           body: `Need inspiration for your card message? Here are popular bilingual options:`,
           bulletPoints: [
-            'Urdu Blessing: "堛堥 塈 塈   塈 堛媢塈棪 塈堭 塈堭 堞椈 琠 堛塈 媢堥塈堹塈堛 塈堭 堹媢塈埵睆 堥 堭塈埵 媢堹 堥塈堭琠!"',
+            'Urdu Blessing: "اللہ تعالیٰ اس نئے جوڑے کو خوشیوں، محبت اور برکتوں سے نوازے اور ان کی زندگی میں سدا بہار خوشیاں لائے۔"',
             'English Heartfelt Blessing: "May the divine blessings of Allah bring hope, faith, peace, and eternal joy to your heart and home. Eid Mubarak from our family to yours!"',
             'Corporate Professional Greeting: "Wishing you and your esteemed family a joyful and prosperous Eid filled with success and good health. Warm regards from [Company Name]."',
           ],
@@ -287,7 +289,7 @@ export const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Discover why executives and business owners in Pakistan use smart digital business cards. One-tap vCard save, QR code sharing, social links, and zero printing cost.',
     category: 'Business & vCards',
     author: {
-      name: 'Ali Raza',
+      name: 'Kainat',
       role: 'Tech & Product Strategist',
       avatar: '/icon.svg',
     },
@@ -364,7 +366,7 @@ export const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Learn how to manage large wedding guest lists with automated WhatsApp RSVPs. Calculate exact catering headcounts, handle dietary notes, and eliminate guest calling stress.',
     category: 'Event Planning',
     author: {
-      name: 'Zara Malik',
+      name: 'Umar Farooq',
       role: 'Senior Cultural Event & Wedding Stylist',
       avatar: '/icon.svg',
     },
@@ -480,7 +482,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
         "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
-        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or Quranic blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS."
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS."
       },
       {
         "id": "bilingual-and-multilingual-card-customization",
@@ -579,7 +581,149 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     "conclusion": "Make your next holiday or milestone celebration unforgettable. Leave generic forwarded graphics behind and design a royal 3D animated wish card with custom photo and name on Cardzy today. Visit https://cardzy.online/create-wish to get started!"
   }
-}
+},
+{
+  slug: 'ultimate-guide-to-global-holiday-ecards-christmas-thanksgiving-newyear',
+    title: 'The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026',
+    subtitle: 'Create 3D animated holiday greeting cards with photos, custom music, and multilingual greetings in 18 languages for Christmas, Thanksgiving, New Year, Diwali, and Hanukkah.',
+    seoTitle: 'Global Holiday E-Cards Guide: Christmas, Thanksgiving & New Year (18 Languages)',
+    metaDescription: 'Create 3D animated holiday e-cards for Christmas, Thanksgiving, New Year 2026, Hanukkah & Diwali. Customize photos, music, and greetings in 18 languages.',
+    category: 'Eid & Holidays',
+    author: {
+      name: 'Hasnain',
+      role: 'Global Creative & Cultural Events Editor',
+      avatar: '/icon.svg',
+    },
+    publishedAt: '2026-08-01',
+    updatedAt: '2026-08-01',
+    readTime: '7 min read',
+    wordCount: 920,
+    featuredImage: 'https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=750&q=65&fm=webp',
+    tags: ['Christmas E-Cards', 'Thanksgiving Wish Cards', 'New Year 2026 Greetings', 'Global Holiday Cards', 'Multilingual Wishes', 'Diwali Digital Greetings'],
+    content: {
+      intro: 'In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.',
+      sections: [
+        {
+          id: 'christmas-and-new-year-ecards',
+          title: '1. Christmas & New Year 2026 Animated E-Cards',
+          body: 'Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.',
+          bulletPoints: [
+            'Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations',
+            'Custom year counter for New Year 2026 celebrations and countdowns',
+            'Photo frame integration for family portraits and holiday photos',
+            'Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories'
+          ]
+        },
+        {
+          id: 'thanksgiving-and-harvest-wishes',
+          title: '2. Warm Thanksgiving & Harvest Gratitude Notes',
+          body: 'Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.',
+          highlight: 'Cardzy e-cards load instantly on any smartphone browser without requiring app downloads.'
+        },
+        {
+          id: 'diwali-lunar-new-year-hanukkah',
+          title: '3. Diwali, Lunar New Year & Global Festival Greetings',
+          body: 'Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.'
+        }
+      ],
+      faq: [
+        {
+          question: 'Can I send holiday e-cards in multiple languages to international friends?',
+          answer: 'Yes! Cardzy supports 18 languages natively, allowing you to select your preferred language script for recipients worldwide.'
+        }
+      ],
+      conclusion: 'Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!'
+    }
+  },
+  {
+    slug: 'how-to-create-animated-birthday-wish-cards-and-party-invitations-online',
+    title: 'How to Create Animated Birthday Wish Cards & Milestone Party Invitations Online',
+    subtitle: 'Design custom animated birthday greetings and milestone party invites with 3D cake candles, photo frames, party music, and WhatsApp RSVP tracking.',
+    seoTitle: 'Animated Birthday Wish Cards & Party Invitations Online | Cardzy',
+    metaDescription: 'Design custom animated birthday wish cards and 18th/21st/50th milestone party invitations with photo frames, birthday music, countdown timers, and WhatsApp RSVP.',
+    category: 'Event Planning',
+    author: {
+      name: 'Ahmed',
+      role: 'Event Host & Digital Experience Designer',
+      avatar: '/icon.svg',
+    },
+    publishedAt: '2026-08-02',
+    updatedAt: '2026-08-02',
+    readTime: '6 min read',
+    wordCount: 880,
+    featuredImage: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=750&q=65&fm=webp',
+    tags: ['Animated Birthday Cards', 'Birthday Party Invitations', 'Milestone Birthday Wording', 'Online Birthday Greetings', 'WhatsApp Birthday Card'],
+    content: {
+      intro: 'Birthdays are personal milestones that deserve more than a standard text message or generic forwarded graphic. Animated 3D birthday wish cards and digital party invitations create magical moments with glowing cake candles, party poppers, background tunes, and real-time WhatsApp RSVP tracking for party hosts.',
+      sections: [
+        {
+          id: 'animated-birthday-card-features',
+          title: '1. Key Features of 3D Animated Birthday Wish Cards',
+          body: 'Cardzy birthday cards feature interactive candle flame blowing, colorful confetti rains, custom music tracks, and photo frames so you can feature the birthday star front and center.',
+          bulletPoints: [
+            'Flashing 3D cake candles and celebratory party popper confetti',
+            'Custom music background tunes (Happy Birthday, upbeat beats)',
+            'Photo upload for birthday boy or birthday girl portrait',
+            'Instant 1-tap WhatsApp sharing link'
+          ]
+        },
+        {
+          id: 'milestone-birthday-invitations',
+          title: '2. Milestone Birthday Parties (18th, 21st, 30th, 50th & 60th)',
+          body: 'Planning a major milestone birthday party? Use Cardzy digital event invitations to add live party countdown timers, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking so you know exactly who is attending.'
+        }
+      ],
+      faq: [
+        {
+          question: 'Is RSVP tracking included for birthday party invitations?',
+          answer: 'Yes! Guests can confirm attendance with one click and party hosts receive instant WhatsApp RSVP notifications.'
+        }
+      ],
+      conclusion: 'Make every birthday celebration extraordinary. Create your animated birthday card or party invitation at https://cardzy.online/create-wish!'
+    }
+  },
+  {
+    slug: 'the-future-of-networking-smart-digital-business-cards-with-vcf-download',
+    title: 'The Future of Networking: Smart Digital Business Cards with 1-Click .VCF Save',
+    subtitle: 'Create executive NFC-ready digital business cards for corporate, tech, medical, legal, and real estate professionals with instant contact download.',
+    seoTitle: 'Smart Digital Business Cards & 1-Click .VCF Save | Cardzy',
+    metaDescription: 'Build executive digital business cards for corporate, tech, medical, legal & real estate. Features 1-click Save Contact (.vcf), WhatsApp link, and Google Maps pin.',
+    category: 'Business & vCards',
+    author: {
+      name: 'Umar Farooq',
+      role: 'Chief Executive & Tech Strategy Analyst',
+      avatar: '/icon.svg',
+    },
+    publishedAt: '2026-08-03',
+    updatedAt: '2026-08-03',
+    readTime: '6 min read',
+    wordCount: 850,
+    featuredImage: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=750&q=65&fm=webp',
+    tags: ['Digital Business Cards', 'Smart vCard Generator', 'NFC Business Card', '1-Click VCF Save', 'Corporate Digital Card'],
+    content: {
+      intro: 'Traditional paper business cards are frequently lost, discarded, or outdated when contact numbers or job titles change. Smart digital business cards (vCards) offer a sleek, eco-friendly alternative for modern executives, founders, doctors, lawyers, realtors, and freelancers.',
+      sections: [
+        {
+          id: 'vcard-1click-save-contact',
+          title: '1. The Power of 1-Click Save Contact (.vcf Download)',
+          body: 'With Cardzy digital business cards, clients and partners can tap "Save Contact (.vcf)" and instantly save your full name, job title, company, phone number, email, website, and social links directly into their phone contacts list.',
+          bulletPoints: [
+            '1-Click Save Contact button (.vcf file generation)',
+            'Direct Call, Email, and WhatsApp Chat buttons',
+            'Embedded Google Maps office location pin',
+            'Executive Gold, Dark Slate, Tech Cyber, and Medical themes'
+          ]
+        }
+      ],
+      faq: [
+        {
+          question: 'Does the contact download work on iPhone and Android?',
+          answer: 'Yes! The .vcf file format is universally supported on iOS, Android, and Windows devices.'
+        }
+      ],
+      conclusion: 'Upgrade your professional networking today. Build your executive digital business card at https://cardzy.online/create-visiting-card!'
+    }
+  }
 ]
 
 export function getBlogPost(slug: string): BlogPost | undefined {
@@ -1195,6 +1339,63 @@ const MULTILINGUAL_BLOG_DATA: Record<string, Record<string, { title: string; sub
       "subtitle": "Mwongozo wa kutengeneza kadi zenye picha na muziki kwa ajili ya siku maalum.",
       "category": "Eid & Holidays"
     }
+  },
+  "ultimate-guide-to-global-holiday-ecards-christmas-thanksgiving-newyear": {
+    "ur": { "title": "عالمی کرسمس، تھینکس گیونگ اور نیا سال 2026 ای کارڈز گائیڈ", "subtitle": "18 زبانوں میں تصویر اور موسیقی کے ساتھ 3D اینیمیٹڈ ہالیڈے کارڈز بنائیں", "category": "Eid & Holidays" },
+    "ar": { "title": "الدليل الشامل لبطاقات المعايدة الرقمية لجميع الأعياد العالمية ورأس السنة 2026", "subtitle": "أنشئ بطاقات عطلات متحركة بـ 18 لغة مع الصور والموسيقى", "category": "Eid & Holidays" },
+    "es": { "title": "Guía Definitiva de Tarjetas Digitales para Fiestas: Navidad, Acción de Gracias y Año Nuevo 2026", "subtitle": "Cree tarjetas animadas en 3D en 18 idiomas con foto y música personalizada.", "category": "Eid & Holidays" },
+    "fr": { "title": "Guide Ultime des Cartes Virtuelles de Fêtes: Noël, Action de Grâce & Nouvel An 2026", "subtitle": "Créez des cartes animées 3D en 18 langues avec musique et photos.", "category": "Eid & Holidays" },
+    "hi": { "title": "ग्लोबल हॉलिडे ई-कार्ड्स गाइड: क्रिसमस, थैंक्सगिविंग और नया साल 2026", "subtitle": "18 भाषाओं में फोटो और म्यूजिक के साथ 3D एनिमेटेड कार्ड्स बनाएं।", "category": "Eid & Holidays" },
+    "zh": { "title": "全球节日与新春电子贺卡指南：圣诞节、感恩节与2026跨年", "subtitle": "包含18种语言个性化音乐与合影的 3D 动态贺卡。", "category": "Eid & Holidays" },
+    "pt": { "title": "Guia Definitivo de Cartões de Festas: Natal, Ação de Graças e Ano Novo 2026", "subtitle": "Crie cartões animados 3D em 18 idiomas com fotos e músicas.", "category": "Eid & Holidays" },
+    "ru": { "title": "Полное руководство по праздничным открыткам: Рождество, День благодарения и Новый год 2026", "subtitle": "Создавайте анимированные 3D открытки на 18 языках с фото и музыкой.", "category": "Eid & Holidays" },
+    "de": { "title": "Der ultimative Leitfaden für globale Feiertagskarten: Weihnachten, Thanksgiving & Neujahr 2026", "subtitle": "Erstellen Sie animierte 3D-Karten in 18 Sprachen mit Foto und Musik.", "category": "Eid & Holidays" },
+    "ja": { "title": "世界の祝日・クリスマス・感謝祭・2026年新年Eカード完全ガイド", "subtitle": "18言語対応の写真・音楽付き3Dアニメーションカードを作成。", "category": "Eid & Holidays" },
+    "ko": { "title": "글로벌 휴일 e-카드 가이드: 크리스마스, 추수감사절 및 2026 새해", "subtitle": "18개 언어 지원, 사진 및 음악이 포함된 3D 애니메이션 카드 제작.", "category": "Eid & Holidays" },
+    "it": { "title": "Guida Definitiva ai Biglietti di Auguri Digitali: Natale, Ringraziamento e Anno Nuovo 2026", "subtitle": "Crea biglietti animati 3D in 18 lingue con foto e musica personalizzata.", "category": "Eid & Holidays" },
+    "tr": { "title": "Dünya Tatilleri E-Kart Rehberi: Noel, Şükran Günü ve 2026 Yeni Yıl", "subtitle": "18 dilde müzikli ve fotoğraflı 3D animasyonlu kartlar oluşturun.", "category": "Eid & Holidays" },
+    "id": { "title": "Panduan Kartu Ucapan Digital Liburan Global: Natal, Thanksgiving & Tahun Baru 2026", "subtitle": "Buat kartu animasi 3D dalam 18 bahasa dengan foto dan musik.", "category": "Eid & Holidays" },
+    "bn": { "title": "গ্লোবাল হলিডে ই-কার্ডস গাইড: ক্রিসমাস, থ্যাঙ্কসগিভিং এবং নতুন বছর ২০২৬", "subtitle": "১৮টি ভাষায় ছবি ও ব্যাকগ্রাউন্ড মিউজিক সহ অ্যানিমেটেড উইশ কার্ড তৈরি করুন।", "category": "Eid & Holidays" },
+    "vi": { "title": "Hướng Dẫn Thiệp Chúc Mừng Lễ Hội Toàn Cầu: Giáng Sinh, Lễ Tạ Ơn & Năm Mới 2026", "subtitle": "Tạo thiệp 3D hoạt hình 18 ngôn ngữ với nhạc và hình ảnh riêng.", "category": "Eid & Holidays" },
+    "sw": { "title": "Mwongozo wa Kadi za Kidijitali za Sikukuu: Krismasi, Shukrani na Mwaka Mpya 2026", "subtitle": "Tengeneza kadi za 3D kwa lugha 18 ukiwa na picha na muziki.", "category": "Eid & Holidays" }
+  },
+  "how-to-create-animated-birthday-wish-cards-and-party-invitations-online": {
+    "ur": { "title": "آن لائن 3D اینیمیٹڈ سالگرہ وش کارڈز اور پارٹیز کی دعوتیں بنانے کا طریقہ", "subtitle": "کیپشنز، تصاویر، اینیمیٹڈ موم بتیاں اور واٹس ایپ RSVP کے ساتھ کارڈز ڈیزائن کریں", "category": "Event Planning" },
+    "ar": { "title": "كيفية إنشاء بطاقات أعياد الميلاد المتحركة ودعوات الحفلات عبر الإنترنت", "subtitle": "تصميم بطاقات أعياد ميلاد بالاسم والصورة والعداد التنازلي وتتبع RSVP عبر واتساب", "category": "Event Planning" },
+    "es": { "title": "Cómo Crear Tarjetas de Cumpleaños Animadas e Invitaciones de Fiesta Online", "subtitle": "Diseñe invitaciones con velas 3D, música, fotos y seguimiento RSVP por WhatsApp.", "category": "Event Planning" },
+    "fr": { "title": "Créer des Cartes d’Anniversaire Animées et des Invitations de Fête en Ligne", "subtitle": "Concevez des invitations avec bougies 3D, musique et confirmation WhatsApp.", "category": "Event Planning" },
+    "hi": { "title": "ऑनलाइन एनिमेटेड जन्मदिन विश कार्ड्स और पार्टी निमंत्रण कैसे बनाएं", "subtitle": "3D मोमबत्तियां, फोटो, पार्टी म्यूजिक और व्हाट्सएप RSVP के साथ निमंत्रण बनाएं।", "category": "Event Planning" },
+    "zh": { "title": "在线制作 3D 动态生日贺卡与派对邀请函完整指南", "subtitle": "包含点燃蜡烛特效、合影相框、派对背景音乐与 WhatsApp RSVP 出席确认。", "category": "Event Planning" },
+    "pt": { "title": "Como Criar Cartões de Aniversário Animados e Convites de Festa Online", "subtitle": "Crie convites com velas 3D, música, fotos e confirmação de presença no WhatsApp.", "category": "Event Planning" },
+    "ru": { "title": "Как создать анимированные открытки на день рождения и приглашения на вечеринку", "subtitle": "Дизайн приглашений с 3D свечами, музыкой, фото и RSVP через WhatsApp.", "category": "Event Planning" },
+    "de": { "title": "Animierte Geburtstagskarten & Party-Einladungen online erstellen", "subtitle": "Gestalten Sie Einladungen mit 3D-Kerzen, Musik, Fotos und WhatsApp-RSVP.", "category": "Event Planning" },
+    "ja": { "title": "オンラインでアニメーション誕生日カード＆パーティー招待状を作成する方法", "subtitle": "3Dキャンドル、音楽、写真、WhatsApp出席確認付きで招待状を作成。", "category": "Event Planning" },
+    "ko": { "title": "온라인 애니메이션 생일 축하 카드 및 파티 초대장 만들기", "subtitle": "3D 촛불, 음악, 사진 및 WhatsApp RSVP 참석 여부 확인 기능 지원.", "category": "Event Planning" },
+    "it": { "title": "Come Creare Biglietti di Compleanno Animati e Inviti per Feste Online", "subtitle": "Crea inviti con candeline 3D, musica, foto e tracciamento RSVP WhatsApp.", "category": "Event Planning" },
+    "tr": { "title": "Online Animasyonlu Doğum Günü Kartları ve Parti Davetiyeleri Oluşturma", "subtitle": "3D mumlar, müzik, fotoğraflar ve WhatsApp LCV takibi ile davetiyeler tasarlayın.", "category": "Event Planning" },
+    "id": { "title": "Cara Membuat Kartu Ucapan Ulang Tahun Animasi & Undangan Pesta Online", "subtitle": "Buat undangan dengan lilin 3D, musik, foto, dan konfirmasi RSVP WhatsApp.", "category": "Event Planning" },
+    "bn": { "title": "অনলাইনে অ্যানিমেটেড জন্মদিন উইশ কার্ড এবং পার্টি আমন্ত্রণপত্র তৈরির নিয়ম", "subtitle": "৩ডি মোমবাতি, ছবি, মিউজিক এবং হোয়াটসঅ্যাপ RSVP ট্র্যাকিং সহ নিমন্ত্রণ তৈরি করুন।", "category": "Event Planning" },
+    "vi": { "title": "Cách Tạo Thiệp Sinh Nhật Hoạt Hình & Thiệp Mời Tiệc Trực Tuyến", "subtitle": "Thiết kế thiệp mời với nến 3D, nhạc tiệc, hình ảnh và xác nhận RSVP WhatsApp.", "category": "Event Planning" },
+    "sw": { "title": "Jinsi ya Kuunda Kadi za Siku ya Kuzaliwa na Mialiko ya Sherehe Mtandaoni", "subtitle": "Tengeneza mialiko yenye mishumaa ya 3D, muziki, picha na majibu ya RSVP ya WhatsApp.", "category": "Event Planning" }
+  },
+  "the-future-of-networking-smart-digital-business-cards-with-vcf-download": {
+    "ur": { "title": "سمارٹ ڈیجیٹل بزنس کارڈز اور 1-کلک .VCF کانٹیکٹ سیو گائیڈ", "subtitle": "اپنا رابطہ، واٹس ایپ اور کمپنی میپ ایک ہی کلک میں شیئر کریں", "category": "Business & vCards" },
+    "ar": { "title": "مستقبل التواصل: بطاقات العمل الرقمية الذكية مع حفظ جهة الاتصال بضغطة زر (.VCF)", "subtitle": "شارك تفاصيل الاتصال ورابط واتساب وموقع مكتبك بضغطة زر واحدة", "category": "Business & vCards" },
+    "es": { "title": "El Futuro del Networking: Tarjetas de Visita Digitales con Descarga .VCF en 1 Clic", "subtitle": "Comparta contactos, WhatsApp y ubicación con un solo toque.", "category": "Business & vCards" },
+    "fr": { "title": "Le Futur du Networking: Cartes de Visite Numériques avec Téléchargement .VCF", "subtitle": "Partagez vos coordonnées, WhatsApp et carte Google Maps en un clic.", "category": "Business & vCards" },
+    "hi": { "title": "नेटवर्किंग का भविष्य: 1-क्लिक .VCF कॉन्टैक्ट सेव के साथ स्मार्ट डिजिटल बिजनेस कार्ड", "subtitle": "एक ही क्लिक में अपना संपर्क नंबर, व्हाट्सएप और ऑफिस लोकेशन शेयर करें।", "category": "Business & vCards" },
+    "zh": { "title": "商务社交的未来：带有 1 键保存通讯录 (.VCF) 的智能数字名片", "subtitle": "一键即可在客户手机中保存完整联系方式、WhatsApp 聊天与地图定位。", "category": "Business & vCards" },
+    "pt": { "title": "O Futuro do Networking: Cartões de Visita Digitais com Download .VCF em 1 Clique", "subtitle": "Partilhe contactos, WhatsApp e localização com um único toque.", "category": "Business & vCards" },
+    "ru": { "title": "Будущее нетворкинга: умные цифровые визитки с сохранением контакта в 1 клик (.VCF)", "subtitle": "Делитесь контактами, WhatsApp и локацией офиса в одно касание.", "category": "Business & vCards" },
+    "de": { "title": "Die Zukunft des Networkings: Smarte digitale Visitenkarten mit 1-Klick .VCF Download", "subtitle": "Teilen Sie Kontakte, WhatsApp und Standort mit nur einem Tippen.", "category": "Business & vCards" },
+    "ja": { "title": "ネットワーキングの未来：ワンクリック連絡先保存（.VCF）対応スマート名刺", "subtitle": "ワンタップで相手のスマホに氏名、電話番号、WhatsApp、地図を登録。", "category": "Business & vCards" },
+    "ko": { "title": "네트워킹의 미래: 1클릭 .VCF 연락처 저장 지원 스마트 디지털 명함", "subtitle": "한 번의 터치로 상대방 휴대폰에 연락처, WhatsApp 및 지도 위치 저장.", "category": "Business & vCards" },
+    "it": { "title": "Il Futuro del Networking: Biglietti da Visita Digitali con Salvataggio .VCF in 1 Click", "subtitle": "Condividi contatti, WhatsApp e posizione ufficio con un solo tocco.", "category": "Business & vCards" },
+    "tr": { "title": "Ağ Kurmanın Geleceği: 1-Tıkla Kişi Kaydetme (.VCF) Özellikli Akıllı Dijital Kartvizitler", "subtitle": "Kişi bilgilerinizi, WhatsApp bağlantınızı ve konumunuzu tek dokunuşla paylaşın.", "category": "Business & vCards" },
+    "id": { "title": "Masa Depan Networking: Kartu Nama Digital Pintar dengan Unduh Kontak .VCF 1-Klik", "subtitle": "Bagikan kontak, WhatsApp, dan lokasi kantor dengan satu sentuhan.", "category": "Business & vCards" },
+    "bn": { "title": "নেটওয়ার্কিংয়ের ভবিষ্যৎ: ১-ক্লিক .VCF কন্টাক্ট সেভ সহ স্মার্ট ডিজিটাল বিজনেস কার্ড", "subtitle": "এক ক্লিকেই আপনার কন্টাক্ট নম্বর, হোয়াটসঅ্যাপ এবং অফিস লোকেশন শেয়ার করুন।", "category": "Business & vCards" },
+    "vi": { "title": "Tương Lai Của Mạng Lưới Giao Thương: Danh Thiếp Kỹ Thuật Số Với Lưu Danh Bạ .VCF 1-Chạm", "subtitle": "Chia sẻ danh bạ, WhatsApp và vị trí bản đồ chỉ trong một thao tác.", "category": "Business & vCards" },
+    "sw": { "title": "Mustakabali wa Mtandao: Kadi za Biashara za Kidijitali zenye Kuhifadhi Anwani kwa Bofya Moja (.VCF)", "subtitle": "Shiriki anwani, WhatsApp na eneo la ofisi kwa mguso mmoja tu.", "category": "Business & vCards" }
   }
 }
 
@@ -1227,12 +1428,24 @@ const MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, {
         {
           "id": "step-by-step-card-creation-guide",
           "title": "3. کارڈزی پر اپنا خصوصی عید کارڈ بنانے کا آسان طریقہ",
-          "body": "اپنا نام درج کریں، اپنی خوبصورت تصویر اپ لوڈ کریں، پسندیدہ دعا منتخب کریں اور واٹس ایپ پر فوراً شیئر کریں۔"
+          "body": "کارڈزی پر اپنا اینیمیٹڈ عید وش کارڈ بنانا انتہائی آسان ہے:",
+          "bulletPoints": [
+            "مرحلہ 1 - وش جنریٹر کھولیں (/create-wish): عید کی فہرست میں سے 'Eid Mubarak' منتخب کریں۔",
+            "مرحلہ 2 - نام اور پیغام درج کریں: اپنا نام (مثلاً 'کامران اور فیملی')، وصول کنندہ کا نام لکھیں اور خوبصورت دعا منتخب کریں۔",
+            "مرحلہ 3 - خاندانی تصویر اپ لوڈ کریں: تصویر منتخب کریں؛ کارڈزی اسے سنہری فریم میں سیٹ کر دے گا۔",
+            "مرحلہ 4 - اینیمیٹڈ تھیم منتخب کریں: لائیو اینیمیشن کا جائزہ لیں اور واٹس ایپ پر فوراً شیئر کریں۔"
+          ]
         },
         {
           "id": "curated-eid-duas-bilingual-wording",
           "title": "4. منتخب اردو اور عربی عید دعائیں",
-          "body": "تقبل الله منا ومنكم صالح الأعمال — اللہ تعالیٰ ہماری اور آپ کی عبادتوں اور دعاؤں کو قبول فرمائے۔"
+          "body": "عید کے موقع پر اپنے پیاروں کو بھیجنے کے لیے بہترین دعائیں اور مبارکباد کے الفاظ:",
+          "bulletPoints": [
+            "عربی دعا: 'تقبل الله منا ومنكم صالح الأعمال' — اللہ تعالیٰ ہماری اور آپ کی عبادتوں اور دعاؤں کو قبول فرمائے۔",
+            "اردو پرخلوص دعا: 'اللہ کرے یہ عید آپ کے گھرانے کے لیے خوشیوں، صحت، ترقی اور برکتوں کا پیغام لائے۔ عید مبارک!'",
+            "انگریزی دعا: 'May the divine blessings of Allah bring hope, faith, peace, and eternal joy to your heart and home. Eid Mubarak from our family to yours!'",
+            "کارپوریٹ مبارکباد: 'Wishing you and your esteemed family a joyful and prosperous Eid filled with success and good health. Warm regards from [Company Name].'"
+          ]
         }
       ],
       "faq": [
@@ -1450,9 +1663,9 @@ const MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, {
       "intro": "پاکستان اور دنیا بھر میں شادی اور نکاح ایک مقدس اور یادگار بندھن ہے۔ ایک خوبصورت شادی کارڈ آپ کی تقریب کی شان و شوکت اور جذبات کی ترجمانی کرتا ہے۔ اس گائیڈ میں ہم اردو اور انگریزی تحریروں کے بہترین نمونے پیش کر رہے ہیں۔",
       "sections": [
         {
-          "id": "bismillah-calligraphy-and-quranic-blessings",
-          "title": "1. بسم اللہ الرحمن الرحیم اور قرآنی آیات کا بابرکت آغاز",
-          "body": "اسلامی روایات کے مطابق شادی کے کارڈ کا آغاز اللہ تعالیٰ کے بابرکت نام اور قرآنی آیات سے کیا جاتا ہے، جو رشتے میں برکت اور محبت کا ذریعہ بنتی ہیں۔"
+          "id": "bismillah-calligraphy-and-celebrated-quotes",
+          "title": "1. بسم اللہ الرحمن الرحیم اور رومی اور خلیل جبران کے خوبصورت اقوال کا بابرکت آغاز",
+          "body": "اسلامی روایات کے مطابق شادی کے کارڈ کا آغاز اللہ تعالیٰ کے بابرکت نام اور رومی اور خلیل جبران کے خوبصورت اقوال سے کیا جاتا ہے، جو رشتے میں برکت اور محبت کا ذریعہ بنتی ہیں۔"
         },
         {
           "id": "nikkah-ceremony-wording-examples",
@@ -1476,7 +1689,7 @@ const MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, {
       "intro": "تعتبر مناسبات الزفاف والنكاح في الثقافة الإسلامية والباكستانية حدثاً مباركاً يجمع العائلات في جو من الفرح والتقوى. يوفر لك هذا الدليل نماذج كتابة الدعوات باللغتين العربية والإنجليزي.",
       "sections": [
         {
-          "id": "bismillah-calligraphy-and-quranic-blessings",
+          "id": "bismillah-calligraphy-and-celebrated-quotes",
           "title": "1. الافتتاحية المباركة: البسملة والآيات القرآنية",
           "body": "تبدأ الدعوة بالبسملة الشريفة والآيات الكريمة التي تدعو للود والرحمة بين الزوجين."
         }
@@ -1497,7 +1710,7 @@ const MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, {
       "intro": "Las bodas en comunidades del sur de Asia e islámicas son celebraciones sagradas. Esta guía ofrece plantillas bilingües y frases tradicionales para invitaciones.",
       "sections": [
         {
-          "id": "bismillah-calligraphy-and-quranic-blessings",
+          "id": "bismillah-calligraphy-and-celebrated-quotes",
           "title": "1. Bendiciones y Caligrafía Tradicional",
           "body": "Comenzar la invitación con bendiciones sagradas aporta un toque espiritual y elegante."
         }
@@ -1727,15 +1940,59 @@ const MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, {
   },
   "digital-vs-paper-wedding-invitations-cost-eco-comparison": {
     "ur": {
-      "intro": "شادی کی منصوبہ بندی میں بجٹ کی بچت اور بہترین انتظامات کا موازنہ۔ روایتی کاغذی کارڈز کے مقابلے میں جدید ڈیجیٹل اینیمیٹڈ کارڈز 90% تک بچت فراہم کرتے ہیں۔",
+      "intro": "شادی کی منصوبہ بندی زندگی کے پرمسرت ترین تجربات میں سے ایک ہے، لیکن اس میں مالی منصوبہ بندی اور سینکڑوں لاجسٹک فیصلے بھی شامل ہوتے ہیں۔ ان میں سے اپنے مہمانوں کو مدعو کرنے کا طریقہ منتخب کرنا ایک اہم مرحلہ ہے۔ دہائیوں سے، بھاری گتے کے خانوں، سنہری خطاطی اور ریشمی ربنوں والے روایتی کاغذی پرنٹ شدہ کارڈز کا رواج رہا ہے۔ تاہم، 2026 میں اسمارٹ فونز کے تیز رفتار استعمال اور ماحولیاتی شعور کی وجہ سے **ڈیجیٹل شادی کارڈز** کی طرف تیزی سے رجحان بڑھ رہا ہے۔ اس تفصیلی موازنے میں، ہم کاغذی اور ڈیجیٹل کارڈز کی قیمت، ماحولیاتی اثرات اور مہمانوں کے تجربے کا مکمل جائزہ پیش کرتے ہیں۔",
       "sections": [
         {
-          "id": "financial-analysis-cost-of-paper-vs-digital",
-          "title": "1. مالیاتی موازنہ: کاغذی بمقابلہ ڈیجیٹل کارڈز کے اخراجات",
-          "body": "کاغذی کارڈز کی پرنٹنگ، ڈبے اور کوریئر کے اخراجات کے مقابلے میں ڈیجیٹل کارڈز کم قیمت اور زیادہ پرکشش ہیں۔"
+          "id": "financial-cost-breakdown",
+          "title": "1. مالیاتی موازنہ: کاغذی بمقابلہ ڈیجیٹل کارڈز کے حقیقی اخراجات",
+          "body": "کاغذی دعوت ناموں کے بجٹ کی منصوبہ بندی کرتے وقت، خاندان اکثر ابتدائی پرنٹنگ کی قیمت کے علاوہ چھپے ہوئے اخراجات کو نظر انداز کر دیتے ہیں۔ 300 خاندانوں کو مدعو کرنے کی لاگت کا حقیقی موازنہ درج ذیل ہے:",
+          "bulletPoints": [
+            "کاغذی کارڈز کے اخراجات: سنہری فولڈ ایمبوسنگ اور ایکریلک باکسز والے پرنٹ شدہ کارڈ سیٹ 350 روپے سے 1,200 روپے فی کارڈ تک ہوتے ہیں۔ 300 کارڈز کی صرف پرنٹنگ 1,05,000 روپے سے 3,60,000 روپے بنتی ہے۔",
+            "کوریئر اور ڈاک کی ترسیل کے اخراجات: مختلف شہروں (لاہور، کراچی، اسلام آباد) اور بین الاقوامی کوریئر (برطانیہ، امریکہ، یو اے ای) میں کاغذی کارڈز بھیجنے پر مزید 35,000 روپے سے 80,000 روپے خرچ ہوتے ہیں۔",
+            "آخری لمحے کی تبدیلیوں پر دوبارہ پرنٹنگ کا خرچہ: اگر ہال کی دستیابی یا موسم کی وجہ سے جگہ، وقت یا تاریخ تبدیل ہوتی ہے، تو کاغذی کارڈز دوبارہ پرنٹ کرنے پر 100% اضافی لاگت آتی ہے۔",
+            "ڈیجیٹل کارڈز کی بچت: کارڈزی پر 4K متحرک ڈیجیٹل دعوتی ویب سائٹ بنانا پرنٹنگ آرڈر کا ایک چھوٹا سا حصہ ہے—جس سے خاندانوں کے 90% تک بجٹ کی بچت ہوتی ہے۔"
+          ],
+          "highlight": "مالیاتی فیصلہ: ڈیجیٹل کارڈز پر منتقل ہونے سے 1,00,000 روپے سے 3,00,000 روپے تک کی بچت ہوتی ہے جسے آپ کیٹرنگ، فوٹوگرافی یا ہنی مون کے لیے استعمال کر سکتے ہیں!"
+        },
+        {
+          "id": "environmental-sustainability",
+          "title": "2. ماحولیاتی تحفظ اور زیرو ویسٹ",
+          "body": "روایتی کاغذی شادی کے کارڈز ماحولیاتی آلودگی میں نمایاں اضافہ کرتے ہیں۔ کاغذی کارڈز کے ماحولیاتی اثرات ملاحظہ کریں:",
+          "bulletPoints": [
+            "درختوں کی کٹائی اور پانی کا ضیاع: 300 لگژری کاغذی ڈبے بنانے کے لیے درجنوں درخت کاٹے جاتے ہیں اور ہزاروں لیٹر صنعتی پانی استعمال ہوتا ہے۔",
+            "کیمیائی روشنائی اور نا قابل ری سائیکل پلاسٹک: میٹالک لیمینیشن اور پرنٹنگ مواد عام ریسائیکل مراکز میں ری سائیکل نہیں ہو سکتا اور کوڑے کے ڈھیر میں بدل جاتا ہے۔",
+            "مختصر ترین استعمال: تحقیق سے ثابت ہے کہ 85% سے زائد کاغذی شادی کارڈز تقریب ختم ہونے کے 48 گھنٹوں کے اندر کوڑے دان میں پھینک دیے جاتے ہیں۔",
+            "زیرو کاربن ڈیجیٹل کارڈز: ماحولیاتی کلاؤڈ سرورز پر ہوسٹ کیے گئے ڈیجیٹل کارڈز زیرو کاغذ، زیرو فضلہ اور زیرو ایندھن استعمال کرتے ہیں۔"
+          ]
+        },
+        {
+          "id": "convenience-and-interactivity",
+          "title": "3. انٹرایکٹو سہولت اور مہمانوں کا شاندار تجربہ",
+          "body": "پیسوں اور ماحول کی بچت کے ساتھ ساتھ، ڈیجیٹل کارڈز ایسے جدید انٹرایکٹو فیچرز پیش کرتے ہیں جو کاغذی کارڈز کبھی فراہم نہیں کر سکتے:",
+          "bulletPoints": [
+            "فوری عالمی ترسیل: واٹس ایپ، آئی میسج یا ای میل کے ذریعے 1 منٹ میں 500 مہمانوں کو دعوت نامہ بھیجیں۔",
+            "گوگل میپس کی ایک کلک نیویگیشن: مہمان اپنے فون پر ہال کے ایڈریس پر کلک کر کے لائیو جی پی ایس نیویگیشن حاصل کر سکتے ہیں۔",
+            "واٹس ایپ پر خودکار RSVP حاضری: مہمان ایک کلک سے اپنی آمد کی تصدیق کرتے ہیں جس سے آپ کیٹرنگ کا درست اندازہ لگا سکتے ہیں۔",
+            "لائیو کاؤنٹ ڈاؤن ٹائمر: متحرک کاؤنٹ ڈاؤن ٹائمرز شادی کے دن تک خوشی اور جوش کو برقرار رکھتے ہیں۔"
+          ]
+        },
+        {
+          "id": "comparison-matrix-table",
+          "title": "4. خلاصہ موازنہ ٹیبل: کاغذی بمقابلہ ڈیجیٹل کارڈز",
+          "body": "درج ذیل ٹیبل میں بنیادی زمروں کے لحاظ سے کاغذی اور ڈیجیٹل کارڈز کی کارکردگی کا موازنہ دکھایا گیا ہے:",
+          "bulletPoints": [
+            "تکمیل کا وقت: کاغذی = 2 سے 4 ہفتے | ڈیجیٹل = فوری (60 سیکنڈز)",
+            "شائع ہونے کے بعد تبدیلی: کاغذی = ناممکن (دوبارہ پرنٹنگ کی ضرورت) | ڈیجیٹل = 1 کلک میں کسی بھی وقت ایڈٹ کریں",
+            "RSVP حاضری ٹریکنگ: کاغذی = خود فون کر کے پوچھنا | ڈیجیٹل = واٹس ایپ خودکار سنک",
+            "عالمی رسائی: کاغذی = مہنگا کوریئر اور تاخیر | ڈیجیٹل = 1 کلک میں فوری شیئرنگ"
+          ]
+        },
+        {
+          "id": "faqs",
+          "title": "5. بار بار پوچھے گئے سوالات (FAQ)",
+          "body": "روایتی کاغذی کارڈز سے ڈیجیٹل کارڈز کی طرف منتقل ہوتے وقت خاندانوں کے عام سوالات درج ذیل ہیں۔"
         }
       ],
-      "conclusion": "کارڈزی کے ساتھ سمارٹ، ماحول دوست اور خوبصورت ڈیجیٹل کارڈز بنائیں اور اپنی بچت کریں۔",
       "faq": [
         {
           "question": "کیا فیملی کے بزرگ ڈیجیٹل شادی کارڈ وصول کرنے میں آسانی محسوس کریں گے؟",
@@ -1745,7 +2002,8 @@ const MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, {
           "question": "کیا میں کچھ بزرگوں کے لیے کاغذی کارڈز اور باقیوں کے لیے ڈیجیٹل لنک استعمال کر سکتا ہوں؟",
           "answer": "جی بالکل! بہت سے جوڑے قریبی بزرگوں کے لیے 20-30 کاغذی کارڈ پرنٹ کرتے ہیں اور باقی 300+ مہمانوں کو کارڈزی ڈیجیٹل لنک بھیجتے ہیں۔"
         }
-      ]
+      ],
+      "conclusion": "ڈیجیٹل شادی کا انتخاب صرف بجٹ کی سمارٹ بچت نہیں بلکہ ایک جدید، ماحول دوست اور انٹرایکٹو قدم ہے جو آپ کی تقریب کی شان بڑھاتا ہے۔ آج ہی کارڈزی پر اپنا 4K ڈیجیٹل کارڈ بنائیں!"
     },
     "es": {
       "intro": "Comparativa detallada entre invitaciones de boda impresas en papel y tarjetas digitales animadas. Ahorre hasta un 90% en costes.",
@@ -2055,15 +2313,50 @@ const MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, {
   },
   "how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly": {
     "ur": {
-      "intro": "شادی میں مہمانوں کی فہرست اور واٹس ایپ آر ایس وی پی کو آسانی سے کنٹرول کرنے کی گائیڈ۔ براہِ راست واٹس ایپ میسج کے ذریعے حاضری کی تصدیق سے کھانے کا ضیاع ختم ہوتا ہے۔",
+      "intro": "شادی کی منصوبہ بندی خوشگوار ہوتی ہے، لیکن مہمانوں کی فہرست سنبھالنا مشکل اور تناؤ کا باعث بن سکتا ہے۔ سینکڑوں مہمانوں کو کاغذی دعوت نامے بھیج کر خود فون کرنا ہفتوں کا وقت لیتا ہے اور کھانے کی تعداد کا غلط اندازہ ہوتا ہے۔ 2026 میں سمارٹ ہوسٹس واٹس ایپ کے ذریعے خودکار RSVP ٹریکنگ استعمال کر رہے ہیں۔ کارڈزی آپ کو فوری حاضری کی معلومات اکٹھی کرنے، کیٹرنگ میں پیسے بچانے اور تقریب کو بہترین انداز میں چلانے میں مدد فراہم کرتا ہے۔",
       "sections": [
         {
-          "id": "the-rsvp-problem-in-weddings",
-          "title": "1. شادیوں میں آر ایس وی پی کا مسئلہ اور حل",
-          "body": "براہِ راست واٹس ایپ میسج کے ذریعے حاضری کی تصدیق کھانے کے ضیاع اور بدانتظامی کو ختم کرتی ہے۔"
+          "id": "the-rsvp-problem-in-south-asian-weddings",
+          "title": "1. بڑی تقریبات میں RSVP اور مہمانوں کی ٹریکنگ کا چیلنج",
+          "body": "ہماری ثقافت میں مہمان نوازی کو مقدس سمجھا جاتا ہے۔ تاہم، روایتی طریقوں سے ہوسٹس کے لیے تین بڑے مسائل پیدا ہوتے ہیں:",
+          "bulletPoints": [
+            "کیٹرنگ کا ضیاع اور غیر متوقع اخراجات: ہال والے فی کس (عام طور پر 2,500 سے 5,500 روپے فی ڈش) وصول کرتے ہیں۔ صحیح تعداد معلوم نہ ہونے سے یا تو 100 اضافی ڈشز کے پیسے ضائع ہوتے ہیں یا مہمان زیادہ آنے پر کھانا کم پڑ جاتا ہے۔",
+            "وقت کا ضیاع اور فون کالز کی پریشانی: 300 خاندانوں کو انفرادی طور پر فون کر کے آمد کی تصدیق کرنا درجنوں گھنٹوں کی تھکا دینے والی کالز مانگتا ہے۔",
+            "ہال کے راستے کی پریشانی: نکاح سے 10 منٹ پہلے مہمانوں کا ہال کے راستے کے لیے فون کرنا ہوسٹ کے لیے پریشانی کا باعث بنتا ہے۔"
+          ]
+        },
+        {
+          "id": "how-whatsapp-rsvps-solve-the-chaos",
+          "title": "2. کارڈزی پر خودکار واٹس ایپ RSVP کیسے کام کرتا ہے؟",
+          "body": "جب آپ کارڈزی ڈیجیٹل شادی کارڈ واٹس ایپ پر شیئر کرتے ہیں، تو مہمانوں کو کارڈ پر ایک واضح اور خوبصورت 'Confirm Attendance / RSVP' کا بٹن نظر آتا ہے۔ یہ درج ذیل طریقے سے کام کرتا ہے:",
+          "bulletPoints": [
+            "1-ٹیپ میں مہمان کی تصدیق: مہمان 'RSVP' پر کلک کرتا ہے، 1، 2 یا 5 خاندانی افراد کی آمد منتخب کرتا ہے اور 5 سیکنڈز میں جمع کرواتا ہے۔",
+            "براہ راست واٹس ایپ نوٹیفکیشن: تصدیق پر خودکار پیغام ہوسٹ کے واٹس ایپ پر پہنچ جاتا ہے (مثلاً 'السلام علیکم! کامران خان فیملی بارات میں 4 افراد کی شرکت کی تصدیق کرتے ہیں')۔",
+            "لائیو حاضری ڈیش بورڈ: ہوسٹ نکاح، مہندی، بارات اور ولیمہ کی تقاریب کی الگ الگ لائیو تعداد دیکھ سکتے ہیں۔"
+          ],
+          "highlight": "پرو ٹپ: کیٹرنگ فائنل کرنے سے 3 سے 4 ہفتے پہلے اپنے کارڈزی لنکس بھیجیں تاکہ مہمانوں کو RSVP جمع کروانے کا پورا وقت ملے!"
+        },
+        {
+          "id": "step-by-step-guest-management-plan",
+          "title": "3. مہمانوں کی فہرست سنبھالنے کا مرحلہ وار گائیڈ کاپی",
+          "body": "مہمانوں کی فہرست کو آسانی سے منظم کرنے کے لیے اس طریقہ کار پر عمل کریں:",
+          "bulletPoints": [
+            "مرحلہ 1 - مہمانوں کی فہرست کی تقسیم (6 ہفتے پہلے): 3 زمرے بنائیں: زمرہ A (قریبی فیملی)، زمرہ B (قریبی دوست و رشتہ دار)، زمرہ C (ساتھی اور عام واقف کار)۔",
+            "مرحلہ 2 - ڈیجیٹل کارڈ لنکس بھیجیں (4 ہفتے پہلے): زمرہ A اور B کے مہمانوں کو واٹس ایپ پر لنک بھیجیں اور RSVP کی آخری تاریخ مقرر کریں۔",
+            "مرحلہ 3 - تعداد کا جائزہ لیں (2 ہفتے پہلے): اگر ہال میں مزید گنجائش دستیاب ہو تو زمرہ C کے مہمانوں کو دعوت نامے بھیجیں۔",
+            "مرحلہ 4 - کیٹرنگ کا آرڈر فائنل کریں (1 ہفتہ پہلے): تصدیق شدہ درست تعداد کیٹرنگ مینجمنٹ کے حوالے کریں۔"
+          ]
+        },
+        {
+          "id": "managing-dietary-notes-and-venue-pins",
+          "title": "4. کھانے کی ترجیحات اور گوگل میپس پن کی تقسیم",
+          "body": "مہمانوں کی تعداد کے ساتھ ساتھ جدید مینجمنٹ میں راستے کی سمت اور کھانے کی ترجیحات بھی شامل ہیں:",
+          "bulletPoints": [
+            "کھانے کی خاص ترجیحات: ڈیجیٹل RSVP کے ذریعے مہمان ویجیٹیرین یا شوگر فری ڈشز کی اطلاع دے سکتے ہیں۔",
+            "گوگل میپس کی لوکیشن بٹن: کارڈ پر لائیو GPS بٹن پر کلک کر کے مہمان سیدھے ہال کے گیٹ تک نیویگیشن حاصل کر سکتے ہیں۔"
+          ]
         }
       ],
-      "conclusion": "کارڈزی کے لائیو واٹس ایپ آر ایس وی پی کے ساتھ بے فکری سے اپنی تقریب کا انعقاد کریں۔",
       "faq": [
         {
           "question": "اگر مہمان کے ارادے تبدیل ہو جائیں تو کیا وہ اپنے RSVP کو اپ ڈیٹ کر سکتے ہیں؟",
@@ -2073,7 +2366,8 @@ const MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, {
           "question": "کیا نکاح، مہندی اور بارات کے لیے الگ الگ RSVP رکھنا آسان ہے؟",
           "answer": "جی ہاں! کارڈزی آپ کو الگ الگ ایونٹ RSVPs بنانے کی اجازت دیتا ہے تاکہ مہمان مخصوص تقاریب کے لیے اپنی شرکت کی تصدیق کر سکیں۔"
         }
-      ]
+      ],
+      "conclusion": "شادی کی پریشانیوں کو ختم کریں اور اپنے خاص دن کو مکمل سکون کے ساتھ منائیں۔ کارڈزی واٹس ایپ RSVP ٹریکنگ کے ساتھ اپنے مہمانوں کو بے فکری سے منظم کریں!"
     },
     "es": {
       "intro": "Gestione la lista de invitados a su boda sin estrés utilizando el sistema de confirmaciones RSVP por WhatsApp en tiempo real.",
@@ -2490,29 +2784,270 @@ const MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, {
       ],
       "conclusion": "立即在 Cardzy 制作您的高清 3D 专属贺卡。"
     }
+  },
+  "ultimate-guide-to-global-holiday-ecards-christmas-thanksgiving-newyear": {
+    "ur": {
+      "intro": "آج کی بین الاقوامی دنیا میں جہاں رشتہ دار، دوست اور ساتھی مختلف ممالک میں مقیم ہیں، روایتی کاغذی کارڈز بھیجنا سست اور مہنگا عمل ہے۔ ڈیجیٹل ہالیڈے ای کارڈز اب محض ساکت تصاویر تک محدود نہیں رہے۔ جدید اینیمیٹڈ ای کارڈز 3D بصری اثرات، تہوار کی موسیقی، ذاتی تصاویر اور 18 بین الاقوامی زبانوں میں فوری شیئرنگ کی سہولت فراہم کرتے ہیں۔",
+      "sections": [
+        {
+          "id": "christmas-and-new-year-ecards",
+          "title": "1. کرسمس اور نیا سال 2026 اینیمیٹڈ ای کارڈز",
+          "body": "کرسمس اور نیا سال دنیا بھر میں خوشیوں اور دعا کا سب سے بڑا موسم ہیں۔ کارڈزی پر 3D برف باری کے اینیمیشنز، کرسمس ٹری لائٹس، 2026 کے لیے نیا سال فائر ورکس اور بیک گراؤنڈ میوزک کے ساتھ کارڈز بنائیں۔ آپ واٹس ایپ پر ایک کلک میں شیئر کر سکتے ہیں۔",
+          "bulletPoints": [
+            "3D اینیمیٹڈ برف باری، لائٹس اور سانتا کلاز اینیمیشنز",
+            "نیا سال 2026 کی الٹی گنتی اور شاندار فائر ورکس کاؤنٹر",
+            "خاندانی تصاویر اور یادگار لمحات اپ لوڈ کرنے کا فریم",
+            "واٹس ایپ، آئی میسج اور انسٹاگرام اسٹوریز پر ایک کلک شیئرنگ"
+          ]
+        },
+        {
+          "id": "thanksgiving-and-harvest-wishes",
+          "title": "2. تھینکس گیونگ اور شکر گزاری کے پرخلوص پیغامات",
+          "body": "تھینکس گیونگ کا تہوار شکر گزاری، محبت اور اپنوں کو یاد کرنے کا موقع ہے۔ کارڈزی کے خوبصورت خزان کے تھیمز اور سنہری ڈیزائن کے ساتھ اپنے پیاروں اور دور مقیم دوستوں کو شکر گزاری کے پیغامات بھیجیں۔",
+          "highlight": "کارڈزی کے ای کارڈز بغیر کسی ایپ ڈاؤن لوڈ کے کسی بھی اسمارٹ فون پر فوراً کھلتے ہیں۔"
+        },
+        {
+          "id": "diwali-lunar-new-year-hanukkah",
+          "title": "3. دیوالی، قمری نیا سال اور عالمی تہواروں کی مبارکباد",
+          "body": "دیوالی پر 3D اینیمیٹڈ چراغوں، قمری نئے سال پر ریڈ لالٹین، ہانوکا پر شمع دان اور ایسٹر پر بہار کے پھولوں کے ساتھ کارڈز بنائیں۔ کارڈزی اردو، عربی، انگریزی، ہندی، ہسپانوی، فرانسیسی اور 18 زبانوں کو سپورٹ کرتا ہے۔"
+        }
+      ],
+      faq: [
+        {
+          "question": "کیا میں مختلف زبانوں میں ہالیڈے ای کارڈز بھیج سکتا ہوں؟",
+          "answer": "جی ہاں! کارڈزی 18 زبانوں کو نیٹو طور پر سپورٹ کرتا ہے تاکہ آپ دنیا بھر میں کسی کو بھی ان کی زبان میں کارڈ بھیج سکیں۔"
+        }
+      ],
+      "conclusion": "دنیا بھر میں چند سیکنڈز میں خوشیاں پھیلائیں۔ آج ہی کارڈزی پر اپنا مفت 3D ہالیڈے ای کارڈ بنائیں!"
+    }
+  },
+  "how-to-create-animated-birthday-wish-cards-and-party-invitations-online": {
+    "ur": {
+      "intro": "سالگرہ زندگی کے خاص ترین لمحات ہوتے ہیں جو عام ٹیکسٹ میسجز سے زیادہ توجہ کے مستحق ہیں۔ 3D اینیمیٹڈ سالگرہ کارڈز اور ڈیجیٹل پارٹی دعوت نامے جلتی ہوئی موم بتیوں، رنگ برنگے کنفیٹی، خوشگوار موسیقی اور واٹس ایپ آر ایس وی پی ٹریکنگ کے ساتھ خوشیوں کو دوبالا کر دیتے ہیں۔",
+      "sections": [
+        {
+          "id": "animated-birthday-card-features",
+          "title": "1. 3D اینیمیٹڈ سالگرہ وش کارڈز کی اہم خصوصیات",
+          "body": "کارڈزی سالگرہ کارڈز میں موم بتیاں بجھانے کا اینیمیشن، کنفیٹی باراش، کسٹم پس منظر موسیقی اور سالگرہ والے شخص کی تصویر اپ لوڈ کرنے کا فریم شامل ہے۔",
+          "bulletPoints": [
+            "جلتی ہوئی 3D موم بتیاں اور اینیمیٹڈ پارٹی کنفیٹی بارش",
+            "کسٹم ہیپی برتھ ڈے میوزک اور خوشگوار دھنیں",
+            "سالگرہ کی خصوصی تصویر اپ لوڈ کرنے کا بہترین فریم",
+            "واٹس ایپ پر ایک کلک میں شیئرنگ کا لائیو لنک"
+          ]
+        },
+        {
+          "id": "milestone-birthday-invitations",
+          "title": "2. خصوصی سالگرہ پارٹیز (18 ویں، 21 ویں، 30 ویں، 50 ویں اور 60 ویں سالگرہ)",
+          "body": "کیا آپ سالگرہ کی بڑی پارٹی کی منصوبہ بندی کر رہے ہیں؟ کارڈزی ڈیجیٹل دعوت ناموں پر لائیو کاؤنٹ ڈاؤن ٹائمر، گوگل میپس کی لوکیشن اور واٹس ایپ RSVP ٹریکنگ شامل کریں تاکہ آپ کو معلوم ہو کہ کون کون آ رہا ہے۔"
+        }
+      ],
+      faq: [
+        {
+          "question": "کیا سالگرہ پارٹی دعوت نامے کے لیے RSVP شامل ہے؟",
+          "answer": "جی ہاں! مہمان ایک کلک سے اپنی آمد کی تصدیق کر سکتے ہیں اور ہوسٹ کو واٹس ایپ پر اطلاع مل جاتی ہے۔"
+        }
+      ],
+      "conclusion": "ہر سالگرہ کو ناقابل فراموش بنائیں۔ آج ہی کارڈزی پر سالگرہ کا متحرک کارڈ یا دعوت نامہ بنائیں!"
+    }
+  },
+  "the-future-of-networking-smart-digital-business-cards-with-vcf-download": {
+    "ur": {
+      "intro": "روایتی کاغذی بزنس کارڈز اکثر گم ہو جاتے ہیں، ضائع ہو جاتے ہیں یا فون نمبر تبدیل ہونے پر پرانے ہو جاتے ہیں۔ سمارٹ ڈیجیٹل بزنس کارڈز (vCards) جدید ایگزیکٹوز، فاؤنڈرز، ڈاکٹرز، وکلاء، ریئلٹرز اور فری لانسرز کے لیے ایک شاندار اور ماحول دوست متبادل ہیں۔",
+      "sections": [
+        {
+          "id": "vcard-1click-save-contact",
+          "title": "1. 1-کلک میں فون نمبر سیو کرنے کی سہولت (.vcf ڈاؤن لوڈ)",
+          "body": "کارڈزی ڈیجیٹل بزنس کارڈز کے ساتھ، کلائنٹس اور بزنس پارٹنرز 'Save Contact (.vcf)' پر کلک کر کے آپ کا پورا نام، عہدہ، کمپنی، فون نمبر، ای میل، ویب سائٹ اور سوشل لنکس براہ راست اپنے فون میں محفوظ کر سکتے ہیں۔",
+          "bulletPoints": [
+            "1-کلک میں رابطہ محفوظ کرنے کا بٹن (.vcf فائل جنریشن)",
+            "براہ راست کال، ای میل اور واٹس ایپ چیٹ کے بٹنز",
+            "آفس کی جگہ کے لیے گوگل میپس کا پن لوکیشن",
+            "ایگزیکٹو گولڈ، ڈارک سلیٹ، ٹیک سائبر اور میڈیکل تھیمز"
+          ]
+        }
+      ],
+      faq: [
+        {
+          "question": "کیا کانٹیکٹ ڈاؤن لوڈ آئی فون اور اینڈرائیڈ دونوں پر کام کرتا ہے؟",
+          "answer": "جی ہاں! .vcf فائل فارمیٹ تمام آئی فون، اینڈرائیڈ اور ونڈوز ڈیوائسز پر مکمل طور پر کام کرتا ہے۔"
+        }
+      ],
+      "conclusion": "آج ہی اپنے بزنس نیٹ ورکنگ کو جدید بنائیں۔ اپنا سمارٹ ڈیجیٹل وزٹنگ کارڈ کارڈزی پر بنائیں!"
+    }
   }
+}
+
+function getTranslatedSectionTitle(englishTitle: string, lang: string, index: number): string {
+  const translations: Record<string, string[]> = {
+    ur: [
+      '1. ذاتی کارڈز کیوں گہرا جذبہ پیدا کرتے ہیں',
+      '2. دلکش ڈیزائن تھیمز کا انتخاب',
+      '3. 3D اینیمیٹڈ کارڈ بنانے کا مرحلہ وار طریقہ',
+      '4. منتخب دعائیں اور مبارکباد کے الفاظ',
+      '5. آسان طریقہ کار اور ٹپس'
+    ],
+    ar: [
+      '1. أهمية بطاقات التهنئة المخصصة',
+      '2. اختيار التيمات والألوان المميزة',
+      '3. دليل تصميم البطاقات خطوة بخطوة',
+      '4. عبارات ودعوات معايدة مختارة',
+      '5. نصائح وإرشادات عامة'
+    ],
+    es: [
+      '1. Por qué las tarjetas personalizadas crean conexiones más profundas',
+      '2. Selección de diseño y paleta de colores',
+      '3. Guía paso a paso para crear su tarjeta 3D',
+      '4. Frases y bendiciones recomendadas',
+      '5. Consejos clave y recomendaciones'
+    ],
+    fr: [
+      '1. Pourquoi les cartes personnalisées créent des liens authentiques',
+      '2. Sélection du thème et des couleurs',
+      '3. Guide de création étape par étape',
+      '4. Formules et bénédictions recommandées',
+      '5. Conseils pratiques et astuces'
+    ],
+    hi: [
+      '1. व्यक्तिगत 3D विश कार्ड क्यों खास होते हैं',
+      '2. डिजाइन और थीम का चयन',
+      '3. स्टेप-बाय-स्टेप कार्ड निर्माण गाइड',
+      '4. चुनिंदा शुभकामनाएं और आशीर्वाद',
+      '5. मुख्य सुझाव और गाइड'
+    ],
+    zh: [
+      '1. 为什么个性化 3D 贺卡更具情感价值',
+      '2. 选中最适合的主题与配色',
+      '3. 分步 3D 贺卡制作指南',
+      '4. 精选祝福语与经典文案',
+      '5. 核心建议与技巧'
+    ],
+    pt: [
+      '1. Por que cartões personalizados criam laços fortes',
+      '2. Escolha do tema e paleta de cores',
+      '3. Guia de criação passo a passo',
+      '4. Frases e bênçãos selecionadas',
+      '5. Dicas práticas e recomendações'
+    ],
+    ru: [
+      '1. Почему именные 3D открытки создают глубокую связь',
+      '2. Выбор дизайна и цветовой гаммы',
+      '3. Пошаговое руководство по созданию',
+      '4. Избранные пожелания и фразы',
+      '5. Главные советы и рекомендации'
+    ],
+    de: [
+      '1. Warum personalisierte 3D-Karten tiefere Verbindungen schaffen',
+      '2. Auswahl von Design und Farbpalette',
+      '3. Schritt-für-Schritt-Erstellungsanleitung',
+      '4. Ausgewählte Wünsche und Segenssprüche',
+      '5. Wichtige Tipps und Empfehlungen'
+    ],
+    ja: [
+      '1. パーソナライズ3Dカードが心に響く理由',
+      '2. デザインとカラーパレットの選択',
+      '3. ステップ・バイ・ステップ作成ガイド',
+      '4. おすすめのメッセージと祝福の言葉',
+      '5. 主なヒントとアドバイス'
+    ],
+    ko: [
+      '1. 맞춤형 3D 카드가 깊은 감동을 주는 이유',
+      '2. 디자인 및 컬러 테마 선택',
+      '3. 단계별 카드 제작 가이드',
+      '4. 엄선된 축하 문구 및 메시지',
+      '5. 주요 팁 및 권장 사항'
+    ],
+    it: [
+      '1. Perché i biglietti 3D personalizzati creano legami speciali',
+      '2. Selezione del design e della palette di colori',
+      '3. Guida alla creazione passo passo',
+      '4. Frasi e auguri consigliati',
+      '5. Suggerimenti e consigli utili'
+    ],
+    tr: [
+      '1. Kişiselleştirilmiş 3D kartlar neden daha derin bağ kurar',
+      '2. Tasarım ve renk paleti seçimi',
+      '3. Adım adım kart oluşturma rehberi',
+      '4. Seçkin mesajlar ve dilekler',
+      '5. Önemli ipuçları ve tavsiyeler'
+    ],
+    id: [
+      '1. Mengapa kartu 3D personalisasi lebih berkesan',
+      '2. Pemilihan desain dan tema warna',
+      '3. Panduan pembuatan kartu step-by-step',
+      '4. Kata-kata dan doa pilihan',
+      '5. Tips dan rekomendasi utama'
+    ],
+    bn: [
+      '১. কেন ব্যক্তিগতকৃত ৩ডি কার্ড গভীর আবেগ প্রকাশ করে',
+      '২. ডিজাইন এবং রঙের থিম নির্বাচন',
+      '৩. ধাপে ধাপে কার্ড তৈরির নির্দেশিকা',
+      '৪. বাছাইকৃত শুভেচ্ছা এবং বার্তা',
+      '৫. প্রধান পরামর্শ এবং নির্দেশিকা'
+    ],
+    vi: [
+      '1. Tại sao thiệp 3D cá nhân hóa tạo ấn tượng sâu sắc',
+      '2. Lựa chọn thiết kế và phối màu',
+      '3. Hướng dẫn tạo thiệp từng bước',
+      '4. Câu chúc và thông điệp chọn lọc',
+      '5. Mẹo hay và lời khuyên chính'
+    ],
+    sw: [
+      '1. Kwa nini kadi za 3D hufanya uhusiano kuwa imara',
+      '2. Uchaguzi wa muundo na rangi',
+      '3. Mwongozo wa hatua kwa hatua wa kuunda kadi',
+      '4. Maneno na baraka zilizochaguliwa',
+      '5. Vidokezo na mapendekezo makuu'
+    ]
+  }
+
+  const langArray = translations[lang]
+  if (langArray && langArray[index]) {
+    return langArray[index]
+  }
+  return englishTitle
 }
 
 export function getLocalizedPost(post: BlogPost, lang?: string): BlogPost {
   if (!lang || lang === "en") return post
 
-  const localizedData = MULTILINGUAL_BLOG_DATA[post.slug]?.[lang]
-  const localizedContent = MULTILINGUAL_BLOG_CONTENTS[post.slug]?.[lang]
+  const localizedData = ALL_MULTILINGUAL_BLOG_DATA[post.slug]?.[lang] || MULTILINGUAL_BLOG_DATA[post.slug]?.[lang]
+  const localizedContent = ALL_MULTILINGUAL_BLOG_CONTENTS[post.slug]?.[lang] || MULTILINGUAL_BLOG_CONTENTS[post.slug]?.[lang]
+  const fallbackUrduContent = ALL_MULTILINGUAL_BLOG_CONTENTS[post.slug]?.['ur'] || MULTILINGUAL_BLOG_CONTENTS[post.slug]?.['ur']
+
+  // Resolve section titles, bodies, and bullet points across all 18 languages
+  const localizedSections = post.content.sections.map((sec, i) => {
+    const locSec = localizedContent?.sections?.[i]
+    const urSec = fallbackUrduContent?.sections?.[i]
+    
+    // Resolve section title in target language
+    const resolvedTitle = locSec?.title || (lang === 'ur' ? urSec?.title : undefined) || getTranslatedSectionTitle(sec.title, lang, i)
+
+    return {
+      ...sec,
+      title: resolvedTitle,
+      body: locSec?.body || (lang === 'ur' ? urSec?.body : undefined) || sec.body,
+      bulletPoints: locSec?.bulletPoints || (lang === 'ur' ? urSec?.bulletPoints : undefined) || sec.bulletPoints,
+      highlight: locSec?.highlight || (lang === 'ur' ? urSec?.highlight : undefined) || sec.highlight,
+    }
+  })
 
   return {
     ...post,
     title: localizedData?.title || post.title,
     subtitle: localizedData?.subtitle || post.subtitle,
+    seoTitle: localizedData?.seoTitle || localizedData?.title || post.seoTitle,
+    metaDescription: localizedData?.metaDescription || localizedData?.subtitle || post.metaDescription,
     category: (localizedData?.category as any) || post.category,
-    content: localizedContent
-      ? {
-          intro: localizedContent.intro || post.content.intro,
-          sections: (localizedContent.sections && localizedContent.sections.length > 0)
-            ? localizedContent.sections
-            : post.content.sections,
-          faq: (localizedContent.faq && localizedContent.faq.length > 0) ? localizedContent.faq : post.content.faq,
-          conclusion: localizedContent.conclusion || post.content.conclusion,
-        }
-      : post.content,
+    content: {
+      intro: localizedContent?.intro || (lang === 'ur' ? fallbackUrduContent?.intro : undefined) || post.content.intro,
+      sections: localizedSections,
+      faq: (localizedContent?.faq && localizedContent.faq.length > 0)
+        ? localizedContent.faq
+        : (lang === 'ur' && fallbackUrduContent?.faq && fallbackUrduContent.faq.length > 0)
+        ? fallbackUrduContent.faq
+        : post.content.faq,
+      conclusion: localizedContent?.conclusion || (lang === 'ur' ? fallbackUrduContent?.conclusion : undefined) || post.content.conclusion,
+    },
   }
 }
