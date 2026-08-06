@@ -189,7 +189,7 @@ function SiteHeaderInner() {
         </div>
 
         <button
-          className="min-h-[48px] min-w-[48px] rounded-lg p-3 text-foreground md:hidden flex items-center justify-center"
+          className="min-h-[48px] min-w-[48px] rounded-lg p-3 text-foreground lg:hidden flex items-center justify-center"
           onClick={() => setOpen((o) => !o)}
           aria-label="Toggle menu"
         >
@@ -198,7 +198,7 @@ function SiteHeaderInner() {
       </div>
 
       {open && (
-        <div className="border-t border-border bg-background px-4 py-3 md:hidden">
+        <div className="border-t border-border bg-background px-4 py-3 lg:hidden">
           <nav className="flex flex-col gap-1">
             {[
               { href: '/', key: 'home', fallback: 'Home' },

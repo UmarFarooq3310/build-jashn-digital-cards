@@ -37,7 +37,7 @@ export default function ContactPage() {
 
         {/* Hero */}
         <section className="bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950 text-white py-16 md:py-24">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-bold text-amber-300 uppercase tracking-wider mb-6">
               <MessageSquare className="size-4" />
               {t('contactPageBadge')}
@@ -53,7 +53,7 @@ export default function ContactPage() {
 
         {/* Contact Cards */}
         <section className="py-14 md:py-20">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 
               <a href="https://wa.me/923093518796" target="_blank" rel="noopener noreferrer"
@@ -125,7 +125,7 @@ export default function ContactPage() {
 
         {/* About Team */}
         <section className="bg-muted/40 py-14 md:py-20">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-8">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">{t('contactAboutTeam')}</h2>
               <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -161,7 +161,7 @@ export default function ContactPage() {
 
         {/* Help With */}
         <section className="py-14 md:py-20">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-extrabold text-foreground mb-8 text-center">{t('contactHelpTitle')}</h2>
             <ul className="grid gap-3 sm:grid-cols-2 text-sm text-muted-foreground">
               {helpItems.map((item) => (

@@ -10,6 +10,13 @@ import { POST_8_SLUG, POST_8_DATA, POST_8_CONTENT } from './post8'
 import { POST_9_SLUG, POST_9_DATA, POST_9_CONTENT } from './post9'
 import { POST_10_SLUG, POST_10_DATA, POST_10_CONTENT } from './post10'
 
+import { POST_11_SLUG, POST_11_DATA, POST_11_CONTENT } from './post11'
+import { POST_12_SLUG, POST_12_DATA, POST_12_CONTENT } from './post12'
+import { POST_13_SLUG, POST_13_DATA, POST_13_CONTENT } from './post13'
+import { POST_14_SLUG, POST_14_DATA, POST_14_CONTENT } from './post14'
+import { POST_15_SLUG, POST_15_DATA, POST_15_CONTENT } from './post15'
+import { POST_16_SLUG, POST_16_DATA, POST_16_CONTENT } from './post16'
+
 export const ALL_MULTILINGUAL_BLOG_DATA: Record<string, Record<string, LocalizedBlogData>> = {
   [POST_1_SLUG]: POST_1_DATA,
   [POST_2_SLUG]: POST_2_DATA,
@@ -21,6 +28,12 @@ export const ALL_MULTILINGUAL_BLOG_DATA: Record<string, Record<string, Localized
   [POST_8_SLUG]: POST_8_DATA,
   [POST_9_SLUG]: POST_9_DATA,
   [POST_10_SLUG]: POST_10_DATA,
+  [POST_11_SLUG]: POST_11_DATA,
+  [POST_12_SLUG]: POST_12_DATA,
+  [POST_13_SLUG]: POST_13_DATA,
+  [POST_14_SLUG]: POST_14_DATA,
+  [POST_15_SLUG]: POST_15_DATA,
+  [POST_16_SLUG]: POST_16_DATA,
 }
 
 export const ALL_MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, LocalizedBlogContent>> = {
@@ -34,4 +47,10 @@ export const ALL_MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, Local
   [POST_8_SLUG]: POST_8_CONTENT,
   [POST_9_SLUG]: POST_9_CONTENT,
   [POST_10_SLUG]: POST_10_CONTENT,
+  [POST_11_SLUG]: POST_11_CONTENT,
+  [POST_12_SLUG]: POST_12_CONTENT,
+  [POST_13_SLUG]: POST_13_CONTENT,
+  [POST_14_SLUG]: POST_14_CONTENT,
+  [POST_15_SLUG]: POST_15_CONTENT,
+  [POST_16_SLUG]: POST_16_CONTENT,
 }

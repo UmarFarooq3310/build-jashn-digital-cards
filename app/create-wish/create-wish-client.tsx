@@ -819,7 +819,7 @@ function CreateWishContent() {
         <p className={`text-xs sm:text-sm text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-sm sm:text-base leading-relaxed' : ''}`}>
           {t('personalizedWishCardsDesc') || 'Cardzy allows you to create interactive, 3D animated greeting cards for Eid Mubarak, Birthdays, Friendship Day, Ramadan, Anniversaries, and Congratulations. Personalize your card with custom photo uploads, warm family messages in Urdu or English, background music tracks, and custom color accents. Share instantly via WhatsApp, Instagram, or email with zero setup required.'}
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
             <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
               {t('personalPhotoNameCustomizationTitle') || 'Personal Photo & Name Customization'}
@@ -836,6 +836,14 @@ function CreateWishContent() {
               {t('multilingualTemplatesDesc') || 'Choose from curated Urdu, Arabic, and English wish wording for every special occasion.'}
             </p>
           </div>
+          <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+            <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+              {t('liveWhatsappRsvpTitle') || 'Instant WhatsApp & Social Share'}
+            </h3>
+            <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+              {t('liveWhatsappRsvpDesc') || 'Share your animated greeting cards instantly with friends & family on WhatsApp with 1 click.'}
+            </p>
+          </div>
         </div>
       </section>
     </div>
@@ -847,7 +855,7 @@ export default function CreateWishPage() {
   const isUrdu = lang === 'ur' || lang === 'ar'
 
   return (
-    <div className="py-4 md:py-6 max-w-7xl mx-auto px-4 text-center w-full">
+    <div className="py-4 md:py-6 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center w-full">
       <h1 className={`text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-[#7A1E2B] font-serif mb-2 ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
         {t('create3dAnimatedWishCardsTitle') || 'Create 3D Animated Wish Cards'}
       </h1>

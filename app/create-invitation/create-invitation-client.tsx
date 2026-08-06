@@ -986,7 +986,7 @@ function CreateInvitationContent() {
               {t('multilingualWordingTitle') || 'Multilingual Wording Support'}
             </h3>
             <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
-              {t('multilingualWordingDesc') || 'Explore pre-written Urdu and English wedding wording, Quranic verses, and host protocols.'}
+              {t('multilingualWordingDesc') || 'Explore pre-written Urdu and English wedding wording, blessings, and host protocols.'}
             </p>
           </div>
         </div>
@@ -1000,7 +1000,7 @@ export default function CreateInvitationPage() {
   const isUrdu = lang === 'ur' || lang === 'ar'
 
   return (
-    <div className="py-4 md:py-6 max-w-7xl mx-auto px-4 text-center w-full">
+    <div className="py-4 md:py-6 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center w-full">
       <h1 className={`text-2xl font-extrabold tracking-tight sm:text-4xl text-[#7B0D1E] mb-2 ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
         {t('createDigitalWeddingInvitationsHeader') || 'Create Digital Wedding Invitations'}
       </h1>

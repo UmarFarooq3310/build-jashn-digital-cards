@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function GuideIndexPage() {
   return (
-    <div className="py-12 md:py-20 max-w-5xl mx-auto px-4 w-full">
+    <div className="py-12 md:py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
       <GuideClientContent />
     </div>
   )

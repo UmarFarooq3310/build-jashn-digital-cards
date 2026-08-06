@@ -49,7 +49,7 @@ export default function AboutPage() {
 
         {/* Hero */}
         <section className="bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950 text-white py-16 md:py-28">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-bold text-amber-300 uppercase tracking-wider mb-6">
               <Heart className="size-4" /> {t('aboutBadge')}
             </span>
@@ -64,7 +64,7 @@ export default function AboutPage() {
 
         {/* Story */}
         <section className="py-14 md:py-20">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-8">
             <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">{t('aboutWelcome')}</h2>
             <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
               Cardzy is a modern digital wish card and event invitation platform created for South Asian families, diaspora communities, and anyone who believes that celebrations deserve more than a plain text message. We combine rich animated design, multilingual text support, and practical event management tools — all in one place, accessible from any smartphone or computer.
@@ -83,7 +83,7 @@ export default function AboutPage() {
 
         {/* Products */}
         <section className="bg-muted/40 py-14 md:py-20">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-10">
             <div className="text-center">
               <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">{t('aboutWhatOffer')}</h2>
             </div>
@@ -101,7 +101,7 @@ export default function AboutPage() {
 
         {/* Why Choose */}
         <section className="py-14 md:py-20">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-10">
             <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl text-center">{t('aboutWhyChoose')}</h2>
             <div className="grid gap-5 sm:grid-cols-2">
               {values.map(([icon, title, body]) => (
@@ -116,7 +116,7 @@ export default function AboutPage() {
 
         {/* Who We Serve */}
         <section className="bg-muted/40 py-14 md:py-20">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-8">
             <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">{t('aboutWhoServe')}</h2>
             <ul className="grid sm:grid-cols-2 gap-3 text-sm text-muted-foreground">
               {whoWeServe.map((item) => (
@@ -131,7 +131,7 @@ export default function AboutPage() {
 
         {/* Values */}
         <section className="py-14 md:py-20">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-8">
             <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl text-center">{t('aboutValues')}</h2>
             <div className="grid sm:grid-cols-3 gap-5">
               {[
@@ -150,7 +150,7 @@ export default function AboutPage() {
 
         {/* HQ & Contact */}
         <section className="bg-muted/40 py-14 md:py-20">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-8">
             <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">{t('aboutHQ')}</h2>
             <div className="grid sm:grid-cols-3 gap-5">
               <div className="rounded-2xl border border-border bg-card p-5 space-y-2">
@@ -176,7 +176,7 @@ export default function AboutPage() {
 
         {/* CTA */}
         <section className="py-14 md:py-20 text-center">
-          <div className="mx-auto max-w-2xl px-4 space-y-6">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-6">
             <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">{t('aboutReady')}</h2>
             <p className="text-muted-foreground text-base sm:text-lg">Join thousands of families and professionals who use Cardzy to celebrate, connect, and communicate in style — for free.</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">

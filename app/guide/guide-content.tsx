@@ -150,7 +150,7 @@ const GUIDE_HUB_TEXT: Record<string, Record<string, string>> = {
     sw: "Mwongozo Kamili wa Kadi za Dijitali na Mialiko — Cardzy"
   },
   overviewDesc: {
-    en: "Welcome to the Cardzy Celebration Guide Hub. Whether you are planning a traditional South Asian wedding with Nikkah, Mehndi, Barat, and Walima events, or sending animated Eid Mubarak greetings to family across the globe, our expert guides provide curated wording templates, Quranic verses, host protocols, and step-by-step instructions.",
+    en: "Welcome to the Cardzy Celebration Guide Hub. Whether you are planning a traditional South Asian wedding with Nikkah, Mehndi, Barat, and Walima events, or sending animated Eid Mubarak greetings to family across the globe, our expert guides provide curated wording templates, blessings, host protocols, and step-by-step instructions.",
     ur: "کارڈزی گائیڈز ہب میں خوش آمدید۔ چاہیں آپ نکاح، مہندی، بارات اور ولیمہ کی منصوبہ بندی کر رہے ہوں یا پوری دنیا میں عید کی مبارکباد بھیج رہے ہوں، ہمارے گائیڈز آپ کو تمام تفصیلات اور ٹیمپلیٹس فراہم کرتے ہیں۔",
     es: "Bienvenido al Centro de Guías de Cardzy. Ya sea que estés planificando una boda tradicional o enviando felicitaciones de Eid animadas a tu familia en todo el mundo, nuestras guías expertas ofrecen plantillas de redacción y consejos paso a paso.",
     fr: "Bienvenue sur le centre de guides Cardzy. Que vous planifiez un mariage traditionnel ou envoyiez des vœux de l'Aïd animés à votre famille dans le monde entier, nos guides vous fournissent des modèles de texte et des instructions étape par étape.",

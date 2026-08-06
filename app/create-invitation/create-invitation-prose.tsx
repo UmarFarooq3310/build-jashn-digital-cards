@@ -17,7 +17,7 @@ export function CreateInvitationProse() {
           <h2 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">{t('inviteProseH2b')}</h2>
           <ol className="space-y-3 text-base text-muted-foreground list-none">
             {[
-              ['Choose Your Invitation Type','Select from Nikkah, Mehndi, Dholki, Barat, Walima, Birthday Party, Iftaar, Quran Khatam, Graduation Party, Baby Shower, and 10+ more.'],
+              ['Choose Your Invitation Type','Select from Nikkah, Mehndi, Dholki, Barat, Walima, Birthday Party, Iftaar, Event Khatam, Graduation Party, Baby Shower, and 10+ more.'],
               ['Enter Event Details','Add host names, event title, date and time, venue name, and address. Cardzy automatically generates a Google Maps link.'],
               ['Write Your Message',"Use one of our elegant pre-written templates or write your own. Templates available in formal Urdu Nastaliq, bilingual Urdu-English, and modern English."],
               ['Customise the Design','Pick an animated theme, decorative borders, and optional background music.'],

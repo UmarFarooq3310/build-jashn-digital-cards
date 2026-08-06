@@ -227,7 +227,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
     <div className="min-h-screen bg-[#07080c] text-white pb-24 selection:bg-[#D4AF37] selection:text-slate-950">
         {/* Post Header Banner */}
         <div className="relative py-10 md:py-14 border-b border-[#D4AF37]/20 bg-[radial-gradient(50%_50%_at_50%_20%,rgba(212,175,55,0.15),transparent_70%)]">
-          <div className="mx-auto max-w-7xl px-1 sm:px-2 lg:px-3 space-y-6">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-6">
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 text-xs font-extrabold text-[#D4AF37] hover:underline"
@@ -289,7 +289,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
         </div>
 
         {/* Featured Image */}
-        <div className="mx-auto max-w-7xl px-1 sm:px-2 lg:px-3 py-6">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6">
           <div className="rounded-3xl overflow-hidden border border-[#D4AF37]/30 shadow-2xl aspect-[16/9] bg-slate-900">
             <img 
               src={post.featuredImage} 
@@ -303,7 +303,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
         </div>
 
         {/* Post Content Layout */}
-        <div className="mx-auto max-w-7xl px-1 sm:px-2 lg:px-3 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Table of Contents Sticky Sidebar */}
           <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-24 h-fit">
             <div className="rounded-3xl border border-[#D4AF37]/30 bg-[#0a0a0c]/90 p-5 backdrop-blur-xl shadow-lg space-y-4">
@@ -362,7 +362,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
             ))}
 
             {/* Ad Banner placement */}
-            <AdBanner format="display" className="my-8 mx-auto max-w-7xl px-1" />
+            <AdBanner format="display" className="my-8 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8" />
             
             {/* FAQs Section */}
             {post.content.faq && post.content.faq.length > 0 && (
@@ -398,7 +398,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
 
         {/* Related Articles Section */}
         {relatedPosts.length > 0 && (
-          <section className="mt-16 pt-12 border-t border-[#D4AF37]/20 mx-auto max-w-7xl px-1 sm:px-2 lg:px-3">
+          <section className="mt-16 pt-12 border-t border-[#D4AF37]/20 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-6 flex items-center gap-2">
               <Crown className="w-5 h-5 text-[#D4AF37]" />
               <span>{tUI('relatedTitle')}</span>

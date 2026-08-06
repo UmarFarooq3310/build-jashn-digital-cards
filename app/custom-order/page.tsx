@@ -154,6 +154,47 @@ export default function CustomOrderPage() {
             </Link>
           </div>
         </div>
+
+        {/* Unified Feature Overview Banner */}
+        <section className="mt-12 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-6xl mx-auto">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+              <Sparkles className="size-3.5" /> {t('invitationFeaturesBadge') || 'Cardzy Features Overview'}
+            </span>
+          </div>
+          <h2 className={`text-xl sm:text-2xl font-extrabold text-foreground tracking-tight ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+            {t('royalWeddingInvitationsTitle') || 'Royal 4K Animated Wedding Invitations & Online Nikkah Cards'}
+          </h2>
+          <p className={`text-xs sm:text-sm text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-sm sm:text-base leading-relaxed' : ''}`}>
+            {t('royalWeddingInvitationsDesc') || 'Create breathtaking animated digital wedding invitation websites for Nikkah, Mehndi, Barat, Walima, and Save-The-Date celebrations.'}
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
+            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+              <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+                {t('liveWhatsappRsvpTitle') || 'Live WhatsApp RSVP Tracking'}
+              </h3>
+              <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+                {t('liveWhatsappRsvpDesc') || 'Receive guest attendance confirmations and headcount updates directly in WhatsApp.'}
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+              <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+                {t('googleMapsVenuePinTitle') || 'Google Maps Venue Pin'}
+              </h3>
+              <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+                {t('googleMapsVenuePinDesc') || 'Help guests navigate directly to your marquee or wedding hall with one click.'}
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
+              <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
+                {t('multilingualWordingTitle') || 'Multilingual Wording Support'}
+              </h3>
+              <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
+                {t('multilingualWordingDesc') || 'Explore pre-written Urdu and English wedding wording, blessings, and host protocols.'}
+              </p>
+            </div>
+          </div>
+        </section>
       </section>
     </div>
   )
