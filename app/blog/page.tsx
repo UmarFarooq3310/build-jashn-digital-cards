@@ -9,14 +9,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://cardzy.online/blog',
   },
-  keywords: [
-    'Pakistani wedding invitations blog',
-    'Eid Mubarak wishes guide',
-    'Digital business card tips',
-    'Nikkah card wording ideas',
-    'WhatsApp RSVP tracking guide',
-  ],
-  openGraph: {
+    openGraph: {
     title: 'Cardzy Blog - Guides & Tips for Digital Cards',
     description: 'Expert tips on royal digital invitations, Eid wishes, and smart digital business cards.',
     url: 'https://cardzy.online/blog',

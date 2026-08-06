@@ -67,29 +67,7 @@ export const metadata: Metadata = {
   other: {
     'google-adsense-account': 'ca-pub-8899224608517833',
   },
-  keywords: [
-    'Cardzy',
-    'urdu eid mubarak wishes',
-    'eid mubarak to you too meaning in urdu',
-    'send animated art greetings online',
-    'eid greetings in urdu',
-    'pakistani wedding card text',
-    'eid mubarak greetings in urdu',
-    'eid greeting messages in urdu',
-    'eid mubarak in urdu words',
-    'eid card in urdu',
-    'digital invitation',
-    'animated wish card',
-    'online invitation',
-    'eid mubarak card',
-    'wedding invitation',
-    'birthday card',
-    'RSVP invitation',
-    'multilingual card',
-    'event invitation',
-    'gaming winner card',
-  ],
-  icons: {
+    icons: {
     icon: [
       { url: '/favicon.ico?v=4', sizes: 'any' },
       { url: '/favicon-32x32.png?v=4', type: 'image/png', sizes: '32x32' },

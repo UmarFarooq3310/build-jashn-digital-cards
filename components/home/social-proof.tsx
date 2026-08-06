@@ -17,21 +17,21 @@ export function SocialProofSection() {
           </div>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight">
-            {t('lovedBySendersTitle') || 'Loved by 150,000+ Card Senders Worldwide'}
+            {t('lovedBySendersTitle') || 'Loved by Senders Across 60+ Countries Worldwide'}
           </h2>
 
           <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto">
-            {t('lovedBySendersSub') || 'From birthdays and Nikah invitations to PUBG victory cards, see why families and gamers choose Cardzy.'}
+            {t('lovedBySendersSub') || 'From birthdays and Nikah invitations to custom greeting cards, see why senders across the world choose Cardzy.'}
           </p>
         </div>
 
         {/* Live Metrics Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { metric: '150,000+', label: t('cardsSharedLabel') || 'Cards Shared', sub: t('acrossWhatsappEmail') || 'Across WhatsApp & Email' },
+            { metric: '60+', label: t('globalCountriesLabel') || 'Global Countries', sub: t('sendersWorldwideSub') || 'Senders across 60+ nations' },
             { metric: '18', label: t('languagesSupportedLabel') || 'Languages Supported', sub: t('languagesSub') || 'Urdu, Arabic, English & more' },
-            { metric: '4.9 ★', label: t('userRatingLabel') || 'User Rating', sub: t('fromReviewsSub') || 'From over 12,000 reviews' },
-            { metric: '100%', label: t('freeCreationLabel') || 'Free Creation', sub: t('zeroCreditCardRequired') || 'Zero credit card required' },
+            { metric: '100%', label: t('mobileOptimizedLabel') || 'Mobile & Desktop', sub: t('instantWebAccessSub') || 'Instant web browser access' },
+            { metric: 'Free', label: t('freeCreationLabel') || 'Free Creation', sub: t('zeroCreditCardRequired') || 'Zero credit card required' },
           ].map((item, idx) => (
             <div
               key={idx}

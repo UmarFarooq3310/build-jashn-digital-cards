@@ -8,15 +8,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://cardzy.online/guide',
   },
-  keywords: [
-    'digital invitation templates',
-    'Eid Mubarak wishes wording',
-    'wedding card design guides',
-    'multilingual digital cards',
-    'how to design invitation cards',
-    'birthday card wording ideas',
-  ],
-}
+  }
 
 export default function GuideIndexPage() {
   return (

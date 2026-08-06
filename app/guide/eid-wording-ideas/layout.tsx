@@ -7,14 +7,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://cardzy.online/guide/eid-wording-ideas',
   },
-  keywords: [
-    'Eid Mubarak wishes in Urdu',
-    'Eid card wording templates',
-    'bilingual eid greeting messages',
-    'Urdu poetry for Eid cards',
-    'send digital Eid wishes Pakistan',
-  ],
-}
+  }
 
 export default function EidGuideLayout({
   children,

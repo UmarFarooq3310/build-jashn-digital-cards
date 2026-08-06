@@ -4,15 +4,7 @@ export const metadata: Metadata = {
   title: 'Pakistani Wedding Card Text & Invitation Wording (Urdu & English) | Cardzy',
   description:
     'Explore 50+ Pakistani wedding card text examples in Urdu and English for Nikkah, Mehndi, Barat, and Walima cards with Bismillah calligraphy and WhatsApp RSVP links.',
-  keywords: [
-    'pakistani wedding card text',
-    'pakistani wedding card wording in urdu',
-    'nikkah card text urdu english',
-    'walima invitation text',
-    'mehndi card text',
-    'pakistani wedding invitations',
-  ],
-  alternates: {
+    alternates: {
     canonical: 'https://cardzy.online/guide/pakistani-wedding-invitations',
   },
 }

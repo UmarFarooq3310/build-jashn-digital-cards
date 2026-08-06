@@ -7,15 +7,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://cardzy.online/guide/birthday-wishes-wording',
   },
-  keywords: [
-    'birthday wishes wording',
-    'birthday card messages',
-    'funny birthday wishes',
-    'birthday message for friend',
-    'happy birthday quotes',
-    'digital birthday card ideas',
-  ],
-}
+  }
 
 export default function BirthdayGuideLayout({
   children,

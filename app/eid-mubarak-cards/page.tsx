@@ -8,20 +8,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://cardzy.online/eid-mubarak-cards',
   },
-  keywords: [
-    'urdu eid mubarak wishes',
-    'eid mubarak to you too meaning in urdu',
-    'eid greetings in urdu',
-    'eid mubarak greetings in urdu',
-    'eid greeting messages in urdu',
-    'eid mubarak in urdu words',
-    'eid card in urdu',
-    'send animated art greetings online',
-    'Eid Mubarak cards',
-    'digital Eid greetings',
-    'personalized Eid wish card',
-    'WhatsApp Eid cards',
-  ],
 }
 
 const faqSchema = {
