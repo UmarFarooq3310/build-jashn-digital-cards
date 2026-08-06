@@ -97,6 +97,7 @@ export function SiteFooter() {
                 { href: '/', label: t('home') },
                 { href: '/blog', label: t('blog') },
                 { href: '/about', label: t('footerAbout') },
+                { href: '/contact', label: 'Contact Us' },
                 { href: '/pricing', label: t('footerPlans') },
                 { href: '/faq', label: t('faqs') },
                 { href: '/guide', label: t('guides') },
@@ -110,6 +111,8 @@ export function SiteFooter() {
         <div className="mt-6 border-t border-emerald-900/50 pt-4 text-center text-xs text-emerald-200/60 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
           <span>{t('footerCopyright')}</span>
           <Link href="/about" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('footerAbout')}</Link>
+          <span>•</span>
+          <Link href="/contact" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">Contact</Link>
           <span>•</span>
           <Link href="/privacy" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('footerPrivacy')}</Link>
           <span>•</span>

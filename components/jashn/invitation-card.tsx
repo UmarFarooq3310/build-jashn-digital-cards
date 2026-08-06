@@ -60,9 +60,10 @@ function formatTime12h(timeStr: string, lang: string = 'en') {
   const minutes = match[2]
   const isPm = hours >= 12
   hours = hours % 12 || 12
+  const isUrdu = lang === 'ur' || lang === 'ar'
   const ampm = isPm
-    ? (t('pmLabel') || 'PM')
-    : (t('amLabel') || 'AM')
+    ? (isUrdu ? 'شام' : 'PM')
+    : (isUrdu ? 'صبح' : 'AM')
   return `${hours}:${minutes} ${ampm}`
 }
 

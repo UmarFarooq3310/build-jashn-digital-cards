@@ -1,529 +1,198 @@
 'use client'
-
 import Link from 'next/link'
+import { Heart, Globe, Sparkles, ShieldCheck, Zap, Users, Mail, MessageSquare, MapPin, ArrowRight, Star } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
-import { Heart, Sparkles, Globe, MapPin, Mail, MessageSquare, ShieldCheck, Zap } from 'lucide-react'
 
-const ABOUT_TEXT: Record<string, Record<string, string>> = {
-  tagline: {
-    en: "Our Story & Mission",
-    ur: "ہماری کہانی اور مقصد",
-    es: "Nuestra Historia y Misión",
-    fr: "Notre Histoire & Mission",
-    ar: "قصتنا ومهمتنا",
-    hi: "हमारी कहानी और मिशन",
-    zh: "我们的故事与使命",
-    pt: "Nossa História e Missão",
-    ru: "Наша история и миссия",
-    de: "Unsere Geschichte & Mission",
-    ja: "私たちのストーリーとミッション",
-    ko: "우리의 이야기와 사명",
-    it: "La Nostra Storia e Missione",
-    tr: "Hikayemiz ve Misyonumuz",
-    id: "Kisah & Misi Kami",
-    bn: "আমাদের গল্প ও লক্ষ্য",
-    vi: "Câu Chuyện & Sứ Mệnh",
-    sw: "Hadithi na Dira Wetu"
-  },
-  mainHeading: {
-    en: "Connecting Celebrations Worldwide",
-    ur: "دنیا بھر کی تقریبات کو جوڑنا",
-    es: "Conectando Celebraciones en Todo el Mundo",
-    fr: "Connecter les Célébrations à Travers le Monde",
-    ar: "ربط الاحتفالات حول العالم",
-    hi: "दुनिया भर के उत्सवों को जोड़ना",
-    zh: "连接全球的美好庆典",
-    pt: "Conectando Celebrações em Todo o Mundo",
-    ru: "Объединяя праздники по всему миру",
-    de: "Weltweite Feiern verbinden",
-    ja: "世界中のお祝いを繋ぐ",
-    ko: "전 세계의 축하를 연결합니다",
-    it: "Connettere le Celebrazioni nel Mondo",
-    tr: "Dünyadaki Kutlamaları Birleştiriyoruz",
-    id: "Menghubungkan Perayaan di Seluruh Dunia",
-    bn: "বিশ্বজুড়ে উৎসবের মেলবন্ধন",
-    vi: "Kết Nối Mọi Dịp Lễ Trên Toàn Cầu",
-    sw: "Kuunganisha Sherehe Duniani Kote"
-  },
-  subtitle: {
-    en: "Bringing loved ones together through interactive, multi-lingual digital wish cards and event invitations.",
-    ur: "انٹرایکٹو اور کثیر لسانی ڈیجیٹل کارڈز اور دعوت ناموں کے ذریعے پیاروں کو قریب لانا۔",
-    es: "Uniendo a tus seres queridos mediante tarjetas e invitaciones digitales interactivas y multilingües.",
-    fr: "Rapprocher vos proches grâce à des cartes de vœux et invitations numériques interactives et multilingues.",
-    ar: "جمع الأحبة معًا من خلال بطاقات معايدة ودعوات رقمية تفاعلية ومتعددة اللغات.",
-    hi: "इंटरएक्टिव, बहुभाषी डिजिटल विश कार्ड और निमंत्रण के माध्यम से अपनों को करीब लाना।",
-    zh: "通过多语言互动数字贺卡与邀请函，让身处各地的亲友紧密相连。",
-    pt: "Aproximando entes queridos através de cartões e convites digitais interativos e multilíngues.",
-    ru: "Сближая близких с помощью интерактивных цифровых открыток и приглашений на разных языках.",
-    de: "Bringt Ihre Liebsten durch interaktive, mehrsprachige digitale Wunschkarten und Einladungen zusammen.",
-    ja: "インタラクティブで多言語に対応したデジタルカードと招待状で、大切な人々を近づけます。",
-    ko: "대화형 다국어 디지털 소원 카드와 행사 초대장을 통해 사랑하는 이들을 하나로 모읍니다.",
-    it: "Avvicinare i cari attraverso biglietti e inviti digitali interattivi e multilingue.",
-    tr: "İnteraktif ve çok dilli dijital tebrik kartları ve davetiyelerle sevdiklerinizi bir araya getiriyoruz.",
-    id: "Mendekatkan orang-orang tercinta melalui kartu ucapan dan undangan digital interaktif multi-bahasa.",
-    bn: "ইন্টারেক্টিভ ও বহুভাষিক ডিজিটাল উইশ কার্ড এবং ইনভিটেশনের মাধ্যমে প্রিয়জনদের একসূত্রে বাঁধা।",
-    vi: "Gắn kết người thân yêu qua thiệp chúc mừng và thiệp mời kỹ thuật số tương tác đa ngôn ngữ.",
-    sw: "Kuwaleta wapendwa pamoja kupitia kadi za dijitali za lugha nyingi na mialiko shirikishi."
-  },
-  s1Title: {
-    en: "Welcome to Cardzy",
-    ur: "کارڈزی میں خوش آمدید",
-    es: "Bienvenido a Cardzy",
-    fr: "Bienvenue sur Cardzy",
-    ar: "أهلاً بكم في كاردزي",
-    hi: "Cardzy में आपका स्वागत है",
-    zh: "欢迎使用 Cardzy",
-    pt: "Bem-vindo ao Cardzy",
-    ru: "Добро пожаловать в Cardzy",
-    de: "Willkommen bei Cardzy",
-    ja: "Cardzyへようこそ",
-    ko: "Cardzy에 오신 것을 환영합니다",
-    it: "Benvenuto su Cardzy",
-    tr: "Cardzy'ye Hoş Geldiiniz",
-    id: "Selamat Datang di Cardzy",
-    bn: "Cardzy-তে স্বাগতম",
-    vi: "Chào mừng đến với Cardzy",
-    sw: "Karibu Cardzy"
-  },
-  s1Content: {
-    en: "Cardzy is a modern digital wish card and invitation builder.",
-    ur: "کارڈزی ایک جدید ڈیجیٹل وش کارڈ اور انویٹیشن بلڈر ہے۔",
-    es: "Cardzy es un moderno creador de tarjetas e invitaciones digitales.",
-    fr: "Cardzy est un créateur moderne de cartes et invitations numériques.",
-    ar: "كاردزي هو منشئ عصري للبطاقات والدعوات الرقمية.",
-    hi: "Cardzy एक आधुनिक डिजिटल विश कार्ड और इनविटेशन बिल्डर है।",
-    zh: "Cardzy 是一个现代化的数字祝贺卡和邀请函生成工具。",
-    pt: "Cardzy é um criador moderno de cartões e convites digitais.",
-    ru: "Cardzy — это современный конструктор цифровых открыток и приглашений.",
-    de: "Cardzy ist ein moderner Ersteller für digitale Karten und Einladungen.",
-    ja: "Cardzyは現代的なデジタルカードと招待状作成ツールです。",
-    ko: "Cardzy는 현대적인 디지털 카드 및 초대장 제작 도구입니다.",
-    it: "Cardzy è un moderno creatore di biglietti e inviti digitali.",
-    tr: "Cardzy modern bir dijital kart ve davetiye oluşturucudur.",
-    id: "Cardzy adalah pembuat kartu dan undangan digital yang modern.",
-    bn: "Cardzy একটি আধুনিক ডিজিটাল উইশ কার্ড এবং ইনভিটেশন বিল্ডার।",
-    vi: "Cardzy là trình tạo thiệp và thiệp mời kỹ thuật số hiện đại.",
-    sw: "Cardzy ni mjenzi wa kisasa wa kadi za dijitali na mialiko."
-  },
-  s2Title: {
-    en: "The Problem We Solve",
-    ur: "مسئلہ جس کا ہم حل پیش کرتے ہیں",
-    es: "El Problema que Solucionamos",
-    fr: "Le Problème Que Nous Résolvons",
-    ar: "المشكلة التي نحلها",
-    hi: "समस्या जिसका हम समाधान करते हैं",
-    zh: "我们解决的痛点",
-    pt: "O Problema que Solucionamos",
-    ru: "Проблема, которую мы решаем",
-    de: "Das Problem, das wir lösen",
-    ja: "解決する課題",
-    ko: "우리가 해결하는 문제",
-    it: "Il Problema che Risolviamo",
-    tr: "Çözdüğümüz Sorun",
-    id: "Masalah yang Kami Selesaikan",
-    bn: "আমরা যে সমস্যার সমাধান করি",
-    vi: "Vấn Đề Chúng Tôi Giải Quyết",
-    sw: "Tatizo Tunalotatua"
-  },
-  s2Content: {
-    en: "Paper cards are expensive, slow, and hard to manage globally.",
-    ur: "کاغذی کارڈ مہنگے، سست اور عالمی سطح پر سنبھالنا مشکل ہیں۔",
-    es: "Las tarjetas de papel son costosas, lentas y difíciles de gestionar.",
-    fr: "Les cartes papier sont coûteuses, lentes et difficiles à gérer globalement.",
-    ar: "البطاقات الورقية مكلفة وبطيئة ويصعب إدارتها على مستوى العالم.",
-    hi: "कागज के कार्ड महंगे, धीमे और वैश्विक स्तर पर प्रबंधित करने में कठिन हैं।",
-    zh: "纸质卡片成本高、速度慢，且难以在全球范围内进行管理。",
-    pt: "Cartões de papel são caros, lentos e difíceis de gerenciar globalmente.",
-    ru: "Бумажные открытки дорогие, медленные и их сложно управлять глобально.",
-    de: "Papierkarten sind teuer, langsam und weltweit schwer zu verwalten.",
-    ja: "紙のカードは高価で遅く、世界的に管理するのが困難です。",
-    ko: "종이 카드는 비싸고 느리며 전 세계적으로 관리하기 어렵습니다.",
-    it: "I biglietti cartacei sono costosi, lenti e difficili da gestire globalmente.",
-    tr: "Kağıt kartlar pahalı, yavaş ve küresel olarak yönetilmesi zordur.",
-    id: "Kartu kertas mahal, lambat, dan sulit dikelola secara global.",
-    bn: "কাগজের কার্ড দামী, ধীরগতির এবং বিশ্বব্যাপী পরিচালনা করা কঠিন।",
-    vi: "Thiệp giấy đắt đỏ, chậm chạp và khó quản lý trên toàn cầu.",
-    sw: "Kadi za karatasi ni ghali, polepole, na ni vigumu kuzisimamia duniani kote."
-  },
-  s3Title: {
-    en: "What We Do",
-    ur: "ہم کیا کرتے ہیں",
-    es: "Lo Que Hacemos",
-    fr: "Ce Que Nous Faisons",
-    ar: "ماذا نقدم",
-    hi: "हम क्या करते हैं",
-    zh: "我们的核心功能",
-    pt: "O Que Fazemos",
-    ru: "Что мы делаем",
-    de: "Was wir tun",
-    ja: "提供する機能",
-    ko: "우리가 하는 일",
-    it: "Cosa Facciamo",
-    tr: "Neler Yapıyoruz",
-    id: "Layanan Kami",
-    bn: "আমরা কী করি",
-    vi: "Dịch Vụ Của Chúng Tôi",
-    sw: "Tunachofanya"
-  },
-  s3Content: {
-    en: "Cardzy enables individuals and hosts to create and share animated wish cards and digital event invitations tailored for weddings, birthdays, Eid, anniversaries, and corporate gatherings.",
-    ur: "کارڈزی صارفین اور میزبانوں کو شادیوں، سالگرہ، عید، سالگرہ اور کارپوریٹ تقریبات کے لیے متحرک وش کارڈز اور ڈیجیٹل دعوت نامے بنانے کی اجازت دیتا ہے۔",
-    es: "Cardzy permite a usuarios y anfitriones crear y compartir tarjetas de deseos animadas e invitaciones digitales para bodas, cumpleaños, Eid, aniversarios y eventos corporativos.",
-    fr: "Cardzy permet de créer et de partager des cartes animées et des invitations numériques personnalisées pour les mariages, anniversaires, l'Aïd et les événements d'entreprise.",
-    ar: "يتيح كاردزي للأفراد والمضيفين إنشاء ومشاركة بطاقات ودعوات رقمية متحركة للأعراس وأعياد الميلاد والعيد والمناسبات.",
-    hi: "Cardzy शादी, जन्मदिन, ईद, वर्षगांठ और कॉर्पोरेट आयोजनों के लिए एनिमेटेड विश कार्ड और डिजिटल निमंत्रण बनाने की सुविधा देता है।",
-    zh: "Cardzy 助力广大用户与活动策划者轻松打造动感祝贺卡与数字邀请函，完美适用于婚礼、生日、祝寿、开业及节日庆典。",
-    pt: "O Cardzy permite criar e compartilhar cartões animados e convites digitais para casamentos, aniversários, Eid e eventos corporativos.",
-    ru: "Cardzy позволяет создавать и отправлять анимированные открытки и цифровые приглашения на свадьбы, дни рождения, Аид и корпоративы.",
-    de: "Cardzy ermöglicht das Erstellen animierter Wunschkarten und digitaler Einladungen für Hochzeiten, Geburtstage, Eid, Jubiläen und Firmen-Events.",
-    ja: "Cardzyでは、結婚式、誕生日、Eid、記念日、法人 eventなどのために、アニメーション付きカードやデジタル招待状を作成・共有できます。",
-    ko: "Cardzy는 결혼식, 생일, 이드, 기념일 및 기업 행사를 위한 애니메이션 소원 카드와 디지털 초대장을 손쉽게 만들고 공유할 수 있게 합니다.",
-    it: "Cardzy consente di creare e condividere biglietti d'auguri animati e inviti digitali per matrimoni, compleanni, Eid, anniversari ed eventi aziendali.",
-    tr: "Cardzy; düğünler, doğum günleri, Bayram, yıldönümleri ve kurumsal etkinlikler için animasyonlu kartlar ve davetiyeler oluşturmanızı sağlar.",
-    id: "Cardzy memungkinkan siapa saja membuat dan membagikan kartu animasi dan undangan digital untuk pernikahan, ulang tahun, Eid, dan acara kantor.",
-    bn: "Cardzy বিয়ে, জন্মদিন, ঈদ, অ্যানিভার্সারি এবং কর্পোরেট ইভেন্টের জন্য অ্যানিমেটেড উইশ কার্ড এবং ডিজিটাল ইনভিটেশন তৈরির সুযোগ দেয়।",
-    vi: "Cardzy cho phép tạo và chia sẻ thiệp mừng hoạt hình & thiệp mời kỹ thuật số cho đám cưới, sinh nhật, lễ Eid, kỷ niệm và sự kiện công ty.",
-    sw: "Cardzy inamwezesha mtu yeyote kuunda na kushiriki kadi za dijitali na mialiko ya harusi, siku ya kuzaliwa, Eid na sherehe mbalimbali."
-  },
-  f1Title: {
-    en: "18 Global Languages",
-    ur: "18 عالمی زبانیں",
-    es: "18 Idiomas Globales",
-    fr: "18 Langues Mondiales",
-    ar: "18 لغة عالمية",
-    hi: "18 वैश्विक भाषाएं",
-    zh: "支持 18 种全球语言",
-    pt: "18 Idiomas Globais",
-    ru: "18 языков мира",
-    de: "18 globale Sprachen",
-    ja: "18言語に対応",
-    ko: "18개 글로벌 언어 지원",
-    it: "18 Lingue Globali",
-    tr: "18 Küresel Dil",
-    id: "18 Bahasa Global",
-    bn: "১৮টি বিশ্বব্যাপী ভাষা",
-    vi: "18 Ngôn Ngữ Toàn Cầu",
-    sw: "Lugha 18 za Dunia"
-  },
-  f1Desc: {
-    en: "Express blessings in your native script including English, Urdu, Arabic, Turkish, French, and 13 other regional languages.",
-    ur: "انگریزی، اردو، عربی، ترکی، فرانسیسی اور 13 دیگر علاقائی زبانوں میں اپنے پیغامات لکھیں۔",
-    es: "Expresa tus deseos en tu idioma nativo, incluyendo inglés, urdu, árabe, turco, francés y otros 13 idiomas.",
-    fr: "Exprimez vos vœux dans votre langue maternelle : anglais, ourdou, arabe, turc, français et 13 autres langues.",
-    ar: "عبر عن أمنياتك بلغتك الأم بما في ذلك الإنجليزية والأردية والعربية والتركية والفرنسية و13 لغة أخرى.",
-    hi: "अंग्रेजी, उर्दू, अरबी, तुर्की, फ्रेंच और 13 अन्य क्षेत्रीय भाषाओं में अपनी शुभकामनाएं व्यक्त करें।",
-    zh: "提供英语、乌尔都语、阿拉伯语、土耳其语、法语等 18 种语言的原汁原味字形排版。",
-    pt: "Escreva mensagens em seu idioma nativo, incluindo inglês, urdu, árabe, turco, francês e mais 13 idiomas.",
-    ru: "Пишите поздравления на родном языке, включая английский, урду, арабский, турецкий, французский и еще 13 языков.",
-    de: "Drücken Sie Wünsche in Ihrer Muttersprache aus, darunter Englisch, Urdu, Arabisch, Türkisch, Französisch und 13 weitere.",
-    ja: "英語、ウルドゥー語、アラビア語、トルコ語、フランス語など18の言語とフォントに対応しています。",
-    ko: "영어, 우르두어, 아랍어, 튀르키예어, 프랑스어 및 13개 지역 언어를 포함한 고유 문자로 마음을 전하세요.",
-    it: "Esprimi i tuoi auguri nella tua lingua madre, tra cui inglese, urdu, arabo, turco, francese e altre 13 lingue.",
-    tr: "İngilizce, Urduca, Arapça, Türkçe, Fransızca ve 13 diğer dilde kendi dilinizle tebriklerinizi iletin.",
-    id: "Sampaikan ucapan dalam bahasa Anda sendiri, termasuk Bahasa Inggris, Urdu, Arab, Turki, Prancis, dan 13 bahasa lainnya.",
-    bn: "ইংরেজি, উর্দু, আরবি, তুর্কি, ফরাসি এবং আরও ১৩টি আঞ্চলিক ভাষায় শুভেচ্ছা জানান।", vi: "Bày tỏ lời chúc bằng tiếng mẹ đẻ bao gồm tiếng Anh, Urdu, Ả Rập, Thổ Nhĩ Kỳ, Pháp và 13 ngôn ngữ khác.",
-    sw: "Eleza baraka zako kwa lugha yako ya asili ikiwa ni pamoja na Kiingereza, Kiurdu, Kiarabu, Kituruki na lugha nyingine 13."
-  },
-  f2Title: {
-    en: "WhatsApp RSVP Tracking",
-    ur: "واٹس ایپ آر ایس وی پی ٹریکنگ",
-    es: "Confirmación RSVP por WhatsApp",
-    fr: "Suivi RSVP via WhatsApp",
-    ar: "تأكيد الحضور عبر واتساب",
-    hi: "व्हाट्सएप RSVP ट्रैकिंग",
-    zh: "WhatsApp RSVP 实时回执",
-    pt: "Rastreamento RSVP no WhatsApp",
-    ru: "Отслеживание RSVP в WhatsApp",
-    de: "WhatsApp RSVP-Nachverfolgung",
-    ja: "WhatsApp RSVP追跡",
-    ko: "WhatsApp RSVP 참석 확인",
-    it: "Tracciamento RSVP su WhatsApp",
-    tr: "WhatsApp RSVP Takibi",
-    id: "Pelacakan RSVP WhatsApp",
-    bn: "হোয়াটসঅ্যাপ RSVP ট্র্যাকিং",
-    vi: "Theo Dõi RSVP Qua WhatsApp",
-    sw: "Ufuatiliaji wa RSVP wa WhatsApp"
-  },
-  f2Desc: {
-    en: "Collect attendance confirmations, guest counts, and dietary responses with one-click WhatsApp integration.",
-    ur: "ایک کلک واٹس ایپ انٹیگریشن کے ذریعے مہمانوں کی حاضری اور جوابات جمع کریں۔",
-    es: "Recopila confirmaciones de asistencia y respuestas de invitados con un clic vía WhatsApp.",
-    fr: "Collectez les confirmations de présence et réponses des invités en un clic via WhatsApp.",
-    ar: "جمع تأكيدات الحضور وعدد الضيوف والاستجابات بنقرة واحدة عبر واتساب.",
-    hi: "एक-क्लिक व्हाट्सएप एकीकरण के साथ उपस्थिति की पुष्टि और मेहमानों की प्रतिक्रियाएं एकत्र करें।",
-    zh: "一键关联 WhatsApp，实时收集宾客出席确认、同行人数与饮食偏好。",
-    pt: "Colete confirmações de presença e contagem de convidados com um clique no WhatsApp.",
-    ru: "Собирайте подтверждения присутствия и количество гостей в один клик через WhatsApp.",
-    de: "Sammeln Sie Anmeldungen und Gästezahlen mit einem Klick über WhatsApp.",
-    ja: "ワンタップのWhatsApp連携で、出席確認やゲスト人数を簡単に収集できます。",
-    ko: "원클릭 WhatsApp 연동으로 참석 여부 및 하객 수를 편리하게 수집하세요.",
-    it: "Raccogli conferme di presenza e numero di ospiti con un clic tramite WhatsApp.",
-    tr: "Tek tıkla WhatsApp entegrasyonu ile katılım onaylarını ve davetli sayılarını toplayın.",
-    id: "Kumpulkan konfirmasi kehadiran dan jumlah tamu dengan satu klik di WhatsApp.",
-    bn: "এক ক্লিকে হোয়াটসঅ্যাপ ইন্টিগ্রেশনের মাধ্যমে অতিথিদের উপস্থিতি ও সাড়া সংগ্রহ করুন।",
-    vi: "Thu thập xác nhận tham dự và số lượng khách chỉ bằng 1 cú nhấp chuột qua WhatsApp.",
-    sw: "Kusanya uthibitisho wa mahudhurio na idadi ya wageni kwa kubonyeza moja kwenye WhatsApp."
-  },
-  f3Title: {
-    en: "Google Maps Venue Links",
-    ur: "گوگل میپس لوکیشن لنکس",
-    es: "Ubicación en Google Maps",
-    fr: "Lien de Lieu Google Maps",
-    ar: "روابط خرائط جوجل للموقع",
-    hi: "गूगल मैप्स स्थान लिंक",
-    zh: "Google Maps 地图导航",
-    pt: "Localização no Google Maps",
-    ru: "Локация в Google Maps",
-    de: "Google Maps Standort-Links",
-    ja: "Googleマップ会場案内",
-    ko: "Google 지도 장소 링크",
-    it: "Mappe di Google per la Sede",
-    tr: "Google Haritalar Konumu",
-    id: "Tautan Lokasi Google Maps",
-    bn: "গুগল ম্যাপস লোকেশন লিঙ্ক",
-    vi: "Định Vị Google Maps Vấn Đề",
-    sw: "Viungo vya Google Maps"
-  },
-  f3Desc: {
-    en: "Guide guests straight to your home or hall without sending manual directions.",
-    ur: "مہمانوں کو الگ سے راستہ بتائے بغیر سیدھا اپنے گھر یا ہال کی لوکیشن دیں۔",
-    es: "Guía a tus invitados directamente a tu casa o salón sin enviar instrucciones manuales.",
-    fr: "Guidez vos invités directement jusqu'à votre salle sans envoyer d'explications manuelle.",
-    ar: "توجيه الضيوف مباشرة إلى منزلك أو قاعتك دون الحاجة لإرسال تفاصيل المسار يدويًا.",
-    hi: "अलग से दिशा-निर्देश भेजे बिना मेहमानों को सीधे अपने घर या हॉल का रास्ता दिखाएं।",
-    zh: "直接嵌入地图精准定位，无须手动发定位即可将宾客指引至宴会现场。",
-    pt: "Guie os convidados diretamente para sua casa ou salão sem enviar orientações manuais.",
-    ru: "Направляйте гостей прямо к вашему дому или залу без отправки инструкции вручную.",
-    de: "Führen Sie Gäste direkt zu Ihrem Zuhause oder Saal, ohne Wegbeschreibungen tippen zu müssen.",
-    ja: "手動で道順を送ることなく、ゲストを自宅や会場へ直接案内できます。",
-    ko: "수동으로 길을 설명할 필요 없이 하객을 예식장이나 집으로 직접 안내하세요.",
-    it: "Guida gli ospiti direttamente a casa tua o in sala senza inviare indicazioni manuali.",
-    tr: "Manuel yol tarifi göndermeden davetlileri doğrudan evinize veya salona yönlendirin.",
-    id: "Arahkan tamu langsung ke rumah atau gedung acara tanpa perlu mengetik petunjuk arah.",
-    bn: "আলাদা করে দিকনির্দেশ না পাঠিয়ে অতিথিদের সরাসরি আপনার বাড়ি বা হলে নিয়ে আসুন।",
-    vi: "Dẫn đường cho khách đến thẳng nhà hoặc hội trường mà không cần nhắn tin chỉ đường.",
-    sw: "Waelekeze wageni moja kwa moja hadi nyumbani au ukumbini bila kutuma maelekezo ya mkono."
-  },
-  f4Title: {
-    en: "Live Event Countdowns",
-    ur: "لائیو کاؤنٹ ڈاؤن ٹائمر",
-    es: "Contador en Tiempo Real",
-    fr: "Comptes à Rebours en Direct",
-    ar: "عداد تنازلي مباشر",
-    hi: "लाइव काउंटडाउन टाइमर",
-    zh: "倒计时实时计时器",
-    pt: "Contagem Regressiva ao Vivo",
-    ru: "Живой обратный отсчет",
-    de: "Live-Countdown-Timer",
-    ja: "カウントダウンタイマー",
-    ko: "실시간 카운트다운 타이머",
-    it: "Count-down in Tempo Reale",
-    tr: "Canlı Geri Sayım Sayacı",
-    id: "Hitung Mundur Acara",
-    bn: "লাইভ কাউন্টডাউন টাইমার",
-    vi: "Đếm Ngược Thời Gian Thực",
-    sw: "Wakati wa Kuhesabu Kurudi"
-  },
-  f4Desc: {
-    en: "Build excitement leading up to your wedding day, party, or holiday morning.",
-    ur: "اپنی شادی کے دن، پارٹی یا عید کی صبح تک جوش و خروش بڑھائیں۔",
-    es: "Genera emoción antes de tu boda, fiesta o mañana festiva.",
-    fr: "Créez de l'enthousiasme à l'approche de votre mariage, fête ou matin de fête.",
-    ar: "زيادة الحماس والترقب حتى يوم الزفاف أو الحفلة أو صباح العيد.",
-    hi: "अपनी शादी के दिन, पार्टी या त्योहार की सुबह तक उत्साह बढ़ाएं।",
-    zh: "为大婚喜日子、寿宴及开业盛典营造满满的期盼与仪式感。",
-    pt: "Crie expectativa até o dia do casamento, festa ou manhã de feriado.",
-    ru: "Создавайте предвкушение пред свадьбой, вечеринкой или праздничным утром.",
-    de: "Steigern Sie die Vorfreude auf Ihren Hochzeitstag, Ihre Party oder den Feiertag.",
-    ja: "結婚式やパーティー、休日の朝に向けて期待感を高めます。",
-    ko: "결혼식, 파티 또는 명절 아침까지 설렘과 기대감을 높여보세요.",
-    it: "Crea attesa fino al giorno del matrimonio, della festa o della mattina di festa.",
-    tr: "Düğün gününüz, partiniz veya bayram sabahına kadar heyecanı artırın.",
-    id: "Ciptakan kegembiraan menjelang hari pernikahan, pesta, atau pagi hari raya.",
-    bn: "আপনার বিয়ের দিন, পার্টি বা ঈদের সকালের জন্য উৎসাহ বাড়িয়ে তুলুন।",
-    vi: "Tạo sự hào hứng chờ đón ngày cưới, bữa tiệc hoặc buổi sáng ngày lễ.",
-    sw: "Jenga msisimko kuelekea siku ya harusi, karamu au asubuhi ya sikukuu."
-  },
-  s4Title: {
-    en: "What Makes Cardzy Different",
-    ur: "کارڈزی کو کیا چیز منفرد بناتی ہے",
-    es: "Lo Que Hace Diferente a Cardzy",
-    fr: "Ce Qui Rend Cardzy Unique",
-    ar: "ما الذي يجعل كاردزي مختلفاً",
-    hi: "Cardzy को क्या अलग बनाता है",
-    zh: "Cardzy 的独特之处",
-    pt: "O que Torna o Cardzy Diferente",
-    ru: "Что делает Cardzy особенным",
-    de: "Was Cardzy unterscheidet",
-    ja: "Cardzyのユニークな点",
-    ko: "Cardzy가 특별한 이유",
-    it: "Cosa Rende Cardzy Diverso",
-    tr: "Cardzy'yi Farklı Kılan Nedir",
-    id: "Apa yang Membuat Cardzy Berbeda",
-    bn: "Cardzy-কে যা অনন্য করে তোলে",
-    vi: "Điểm Khác Biệt Của Cardzy",
-    sw: "Anachofanya Cardzy Kuwa Tofauti"
-  },
-  s4Content: {
-    en: "We believe sending heartfelt wishes should be accessible to everyone. That is why Cardzy offers free-forever digital wish cards for everyday greetings. For hosts planning larger events or weddings, our affordable Cardzy Pro upgrade unlocks advanced guest management, custom maps, live countdowns, and ad-free customization.",
-    ur: "ہم مانتے ہیں کہ مبارکباد کے پیغامات بھیجنا ہر ایک کے لیے آسان ہونا چاہیے۔ اسی لیے کارڈزی روزمرہ پیغامات کے لیے بالکل مفت کارڈز پیش کرتا ہے۔ بڑے ایونٹس کے لیے کارڈزی پرو پلان دستیاب ہے۔",
-    es: "Creemos que enviar deseos sinceros debe ser accesible para todos. Por eso Cardzy ofrece tarjetas digitales gratuitas para siempre. Para eventos más grandes, nuestro plan Cardzy Pro desbloquea funciones avanzadas.",
-    fr: "Nous pensons que l'envoi de vœux doit être accessible à tous. C'est pourquoi Cardzy propose des cartes gratuites à vie. Pour les grands événements, Cardzy Pro débloque des fonctionnalités avancées.",
-    ar: "نؤمن بأن إرسال الأمنيات يجب أن يكون متاحاً للجميع. لذلك يقدم كاردزي بطاقات مجانية مدى الحياة. وللمناسبات الكبيرة، يوفر Cardzy Pro مزايا متقدمة.",
-    hi: "हम मानते हैं कि दिल से शुभकामनाएं भेजना हर किसी के लिए सुलभ होना चाहिए। इसीलिए Cardzy हमेशा के लिए मुफ़्त कार्ड प्रदान करता है। बड़े आयोजनों के लिए Cardzy Pro उन्नत सुविधाएँ अनलॉक करता है।",
-    zh: "我们坚信分享真心祝福应当没有任何门槛。因此 Cardzy 永久提供免费版的祝贺卡。而针对大型婚礼与聚会，Cardzy Pro 方案则解锁高级嘉宾管理与无广告体验。",
-    pt: "Acreditamos que enviar felicitações deve ser acessível a todos. Por isso o Cardzy oferece cartões gratuitos para sempre. Para grandes eventos, o Cardzy Pro desbloqueia recursos avançados.",
-    ru: "Мы верим, что отправка искренних пожеланий должна быть доступна каждому. Поэтому Cardzy бесплатно предоставляет открытки всегда. Для крупных событий есть тариф Cardzy Pro.",
-    de: "Wir glauben, dass das Versenden von Wünschen für jeden zugänglich sein sollte. Cardzy bietet dauerhaft kostenlose Karten. Für große Events bietet Cardzy Pro erweiterte Funktionen.",
-    ja: "心のこもったお祝いを送ることは誰にとっても手軽であるべきだと考えています。そのためCardzyは無料のウィッシュカードを提供しています。大規模イベントにはCardzy Proが利用可能です。",
-    ko: "진심 어린 마음을 전하는 일은 누구에게나 쉬워야 한다고 믿습니다. 그렇기에 Cardzy는 평생 무료 소원 카드를 제공합니다. 대형 행사의 경우 Cardzy Pro로 업그레이드할 수 있습니다.",
-    it: "Crediamo che inviare auguri sinceri debba essere accessibile a tutti. Ecco perché Cardzy offre biglietti gratuiti per sempre. Per eventi più grandi, Cardzy Pro sblocca funzioni avanzate.",
-    tr: "Samimi dilekler göndermenin herkes için erişilebilir olması gerektiğine inanıyoruz. Cardzy ücretsiz kartlar sunar. Büyük etkinlikler için Cardzy Pro gelişmiş özellikler sağlar.",
-    id: "Kami percaya mengucapkan selamat harus dapat diakses semua orang. Cardzy menyediakan kartu ucapan gratis selamanya. Untuk acara besar, paket Cardzy Pro membuka fitur lanjutan.",
-    bn: "আমরা বিশ্বাস করি যে শুভেচ্ছা বার্তা পাঠানো সবার জন্য সহজ হওয়া উচিত। তাই Cardzy চিরতরে বিনামূল্যে উইশ کارڈ প্রদান করে। বড় ইভেন্টের জন্য রয়েছে Cardzy Pro।",
-    vi: "Chúng tôi tin rằng việc gửi lời chúc chân thành nên dễ dàng với mọi người. Cardzy cung cấp thiệp miễn phí mãi mãi. Với sự kiện lớn, Cardzy Pro nâng cấp tính năng cao cấp.",
-    sw: "Tunaamini kutuma matamanio kutoka moyoni lazima iwe rahisi kwa kila mtu. Ndiyo maana Cardzy inatoa kadi za bure kabisa. Kwa hafla kubwa, Cardzy Pro inafungua vipengele vya juu."
-  },
-  contactTitle: {
-    en: "Contact Information",
-    ur: "رابطے کی معلومات",
-    es: "Información de Contacto",
-    fr: "Informations de Contact",
-    ar: "معلومات الاتصال",
-    hi: "संपर्क जानकारी",
-    zh: "联系方式与总部",
-    pt: "Informações de Contato",
-    ru: "Контактная информация",
-    de: "Kontaktinformationen",
-    ja: "お問い合わせ先",
-    ko: "연락처 정보",
-    it: "Informazioni di Contatto",
-    tr: "İletişim Bilgileri",
-    id: "Informasi Kontak",
-    bn: "যোগাযোগের তথ্য",
-    vi: "Thông Tin Liên Hệ",
-    sw: "Taarifa za Mawasiliano"
-  },
-  locLabel: {
-    en: "Operating Location: Islamabad / Rawalpindi, Pakistan",
-    ur: "مقام: اسلام آباد / راولپنڈی، پاکستان",
-    es: "Ubicación: Islamabad / Rawalpindi, Pakistán",
-    fr: "Siège : Islamabad / Rawalpindi, Pakistan",
-    ar: "الموقع الرئيسي: إسلام آباد / راولبندي، باكستان",
-    hi: "स्थान: इस्लामाबाद / रावलपिंडी, पाकिस्तान",
-    zh: "运营总部：巴基斯坦·伊斯兰堡 / 拉瓦尔品第",
-    pt: "Localização: Islamabad / Rawalpindi, Paquistão",
-    ru: "Локация: Исламабад / Равалпинди, Пакистан",
-    de: "Standort: Islamabad / Rawalpindi, Pakistan",
-    ja: "拠点：パキスタン・イスラマバード/ラワルピンディ",
-    ko: "운영 위치: 파키스탄 이슬라마바드 / 라왈핀디",
-    it: "Sede Operativa: Islamabad / Rawalpindi, Pakistan",
-    tr: "Konum: İslamabad / Rawalpindi, Pakistan",
-    id: "Lokasi Operasional: Islamabad / Rawalpindi, Pakistan",
-    bn: "অবস্থান: ইসলামাবাদ / রাওয়ালপিন্ডি, পাকিস্তান",
-    vi: "Địa điểm: Islamabad / Rawalpindi, Pakistan",
-    sw: "Eneo la Kazi: Islamabad / Rawalpindi, Pakistan"
-  }
+const aboutJsonLd = {
+  '@context': 'https://schema.org', '@type': 'Organization', name: 'Cardzy',
+  url: 'https://cardzy.online', logo: 'https://cardzy.online/favicon.svg',
+  description: 'Cardzy is a global digital celebration platform for animated wish cards and event invitations, supporting 18 languages and serving users in 60+ countries.',
+  foundingLocation: 'Islamabad, Pakistan',
+  sameAs: ['https://www.instagram.com/cardzyonline','https://www.tiktok.com/@cardzyonline','https://www.facebook.com/share/1bPTaFnxDz/'],
 }
 
 export default function AboutPage() {
-  const { lang, t: globalT } = useLang()
-  const t = (key: string) => ABOUT_TEXT[key]?.[lang] || ABOUT_TEXT[key]?.en || globalT(key) || ''
+  const { t } = useLang()
+
+  const products = [
+    { icon: <Sparkles className="size-6" />, bg: 'bg-emerald-100 text-emerald-700', title: 'Animated Wish Cards', body: 'Create personalised, 3D-animated digital greeting cards for Eid Mubarak, birthdays, anniversaries, Ramadan, graduations, and 35+ other occasions. Add a photo, custom message, name, and background music. Share instantly via a link — no app required.' },
+    { icon: <Heart className="size-6" />, bg: 'bg-amber-100 text-amber-700', title: 'Digital Event Invitations', body: 'Build a full animated invitation website for your Nikkah, Mehndi, Barat, Walima, Birthday Party, or any event. Includes live RSVP tracking, Google Maps venue pin, WhatsApp one-tap RSVP, countdown timer, and a shareable link you can blast to 200+ family members instantly.' },
+    { icon: <ShieldCheck className="size-6" />, bg: 'bg-blue-100 text-blue-700', title: 'Digital Visiting Cards', body: 'Create a smart digital business card (vCard) for doctors, lawyers, executives, real estate agents, and entrepreneurs. Share via QR code or link. Recipients save your full contact details with one tap — always up to date, zero printing cost.' },
+  ]
+
+  const values = [
+    [<Globe key="g" className="size-5" />, '18 Languages — Including Urdu & Arabic', "Cardzy is the only digital card platform with native Urdu Nastaliq script, Arabic, and 16 other world languages. Create a bilingual Urdu-English Nikkah invitation that both your London relatives and your Lahore elders can read beautifully."],
+    [<Zap key="z" className="size-5" />, 'Instant — No Printing, No Courier', "Your card is live the moment you click create. Share it in any WhatsApp group, Instagram Story, or SMS. No 2-week print wait, no Rs. 40,000 printing bill, no cards stuck in courier delays before the wedding."],
+    [<Users key="u" className="size-5" />, 'Real-Time RSVP & Guest Management', "Track exactly who has confirmed attendance for your event. Export the full guest list to CSV. The WhatsApp RSVP button increases response rates dramatically compared to phone-call follow-ups."],
+    [<Star key="s" className="size-5" />, 'South Asian Cultural Authenticity', "Cardzy is designed with Pakistani and South Asian celebrations at its heart — Mehndi themes, Islamic geometric patterns, Bismillah calligraphy openers, dholki music tracks, and occasion categories covering every function from Mangni to Walima."],
+    [<ShieldCheck key="sc" className="size-5" />, 'Free to Start, Genuinely', "No credit card. No trial period. Cardzy's free plan lets you create unlimited wish cards with classic themes. Upgrade only when you need premium animations or watermark removal."],
+    [<Sparkles key="sp" className="size-5" />, 'Global Reach for Diaspora Families', "Pakistani, Indian, and Bangladeshi diaspora families are spread across the UK, USA, UAE, Canada, and Australia. Cardzy cards work perfectly across time zones — your Eid card reaches your relative in Manchester the same second you create it in Karachi."],
+  ]
+
+  const whoWeServe = [
+    'Pakistani families celebrating Eid ul Fitr, Eid ul Adha, and national holidays',
+    'Couples planning Nikkah, Mehndi, Barat, and Walima functions in Pakistan and abroad',
+    'Muslim families marking Ramadan, Quran Khatam, Hajj, and Umrah milestones',
+    'Pakistani, Indian, and Bangladeshi diaspora families in the UK, USA, UAE, and Canada',
+    'Business executives and doctors needing professional digital visiting cards',
+    'Wedding planners and event managers handling multiple client events',
+    'School and university students celebrating graduation and exam results',
+    'Corporate teams sending New Year, Eid, and company milestone cards',
+    'Real estate agents and lawyers sharing smart digital business cards via QR',
+    'NGOs and community organisations managing event invitations and RSVPs',
+  ]
 
   return (
-    <div className="py-12 md:py-20">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          
-          {/* Header Badge & Title */}
-          <div className="text-center">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-              <Sparkles className="size-3.5" /> {t('tagline')}
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutJsonLd) }} />
+      <div className="min-h-screen bg-background">
+
+        {/* Hero */}
+        <section className="bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950 text-white py-16 md:py-28">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-bold text-amber-300 uppercase tracking-wider mb-6">
+              <Heart className="size-4" /> {t('aboutBadge')}
             </span>
-            <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
-              {t('mainHeading')}
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl leading-tight">
+              {t('aboutH1')}
             </h1>
-            <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t('subtitle')}
+            <p className="mt-5 max-w-2xl mx-auto text-lg leading-relaxed text-emerald-100/80">
+              Cardzy is a global digital celebration platform bringing loved ones together through interactive, multi-lingual animated wish cards and professional event invitations. Born in Pakistan. Built for the world.
             </p>
           </div>
+        </section>
 
-          {/* Core Content Card */}
-          <div className="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-xs space-y-8 text-foreground leading-relaxed">
-            <h2 className="text-xl font-extrabold text-foreground mb-4 border-b pb-2">{t('aboutCardzyMissionTitle')}</h2>
-            <section>
-              <h3 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
-                <Heart className="size-5 text-emerald-600 dark:text-emerald-400" /> {t('s1Title')}
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                {t('s1Content')}
+        {/* Story */}
+        <section className="py-14 md:py-20">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
+            <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">{t('aboutWelcome')}</h2>
+            <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
+              Cardzy is a modern digital wish card and event invitation platform created for South Asian families, diaspora communities, and anyone who believes that celebrations deserve more than a plain text message. We combine rich animated design, multilingual text support, and practical event management tools — all in one place, accessible from any smartphone or computer.
+            </p>
+            <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
+              The idea for Cardzy was born from a simple frustration: sending an Eid Mubarak WhatsApp message to a hundred relatives felt impersonal, but printing and couriering physical cards was expensive, slow, and wasteful. Cardzy is the solution — as warm and personal as a handwritten card but as instant and effortless as a text message.
+            </p>
+            <div className="rounded-3xl border border-border bg-card p-7 space-y-4">
+              <h3 className="text-xl font-extrabold text-foreground">{t('aboutProblem')}</h3>
+              <p className="text-base leading-relaxed text-muted-foreground">
+                Traditional paper greeting cards are expensive (a single Pakistani wedding invitation printing run can cost Rs. 20,000–80,000), take days to produce, cannot be updated once printed, and are impossible to share across WhatsApp family groups or with overseas relatives in real time. Generic Western card sites offer no Urdu script support, no South Asian occasion categories, and no Pakistani payment options. Cardzy was built to fill this gap.
               </p>
-            </section>
-
-            <section className="border-t border-border/60 pt-6">
-              <h3 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
-                <Globe className="size-5 text-emerald-600 dark:text-emerald-400" /> {t('s2Title')}
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                {t('s2Content')}
-              </p>
-            </section>
-
-            <section className="border-t border-border/60 pt-6">
-              <h3 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
-                <Zap className="size-5 text-emerald-600 dark:text-emerald-400" /> {t('s3Title')}
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground mb-4">
-                {t('s3Content')}
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="rounded-2xl border border-border/80 bg-background/60 p-4">
-                  <h3 className="font-bold text-sm text-foreground">{t('f1Title')}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{t('f1Desc')}</p>
-                </div>
-                <div className="rounded-2xl border border-border/80 bg-background/60 p-4">
-                  <h3 className="font-bold text-sm text-foreground">{t('f2Title')}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{t('f2Desc')}</p>
-                </div>
-                <div className="rounded-2xl border border-border/80 bg-background/60 p-4">
-                  <h3 className="font-bold text-sm text-foreground">{t('f3Title')}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{t('f3Desc')}</p>
-                </div>
-                <div className="rounded-2xl border border-border/80 bg-background/60 p-4">
-                  <h3 className="font-bold text-sm text-foreground">{t('f4Title')}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{t('f4Desc')}</p>
-                </div>
-              </div>
-            </section>
-
-            <section className="border-t border-border/60 pt-6">
-              <h3 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2 mb-3">
-                <ShieldCheck className="size-5 text-emerald-600 dark:text-emerald-400" /> {t('s4Title')}
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                {t('s4Content')}
-              </p>
-            </section>
-
-            <section className="border-t border-border/60 pt-6 bg-emerald-500/5 rounded-2xl p-6">
-              <h2 className="text-lg font-bold text-foreground mb-4">{t('contactTitle')}</h2>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <MapPin className="size-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>{t('locLabel')}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="size-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>Email: <a href="mailto:cardzyonline@gmail.com" className="text-foreground hover:underline font-medium">cardzyonline@gmail.com</a></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MessageSquare className="size-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>WhatsApp: <a href="https://wa.me/923093518796" target="_blank" rel="noopener noreferrer" className="text-foreground hover:underline font-medium">+92 309 3518796</a></span>
-                </div>
-              </div>
-            </section>
-
+            </div>
           </div>
-        </div>
-    </div>
+        </section>
+
+        {/* Products */}
+        <section className="bg-muted/40 py-14 md:py-20">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-10">
+            <div className="text-center">
+              <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">{t('aboutWhatOffer')}</h2>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {products.map((p) => (
+                <div key={p.title} className="rounded-2xl border border-border bg-card p-6 space-y-3">
+                  <div className={`flex size-12 items-center justify-center rounded-2xl ${p.bg}`}>{p.icon}</div>
+                  <h3 className="font-extrabold text-foreground">{p.title}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{p.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose */}
+        <section className="py-14 md:py-20">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-10">
+            <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl text-center">{t('aboutWhyChoose')}</h2>
+            <div className="grid gap-5 sm:grid-cols-2">
+              {values.map(([icon, title, body]) => (
+                <div key={title as string} className="rounded-2xl border border-border bg-card p-5 space-y-2">
+                  <div className="flex items-center gap-2 text-emerald-700">{icon}<h3 className="font-bold text-foreground text-sm">{title as string}</h3></div>
+                  <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">{body as string}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Who We Serve */}
+        <section className="bg-muted/40 py-14 md:py-20">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
+            <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">{t('aboutWhoServe')}</h2>
+            <ul className="grid sm:grid-cols-2 gap-3 text-sm text-muted-foreground">
+              {whoWeServe.map((item) => (
+                <li key={item} className="flex items-start gap-2.5">
+                  <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* Values */}
+        <section className="py-14 md:py-20">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
+            <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl text-center">{t('aboutValues')}</h2>
+            <div className="grid sm:grid-cols-3 gap-5">
+              {[
+                ['Authenticity','We honour South Asian culture, Islamic traditions, and the emotional weight of family celebrations. Every design decision is made with cultural respect.'],
+                ['Simplicity','Creating a card should take two minutes, not two hours. We remove every unnecessary step so you can focus on the message, not the software.'],
+                ['Accessibility','Cardzy is free to start and available in 18 languages. Beautiful digital celebrations should be accessible to every family, regardless of budget.'],
+              ].map(([title, body]) => (
+                <div key={title} className="rounded-2xl border border-border bg-card p-6 text-center space-y-2">
+                  <h3 className="font-extrabold text-foreground">{title}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* HQ & Contact */}
+        <section className="bg-muted/40 py-14 md:py-20">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
+            <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">{t('aboutHQ')}</h2>
+            <div className="grid sm:grid-cols-3 gap-5">
+              <div className="rounded-2xl border border-border bg-card p-5 space-y-2">
+                <MapPin className="size-5 text-emerald-700" />
+                <h3 className="font-bold text-foreground text-sm">Location</h3>
+                <p className="text-sm text-muted-foreground">Islamabad / Rawalpindi, Pakistan</p>
+              </div>
+              <a href="mailto:cardzyonline@gmail.com" className="group rounded-2xl border border-border bg-card p-5 space-y-2 hover:border-emerald-500/50 transition-all">
+                <Mail className="size-5 text-emerald-700" />
+                <h3 className="font-bold text-foreground text-sm group-hover:text-emerald-700 transition-colors">Email</h3>
+                <p className="text-sm text-muted-foreground">cardzyonline@gmail.com</p>
+                <p className="text-xs text-muted-foreground">Response within 24 hours</p>
+              </a>
+              <a href="https://wa.me/923093518796" target="_blank" rel="noopener noreferrer" className="group rounded-2xl border border-border bg-card p-5 space-y-2 hover:border-emerald-500/50 transition-all">
+                <MessageSquare className="size-5 text-emerald-700" />
+                <h3 className="font-bold text-foreground text-sm group-hover:text-emerald-700 transition-colors">WhatsApp</h3>
+                <p className="text-sm text-muted-foreground">+92 309 3518796</p>
+                <p className="text-xs text-muted-foreground">Usually responds within hours</p>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="py-14 md:py-20 text-center">
+          <div className="mx-auto max-w-2xl px-4 space-y-6">
+            <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">{t('aboutReady')}</h2>
+            <p className="text-muted-foreground text-base sm:text-lg">Join thousands of families and professionals who use Cardzy to celebrate, connect, and communicate in style — for free.</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/create-wish" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-700 px-7 py-3.5 text-sm font-bold text-white hover:bg-emerald-800 transition-colors shadow-md">
+                <Sparkles className="size-4" />{t('createWishCard')}<ArrowRight className="size-4" />
+              </Link>
+              <Link href="/create-invitation" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-emerald-800/30 px-7 py-3.5 text-sm font-bold text-foreground hover:bg-muted transition-colors">
+                {t('createInvitation')}
+              </Link>
+              <Link href="/contact" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border px-7 py-3.5 text-sm font-bold text-foreground hover:bg-muted transition-colors">
+                {t('contactPageBadge')}
+              </Link>
+            </div>
+          </div>
+        </section>
+      </div>
+    </>
   )
 }

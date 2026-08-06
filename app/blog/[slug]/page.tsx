@@ -49,7 +49,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     description,
     keywords: post.tags,
     alternates: {
-      canonical: `https://cardzy.online/blog/${post.slug}${lang !== 'en' ? `?lang=${lang}` : ''}`,
+      canonical: `https://cardzy.online/blog/${post.slug}`,
       languages: languageAlternates,
     },
     openGraph: {

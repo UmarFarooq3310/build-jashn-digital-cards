@@ -105,6 +105,7 @@ function SiteHeaderInner() {
             { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },
             { href: '/pricing', key: 'pricing', fallback: 'Pricing' },
             { href: '/faq', key: 'faqs', fallback: 'FAQs' },
+            { href: '/contact', key: 'contact', fallback: 'Contact' },
           ].map((item) => (
             <Link
               key={item.href}
@@ -207,6 +208,7 @@ function SiteHeaderInner() {
               { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },
               { href: '/pricing', key: 'pricing', fallback: 'Pricing' },
               { href: '/faq', key: 'faqs', fallback: 'FAQs' },
+              { href: '/contact', key: 'contact', fallback: 'Contact' },
             ].map((item) => (
               <Link
                 key={item.href}

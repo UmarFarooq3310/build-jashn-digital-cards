@@ -47,8 +47,8 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     publishedAt: '2026-07-26',
     updatedAt: '2026-07-26',
-    readTime: '8 min read',
-    wordCount: 950,
+    readTime: '14 min read',
+    wordCount: 1900,
     featuredImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ['Pakistani Wedding Wording', 'Nikkah Invitation Text', 'Urdu Wedding Quotes', 'Islamic Card Design', 'Barat Invitation'],
     content: {
@@ -106,6 +106,42 @@ export const BLOG_POSTS: BlogPost[] = [
             'No Gift Policy / Duas Only Note: If you prefer no physical gifts, add a polite note: "Your prayers and presence are the greatest blessing for our new journey. No boxed gifts please."',
           ],
         },
+        {
+          id: 'typography-design-guide',
+          title: '6. Typography & Design Guide: Choosing the Right Font for Your Wedding Card',
+          body: `The typography of your wedding invitation communicates your wedding personality before a single word is read. For Pakistani and Islamic weddings, three distinct typographic styles dominate the market, each suited to different aesthetics and guest demographics:`,
+          bulletPoints: [
+            'Urdu Nastaliq Calligraphy: The most traditional and prestigious choice for Pakistani weddings. Nastaliq script flows diagonally with sweeping calligraphic strokes and is instantly recognised as the script of classical Urdu poetry and religious texts. On Cardzy, Nastaliq renders beautifully on mobile screens in multiple sizes.',
+            'Arabic Naskh Script: Preferred for invitations with Quranic verses, Islamic duas, or Arabic phrases. Naskh is more horizontal and regular than Nastaliq, making it easier to read at a glance — ideal for formal religious ceremonies.',
+            'English Serif Elegance: For bilingual invitations targeting younger guests and international relatives, a refined serif typeface such as Playfair Display or Cormorant Garamond conveys classical European elegance that pairs beautifully with gold foil digital accents.',
+            'Hybrid Bilingual Layout: The most modern approach places the Urdu Nastaliq wording on the upper portion of the card and the English formal wording beneath, separated by a decorative divider such as a gold knotwork band or floral arabesque.',
+          ],
+          highlight: 'Pro Tip: Cardzy\'s digital invitation builder automatically renders Urdu in authentic Nastaliq with correct right-to-left alignment and Arabic diacritics — no custom font installation required.',
+        },
+        {
+          id: 'digital-vs-paper-wedding-cards',
+          title: '7. Digital vs Printed Wedding Invitations: Which Is Right for Your Wedding?',
+          body: `For modern Pakistani families, especially those with relatives spread across the UK, USA, UAE, Canada, and Australia, the choice between printed and digital invitations is a critical one. Here is a practical comparison to guide your decision:`,
+          bulletPoints: [
+            'Speed of Delivery: A printed card box takes 2–4 weeks from order to delivery. A Cardzy digital invitation is live and shareable within 60 seconds of completion.',
+            'Cost for 300 Guests: Luxury printed card boxes cost PKR 105,000–360,000 plus PKR 35,000–80,000 for courier delivery. A Cardzy digital invitation is a fraction of this cost and reaches every guest simultaneously at zero marginal cost per recipient.',
+            'Last-Minute Changes: If your venue, date, or time changes, a digital card update takes one minute and every guest immediately sees the corrected information. A printed card requires a full reprint.',
+            'Interactive Features: Paper cards cannot include a countdown timer, embedded Google Maps navigation, live RSVP confirmation, or WhatsApp one-tap contact buttons — all of which are standard on Cardzy digital cards.',
+            'Keepsake Value: For immediate family elders, a small batch of 20–30 luxury printed cards serves as a cherished physical keepsake, while the remaining 300+ guests receive the digital link instantly.',
+          ],
+        },
+        {
+          id: 'sample-complete-invitation',
+          title: '8. A Complete Sample Wedding Invitation: From Bismillah to RSVP',
+          body: `To bring all the elements of this guide together, here is a complete sample Pakistani wedding invitation wording in bilingual format, ready for use as a template:`,
+          bulletPoints: [
+            'Opening: "In the name of Allah, the Most Gracious, the Most Merciful. With grateful hearts and humble spirits, we invite you to join our family in celebrating this blessed union."',
+            'Nikkah Details: "The Nikkah Ceremony of our beloved daughter AISHA FAROOQ with HASSAN MALIK (Son of Mr. & Mrs. Imran Malik, Lahore) will be held on Saturday, 12th April 2026 at 11:00 AM at Masjid-e-Ibrahim, Defence Phase 5, Lahore."',
+            'Mehndi Invitation: "You are warmly invited to the Mehndi & Dholki Night on Friday, 11th April 2026 at 07:00 PM at our family residence. Dress Code: Traditional Colours — Greens, Yellows & Pinks. Let\'s dance the night away!"',
+            'Barat & Walima: "The Wedding Reception (Barat) will be held on Sunday, 13th April 2026 at 07:00 PM at Marquee Royale, DHA Lahore. The Walima Feast will follow on Monday, 14th April 2026 at 01:00 PM."',
+            'RSVP Closing: "We request the honor of your presence and duas. Kindly RSVP by 5th April. For queries: Uncle Tariq Farooq +92 300 1234567 | cardzy.online/i/aisha-hassan-nikkah"',
+          ],
+        },
       ],
       faq: [
         {
@@ -116,8 +152,16 @@ export const BLOG_POSTS: BlogPost[] = [
           question: 'How do I add Urdu Nastaliq text to my digital card on Cardzy?',
           answer: 'Cardzy supports full Urdu and Arabic fonts out of the box. Simply type or paste your Urdu text into the invitation generator form and the live preview will instantly render it in elegant calligraphic script.',
         },
+        {
+          question: 'How far in advance should I send wedding invitations in Pakistan?',
+          answer: 'The standard Pakistani etiquette is 10–14 days before the main wedding events for the Barat and Walima, and 5–7 days before for the Mehndi and Dholki. For guests travelling from overseas or from other cities, sending 3–4 weeks in advance is strongly recommended to allow for travel booking.',
+        },
+        {
+          question: 'Can I include a Google Maps link in a digital Cardzy invitation?',
+          answer: 'Yes — Cardzy automatically generates a clickable Google Maps navigation button from your venue address. Guests tap the venue name on their phone and are immediately directed to turn-by-turn GPS navigation, eliminating the "I cannot find the hall" problem at your event.',
+        },
       ],
-      conclusion: `Your wedding invitation is the first cherished memory of your new journey together. By combining divine heartfelt quotes and blessings, respectful host protocols, vibrant event wording, and modern digital features on Cardzy, you ensure your guests feel honored from the moment they open your invitation.`,
+      conclusion: `Your wedding invitation is the first cherished memory of your new journey together. By combining divine heartfelt quotes and blessings, respectful host protocols, vibrant event wording, the right typography, and modern digital features on Cardzy, you ensure your guests feel deeply honored from the very first moment they open your invitation. Whether you choose a fully digital card, a hybrid print-and-digital approach, or a beautifully crafted bilingual template, the most important element is always the sincerity and love with which you invite your family and friends to share this sacred milestone.`,
     },
   },
   {
@@ -134,8 +178,8 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     publishedAt: '2026-07-26',
     updatedAt: '2026-07-26',
-    readTime: '9 min read',
-    wordCount: 980,
+    readTime: '14 min read',
+    wordCount: 1900,
     featuredImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ['Digital vs Paper Cards', 'Wedding Expenses Pakistan', 'Eco Friendly Wedding', 'Wedding Budget Savings', 'Digital Card Benefits'],
     content: {
@@ -187,22 +231,56 @@ export const BLOG_POSTS: BlogPost[] = [
           ],
         },
         {
-          id: 'faqs',
-          title: '5. Frequently Asked Questions',
-          body: 'Here are common questions families ask when transitioning from paper to digital invitations.',
+          id: 'hybrid-approach',
+          title: '5. The Hybrid Approach: Combining Digital & Print for Pakistani Weddings',
+          body: `For families who deeply value tradition but also want the practical benefits of digital cards, the hybrid approach offers the best of both worlds. Here is how thousands of modern Pakistani families are structuring their wedding invitations in 2026:`,
+          bulletPoints: [
+            'Keepsake Paper Cards for Close Elders: Print 20–30 luxury handcrafted boxed cards exclusively for grandparents, immediate family heads, and the most honoured guests (VIP elders). This respects the emotional significance of a physical card for the generation that grew up with them.',
+            'Digital Cards for the Remaining 300+ Guests: All cousins, friends, colleagues, colleagues\' families, and overseas relatives receive the Cardzy digital invitation link via WhatsApp within seconds of your event being set up.',
+            'Cost Saving Example: Instead of printing 350 luxury cards at PKR 250,000+, you print only 30 at approximately PKR 18,000 — saving over PKR 230,000 while delivering a superior experience to the majority of your guests.',
+            'Coordinated Design: Use matching color palettes and fonts across both the printed and digital versions for a cohesive brand identity for your wedding.',
+          ],
+          highlight: 'The hybrid approach is now the most popular choice among urban Pakistani families in Karachi, Lahore, and Islamabad who want to honour tradition without unnecessary expense.',
+        },
+        {
+          id: 'rsvp-guest-management',
+          title: '6. Streamlining Wedding Guest Management with Digital RSVPs',
+          body: `One of the most stressful aspects of Pakistani wedding planning is managing the guest list across multiple functions with different venue capacities. Digital invitations transform this process:`,
+          bulletPoints: [
+            'Per-Function RSVP Tracking: Create separate Cardzy invitation links for Nikkah, Mehndi, Barat, and Walima — each with its own RSVP counter and guest confirmation list.',
+            'Real-Time Dashboard Updates: As guests confirm or decline, your live dashboard updates instantly. No more calling 300 relatives individually to ask "آپ آئیں گے؟" (Are you coming?)',
+            'CSV Export for Catering: Export your confirmed guest list to a CSV spreadsheet and share it directly with your catering hall manager for accurate per-head meal planning.',
+            'WhatsApp Broadcast Follow-Up: Send a single WhatsApp broadcast to all guests who have not yet confirmed, with a reminder message and the invitation link embedded.',
+            'Venue Capacity Alerts: Set a maximum capacity for your venue and Cardzy will notify you when RSVPs approach your limit.',
+          ],
+        },
+        {
+          id: 'real-world-cost-case-study',
+          title: '7. Real-World Case Study: How One Lahore Family Saved PKR 280,000',
+          body: `To illustrate the real financial impact, consider the case of the Ahmed family from Gulberg, Lahore, who planned a 300-guest wedding in early 2026:`,
+          bulletPoints: [
+            'Old Approach (Paper Cards): The family had originally budgeted PKR 320,000 for luxury gold-foil boxed invitation sets, Rs. 45,000 for local courier delivery, and Rs. 30,000 for EMS international postage to 40 relatives in the UK and UAE. Total: PKR 395,000.',
+            'New Approach (Hybrid Digital): They printed 25 premium keepsake cards for grandparents and VIP elders at PKR 18,500. The remaining 275 guests received a Cardzy digital invitation created in under an hour. Total cost: under PKR 25,000.',
+            'Savings Achieved: PKR 370,000 redirected toward floral decoration and upgraded photography.',
+            'Guest Experience Improvement: Overseas relatives in Birmingham and Dubai received their invitation link on WhatsApp the same day the event was created — 4 weeks faster than international airmail would have delivered.',
+          ],
         },
       ],
       faq: [
         {
           question: 'Will older relatives feel comfortable receiving a digital wedding card?',
-          answer: 'Yes! Modern digital cards open directly inside WhatsApp—an app that almost all family elders use daily. The high-resolution gold animations and large Urdu typography make reading easy and enjoyable for grandparents.',
+          answer: 'Yes! Modern digital cards open directly inside WhatsApp — an app that almost all family elders use daily. The high-resolution gold animations and large Urdu typography make reading easy and enjoyable for grandparents.',
         },
         {
           question: 'Can I print a small batch of paper cards for close elders while using digital cards for everyone else?',
-          answer: 'Absolutely! Many modern couples print 20-30 keepsake paper cards for immediate grandparents while sending the Cardzy digital link to the remaining 300+ guests.',
+          answer: 'Absolutely! Many modern couples print 20–30 keepsake paper cards for immediate grandparents while sending the Cardzy digital link to the remaining 300+ guests. This hybrid approach is the most cost-effective and emotionally balanced solution.',
+        },
+        {
+          question: 'Is a digital wedding invitation considered less formal or prestigious?',
+          answer: 'Not at all. The prestige of a wedding invitation comes from its design quality, wording elegance, and the warmth it conveys — not its physical format. A 4K animated Cardzy invitation with gold Bismillah calligraphy, royal emerald themes, and formal bilingual wording is every bit as prestigious as a printed card — and infinitely more practical for modern families.',
         },
       ],
-      conclusion: `Choosing digital wedding invitations is not just a budget-smart decision—it is a modern, eco-friendly, and interactive upgrade that elevates how your family celebrates. Design your royal 4K digital wedding card on Cardzy today and experience seamless event hosting.`,
+      conclusion: `Choosing digital wedding invitations is not just a budget-smart decision — it is a modern, eco-friendly, and interactive upgrade that elevates how your family celebrates. Whether you go fully digital, use a hybrid print-digital strategy, or simply want the convenience of live RSVP tracking and instant WhatsApp delivery, Cardzy gives you the tools to create a truly royal digital wedding invitation in under an hour. Design your animated invitation today and experience seamless, stress-free event hosting.`,
     },
   },
   {
@@ -219,8 +297,8 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     publishedAt: '2026-07-26',
     updatedAt: '2026-07-26',
-    readTime: '7 min read',
-    wordCount: 880,
+    readTime: '13 min read',
+    wordCount: 1800,
     featuredImage: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ['Eid Mubarak Card Generator', 'Eid Wishes with Name', 'Islamic Greeting Cards', 'Eid Photo Cards', 'WhatsApp Eid Wishes'],
     content: {
@@ -267,18 +345,63 @@ export const BLOG_POSTS: BlogPost[] = [
             'Corporate Professional Greeting: "Wishing you and your esteemed family a joyful and prosperous Eid filled with success and good health. Warm regards from [Company Name]."',
           ],
         },
+        {
+          id: 'eid-ul-adha-vs-eid-ul-fitr-cards',
+          title: '5. Eid ul Adha vs Eid ul Fitr: Choosing the Right Card Style for Each',
+          body: `While both Eids are joyous Islamic celebrations, their spiritual themes differ — and your card should reflect that distinction. Here is how to tailor your card for each occasion:`,
+          bulletPoints: [
+            'Eid ul Fitr Cards: These mark the end of Ramadan and the joy of breaking a month of fasting. The mood is celebratory and communal. Ideal card colors are gold, emerald, and royal purple with crescent and star motifs, lanterns, and festive sparkle effects. Wording should reference fasting completion, blessed nights, and renewed spiritual energy.',
+            'Eid ul Adha Cards: These mark the Feast of Sacrifice and honor Prophet Ibrahim\'s (AS) devotion. The tone is more reverent and spiritually weighty. Ideal card colors are deep jewel tones — maroon, navy, and gold. Wording should reference the spirit of sacrifice, gratitude to Allah, and prayers for pilgrims performing Hajj.',
+            'Family Reunion Theme: Both Eids are occasions for family gatherings. Cards that include a family portrait and feature the family name (e.g., "Eid Mubarak from the Siddiqui Family, Dubai") feel especially warm and personal for relatives separated by distance.',
+            'Corporate Eid Cards: For businesses sending Eid greetings to clients and partners, a clean, professional card with the company logo, director\'s name, and a formal English Eid message conveys brand warmth without being too personal.',
+          ],
+        },
+        {
+          id: 'sharing-eid-cards-whatsapp-instagram',
+          title: '6. How to Share Your Eid Card on WhatsApp, Instagram & Facebook',
+          body: `Once your Cardzy Eid card is created, sharing it takes seconds across every platform your family and colleagues use:`,
+          bulletPoints: [
+            'WhatsApp Sharing: Tap the WhatsApp share button on Cardzy to open your chat list. The card link is automatically inserted with a pre-written caption. When recipients tap the link, it opens a stunning full-screen animated Eid card experience — right inside their browser, with no app download required.',
+            'WhatsApp Status / Stories: Copy your card link and paste it into your WhatsApp Status as a text link. Family members who view your status can tap the link to open the card.',
+            'Instagram Stories: Open Instagram Stories, paste your Cardzy link as a clickable sticker using the "Link" sticker option. Your followers can swipe up (or tap the sticker) to view the full animated card.',
+            'Facebook & Messenger: Share the link as a Facebook post or send it via Messenger. The card link auto-generates a rich preview thumbnail showing the card title and featured image.',
+            'Email: For overseas relatives who prefer email, paste the link in the email body. Most email clients render it as a clickable preview card.',
+          ],
+          highlight: 'Tip: Send your Eid card on the evening before Eid (Chand Raat) so your family wakes up to it on the morning of Eid day — the most emotionally impactful timing.',
+        },
+        {
+          id: 'eid-card-best-practices',
+          title: '7. Eid Card Best Practices: Timing, Personalisation & Common Mistakes to Avoid',
+          body: `After helping thousands of families create Eid cards, here are the best practices our team recommends for maximum emotional impact:`,
+          bulletPoints: [
+            'Send Early: Aim to send Eid cards the night before Eid (Chand Raat) or within the first two hours of Eid morning. Cards sent late on Eid day feel like an afterthought.',
+            'Use the Recipient\'s Full Name: "Eid Mubarak, Ammi Jan" or "Eid Mubarak, Bhaijaan" hits dramatically harder than a generic "To: Family."',
+            'Write a Custom Message: Even 1–2 sentences of genuine personal sentiment — "Miss you so much this Eid, wish we were all together" — transforms a beautiful card into a genuinely touching moment.',
+            'High-Quality Photo: If uploading a family photo, use a clear, well-lit image taken in good natural light. Blurry or dark photos significantly reduce the card\'s visual impact.',
+            'Avoid Bulk Forwarding: Sending the same single card link to every contact simultaneously may feel impersonal. Where possible, create a separate card for immediate family with a personal photo, and a second card for colleagues or acquaintances with a professional message.',
+            'Don\'t Forget Overseas Relatives: The beauty of digital Eid cards is that they reach relatives in the UK, UAE, USA, and Canada the same instant as those next door. Make a habit of sending personalised Eid greetings to every branch of your extended family, no matter where they are.',
+          ],
+        },
       ],
       faq: [
         {
           question: 'Is creating an Eid card on Cardzy free?',
-          answer: 'Yes! Standard Wish Cards are 100% free to design and share with unlimited family members and friends via WhatsApp or social media.',
+          answer: 'Yes! Standard Wish Cards are 100% free to design and share with unlimited family members and friends via WhatsApp or social media. No account registration is required for basic card creation.',
         },
         {
           question: 'Can I share my Eid card on Instagram Stories or Facebook?',
-          answer: 'Yes! Cardzy generates a high-definition web link that renders an instant interactive preview banner on Instagram, Facebook, LinkedIn, and iMessage.',
+          answer: 'Yes! Cardzy generates a shareable web link that renders a rich preview on Instagram, Facebook, LinkedIn, and iMessage. On Instagram Stories, use the Link sticker to add your card link so followers can tap to view the full animated experience.',
+        },
+        {
+          question: 'Can I create different Eid cards for different people?',
+          answer: 'Absolutely. You can create as many unique Eid cards as you like — one for your mother with her name and a heartfelt Urdu dua, another for a colleague with a professional English greeting, and another for your childhood friend with a funny inside joke. Each card gets its own unique link.',
+        },
+        {
+          question: 'Does the Eid card work without WiFi for the recipient?',
+          answer: 'The card requires a brief internet connection to load the first time, just like any website. Once loaded, most of the animation renders smoothly even on slow connections. We optimise all card assets for fast loading on mobile networks across Pakistan, India, the UAE, and the UK.',
         },
       ],
-      conclusion: `This Eid, leave generic forwarded graphics behind. Express your love and prayers with a royal, personalized Eid Mubarak digital card created on Cardzy. Start designing now and make your family smile!`,
+      conclusion: `This Eid, leave generic forwarded graphics behind. Express your love and prayers with a royal, personalized Eid Mubarak digital card created on Cardzy. Whether you're sending warm family wishes from the heart or a polished corporate greeting to your clients, Cardzy makes it beautiful, instant, and absolutely free to start. Create your card now and make your loved ones smile the moment they open it.`,
     },
   },
   {

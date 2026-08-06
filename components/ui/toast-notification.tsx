@@ -10,7 +10,8 @@ export function ToastNotification() {
   const storeToast = useJashn((s) => s.toast)
   const hideToast = useJashn((s) => s.hideToast)
   const [toast, setToast] = useState<{ id?: string | number; message: string; type: 'success' | 'info' | 'error' } | null>(null)
-  const { lang, isRtl } = useLang()
+  const { lang } = useLang()
+  const isRtl = lang === 'ur' || lang === 'ar'
 
   useEffect(() => {
     if (storeToast) {
@@ -46,7 +47,7 @@ export function ToastNotification() {
 
   if (!toast) return null
 
-  const isUrduRtl = isRtl || lang === 'ur' || lang === 'ar'
+  const isUrduRtl = isRtl
   const isError = toast.type === 'error'
 
   const handleClose = () => {
