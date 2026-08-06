@@ -264,18 +264,18 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
 
             {/* Author Profile */}
             <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37] font-black text-base">
+              <Link href="/authors/umar-farooq" className="flex items-center gap-3 group/author">
+                <div className="w-11 h-11 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37] font-black text-base group-hover/author:border-[#D4AF37]">
                   {post.author.name[0]}
                 </div>
                 <div>
-                  <div className="text-sm font-bold text-white flex items-center gap-1.5">
+                  <div className="text-sm font-bold text-white flex items-center gap-1.5 group-hover/author:text-[#D4AF37] transition-colors">
                     {post.author.name}
                     <CheckCircle className="w-3.5 h-3.5 text-[#D4AF37]" />
                   </div>
                   <div className="text-xs text-zinc-400">{post.author.role}</div>
                 </div>
-              </div>
+              </Link>
 
               <button
                 onClick={handleShare}

@@ -47,7 +47,6 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   return {
     title,
     description,
-    keywords: post.tags,
     alternates: {
       canonical: `https://cardzy.online/blog/${post.slug}`,
       languages: languageAlternates,

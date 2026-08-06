@@ -91,6 +91,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/authors/umar-farooq`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${baseUrl}/contact`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
