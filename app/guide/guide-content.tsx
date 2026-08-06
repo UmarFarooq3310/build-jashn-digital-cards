@@ -249,6 +249,18 @@ const GUIDE_HUB_TEXT: Record<string, Record<string, string>> = {
   },
   dateJuly15: {
     en: "July 15, 2026", ur: "15 جولائی 2026", es: "15 de julio de 2026", fr: "15 juillet 2026", ar: "15 يوليو 2026", hi: "15 जुलाई 2026", zh: "2026年7月15日", pt: "15 de julho de 2026", ru: "15 июля 2026 г.", de: "15. Juli 2026", ja: "2026年7月15日", ko: "2026년 7월 15일", it: "15 luglio 2026", tr: "15 Temmuz 2026", id: "15 Juli 2026", bn: "১৫ জুলাই, ২০২৬", vi: "15 tháng 7 năm 2026", sw: "15 Julai 2026"
+  },
+  birthdayGuideTitle: {
+    en: "Birthday Wish Wording Ideas: Heartfelt, Funny & Formal Messages"
+  },
+  birthdayGuideDesc: {
+    en: "Copy-ready birthday messages sorted by tone and relationship — sweet, funny, formal, and messages just for kids."
+  },
+  readTime5min: {
+    en: "5 min read"
+  },
+  dateAug6: {
+    en: "August 6, 2026"
   }
 }
 
@@ -268,6 +280,14 @@ const GUIDES = [
     catKey: 'catReligious',
     readTimeKey: 'readTime4min',
     dateKey: 'dateJuly15',
+  },
+  {
+    slug: 'birthday-wishes-wording',
+    titleKey: 'birthdayGuideTitle',
+    descKey: 'birthdayGuideDesc',
+    catKey: 'birthdays',
+    readTimeKey: 'readTime5min',
+    dateKey: 'dateAug6',
   },
 ]
 

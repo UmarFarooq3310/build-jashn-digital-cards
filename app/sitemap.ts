@@ -5,8 +5,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://cardzy.online'
   const currentDate = new Date()
 
-  const languages = ['en', 'es', 'fr', 'ar', 'hi', 'zh', 'pt', 'ru', 'de', 'ja', 'ko', 'it', 'tr', 'id', 'ur', 'bn', 'vi', 'sw']
-
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -19,11 +17,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: currentDate,
       changeFrequency: 'daily',
       priority: 0.9,
-      alternates: {
-        languages: Object.fromEntries(
-          languages.map((l) => [l, l === 'en' ? `${baseUrl}/blog` : `${baseUrl}/blog?lang=${l}`])
-        ),
-      },
     },
     {
       url: `${baseUrl}/custom-order`,
@@ -80,6 +73,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/guide/birthday-wishes-wording`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${baseUrl}/eid-mubarak-cards`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
@@ -122,11 +121,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.updatedAt),
     changeFrequency: 'weekly',
     priority: 0.8,
-    alternates: {
-      languages: Object.fromEntries(
-        languages.map((l) => [l, l === 'en' ? `${baseUrl}/blog/${post.slug}` : `${baseUrl}/blog/${post.slug}?lang=${l}`])
-      ),
-    },
   }))
 
   return [...staticRoutes, ...blogRoutes]
