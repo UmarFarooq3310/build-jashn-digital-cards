@@ -1,142 +1,142 @@
 import { LocalizedBlogData, LocalizedBlogContent } from './types'
 
-export const POST_14_SLUG = "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards";
+export const POST_14_SLUG = "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards";
 
 export const POST_14_DATA: Record<string, LocalizedBlogData> = {
   "en": {
     "title": "Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
-    "subtitle": "Why medical practitioners, legal consultants, corporate executives, and real estate agents are switching to smart NFC vCards with 1-tap contact saving.",
+    "subtitle": "Why medical practitioners, legal consultants, corporate executives, and real estate agents are switching to smart smart vCards with 1-tap contact saving.",
     "category": "Business & vCards",
     "seoTitle": "Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "ur": {
     "title": "ڈیجیٹل کارڈز گائیڈ: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "خوبصورت متحرک کارڈز اور واٹس ایپ RSVP کے ساتھ اپنی تقریبات کو یادگار بنائیں۔",
     "category": "Business & vCards",
     "seoTitle": "ڈیجیٹل کارڈز گائیڈ: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "es": {
     "title": "Guía Digital Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "Cree tarjetas digitales animadas y comparta invitaciones con seguimiento de RSVP por WhatsApp.",
     "category": "Business & vCards",
     "seoTitle": "Guía Digital Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "fr": {
     "title": "Guide Numérique Cardzy : Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "Créez des cartes numériques animées et partagez vos invitations avec suivi RSVP WhatsApp.",
     "category": "Business & vCards",
     "seoTitle": "Guide Numérique Cardzy : Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "ar": {
     "title": "دليل كاردزي الرقمي: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "أنشئ بطاقات رقمية متحركة وشارك الدعوات مع متابعة تأكيد الحضور عبر الواتساب.",
     "category": "Business & vCards",
     "seoTitle": "دليل كاردزي الرقمي: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "hi": {
     "title": "Cardzy डिजिटल गाइड: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "एनिमेटेड डिजिटल कार्ड बनाएं और व्हाट्सएप RSVP ट्रैकिंग के साथ आमंत्रण साझा करें।",
     "category": "Business & vCards",
     "seoTitle": "Cardzy डिजिटल गाइड: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "zh": {
     "title": "Cardzy 数字指南：Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "创建动态数字卡片，并使用 WhatsApp RSVP 追踪即时分享请柬。",
     "category": "Business & vCards",
     "seoTitle": "Cardzy 数字指南：Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "pt": {
     "title": "Guia Digital Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "Crie cartões digitais animados e compartilhe convites com rastreamento de RSVP pelo WhatsApp.",
     "category": "Business & vCards",
     "seoTitle": "Guia Digital Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "ru": {
     "title": "Цифровое руководство Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "Создавайте анимированные цифровые открытки и отправляйте приглашения с RSVP в WhatsApp.",
     "category": "Business & vCards",
     "seoTitle": "Цифровое руководство Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "de": {
     "title": "Cardzy Digital-Ratgeber: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "Erstellen Sie animierte digitale Karten und teilen Sie Einladungen mit WhatsApp RSVP-Tracking.",
     "category": "Business & vCards",
     "seoTitle": "Cardzy Digital-Ratgeber: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "ja": {
     "title": "Cardzyデジタルガイド：Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "アニメーションデジタルカードを作成し、WhatsAppのRSVP追跡機能で招待状を共有しましょう。",
     "category": "Business & vCards",
     "seoTitle": "Cardzyデジタルガイド：Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "ko": {
     "title": "Cardzy 디지털 가이드: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "애니메이션 디지털 카드를 제작하고 WhatsApp RSVP 추적 기능으로 초대장을 공유하세요.",
     "category": "Business & vCards",
     "seoTitle": "Cardzy 디지털 가이드: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "it": {
     "title": "Guida Digitale Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "Crea biglietti digitali animati e condividi inviti con tracciamento RSVP su WhatsApp.",
     "category": "Business & vCards",
     "seoTitle": "Guida Digitale Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "tr": {
     "title": "Cardzy Dijital Rehber: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "Animasyonlu dijital kartlar oluşturun ve WhatsApp RSVP takibi ile davetiyelerinizi paylaşın.",
     "category": "Business & vCards",
     "seoTitle": "Cardzy Dijital Rehber: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "id": {
     "title": "Panduan Digital Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "Buat kartu digital animasi dan bagikan undangan dengan pelacakan RSVP WhatsApp.",
     "category": "Business & vCards",
     "seoTitle": "Panduan Digital Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "bn": {
     "title": "Cardzy ডিজিটাল গাইড: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "অ্যানিমেটেড ডিজিটাল কার্ড তৈরি করুন এবং হোয়াটসঅ্যাপ RSVP ট্র্যাক সহ শেয়ার করুন।",
     "category": "Business & vCards",
     "seoTitle": "Cardzy ডিজিটাল গাইড: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "vi": {
     "title": "Hướng Dẫn Kỹ Thuật Số Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "Tạo thiệp kỹ thuật số hoạt hình và chia sẻ thiệp mời với theo dõi RSVP qua WhatsApp.",
     "category": "Business & vCards",
     "seoTitle": "Hướng Dẫn Kỹ Thuật Số Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   },
   "sw": {
     "title": "Mwongozo wa Kidijitali wa Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits",
     "subtitle": "Unda kadi za kidijitali za mwendo na ushiriki mialiko kwa ufuatiliaji wa RSVP wa WhatsApp.",
     "category": "Business & vCards",
     "seoTitle": "Mwongozo wa Kidijitali wa Cardzy: Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits — Cardzy",
-    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC."
+    "metaDescription": "Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard."
   }
 };
 
 export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
   "en": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -149,7 +149,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -160,7 +160,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -170,7 +170,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -203,7 +203,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "intro": "خوش آمدید! کارڈزی ایک عالمی ڈیجیٹل جشن اور نیٹ ورکنگ پلیٹ فارم ہے جس کا مقصد آپ کے خاص لمحات جیسے کہ شادی، نکاح، عید، سالگرہ اور کاروباری رابطہ کاری کو جدید، متحرک اور یادگار بنانا ہے۔ اس جامع گائیڈ میں، ہم \"Smart Digital Visiting Cards for Doctors, Lawyers & Executives\" پر تفصیل سے روشنی ڈالیں گے تاکہ آپ بغیر کسی دقت کے ایک بہترین ڈیجیٹل کارڈ یا دعوت نامہ تیار کر سکیں۔",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. بنیادی اہمیت اور جدید فوائد",
         "body": "روایتی کاغذی کارڈز کے مقابلے میں ڈیجیٹل کارڈز کا استعمال آپ کے وقت اور اخراجات میں نمایاں بچت فراہم کرتا ہے۔ آپ منٹوں میں اپنا کارڈ خود تیار کر کے واٹس ایپ، انسٹاگرام، یا ای میل کے ذریعے اپنے تمام عزیزوں تک پہنچا سکتے ہیں۔",
         "bulletPoints": [
@@ -216,7 +216,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. اہم نکات، الفاظ اور ڈیزائننگ کی تجاویز",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "ایک بہترین ڈیجیٹل کارڈ بنانے کے لیے مناسب رنگوں اور خوبصورت الفاظ کا انتخاب نہایت ضروری ہے۔ نکاح اور شادی کی دعوات کے لیے اسلامک خطاطی (بسم اللہ) اور باوقار الفاظ کا استعمال کارڈ کو باوقار بناتا ہے۔",
         "bulletPoints": [
           "ایونٹ کے مزاج کے مطابق تھیم کا انتخاب کریں (مغل گولڈ، مہندی وائبرنٹ، وغیرہ)",
@@ -227,7 +227,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. واٹس ایپ پر شیئرنگ اور آر ایس وی پی مینجمنٹ",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "اپنا کارڈ تیار کرنے کے بعد آپ کو ایک یونیک لنک حاصل ہوتا ہے۔ اس لنک کو آپ براہ راست واٹس ایپ گروپس یا انفرادی چیٹس میں شیئر کر سکتے ہیں۔ مہمان ایک کلک سے اپنی آمد کی تصدیق کر سکتے ہیں۔",
         "bulletPoints": [
           "تمام آر ایس وی پی جوابات آپ کے ڈیش بورڈ میں جمع ہوتے ہیں",
@@ -237,7 +237,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. کارآمد مشورے اور تکنیکی ہدایات",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "ہمیشہ اپنے ایونٹ سے 10 سے 14 دن پہلے دعوتی لنک بھیجیں تاکہ مہمان اپنی آمد کی منصوبہ بندی کر سکیں۔ کارڈ کا لنک شیئر کرنے سے پہلے تمام معلومات کی تسلی کر لیں۔",
         "bulletPoints": [
           "لنک شیئر کرنے سے پہلے گوگل میپ پن کو خود ٹیسٹ کریں",
@@ -267,10 +267,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "آج ہی کارڈزی (cardzy.online) پر اپنا پسندیدہ متحرک وش کارڈ یا دعوت نامہ بنائیں اور اپنے پیاروں کے ساتھ خوشیاں بانٹیں!"
   },
   "es": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -283,7 +283,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -294,7 +294,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -304,7 +304,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -334,10 +334,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "fr": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -350,7 +350,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -361,7 +361,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -371,7 +371,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -404,7 +404,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "intro": "مرحباً بكم في منصة كاردزي العالمية للبطاقات الرقمية التفاعلية والدعوات الإلكترونية. تهدف هذه المقالة الشاملة إلى تقديم دليل تفصيلي حول \"Smart Digital Visiting Cards for Doctors, Lawyers & Executives\" لمساعدتك في إنشاء دعوات وبطاقات معايدة مبتكرة ومبهرة.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "توفر البطاقات الرقمية التفاعلية مقارنة بالبطاقات الورقية التقليدية حلولاً عصرية توفر الوقت والتكاليف، وتتيح إمكانية المشاركة الفورية عبر واتساب ووسائل التواصل الاجتماعي بـ 18 لغة عالمية.",
         "bulletPoints": [
@@ -417,7 +417,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "تعتمد الدعوة الرقمية الناجحة على اختيار الألوان الهادئة، الخطوط العربية الأنيقة، والعبارات الراقية التي تعبر عن الفرح والتقدير للضيوف.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -428,7 +428,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "بمجرد إنشاء دعوتك، يمكنك نسخ الرابط الفريد ومشاركته مباشرة في مجموعات الواتساب. تتيح لك لوحة التحكم متابعة ردود الحضور لحظة بلحظة.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -438,7 +438,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "ينصح بإرسال الدعوات الرقمية قبل المناسبة بـ 10-14 يوماً لضمان تأكيد الحضور وتسهيل الترتيبات.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -468,10 +468,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "أنشئ دعوتك الرقمية المميزة عبر منصة كاردزي اليوم وشارك الفرحة مع عائلتك وأصدقائك بضغطة زر!"
   },
   "hi": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -484,7 +484,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -495,7 +495,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -505,7 +505,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -535,10 +535,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "zh": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -551,7 +551,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -562,7 +562,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -572,7 +572,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -602,10 +602,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "pt": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -618,7 +618,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -629,7 +629,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -639,7 +639,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -669,10 +669,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "ru": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -685,7 +685,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -696,7 +696,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -706,7 +706,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -736,10 +736,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "de": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -752,7 +752,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -763,7 +763,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -773,7 +773,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -803,10 +803,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "ja": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -819,7 +819,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -830,7 +830,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -840,7 +840,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -870,10 +870,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "ko": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -886,7 +886,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -897,7 +897,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -907,7 +907,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -937,10 +937,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "it": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -953,7 +953,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -964,7 +964,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -974,7 +974,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -1004,10 +1004,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "tr": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -1020,7 +1020,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -1031,7 +1031,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -1041,7 +1041,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -1071,10 +1071,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "id": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -1087,7 +1087,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -1098,7 +1098,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -1108,7 +1108,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -1138,10 +1138,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "bn": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -1154,7 +1154,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -1165,7 +1165,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -1175,7 +1175,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -1205,10 +1205,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "vi": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -1221,7 +1221,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -1232,7 +1232,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -1242,7 +1242,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
@@ -1272,10 +1272,10 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "sw": {
-    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Smart Digital Visiting Cards for Doctors, Lawyers & Executives. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-overview-and-fundamentals",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-overview-and-fundamentals",
         "title": "1. Overview, Significance & Modern Advantages",
         "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
         "bulletPoints": [
@@ -1288,7 +1288,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-design-and-wording-strategies",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-design-and-wording-strategies",
         "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
         "bulletPoints": [
           "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
@@ -1299,7 +1299,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-whatsapp-sharing-and-rsvp",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-whatsapp-sharing-and-rsvp",
         "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
@@ -1309,7 +1309,7 @@ export const POST_14_CONTENT: Record<string, LocalizedBlogContent> = {
       },
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-pro-tips-and-execution",
+        "id": "smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-pro-tips-and-execution",
         "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",

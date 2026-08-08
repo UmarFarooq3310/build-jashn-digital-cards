@@ -41,14 +41,17 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
+import { getLanguageAlternates } from '@/lib/seo'
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
   title: 'Cardzy | 3D Animated Digital Wish Cards & Wedding Invitations',
   description:
-    'Create stunning 3D animated digital wish cards, Pakistani & International digital wedding invitations with instant WhatsApp RSVP tracking, and executive NFC digital visiting cards in 18 languages.',
+    'Create stunning 3D animated digital wish cards, Pakistani & International digital wedding invitations with instant WhatsApp RSVP tracking, and executive digital visiting cards in 18 languages.',
   generator: 'v0.app',
   alternates: {
     canonical: 'https://cardzy.online',
+    languages: getLanguageAlternates('/'),
   },
   robots: {
     index: true,
@@ -102,7 +105,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Cardzy | 3D Animated Digital Wish Cards & Wedding Invitations',
     description:
-      'Create personalized 3D animated wish cards, wedding invitations with RSVP, and executive NFC visiting cards.',
+      'Create personalized 3D animated wish cards, wedding invitations with RSVP, and executive digital visiting cards.',
     images: ['/og-image.jpg'],
   },
 }

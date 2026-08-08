@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { GuideClientContent } from './guide-content'
+import { getLanguageAlternates } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Celebration Guides & Wording Ideas — Cardzy Digital Cards',
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
     'Explore our collection of expert guides for designing digital invitations, animated wish cards, wedding invitations, Eid greetings, and more. Find wording templates and tips for every occasion.',
   alternates: {
     canonical: 'https://cardzy.online/guide',
+    languages: getLanguageAlternates('/guide'),
   },
   }
 

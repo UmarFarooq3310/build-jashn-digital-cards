@@ -45,8 +45,8 @@ export const BLOG_POSTS: BlogPost[] = [
       role: 'Senior Cultural Event & Wedding Stylist',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-07-26',
-    updatedAt: '2026-07-26',
+    publishedAt: '2026-06-08',
+    updatedAt: '2026-06-08',
     readTime: '14 min read',
     wordCount: 1900,
     featuredImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=750&q=65&fm=webp',
@@ -176,8 +176,8 @@ export const BLOG_POSTS: BlogPost[] = [
       role: 'Tech & Product Strategist',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-07-26',
-    updatedAt: '2026-07-26',
+    publishedAt: '2026-06-12',
+    updatedAt: '2026-06-12',
     readTime: '14 min read',
     wordCount: 1900,
     featuredImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=750&q=65&fm=webp',
@@ -291,12 +291,12 @@ export const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Learn how to create custom Eid Mubarak digital wish cards with your name and family photo. Includes animated Islamic moon templates, Urdu/English duas, and WhatsApp sharing.',
     category: 'Eid & Holidays',
     author: {
-      name: 'Zayn Ali',
-      role: 'Digital Content Creator & Cultural Writer',
+      name: 'Umar Farooq',
+      role: 'Senior Cultural Event & Wedding Stylist',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-07-26',
-    updatedAt: '2026-07-26',
+    publishedAt: '2026-06-16',
+    updatedAt: '2026-06-16',
     readTime: '13 min read',
     wordCount: 1800,
     featuredImage: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=750&q=65&fm=webp',
@@ -405,7 +405,7 @@ export const BLOG_POSTS: BlogPost[] = [
     },
   },
   {
-    slug: 'nfc-digital-business-cards-for-pakistani-entrepreneurs-and-executives',
+    slug: 'smart-digital-business-cards-for-pakistani-entrepreneurs-and-executives',
     title: 'Smart Digital Business Cards for Executives in Pakistan: The Future of Professional Networking',
     subtitle: 'Why CEOs, freelancers, and entrepreneurs in Karachi, Lahore, and Islamabad are replacing paper visiting cards with interactive vCards and smart digital cards.',
     seoTitle: 'Smart Digital Business Cards Pakistan (vCard)',
@@ -416,8 +416,8 @@ export const BLOG_POSTS: BlogPost[] = [
       role: 'Tech & Product Strategist',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-07-26',
-    updatedAt: '2026-07-26',
+    publishedAt: '2026-06-20',
+    updatedAt: '2026-06-20',
     readTime: '8 min read',
     wordCount: 920,
     featuredImage: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=750&q=65&fm=webp',
@@ -437,7 +437,7 @@ export const BLOG_POSTS: BlogPost[] = [
           ],
         },
         {
-          id: 'how-nfc-and-digital-vcards-work',
+          id: 'how-smart-and-digital-vcards-work',
           title: '2. How Smart Digital vCards & QR Code Sharing Work',
           body: `A digital business card built on Cardzy acts as a complete, interactive executive profile page hosted in the cloud. It can be shared in two effortless ways:`,
           bulletPoints: [
@@ -493,8 +493,8 @@ export const BLOG_POSTS: BlogPost[] = [
       role: 'Senior Cultural Event & Wedding Stylist',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-07-26',
-    updatedAt: '2026-07-26',
+    publishedAt: '2026-06-24',
+    updatedAt: '2026-06-24',
     readTime: '9 min read',
     wordCount: 960,
     featuredImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=750&q=65&fm=webp',
@@ -569,8 +569,8 @@ export const BLOG_POSTS: BlogPost[] = [
     "role": "Lead UI/UX Architect & Cardzy Founder",
     "avatar": "/icon.svg"
   },
-  "publishedAt": "2026-07-26",
-  "updatedAt": "2026-07-26",
+  "publishedAt": "2026-06-28",
+  "updatedAt": "2026-06-28",
   "readTime": "10 min read",
   "wordCount": 1350,
   "featuredImage": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=750&q=65&fm=webp",
@@ -643,8 +643,8 @@ export const BLOG_POSTS: BlogPost[] = [
     "role": "Lead UI/UX Architect & Cardzy Founder",
     "avatar": "/icon.svg"
   },
-  "publishedAt": "2026-07-26",
-  "updatedAt": "2026-07-26",
+  "publishedAt": "2026-07-02",
+  "updatedAt": "2026-07-02",
   "readTime": "9 min read",
   "wordCount": 1250,
   "featuredImage": "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=750&q=65&fm=webp",
@@ -717,8 +717,8 @@ export const BLOG_POSTS: BlogPost[] = [
       role: 'Global Creative & Cultural Events Editor',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-08-01',
-    updatedAt: '2026-08-01',
+    publishedAt: '2026-07-06',
+    updatedAt: '2026-07-06',
     readTime: '7 min read',
     wordCount: 920,
     featuredImage: 'https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=750&q=65&fm=webp',
@@ -766,12 +766,12 @@ export const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Design custom animated birthday wish cards and 18th/21st/50th milestone party invitations with photo frames, birthday music, countdown timers, and WhatsApp RSVP.',
     category: 'Event Planning',
     author: {
-      name: 'Ahmed',
-      role: 'Event Host & Digital Experience Designer',
+      name: 'Hasnain',
+      role: 'Global Creative & Cultural Events Editor',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-08-02',
-    updatedAt: '2026-08-02',
+    publishedAt: '2026-07-10',
+    updatedAt: '2026-07-10',
     readTime: '6 min read',
     wordCount: 880,
     featuredImage: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=750&q=65&fm=webp',
@@ -808,21 +808,21 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'the-future-of-networking-smart-digital-business-cards-with-vcf-download',
     title: 'The Future of Networking: Smart Digital Business Cards with 1-Click .VCF Save',
-    subtitle: 'Create executive NFC-ready digital business cards for corporate, tech, medical, legal, and real estate professionals with instant contact download.',
+    subtitle: 'Create executive vCard-ready digital business cards for corporate, tech, medical, legal, and real estate professionals with instant contact download.',
     seoTitle: 'Smart Digital Business Cards & 1-Click .VCF Save | Cardzy',
     metaDescription: 'Build executive digital business cards for corporate, tech, medical, legal & real estate. Features 1-click Save Contact (.vcf), WhatsApp link, and Google Maps pin.',
     category: 'Business & vCards',
     author: {
-      name: 'Umar Farooq',
-      role: 'Chief Executive & Tech Strategy Analyst',
+      name: 'Kainat',
+      role: 'Tech & Product Strategist',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-08-03',
-    updatedAt: '2026-08-03',
+    publishedAt: '2026-07-14',
+    updatedAt: '2026-07-14',
     readTime: '6 min read',
     wordCount: 850,
     featuredImage: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=750&q=65&fm=webp',
-    tags: ['Digital Business Cards', 'Smart vCard Generator', 'NFC Business Card', '1-Click VCF Save', 'Corporate Digital Card'],
+    tags: ['Digital Business Cards', 'Smart vCard Generator', 'smart business card', '1-Click VCF Save', 'Corporate Digital Card'],
     content: {
       intro: 'Traditional paper business cards are frequently lost, discarded, or outdated when contact numbers or job titles change. Smart digital business cards (vCards) offer a sleek, eco-friendly alternative for modern executives, founders, doctors, lawyers, realtors, and freelancers.',
       sections: [
@@ -855,18 +855,18 @@ export const BLOG_POSTS: BlogPost[] = [
     metaDescription: 'Learn essential digital invitation etiquette for WhatsApp, Instagram & SMS. Tips on timing, personalized messages, group sharing & RSVP tracking.',
     category: 'Event Planning',
     author: {
-      name: 'Umar Farooq',
-      role: 'Senior Cultural Event & Wedding Stylist',
+      name: 'Hasnain',
+      role: 'Global Creative & Cultural Events Editor',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-08-01',
-    updatedAt: '2026-08-01',
+    publishedAt: '2026-07-18',
+    updatedAt: '2026-07-18',
     readTime: '9 min read',
     wordCount: 1450,
     featuredImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ["Invitation Etiquette","WhatsApp Sharing","Digital RSVP Tips","Wedding Planning","Event Invitation Tips"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart NFC digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
       sections: [
         {
           id: 'digital-invitation-etiquette-whatsapp-social-media-sharing-tips-sec-1',
@@ -915,14 +915,14 @@ export const BLOG_POSTS: BlogPost[] = [
       role: 'Senior Cultural Event & Wedding Stylist',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-08-02',
-    updatedAt: '2026-08-02',
+    publishedAt: '2026-07-22',
+    updatedAt: '2026-07-22',
     readTime: '11 min read',
     wordCount: 1600,
     featuredImage: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ["Mehndi Card Design","Dholki Invitation Wording","Urdu Mehndi Quotes","Festive Wedding Card","Pakistani Wedding"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart NFC digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
       sections: [
         {
           id: 'mehndi-and-dholki-digital-card-ideas-music-themes-wording-sec-1',
@@ -971,14 +971,14 @@ export const BLOG_POSTS: BlogPost[] = [
       role: 'Senior Cultural Event & Wedding Stylist',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-08-03',
-    updatedAt: '2026-08-03',
+    publishedAt: '2026-07-26',
+    updatedAt: '2026-07-26',
     readTime: '10 min read',
     wordCount: 1520,
     featuredImage: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ["Eid ul Adha Wishes","Qurbani Cards","Bakra Eid Urdu Duas","Animated Eid Greetings","Multilingual Cards"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart NFC digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
       sections: [
         {
           id: 'best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-1',
@@ -1016,28 +1016,28 @@ export const BLOG_POSTS: BlogPost[] = [
     }
   },
   {
-    slug: 'smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards',
+    slug: 'smart-vcard-for-doctors-lawyers-engineers-smart-business-cards',
     title: 'Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits',
-    subtitle: 'Why medical practitioners, legal consultants, corporate executives, and real estate agents are switching to smart NFC vCards with 1-tap contact saving.',
+    subtitle: 'Why medical practitioners, legal consultants, corporate executives, and real estate agents are switching to smart smart vCards with 1-tap contact saving.',
     seoTitle: 'Smart Digital Visiting Cards for Doctors & Lawyers — Cardzy',
-    metaDescription: 'Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and NFC.',
+    metaDescription: 'Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard.',
     category: 'Business & vCards',
     author: {
-      name: 'Umar Farooq',
-      role: 'Senior Cultural Event & Wedding Stylist',
+      name: 'Kainat',
+      role: 'Tech & Product Strategist',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-08-04',
-    updatedAt: '2026-08-04',
+    publishedAt: '2026-07-30',
+    updatedAt: '2026-07-30',
     readTime: '12 min read',
     wordCount: 1700,
     featuredImage: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=750&q=65&fm=webp',
-    tags: ["Digital Business Card","Smart vCard","NFC Visiting Card","Doctor Visiting Card","Lawyer Business Card"],
+    tags: ["Digital Business Card","Smart vCard","smart visiting card","Doctor Visiting Card","Lawyer Business Card"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart NFC digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
       sections: [
         {
-          id: 'smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-sec-1',
+          id: 'smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-sec-1',
           title: '1. Core Features & Key Benefits',
           body: 'Digital cards and invitation websites eliminate paper waste, delivery delays, and high printing costs. With Cardzy, your cards are instantly shareable across WhatsApp, Instagram Stories, Facebook, and Email in 18 supported languages.',
           bulletPoints: [
@@ -1049,7 +1049,7 @@ export const BLOG_POSTS: BlogPost[] = [
           highlight: 'Try designing your digital card on Cardzy today with our Free Forever Plan!'
         },
         {
-          id: 'smart-vcard-for-doctors-lawyers-engineers-nfc-business-cards-sec-2',
+          id: 'smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-sec-2',
           title: '2. Styling & Personalisation Best Practices',
           body: 'Selecting harmonious color palettes, elegant typography, and culturally respectful wording elevates your digital invitation into a memorable keepsake. Cardzy provides pre-written templates in formal Urdu, Arabic duas, and modern English.',
           bulletPoints: [
@@ -1083,14 +1083,14 @@ export const BLOG_POSTS: BlogPost[] = [
       role: 'Senior Cultural Event & Wedding Stylist',
       avatar: '/icon.svg',
     },
-    publishedAt: '2026-08-05',
-    updatedAt: '2026-08-05',
+    publishedAt: '2026-08-03',
+    updatedAt: '2026-08-03',
     readTime: '9 min read',
     wordCount: 1400,
     featuredImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ["Anniversary Wishes","Couple Photo Cards","Urdu Anniversary Shayari","Animated Wish Cards","Milestone Celebrations"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart NFC digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
       sections: [
         {
           id: 'how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1',
@@ -1146,7 +1146,7 @@ export const BLOG_POSTS: BlogPost[] = [
     featuredImage: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ["Aqiqah Invitation","Baby Shower Card","Islamic Baby Blessings","Godh Bharai Cards","Digital RSVP Cards"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart NFC digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
       sections: [
         {
           id: 'baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1',
@@ -1452,89 +1452,89 @@ const MULTILINGUAL_BLOG_DATA: Record<string, Record<string, { title: string; sub
       "category": "Eid & Holidays"
     }
   },
-  "nfc-digital-business-cards-for-pakistani-entrepreneurs-and-executives": {
+  "smart-digital-business-cards-for-pakistani-entrepreneurs-and-executives": {
     "ur": {
-      "title": "سمارٹ NFC ڈیجیٹل بزنس کارڈز کے ذریعے اپنے کاروبار کو بڑھانے کی مکمل گائیڈ",
+      "title": "سمارٹ vCard ڈیجیٹل بزنس کارڈز کے ذریعے اپنے کاروبار کو بڑھانے کی مکمل گائیڈ",
       "subtitle": "ایک ہی ٹیپ سے اپنے واٹس ایپ، پورٹ فولیو اور تمام رابطہ نمبرز شیئر کریں",
       "category": "Business & vCards"
     },
     "ar": {
-      "title": "دليل استخدام بطاقات الأعمال الرقمية الذكية NFC و vCard لتعزيز التواصل المهني",
-      "subtitle": "شارك معلومات الاتصال وتفاصيل عملك بنقرة واحدة عبر الرمز النقطي وتقنية NFC.",
+      "title": "دليل استخدام بطاقات الأعمال الرقمية الذكية vCard و vCard لتعزيز التواصل المهني",
+      "subtitle": "شارك معلومات الاتصال وتفاصيل عملك بنقرة واحدة عبر الرمز النقطي وتقنية vCard.",
       "category": "Business & vCards"
     },
     "es": {
-      "title": "Tarjetas de Visita Digitales NFC para Ejecutivos y Empresarios (2026)",
+      "title": "Tarjetas de Visita Digitales vCard para Ejecutivos y Empresarios (2026)",
       "subtitle": "Reemplace las tarjetas de papel por perfiles vCard interactivos que se guardan al instante.",
       "category": "Business & vCards"
     },
     "fr": {
-      "title": "Cartes de Visite Numériques NFC pour Cadres & Entrepreneurs (2026)",
+      "title": "Cartes de Visite Numériques vCard pour Cadres & Entrepreneurs (2026)",
       "subtitle": "Partagez vos coordonnées, WhatsApp et portfolio d’un simple sans-contact ou QR code.",
       "category": "Business & vCards"
     },
     "hi": {
-      "title": "व्यापारियों और अधिकारियों के लिए NFC डिजिटल बिजनेस कार्ड की संपूर्ण जानकारी",
+      "title": "व्यापारियों और अधिकारियों के लिए vCard डिजिटल बिजनेस कार्ड की संपूर्ण जानकारी",
       "subtitle": "कागज के विजिटिंग कार्ड को अलविदा कहें—एक टैप में अपना नंबर और वेबसाइट शेयर करें।",
       "category": "Business & vCards"
     },
     "zh": {
-      "title": "面向企业高管与创业者的 NFC 智能数字名片与 vCard 完整指南",
+      "title": "面向企业高管与创业者的 vCard 智能数字名片与 vCard 完整指南",
       "subtitle": "只需轻碰手机或扫描二维码即可即时保存完整联系人、公司网站和社交主页。",
       "category": "Business & vCards"
     },
     "pt": {
-      "title": "Cartões de Visita Digitais NFC para Empresários e Executivos (2026)",
-      "subtitle": "Partilhe contactos, WhatsApp e portfólio instantaneamente com um toque NFC ou código QR.",
+      "title": "Cartões de Visita Digitais vCard para Empresários e Executivos (2026)",
+      "subtitle": "Partilhe contactos, WhatsApp e portfólio instantaneamente com um toque vCard ou código QR.",
       "category": "Business & vCards"
     },
     "ru": {
-      "title": "Умные цифровые визитные карточки NFC для предпринимателей и руководителей",
+      "title": "Умные цифровые визитные карточки vCard для предпринимателей и руководителей",
       "subtitle": "Замените бумажные визитки на интерактивный vCard-профиль с сохранением контакта в 1 клик.",
       "category": "Business & vCards"
     },
     "de": {
-      "title": "Smart NFC & digitale Visitenkarten für Führungskräfte & Unternehmer",
-      "subtitle": "Teilen Sie Kontaktdaten, WhatsApp und Unternehmenslinks per NFC-Tap oder QR-Code.",
+      "title": "Smart vCard & digitale Visitenkarten für Führungskräfte & Unternehmer",
+      "subtitle": "Teilen Sie Kontaktdaten, WhatsApp und Unternehmenslinks per vCard-Tap oder QR-Code.",
       "category": "Business & vCards"
     },
     "ja": {
-      "title": "エグゼクティブ向けNFC＆デジタル名刺（vCard）活用完全ガイド",
+      "title": "エグゼクティブ向けvCard＆デジタル名刺（vCard）活用完全ガイド",
       "subtitle": "ワンタップでスマホに連絡先、WhatsApp、Webサイトを直接保存。",
       "category": "Business & vCards"
     },
     "ko": {
-      "title": "경영진 및 비즈니스 전문가를 위한 스마트 NFC 디지털 명함 가이드",
+      "title": "경영진 및 비즈니스 전문가를 위한 스마트 vCard 디지털 명함 가이드",
       "subtitle": "스마트폰 원터치로 연락처, WhatsApp, 웹사이트 링크를 실시간 공유하세요.",
       "category": "Business & vCards"
     },
     "it": {
-      "title": "Biglietti da Visita Digitali NFC per Manager ed Imprenditori (2026)",
-      "subtitle": "Condividi contatti, WhatsApp e sito aziendale con un semplice tocco NFC o scansione QR.",
+      "title": "Biglietti da Visita Digitali vCard per Manager ed Imprenditori (2026)",
+      "subtitle": "Condividi contatti, WhatsApp e sito aziendale con un semplice tocco vCard o scansione QR.",
       "category": "Business & vCards"
     },
     "tr": {
-      "title": "İş İnsanları İçin Akıllı NFC Dijital Kartvizit Rehberi ve Avantajları",
-      "subtitle": "Kağıt kartvizitlere son verin—NFC dokunuşuyla WhatsApp ve iletişim bilgilerinizi paylaşın.",
+      "title": "İş İnsanları İçin Akıllı vCard Dijital Kartvizit Rehberi ve Avantajları",
+      "subtitle": "Kağıt kartvizitlere son verin—vCard dokunuşuyla WhatsApp ve iletişim bilgilerinizi paylaşın.",
       "category": "Business & vCards"
     },
     "id": {
-      "title": "Kartu Nama Digital NFC Pintar untuk Eksekutif & Pengusaha",
-      "subtitle": "Bagikan info kontak, WhatsApp, dan tautan bisnis secara instan dengan satu tempelan NFC.",
+      "title": "Kartu Nama Digital vCard Pintar untuk Eksekutif & Pengusaha",
+      "subtitle": "Bagikan info kontak, WhatsApp, dan tautan bisnis secara instan dengan satu tempelan vCard.",
       "category": "Business & vCards"
     },
     "bn": {
-      "title": "ব্যবসায়ী ও এক্সিকিউটিভদের জন্য স্মার্ট NFC ডিজিটাল বিজনেস কার্ডের গাইড",
+      "title": "ব্যবসায়ী ও এক্সিকিউটিভদের জন্য স্মার্ট vCard ডিজিটাল বিজনেস কার্ডের গাইড",
       "subtitle": "কাগজের কার্ড বাদ দিন—মাত্র এক ট্যাপে আপনার হোয়াটসঅ্যাপ, ওয়েব সাইট ও কন্টাক্ট শেয়ার করুন।",
       "category": "Business & vCards"
     },
     "vi": {
-      "title": "Danh Thiếp Kỹ Thuật Số NFC Dành Cho Doanh Nhân Và Lãnh Đạo (2026)",
-      "subtitle": "Chia sẻ số điện thoại, WhatsApp và website công ty tức thì chỉ bằng một chạm NFC.",
+      "title": "Danh Thiếp Kỹ Thuật Số vCard Dành Cho Doanh Nhân Và Lãnh Đạo (2026)",
+      "subtitle": "Chia sẻ số điện thoại, WhatsApp và website công ty tức thì chỉ bằng một chạm vCard.",
       "category": "Business & vCards"
     },
     "sw": {
-      "title": "Kadi za Biashara za Kidijitali za NFC kwa Wafanyabiashara na Viongozi",
+      "title": "Kadi za Biashara za Kidijitali za vCard kwa Wafanyabiashara na Viongozi",
       "subtitle": "Badilisha kadi za karatasi—shiriki namba, WhatsApp na tovuti kwa kugusa mara moja tu.",
       "category": "Business & vCards"
     }
@@ -2502,13 +2502,13 @@ const MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, {
       ]
     }
   },
-  "nfc-digital-business-cards-for-pakistani-entrepreneurs-and-executives": {
+  "smart-digital-business-cards-for-pakistani-entrepreneurs-and-executives": {
     "ur": {
-      "intro": "سمارٹ NFC اور vCard تکنیک کے ذریعے اپنے کاروبار کو تیز رفتاری سے بڑھائیں۔ روایتی کاغذ کے وزٹنگ کارڈز گم ہو جاتے ہیں، جبکہ سمارٹ ڈیجیٹل کارڈ موبائل فون میں فوراً محفوظ ہو جاتا ہے۔",
+      "intro": "سمارٹ vCard اور vCard تکنیک کے ذریعے اپنے کاروبار کو تیز رفتاری سے بڑھائیں۔ روایتی کاغذ کے وزٹنگ کارڈز گم ہو جاتے ہیں، جبکہ سمارٹ ڈیجیٹل کارڈ موبائل فون میں فوراً محفوظ ہو جاتا ہے۔",
       "sections": [
         {
-          "id": "smart-nfc-vcard-technology",
-          "title": "1. سمارٹ NFC اور vCard کیوں ضروری ہیں؟",
+          "id": "smart-smart-vcard-technology",
+          "title": "1. سمارٹ vCard اور vCard کیوں ضروری ہیں؟",
           "body": "ایک ہی ٹیپ سے اپنے واٹس ایپ، پورٹ فولیو اور تمام لنکس شیئر کریں۔"
         }
       ],
@@ -2525,11 +2525,11 @@ const MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, {
       ]
     },
     "es": {
-      "intro": "Lleve su red de contactos al siguiente nivel con tarjetas de visita digitales inteligentes NFC y vCard.",
+      "intro": "Lleve su red de contactos al siguiente nivel con tarjetas de visita digitales inteligentes vCard y vCard.",
       "sections": [
         {
-          "id": "smart-nfc-vcard-technology",
-          "title": "1. Tecnología NFC y vCard Interactiva",
+          "id": "smart-smart-vcard-technology",
+          "title": "1. Tecnología vCard y vCard Interactiva",
           "body": "Comparta su WhatsApp, sitio web y datos de contacto con un solo toque."
         }
       ],

@@ -71,7 +71,7 @@ export const VisitingCardView = forwardRef<HTMLDivElement, VisitingCardProps>(fu
     : data.category === 'beauty' ? 'catFashion'
     : data.category === 'services' ? 'catServices'
     : ''
-  const translatedCategory = catKey ? t(catKey) : (data.category || 'Executive NFC Card')
+  const translatedCategory = catKey ? t(catKey) : (data.category || 'Executive Digital Card')
 
   const roleKey = data.title === 'Software Developer' ? 'roleSoftwareDeveloper'
     : data.title === 'Executive' ? 'roleExecutive'
@@ -345,11 +345,11 @@ END:VCARD`
 
             </div>
           ) : (
-            /* Back Side View (QR & NFC Detail) */
+            /* Back Side View (QR & Profile Detail) */
             <div className="relative z-10 space-y-6 text-center py-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-widest">
-                  Executive NFC Profile Back
+                  Executive Profile Back
                 </span>
                 <button
                   onClick={() => setIsFlipped(false)}

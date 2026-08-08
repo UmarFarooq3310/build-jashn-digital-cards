@@ -284,6 +284,19 @@ export default function WeddingGuidePage() {
               </div>
             </div>
 
+            {/* Related Wedding Articles */}
+            <div className="mt-8 p-5 rounded-2xl border border-border bg-card/60 space-y-3 text-left">
+              <h4 className="font-extrabold text-sm text-foreground">Related Wedding Articles & Guides:</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <Link href="/blog/how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly" className="p-3 rounded-xl border border-border/80 hover:border-primary/50 transition-all font-semibold text-primary">
+                  → How to Manage Wedding Guest Lists & WhatsApp RSVPs
+                </Link>
+                <Link href="/blog/digital-vs-paper-wedding-invitations-cost-eco-comparison" className="p-3 rounded-xl border border-border/80 hover:border-primary/50 transition-all font-semibold text-primary">
+                  → Digital vs Paper Wedding Invitations: Cost & Eco Breakdown
+                </Link>
+              </div>
+            </div>
+
           </div>
 
           {/* Article Footer / CTA */}

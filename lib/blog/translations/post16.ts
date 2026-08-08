@@ -133,7 +133,7 @@ export const POST_16_DATA: Record<string, LocalizedBlogData> = {
 
 export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
   "en": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -267,7 +267,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "آج ہی کارڈزی (cardzy.online) پر اپنا پسندیدہ متحرک وش کارڈ یا دعوت نامہ بنائیں اور اپنے پیاروں کے ساتھ خوشیاں بانٹیں!"
   },
   "es": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -334,7 +334,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "fr": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -468,7 +468,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "أنشئ دعوتك الرقمية المميزة عبر منصة كاردزي اليوم وشارك الفرحة مع عائلتك وأصدقائك بضغطة زر!"
   },
   "hi": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -535,7 +535,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "zh": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -602,7 +602,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "pt": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -669,7 +669,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "ru": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -736,7 +736,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "de": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -803,7 +803,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "ja": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -870,7 +870,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "ko": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -937,7 +937,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "it": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -1004,7 +1004,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "tr": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -1071,7 +1071,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "id": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -1138,7 +1138,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "bn": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -1205,7 +1205,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "vi": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",
@@ -1272,7 +1272,7 @@ export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "sw": {
-    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-overview-and-fundamentals",

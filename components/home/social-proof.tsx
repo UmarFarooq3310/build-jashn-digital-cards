@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Star, Award } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
 
@@ -21,7 +22,10 @@ export function SocialProofSection() {
           </h2>
 
           <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto">
-            {t('lovedBySendersSub') || 'From birthdays and Nikah invitations to custom greeting cards, see why senders across the world choose Cardzy.'}
+            {t('lovedBySendersSub') || 'From birthdays and Nikah invitations to custom greeting cards, see why senders across the world choose Cardzy.'}{' '}
+            <Link href="/about" className="text-emerald-600 dark:text-emerald-400 underline font-semibold hover:opacity-80">
+              Read about our mission
+            </Link>
           </p>
         </div>
 

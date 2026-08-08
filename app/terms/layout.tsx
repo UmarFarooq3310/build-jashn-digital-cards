@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { getLanguageAlternates } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Terms of Service & Usage Policy — Cardzy',
@@ -6,6 +7,7 @@ export const metadata: Metadata = {
     'Read Cardzy terms of service, user account agreement, acceptable use guidelines, and digital card creator policies.',
   alternates: {
     canonical: 'https://cardzy.online/terms',
+    languages: getLanguageAlternates('/terms'),
   },
   robots: {
     index: true,

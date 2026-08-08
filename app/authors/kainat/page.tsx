@@ -4,35 +4,37 @@ import { BLOG_POSTS } from '@/lib/blog/data'
 import { Award, BookOpen, ExternalLink } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Umar Farooq — Senior Cultural Event & Wedding Stylist | Cardzy',
+  title: 'Kainat — Tech & Product Strategist | Cardzy',
   description:
-    'Umar Farooq is a Senior Cultural Event & Wedding Stylist at Cardzy, writing guides on Pakistani and Islamic wedding invitations, Eid celebrations, and digital card etiquette.',
+    'Kainat is a Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards), cost comparisons, and eco-friendly digital invitation solutions.',
   alternates: {
-    canonical: 'https://cardzy.online/authors/umar-farooq',
+    canonical: 'https://cardzy.online/authors/kainat',
   },
 }
 
-export default function AuthorPage() {
+export default function KainatAuthorPage() {
+  const authorPosts = BLOG_POSTS.filter((post) => post.author.name === 'Kainat')
+
   return (
     <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 md:py-20 w-full">
       {/* Header Profile Section */}
       <div className="rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-xs mb-10">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-          <div className="size-24 sm:size-28 rounded-full bg-emerald-900 text-amber-300 font-extrabold text-3xl flex items-center justify-center border-4 border-amber-400/30 shadow-md shrink-0">
-            UF
+          <div className="size-24 sm:size-28 rounded-full bg-amber-950 text-amber-300 font-extrabold text-3xl flex items-center justify-center border-4 border-amber-400/30 shadow-md shrink-0">
+            K
           </div>
           <div className="text-center sm:text-left space-y-2 flex-1">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
-              <Award className="size-3.5" /> Editorial Lead & Stylist
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">
+              <Award className="size-3.5" /> Tech & Product Lead
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-              Umar Farooq
+              Kainat
             </h1>
             <p className="text-sm sm:text-base font-semibold text-muted-foreground">
-              Senior Cultural Event & Wedding Stylist, Cardzy
+              Tech & Product Strategist, Cardzy
             </p>
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-2 text-xs text-muted-foreground">
-              <span>📍 Islamabad / Rawalpindi, Pakistan</span>
+              <span>📍 Lahore / Islamabad, Pakistan</span>
             </div>
           </div>
         </div>
@@ -40,13 +42,13 @@ export default function AuthorPage() {
         {/* Bio Body */}
         <div className="mt-8 pt-8 border-t border-border/60 space-y-4 text-sm sm:text-base text-muted-foreground leading-relaxed">
           <p>
-            Umar Farooq is the Senior Cultural Event & Wedding Stylist at Cardzy, specializing in Pakistani, Islamic, and South Asian wedding traditions, festive wording protocols, and digital invitation etiquette.
+            Kainat is the Tech & Product Strategist at Cardzy, leading research on executive vCard technology, digital business card solutions, and cost-benefit analysis of paper vs digital cards.
           </p>
           <p>
-            Drawing from hands-on experience styling Nikkah, Mehndi, Barat, and Walima events across Islamabad and Rawalpindi, Umar helps couples translate classical Urdu Nasta&apos;liq etiquette and family blessings into interactive 3D digital cards with WhatsApp RSVP tracking.
+            With a focus on user experience and corporate productivity, Kainat helps business leaders, freelancers, doctors, and real estate professionals streamline their networking through 1-click contact save (.vcf), QR code sharing, and interactive digital branding.
           </p>
           <p>
-            His research and articles cover bilingual invitation wording, digital guest list management, vCard networking for professionals, and eco-friendly digital card alternatives.
+            Her articles guide organizations in reducing printing costs and adopting sustainable, high-converting digital contact cards.
           </p>
         </div>
 
@@ -73,27 +75,27 @@ export default function AuthorPage() {
         </div>
       </div>
 
-        {/* Authored Articles */}
+      {/* Authored Articles */}
       <div className="space-y-6">
         <div className="flex items-center gap-2">
-          <BookOpen className="size-5 text-emerald-600 dark:text-emerald-400" />
+          <BookOpen className="size-5 text-amber-600 dark:text-amber-400" />
           <h2 className="text-2xl font-extrabold text-foreground tracking-tight">
-            Articles & Guides by Umar Farooq
+            Articles & Guides by Kainat
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {BLOG_POSTS.filter((post) => post.author.name === 'Umar Farooq').map((post) => (
+          {authorPosts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="group rounded-2xl border border-border/80 bg-card p-5 shadow-2xs hover:border-emerald-500/40 hover:shadow-sm transition-all flex flex-col justify-between"
+              className="group rounded-2xl border border-border/80 bg-card p-5 shadow-2xs hover:border-amber-500/40 hover:shadow-sm transition-all flex flex-col justify-between"
             >
               <div className="space-y-2">
-                <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">
                   {post.category}
                 </span>
-                <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2">
+                <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors line-clamp-2">
                   {post.title}
                 </h3>
                 <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
@@ -102,7 +104,7 @@ export default function AuthorPage() {
               </div>
               <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between text-[11px] text-muted-foreground font-medium">
                 <span>{post.readTime} read</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold group-hover:underline">Read Guide →</span>
+                <span className="text-amber-600 dark:text-amber-400 font-bold group-hover:underline">Read Guide →</span>
               </div>
             </Link>
           ))}

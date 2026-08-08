@@ -27,10 +27,10 @@ export function SiteFooter() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         <div className="flex flex-col gap-8 md:flex-row md:justify-between">
           <div className="max-w-xs">
-            <div className="flex items-center gap-2.5">
+            <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
               <CardzyLogo className="size-8" />
               <span className="text-xl font-extrabold bg-gradient-to-r from-amber-400 to-emerald-300 bg-clip-text text-transparent">Cardzy</span>
-            </div>
+            </Link>
             <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-emerald-200/80">
               {t('footerTagline')}
             </p>
@@ -110,6 +110,8 @@ export function SiteFooter() {
 
         <div className="mt-6 border-t border-emerald-900/50 pt-4 text-center text-xs text-emerald-200/60 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
           <span>{t('footerCopyright')}</span>
+          <Link href="/" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('home')}</Link>
+          <span>•</span>
           <Link href="/about" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('footerAbout')}</Link>
           <span>•</span>
           <Link href="/contact" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">Contact</Link>

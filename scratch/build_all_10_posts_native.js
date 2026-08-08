@@ -196,97 +196,97 @@ buildPost(
   }
 );
 
-// POST 4: NFC Business Cards
+// POST 4: vCard Business Cards
 buildPost(
-  "nfc-digital-business-cards-for-pakistani-entrepreneurs-and-executives",
+  "vcard-digital-business-cards-for-pakistani-entrepreneurs-and-executives",
   4,
   "Business & vCards",
   {
     en: "Smart Digital Business Cards for Executives in Pakistan: The Future of Professional Networking",
     ur: "اسمارٹ ڈیجیٹل بزنس کارڈز اور این ایف سی ویزٹنگ کارڈ گائیڈ",
-    es: "Tarjetas de Visita Digitales Inteligentes con NFC para Ejecutivos",
-    fr: "Cartes de Visite Numériques Intelligentes NFC pour Entreprises",
-    ar: "بطاقات الأعمال الرقمية الذكية وتقنية NFC للتنفيذيين",
-    hi: "स्मार्ट डिजिटल बिजनेस कार्ड और NFC विजिटिंग कार्ड गाइड",
-    zh: "面向企业家的 NFC 智能数字名片与 vCard 完整指南",
-    pt: "Cartões de Visita Digitais NFC para Empresários e Executivos",
-    ru: "Умные цифровые визитки NFC для бизнесменов и руководителей",
-    de: "NFC Digital Visitenkarten für Unternehmer & Führungskräfte",
-    ja: "NFCスマートデジタル名刺＆vCard徹底活用ガイド",
-    ko: "경영진 및 창업가를 위한 스마트 NFC 디지털 명함 가이드",
-    it: "Biglietti da Visita Digitali Smart NFC per Imprenditori",
-    tr: "Girişimciler ve Yöneticiler için Akıllı NFC Dijital Kartvizitler",
-    id: "Kartu Nama Digital NFC Cerdas untuk Pengusaha & Eksekutif",
-    bn: "স্মার্ট ডিজিটাল বিজনেস কার্ড এবং NFC ভিজিটিং কার্ডের সম্পূর্ণ নির্দেশিকা",
-    vi: "Danh Thiếp Kỹ Thuật Số NFC Thông Minh Cho Doanh Nhân",
-    sw: "Kadi za Biashara za Kidijitali za NFC kwa Wajasiriamali"
+    es: "Tarjetas de Visita Digitales Inteligentes con vCard para Ejecutivos",
+    fr: "Cartes de Visite Numériques Intelligentes vCard pour Entreprises",
+    ar: "بطاقات الأعمال الرقمية الذكية وتقنية vCard للتنفيذيين",
+    hi: "स्मार्ट डिजिटल बिजनेस कार्ड और vCard विजिटिंग कार्ड गाइड",
+    zh: "面向企业家的 vCard 智能数字名片与 vCard 完整指南",
+    pt: "Cartões de Visita Digitais vCard para Empresários e Executivos",
+    ru: "Умные цифровые визитки vCard для бизнесменов и руководителей",
+    de: "vCard Digital Visitenkarten für Unternehmer & Führungskräfte",
+    ja: "vCardスマートデジタル名刺＆vCard徹底活用ガイド",
+    ko: "경영진 및 창업가를 위한 스마트 vCard 디지털 명함 가이드",
+    it: "Biglietti da Visita Digitali Smart vCard per Imprenditori",
+    tr: "Girişimciler ve Yöneticiler için Akıllı vCard Dijital Kartvizitler",
+    id: "Kartu Nama Digital vCard Cerdas untuk Pengusaha & Eksekutif",
+    bn: "স্মার্ট ডিজিটাল বিজনেস কার্ড এবং vCard ভিজিটিং কার্ডের সম্পূর্ণ নির্দেশিকা",
+    vi: "Danh Thiếp Kỹ Thuật Số vCard Thông Minh Cho Doanh Nhân",
+    sw: "Kadi za Biashara za Kidijitali za vCard kwa Wajasiriamali"
   },
   {
-    en: "How NFC cards and 1-Click .VCF contact saving revolutionize executive networking.",
+    en: "How vCard cards and 1-Click .VCF contact saving revolutionize executive networking.",
     ur: "این ایف سی اور کیو آر کوڈ کے ذریعے ایک کلک میں ڈائریکٹ فون کنٹیکٹ سیو کریں",
-    es: "Cómo las tarjetas NFC y la descarga en 1 clic de archivos .VCF revolucionan el networking profesional.",
-    fr: "Comment les cartes NFC et le téléchargement .VCF en 1 clic révolutionnent le réseau professionnel.",
-    ar: "كيف تحدث بطاقات NFC وحفظ جهات الاتصال بنقرة واحدة ثورة في التواصل المهني والتنفيذي.",
-    hi: "NFC कार्ड और 1-क्लिक .VCF कांटेक्ट सेविंग कैसे बिजनेस नेटवर्किंग में क्रांति ला रहे हैं।",
-    zh: "探索 NFC 名片与一键保存 .VCF 联系人功能如何颠覆现代商务社交与高管人脉拓展。",
-    pt: "Como os cartões NFC e a captura de contactos .VCF em 1 clique revolucionam o networking.",
-    ru: "Как карты NFC и сохранение контакта .VCF в 1 клик меняют деловой нетворкинг.",
-    de: "Wie NFC-Karten und 1-Klick-VCF-Speicherung das berufliche Networking revolutionieren.",
-    ja: "NFCカードとワンクリック.VCF保存がビジネスネットワーキングをどう革新するか。",
-    ko: "NFC 카드와 1클릭 .VCF 연락처 저장이 경영진 네트워킹을 어떻게 혁신하는지 알아보세요.",
-    it: "Come i biglietti NFC e il salvataggio contatti .VCF in 1 clic rivoluzionano il networking.",
-    tr: "NFC kartların ve 1-Tıkla .VCF kişi kaydetmenin kurumsal iletişimi nasıl değiştirdiğini keşfedin.",
-    id: "Bagaimana kartu NFC dan simpan kontak .VCF 1-klik merevolusi jaringan bisnis profesional.",
+    es: "Cómo las tarjetas vCard y la descarga en 1 clic de archivos .VCF revolucionan el networking profesional.",
+    fr: "Comment les cartes vCard et le téléchargement .VCF en 1 clic révolutionnent le réseau professionnel.",
+    ar: "كيف تحدث بطاقات vCard وحفظ جهات الاتصال بنقرة واحدة ثورة في التواصل المهني والتنفيذي.",
+    hi: "vCard कार्ड और 1-क्लिक .VCF कांटेक्ट सेविंग कैसे बिजनेस नेटवर्किंग में क्रांति ला रहे हैं।",
+    zh: "探索 vCard 名片与一键保存 .VCF 联系人功能如何颠覆现代商务社交与高管人脉拓展。",
+    pt: "Como os cartões vCard e a captura de contactos .VCF em 1 clique revolucionam o networking.",
+    ru: "Как карты vCard и сохранение контакта .VCF в 1 клик меняют деловой нетворкинг.",
+    de: "Wie vCard-Karten und 1-Klick-VCF-Speicherung das berufliche Networking revolutionieren.",
+    ja: "vCardカードとワンクリック.VCF保存がビジネスネットワーキングをどう革新するか。",
+    ko: "vCard 카드와 1클릭 .VCF 연락처 저장이 경영진 네트워킹을 어떻게 혁신하는지 알아보세요.",
+    it: "Come i biglietti vCard e il salvataggio contatti .VCF in 1 clic rivoluzionano il networking.",
+    tr: "vCard kartların ve 1-Tıkla .VCF kişi kaydetmenin kurumsal iletişimi nasıl değiştirdiğini keşfedin.",
+    id: "Bagaimana kartu vCard dan simpan kontak .VCF 1-klik merevolusi jaringan bisnis profesional.",
     bn: "এনএফসি কার্ড এবং ১-ক্লিক .VCF সেভ ফিচার কীভাবে বিজনেস নেটওয়ার্কিং উন্নত করে।",
-    vi: "Cách danh thiếp NFC và tính năng lưu .VCF 1-click cách mạng hóa kết nối doanh nghiệp.",
-    sw: "Jinsi kadi za NFC na hifadhi ya anwani ya .VCF ya mbofyo 1 inavyoboresha mawasiliano."
+    vi: "Cách danh thiếp vCard và tính năng lưu .VCF 1-click cách mạng hóa kết nối doanh nghiệp.",
+    sw: "Jinsi kadi za vCard na hifadhi ya anwani ya .VCF ya mbofyo 1 inavyoboresha mawasiliano."
   },
   {
-    en: "Smart NFC Digital Business Cards Guide — Cardzy",
+    en: "Smart vCard Digital Business Cards Guide — Cardzy",
     ur: "این ایف سی ڈیجیٹل بزنس کارڈز گائیڈ — کارڈزی",
-    es: "Guía de Tarjetas de Visita Digitales NFC — Cardzy",
-    fr: "Guide des Cartes de Visite Numériques NFC — Cardzy",
-    ar: "دليل بطاقات الأعمال الرقمية NFC — كاردزي",
-    hi: "स्मार्ट NFC डिजिटल बिजनेस कार्ड गाइड — कार्डज़ी",
-    zh: "智能 NFC 数字名片指南 — Cardzy",
-    pt: "Guia de Cartões de Visita Digitais NFC — Cardzy",
-    ru: "Руководство по цифровым визиткам NFC — Cardzy",
-    de: "NFC Digitale Visitenkarten Leitfaden — Cardzy",
-    ja: "スマートNFCデジタル名刺ガイド — Cardzy",
-    ko: "스마트 NFC 디지털 명함 가이드 — Cardzy",
-    it: "Guida ai Biglietti da Visita Digitali NFC — Cardzy",
-    tr: "Akıllı NFC Dijital Kartvizit Rehberi — Cardzy",
-    id: "Panduan Kartu Nama Digital NFC — Cardzy",
+    es: "Guía de Tarjetas de Visita Digitales vCard — Cardzy",
+    fr: "Guide des Cartes de Visite Numériques vCard — Cardzy",
+    ar: "دليل بطاقات الأعمال الرقمية vCard — كاردزي",
+    hi: "स्मार्ट vCard डिजिटल बिजनेस कार्ड गाइड — कार्डज़ी",
+    zh: "智能 vCard 数字名片指南 — Cardzy",
+    pt: "Guia de Cartões de Visita Digitais vCard — Cardzy",
+    ru: "Руководство по цифровым визиткам vCard — Cardzy",
+    de: "vCard Digitale Visitenkarten Leitfaden — Cardzy",
+    ja: "スマートvCardデジタル名刺ガイド — Cardzy",
+    ko: "스마트 vCard 디지털 명함 가이드 — Cardzy",
+    it: "Guida ai Biglietti da Visita Digitali vCard — Cardzy",
+    tr: "Akıllı vCard Dijital Kartvizit Rehberi — Cardzy",
+    id: "Panduan Kartu Nama Digital vCard — Cardzy",
     bn: "স্মার্ট এনএফসি ডিজিটাল বিজনেস কার্ড গাইড — কার্ডজি",
-    vi: "Hướng Dẫn Danh Thiếp Kỹ Thuật Số NFC — Cardzy",
-    sw: "Mwongozo wa Kadi za Biashara za NFC — Cardzy"
+    vi: "Hướng Dẫn Danh Thiếp Kỹ Thuật Số vCard — Cardzy",
+    sw: "Mwongozo wa Kadi za Biashara za vCard — Cardzy"
   },
   {
-    en: "Discover how NFC digital business cards and QR code vCards help executives save contacts instantly into phonebooks with high networking conversion.",
+    en: "Discover how vCard digital business cards and QR code vCards help executives save contacts instantly into phonebooks with high networking conversion.",
     ur: "پیپر وزٹنگ کارڈز کو خیرباد کہیں۔ کارڈزی پر این ایف سی اور کیو آر اسمارٹ ڈیجیٹل بزنس کارڈز بنائیں جو ایک کلک میں کنٹیکٹ سیو کرتے ہیں۔",
-    es: "Descubra cómo las tarjetas de visita digitales NFC y vCards QR ayudan a guardar contactos al instante en la agenda telefónica con alta conversión.",
-    fr: "Découvrez comment les cartes de visite numériques NFC et vCards QR permettent d'enregistrer instantanément les contacts dans l'annuaire.",
-    ar: "اكتشف كيف تساعد بطاقات الأعمال الرقمية NFC ورمز QR في حفظ جهات الاتصال فوراً في أجهزة الجوال مع زيادة معدل التواصل المهني.",
-    hi: "जानिए कैसे NFC डिजिटल बिजनेस कार्ड और QR कोड vCards एक क्लिक में कांटेक्ट सीधे फोनबुक में सेव करने में मदद करते हैं।",
-    zh: "了解 NFC 智能数字名片与二维码 vCard 如何帮助商务人士快速保存联系人至手机通讯录并提升社交转化率。",
-    pt: "Descubra como os cartões digitais NFC e vCards QR ajudam a salvar contactos instantaneamente no telemóvel.",
-    ru: "Узнайте, как цифровые визитки NFC и QR-коды vCard помогают мгновенно сохранять контакты в телефонную книгу.",
-    de: "Erfahren Sie, wie digitale NFC-Visitenkarten und QR-vCards Kontaktdaten sofort im Smartphone speichern.",
-    ja: "NFCデジタル名刺とQRコードvCardで、連絡先をスマホの電話帳に即座に保存・ネットワーク率を向上。",
-    ko: "NFC 디지털 명함과 QR 코드 vCard가 연락처를 스마트폰에 즉시 저장하고 네트워킹 효율을 높이는 법을 알아보세요.",
-    it: "Scopri come i biglietti da visita digitali NFC e vCard QR aiutano a salvare i contatti all'istante in rubrica.",
-    tr: "NFC dijital kartvizitlerin ve QR kodlu vCard'ların kişileri telefon rehberine anında kaydetmeyi nasıl sağladığını keşfedin.",
-    id: "Pelajari bagaimana kartu nama digital NFC dan vCard QR membantu menyimpan kontak secara instan ke buku telepon.",
+    es: "Descubra cómo las tarjetas de visita digitales vCard y vCards QR ayudan a guardar contactos al instante en la agenda telefónica con alta conversión.",
+    fr: "Découvrez comment les cartes de visite numériques vCard et vCards QR permettent d'enregistrer instantanément les contacts dans l'annuaire.",
+    ar: "اكتشف كيف تساعد بطاقات الأعمال الرقمية vCard ورمز QR في حفظ جهات الاتصال فوراً في أجهزة الجوال مع زيادة معدل التواصل المهني.",
+    hi: "जानिए कैसे vCard डिजिटल बिजनेस कार्ड और QR कोड vCards एक क्लिक में कांटेक्ट सीधे फोनबुक में सेव करने में मदद करते हैं।",
+    zh: "了解 vCard 智能数字名片与二维码 vCard 如何帮助商务人士快速保存联系人至手机通讯录并提升社交转化率。",
+    pt: "Descubra como os cartões digitais vCard e vCards QR ajudam a salvar contactos instantaneamente no telemóvel.",
+    ru: "Узнайте, как цифровые визитки vCard и QR-коды vCard помогают мгновенно сохранять контакты в телефонную книгу.",
+    de: "Erfahren Sie, wie digitale vCard-Visitenkarten und QR-vCards Kontaktdaten sofort im Smartphone speichern.",
+    ja: "vCardデジタル名刺とQRコードvCardで、連絡先をスマホの電話帳に即座に保存・ネットワーク率を向上。",
+    ko: "vCard 디지털 명함과 QR 코드 vCard가 연락처를 스마트폰에 즉시 저장하고 네트워킹 효율을 높이는 법을 알아보세요.",
+    it: "Scopri come i biglietti da visita digitali vCard e vCard QR aiutano a salvare i contatti all'istante in rubrica.",
+    tr: "vCard dijital kartvizitlerin ve QR kodlu vCard'ların kişileri telefon rehberine anında kaydetmeyi nasıl sağladığını keşfedin.",
+    id: "Pelajari bagaimana kartu nama digital vCard dan vCard QR membantu menyimpan kontak secara instan ke buku telepon.",
     bn: "জানুন কীভাবে এনএফসি ডিজিটাল বিজনেস কার্ড এবং কিউআর কোড ভিকার্ড এক ক্লিকে ফোনে কনট্যাক্ট সেভ করতে সাহায্য করে।",
-    vi: "Khám phá cách danh thiếp NFC và vCard QR giúp lưu danh bạ ngay lập tức vào điện thoại với hiệu quả kết nối cao.",
-    sw: "Gundua jinsi kadi za biashara za NFC na vCard za QR zinavyosaidia kuhifadhi anwani papo hapo kwenye simu."
+    vi: "Khám phá cách danh thiếp vCard và vCard QR giúp lưu danh bạ ngay lập tức vào điện thoại với hiệu quả kết nối cao.",
+    sw: "Gundua jinsi kadi za biashara za vCard na vCard za QR zinavyosaidia kuhifadhi anwani papo hapo kwenye simu."
   },
   {
-    en: "In today's fast-paced corporate landscape, traditional paper business cards are rapidly becoming obsolete. Smart NFC digital business cards allow executives to share their contact info, social links, portfolio, and VCF download with a single smartphone tap.",
+    en: "In today's fast-paced corporate landscape, traditional paper business cards are rapidly becoming obsolete. Smart vCard digital business cards allow executives to share their contact info, social links, portfolio, and VCF download with a single smartphone tap.",
     ur: "کارپوریٹ دنیا میں روایتی کاغذی وزٹنگ کارڈز اکثر کچھ ہی دنوں میں ضائع ہو جاتے ہیں۔ این ایف سی اور اسمارٹ ڈیجیٹل بزنس کارڈز کے ذریعے آپ اپنے سمارٹ فون کو چھو کر یا کیو آر کوڈ اسکین کروا کر اپنا تمام تر بائیو ڈاٹ، سوشل لنکس اور 1-Click contact Save آپشن کسی کو بھی فراہم کر سکتے ہیں۔",
-    es: "En el acelerado entorno corporativo actual, las tarjetas de visita de papel tradicionales están quedando obsoletas. Las tarjetas de visita digitales NFC permiten compartir datos de contacto, redes sociales y archivo .VCF con un solo toque.",
-    fr: "Dans le monde professionnel actuel, les cartes de visite en papier deviennent rapidement obsolètes. Les cartes numériques NFC permettent de partager vos coordonnées, réseaux et fichiers .VCF d'un simple geste.",
-    ar: "في بيئة الأعمال السريعة اليوم، أصبحت بطاقات العمل الورقية التقليدية غير عملية. تتيح بطاقات NFC الرقمية مشاركة جميع بيانات الاتصال وروابط التواصل وحفظ الملف بنقرة واحدة."
+    es: "En el acelerado entorno corporativo actual, las tarjetas de visita de papel tradicionales están quedando obsoletas. Las tarjetas de visita digitales vCard permiten compartir datos de contacto, redes sociales y archivo .VCF con un solo toque.",
+    fr: "Dans le monde professionnel actuel, les cartes de visite en papier deviennent rapidement obsolètes. Les cartes numériques vCard permettent de partager vos coordonnées, réseaux et fichiers .VCF d'un simple geste.",
+    ar: "في بيئة الأعمال السريعة اليوم، أصبحت بطاقات العمل الورقية التقليدية غير عملية. تتيح بطاقات vCard الرقمية مشاركة جميع بيانات الاتصال وروابط التواصل وحفظ الملف بنقرة واحدة."
   },
   l => [
     {
@@ -301,11 +301,11 @@ buildPost(
       ]
     },
     {
-      id: "how-nfc-and-digital-vcards-work",
-      title: l === 'ur' ? "2. این ایف سی اور کیو آر کوڈ کیسے کام کرتے ہیں؟" : l === 'es' ? "2. Cómo Funcionan las Tarjetas vCard NFC y los Códigos QR" : "2. How Smart Digital vCards & QR Code Sharing Work",
-      body: "NFC (Near Field Communication) technology transmits your digital business card profile directly to any iOS or Android phone without requiring an app.",
+      id: "how-vcard-and-digital-vcards-work",
+      title: l === 'ur' ? "2. این ایف سی اور کیو آر کوڈ کیسے کام کرتے ہیں؟" : l === 'es' ? "2. Cómo Funcionan las Tarjetas vCard vCard y los Códigos QR" : "2. How Smart Digital vCards & QR Code Sharing Work",
+      body: "vCard (Near Field Communication) technology transmits your digital business card profile directly to any iOS or Android phone without requiring an app.",
       bulletPoints: [
-        "Tap NFC card onto any smartphone to open digital vCard profile",
+        "Tap vCard card onto any smartphone to open digital vCard profile",
         "Dynamic QR code backup for older devices",
         "1-Click 'Save Contact' (.vcf) button saves info straight to phonebook",
         "Real-time contact detail editing without re-printing physical card"
@@ -335,7 +335,7 @@ buildPost(
   ],
   l => [
     {
-      question: l === 'es' ? "¿El destinatario necesita una aplicación para abrir la tarjeta NFC?" : "Does the recipient need an app to open an NFC vCard?",
+      question: l === 'es' ? "¿El destinatario necesita una aplicación para abrir la tarjeta vCard?" : "Does the recipient need an app to open an vCard vCard?",
       answer: l === 'es' ? "¡No necesita ninguna aplicación! El destinatario simplemente acerca su smartphone a su tarjeta o escanea el código QR para ver su perfil web en vivo." : "No app needed! The recipient simply taps their smartphone on your card or scans the QR code to open your live web profile."
     },
     {
@@ -353,6 +353,6 @@ buildPost(
 );
 
 savePostFile("step-by-step-guide-to-creating-personalized-eid-wishes-cards-with-photo", 3, {}, {});
-savePostFile("nfc-digital-business-cards-for-pakistani-entrepreneurs-and-executives", 4, {}, {});
+savePostFile("vcard-digital-business-cards-for-pakistani-entrepreneurs-and-executives", 4, {}, {});
 
 console.log("Posts 3 and 4 generated.");

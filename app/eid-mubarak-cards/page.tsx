@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { EidCardsClient } from './eid-cards-client'
+import { getLanguageAlternates } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Urdu Eid Mubarak Wishes & Digital Cards | Cardzy',
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
     'Create animated Eid Mubarak cards & send Urdu Eid Mubarak wishes online. Discover "Eid Mubarak to you too" in Urdu words (خیر مبارک) & share instant WhatsApp greetings.',
   alternates: {
     canonical: 'https://cardzy.online/eid-mubarak-cards',
+    languages: getLanguageAlternates('/eid-mubarak-cards'),
   },
 }
 

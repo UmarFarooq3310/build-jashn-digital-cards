@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { BLOG_POSTS, getBlogPost, getLocalizedPost } from '@/lib/blog/data'
 import { BlogPostClient } from '@/components/blog/blog-post-client'
+import { getLanguageAlternates } from '@/lib/seo'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -37,19 +38,12 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const title = baseTitle.length > 68 ? baseTitle.slice(0, 65) + '...' : baseTitle
   const description = post.metaDescription.length > 165 ? post.metaDescription.slice(0, 162) + '...' : post.metaDescription
 
-  const languageAlternates: Record<string, string> = {}
-  SUPPORTED_LANGS.forEach((l) => {
-    languageAlternates[l] = l === 'en' 
-      ? `https://cardzy.online/blog/${post.slug}` 
-      : `https://cardzy.online/blog/${post.slug}?lang=${l}`
-  })
-
   return {
     title,
     description,
     alternates: {
       canonical: `https://cardzy.online/blog/${post.slug}`,
-      languages: languageAlternates,
+      languages: getLanguageAlternates(`/blog/${post.slug}`),
     },
     openGraph: {
       title: post.title,

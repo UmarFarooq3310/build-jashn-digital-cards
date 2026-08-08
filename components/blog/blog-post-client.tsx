@@ -200,6 +200,38 @@ const POST_UI_STRINGS: Record<string, Record<string, string>> = {
   },
 }
 
+function renderTextWithLinks(text: string) {
+  if (!text) return null
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g
+  const parts = []
+  let lastIndex = 0
+  let match
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.substring(lastIndex, match.index))
+    }
+    const label = match[1]
+    const href = match[2]
+    parts.push(
+      <Link
+        key={`${href}-${match.index}`}
+        href={href}
+        className="text-[#D4AF37] hover:underline font-semibold underline-offset-2"
+      >
+        {label}
+      </Link>
+    )
+    lastIndex = regex.lastIndex
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.substring(lastIndex))
+  }
+
+  return parts.length > 0 ? parts : text
+}
+
 export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
   const { lang } = useLang()
   const [copied, setCopied] = useState(false)
@@ -264,7 +296,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
 
             {/* Author Profile */}
             <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-4">
-              <Link href="/authors/umar-farooq" className="flex items-center gap-3 group/author">
+              <Link href={`/authors/${post.author.name.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center gap-3 group/author">
                 <div className="w-11 h-11 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37] font-black text-base group-hover/author:border-[#D4AF37]">
                   {post.author.name[0]}
                 </div>
@@ -329,7 +361,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
           <article className={`lg:col-span-8 space-y-8 text-zinc-200 leading-relaxed text-base ${isRtl ? 'dir-rtl' : ''}`}>
             {/* Intro Paragraph */}
             <div className="p-6 rounded-3xl border border-[#D4AF37]/30 bg-[#D4AF37]/5 backdrop-blur-md text-base leading-relaxed text-zinc-100 font-medium">
-              {post.content.intro}
+              {renderTextWithLinks(post.content.intro)}
             </div>
 
             {/* Sections */}
@@ -340,14 +372,14 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
                   <span>{section.title}</span>
                 </h3>
 
-                <p className="text-sm sm:text-base leading-relaxed text-zinc-300">{section.body}</p>
+                <p className="text-sm sm:text-base leading-relaxed text-zinc-300">{renderTextWithLinks(section.body)}</p>
 
                 {section.bulletPoints && section.bulletPoints.length > 0 && (
                   <ul className="space-y-2.5 pt-2">
                     {section.bulletPoints.map((bp, i) => (
                       <li key={i} className="flex items-start gap-3 text-xs sm:text-sm text-zinc-200">
                         <span className="w-2 h-2 rounded-full bg-[#D4AF37] mt-2 shrink-0" />
-                        <span>{bp}</span>
+                        <span>{renderTextWithLinks(bp)}</span>
                       </li>
                     ))}
                   </ul>
@@ -355,7 +387,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
 
                 {section.highlight && (
                   <div className="p-4 rounded-2xl border border-[#D4AF37]/40 bg-[#0a0a0c] text-xs font-bold text-[#D4AF37] shadow-inner">
-                    💡 {section.highlight}
+                    💡 {renderTextWithLinks(section.highlight)}
                   </div>
                 )}
               </section>
@@ -390,7 +422,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
                 <span>{tUI('keyTakeaway')}</span>
               </div>
               <p className="text-sm sm:text-base font-semibold text-white leading-relaxed">
-                {post.content.conclusion}
+                {renderTextWithLinks(post.content.conclusion)}
               </p>
             </div>
           </article>

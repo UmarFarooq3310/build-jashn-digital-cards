@@ -403,6 +403,51 @@ export function GuideClientContent() {
           </div>
         </div>
       </section>
+
+      {/* Featured Resources & Tool Links */}
+      <section className="mt-12 p-6 rounded-3xl border border-primary/20 bg-primary/5 space-y-4">
+        <h3 className="text-base font-extrabold text-foreground flex items-center gap-2">
+          <Sparkles className="size-4 text-primary" /> Popular Cardzy Tools & Featured Articles
+        </h3>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+          <li>
+            <Link href="/create-invitation" className="font-bold text-primary hover:underline inline-flex items-center gap-1.5">
+              → Create Digital Wedding Invitation
+            </Link>
+            <p className="text-muted-foreground text-xs">Design 4K animated invitation websites with live WhatsApp RSVP tracking.</p>
+          </li>
+          <li>
+            <Link href="/pricing" className="font-bold text-primary hover:underline inline-flex items-center gap-1.5">
+              → View Cardzy Pricing & Plans
+            </Link>
+            <p className="text-muted-foreground text-xs">Explore transparent plans for unlimited cards and premium themes.</p>
+          </li>
+          <li>
+            <Link href="/blog/how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly" className="font-bold text-primary hover:underline inline-flex items-center gap-1.5">
+              → How to Manage Wedding Guest Lists & RSVPs
+            </Link>
+            <p className="text-muted-foreground text-xs">Master guest tracking, dietary preferences, and automated WhatsApp reminders.</p>
+          </li>
+          <li>
+            <Link href="/blog/digital-vs-paper-wedding-invitations-cost-eco-comparison" className="font-bold text-primary hover:underline inline-flex items-center gap-1.5">
+              → Digital vs Paper Wedding Invitations Comparison
+            </Link>
+            <p className="text-muted-foreground text-xs">Detailed cost, eco-impact, and guest response time analysis.</p>
+          </li>
+          <li>
+            <Link href="/about" className="font-bold text-primary hover:underline inline-flex items-center gap-1.5">
+              → About Cardzy & Our Mission
+            </Link>
+            <p className="text-muted-foreground text-xs">Learn about our team and global digital celebration platform.</p>
+          </li>
+          <li>
+            <Link href="/create-visiting-card" className="font-bold text-primary hover:underline inline-flex items-center gap-1.5">
+              → Create Smart Digital Business Card
+            </Link>
+            <p className="text-muted-foreground text-xs">Build digital vCards with 1-tap VCF download for seamless networking.</p>
+          </li>
+        </ul>
+      </section>
     </div>
   )
 }

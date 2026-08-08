@@ -20,7 +20,7 @@ export default function ContactPage() {
   const helpItems = [
     'Creating and sending animated digital wish cards for Eid, birthdays, anniversaries and weddings',
     'Building digital event invitation websites with RSVP tracking and Google Maps integration',
-    'Creating professional NFC digital visiting cards for doctors, lawyers, and businesses',
+    'Creating professional digital visiting cards for doctors, lawyers, and businesses',
     'Upgrading to Pro or Business plan and processing payments via EasyPaisa, JazzCash, or PayPal',
     'Exporting guest CSV lists from your dashboard for event management',
     'Adding custom logos, fonts, and branding to your company invitation cards',
@@ -135,7 +135,7 @@ export default function ContactPage() {
             <div className="grid gap-6 md:grid-cols-2">
               {[
                 [<Globe key="g" className="size-4 text-emerald-600" />, 'Global Platform, Local Heart', 'Cardzy supports 18 languages and serves users from Pakistan, India, the UAE, the UK, the USA, Canada, Australia, and over 60 other countries.'],
-                [<Phone key="p" className="size-4 text-emerald-600" />, 'Custom Order Service', 'Need a fully customised digital card? Our concierge service handles everything from bespoke Mehndi invitations to NFC business cards. Reach us on WhatsApp.'],
+                [<Phone key="p" className="size-4 text-emerald-600" />, 'Custom Order Service', 'Need a fully customised digital card? Our concierge service handles everything from bespoke Mehndi invitations to digital business cards. Reach us on WhatsApp.'],
                 [<Mail key="m" className="size-4 text-emerald-600" />, 'Technical Support', 'Experiencing an issue with your card, RSVP tracking, or account? Email us with your card link and a description. We resolve most issues within one business day.'],
                 [<MessageSquare key="ms" className="size-4 text-emerald-600" />, 'Partnerships & Press', 'Are you a wedding planner, events company, or media outlet? We welcome collaboration proposals. Reach out by email with details.'],
               ].map(([icon, title, desc]) => (

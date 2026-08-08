@@ -1,13 +1,15 @@
 import { Metadata } from 'next'
 import { BLOG_POSTS } from '@/lib/blog/data'
 import { BlogIndexClient } from '@/components/blog/blog-index-client'
+import { getLanguageAlternates } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Cardzy Blog — Digital Cards & Event Wording Guides',
   description:
-    'Explore expert guides on creating Pakistani wedding invitations, Eid wish cards with photo, NFC digital business cards, and WhatsApp RSVP management.',
+    'Explore expert guides on creating Pakistani wedding invitations, Eid wish cards with photo, smart digital business cards, and WhatsApp RSVP management.',
   alternates: {
     canonical: 'https://cardzy.online/blog',
+    languages: getLanguageAlternates('/blog'),
   },
     openGraph: {
     title: 'Cardzy Blog - Guides & Tips for Digital Cards',

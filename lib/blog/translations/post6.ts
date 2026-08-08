@@ -133,7 +133,7 @@ export const POST_6_DATA: Record<string, LocalizedBlogData> = {
 
 export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
   "en": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on creating online invitation cards with WhatsApp RSVP. Start creating your interactive cards directly from the [Cardzy homepage](/) or build an event card with our [Digital Invitation Maker](/create-invitation). In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -156,12 +156,12 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
           "Provide clear event timings, dress code guidelines, and venue directions",
           "Upload high-resolution couple or personal photos into animated frames"
         ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "highlight": "Browse through 50+ professionally curated templates or design directly with our [Digital Invitation Maker](/create-invitation)."
       },
       {
         "title": "3. Seamless WhatsApp Sharing & Guest Management",
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
+        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host. For full guest management guidelines, read [how to manage wedding guest lists and WhatsApp RSVPs effortlessly](/blog/how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly).",
         "bulletPoints": [
           "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
           "Export complete guest lists to CSV for catering and seating arrangements",
@@ -171,7 +171,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
       {
         "title": "4. Pro Tips for Maximum Guest Engagement",
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link. For cost comparisons, read our guide on [digital vs paper wedding invitations](/blog/digital-vs-paper-wedding-invitations-cost-eco-comparison).",
         "bulletPoints": [
           "Verify venue location pins on Google Maps before mass sharing",
           "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
@@ -197,7 +197,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
         "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on the [Cardzy homepage](/) today and experience effortless sharing across the globe."
   },
   "ur": {
     "intro": "خوش آمدید! کارڈزی ایک عالمی ڈیجیٹل جشن اور نیٹ ورکنگ پلیٹ فارم ہے جس کا مقصد آپ کے خاص لمحات جیسے کہ شادی، نکاح، عید، سالگرہ اور کاروباری رابطہ کاری کو جدید، متحرک اور یادگار بنانا ہے۔ اس جامع گائیڈ میں، ہم \"Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages\" پر تفصیل سے روشنی ڈالیں گے تاکہ آپ بغیر کسی دقت کے ایک بہترین ڈیجیٹل کارڈ یا دعوت نامہ تیار کر سکیں۔",
@@ -267,7 +267,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "آج ہی کارڈزی (cardzy.online) پر اپنا پسندیدہ متحرک وش کارڈ یا دعوت نامہ بنائیں اور اپنے پیاروں کے ساتھ خوشیاں بانٹیں!"
   },
   "es": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -334,7 +334,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "fr": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -468,7 +468,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "أنشئ دعوتك الرقمية المميزة عبر منصة كاردزي اليوم وشارك الفرحة مع عائلتك وأصدقائك بضغطة زر!"
   },
   "hi": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -535,7 +535,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "zh": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -602,7 +602,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "pt": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -669,7 +669,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "ru": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -736,7 +736,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "de": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -803,7 +803,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "ja": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -870,7 +870,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "ko": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -937,7 +937,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "it": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -1004,7 +1004,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "tr": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -1071,7 +1071,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "id": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -1138,7 +1138,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "bn": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -1205,7 +1205,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "vi": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
@@ -1272,7 +1272,7 @@ export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
     "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
   },
   "sw": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart NFC visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
     "sections": [
       {
         "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",

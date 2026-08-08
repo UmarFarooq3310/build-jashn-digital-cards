@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Check, Crown, Sparkles } from 'lucide-react'
@@ -71,7 +72,15 @@ export default function PricingPage() {
               {t('choosePerfectPlan')}
             </h1>
             <h2 className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t('pricingHeaderDesc')}
+              {t('pricingHeaderDesc')}{' '}
+              Ready to start? Design your digital card today using our{' '}
+              <Link href="/create-invitation" className="text-primary underline font-semibold hover:opacity-80">
+                Digital Invitation Builder
+              </Link>{' '}
+              or craft an executive{' '}
+              <Link href="/create-visiting-card" className="text-primary underline font-semibold hover:opacity-80">
+                Digital Business Card
+              </Link>.
             </h2>
           </div>
 

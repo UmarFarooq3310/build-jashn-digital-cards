@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Menu, X, LogOut, Globe, ChevronDown } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
@@ -17,9 +17,29 @@ function SiteHeaderInner() {
   const signOut = useJashn((s) => s.signOut)
   const [open, setOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const langDropdownRef = useRef<HTMLDivElement>(null)
   const { lang, setLang, t } = useLang()
 
   const currentLang = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0]
+
+  // Close language dropdown on outside click or touch
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
+        setLangOpen(false)
+      }
+    }
+
+    if (langOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      document.addEventListener('touchstart', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [langOpen])
 
   // Enforce zero top offset on client-side route navigation
   useEffect(() => {
@@ -123,24 +143,27 @@ function SiteHeaderInner() {
 
         <div className="hidden items-center gap-2 lg:flex shrink-0">
           {/* Language Switcher */}
-          <div className="relative z-[9999]">
+          <div ref={langDropdownRef} className="relative z-[9999] notranslate" translate="no">
             <button
               onClick={() => setLangOpen((o) => !o)}
-              className="flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-100 dark:bg-amber-950/40 px-3.5 py-1.5 text-xs font-bold text-amber-950 dark:text-amber-300 transition-all hover:bg-amber-200 shadow-xs whitespace-nowrap"
+              className="flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-100 dark:bg-amber-950/40 px-3.5 py-1.5 text-xs font-bold text-amber-950 dark:text-amber-300 transition-all hover:bg-amber-200 shadow-xs whitespace-nowrap notranslate"
               aria-label="Select language"
+              translate="no"
             >
               <Globe className="size-3.5 text-amber-600" />
-              <span>{currentLang.label}</span>
+              <span className="notranslate" translate="no">{currentLang.label}</span>
               <ChevronDown className={cn('size-3 transition-transform', langOpen && 'rotate-180')} />
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full mt-2 z-[9999] w-56 rounded-2xl border border-amber-500/40 bg-card shadow-2xl p-2.5 max-h-80 overflow-y-auto ring-1 ring-black/5">
+              <div className="absolute right-0 top-full mt-2 z-[9999] w-56 rounded-2xl border border-amber-500/40 bg-card shadow-2xl p-2.5 max-h-80 overflow-y-auto ring-1 ring-black/5 notranslate" translate="no">
                 {LANGUAGES.map((l) => (
                   <button
                     key={l.code}
+                    lang={l.code}
+                    translate="no"
                     onClick={() => { setLang(l.code); setLangOpen(false) }}
                     className={cn(
-                      'w-full text-left rounded-xl px-3 py-2 text-xs sm:text-sm font-medium transition-colors hover:bg-emerald-950/10',
+                      'w-full text-left rounded-xl px-3 py-2 text-xs sm:text-sm font-medium transition-colors hover:bg-emerald-950/10 notranslate',
                       lang === l.code ? 'font-bold text-emerald-800 bg-emerald-950/10' : 'text-foreground'
                     )}
                   >
@@ -221,17 +244,19 @@ function SiteHeaderInner() {
             ))}
 
             {/* Mobile language picker */}
-            <div className="mt-2 pt-2 border-t border-border">
+            <div className="mt-2 pt-2 border-t border-border notranslate" translate="no">
               <p className="px-3 pb-1 text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
                 <Globe className="size-3.5" /> {t('languageLabel')}
               </p>
-              <div className="grid grid-cols-2 gap-1">
+              <div className="grid grid-cols-2 gap-1 notranslate" translate="no">
                 {LANGUAGES.map((l) => (
                   <button
                     key={l.code}
+                    lang={l.code}
+                    translate="no"
                     onClick={() => { setLang(l.code); setOpen(false) }}
                     className={cn(
-                      'rounded-lg px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-secondary',
+                      'rounded-lg px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-secondary notranslate',
                       lang === l.code ? 'bg-primary/10 text-primary font-bold' : 'text-foreground'
                     )}
                   >
