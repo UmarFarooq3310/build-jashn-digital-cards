@@ -7,6 +7,24 @@ export const SUPPORTED_LANGS = [
 
 export type SupportedLang = (typeof SUPPORTED_LANGS)[number]
 
+export const DEFAULT_KEYWORDS = [
+  'digital wish cards',
+  '3D animated greeting cards',
+  'digital wedding invitations',
+  'Pakistani wedding cards',
+  'WhatsApp RSVP invitations',
+  'smart digital business cards',
+  'vCard generator',
+  'Eid Mubarak digital cards',
+  'Nikkah invitations online',
+  'Mehndi invitations',
+  'Walima invitation website',
+  'online birthday cards with photo',
+  'multilingual digital cards',
+  'Cardzy',
+]
+
+
 /**
  * Builds the canonical URL for a given path and optional language.
  * - If a language query parameter is provided (e.g. 'ja', 'hi', 'ur'),

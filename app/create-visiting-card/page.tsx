@@ -15,6 +15,15 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     title: 'Create Smart Digital Business Cards (vCard) | Cardzy',
     description:
       'Build smart executive digital business cards with scannable QR codes, 1-tap contact vCard download, and Google Maps office pins.',
+    keywords: [
+      'digital business card',
+      'vCard maker',
+      'smart visiting card',
+      'QR code business card',
+      'contact card Pakistan',
+      'executive digital card',
+      'electronic business card',
+    ],
     alternates: getPageAlternates('/create-visiting-card', lang),
     robots: PUBLIC_ROBOTS,
   }

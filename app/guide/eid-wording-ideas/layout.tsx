@@ -5,6 +5,13 @@ export const metadata: Metadata = {
   title: 'Eid Mubarak Wording & Wishes in Urdu & English (With Meanings & Replies) | Cardzy',
   description:
     'Free Eid Mubarak wording in Urdu & English with copyable phrases, Khair Mubarak replies, festive greetings, and animated Eid card wording ideas.',
+  keywords: [
+    'Eid Mubarak wording Urdu',
+    'Khair Mubarak reply meaning',
+    'Eid wishes in English',
+    'Eid greeting quotes',
+    'Eid Mubarak card messages',
+  ],
   alternates: getPageAlternates('/guide/eid-wording-ideas'),
   robots: PUBLIC_ROBOTS,
 }

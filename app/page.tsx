@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import { Hero } from '@/components/home/hero'
 import { HowItWorks } from '@/components/home/how-it-works'
-import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS } from '@/lib/seo'
 
 interface PageProps {
   searchParams?: Promise<{ lang?: string }>
@@ -13,6 +13,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const lang = resolvedSearchParams.lang
 
   return {
+    keywords: DEFAULT_KEYWORDS,
     alternates: getPageAlternates('/', lang),
     robots: PUBLIC_ROBOTS,
   }

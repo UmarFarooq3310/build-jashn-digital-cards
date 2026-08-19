@@ -15,6 +15,15 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     title: 'Cardzy Blog — Digital Cards & Event Wording Guides',
     description:
       'Explore expert guides on creating Pakistani wedding invitations, Eid wish cards with photo, smart digital business cards, and WhatsApp RSVP management.',
+    keywords: [
+      'digital invitation guides',
+      'Pakistani wedding card wording',
+      'Eid wish card tutorial',
+      'smart digital visiting cards',
+      'WhatsApp RSVP tracking',
+      'animated greeting card ideas',
+      'Cardzy blog',
+    ],
     alternates: getPageAlternates('/blog', lang),
     robots: PUBLIC_ROBOTS,
     openGraph: {

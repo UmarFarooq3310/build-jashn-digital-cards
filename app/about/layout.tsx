@@ -4,6 +4,13 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'About Cardzy — Our Story, Mission & Team',
   description: 'Learn about Cardzy, the global digital card and invitation platform for families worldwide. Discover our story, mission, and celebration features.',
+  keywords: [
+    'about Cardzy',
+    'digital cards platform',
+    'Cardzy story',
+    'Cardzy mission',
+    'multilingual celebration cards',
+  ],
   alternates: getPageAlternates('/about'),
   robots: PUBLIC_ROBOTS,
   openGraph: {

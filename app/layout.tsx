@@ -41,13 +41,14 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
   title: 'Cardzy | 3D Animated Digital Wish Cards & Wedding Invitations',
   description:
     'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP tracking, and smart digital business cards in 18 languages with Cardzy.',
+  keywords: DEFAULT_KEYWORDS,
   generator: 'v0.app',
   alternates: getPageAlternates('/'),
   robots: PUBLIC_ROBOTS,
