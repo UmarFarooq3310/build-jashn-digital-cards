@@ -13,7 +13,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   return {
     title: 'Celebration Guides & Wording Ideas — Cardzy Digital Cards',
     description:
-      'Explore our collection of expert guides for designing digital invitations, animated wish cards, wedding invitations, Eid greetings, and more. Find wording templates and tips for every occasion.',
+      'Explore expert guides for designing digital invitations, wish cards, and wedding announcements. Find copy-ready wording templates for every occasion.',
     alternates: getPageAlternates('/guide', lang),
     robots: PUBLIC_ROBOTS,
   }

@@ -14,7 +14,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   return {
     title: 'Create Digital Wedding Invitations with WhatsApp RSVP | Cardzy',
     description:
-      'Design royal 4K animated wedding invitation websites for Nikkah, Mehndi, Barat, and Walima with Google Maps directions, music, and WhatsApp RSVP tracking.',
+      'Design 4K animated wedding invitations for Nikkah, Mehndi, Barat & Walima with Google Maps directions, music, and instant WhatsApp RSVP tracking.',
     alternates: getPageAlternates('/create-invitation', lang),
     robots: PUBLIC_ROBOTS,
   }

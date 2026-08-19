@@ -15,7 +15,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   return {
     title: 'Hasnain — Global Creative & Cultural Events Editor | Cardzy',
     description:
-      'Hasnain is a Global Creative & Cultural Events Editor at Cardzy, authoring guides on animated holiday e-cards, birthday invitations, and digital sharing etiquette across 18 languages.',
+      'Hasnain is a Creative & Cultural Events Editor at Cardzy, writing guides on holiday e-cards, party invitations, and digital sharing etiquette.',
     alternates: getPageAlternates('/authors/hasnain', lang),
     robots: PUBLIC_ROBOTS,
   }

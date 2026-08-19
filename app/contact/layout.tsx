@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Contact Us — Cardzy Digital Cards',
-  description: 'Get in touch with the Cardzy team for support, custom orders, pricing questions, or partnership inquiries. Reach us via WhatsApp, email, or our contact form.',
+  description: 'Get in touch with the Cardzy team for support, custom orders, and questions. Reach us via WhatsApp, email, or our contact form for quick help.',
   alternates: getPageAlternates('/contact'),
   robots: PUBLIC_ROBOTS,
   openGraph: {

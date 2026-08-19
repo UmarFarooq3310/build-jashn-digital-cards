@@ -38,7 +38,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'The Complete Guide to Pakistani & Islamic Wedding Invitation Wording (Urdu & English Examples)',
     subtitle: 'Comprehensive wording examples for Nikkah, Mehndi, Barat, and Walima cards with authentic Bismillah calligraphy, inspiring quotes by celebrated authors, host etiquette, and RSVP notes.',
     seoTitle: 'Pakistani Wedding Invitation Wording & Card Text (Urdu & English)',
-    metaDescription: '50+ Pakistani wedding invitation card text examples in Urdu & English for Nikkah, Mehndi, Barat & Walima. Includes Bismillah calligraphy, RSVP management & copyable text.',
+    metaDescription: '50+ Pakistani wedding card text examples in Urdu & English for Nikkah, Mehndi, Barat & Walima with Bismillah calligraphy and WhatsApp RSVP links.',
     category: 'Wedding & Nikkah',
     author: {
       name: 'Umar Farooq',
@@ -173,7 +173,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'Digital vs Paper Wedding Invitations: A Detailed Cost, Eco & Convenience Comparison for 2026',
     subtitle: 'Comprehensive financial, environmental, and practical breakdown comparing traditional printed wedding cards against modern animated digital invitations.',
     seoTitle: 'Digital vs Paper Wedding Invitations Cost Comparison (2026)',
-    metaDescription: 'Compare digital vs paper wedding invitations. Detailed cost breakdown (PKR/USD savings), eco-friendly environmental impact, live WhatsApp RSVPs, and global delivery benefits.',
+    metaDescription: 'Compare digital vs paper wedding invitations: cost breakdown in PKR/USD, eco-friendly benefits, live WhatsApp RSVPs, and instant global delivery.',
     category: 'Event Planning',
     author: {
       name: 'Kainat',
@@ -292,7 +292,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'Step-by-Step Guide to Designing Personalized Eid Mubarak Cards with Family Photos & Custom Names',
     subtitle: 'How to replace generic forwarded graphics with stunning, animated Eid-ul-Fitr and Eid-ul-Adha greeting cards featuring custom names, duas, and family portraits.',
     seoTitle: 'Create Personalized Eid Mubarak Cards with Name & Photo | Cardzy',
-    metaDescription: 'Learn how to create custom Eid Mubarak digital wish cards with your name and family photo. Includes animated Islamic moon templates, Urdu/English duas, and WhatsApp sharing.',
+    metaDescription: 'Create custom Eid Mubarak digital wish cards with your name and photo. Includes animated 3D Islamic moon themes, duas, and instant WhatsApp sharing.',
     category: 'Eid & Holidays',
     author: {
       name: 'Umar Farooq',
@@ -413,7 +413,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'Smart Digital Business Cards for Executives in Pakistan: The Future of Professional Networking',
     subtitle: 'Why CEOs, freelancers, and entrepreneurs in Karachi, Lahore, and Islamabad are replacing paper visiting cards with interactive vCards and smart digital cards.',
     seoTitle: 'Smart Digital Business Cards Pakistan (vCard)',
-    metaDescription: 'Discover why executives and business owners in Pakistan use smart digital business cards. One-tap vCard save, QR code sharing, social links, and zero printing cost.',
+    metaDescription: 'Discover why executives in Pakistan use smart digital business cards. Features 1-tap vCard save, QR code sharing, social links, and zero print cost.',
     category: 'Business & vCards',
     author: {
       name: 'Kainat',
@@ -490,7 +490,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'How to Manage Large Wedding Guest Lists and WhatsApp RSVPs Effortlessly (Host䏭 Survival Guide)',
     subtitle: 'Master guest attendance tracking, eliminate phone call chaos, calculate accurate catering headcounts, and distribute venue GPS pins with ease.',
     seoTitle: 'Manage Wedding Guest Lists & WhatsApp RSVPs Effortlessly',
-    metaDescription: 'Learn how to manage large wedding guest lists with automated WhatsApp RSVPs. Calculate exact catering headcounts, handle dietary notes, and eliminate guest calling stress.',
+    metaDescription: 'Manage wedding guest lists with automated WhatsApp RSVPs. Calculate catering headcounts, track attendance live, and eliminate guest calling stress.',
     category: 'Event Planning',
     author: {
       name: 'Umar Farooq',
@@ -767,7 +767,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'How to Create Animated Birthday Wish Cards & Milestone Party Invitations Online',
     subtitle: 'Design custom animated birthday greetings and milestone party invites with 3D cake candles, photo frames, party music, and WhatsApp RSVP tracking.',
     seoTitle: 'Animated Birthday Wish Cards & Party Invitations Online | Cardzy',
-    metaDescription: 'Design custom animated birthday wish cards and 18th/21st/50th milestone party invitations with photo frames, birthday music, countdown timers, and WhatsApp RSVP.',
+    metaDescription: 'Design custom animated birthday wish cards and milestone party invitations with photo frames, birthday music, countdowns, and WhatsApp RSVP tracking.',
     category: 'Event Planning',
     author: {
       name: 'Hasnain',
@@ -814,7 +814,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: 'The Future of Networking: Smart Digital Business Cards with 1-Click .VCF Save',
     subtitle: 'Create executive vCard-ready digital business cards for corporate, tech, medical, legal, and real estate professionals with instant contact download.',
     seoTitle: 'Smart Digital Business Cards & 1-Click .VCF Save | Cardzy',
-    metaDescription: 'Build executive digital business cards for corporate, tech, medical, legal & real estate. Features 1-click Save Contact (.vcf), WhatsApp link, and Google Maps pin.',
+    metaDescription: 'Build executive digital business cards for corporate, medical, and legal pros. Includes 1-click .vcf contact save, WhatsApp link, and office maps.',
     category: 'Business & vCards',
     author: {
       name: 'Kainat',

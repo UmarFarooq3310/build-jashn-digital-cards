@@ -3,7 +3,7 @@ import { PRIVATE_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Admin Security Portal — Cardzy Management Hub',
-  description: 'Internal administration management portal for Cardzy.',
+  description: 'Internal administration security and data management control portal for Cardzy.',
   robots: PRIVATE_ROBOTS,
 }
 

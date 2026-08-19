@@ -3,7 +3,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions — Cardzy Digital Cards',
-  description: 'Find answers to the most common questions about Cardzy digital wish cards, wedding invitations, visiting cards, pricing, RSVP tracking, and language support.',
+  description: 'Find answers to common questions about Cardzy digital wish cards, wedding invitations, smart vCards, pricing plans, and WhatsApp RSVP tracking.',
   alternates: getPageAlternates('/faq'),
   robots: PUBLIC_ROBOTS,
 }

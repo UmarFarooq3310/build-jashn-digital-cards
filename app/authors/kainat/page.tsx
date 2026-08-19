@@ -15,7 +15,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   return {
     title: 'Kainat — Tech & Product Strategist | Cardzy',
     description:
-      'Kainat is a Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards), cost comparisons, and eco-friendly digital invitation solutions.',
+      'Kainat is a Tech & Product Strategist at Cardzy, writing guides on smart digital business cards, cost comparisons, and digital invitations.',
     alternates: getPageAlternates('/authors/kainat', lang),
     robots: PUBLIC_ROBOTS,
   }

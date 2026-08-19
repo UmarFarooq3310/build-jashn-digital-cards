@@ -15,7 +15,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   return {
     title: 'Umar Farooq — Senior Cultural Event & Wedding Stylist | Cardzy',
     description:
-      'Umar Farooq is a Senior Cultural Event & Wedding Stylist at Cardzy, writing guides on Pakistani and Islamic wedding invitations, Eid celebrations, and digital card etiquette.',
+      'Umar Farooq is a Cultural Event & Wedding Stylist at Cardzy, writing guides on Pakistani wedding invitations, Eid wishes, and card etiquette.',
     alternates: getPageAlternates('/authors/umar-farooq', lang),
     robots: PUBLIC_ROBOTS,
   }

@@ -13,7 +13,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   return {
     title: 'Urdu Eid Mubarak Wishes & Digital Cards | Cardzy',
     description:
-      'Create animated Eid Mubarak cards & send Urdu Eid Mubarak wishes online. Discover "Eid Mubarak to you too" in Urdu words (خیر مبارک) & share instant WhatsApp greetings.',
+      'Create animated Eid Mubarak cards with Urdu wishes online. Learn Khair Mubarak replies and share instant 3D Eid greeting links on WhatsApp.',
     alternates: getPageAlternates('/eid-mubarak-cards', lang),
     robots: PUBLIC_ROBOTS,
   }

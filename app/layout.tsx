@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
   title: 'Cardzy | 3D Animated Digital Wish Cards & Wedding Invitations',
   description:
-    'Create stunning 3D animated digital wish cards, Pakistani & International digital wedding invitations with instant WhatsApp RSVP tracking, and executive digital visiting cards in 18 languages.',
+    'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP tracking, and smart digital business cards in 18 languages with Cardzy.',
   generator: 'v0.app',
   alternates: getPageAlternates('/'),
   robots: PUBLIC_ROBOTS,

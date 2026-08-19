@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Pakistani Wedding Card Text & Invitation Wording (Urdu & English) | Cardzy',
   description:
-    'Explore 50+ Pakistani wedding card text examples in Urdu and English for Nikkah, Mehndi, Barat, and Walima cards with Bismillah calligraphy and WhatsApp RSVP links.',
+    'Explore 50+ Pakistani wedding card text examples in Urdu and English for Nikkah, Mehndi, Barat & Walima cards with Bismillah and WhatsApp RSVP links.',
   alternates: getPageAlternates('/guide/pakistani-wedding-invitations'),
   robots: PUBLIC_ROBOTS,
 }

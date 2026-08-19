@@ -31,7 +31,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
   const baseTitle = post.seoTitle.includes('Cardzy') ? post.seoTitle : `${post.seoTitle} — Cardzy`
   const title = baseTitle.length > 68 ? baseTitle.slice(0, 65) + '...' : baseTitle
-  const description = post.metaDescription.length > 165 ? post.metaDescription.slice(0, 162) + '...' : post.metaDescription
+  const description = post.metaDescription.length > 155 ? post.metaDescription.slice(0, 152) + '...' : post.metaDescription
 
   return {
     title,
