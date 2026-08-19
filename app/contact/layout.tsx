@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Contact Us — Cardzy Digital Cards',
+  title: 'Contact Cardzy — Customer Support & Custom Card Orders',
   description: 'Get in touch with the Cardzy team for support, custom orders, and questions. Reach us via WhatsApp, email, or our contact form for quick help.',
   keywords: [
     'contact Cardzy',

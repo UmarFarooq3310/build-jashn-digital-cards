@@ -13,7 +13,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const lang = resolvedSearchParams.lang
 
   return {
-    title: 'Kainat — Tech & Product Strategist | Cardzy',
+    title: 'Kainat — Tech & Digital Product Strategist | Cardzy',
     description:
       'Kainat is a Tech & Product Strategist at Cardzy, writing guides on smart digital business cards, cost comparisons, and digital invitations.',
     keywords: [

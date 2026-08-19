@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'About Cardzy — Our Story, Mission & Team',
+  title: 'About Cardzy — 3D Digital Cards & Invitation Platform',
   description: 'Learn about Cardzy, the global digital card and invitation platform for families worldwide. Discover our story, mission, and celebration features.',
   keywords: [
     'about Cardzy',

@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Sign Up Free — Cardzy Digital Cards',
+  title: 'Sign Up Free — Create Digital Cards & Invites | Cardzy',
   description: 'Create your free Cardzy account to start designing animated 3D wish cards, digital wedding invitations, and smart business cards.',
   keywords: [
     'Cardzy signup',

@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy & Data Security — Cardzy',
+  title: 'Privacy Policy & User Data Protection Notice | Cardzy',
   description:
     'Learn how Cardzy protects user privacy, collects data responsibly, enforces AdSense compliance, and secures your digital cards.',
   keywords: [

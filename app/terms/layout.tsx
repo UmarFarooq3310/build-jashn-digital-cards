@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service & Usage Policy — Cardzy',
+  title: 'Terms of Service & Platform Usage Policy | Cardzy',
   description:
     'Read Cardzy terms of service, user account agreement, acceptable use guidelines, and digital card creator policies.',
   keywords: [

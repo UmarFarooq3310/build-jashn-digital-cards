@@ -12,7 +12,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const lang = resolvedSearchParams.lang
 
   return {
-    title: 'Create 3D Animated Wish Cards | Cardzy',
+    title: 'Create 3D Animated Wish Cards with Photos | Cardzy',
     description:
       'Design and personalize 3D animated greeting cards for Eid, Birthdays, Anniversaries, and Ramadan with photos, music, and WhatsApp sharing.',
     keywords: [
