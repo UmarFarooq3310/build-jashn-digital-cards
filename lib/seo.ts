@@ -1,4 +1,6 @@
 export const SITE_URL = 'https://cardzy.online'
+export const SITE_PUBLISHER = 'Cardzy'
+export const SITE_CREATOR = 'Cardzy'
 
 export const SUPPORTED_LANGS = [
   'en', 'es', 'fr', 'ar', 'hi', 'zh', 'pt', 'ru', 'de',

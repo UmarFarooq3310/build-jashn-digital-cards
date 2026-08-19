@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { CreateVisitingCardWrapper } from './create-visiting-card-wrapper'
 import { CreateVisitingCardProse } from './create-visiting-card-prose'
-import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS, SITE_PUBLISHER } from '@/lib/seo'
 
 interface PageProps {
   searchParams?: Promise<{ lang?: string }>
@@ -24,6 +24,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       'executive digital card',
       'electronic business card',
     ],
+    publisher: SITE_PUBLISHER,
     alternates: getPageAlternates('/create-visiting-card', lang),
     robots: PUBLIC_ROBOTS,
   }

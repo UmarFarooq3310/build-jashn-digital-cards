@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { CreateWishWrapper } from './create-wish-wrapper'
 import { CreateWishProse } from './create-wish-prose'
-import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS, SITE_PUBLISHER } from '@/lib/seo'
 
 interface PageProps {
   searchParams?: Promise<{ lang?: string }>
@@ -24,6 +24,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       'WhatsApp wish card',
       'digital greeting card',
     ],
+    publisher: SITE_PUBLISHER,
     alternates: getPageAlternates('/create-wish', lang),
     robots: PUBLIC_ROBOTS,
   }

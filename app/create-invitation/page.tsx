@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { CreateInvitationWrapper } from './create-invitation-wrapper'
 import { CreateInvitationProse } from './create-invitation-prose'
-import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS, SITE_PUBLISHER } from '@/lib/seo'
 
 interface PageProps {
   searchParams?: Promise<{ lang?: string }>
@@ -25,6 +25,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       'WhatsApp wedding RSVP',
       'animated wedding card',
     ],
+    publisher: SITE_PUBLISHER,
     alternates: getPageAlternates('/create-invitation', lang),
     robots: PUBLIC_ROBOTS,
   }

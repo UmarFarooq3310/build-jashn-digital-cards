@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { BLOG_POSTS, getBlogPost, getLocalizedPost } from '@/lib/blog/data'
 import { BlogPostClient } from '@/components/blog/blog-post-client'
-import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS, SITE_PUBLISHER } from '@/lib/seo'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -38,6 +38,9 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     title,
     description,
     keywords: post.tags && post.tags.length > 0 ? post.tags : DEFAULT_KEYWORDS,
+    authors: [{ name: post.author.name }],
+    creator: post.author.name,
+    publisher: SITE_PUBLISHER,
     alternates: getPageAlternates(`/blog/${post.slug}`, resolvedSearchParams.lang),
     robots: PUBLIC_ROBOTS,
     openGraph: {

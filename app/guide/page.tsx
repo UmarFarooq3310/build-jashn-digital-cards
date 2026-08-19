@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { GuideClientContent } from './guide-content'
-import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS, SITE_PUBLISHER } from '@/lib/seo'
 
 interface PageProps {
   searchParams?: Promise<{ lang?: string }>
@@ -22,6 +22,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       'invitation etiquette',
       'Cardzy guides',
     ],
+    publisher: SITE_PUBLISHER,
     alternates: getPageAlternates('/guide', lang),
     robots: PUBLIC_ROBOTS,
   }

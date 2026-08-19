@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { BLOG_POSTS } from '@/lib/blog/data'
 import { BlogIndexClient } from '@/components/blog/blog-index-client'
-import { getPageAlternates, PUBLIC_ROBOTS, SITE_URL } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS, SITE_URL, SITE_PUBLISHER } from '@/lib/seo'
 
 interface PageProps {
   searchParams?: Promise<{ lang?: string }>
@@ -24,6 +24,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       'animated greeting card ideas',
       'Cardzy blog',
     ],
+    publisher: SITE_PUBLISHER,
     alternates: getPageAlternates('/blog', lang),
     robots: PUBLIC_ROBOTS,
     openGraph: {

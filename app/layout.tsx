@@ -41,7 +41,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS, SITE_PUBLISHER, SITE_CREATOR } from '@/lib/seo'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
@@ -49,6 +49,9 @@ export const metadata: Metadata = {
   description:
     'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP tracking, and smart digital business cards in 18 languages with Cardzy.',
   keywords: DEFAULT_KEYWORDS,
+  authors: [{ name: 'Cardzy Editorial Team', url: 'https://cardzy.online' }],
+  creator: SITE_CREATOR,
+  publisher: SITE_PUBLISHER,
   generator: 'v0.app',
   alternates: getPageAlternates('/'),
   robots: PUBLIC_ROBOTS,
