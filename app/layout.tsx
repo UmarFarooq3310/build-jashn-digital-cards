@@ -45,7 +45,7 @@ import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS, SITE_PUBLISHER, SIT
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
-  title: 'Cardzy | 3D Animated Digital Wish Cards & Wedding Invitations',
+  title: 'Cardzy — 3D Digital Cards & Wedding Invitations',
   description:
     'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP tracking, and smart digital business cards in 18 languages with Cardzy.',
   keywords: DEFAULT_KEYWORDS,

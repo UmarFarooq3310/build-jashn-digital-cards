@@ -12,7 +12,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const lang = resolvedSearchParams.lang
 
   return {
-    title: 'Create Digital Wedding Invitations with WhatsApp RSVP | Cardzy',
+    title: 'Create Wedding Invitations with WhatsApp RSVP | Cardzy',
     description:
       'Design 4K animated wedding invitations for Nikkah, Mehndi, Barat & Walima with Google Maps directions, music, and instant WhatsApp RSVP tracking.',
     keywords: [

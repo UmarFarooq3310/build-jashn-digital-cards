@@ -37,7 +37,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'complete-guide-to-pakistani-wedding-invitation-wording-urdu-english',
     title: 'The Complete Guide to Pakistani & Islamic Wedding Invitation Wording (Urdu & English Examples)',
     subtitle: 'Comprehensive wording examples for Nikkah, Mehndi, Barat, and Walima cards with authentic Bismillah calligraphy, inspiring quotes by celebrated authors, host etiquette, and RSVP notes.',
-    seoTitle: 'Pakistani Wedding Invitation Wording & Card Text (Urdu & English)',
+    seoTitle: 'Pakistani Wedding Card Wording | Cardzy',
     metaDescription: '50+ Pakistani wedding card text examples in Urdu & English for Nikkah, Mehndi, Barat & Walima with Bismillah calligraphy and WhatsApp RSVP links.',
     category: 'Wedding & Nikkah',
     author: {
@@ -172,7 +172,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'digital-vs-paper-wedding-invitations-cost-eco-comparison',
     title: 'Digital vs Paper Wedding Invitations: A Detailed Cost, Eco & Convenience Comparison for 2026',
     subtitle: 'Comprehensive financial, environmental, and practical breakdown comparing traditional printed wedding cards against modern animated digital invitations.',
-    seoTitle: 'Digital vs Paper Wedding Invitations Cost Comparison (2026)',
+    seoTitle: 'Digital vs Paper Wedding Cards Cost | Cardzy',
     metaDescription: 'Compare digital vs paper wedding invitations: cost breakdown in PKR/USD, eco-friendly benefits, live WhatsApp RSVPs, and instant global delivery.',
     category: 'Event Planning',
     author: {
@@ -291,7 +291,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'step-by-step-guide-to-creating-personalized-eid-wishes-cards-with-photo',
     title: 'Step-by-Step Guide to Designing Personalized Eid Mubarak Cards with Family Photos & Custom Names',
     subtitle: 'How to replace generic forwarded graphics with stunning, animated Eid-ul-Fitr and Eid-ul-Adha greeting cards featuring custom names, duas, and family portraits.',
-    seoTitle: 'Create Personalized Eid Mubarak Cards with Name & Photo | Cardzy',
+    seoTitle: 'Personalized Eid Wish Cards with Photo | Cardzy',
     metaDescription: 'Create custom Eid Mubarak digital wish cards with your name and photo. Includes animated 3D Islamic moon themes, duas, and instant WhatsApp sharing.',
     category: 'Eid & Holidays',
     author: {
@@ -412,7 +412,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'smart-digital-business-cards-for-pakistani-entrepreneurs-and-executives',
     title: 'Smart Digital Business Cards for Executives in Pakistan: The Future of Professional Networking',
     subtitle: 'Why CEOs, freelancers, and entrepreneurs in Karachi, Lahore, and Islamabad are replacing paper visiting cards with interactive vCards and smart digital cards.',
-    seoTitle: 'Smart Digital Business Cards Pakistan (vCard)',
+    seoTitle: 'Smart Digital Business Cards in Pakistan | Cardzy',
     metaDescription: 'Discover why executives in Pakistan use smart digital business cards. Features 1-tap vCard save, QR code sharing, social links, and zero print cost.',
     category: 'Business & vCards',
     author: {
@@ -489,7 +489,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly',
     title: 'How to Manage Large Wedding Guest Lists and WhatsApp RSVPs Effortlessly (Host䏭 Survival Guide)',
     subtitle: 'Master guest attendance tracking, eliminate phone call chaos, calculate accurate catering headcounts, and distribute venue GPS pins with ease.',
-    seoTitle: 'Manage Wedding Guest Lists & WhatsApp RSVPs Effortlessly',
+    seoTitle: 'Manage Wedding RSVPs on WhatsApp | Cardzy',
     metaDescription: 'Manage wedding guest lists with automated WhatsApp RSVPs. Calculate catering headcounts, track attendance live, and eliminate guest calling stress.',
     category: 'Event Planning',
     author: {
@@ -713,7 +713,7 @@ export const BLOG_POSTS: BlogPost[] = [
   slug: 'ultimate-guide-to-global-holiday-ecards-christmas-thanksgiving-newyear',
     title: 'The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026',
     subtitle: 'Create 3D animated holiday greeting cards with photos, custom music, and multilingual greetings in 18 languages for Christmas, Thanksgiving, New Year, Diwali, and Hanukkah.',
-    seoTitle: 'Global Holiday E-Cards Guide: Christmas, Thanksgiving & New Year (18 Languages)',
+    seoTitle: 'Global 3D Holiday E-Cards Guide | Cardzy',
     metaDescription: 'Create 3D animated holiday e-cards for Christmas, Thanksgiving, New Year 2026, Hanukkah & Diwali. Customize photos, music, and greetings in 18 languages.',
     category: 'Eid & Holidays',
     author: {
@@ -766,7 +766,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'how-to-create-animated-birthday-wish-cards-and-party-invitations-online',
     title: 'How to Create Animated Birthday Wish Cards & Milestone Party Invitations Online',
     subtitle: 'Design custom animated birthday greetings and milestone party invites with 3D cake candles, photo frames, party music, and WhatsApp RSVP tracking.',
-    seoTitle: 'Animated Birthday Wish Cards & Party Invitations Online | Cardzy',
+    seoTitle: 'Animated Birthday Wish Cards Online | Cardzy',
     metaDescription: 'Design custom animated birthday wish cards and milestone party invitations with photo frames, birthday music, countdowns, and WhatsApp RSVP tracking.',
     category: 'Event Planning',
     author: {
@@ -813,7 +813,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'the-future-of-networking-smart-digital-business-cards-with-vcf-download',
     title: 'The Future of Networking: Smart Digital Business Cards with 1-Click .VCF Save',
     subtitle: 'Create executive vCard-ready digital business cards for corporate, tech, medical, legal, and real estate professionals with instant contact download.',
-    seoTitle: 'Smart Digital Business Cards & 1-Click .VCF Save | Cardzy',
+    seoTitle: 'Smart Digital Business Cards & vCard | Cardzy',
     metaDescription: 'Build executive digital business cards for corporate, medical, and legal pros. Includes 1-click .vcf contact save, WhatsApp link, and office maps.',
     category: 'Business & vCards',
     author: {
@@ -855,7 +855,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'digital-invitation-etiquette-whatsapp-social-media-sharing-tips',
     title: 'Digital Invitation Etiquette: Master the Art of Sharing Invitations on WhatsApp & Social Media',
     subtitle: 'Complete rules of courtesy, timing, group messaging etiquette, and RSVP tracking for modern digital wedding cards & party invitations.',
-    seoTitle: 'Digital Invitation Sharing Etiquette on WhatsApp — Cardzy',
+    seoTitle: 'WhatsApp Digital Invitation Etiquette | Cardzy',
     metaDescription: 'Learn essential digital invitation etiquette for WhatsApp, Instagram & SMS. Tips on timing, personalized messages, group sharing & RSVP tracking.',
     category: 'Event Planning',
     author: {
@@ -911,7 +911,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'mehndi-and-dholki-digital-card-ideas-music-themes-wording',
     title: 'Creative Mehndi & Dholki Digital Card Ideas: Vibrant Themes, Songs & Urdu Wording',
     subtitle: 'How to design festive, interactive Mehndi and Dholki digital cards with dholak rhythms, mustard & emerald color palettes, and cheerful Urdu quotes.',
-    seoTitle: 'Mehndi & Dholki Digital Card Design Ideas & Wording — Cardzy',
+    seoTitle: 'Mehndi & Dholki Digital Card Wording | Cardzy',
     metaDescription: 'Discover vibrant Mehndi and Dholki digital card designs with background music, dress code tags, Urdu poetry, and 1-click WhatsApp RSVP tracking.',
     category: 'Wedding & Nikkah',
     author: {
@@ -967,7 +967,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english',
     title: 'Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings',
     subtitle: 'Authentic Eid ul Adha dua cards, Qurbani greetings, and Bakra Eid wish templates in Urdu Nastaliq, Arabic, English, and 15 other global languages.',
-    seoTitle: 'Best Eid ul Adha & Qurbani Wishes Cards (Urdu, Arabic, English) — Cardzy',
+    seoTitle: 'Eid ul Adha & Qurbani Wish Cards | Cardzy',
     metaDescription: 'Send 3D animated Eid ul Adha and Qurbani wish cards in 18 languages. Features Urdu Nastaliq duas, crescent moon themes, and instant WhatsApp sharing.',
     category: 'Eid & Holidays',
     author: {
@@ -1023,7 +1023,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'smart-vcard-for-doctors-lawyers-engineers-smart-business-cards',
     title: 'Smart Digital Visiting Cards for Doctors, Lawyers & Executives: Setup & Benefits',
     subtitle: 'Why medical practitioners, legal consultants, corporate executives, and real estate agents are switching to smart smart vCards with 1-tap contact saving.',
-    seoTitle: 'Smart Digital Visiting Cards for Doctors & Lawyers — Cardzy',
+    seoTitle: 'Digital Cards for Doctors & Lawyers | Cardzy',
     metaDescription: 'Learn how doctors, lawyers, and business executives build professional digital business cards with 1-click .VCF contact save, clinic maps, and vCard.',
     category: 'Business & vCards',
     author: {
@@ -1079,7 +1079,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards',
     title: 'How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards',
     subtitle: 'Express everlasting love with romantic anniversary quotes, Urdu shayari, couple photo frames, and interactive 3D digital cards.',
-    seoTitle: 'Heartfelt Wedding Anniversary Wishes & Digital Couple Cards — Cardzy',
+    seoTitle: 'Wedding Anniversary Wish Cards | Cardzy',
     metaDescription: 'Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload.',
     category: 'Event Planning',
     author: {
@@ -1135,7 +1135,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates',
     title: 'Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording',
     subtitle: 'Celebrate your newborn\'s blessing with charming Aqiqah, Baby Shower, and Godh Bharai digital invitations featuring custom photo frames and RSVP tracking.',
-    seoTitle: 'Aqiqah & Baby Shower Digital Invitations Wording — Cardzy',
+    seoTitle: 'Aqiqah & Baby Shower Card Wording | Cardzy',
     metaDescription: 'Design cute Aqiqah and Baby Shower digital invitations with Islamic duas, venue maps, photo frames, and 1-click WhatsApp RSVP tracking.',
     category: 'Wedding & Nikkah',
     author: {

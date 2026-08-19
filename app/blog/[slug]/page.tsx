@@ -30,8 +30,8 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
   const post = getLocalizedPost(rawPost, lang)
 
-  const baseTitle = post.seoTitle.includes('Cardzy') ? post.seoTitle : `${post.seoTitle} — Cardzy`
-  const title = baseTitle.length > 68 ? baseTitle.slice(0, 65) + '...' : baseTitle
+  const baseTitle = post.seoTitle.includes('Cardzy') ? post.seoTitle : `${post.seoTitle} | Cardzy`
+  const title = baseTitle.length > 60 ? baseTitle.slice(0, 57) + '...' : baseTitle
   const description = post.metaDescription.length > 155 ? post.metaDescription.slice(0, 152) + '...' : post.metaDescription
 
   return {

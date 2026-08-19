@@ -13,7 +13,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const lang = resolvedSearchParams.lang
 
   return {
-    title: 'Hasnain — Global Creative & Cultural Events Editor | Cardzy',
+    title: 'Hasnain — Events & Culture Editor | Cardzy',
     description:
       'Hasnain is a Creative & Cultural Events Editor at Cardzy, writing guides on holiday e-cards, party invitations, and digital sharing etiquette.',
     keywords: [

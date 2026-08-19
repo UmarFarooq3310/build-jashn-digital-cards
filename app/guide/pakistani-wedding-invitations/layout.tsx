@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Pakistani Wedding Card Text & Invitation Wording (Urdu & English) | Cardzy',
+  title: 'Pakistani Wedding Card Text & Wording | Cardzy',
   description:
     'Explore 50+ Pakistani wedding card text examples in Urdu and English for Nikkah, Mehndi, Barat & Walima cards with Bismillah and WhatsApp RSVP links.',
   keywords: [

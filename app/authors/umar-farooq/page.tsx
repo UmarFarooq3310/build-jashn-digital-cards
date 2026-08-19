@@ -13,7 +13,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const lang = resolvedSearchParams.lang
 
   return {
-    title: 'Umar Farooq — Senior Cultural Event & Wedding Stylist | Cardzy',
+    title: 'Umar Farooq — Wedding & Cultural Stylist | Cardzy',
     description:
       'Umar Farooq is a Cultural Event & Wedding Stylist at Cardzy, writing guides on Pakistani wedding invitations, Eid wishes, and card etiquette.',
     keywords: [
