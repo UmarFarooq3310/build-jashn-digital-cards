@@ -75,12 +75,22 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
             <FooterCol
               title={t('footerCards')}
               links={[
                 { href: '/create-wish', label: t('sendWish') },
                 { href: '/create-invitation', label: t('createInvitation') },
+                { href: '/create-visiting-card', label: 'Create vCard' },
+              ]}
+            />
+            <FooterCol
+              title="Guides & Wording"
+              links={[
+                { href: '/guide/eid-wording-ideas', label: 'Eid Wording & Replies' },
+                { href: '/blog/complete-guide-to-pakistani-wedding-invitation-wording-urdu-english', label: 'Pakistani Wedding Card Text' },
+                { href: '/guide/pakistani-wedding-invitations', label: 'Pakistani Wedding Invitations' },
+                { href: '/guide', label: 'All Celebration Guides' },
               ]}
             />
             <FooterCol
@@ -100,7 +110,6 @@ export function SiteFooter() {
                 { href: '/contact', label: 'Contact Us' },
                 { href: '/pricing', label: t('footerPlans') },
                 { href: '/faq', label: t('faqs') },
-                { href: '/guide', label: t('guides') },
                 { href: '/privacy', label: t('footerPrivacy') },
                 { href: '/terms', label: t('footerTerms') },
               ]}

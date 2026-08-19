@@ -304,6 +304,110 @@ export default function EidGuidePage() {
               </div>
             </div>
 
+            {/* Dedicated Section: "Eid Mubarak to You Too" Meaning in Urdu & How to Reply */}
+            <section className="my-10 p-6 rounded-3xl border border-emerald-500/30 bg-emerald-500/5 space-y-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground">
+                What Does &quot;Eid Mubarak to You Too&quot; Mean in Urdu? (Proper Replies &amp; Meanings)
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                When someone wishes you a happy Eid, replying with warmth and cultural etiquette is an essential part of South Asian hospitality. If you are searching for what <strong>&quot;Eid Mubarak to you too&quot;</strong> means in Urdu and how to respond properly, here is the full linguistic guide:
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2 pt-2">
+                <div className="p-4 rounded-2xl bg-card border border-border">
+                  <span className="text-xs font-bold uppercase text-emerald-600">Standard Urdu Translation</span>
+                  <p className="text-lg font-urdu font-bold text-foreground mt-1">آپ کو بھی عید مبارک</p>
+                  <p className="text-xs text-muted-foreground mt-1"><strong>Roman Urdu:</strong> Aap ko bhi Eid Mubarak!</p>
+                  <p className="text-xs text-muted-foreground"><strong>English Meaning:</strong> Eid Mubarak to you too!</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-card border border-border">
+                  <span className="text-xs font-bold uppercase text-amber-600">Traditional Islamic Response</span>
+                  <p className="text-lg font-urdu font-bold text-foreground mt-1">خیر مبارک</p>
+                  <p className="text-xs text-muted-foreground mt-1"><strong>Roman Urdu:</strong> Khair Mubarak!</p>
+                  <p className="text-xs text-muted-foreground"><strong>English Meaning:</strong> May goodness and blessings be upon you as well!</p>
+                </div>
+              </div>
+              <div className="p-4 rounded-2xl bg-background border border-border/70 space-y-2">
+                <h4 className="font-bold text-sm text-foreground">More Traditional Urdu Replies to Eid Mubarak:</h4>
+                <ul className="list-disc pl-5 text-xs text-muted-foreground space-y-1.5">
+                  <li><strong>&quot;Khair Mubarak, Aap ko bhi عید مبارک!&quot;</strong> — Combining both for extra warmth.</li>
+                  <li><strong>&quot;سدا خوش رہیں، عید مبارک&quot;</strong> (<em>Sada khush rahein, Eid Mubarak</em>) — &quot;May you always remain happy and blessed.&quot;</li>
+                  <li><strong>&quot;تقبل الله منا ومنكم&quot;</strong> (<em>Taqabbal Allahu minna wa minkum</em>) — &quot;May Allah accept good deeds from us and from you.&quot;</li>
+                </ul>
+              </div>
+            </section>
+
+            {/* Dedicated Section: Urdu Eid Mubarak Wishes & Greetings Collection */}
+            <section className="my-10 space-y-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground border-b border-border/80 pb-2">
+                Copyable Urdu Eid Mubarak Wishes &amp; Greetings (باآسانی کاپی کریں)
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Copy these curated Urdu Eid greetings directly to send to relatives on WhatsApp or include in your custom Cardzy animated wish card:
+              </p>
+              <div className="space-y-3">
+                <div className="p-4 rounded-2xl border border-border bg-card">
+                  <p className="text-base font-urdu text-right text-primary font-bold">
+                    اللہ تعالیٰ آپ کی زندگی کو خوشیوں، صحت اور کامیابی سے بھر دے۔ عید مبارک!
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    <em>English: May Almighty Allah fill your life with eternal happiness, good health, and success. Eid Mubarak!</em>
+                  </p>
+                </div>
+                <div className="p-4 rounded-2xl border border-border bg-card">
+                  <p className="text-base font-urdu text-right text-primary font-bold">
+                    عید کا چاند آپ کی زندگی میں نئی امیدیں اور ڈھیروں خوشیاں لائے۔ عید الفطر مبارک!
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    <em>English: May the crescent moon of Eid bring new hope and endless joy to your life. Eid ul Fitr Mubarak!</em>
+                  </p>
+                </div>
+                <div className="p-4 rounded-2xl border border-border bg-card">
+                  <p className="text-base font-urdu text-right text-primary font-bold">
+                    دعاؤں کی قبولیت اور خوشیوں کی برسات کے ساتھ آپ کو اور آپ کی پوری فیملی کو عید مبارک!
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    <em>English: With accepted prayers and showers of blessings, Eid Mubarak to you and your entire family!</em>
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* Dedicated FAQ Accordion Section */}
+            <section className="my-10 space-y-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground border-b border-border/80 pb-2">
+                Frequently Asked Questions (Frequently Searched)
+              </h3>
+              <div className="space-y-3">
+                <details className="group p-4 rounded-2xl border border-border bg-card [&_summary::-webkit-details-marker]:none">
+                  <summary className="flex cursor-pointer items-center justify-between font-bold text-sm text-foreground">
+                    <span>What does &quot;Eid Mubarak to you too&quot; mean in Urdu?</span>
+                    <span className="shrink-0 transition duration-300 group-open:-rotate-180">👇</span>
+                  </summary>
+                  <p className="mt-3 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    In Urdu, &quot;Eid Mubarak to you too&quot; is written as <strong>&quot;آپ کو بھی عید مبارک&quot;</strong> (pronounced <em>Aap ko bhi Eid Mubarak</em>). The customary traditional reply is <strong>&quot;خیر مبارک&quot;</strong> (<em>Khair Mubarak</em>), which means &quot;May goodness be upon you as well.&quot;
+                  </p>
+                </details>
+                <details className="group p-4 rounded-2xl border border-border bg-card [&_summary::-webkit-details-marker]:none">
+                  <summary className="flex cursor-pointer items-center justify-between font-bold text-sm text-foreground">
+                    <span>How do you wish Eid Mubarak in Urdu?</span>
+                    <span className="shrink-0 transition duration-300 group-open:-rotate-180">👇</span>
+                  </summary>
+                  <p className="mt-3 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    You can say <strong>&quot;عید مبارک&quot;</strong> (<em>Eid Mubarak</em>) or for a more formal and affectionate greeting say: <strong>&quot;آپ کو اور آپ کے تمام اہل خانہ کو عید مبارک&quot;</strong> (<em>Aap ko aur aap ke tamam ahal-e-khana ko Eid Mubarak</em>).
+                  </p>
+                </details>
+                <details className="group p-4 rounded-2xl border border-border bg-card [&_summary::-webkit-details-marker]:none">
+                  <summary className="flex cursor-pointer items-center justify-between font-bold text-sm text-foreground">
+                    <span>How do I send an animated 3D Eid wish card with my photo on WhatsApp?</span>
+                    <span className="shrink-0 transition duration-300 group-open:-rotate-180">👇</span>
+                  </summary>
+                  <p className="mt-3 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Simply open Cardzy&apos;s free <Link href="/create-wish" className="text-primary font-bold hover:underline">Wish Card Generator</Link>, choose the Eid occasion, type your name and optional custom dua, upload your family picture, and click &quot;Share on WhatsApp&quot;. Your recipient gets a 4K animated greeting card link immediately!
+                  </p>
+                </details>
+              </div>
+            </section>
+
             <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
               {getText('sec4Title')}
             </h3>
@@ -323,6 +427,51 @@ export default function EidGuidePage() {
             </ol>
 
           </div>
+
+          {/* FAQ Schema Script for Search Engines */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'FAQPage',
+                mainEntity: [
+                  {
+                    '@type': 'Question',
+                    name: 'What does "Eid Mubarak to you too" mean in Urdu and how do you reply?',
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: 'In Urdu, "Eid Mubarak to you too" translates to "آپ کو بھی عید مبارک" (Aap ko bhi Eid Mubarak). The most traditional response is "خیر مبارک" (Khair Mubarak), meaning "May goodness and blessings be upon you as well."'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    name: 'How do you wish Eid Mubarak in Urdu?',
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: 'To wish Eid Mubarak in Urdu, you can say "عید مبارک" (Eid Mubarak) or "آپ کو اور آپ کے تمام اہل خانہ کو عید مبارک" (Aap ko aur aap ke tamam ahal-e-khana ko Eid Mubarak).'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    name: 'What is the traditional reply to Eid Mubarak in Urdu?',
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: 'The most traditional reply to Eid Mubarak in Urdu is "خیر مبارک" (Khair Mubarak). You can also say "Taqabbal Allahu minna wa minkum" (May Allah accept it from us and from you).'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    name: 'How can I create a personalized 3D animated Eid card with my name?',
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: 'You can create a free personalized 3D animated Eid card on Cardzy.online by entering your name, selecting an authentic Urdu or English Eid wish, adding a photo, and sharing directly on WhatsApp.'
+                    }
+                  }
+                ]
+              })
+            }}
+          />
 
           {/* Article Footer / CTA */}
           <footer className="mt-12 border-t border-border/80 pt-8 text-center">

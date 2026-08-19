@@ -6,7 +6,16 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin_portal'],
+        disallow: [
+          '/admin_portal',
+          '/admin_portal/',
+          '/dashboard',
+          '/dashboard/',
+          '/api/',
+          '/i/',
+          '/w/',
+          '/v/',
+        ],
       },
       {
         userAgent: 'Mediapartners-Google',

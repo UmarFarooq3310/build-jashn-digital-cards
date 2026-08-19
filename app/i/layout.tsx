@@ -1,11 +1,8 @@
 import { Metadata } from 'next'
+import { PRIVATE_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  robots: {
-    index: false,
-    follow: false,
-    nocache: true,
-  },
+  robots: PRIVATE_ROBOTS,
 }
 
 export default function NoIndexLayout({

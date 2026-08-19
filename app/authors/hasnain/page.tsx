@@ -2,14 +2,23 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { BLOG_POSTS } from '@/lib/blog/data'
 import { Award, BookOpen, ExternalLink } from 'lucide-react'
+import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Hasnain — Global Creative & Cultural Events Editor | Cardzy',
-  description:
-    'Hasnain is a Global Creative & Cultural Events Editor at Cardzy, authoring guides on animated holiday e-cards, birthday invitations, and digital sharing etiquette across 18 languages.',
-  alternates: {
-    canonical: 'https://cardzy.online/authors/hasnain',
-  },
+interface PageProps {
+  searchParams?: Promise<{ lang?: string }>
+}
+
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const resolvedSearchParams = searchParams ? await searchParams : {}
+  const lang = resolvedSearchParams.lang
+
+  return {
+    title: 'Hasnain — Global Creative & Cultural Events Editor | Cardzy',
+    description:
+      'Hasnain is a Global Creative & Cultural Events Editor at Cardzy, authoring guides on animated holiday e-cards, birthday invitations, and digital sharing etiquette across 18 languages.',
+    alternates: getPageAlternates('/authors/hasnain', lang),
+    robots: PUBLIC_ROBOTS,
+  }
 }
 
 export default function HasnainAuthorPage() {

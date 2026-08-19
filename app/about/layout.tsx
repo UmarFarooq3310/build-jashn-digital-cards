@@ -1,13 +1,11 @@
 import type { Metadata } from 'next'
-import { getLanguageAlternates } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'About Cardzy — Our Story, Mission & Team',
   description: 'Learn about Cardzy, the global digital card and invitation platform built for South Asian families worldwide. Our mission, story, features, and the team behind the platform.',
-  alternates: {
-    canonical: 'https://cardzy.online/about',
-    languages: getLanguageAlternates('/about'),
-  },
+  alternates: getPageAlternates('/about'),
+  robots: PUBLIC_ROBOTS,
   openGraph: {
     title: 'About Cardzy — Digital Wish Cards & Event Invitations',
     description: 'Cardzy is a multilingual digital celebration platform serving over 60 countries.',

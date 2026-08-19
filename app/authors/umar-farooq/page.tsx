@@ -2,14 +2,23 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { BLOG_POSTS } from '@/lib/blog/data'
 import { Award, BookOpen, ExternalLink } from 'lucide-react'
+import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Umar Farooq — Senior Cultural Event & Wedding Stylist | Cardzy',
-  description:
-    'Umar Farooq is a Senior Cultural Event & Wedding Stylist at Cardzy, writing guides on Pakistani and Islamic wedding invitations, Eid celebrations, and digital card etiquette.',
-  alternates: {
-    canonical: 'https://cardzy.online/authors/umar-farooq',
-  },
+interface PageProps {
+  searchParams?: Promise<{ lang?: string }>
+}
+
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const resolvedSearchParams = searchParams ? await searchParams : {}
+  const lang = resolvedSearchParams.lang
+
+  return {
+    title: 'Umar Farooq — Senior Cultural Event & Wedding Stylist | Cardzy',
+    description:
+      'Umar Farooq is a Senior Cultural Event & Wedding Stylist at Cardzy, writing guides on Pakistani and Islamic wedding invitations, Eid celebrations, and digital card etiquette.',
+    alternates: getPageAlternates('/authors/umar-farooq', lang),
+    robots: PUBLIC_ROBOTS,
+  }
 }
 
 export default function AuthorPage() {

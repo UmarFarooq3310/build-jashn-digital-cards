@@ -79,6 +79,23 @@ export function CreateInvitationProse() {
           </ul>
         </div>
 
+        {/* Featured Wedding Guides Box for Contextual Internal Linking */}
+        <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/5 p-6 space-y-4">
+          <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
+            💡 Wedding Invitation Wording &amp; RSVP Guides
+          </h3>
+          <div className="grid sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <a href="/blog/complete-guide-to-pakistani-wedding-invitation-wording-urdu-english" className="p-4 rounded-2xl bg-card border border-border hover:border-emerald-500 transition-all font-semibold text-primary">
+              → Complete Pakistani Wedding Invitation Wording Guide
+              <p className="text-xs text-muted-foreground font-normal mt-1">Bilingual Urdu/English templates for Nikkah, Mehndi, Barat &amp; Walima cards with Bismillah calligraphy.</p>
+            </a>
+            <a href="/blog/how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly" className="p-4 rounded-2xl bg-card border border-border hover:border-emerald-500 transition-all font-semibold text-primary">
+              → How to Manage Wedding Guest Lists &amp; WhatsApp RSVPs
+              <p className="text-xs text-muted-foreground font-normal mt-1">Master guest headcounts, dietary tracking, and automated WhatsApp reminders for your wedding.</p>
+            </a>
+          </div>
+        </div>
+
       </div>
     </section>
   )

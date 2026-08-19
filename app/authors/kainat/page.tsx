@@ -2,14 +2,23 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { BLOG_POSTS } from '@/lib/blog/data'
 import { Award, BookOpen, ExternalLink } from 'lucide-react'
+import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Kainat — Tech & Product Strategist | Cardzy',
-  description:
-    'Kainat is a Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards), cost comparisons, and eco-friendly digital invitation solutions.',
-  alternates: {
-    canonical: 'https://cardzy.online/authors/kainat',
-  },
+interface PageProps {
+  searchParams?: Promise<{ lang?: string }>
+}
+
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const resolvedSearchParams = searchParams ? await searchParams : {}
+  const lang = resolvedSearchParams.lang
+
+  return {
+    title: 'Kainat — Tech & Product Strategist | Cardzy',
+    description:
+      'Kainat is a Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards), cost comparisons, and eco-friendly digital invitation solutions.',
+    alternates: getPageAlternates('/authors/kainat', lang),
+    robots: PUBLIC_ROBOTS,
+  }
 }
 
 export default function KainatAuthorPage() {

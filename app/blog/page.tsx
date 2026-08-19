@@ -1,23 +1,30 @@
 import { Metadata } from 'next'
 import { BLOG_POSTS } from '@/lib/blog/data'
 import { BlogIndexClient } from '@/components/blog/blog-index-client'
-import { getLanguageAlternates } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS, SITE_URL } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Cardzy Blog — Digital Cards & Event Wording Guides',
-  description:
-    'Explore expert guides on creating Pakistani wedding invitations, Eid wish cards with photo, smart digital business cards, and WhatsApp RSVP management.',
-  alternates: {
-    canonical: 'https://cardzy.online/blog',
-    languages: getLanguageAlternates('/blog'),
-  },
+interface PageProps {
+  searchParams?: Promise<{ lang?: string }>
+}
+
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const resolvedSearchParams = searchParams ? await searchParams : {}
+  const lang = resolvedSearchParams.lang
+
+  return {
+    title: 'Cardzy Blog — Digital Cards & Event Wording Guides',
+    description:
+      'Explore expert guides on creating Pakistani wedding invitations, Eid wish cards with photo, smart digital business cards, and WhatsApp RSVP management.',
+    alternates: getPageAlternates('/blog', lang),
+    robots: PUBLIC_ROBOTS,
     openGraph: {
-    title: 'Cardzy Blog - Guides & Tips for Digital Cards',
-    description: 'Expert tips on royal digital invitations, Eid wishes, and smart digital business cards.',
-    url: 'https://cardzy.online/blog',
-    siteName: 'Cardzy Digital Cards',
-    type: 'website',
-  },
+      title: 'Cardzy Blog - Guides & Tips for Digital Cards',
+      description: 'Expert tips on royal digital invitations, Eid wishes, and smart digital business cards.',
+      url: lang ? `${SITE_URL}/blog?lang=${lang}` : `${SITE_URL}/blog`,
+      siteName: 'Cardzy Digital Cards',
+      type: 'website',
+    },
+  }
 }
 
 export default function BlogIndexPage() {

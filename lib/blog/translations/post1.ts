@@ -7,8 +7,8 @@ export const POST_1_DATA: Record<string, LocalizedBlogData> = {
     "title": "The Complete Guide to Pakistani & Islamic Wedding Invitation Wording (Urdu & English Examples)",
     "subtitle": "Comprehensive wording examples for Nikkah, Mehndi, Barat, and Walima cards with authentic Bismillah calligraphy, celebrated quotes by Rumi & Kahlil Gibran, host etiquette, and RSVP notes.",
     "category": "Wedding & Nikkah",
-    "seoTitle": "Pakistani & Islamic Wedding Invitation Wording Guide (Urdu & English)",
-    "metaDescription": "Explore 50+ Pakistani and Islamic wedding invitation wording examples in Urdu & English for Nikkah, Mehndi, Barat & Walima cards. Includes celebrated quotes by Rumi & Kahlil Gibran and RSVP etiquette."
+    "seoTitle": "Pakistani Wedding Invitation Wording & Card Text (Urdu & English)",
+    "metaDescription": "50+ Pakistani wedding invitation card text examples in Urdu & English for Nikkah, Mehndi, Barat & Walima. Includes Bismillah calligraphy, RSVP management & copyable text."
   },
   "es": {
     "title": "Guía Completa de Textos para Invitaciones de Boda (Urdu e Inglés)",

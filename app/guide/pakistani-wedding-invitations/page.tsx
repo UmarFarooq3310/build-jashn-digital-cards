@@ -299,6 +299,43 @@ export default function WeddingGuidePage() {
 
           </div>
 
+          {/* FAQ Schema Script for Search Engines */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'FAQPage',
+                mainEntity: [
+                  {
+                    '@type': 'Question',
+                    name: 'What is the standard Pakistani wedding card text format in Urdu & English?',
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: 'A standard Pakistani wedding card includes the Bismillah calligraphy header, host parent names, groom & bride names, function dates/times for Nikkah, Mehndi, Barat, and Walima, venue GPS map location, and RSVP contact phone numbers.'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    name: 'How does digital wedding RSVP management work for Pakistani weddings?',
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: 'Cardzy provides live digital RSVP management. Guests open a single WhatsApp card link, tap to confirm attendance and guest count for each function (Nikkah, Mehndi, Walima), and hosts track confirmed guest headcounts in real-time.'
+                    }
+                  },
+                  {
+                    '@type': 'Question',
+                    name: 'Should I write Pakistani wedding invitations in Urdu or English?',
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: 'A bilingual invitation combining both languages is ideal. It honors traditional elders with Urdu Nastaliq script while ensuring younger guests and international relatives easily understand the schedule in English.'
+                    }
+                  }
+                ]
+              })
+            }}
+          />
+
           {/* Article Footer / CTA */}
           <footer className="mt-12 border-t border-border/80 pt-8 text-center">
             <h3 className="text-xl font-bold text-foreground flex items-center justify-center gap-1.5">

@@ -1,18 +1,12 @@
 import { Metadata } from 'next'
-import { getLanguageAlternates } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy & Data Security — Cardzy',
   description:
     'Learn how Cardzy protects user privacy, collects data responsibly, enforces AdSense compliance, and secures your digital cards.',
-  alternates: {
-    canonical: 'https://cardzy.online/privacy',
-    languages: getLanguageAlternates('/privacy'),
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  alternates: getPageAlternates('/privacy'),
+  robots: PUBLIC_ROBOTS,
 }
 
 export default function PrivacyLayout({

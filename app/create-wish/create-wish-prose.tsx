@@ -86,6 +86,23 @@ export function CreateWishProse() {
           </ul>
         </div>
 
+        {/* Featured Guides Box for Contextual Internal Linking */}
+        <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/5 p-6 space-y-4">
+          <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
+            💡 Popular Wording Guides &amp; Inspiration
+          </h3>
+          <div className="grid sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <a href="/guide/eid-wording-ideas" className="p-4 rounded-2xl bg-card border border-border hover:border-emerald-500 transition-all font-semibold text-primary">
+              → Eid Mubarak Wording &amp; Replies in Urdu &amp; English
+              <p className="text-xs text-muted-foreground font-normal mt-1">Copyable Eid wishes, &quot;Eid Mubarak to you too&quot; meanings, and Khair Mubarak replies.</p>
+            </a>
+            <a href="/blog/complete-guide-to-pakistani-wedding-invitation-wording-urdu-english" className="p-4 rounded-2xl bg-card border border-border hover:border-emerald-500 transition-all font-semibold text-primary">
+              → Pakistani Wedding Invitation Card Text Guide
+              <p className="text-xs text-muted-foreground font-normal mt-1">Bilingual Urdu/English wording for Nikkah, Mehndi, Barat, and Walima cards.</p>
+            </a>
+          </div>
+        </div>
+
       </div>
     </section>
   )

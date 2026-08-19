@@ -37,8 +37,8 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: 'complete-guide-to-pakistani-wedding-invitation-wording-urdu-english',
     title: 'The Complete Guide to Pakistani & Islamic Wedding Invitation Wording (Urdu & English Examples)',
     subtitle: 'Comprehensive wording examples for Nikkah, Mehndi, Barat, and Walima cards with authentic Bismillah calligraphy, inspiring quotes by celebrated authors, host etiquette, and RSVP notes.',
-    seoTitle: 'Pakistani & Islamic Wedding Invitation Wording Guide (Urdu & English)',
-    metaDescription: 'Explore 50+ Pakistani and Islamic wedding invitation wording examples in Urdu & English for Nikkah, Mehndi, Barat & Walima cards. Includes inspiring quotes by celebrated authors and RSVP etiquette.',
+    seoTitle: 'Pakistani Wedding Invitation Wording & Card Text (Urdu & English)',
+    metaDescription: '50+ Pakistani wedding invitation card text examples in Urdu & English for Nikkah, Mehndi, Barat & Walima. Includes Bismillah calligraphy, RSVP management & copyable text.',
     category: 'Wedding & Nikkah',
     author: {
       name: 'Umar Farooq',
@@ -46,11 +46,11 @@ export const BLOG_POSTS: BlogPost[] = [
       avatar: '/icon.svg',
     },
     publishedAt: '2026-06-08',
-    updatedAt: '2026-06-08',
+    updatedAt: '2026-08-09',
     readTime: '14 min read',
-    wordCount: 1900,
+    wordCount: 2100,
     featuredImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=750&q=65&fm=webp',
-    tags: ['Pakistani Wedding Wording', 'Nikkah Invitation Text', 'Urdu Wedding Quotes', 'Islamic Card Design', 'Barat Invitation'],
+    tags: ['Pakistani Wedding Wording', 'Pakistani Wedding Cards Text', 'Wedding RSVP Management', 'Nikkah Invitation Text', 'Urdu Wedding Quotes', 'Islamic Card Design', 'Barat Invitation'],
     content: {
       intro: `Weddings in Pakistan and South Asian communities worldwide are sacred, grand celebrations that unite two families in love and faith. The wedding invitation card serves as the official harbinger of this joyous union. It sets the tone for the entire celebration, conveying warmth, respect, religious reverence, and cultural pride. Selecting the appropriate invitation wording in both Urdu and English requires a delicate balance of traditional honorifics, spiritual blessings, and clear event details. Whether you are organizing an intimate Nikkah ceremony or a lavish multiday wedding gala with Mehndi, Barat, and Walima functions, this master guide provides curated wording templates, inspirational quotes, host protocols, and practical advice to make your invitation truly royal.`,
       sections: [
@@ -71,7 +71,7 @@ export const BLOG_POSTS: BlogPost[] = [
           title: '2. Nikkah Ceremony Wording Examples (Formal & Elegant)',
           body: `The Nikkah is the solemn, sacred Islamic contract where the bride and groom officially accept each other in marriage. The wording for a Nikkah invitation should convey dignity, purity, and spiritual joy. Below are formal bilingual templates:`,
           bulletPoints: [
-            'English Template 1: "Together with their families, [Groom䏭 Name] & [Bride䏭 Name] request the honor of your presence and blessings at their Nikkah ceremony. As two lives unite under Allah䏭 grace, your presence will make our joy complete."',
+            'English Template 1: "Together with their families, [Groom\'s Name] & [Bride\'s Name] request the honor of your presence and blessings at their Nikkah ceremony. As two lives unite under Allah\'s grace, your presence will make our joy complete."',
             'Urdu Template 1: "بفضلِ تعالیٰ [دولہا کا نام] اور [دلہن کا نام] کے رشتہ ازدواج میں منسلک ہونے کی مسرت میں آپ کی شرکت کے خواہش مند ہیں۔"',
             'Bilingual Hybrid Template: "In the name of Allah, the Most Gracious, the Most Merciful. Chaudhry [Family Name] & Malik [Family Name] cordially invite you to share in the divine blessings of the Nikkah Ceremony uniting [Groom Name] & [Bride Name]."',
           ],
@@ -83,16 +83,16 @@ export const BLOG_POSTS: BlogPost[] = [
           bulletPoints: [
             'Festive English Template: "Henna, Beats & Festive Feasts! Join us for an enchanting night of music, dholki, and henna as we celebrate the Mehndi ceremony of [Bride/Groom Name]. Bring your best dance moves and brightest smiles!"',
             'Urdu Festive Template: "مہندی کی رات، خوشیوں کی برسات! آپ تمام احباب کو مہندی اور ڈھولکی کی تقریب میں شرکت کی دلی دعوت دی جاتی ہے۔"',
-            'Dress Code Highlight: "Dress Theme: Shades of Yellow, Mustard, Emerald Green & Magenta. Let䏭 brighten the night together!"',
+            'Dress Code Highlight: "Dress Theme: Shades of Yellow, Mustard, Emerald Green & Magenta. Let\'s brighten the night together!"',
           ],
         },
         {
           id: 'barat-and-walima-wording',
           title: '4. Regal Host Invitations for Barat & Walima Galas',
-          body: `The Barat represents the groom䏭 procession and main wedding banquet hosted by the bride䏭 family, while the Walima is the sunnah feast hosted by the groom䏭 family. Both require grand, formal wording:`,
+          body: `The Barat represents the groom\'s procession and main wedding banquet hosted by the bride\'s family, while the Walima is the sunnah feast hosted by the groom\'s family. Both require grand, formal wording:`,
           bulletPoints: [
-            'Barat Reception Wording: "[Host Parents Names] cordially solicit the gracious presence of your family at the Wedding Gala & Barat Reception of their beloved daughter [Bride Name] with [Groom Name] (Son of [Groom䏭 Parents])."',
-            'Walima Feast Wording: "In accordance with the Sunnah of Prophet Muhammad (PBUH), [Groom䏭 Parents Names] request the pleasure of your company at the Walima Reception celebrating the marriage of their son [Groom Name] to [Bride Name]."',
+            'Barat Reception Wording: "[Host Parents Names] cordially solicit the gracious presence of your family at the Wedding Gala & Barat Reception of their beloved daughter [Bride Name] with [Groom Name] (Son of [Groom\'s Parents])."',
+            'Walima Feast Wording: "In accordance with the Sunnah of Prophet Muhammad (PBUH), [Groom\'s Parents Names] request the pleasure of your company at the Walima Reception celebrating the marriage of their son [Groom Name] to [Bride Name]."',
           ],
         },
         {
@@ -145,16 +145,20 @@ export const BLOG_POSTS: BlogPost[] = [
       ],
       faq: [
         {
+          question: 'What is the standard Pakistani wedding card text format in Urdu & English?',
+          answer: 'A standard Pakistani wedding card includes the Bismillah calligraphy header, host parent names, groom & bride names, function dates/times for Nikkah, Mehndi, Barat, and Walima, venue GPS map location, and RSVP contact phone numbers.',
+        },
+        {
+          question: 'How does digital wedding RSVP management work on Cardzy?',
+          answer: 'Cardzy provides live digital RSVP management for Pakistani weddings. Guests receive a single WhatsApp card link, tap to confirm attendance and guest count for each function (Nikkah, Mehndi, Walima), and hosts track confirmed guest headcounts in real-time.',
+        },
+        {
           question: 'Should I write the invitation in Urdu or English?',
           answer: 'A bilingual invitation combining both languages is ideal for South Asian weddings. It honors traditional elders with Urdu Nastaliq script while ensuring younger guests and international relatives easily understand the schedule in English.',
         },
         {
           question: 'How do I add Urdu Nastaliq text to my digital card on Cardzy?',
           answer: 'Cardzy supports full Urdu and Arabic fonts out of the box. Simply type or paste your Urdu text into the invitation generator form and the live preview will instantly render it in elegant calligraphic script.',
-        },
-        {
-          question: 'How far in advance should I send wedding invitations in Pakistan?',
-          answer: 'The standard Pakistani etiquette is 10–14 days before the main wedding events for the Barat and Walima, and 5–7 days before for the Mehndi and Dholki. For guests travelling from overseas or from other cities, sending 3–4 weeks in advance is strongly recommended to allow for travel booking.',
         },
         {
           question: 'Can I include a Google Maps link in a digital Cardzy invitation?',

@@ -2,12 +2,12 @@ import { Metadata } from 'next'
 import { PRIVATE_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Cardzy User Dashboard — Manage Cards & RSVPs',
-  description: 'Manage your created digital cards, event invitations, and RSVP responses.',
+  title: 'Admin Security Portal — Cardzy Management Hub',
+  description: 'Internal administration management portal for Cardzy.',
   robots: PRIVATE_ROBOTS,
 }
 
-export default function DashboardLayout({
+export default function AdminPortalLayout({
   children,
 }: {
   children: React.ReactNode

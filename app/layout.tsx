@@ -41,7 +41,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-import { getLanguageAlternates } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
@@ -49,21 +49,8 @@ export const metadata: Metadata = {
   description:
     'Create stunning 3D animated digital wish cards, Pakistani & International digital wedding invitations with instant WhatsApp RSVP tracking, and executive digital visiting cards in 18 languages.',
   generator: 'v0.app',
-  alternates: {
-    canonical: 'https://cardzy.online',
-    languages: getLanguageAlternates('/'),
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+  alternates: getPageAlternates('/'),
+  robots: PUBLIC_ROBOTS,
   verification: {
     google: 'google8c02e6f18e222682',
   },

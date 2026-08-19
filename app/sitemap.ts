@@ -1,145 +1,54 @@
 import { MetadataRoute } from 'next'
 import { BLOG_POSTS } from '@/lib/blog/data'
+import { SITE_URL, getLanguageAlternates } from '@/lib/seo'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://cardzy.online'
   const currentDate = new Date()
 
-  const staticRoutes: MetadataRoute.Sitemap = [
-    {
-      url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: 'daily',
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: currentDate,
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/custom-order`,
-      lastModified: currentDate,
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/create-wish`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/create-invitation`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/create-visiting-card`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/pricing`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/faq`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/guide`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/guide/eid-wording-ideas`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/guide/pakistani-wedding-invitations`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/guide/birthday-wishes-wording`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/eid-mubarak-cards`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/authors/umar-farooq`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/authors/kainat`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/authors/hasnain`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: currentDate,
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/terms`,
-      lastModified: currentDate,
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/campaign`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
+  const staticRoutePaths = [
+    { path: '/', changeFrequency: 'daily' as const, priority: 1.0 },
+    { path: '/blog', changeFrequency: 'daily' as const, priority: 0.9 },
+    { path: '/custom-order', changeFrequency: 'daily' as const, priority: 0.9 },
+    { path: '/create-wish', changeFrequency: 'weekly' as const, priority: 0.9 },
+    { path: '/create-invitation', changeFrequency: 'weekly' as const, priority: 0.9 },
+    { path: '/create-visiting-card', changeFrequency: 'weekly' as const, priority: 0.8 },
+    { path: '/pricing', changeFrequency: 'weekly' as const, priority: 0.8 },
+    { path: '/faq', changeFrequency: 'monthly' as const, priority: 0.8 },
+    { path: '/guide', changeFrequency: 'weekly' as const, priority: 0.8 },
+    { path: '/guide/eid-wording-ideas', changeFrequency: 'daily' as const, priority: 0.9 },
+    { path: '/guide/pakistani-wedding-invitations', changeFrequency: 'daily' as const, priority: 0.9 },
+    { path: '/guide/birthday-wishes-wording', changeFrequency: 'weekly' as const, priority: 0.8 },
+    { path: '/eid-mubarak-cards', changeFrequency: 'weekly' as const, priority: 0.9 },
+    { path: '/about', changeFrequency: 'monthly' as const, priority: 0.7 },
+    { path: '/authors/umar-farooq', changeFrequency: 'monthly' as const, priority: 0.7 },
+    { path: '/authors/kainat', changeFrequency: 'monthly' as const, priority: 0.7 },
+    { path: '/authors/hasnain', changeFrequency: 'monthly' as const, priority: 0.7 },
+    { path: '/contact', changeFrequency: 'monthly' as const, priority: 0.7 },
+    { path: '/privacy', changeFrequency: 'yearly' as const, priority: 0.3 },
+    { path: '/terms', changeFrequency: 'yearly' as const, priority: 0.3 },
+    { path: '/campaign', changeFrequency: 'weekly' as const, priority: 0.8 },
   ]
 
+  const staticRoutes: MetadataRoute.Sitemap = staticRoutePaths.map((route) => ({
+    url: route.path === '/' ? SITE_URL : `${SITE_URL}${route.path}`,
+    lastModified: currentDate,
+    changeFrequency: route.changeFrequency,
+    priority: route.priority,
+    alternates: {
+      languages: getLanguageAlternates(route.path),
+    },
+  }))
+
   const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
+    url: `${SITE_URL}/blog/${post.slug}`,
     lastModified: new Date(post.updatedAt),
     changeFrequency: 'weekly',
     priority: 0.8,
+    alternates: {
+      languages: getLanguageAlternates(`/blog/${post.slug}`),
+    },
   }))
 
   return [...staticRoutes, ...blogRoutes]
 }
+

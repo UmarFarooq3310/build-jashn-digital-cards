@@ -1,15 +1,13 @@
 import type { Metadata } from 'next'
-import { getLanguageAlternates } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Eid Mubarak Wish Wording & Urdu Messages Ideas — Cardzy',
+  title: 'Eid Mubarak Wording & Wishes in Urdu & English (With Meanings & Replies) | Cardzy',
   description:
-    'Browse our curated collection of Eid Mubarak wishes, traditional Urdu greetings, and poetry verses for digital animated greeting cards.',
-  alternates: {
-    canonical: 'https://cardzy.online/guide/eid-wording-ideas',
-    languages: getLanguageAlternates('/guide/eid-wording-ideas'),
-  },
-  }
+    'Free Eid Mubarak wording in Urdu & English — copyable phrases, "Eid Mubarak to you too" meaning & replies (Khair Mubarak), greetings, and 3D animated Eid cards.',
+  alternates: getPageAlternates('/guide/eid-wording-ideas'),
+  robots: PUBLIC_ROBOTS,
+}
 
 export default function EidGuideLayout({
   children,

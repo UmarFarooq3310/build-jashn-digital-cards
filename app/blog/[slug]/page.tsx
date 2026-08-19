@@ -2,17 +2,12 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { BLOG_POSTS, getBlogPost, getLocalizedPost } from '@/lib/blog/data'
 import { BlogPostClient } from '@/components/blog/blog-post-client'
-import { getLanguageAlternates } from '@/lib/seo'
+import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 interface PageProps {
   params: Promise<{ slug: string }>
   searchParams?: Promise<{ lang?: string }>
 }
-
-const SUPPORTED_LANGS = [
-  'en', 'es', 'fr', 'ar', 'hi', 'zh', 'pt', 'ru', 'de',
-  'ja', 'ko', 'it', 'tr', 'id', 'ur', 'bn', 'vi', 'sw'
-]
 
 export async function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({
@@ -41,10 +36,8 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   return {
     title,
     description,
-    alternates: {
-      canonical: `https://cardzy.online/blog/${post.slug}`,
-      languages: getLanguageAlternates(`/blog/${post.slug}`),
-    },
+    alternates: getPageAlternates(`/blog/${post.slug}`, resolvedSearchParams.lang),
+    robots: PUBLIC_ROBOTS,
     openGraph: {
       title: post.title,
       description: post.metaDescription,
@@ -105,12 +98,31 @@ export default async function BlogPostPage({ params, searchParams }: PageProps) 
     },
   }
 
+  const faqJsonLd = post.content.faq && post.content.faq.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: post.content.faq.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  } : null
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       <BlogPostClient initialPost={post} />
     </>
   )
