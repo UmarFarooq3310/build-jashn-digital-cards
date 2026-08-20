@@ -194,6 +194,14 @@ export default function RootLayout({
                 position: static !important;
                 transform: none !important;
               }
+              #cookie-consent-banner,
+              #cardzy-cookie-modal-root,
+              [data-cookie-root] {
+                visibility: visible !important;
+                opacity: 1 !important;
+                z-index: 2147483647 !important;
+                pointer-events: auto !important;
+              }
               iframe.goog-te-banner-frame,
               .goog-te-banner-frame,
               .goog-te-balloon-frame,
@@ -201,9 +209,8 @@ export default function RootLayout({
               .goog-te-spinner-pos,
               .goog-te-banner,
               #google_translate_element,
-              .skiptranslate,
-              body > .skiptranslate,
-              div.skiptranslate {
+              body > .skiptranslate:not(#cookie-consent-banner):not(#cardzy-cookie-modal-root),
+              div.skiptranslate:not(#cookie-consent-banner):not(#cardzy-cookie-modal-root) {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
@@ -242,6 +249,7 @@ export default function RootLayout({
       </head>
       <body className="bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]" suppressHydrationWarning>
         <LanguageProvider>
+          <CookieBanner />
           <AdSenseCleaner />
           <AdSenseHandler />
           <FirebaseAuthListener />
@@ -252,7 +260,6 @@ export default function RootLayout({
             </main>
             <SiteFooter />
           </div>
-          <CookieBanner />
           <ToastNotification />
           {process.env.NODE_ENV === 'production' && process.env.VERCEL === '1' && <Analytics />}
         </LanguageProvider>

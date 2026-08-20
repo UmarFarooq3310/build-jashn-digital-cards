@@ -608,7 +608,7 @@ export function CookieBanner() {
             position: 'fixed',
             bottom: '16px',
             left: '16px',
-            zIndex: 9999999,
+            zIndex: 2147483640,
           }}
           className="flex items-center gap-2 rounded-full border border-amber-500/60 bg-[#0c0e14]/95 px-3.5 py-2 text-xs font-bold text-amber-400 shadow-2xl backdrop-blur-md hover:bg-slate-900 hover:border-amber-400 hover:scale-105 transition-all active:scale-95 cursor-pointer pointer-events-auto group notranslate"
           aria-label={tr('preferences')}
@@ -633,7 +633,7 @@ export function CookieBanner() {
             left: '12px',
             right: '12px',
             maxWidth: '576px',
-            zIndex: 9999999,
+            zIndex: 2147483645,
           }}
           className="mx-auto sm:mr-6 sm:ml-auto rounded-2xl sm:rounded-3xl border border-amber-500/60 bg-[#0a0a0e]/98 p-5 sm:p-6 text-white shadow-[0_20px_50px_rgba(0,0,0,0.85)] backdrop-blur-2xl opacity-100 transition-all duration-300 pointer-events-auto notranslate"
         >
@@ -729,7 +729,7 @@ export function CookieBanner() {
             bottom: 0,
             width: '100vw',
             height: '100vh',
-            zIndex: 9999999,
+            zIndex: 2147483647,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
