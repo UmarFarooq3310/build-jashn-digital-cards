@@ -133,11 +133,12 @@ function SiteHeaderInner() {
         <nav className="hidden items-center gap-1 xl:gap-2 lg:flex">
           {[
             { href: '/', key: 'home', fallback: 'Home' },
-            { href: '/custom-order', key: 'customOrder', fallback: 'WhatsApp Order' },
-            { href: '/create-wish', key: 'sendWish', fallback: 'Send Wish' },
-            { href: '/create-invitation', key: 'createInvitation', fallback: 'Invitations' },
-            { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },
+            { href: '/create-wish', key: 'sendWish', fallback: '3D Wish Cards' },
+            { href: '/create-invitation', key: 'createInvitation', fallback: 'Wedding Invitations' },
+            { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Smart vCards' },
+            { href: '/blog', key: 'blog', fallback: 'Guides & Ideas' },
             { href: '/pricing', key: 'pricing', fallback: 'Pricing' },
+            { href: '/custom-order', key: 'customOrder', fallback: 'Custom Order' },
             { href: '/faq', key: 'faqs', fallback: 'FAQs' },
             { href: '/contact', key: 'contact', fallback: 'Contact' },
           ].map((item) => (
@@ -262,11 +263,12 @@ function SiteHeaderInner() {
           <nav className="flex flex-col gap-1">
             {[
               { href: '/', key: 'home', fallback: 'Home' },
-              { href: '/custom-order', key: 'customOrder', fallback: 'WhatsApp Order' },
-              { href: '/create-wish', key: 'sendWish', fallback: 'Send Wish' },
-              { href: '/create-invitation', key: 'createInvitation', fallback: 'Invitations' },
-              { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Visiting Cards' },
+              { href: '/create-wish', key: 'sendWish', fallback: '3D Wish Cards' },
+              { href: '/create-invitation', key: 'createInvitation', fallback: 'Wedding Invitations' },
+              { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Smart vCards' },
+              { href: '/blog', key: 'blog', fallback: 'Guides & Ideas' },
               { href: '/pricing', key: 'pricing', fallback: 'Pricing' },
+              { href: '/custom-order', key: 'customOrder', fallback: 'Custom Order' },
               { href: '/faq', key: 'faqs', fallback: 'FAQs' },
               { href: '/contact', key: 'contact', fallback: 'Contact' },
             ].map((item) => (

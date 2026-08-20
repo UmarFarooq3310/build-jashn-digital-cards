@@ -13,10 +13,21 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const lang = resolvedSearchParams.lang
 
   return {
+    title: 'Cardzy — 3D Digital Cards, Wedding Invitations & Smart vCards',
+    description:
+      'Design, customize, and share interactive 3D digital wish cards, wedding invitations with automated WhatsApp RSVP tracking, and executive smart digital business cards (vCards) in 18 languages.',
     keywords: DEFAULT_KEYWORDS,
     publisher: SITE_PUBLISHER,
     alternates: getPageAlternates('/', lang),
     robots: PUBLIC_ROBOTS,
+    openGraph: {
+      title: 'Cardzy — 3D Digital Cards, Wedding Invitations & Smart vCards',
+      description:
+        'Design, customize, and share interactive 3D digital wish cards, wedding invitations with automated WhatsApp RSVP tracking, and executive smart digital business cards (vCards) in 18 languages.',
+      url: 'https://cardzy.online',
+      siteName: 'Cardzy',
+      type: 'website',
+    },
   }
 }
 
