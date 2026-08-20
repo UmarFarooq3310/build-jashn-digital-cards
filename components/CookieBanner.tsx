@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import {
   Cookie,
@@ -579,10 +580,10 @@ export function CookieBanner() {
     persistConsent(prefs.analytics, prefs.advertising)
   }
 
-  if (!mounted) return null
+  if (!mounted || typeof document === 'undefined') return null
 
-  return (
-    <>
+  return createPortal(
+    <div id="cardzy-cookie-consent-root" style={{ position: 'relative', zIndex: 2147483647 }}>
       {/* ───────────────────────────────────────────────────────────── */}
       {/* 1. Floating Persistent Cookie Settings Trigger Badge          */}
       {/* ───────────────────────────────────────────────────────────── */}
@@ -590,7 +591,13 @@ export function CookieBanner() {
         <button
           type="button"
           onClick={openPreferencesModal}
-          className="fixed bottom-4 left-4 z-[99999990] flex items-center gap-2 rounded-full border border-amber-500/60 bg-[#0c0e14]/95 px-3.5 py-2 text-xs font-bold text-amber-400 shadow-2xl backdrop-blur-md hover:bg-slate-900 hover:border-amber-400 hover:scale-105 transition-all active:scale-95 cursor-pointer pointer-events-auto group"
+          style={{
+            position: 'fixed',
+            bottom: '16px',
+            left: '16px',
+            zIndex: 2147483640,
+          }}
+          className="flex items-center gap-2 rounded-full border border-amber-500/60 bg-[#0c0e14]/95 px-3.5 py-2 text-xs font-bold text-amber-400 shadow-2xl backdrop-blur-md hover:bg-slate-900 hover:border-amber-400 hover:scale-105 transition-all active:scale-95 cursor-pointer pointer-events-auto group"
           aria-label={tr('preferences')}
           title={tr('preferences')}
         >
@@ -607,7 +614,15 @@ export function CookieBanner() {
           id="cookie-consent-banner"
           role="region"
           aria-label="Cookie & Privacy Notice"
-          className="fixed bottom-3 inset-x-3 sm:bottom-6 sm:right-6 sm:inset-x-auto max-w-xl w-full rounded-2xl sm:rounded-3xl border border-amber-500/60 bg-[#0a0a0e]/98 p-5 sm:p-6 text-white shadow-[0_20px_50px_rgba(0,0,0,0.85)] backdrop-blur-2xl z-[99999999] opacity-100 transition-all duration-300 pointer-events-auto"
+          style={{
+            position: 'fixed',
+            bottom: '16px',
+            left: '12px',
+            right: '12px',
+            maxWidth: '576px',
+            zIndex: 2147483645,
+          }}
+          className="mx-auto sm:mr-6 sm:ml-auto rounded-2xl sm:rounded-3xl border border-amber-500/60 bg-[#0a0a0e]/98 p-5 sm:p-6 text-white shadow-[0_20px_50px_rgba(0,0,0,0.85)] backdrop-blur-2xl opacity-100 transition-all duration-300 pointer-events-auto"
         >
           <div className="space-y-4">
             {/* Top Row */}
@@ -692,12 +707,35 @@ export function CookieBanner() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="cookie-preferences-title"
-          className="fixed inset-0 z-[99999999] flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/80 backdrop-blur-md opacity-100 transition-opacity duration-200 pointer-events-auto"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: 2147483647,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+          }}
+          className="p-3 sm:p-4 md:p-6 opacity-100 transition-opacity duration-200 pointer-events-auto"
           onClick={(e) => {
             if (e.target === e.currentTarget) closePreferencesModal()
           }}
         >
-          <div className="relative w-full max-w-xl rounded-3xl border border-amber-500/50 bg-[#0c0e14] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] text-white opacity-100 transition-all duration-200 pointer-events-auto">
+          <div
+            style={{
+              maxHeight: '90vh',
+              width: '100%',
+              maxWidth: '36rem',
+            }}
+            className="relative rounded-3xl border border-amber-500/50 bg-[#0c0e14] shadow-2xl overflow-hidden flex flex-col text-white opacity-100 transition-all duration-200 pointer-events-auto"
+          >
             {/* Modal Header */}
             <div className="flex items-start justify-between p-5 sm:p-6 border-b border-white/10 bg-slate-950/90">
               <div className="flex items-start gap-3.5 pr-2">
@@ -853,6 +891,7 @@ export function CookieBanner() {
           </div>
         </div>
       )}
-    </>
+    </div>,
+    document.body
   )
 }
