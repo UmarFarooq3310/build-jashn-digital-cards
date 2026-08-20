@@ -139,6 +139,7 @@ export function SiteFooter() {
             data-open-cookie-preferences="true"
             onClick={(e) => {
               e.preventDefault()
+              e.stopPropagation()
               if (typeof window !== 'undefined') {
                 if (typeof window.openCookiePreferences === 'function') {
                   window.openCookiePreferences()

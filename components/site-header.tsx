@@ -346,14 +346,19 @@ function SiteHeaderInner() {
             <button
               type="button"
               data-open-cookie-preferences="true"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
                 setOpen(false)
                 if (typeof window !== 'undefined') {
-                  if (window.openCookiePreferences) {
+                  if (typeof window.openCookiePreferences === 'function') {
                     window.openCookiePreferences()
-                  } else {
-                    window.dispatchEvent(new CustomEvent('open_cookie_preferences'))
                   }
+                  if (typeof (window as any).openCardzyCookieConsent === 'function') {
+                    (window as any).openCardzyCookieConsent()
+                  }
+                  window.dispatchEvent(new CustomEvent('open_cookie_preferences'))
+                  document.dispatchEvent(new CustomEvent('open_cookie_preferences'))
                 }
               }}
               className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-amber-600 hover:bg-amber-500/10 cursor-pointer border-t border-border/40 mt-1 pt-3"

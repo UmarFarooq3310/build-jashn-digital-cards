@@ -73,7 +73,9 @@ export default function PrivacyPolicyPage() {
         <button
           type="button"
           data-open-cookie-preferences="true"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
             if (typeof window !== 'undefined') {
               if (window.openCookiePreferences) {
                 window.openCookiePreferences()

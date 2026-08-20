@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import {
@@ -28,7 +28,7 @@ declare global {
 }
 
 const STORAGE_KEY = 'cookie_consent'
-const VERSIONED_KEY = 'cardzy_consent_v2'
+const VERSIONED_KEY = 'cardzy_consent_v3'
 const LEGACY_CONSENT_KEY = 'cardzy_cookie_consent'
 const LEGACY_PREFS_KEY = 'cardzy_cookie_prefs'
 
@@ -408,7 +408,10 @@ export function CookieBanner() {
     advertising: true,
   })
 
+  const openedAtRef = useRef<number>(0)
+
   const openPreferencesModal = useCallback(() => {
+    openedAtRef.current = Date.now()
     setShowModal(true)
     setShowNoticeBanner(false)
   }, [])
@@ -416,6 +419,13 @@ export function CookieBanner() {
   const closePreferencesModal = useCallback(() => {
     setShowModal(false)
   }, [])
+
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (Date.now() - openedAtRef.current < 350) return
+    if (e.target === e.currentTarget) {
+      closePreferencesModal()
+    }
+  }
 
   useEffect(() => {
     setMounted(true)
@@ -724,7 +734,7 @@ export function CookieBanner() {
             WebkitBackdropFilter: 'blur(8px)',
           }}
           className="p-3 sm:p-4 md:p-6 opacity-100 transition-opacity duration-200 pointer-events-auto notranslate"
-          onClick={closePreferencesModal}
+          onClick={handleBackdropClick}
         >
           <div
             style={{
