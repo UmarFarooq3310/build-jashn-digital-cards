@@ -400,8 +400,7 @@ export function CookieBanner() {
     return COOKIE_TEXTS[key]?.[activeLang] || COOKIE_TEXTS[key]?.en || ''
   }
 
-  const [mounted, setMounted] = useState(false)
-  const [showNoticeBanner, setShowNoticeBanner] = useState(false)
+  const [showNoticeBanner, setShowNoticeBanner] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [prefs, setPrefs] = useState<CookiePrefs>({
     essential: true,
@@ -429,8 +428,6 @@ export function CookieBanner() {
   }
 
   useEffect(() => {
-    setMounted(true)
-
     // Expose global methods for footer, settings, and other components
     window.openCookiePreferences = openPreferencesModal
     window.openCardzyCookieConsent = openPreferencesModal
@@ -439,7 +436,7 @@ export function CookieBanner() {
     window.openCookieAlert = openPreferencesModal
 
     try {
-      const storedV2 = localStorage.getItem(VERSIONED_KEY)
+      const storedConsent = localStorage.getItem(VERSIONED_KEY)
 
       const urlHasCookieParam =
         window.location.search.includes('cookie') ||
@@ -447,22 +444,28 @@ export function CookieBanner() {
         window.location.hash.includes('cookie') ||
         window.location.hash.includes('privacy-choices')
 
-      if (urlHasCookieParam || !storedV2) {
-        // Automatically show banner if no explicit v2 consent or if triggered by URL
-        setShowNoticeBanner(true)
-      } else {
+      if (urlHasCookieParam) {
+        setShowNoticeBanner(false)
+        setShowModal(true)
+      } else if (storedConsent) {
         try {
-          const parsed = JSON.parse(storedV2)
+          const parsed = JSON.parse(storedConsent)
           if (parsed && typeof parsed === 'object') {
             setPrefs({
               essential: true,
               analytics: parsed.analytics !== false,
               advertising: parsed.advertising !== false,
             })
+            // Already has valid v3 consent
+            setShowNoticeBanner(false)
+          } else {
+            setShowNoticeBanner(true)
           }
         } catch {
           setShowNoticeBanner(true)
         }
+      } else {
+        setShowNoticeBanner(true)
       }
     } catch {
       setShowNoticeBanner(true)
@@ -501,6 +504,7 @@ export function CookieBanner() {
       )
       if (target) {
         e.preventDefault()
+        e.stopPropagation()
         openPreferencesModal()
       }
     }
@@ -590,8 +594,6 @@ export function CookieBanner() {
   const handleSaveCustom = () => {
     persistConsent(prefs.analytics, prefs.advertising)
   }
-
-  if (!mounted) return null
 
   return (
     <>
