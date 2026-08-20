@@ -164,6 +164,18 @@ export default function RootLayout({
               };
               window.openCardzyCookieConsent = window.openCookiePreferences;
               window.showCookieAlert = window.openCookiePreferences;
+              document.addEventListener('click', function(e) {
+                try {
+                  var target = e.target && e.target.closest && e.target.closest('[data-open-cookie-preferences], [data-cookie-preferences], a[href="#cookie-preferences"]');
+                  if (target) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (typeof window.openCookiePreferences === 'function') {
+                      window.openCookiePreferences();
+                    }
+                  }
+                } catch(err) {}
+              }, true);
             `,
           }}
         />

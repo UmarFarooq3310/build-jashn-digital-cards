@@ -393,7 +393,8 @@ if (typeof window !== 'undefined') {
 }
 
 export function CookieBanner() {
-  const { lang } = useLang()
+  const langContext = useLang()
+  const lang = langContext?.lang || 'en'
   const activeLang: LangCode = (lang as LangCode) || 'en'
   const tr = (key: string): string => {
     return COOKIE_TEXTS[key]?.[activeLang] || COOKIE_TEXTS[key]?.en || ''
@@ -714,6 +715,7 @@ export function CookieBanner() {
       {/* ───────────────────────────────────────────────────────────── */}
       {showModal && (
         <div
+          id="cardzy-cookie-modal-root"
           role="dialog"
           aria-modal="true"
           aria-labelledby="cookie-preferences-title"
