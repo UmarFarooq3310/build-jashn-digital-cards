@@ -639,13 +639,16 @@ const TERMS_TEXT: Record<string, Record<string, string>> = {
   }
 }
 
+import { Breadcrumbs } from '@/components/breadcrumbs'
+
 export default function TermsPage() {
   const { lang, t: globalT } = useLang()
   const t = (key: string) => TERMS_TEXT[key]?.[lang] || TERMS_TEXT[key]?.en || globalT(key) || ''
 
   return (
-    <div className="py-12 md:py-20">
+    <div className="py-8 md:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Breadcrumbs items={[{ label: 'Terms of Service', href: '/terms' }]} className="mb-6" />
           
           {/* Header */}
           <div className="text-center">

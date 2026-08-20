@@ -161,6 +161,8 @@ const WEDDING_GUIDE_TEXT: Record<string, Record<string, string>> = {
   }
 }
 
+import { Breadcrumbs } from '@/components/breadcrumbs'
+
 export default function WeddingGuidePage() {
   const { lang, t } = useLang()
   const isUrdu = lang === 'ur' || lang === 'ar'
@@ -170,8 +172,16 @@ export default function WeddingGuidePage() {
   }
 
   return (
-    <div className="py-10 md:py-16">
+    <div className="py-8 md:py-14">
       <div className="mx-auto max-w-3xl px-4">
+        {/* Breadcrumb Navigation */}
+        <Breadcrumbs
+          items={[
+            { label: 'Celebration Guides', href: '/guide' },
+            { label: 'Pakistani Wedding Invitations Wording' },
+          ]}
+          className="mb-4"
+        />
         
         {/* Back button */}
         <Link

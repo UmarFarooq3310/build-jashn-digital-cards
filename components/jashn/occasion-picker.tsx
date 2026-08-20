@@ -61,6 +61,7 @@ function OccasionCard({
           src={bgImage}
           alt={displayLabel}
           fill
+          unoptimized
           priority={priority}
           sizes="(max-width: 640px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-110"

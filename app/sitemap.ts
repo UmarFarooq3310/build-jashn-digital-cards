@@ -24,8 +24,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/authors/kainat', changeFrequency: 'monthly' as const, priority: 0.7 },
     { path: '/authors/hasnain', changeFrequency: 'monthly' as const, priority: 0.7 },
     { path: '/contact', changeFrequency: 'monthly' as const, priority: 0.7 },
-    { path: '/privacy', changeFrequency: 'yearly' as const, priority: 0.3 },
-    { path: '/terms', changeFrequency: 'yearly' as const, priority: 0.3 },
+    { path: '/privacy', changeFrequency: 'yearly' as const, priority: 0.4 },
+    { path: '/privacy-policy', changeFrequency: 'yearly' as const, priority: 0.4 },
+    { path: '/disclaimer', changeFrequency: 'yearly' as const, priority: 0.4 },
+    { path: '/terms', changeFrequency: 'yearly' as const, priority: 0.4 },
+    { path: '/terms-of-service', changeFrequency: 'yearly' as const, priority: 0.4 },
     { path: '/campaign', changeFrequency: 'weekly' as const, priority: 0.8 },
   ]
 

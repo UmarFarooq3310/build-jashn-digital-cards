@@ -585,7 +585,7 @@ function CreateWishContent() {
                       {photoUrl && (
                         <div className="relative size-12 rounded-full overflow-hidden border-2 border-[#D4AF37] shadow-md">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={photoUrl} alt="Preview" className="size-full object-cover" />
+                          <img src={photoUrl} alt="Custom Greeting Card Photo Upload Preview" className="size-full object-cover" />
                         </div>
                       )}
                     </div>

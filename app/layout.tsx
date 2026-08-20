@@ -19,6 +19,8 @@ const Analytics = dynamic(
   () => import('@vercel/analytics/next').then((mod) => mod.Analytics)
 )
 
+import { CookieBanner } from '@/components/CookieBanner'
+
 const SiteHeader = dynamic(
   () => import('@/components/site-header').then((mod) => mod.SiteHeader)
 )
@@ -61,18 +63,18 @@ export const metadata: Metadata = {
   other: {
     'google-adsense-account': 'ca-pub-8899224608517833',
   },
-    icons: {
+  icons: {
     icon: [
-      { url: '/favicon.ico?v=4', sizes: 'any' },
-      { url: '/favicon-32x32.png?v=4', type: 'image/png', sizes: '32x32' },
-      { url: '/favicon-16x16.png?v=4', type: 'image/png', sizes: '16x16' },
-      { url: '/favicon.svg?v=4', type: 'image/svg+xml' },
-      { url: '/icon.svg?v=4', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
     ],
-    shortcut: ['/favicon.ico?v=4'],
+    shortcut: ['/favicon.ico'],
     apple: [
-      { url: '/apple-touch-icon.png?v=4', sizes: '180x180', type: 'image/png' },
-      { url: '/apple-icon.svg?v=4', type: 'image/svg+xml' },
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-icon.svg', type: 'image/svg+xml' },
     ],
   },
   openGraph: {
@@ -133,12 +135,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head suppressHydrationWarning>
-        <link rel="icon" href="/favicon.ico?v=4" sizes="any" />
-        <link rel="icon" href="/favicon-32x32.png?v=4" type="image/png" sizes="32x32" />
-        <link rel="icon" href="/favicon-16x16.png?v=4" type="image/png" sizes="16x16" />
-        <link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" sizes="180x180" />
-        <link rel="shortcut icon" href="/favicon.ico?v=4" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://jashn-app-e3888.firebaseapp.com" crossOrigin="anonymous" />
@@ -224,6 +226,7 @@ export default function RootLayout({
             </main>
             <SiteFooter />
           </div>
+          <CookieBanner />
           <ToastNotification />
           {process.env.NODE_ENV === 'production' && process.env.VERCEL === '1' && <Analytics />}
         </LanguageProvider>

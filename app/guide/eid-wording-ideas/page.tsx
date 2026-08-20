@@ -214,6 +214,8 @@ const EID_GUIDE_TEXT: Record<string, Record<string, string>> = {
   }
 }
 
+import { Breadcrumbs } from '@/components/breadcrumbs'
+
 export default function EidGuidePage() {
   const { lang, t } = useLang()
   const isUrdu = lang === 'ur' || lang === 'ar'
@@ -223,8 +225,16 @@ export default function EidGuidePage() {
   }
 
   return (
-    <div className="py-10 md:py-16">
+    <div className="py-8 md:py-14">
       <div className="mx-auto max-w-3xl px-4">
+        {/* Breadcrumb Navigation */}
+        <Breadcrumbs
+          items={[
+            { label: 'Celebration Guides', href: '/guide' },
+            { label: 'Eid Mubarak Wishes & Wording' },
+          ]}
+          className="mb-4"
+        />
         
         {/* Back button */}
         <Link

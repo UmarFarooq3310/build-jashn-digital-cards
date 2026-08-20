@@ -39,6 +39,9 @@ const InvitationsSection = dynamic(
 const ConciergeService = dynamic(
   () => import('@/components/home/concierge-service').then((mod) => mod.ConciergeService)
 )
+const StructuredFaqSection = dynamic(
+  () => import('@/components/home/structured-faq').then((mod) => mod.StructuredFaqSection)
+)
 const HomeCTA = dynamic(
   () => import('@/components/home/home-cta').then((mod) => mod.HomeCTA)
 )
@@ -71,6 +74,9 @@ export default function Page() {
 
       {/* Concierge Custom Card Creation Service */}
       <ConciergeService />
+
+      {/* ❓ High-Value Semantic Structured FAQ Section */}
+      <StructuredFaqSection />
 
       {/* Final CTA block */}
       <HomeCTA />

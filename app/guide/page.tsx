@@ -28,9 +28,12 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   }
 }
 
+import { Breadcrumbs } from '@/components/breadcrumbs'
+
 export default function GuideIndexPage() {
   return (
-    <div className="py-12 md:py-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <div className="py-8 md:py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <Breadcrumbs items={[{ label: 'Celebration Guides & Ideas', href: '/guide' }]} className="mb-6" />
       <GuideClientContent />
     </div>
   )

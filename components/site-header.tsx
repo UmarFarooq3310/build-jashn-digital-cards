@@ -3,12 +3,13 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
-import { Menu, X, LogOut, Globe, ChevronDown } from 'lucide-react'
+import { Menu, X, LogOut, Globe, ChevronDown, Search } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang, LANGUAGES } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
 import { CardzyLogo } from '@/components/ui/logo'
+import { SearchModal } from '@/components/search-modal'
 
 function SiteHeaderInner() {
   const pathname = usePathname()
@@ -17,8 +18,21 @@ function SiteHeaderInner() {
   const signOut = useJashn((s) => s.signOut)
   const [open, setOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const langDropdownRef = useRef<HTMLDivElement>(null)
   const { lang, setLang, t } = useLang()
+
+  // Listen for Cmd+K / Ctrl+K keyboard shortcut
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setSearchOpen((prev) => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   const currentLang = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0]
 
@@ -142,6 +156,20 @@ function SiteHeaderInner() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex shrink-0">
+          {/* Quick Search Button */}
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            className="flex items-center gap-2 rounded-full border border-border/80 bg-secondary/50 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary transition-all shadow-2xs whitespace-nowrap"
+            aria-label="Search guides and templates"
+          >
+            <Search className="size-3.5 text-amber-500" />
+            <span className="hidden xl:inline">Search</span>
+            <kbd className="inline-flex items-center gap-0.5 rounded border border-border/80 bg-background/80 px-1.5 py-0.2 text-[10px] font-mono text-muted-foreground">
+              ⌘K
+            </kbd>
+          </button>
+
           {/* Language Switcher */}
           <div ref={langDropdownRef} className="relative z-[9999] notranslate" translate="no">
             <button
@@ -211,13 +239,22 @@ function SiteHeaderInner() {
           </Link>
         </div>
 
-        <button
-          className="min-h-[48px] min-w-[48px] rounded-lg p-3 text-foreground lg:hidden flex items-center justify-center"
-          onClick={() => setOpen((o) => !o)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
+        <div className="flex items-center gap-1.5 lg:hidden">
+          <button
+            className="min-h-[44px] min-w-[44px] rounded-lg p-2.5 text-foreground hover:bg-secondary flex items-center justify-center"
+            onClick={() => setSearchOpen(true)}
+            aria-label="Search"
+          >
+            <Search className="size-5 text-amber-500" />
+          </button>
+          <button
+            className="min-h-[44px] min-w-[44px] rounded-lg p-2.5 text-foreground hover:bg-secondary flex items-center justify-center"
+            onClick={() => setOpen((o) => !o)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -303,9 +340,29 @@ function SiteHeaderInner() {
                 </Link>
               </>
             )}
+
+            <button
+              type="button"
+              data-open-cookie-preferences="true"
+              onClick={() => {
+                setOpen(false)
+                if (typeof window !== 'undefined') {
+                  if (window.openCookiePreferences) {
+                    window.openCookiePreferences()
+                  } else {
+                    window.dispatchEvent(new CustomEvent('open_cookie_preferences'))
+                  }
+                }
+              }}
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-amber-600 hover:bg-amber-500/10 cursor-pointer border-t border-border/40 mt-1 pt-3"
+            >
+              <span>🍪 Cookie Preferences</span>
+            </button>
           </nav>
         </div>
       )}
+
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   )
 }

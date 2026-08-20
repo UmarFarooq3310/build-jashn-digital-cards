@@ -737,7 +737,7 @@ function CreateInvitationContent() {
                         </span>
                         {photoUrl ? (
                           <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm">
-                            <img src={photoUrl} alt="Photo 1 Preview" className="size-full object-cover" />
+                            <img src={photoUrl} alt="Bride or Primary Host Portrait Preview" className="size-full object-cover" />
                             <button
                               type="button"
                               onClick={() => setPhotoUrl('')}
@@ -762,7 +762,7 @@ function CreateInvitationContent() {
                           </span>
                           {photoUrl2 ? (
                             <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm">
-                              <img src={photoUrl2} alt="Photo 2 Preview" className="size-full object-cover" />
+                              <img src={photoUrl2} alt="Groom or Secondary Host Portrait Preview" className="size-full object-cover" />
                               <button
                                 type="button"
                                 onClick={() => setPhotoUrl2('')}

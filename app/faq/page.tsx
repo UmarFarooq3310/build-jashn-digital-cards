@@ -28,14 +28,17 @@ const faqSchema = {
   })),
 }
 
+import { Breadcrumbs } from '@/components/breadcrumbs'
+
 export default function FaqPage() {
   const { t } = useLang()
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <div className="py-12 md:py-20">
+      <div className="py-8 md:py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs items={[{ label: 'Frequently Asked Questions', href: '/faq' }]} className="mb-6" />
 
           {/* Header */}
           <div className="mb-12 text-center">

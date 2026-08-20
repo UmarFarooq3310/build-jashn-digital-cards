@@ -110,8 +110,9 @@ export function SiteFooter() {
                 { href: '/contact', label: 'Contact Us' },
                 { href: '/pricing', label: t('footerPlans') },
                 { href: '/faq', label: t('faqs') },
-                { href: '/privacy', label: t('footerPrivacy') },
-                { href: '/terms', label: t('footerTerms') },
+                { href: '/privacy-policy', label: t('footerPrivacy') },
+                { href: '/terms-of-service', label: 'Terms of Service' },
+                { href: '/disclaimer', label: 'Disclaimer' },
               ]}
             />
           </div>
@@ -121,13 +122,39 @@ export function SiteFooter() {
           <span>{t('footerCopyright')}</span>
           <Link href="/" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('home')}</Link>
           <span>•</span>
+          <Link href="/blog" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('blog')}</Link>
+          <span>•</span>
           <Link href="/about" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('footerAbout')}</Link>
           <span>•</span>
           <Link href="/contact" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">Contact</Link>
           <span>•</span>
-          <Link href="/privacy" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('footerPrivacy')}</Link>
+          <Link href="/privacy-policy" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('footerPrivacy')}</Link>
           <span>•</span>
-          <Link href="/terms" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('footerTerms')}</Link>
+          <Link href="/terms-of-service" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">Terms</Link>
+          <span>•</span>
+          <Link href="/disclaimer" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">Disclaimer</Link>
+          <span>•</span>
+          <button
+            type="button"
+            data-open-cookie-preferences="true"
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                if (window.openCookiePreferences) {
+                  window.openCookiePreferences()
+                } else if ((window as any).openCardzyCookieConsent) {
+                  (window as any).openCardzyCookieConsent()
+                } else if ((window as any).showCookieAlert) {
+                  (window as any).showCookieAlert()
+                } else {
+                  window.dispatchEvent(new CustomEvent('open_cookie_preferences'))
+                  document.dispatchEvent(new CustomEvent('open_cookie_preferences'))
+                }
+              }
+            }}
+            className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center cursor-pointer bg-transparent border-0 text-emerald-200/60 transition-colors"
+          >
+            🍪 Cookie Preferences
+          </button>
         </div>
       </div>
     </footer>

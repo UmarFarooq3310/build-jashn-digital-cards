@@ -11,11 +11,15 @@ import {
   Crown,
   BookOpen,
   HelpCircle,
+  ExternalLink,
+  Award,
+  UserCheck,
 } from 'lucide-react'
 import { BLOG_POSTS, getLocalizedPost, type BlogPost } from '@/lib/blog/data'
 import { useLang } from '@/lib/lang/context'
 import { useState } from 'react'
 import { AdBanner } from '@/components/ad-banner'
+import { Breadcrumbs } from '@/components/breadcrumbs'
 
 const POST_UI_STRINGS: Record<string, Record<string, string>> = {
   backToBlog: {
@@ -178,25 +182,76 @@ const POST_UI_STRINGS: Record<string, Record<string, string>> = {
     vi: 'Hướng Dẫn & Bài Viết Liên Quan',
     sw: 'Miongozo na Makala Yanayohusiana',
   },
-  createCTA: {
-    en: 'Create Your Royal Digital Card',
-    ur: 'اپنا شاہی ڈیجیٹل کارڈ بنائیں',
-    ar: 'أنشئ بطاقتك الرقمية الملكية',
-    es: 'Crea Tu Tarjeta Digital Real',
-    fr: 'Créez Votre Carte Numérique Royale',
-    hi: 'अपना रॉयल डिजिटल कार्ड बनाएं',
-    zh: '创建您的皇家数字卡片',
-    pt: 'Crie o Seu Cartão Digital Real',
-    ru: 'Создайте свою королевскую цифровую карту',
-    de: 'Erstellen Sie Ihre königliche digitale Karte',
-    ja: 'ロイヤルデジタルカードを作成',
-    ko: '로열 디지털 카드 만들기',
-    it: 'Crea il Tuo Biglietto Digitale Reale',
-    tr: 'Kraliyet Dijital Kartınızı Oluşturun',
-    id: 'Buat Kartu Digital Mewah Anda',
-    bn: 'আপনার রাজকীয় ডিজিটাল কার্ড তৈরি করুন',
-    vi: 'Tạo Thiệp Kỹ Thuật Số Hoàng Gia Của Bạn',
-    sw: 'Tengeneza Kadi Yako ya Kidijitali ya Kifalme',
+  aboutAuthor: {
+    en: 'About the Author',
+    ur: 'مصنف کے بارے میں',
+    ar: 'عن الكاتب',
+    es: 'Sobre el Autor',
+    fr: 'À Propos de l’Auteur',
+    hi: 'लेखक के बारे में',
+    zh: '关于作者',
+    pt: 'Sobre o Autor',
+    ru: 'Об авторе',
+    de: 'Über den Autor',
+    ja: '著者について',
+    ko: '저자 소개',
+    it: 'Informazioni sull’Autore',
+    tr: 'Yazar Hakkında',
+    id: 'Tentang Penulis',
+    bn: 'লেখক সম্পর্কে',
+    vi: 'Về Tác Giả',
+    sw: 'Kuhusu Mwandishi',
+  },
+  viewAllByAuthor: {
+    en: 'View all guides by this author',
+    ur: 'اس مصنف کے تمام مضامین دیکھیں',
+    ar: 'عرض جميع أدلة الكاتب',
+    es: 'Ver todas las guías del autor',
+    fr: 'Voir tous les guides de cet auteur',
+    hi: 'इस लेखक के सभी गाइड देखें',
+    zh: '查看该作者的所有指南',
+    pt: 'Ver todos os guias deste autor',
+    ru: 'Все руководства автора',
+    de: 'Alle Anleitungen dieses Autors',
+    ja: 'この著者のすべての記事を見る',
+    ko: '이 저자의 모든 가이드 보기',
+    it: 'Vedi tutte le guide di questo autore',
+    tr: 'Yazarın tüm rehberlerini gör',
+    id: 'Lihat semua panduan penulis ini',
+    bn: 'এই লেখকের সমস্ত গাইড দেখুন',
+    vi: 'Xem tất cả hướng dẫn của tác giả này',
+    sw: 'Tazama miongozo yote ya mwandishi huyu',
+  },
+}
+
+const AUTHOR_BIOS: Record<string, { bio: string; location: string; credentials: string; instagram: string; tiktok: string }> = {
+  'Cardzy Editorial Team': {
+    bio: 'The Cardzy Editorial Team consists of certified digital stationery designers, cultural event planners, and multilingual invitation copywriters delivering expert wedding etiquette, RSVP workflows, and digital card guides.',
+    location: 'Islamabad / Lahore, Pakistan',
+    credentials: 'Lead Event & Stationery Specialists',
+    instagram: 'https://www.instagram.com/cardzyonline',
+    tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
+  },
+  'Umar Farooq': {
+    bio: 'Senior Cultural Event & Wedding Stylist at Cardzy. Specializing in Pakistani, Islamic, and South Asian wedding traditions, bilingual invitation etiquette in Urdu & English, and WhatsApp RSVP management.',
+    location: 'Islamabad / Rawalpindi, Pakistan',
+    credentials: 'Lead Wedding & Cultural Stylist',
+    instagram: 'https://www.instagram.com/cardzyonline',
+    tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
+  },
+  Kainat: {
+    bio: 'Tech & Product Strategist at Cardzy. Leading research on modern digital business cards, executive vCard protocols, and cost-effective digital invitation solutions for global professionals and businesses.',
+    location: 'Lahore / Islamabad, Pakistan',
+    credentials: 'Lead Product & Tech Strategist',
+    instagram: 'https://www.instagram.com/cardzyonline',
+    tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
+  },
+  Hasnain: {
+    bio: 'Global Creative & Cultural Events Editor at Cardzy. Crafting guides on 3D animated holiday e-cards, birthday party invitations, and digital sharing etiquette across 18 languages.',
+    location: 'Karachi / Islamabad, Pakistan',
+    credentials: 'Global Events & Culture Editor',
+    instagram: 'https://www.instagram.com/cardzyonline',
+    tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
   },
 }
 
@@ -213,15 +268,32 @@ function renderTextWithLinks(text: string) {
     }
     const label = match[1]
     const href = match[2]
-    parts.push(
-      <Link
-        key={`${href}-${match.index}`}
-        href={href}
-        className="text-[#D4AF37] hover:underline font-semibold underline-offset-2"
-      >
-        {label}
-      </Link>
-    )
+    const isExternal = href.startsWith('http://') || href.startsWith('https://')
+
+    if (isExternal) {
+      parts.push(
+        <a
+          key={`${href}-${match.index}`}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#D4AF37] hover:underline font-semibold underline-offset-2 inline-flex items-center gap-0.5"
+        >
+          <span>{label}</span>
+          <ExternalLink className="w-3 h-3 opacity-70" />
+        </a>
+      )
+    } else {
+      parts.push(
+        <Link
+          key={`${href}-${match.index}`}
+          href={href}
+          className="text-[#D4AF37] hover:underline font-semibold underline-offset-2"
+        >
+          {label}
+        </Link>
+      )
+    }
     lastIndex = regex.lastIndex
   }
 
@@ -241,6 +313,9 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
     .slice(0, 3)
     .map((p) => getLocalizedPost(p, lang))
 
+  const authorSlug = post.author.name.toLowerCase().replace(/\s+/g, '-')
+  const authorInfo = AUTHOR_BIOS[post.author.name] || AUTHOR_BIOS['Umar Farooq']
+
   const tUI = (key: string) => {
     return POST_UI_STRINGS[key]?.[lang] || POST_UI_STRINGS[key]?.en || key
   }
@@ -257,211 +332,295 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
 
   return (
     <div className="min-h-screen bg-[#07080c] text-white pb-24 selection:bg-[#D4AF37] selection:text-slate-950">
-        {/* Post Header Banner */}
-        <div className="relative py-10 md:py-14 border-b border-[#D4AF37]/20 bg-[radial-gradient(50%_50%_at_50%_20%,rgba(212,175,55,0.15),transparent_70%)]">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-6">
+      {/* Breadcrumb Navigation */}
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-4">
+        <Breadcrumbs
+          isDark
+          items={[
+            { label: 'Blog & Guides', href: '/blog' },
+            { label: post.category, href: '/blog' },
+            { label: post.seoTitle || post.title },
+          ]}
+        />
+      </div>
+
+      {/* Post Header Banner */}
+      <div className="relative py-8 md:py-12 border-b border-[#D4AF37]/20 bg-[radial-gradient(50%_50%_at_50%_20%,rgba(212,175,55,0.15),transparent_70%)]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-5">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-xs font-extrabold text-[#D4AF37] hover:underline"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>{tUI('backToBlog')}</span>
+          </Link>
+
+          <div className="flex flex-wrap items-center gap-3 text-xs">
+            <span className="px-3 py-1 rounded-full bg-[#D4AF37] text-slate-950 font-black uppercase text-[10px]">
+              {post.category}
+            </span>
+            <span className="text-zinc-400 flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5 text-[#D4AF37]" />
+              {post.readTime}
+            </span>
+            <span className="text-zinc-400 flex items-center gap-1">
+              <Calendar className="w-3.5 h-3.5 text-[#D4AF37]" />
+              Published: {post.publishedAt}
+            </span>
+            {post.updatedAt && post.updatedAt !== post.publishedAt && (
+              <span className="text-emerald-400/90 flex items-center gap-1 font-medium">
+                • Updated: {post.updatedAt}
+              </span>
+            )}
+          </div>
+
+          <h1
+            className={`font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight ${
+              isRtl ? 'dir-rtl font-serif' : ''
+            }`}
+          >
+            {post.seoTitle || post.title}
+          </h1>
+
+          <p className={`text-base sm:text-lg text-zinc-300 leading-relaxed ${isRtl ? 'dir-rtl' : ''}`}>
+            {post.subtitle}
+          </p>
+
+          {/* Author Profile Top Header Byline */}
+          <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
             <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 text-xs font-extrabold text-[#D4AF37] hover:underline"
+              href={`/authors/${authorSlug}`}
+              className="flex items-center gap-3 group/author"
+              title={`View author profile: ${post.author.name}`}
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span>{tUI('backToBlog')}</span>
+              <div className="w-11 h-11 rounded-full bg-[#D4AF37]/20 border-2 border-[#D4AF37]/50 flex items-center justify-center text-[#D4AF37] font-black text-base group-hover/author:border-[#D4AF37] transition-all shadow-md">
+                {post.author.name[0]}
+              </div>
+              <div>
+                <div className="text-sm font-bold text-white flex items-center gap-1.5 group-hover/author:text-[#D4AF37] transition-colors">
+                  <span>{post.author.name}</span>
+                  <CheckCircle className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-1.5 py-0.2 rounded-sm">
+                    Verified Author
+                  </span>
+                </div>
+                <div className="text-xs text-zinc-400">{post.author.role}</div>
+              </div>
             </Link>
 
-            <div className="flex flex-wrap items-center gap-3 text-xs">
-              <span className="px-3 py-1 rounded-full bg-[#D4AF37] text-slate-950 font-black uppercase text-[10px]">
-                {post.category}
-              </span>
-              <span className="text-zinc-400 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-[#D4AF37]" />
-                {post.readTime}
-              </span>
-              <span className="text-zinc-400 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-[#D4AF37]" />
-                {post.publishedAt}
-              </span>
+            <button
+              onClick={handleShare}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-bold text-white transition-all active:scale-95"
+            >
+              <Share2 className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span>{copied ? tUI('copied') : tUI('copyLink')}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Featured Image Banner */}
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6">
+        <div className="rounded-3xl overflow-hidden border border-[#D4AF37]/30 shadow-2xl aspect-[16/9] bg-slate-900">
+          <img
+            src={post.featuredImage}
+            alt={`${post.title} — Cardzy Featured Master Guide Header`}
+            width={1200}
+            height={630}
+            loading="lazy"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+
+      {/* Post Content Layout */}
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Table of Contents Sticky Sidebar */}
+        <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-24 h-fit">
+          <div className="rounded-3xl border border-[#D4AF37]/30 bg-[#0a0a0c]/90 p-5 backdrop-blur-xl shadow-lg space-y-4">
+            <div className="flex items-center gap-2 text-xs font-black uppercase text-[#D4AF37] tracking-wider border-b border-white/10 pb-3">
+              <BookOpen className="w-4 h-4 text-[#D4AF37]" />
+              <span>{tUI('tableOfContents')}</span>
+            </div>
+            <nav className="space-y-2 text-xs">
+              {post.content.sections.map((section) => (
+                <a
+                  key={section.id}
+                  href={`#${section.id}`}
+                  className="block text-zinc-300 hover:text-[#D4AF37] transition-colors py-1 leading-snug truncate"
+                >
+                  {section.title}
+                </a>
+              ))}
+            </nav>
+          </div>
+        </aside>
+
+        {/* Main Article Body */}
+        <article className={`lg:col-span-8 space-y-8 text-zinc-200 leading-relaxed text-base ${isRtl ? 'dir-rtl' : ''}`}>
+          {/* Intro Paragraph */}
+          <div className="p-6 rounded-3xl border border-[#D4AF37]/30 bg-[#D4AF37]/5 backdrop-blur-md text-base leading-relaxed text-zinc-100 font-medium">
+            {renderTextWithLinks(post.content.intro)}
+          </div>
+
+          {/* Sections */}
+          {post.content.sections.map((section) => (
+            <section key={section.id} id={section.id} className="space-y-4 pt-4 border-t border-white/10 scroll-mt-24">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-[#D4AF37] shrink-0" />
+                <span>{section.title}</span>
+              </h3>
+
+              <p className="text-sm sm:text-base leading-relaxed text-zinc-300">{renderTextWithLinks(section.body)}</p>
+
+              {section.bulletPoints && section.bulletPoints.length > 0 && (
+                <ul className="space-y-2.5 pt-2">
+                  {section.bulletPoints.map((bp, i) => (
+                    <li key={i} className="flex items-start gap-3 text-xs sm:text-sm text-zinc-200">
+                      <span className="w-2 h-2 rounded-full bg-[#D4AF37] mt-2 shrink-0" />
+                      <span>{renderTextWithLinks(bp)}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {section.highlight && (
+                <div className="p-4 rounded-2xl border border-[#D4AF37]/40 bg-[#0a0a0c] text-xs font-bold text-[#D4AF37] shadow-inner">
+                  💡 {renderTextWithLinks(section.highlight)}
+                </div>
+              )}
+            </section>
+          ))}
+
+          {/* Ad Banner placement */}
+          <AdBanner format="display" className="my-8 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8" />
+
+          {/* FAQs Section */}
+          {post.content.faq && post.content.faq.length > 0 && (
+            <div className="pt-8 border-t border-white/10 space-y-6">
+              <h3 className="text-2xl font-extrabold text-white flex items-center gap-2">
+                <HelpCircle className="w-6 h-6 text-[#D4AF37]" />
+                <span>{tUI('faqTitle')}</span>
+              </h3>
+
+              <div className="space-y-4">
+                {post.content.faq.map((f, idx) => (
+                  <div key={idx} className="p-5 rounded-2xl border border-white/10 bg-[#0a0a0c]/80 space-y-2">
+                    <h4 className="text-sm font-bold text-[#D4AF37]">Q: {f.question}</h4>
+                    <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">{f.answer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Key Takeaway & Conclusion */}
+          <div className="p-6 rounded-3xl border border-[#D4AF37]/40 bg-gradient-to-br from-[#0a0a0c] via-[#D4AF37]/10 to-[#0a0a0c] space-y-3 shadow-xl">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-[#D4AF37] uppercase tracking-wider">
+              <Crown className="w-4 h-4 text-[#D4AF37]" />
+              <span>{tUI('keyTakeaway')}</span>
+            </div>
+            <p className="text-sm sm:text-base font-semibold text-white leading-relaxed">
+              {renderTextWithLinks(post.content.conclusion)}
+            </p>
+          </div>
+
+          {/* Author Box / Detailed Byline Card */}
+          <div className="mt-10 p-6 sm:p-8 rounded-3xl border border-[#D4AF37]/40 bg-[#0a0a0c] shadow-2xl space-y-4">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-[#D4AF37] uppercase tracking-wider">
+              <UserCheck className="w-4 h-4 text-[#D4AF37]" />
+              <span>{tUI('aboutAuthor')}</span>
             </div>
 
-            <h1
-              className={`font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight ${
-                isRtl ? 'dir-rtl font-serif' : ''
-              }`}
-            >
-              {post.seoTitle || post.title}
-            </h1>
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+              <div className="size-20 rounded-2xl bg-[#D4AF37]/20 border-2 border-[#D4AF37] flex items-center justify-center text-[#D4AF37] font-black text-2xl shrink-0 shadow-lg">
+                {post.author.name[0]}
+              </div>
 
-            <p className={`text-base sm:text-lg text-zinc-300 leading-relaxed ${isRtl ? 'dir-rtl' : ''}`}>
-              {post.subtitle}
-            </p>
+              <div className="space-y-2 text-center sm:text-left flex-1">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                  <h4 className="text-lg font-extrabold text-white">{post.author.name}</h4>
+                  <CheckCircle className="size-4 text-[#D4AF37]" />
+                  <span className="text-[11px] font-bold text-amber-300 bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded-full">
+                    {authorInfo.credentials}
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  {authorInfo.bio}
+                </p>
+                <div className="text-[11px] text-zinc-400 pt-1">
+                  <span>📍 {authorInfo.location}</span>
+                </div>
+              </div>
+            </div>
 
-            {/* Author Profile */}
-            <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-4">
-              <Link href={`/authors/${post.author.name.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center gap-3 group/author">
-                <div className="w-11 h-11 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37] font-black text-base group-hover/author:border-[#D4AF37]">
-                  {post.author.name[0]}
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-white flex items-center gap-1.5 group-hover/author:text-[#D4AF37] transition-colors">
-                    {post.author.name}
-                    <CheckCircle className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  </div>
-                  <div className="text-xs text-zinc-400">{post.author.role}</div>
-                </div>
+            <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <Link
+                href={`/authors/${authorSlug}`}
+                className="inline-flex items-center gap-1.5 font-bold text-[#D4AF37] hover:underline"
+              >
+                <span>{tUI('viewAllByAuthor')}</span>
+                <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
               </Link>
 
-              <button
-                onClick={handleShare}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-bold text-white transition-all active:scale-95"
-              >
-                <Share2 className="w-3.5 h-3.5 text-[#D4AF37]" />
-                <span>{copied ? tUI('copied') : tUI('copyLink')}</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Featured Image */}
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6">
-          <div className="rounded-3xl overflow-hidden border border-[#D4AF37]/30 shadow-2xl aspect-[16/9] bg-slate-900">
-            <img 
-              src={post.featuredImage} 
-              alt={post.title.slice(0, 90)} 
-              width={1200}
-              height={630}
-              loading="lazy"
-              className="w-full h-full object-cover" 
-            />
-          </div>
-        </div>
-
-        {/* Post Content Layout */}
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Table of Contents Sticky Sidebar */}
-          <aside className="lg:col-span-4 space-y-6 lg:sticky lg:top-24 h-fit">
-            <div className="rounded-3xl border border-[#D4AF37]/30 bg-[#0a0a0c]/90 p-5 backdrop-blur-xl shadow-lg space-y-4">
-              <div className="flex items-center gap-2 text-xs font-black uppercase text-[#D4AF37] tracking-wider border-b border-white/10 pb-3">
-                <BookOpen className="w-4 h-4 text-[#D4AF37]" />
-                <span>{tUI('tableOfContents')}</span>
-              </div>
-              <nav className="space-y-2 text-xs">
-                {post.content.sections.map((section) => (
-                  <a
-                    key={section.id}
-                    href={`#${section.id}`}
-                    className="block text-zinc-300 hover:text-[#D4AF37] transition-colors py-1 leading-snug truncate"
-                  >
-                    {section.title}
-                  </a>
-                ))}
-              </nav>
-            </div>
-          </aside>
-
-          {/* Main Article Body */}
-          <article className={`lg:col-span-8 space-y-8 text-zinc-200 leading-relaxed text-base ${isRtl ? 'dir-rtl' : ''}`}>
-            {/* Intro Paragraph */}
-            <div className="p-6 rounded-3xl border border-[#D4AF37]/30 bg-[#D4AF37]/5 backdrop-blur-md text-base leading-relaxed text-zinc-100 font-medium">
-              {renderTextWithLinks(post.content.intro)}
-            </div>
-
-            {/* Sections */}
-            {post.content.sections.map((section) => (
-              <section key={section.id} id={section.id} className="space-y-4 pt-4 border-t border-white/10 scroll-mt-24">
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-[#D4AF37] shrink-0" />
-                  <span>{section.title}</span>
-                </h3>
-
-                <p className="text-sm sm:text-base leading-relaxed text-zinc-300">{renderTextWithLinks(section.body)}</p>
-
-                {section.bulletPoints && section.bulletPoints.length > 0 && (
-                  <ul className="space-y-2.5 pt-2">
-                    {section.bulletPoints.map((bp, i) => (
-                      <li key={i} className="flex items-start gap-3 text-xs sm:text-sm text-zinc-200">
-                        <span className="w-2 h-2 rounded-full bg-[#D4AF37] mt-2 shrink-0" />
-                        <span>{renderTextWithLinks(bp)}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {section.highlight && (
-                  <div className="p-4 rounded-2xl border border-[#D4AF37]/40 bg-[#0a0a0c] text-xs font-bold text-[#D4AF37] shadow-inner">
-                    💡 {renderTextWithLinks(section.highlight)}
-                  </div>
-                )}
-              </section>
-            ))}
-
-            {/* Ad Banner placement */}
-            <AdBanner format="display" className="my-8 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8" />
-            
-            {/* FAQs Section */}
-            {post.content.faq && post.content.faq.length > 0 && (
-              <div className="pt-8 border-t border-white/10 space-y-6">
-                <h3 className="text-2xl font-extrabold text-white flex items-center gap-2">
-                  <HelpCircle className="w-6 h-6 text-[#D4AF37]" />
-                  <span>{tUI('faqTitle')}</span>
-                </h3>
-
-                <div className="space-y-4">
-                  {post.content.faq.map((f, idx) => (
-                    <div key={idx} className="p-5 rounded-2xl border border-white/10 bg-[#0a0a0c]/80 space-y-2">
-                      <h4 className="text-sm font-bold text-[#D4AF37]">Q: {f.question}</h4>
-                      <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">{f.answer}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Key Takeaway & Conclusion */}
-            <div className="p-6 rounded-3xl border border-[#D4AF37]/40 bg-gradient-to-br from-[#0a0a0c] via-[#D4AF37]/10 to-[#0a0a0c] space-y-3 shadow-xl">
-              <div className="flex items-center gap-2 text-xs font-extrabold text-[#D4AF37] uppercase tracking-wider">
-                <Crown className="w-4 h-4 text-[#D4AF37]" />
-                <span>{tUI('keyTakeaway')}</span>
-              </div>
-              <p className="text-sm sm:text-base font-semibold text-white leading-relaxed">
-                {renderTextWithLinks(post.content.conclusion)}
-              </p>
-            </div>
-          </article>
-        </div>
-
-        {/* Related Articles Section */}
-        {relatedPosts.length > 0 && (
-          <section className="mt-16 pt-12 border-t border-[#D4AF37]/20 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-6 flex items-center gap-2">
-              <Crown className="w-5 h-5 text-[#D4AF37]" />
-              <span>{tUI('relatedTitle')}</span>
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedPosts.map((rel) => (
-                <Link
-                  key={rel.slug}
-                  href={`/blog/${rel.slug}`}
-                  className="group flex flex-col rounded-3xl border border-white/10 bg-[#0a0a0c] overflow-hidden hover:border-[#D4AF37]/50 transition-all p-5 space-y-3"
+              <div className="flex items-center gap-3">
+                <a
+                  href={authorInfo.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-400 hover:text-white transition-colors text-xs font-semibold inline-flex items-center gap-1"
                 >
-                  <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-slate-900">
-                    <img
-                      src={rel.featuredImage}
-                      alt={rel.title.slice(0, 90)}
-                      width={1200}
-                      height={630}
-                      loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
-                  </div>
-                  <div className="text-xs text-[#D4AF37] font-bold uppercase tracking-wider">{rel.category}</div>
-                  <h4 className="text-sm font-bold text-white group-hover:text-[#D4AF37] transition-colors leading-snug line-clamp-2">
-                    {rel.title}
-                  </h4>
-                </Link>
-              ))}
+                  Instagram <ExternalLink className="size-3" />
+                </a>
+                <span>•</span>
+                <a
+                  href={authorInfo.tiktok}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-zinc-400 hover:text-white transition-colors text-xs font-semibold inline-flex items-center gap-1"
+                >
+                  TikTok <ExternalLink className="size-3" />
+                </a>
+              </div>
             </div>
-          </section>
-        )}
+          </div>
+        </article>
+      </div>
+
+      {/* Related Articles Section */}
+      {relatedPosts.length > 0 && (
+        <section className="mt-16 pt-12 border-t border-[#D4AF37]/20 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-6 flex items-center gap-2">
+            <Crown className="w-5 h-5 text-[#D4AF37]" />
+            <span>{tUI('relatedTitle')}</span>
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {relatedPosts.map((rel) => (
+              <Link
+                key={rel.slug}
+                href={`/blog/${rel.slug}`}
+                className="group flex flex-col rounded-3xl border border-white/10 bg-[#0a0a0c] overflow-hidden hover:border-[#D4AF37]/50 transition-all p-5 space-y-3"
+              >
+                <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-slate-900">
+                  <img
+                    src={rel.featuredImage}
+                    alt={`${rel.title} — Related Cardzy Guide`}
+                    width={1200}
+                    height={630}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <div className="text-xs text-[#D4AF37] font-bold uppercase tracking-wider">{rel.category}</div>
+                <h4 className="text-sm font-bold text-white group-hover:text-[#D4AF37] transition-colors leading-snug line-clamp-2">
+                  {rel.title}
+                </h4>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }

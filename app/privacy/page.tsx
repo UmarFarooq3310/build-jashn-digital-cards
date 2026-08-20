@@ -31,6 +31,8 @@ const PRIVACY_TEXT: Record<string, Record<string, string>> = {
   s11Content: { en: "If you have any questions, concerns, or requests regarding this Privacy Policy, please contact our support team at cardzyonline@gmail.com.", ur: "اگر آپ کے پاس اس پرائیویسی پالیسی سے متعلق کوئی سوالات ہیں تو ہم سے cardzyonline@gmail.com پر رابطہ کریں۔", es: "Si tiene alguna pregunta o solicitud sobre esta Política de Privacidad, contáctenos en cardzyonline@gmail.com.", fr: "Si vous avez des questions concernant cette politique de confidentialité, contactez-nous à cardzyonline@gmail.com.", ar: "إذا كان لديك أي أسئلة أو استفسارات بخصوص سياسة الخصوصية، يرجى التواصل معنا على cardzyonline@gmail.com.", hi: "यदि इस गोपनीयता नीति के संबंध में आपके कोई प्रश्न या अनुरोध हैं, तो हमसे cardzyonline@gmail.com पर संपर्क करें।", zh: "如果您对本隐私政策有任何疑问、建议或请求，请通过电子邮箱 cardzyonline@gmail.com 联系我们的支持团队。", pt: "Se você tiver dúvidas ou solicitações sobre esta Política de Privacidade, entre em contato em cardzyonline@gmail.com.", ru: "Если у вас есть вопросы по поводу настоящей Политики конфиденциальности, свяжитесь с нами по адресу cardzyonline@gmail.com.", de: "Wenn Sie Fragen oder Anliegen zu dieser Datenschutzerklärung haben, kontaktieren Sie uns unter cardzyonline@gmail.com.", ja: "本プライバシーポリシーに関するご質問やお問い合わせは、cardzyonline@gmail.com までご連絡ください。", ko: "본 개인정보 처리방침에 대해 궁금한 점이나 요청 사항이 있으시면 cardzyonline@gmail.com으로 문의해 주세요.", it: "Se hai domande o richieste riguardo a questa Informativa sulla Privacy, contattaci all'indirizzo cardzyonline@gmail.com.", tr: "Bu Gizlilik Politikası ile ilgili sorularınız veya talepleriniz için lütfen cardzyonline@gmail.com adresinden bizimle iletişime geçin.", id: "Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi tim kami di cardzyonline@gmail.com.", bn: "এই গোপনীয়তা নীতি সম্পর্কে আপনার কোনো প্রশ্ন থাকলে আমাদের সাথে cardzyonline@gmail.com ইমেলে যোগাযোগ করুন।", vi: "Nếu bạn có bất kỳ câu hỏi nào về Chính sách bảo mật này, vui lòng liên hệ với chúng tôi qua email cardzyonline@gmail.com.", sw: "Kama una maswali au maombi kuhusu Sera hii ya Faragha, tafadhali wasiliana nasi kupitia cardzyonline@gmail.com." },
 }
 
+import { Breadcrumbs } from '@/components/breadcrumbs'
+
 export default function PrivacyPolicyPage() {
   const { lang, t } = useLang()
 
@@ -39,7 +41,8 @@ export default function PrivacyPolicyPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 md:py-16 w-full">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 md:py-14 w-full">
+      <Breadcrumbs items={[{ label: 'Privacy Policy', href: '/privacy-policy' }]} className="mb-4" />
       <h1 className="text-3xl font-extrabold text-primary mb-2">
         {getText('title')}
       </h1>
@@ -66,7 +69,23 @@ export default function PrivacyPolicyPage() {
       </Section>
 
       <Section title={getText('s4Title')}>
-        {getText('s4Content')}
+        <p className="mb-4">{getText('s4Content')}</p>
+        <button
+          type="button"
+          data-open-cookie-preferences="true"
+          onClick={() => {
+            if (typeof window !== 'undefined') {
+              if (window.openCookiePreferences) {
+                window.openCookiePreferences()
+              } else {
+                window.dispatchEvent(new CustomEvent('open_cookie_preferences'))
+              }
+            }
+          }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-900 dark:text-amber-300 font-bold text-xs hover:bg-amber-500/25 transition-all cursor-pointer shadow-sm"
+        >
+          <span>🍪 Manage Cookie Preferences</span>
+        </button>
       </Section>
 
       <Section title={getText('s5Title')}>

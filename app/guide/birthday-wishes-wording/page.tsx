@@ -72,6 +72,8 @@ const BIRTHDAY_GUIDE_TEXT: Record<string, Record<string, string>> = {
   moreGuidesBtn: { en: 'More Celebration Guides' },
 }
 
+import { Breadcrumbs } from '@/components/breadcrumbs'
+
 export default function BirthdayGuidePage() {
   const { lang, t } = useLang()
 
@@ -80,8 +82,16 @@ export default function BirthdayGuidePage() {
   }
 
   return (
-    <div className="py-10 md:py-16">
+    <div className="py-8 md:py-14">
       <div className="mx-auto max-w-3xl px-4">
+        {/* Breadcrumb Navigation */}
+        <Breadcrumbs
+          items={[
+            { label: 'Celebration Guides', href: '/guide' },
+            { label: 'Birthday Wishes & Message Ideas' },
+          ]}
+          className="mb-4"
+        />
 
         <Link
           href="/guide"

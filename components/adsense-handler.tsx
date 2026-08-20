@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // Allow Google AdSense on all public site pages except private dashboard/admin or raw dynamic user card views
 function isAdSenseAllowed(pathname: string): boolean {
@@ -20,6 +20,55 @@ function isAdSenseAllowed(pathname: string): boolean {
 export function AdSenseHandler() {
   const pathname = usePathname()
   const allowed = isAdSenseAllowed(pathname)
+  const [consentGranted, setConsentGranted] = useState(true)
+
+  // Listen for cookie consent changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const checkConsent = () => {
+      const prefsStr =
+        localStorage.getItem('cardzy_consent_v2') ||
+        localStorage.getItem('cardzy_cookie_prefs')
+      if (prefsStr) {
+        try {
+          const prefs = JSON.parse(prefsStr)
+          if (prefs && typeof prefs === 'object') {
+            setConsentGranted(prefs.advertising !== false)
+            return
+          }
+        } catch {}
+      }
+
+      const stored =
+        localStorage.getItem('cardzy_cookie_consent') ||
+        localStorage.getItem('cookie_consent')
+      if (stored === 'rejected' || stored === 'declined') {
+        setConsentGranted(false)
+      } else {
+        setConsentGranted(true)
+      }
+    }
+
+    checkConsent()
+
+    const handleConsentChange = (e: any) => {
+      if (e?.detail) {
+        setConsentGranted(e.detail.advertising !== false)
+      } else {
+        checkConsent()
+      }
+    }
+
+    window.addEventListener('cardzy_consent_change', handleConsentChange)
+    window.addEventListener('cookie_consent_change', handleConsentChange)
+    window.addEventListener('storage', checkConsent)
+    return () => {
+      window.removeEventListener('cardzy_consent_change', handleConsentChange)
+      window.removeEventListener('cookie_consent_change', handleConsentChange)
+      window.removeEventListener('storage', checkConsent)
+    }
+  }, [])
 
   useEffect(() => {
     if (typeof document === 'undefined') return
@@ -53,6 +102,12 @@ export function AdSenseHandler() {
       document.documentElement.classList.remove('no-ads')
       document.body.classList.remove('no-ads')
 
+      // Configure personalized vs non-personalized ad requests based on consent
+      try {
+        ;(window as any).adsbygoogle = (window as any).adsbygoogle || []
+        ;(window as any).adsbygoogle.requestNonPersonalizedAds = consentGranted ? 0 : 1
+      } catch {}
+
       // Ensure AdSense script is present in head immediately for bots & users
       const scriptId = 'google-adsense-dynamic'
       if (!document.getElementById(scriptId)) {
@@ -64,7 +119,8 @@ export function AdSenseHandler() {
         document.head.appendChild(script)
       }
     }
-  }, [pathname, allowed])
+  }, [pathname, allowed, consentGranted])
 
   return null
 }
+

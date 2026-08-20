@@ -28,9 +28,18 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   }
 }
 
+import { Breadcrumbs } from '@/components/breadcrumbs'
+
 export default function AuthorPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 md:py-20 w-full">
+    <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 md:py-16 w-full">
+      <Breadcrumbs
+        items={[
+          { label: 'Authors & Editors', href: '/about' },
+          { label: 'Umar Farooq' },
+        ]}
+        className="mb-6"
+      />
       {/* Header Profile Section */}
       <div className="rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-xs mb-10">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
