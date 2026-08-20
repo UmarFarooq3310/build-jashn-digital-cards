@@ -137,18 +137,17 @@ export function SiteFooter() {
           <button
             type="button"
             data-open-cookie-preferences="true"
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault()
               if (typeof window !== 'undefined') {
-                if (window.openCookiePreferences) {
+                if (typeof window.openCookiePreferences === 'function') {
                   window.openCookiePreferences()
-                } else if ((window as any).openCardzyCookieConsent) {
-                  (window as any).openCardzyCookieConsent()
-                } else if ((window as any).showCookieAlert) {
-                  (window as any).showCookieAlert()
-                } else {
-                  window.dispatchEvent(new CustomEvent('open_cookie_preferences'))
-                  document.dispatchEvent(new CustomEvent('open_cookie_preferences'))
                 }
+                if (typeof (window as any).openCardzyCookieConsent === 'function') {
+                  (window as any).openCardzyCookieConsent()
+                }
+                window.dispatchEvent(new CustomEvent('open_cookie_preferences'))
+                document.dispatchEvent(new CustomEvent('open_cookie_preferences'))
               }
             }}
             className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center cursor-pointer bg-transparent border-0 text-emerald-200/60 transition-colors"

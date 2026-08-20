@@ -154,6 +154,20 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.openCookiePreferences = window.openCookiePreferences || function() {
+                try {
+                  window.dispatchEvent(new CustomEvent('open_cookie_preferences'));
+                  document.dispatchEvent(new CustomEvent('open_cookie_preferences'));
+                } catch(e) {}
+              };
+              window.openCardzyCookieConsent = window.openCookiePreferences;
+              window.showCookieAlert = window.openCookiePreferences;
+            `,
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
           suppressHydrationWarning
