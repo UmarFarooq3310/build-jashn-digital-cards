@@ -616,12 +616,22 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    if (!document.getElementById('google-translate-script')) {
-      const script = document.createElement('script')
-      script.id = 'google-translate-script'
-      script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
-      script.async = true
-      document.body.appendChild(script)
+    const loadGoogleTranslate = () => {
+      if (!document.getElementById('google-translate-script')) {
+        const script = document.createElement('script')
+        script.id = 'google-translate-script'
+        script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
+        script.async = true
+        document.body.appendChild(script)
+      }
+    }
+
+    if (typeof window !== 'undefined') {
+      if ('requestIdleCallback' in window) {
+        ;(window as any).requestIdleCallback(loadGoogleTranslate, { timeout: 3000 })
+      } else {
+        setTimeout(loadGoogleTranslate, 1200)
+      }
     }
 
     // Monitor and force body and documentElement top offset to 0px

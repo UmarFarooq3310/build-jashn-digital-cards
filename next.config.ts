@@ -52,13 +52,67 @@ const GLOBAL_SECURITY_HEADERS = [
 ]
 
 const nextConfig: NextConfig = {
+  compress: true,
+  poweredByHeader: false,
   images: {
+    formats: ['image/avif', 'image/webp'],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'canvas-confetti', 'framer-motion'],
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
+  },
   async headers() {
     return [
+      // 0. High-performance caching for static image/font assets
+      {
+        source: '/:all*(svg|jpg|jpeg|png|webp|avif|ico|woff2|woff)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // 0.1 LLM crawler manifest headers (text/plain; charset=utf-8)
+      {
+        source: '/llms.txt',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'text/plain; charset=utf-8',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=604800',
+          },
+          {
+            key: 'X-Robots-Tag',
+            value: 'index, follow',
+          },
+        ],
+      },
+      {
+        source: '/llms-full.txt',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'text/plain; charset=utf-8',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=604800',
+          },
+          {
+            key: 'X-Robots-Tag',
+            value: 'index, follow',
+          },
+        ],
+      },
       // 1. Global Security Headers for all routes
       {
         source: '/:path*',
@@ -265,15 +319,6 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: '/privacy',
-        headers: [
-          {
-            key: 'X-Robots-Tag',
-            value: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
-          },
-        ],
-      },
-      {
         source: '/privacy-policy',
         headers: [
           {
@@ -292,7 +337,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: '/terms',
+        source: '/terms-of-service',
         headers: [
           {
             key: 'X-Robots-Tag',
@@ -301,7 +346,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: '/terms-of-service',
+        source: '/cookies',
         headers: [
           {
             key: 'X-Robots-Tag',
@@ -340,6 +385,31 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      {
+        source: '/about-us',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/contact-us',
+        destination: '/contact',
+        permanent: true,
+      },
+      {
+        source: '/privacy',
+        destination: '/privacy-policy',
+        permanent: true,
+      },
+      {
+        source: '/terms',
+        destination: '/terms-of-service',
+        permanent: true,
+      },
+      {
+        source: '/cookie-policy',
+        destination: '/cookies',
+        permanent: true,
+      },
       {
         source: '/blog/nfc-digital-business-cards-for-pakistani-entrepreneurs-and-executives',
         destination: '/blog/smart-digital-business-cards-for-pakistani-entrepreneurs-and-executives',

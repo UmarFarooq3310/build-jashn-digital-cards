@@ -1,57 +1,136 @@
-# Cardzy: Digital Wish Cards & Event Invitations (Full Documentation)
+# Cardzy: Digital Wish Cards, Event Invitations & Smart vCards (Comprehensive Documentation & Content Library)
 
-> Cardzy is a global web application for creating interactive, animated digital wish cards and multi-event invitation websites with WhatsApp RSVP tracking, Google Maps integration, live countdown timers, and support for 18 international languages.
+> Cardzy (https://cardzy.online) is a global web application operated by Cardzy Digital Solutions. It enables individuals, families, and businesses to create interactive, animated 3D digital wish cards, multi-event invitation websites with WhatsApp RSVP tracking, Google Maps integration, live countdown timers, and executive smart digital business cards (vCards) across 18 international languages.
+> Primary manifest file: https://cardzy.online/llms.txt
 
-## Platform Summary
+---
 
-Cardzy (https://cardzy.online) allows users to design, customize, and publish digital wish cards for personal celebrations (Eid, Birthdays, Anniversaries, New Baby, Graduation) and multi-event wedding/party invitation websites (Shaadi, Mehndi, Baraat, Walima, Nikkah, Dholki, Parties).
+## 1. Platform Summary & Product Overview
 
-## Main Features & Workflows
+Cardzy eliminates traditional printing costs, postal delays, and environmental paper waste by providing instant, interactive digital celebration and networking tools.
 
-### 1. Digital Wish Cards
-- Select from 34+ celebration categories.
-- Personalize sender/recipient names, custom greeting messages, font styles, and background themes.
-- 3D envelope opening animation with ambient background music and floating particle motifs.
-- Shareable via unique URL (`cardzy.online/w/[slug]`) or downloadable as PNG image.
+### Core Modules:
+1. **Digital Wish Cards (`/create-wish`)**:
+   - 34+ celebration categories (Eid ul Fitr, Eid ul Adha, Ramadan, Birthdays, Weddings, Anniversaries, New Baby, Graduations, Promotions, Get Well Soon, Thank You).
+   - 3D envelope opening animations with ambient audio, floating confetti, customizable text, and personalized photo uploads.
+   - Deliverable via short URL (`cardzy.online/w/[slug]`), WhatsApp, Instagram, SMS, or downloadable PNG image cards.
 
-### 2. Event Invitation Websites
-- Select from 21+ event types (Weddings, Corporate Events, Parties).
-- Manage multiple sub-events (e.g. Mehndi, Baraat, Walima) within a single event hub.
-- Real-time guest RSVP tracking integrated directly with WhatsApp.
-- Google Maps venue location pins for guest navigation.
-- Live countdown timers showing days, hours, and minutes until the event.
+2. **Event Invitation Websites (`/create-invitation`)**:
+   - Multi-event hubs supporting distinct sub-events (e.g. Mehndi, Nikkah, Barat, Walima, Reception).
+   - Automated WhatsApp RSVP tracking with host dashboards and guest response export.
+   - Interactive Google Maps venue navigation pins and live event countdown timers.
+   - Multilingual RTL support with Urdu Nasta'liq and Arabic calligraphy.
 
-### 3. Multilingual Capabilities
-Supported languages include:
-1. English
-2. Urdu (اردو with Nastaliq font)
-3. Arabic (العربية)
-4. Spanish (Español)
-5. French (Français)
-6. Hindi (हिन्दी)
-7. Chinese (中文)
-8. Portuguese (Português)
-9. Russian (Русский)
-10. German (Deutsch)
-11. Japanese (日本語)
-12. Korean (한국어)
-13. Italian (Italiano)
-14. Turkish (Türkçe)
-15. Indonesian (Bahasa Indonesia)
-16. Bengali (বাংলা)
-17. Vietnamese (Tiếng Việt)
-18. Swahili (Kiswahili)
+3. **Smart Digital Visiting Cards (`/create-visiting-card`)**:
+   - Professional digital business cards featuring 1-click contact download (.vcf vCard standard).
+   - Dynamic QR code generation for effortless in-person networking.
+   - Click-to-call, WhatsApp messaging, email, portfolio links, and social media icons.
 
-## Links Index
+4. **Multilingual Architecture (18 Languages)**:
+   - English, Urdu (اردو), Arabic (العربية), Spanish (Español), French (Français), Hindi (हिन्दी), Chinese (中文), Portuguese (Português), Russian (Русский), German (Deutsch), Japanese (日本語), Korean (한국어), Italian (Italiano), Turkish (Türkçe), Indonesian (Bahasa Indonesia), Bengali (বাংলা), Vietnamese (Tiếng Việt), Swahili (Kiswahili).
 
-- Homepage: https://cardzy.online
-- Create Wish Card: https://cardzy.online/create-wish
-- Create Invitation: https://cardzy.online/create-invitation
-- Eid Mubarak Collection: https://cardzy.online/eid-mubarak-cards
-- Pricing Plans: https://cardzy.online/pricing
-- FAQ: https://cardzy.online/faq
-- Guide - Pakistani Wedding Invitations: https://cardzy.online/guide/pakistani-wedding-invitations
-- Guide - Eid Wording Ideas: https://cardzy.online/guide/eid-wording-ideas
-- Instagram Campaign Assets: https://cardzy.online/campaign
-- Terms of Service: https://cardzy.online/terms
-- Privacy Policy: https://cardzy.online/privacy
+---
+
+## 2. Complete Guide: Pakistani & Islamic Wedding Invitation Wording
+
+### Sacred Opening Invocations:
+Every traditional Islamic wedding invitation begins with the remembrance of Almighty Allah:
+- **Arabic Bismillah Calligraphy**: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ" (In the name of Allah, the Most Gracious, the Most Merciful).
+- **Quranic Verse on Marriage**: "وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا" (And of His signs is that He created for you spouses from among yourselves so that you may find tranquility in them — Surah Ar-Rum 30:21).
+
+### Celebrated Poetic Quotes:
+- **Rumi**: "Love is the bridge between you and everything."
+- **Kahlil Gibran**: "Let there be spaces in your togetherness, and let the winds of the heavens dance between you."
+- **Maya Angelou**: "Love recognizes no barriers. It jumps hurdles, leaps fences, penetrates walls to arrive at its destination full of hope."
+
+### Formal Wording Templates by Event:
+
+#### 1. Nikkah Ceremony (Urdu & English):
+- **Formal English**: "Together with their families, [Groom's Name] & [Bride's Name] request the honor of your presence and blessings at their solemn Nikkah ceremony. As two souls unite under Allah's grace, your presence will make our joy complete."
+- **Urdu Nastaliq**: "بفضلِ تعالیٰ [دولہا کا نام] اور [دلہن کا نام] کے رشتہ ازدواج (نکاح مبارک) کے پرمسرت موقع پر آپ کی شرکت اور دعاؤں کے متمنی ہیں۔"
+
+#### 2. Mehndi & Mayun Celebrations:
+- **English**: "Let the rhythm of the dholki and the vibrancy of henna illuminate our joyous night! [Host Family Names] warmly invite you to the Mehndi & Sangeet celebration of [Groom/Bride Name]."
+- **Urdu**: "رنگ، خوشیوں اور ڈھولک کی تھاپ کے سنگ، [میزبان خاندان] آپ کو [نام] کی مہندی کی محفل میں شرکت کی پرخلوص دعوت دیتے ہیں۔"
+
+#### 3. Barat Ceremony:
+- **Formal English**: "Mr. & Mrs. [Host Name] cordially invite you to celebrate the wedding ceremony (Barat) of their beloved daughter [Bride's Name] with [Groom's Name], son of Mr. & Mrs. [Groom's Parents]."
+- **Urdu**: "جناب و محترمہ [میزبان کا نام] اپنی صاحبزادی [دلہن کا نام] کی رخصتی (بارات) کے مبارک موقع پر آپ کی معزز شرکت کے دلی طلبگار ہیں۔"
+
+#### 4. Walima Reception:
+- **Formal English**: "In accordance with the Sunnah of our beloved Prophet Muhammad (PBUH), Mr. & Mrs. [Host Name] request the pleasure of your company at the Walima reception celebrating the marriage of their son [Groom's Name] with [Bride's Name]."
+- **Urdu**: "سنتِ نبوی صلی اللہ علیہ وآلہ وسلم کی پیروی میں، جناب و محترمہ [میزبان] اپنے فرزند [دولہا کا نام] کی تقریبِ ولیمہ میں آپ کی پرخلوص شرکت کے متمنی ہیں۔"
+
+---
+
+## 3. Guide: Smart Digital Visiting Cards (vCards) for Professionals
+
+### Key Technical Specifications:
+- **Format**: Dynamic HTML5 web page + embedded vCard 3.0/4.0 standard `.vcf` payload.
+- **Sync Mechanism**: 1-tap "Save Contact to Phone" directly populates mobile address books on iOS (Contacts app) and Android (Google Contacts) with full name, job title, phone numbers, company, website, and address.
+- **QR Code Protocol**: High-contrast, mobile-optimized QR code scannable with native camera apps.
+- **Zero Paper Footprint**: Eliminates recurring business card printing costs and card bin wastage.
+
+---
+
+## 4. Guide: Eid Mubarak & Holiday Wording & Reply Ideas
+
+### Eid ul Fitr & Eid ul Adha Wishes:
+- **English Classic**: "May the divine blessings of Allah bring you hope, faith, and joy on Eid and always. Eid Mubarak to you and your loved ones!"
+- **Urdu Classic**: "عید الفطر/عید الاضحیٰ کی پرمسرت ساعتیں آپ اور آپ کے اہل خانہ کے لیے رحمتوں، برکتوں اور دلی خوشیوں کا باعث بنیں۔ عید مبارک!"
+- **Arabic Classic**: "تقبل الله منا ومنكم صالح الأعمال، وكل عام وأنتم بخير بمناسبة عيد الفطر المبارك."
+
+---
+
+## 5. Frequently Asked Questions (FAQ)
+
+### Q: Is Cardzy completely free to use?
+**A:** Yes. Cardzy offers a Free Forever tier ($0 / PKR 0) that allows anyone to create and share unlimited 3D animated wish cards and digital invitations. Pro ($4/mo) and Business ($18/mo) plans unlock premium royal themes, watermark removal, and dedicated event manager features.
+
+### Q: How does WhatsApp RSVP tracking work?
+**A:** When guests view an invitation link, they can confirm attendance (Yes, No, Number of Guests) with one tap. Responses are instantly delivered to the host's WhatsApp and recorded on the live Cardzy event dashboard.
+
+### Q: Which payment methods are accepted in Pakistan and internationally?
+**A:** We accept JazzCash, EasyPaisa, Nayapay, Sadapay, bank transfers, and international credit/debit cards. Instant upgrades are processed via WhatsApp helpline (+92 309 3518796).
+
+### Q: Are my event details and guest lists private?
+**A:** Yes. Guest RSVP submissions are encrypted and strictly shared only with the designated event host. We implement Google Consent Mode v2 and never sell personal data.
+
+---
+
+## 6. Editorial Team & E-E-A-T Credentials
+
+- **Umar Farooq** — Senior Cultural Event & Wedding Stylist  
+  *Education:* B.S. Communication & Design, National University of Sciences and Technology (NUST)  
+  *Expertise:* Pakistani wedding traditions, Urdu Nasta'liq calligraphy, Islamic event protocols.  
+  *Profile:* https://cardzy.online/authors/umar-farooq
+
+- **Kainat** — Tech & Digital Product Strategist  
+  *Education:* M.S. Information Technology, Lahore University of Management Sciences (LUMS)  
+  *Expertise:* Smart vCards (.vcf protocol), paperless corporate networking, mobile UX optimization.  
+  *Profile:* https://cardzy.online/authors/kainat
+
+- **Hasnain** — Creative & Cultural Events Editor  
+  *Education:* B.A. Media Arts & Creative Writing, University of Karachi (UoK)  
+  *Expertise:* 3D animated greeting cards, holiday traditions across 18 languages.  
+  *Profile:* https://cardzy.online/authors/hasnain
+
+---
+
+## 7. Canonical Links Directory
+
+- **Homepage**: https://cardzy.online
+- **Create Wish Card**: https://cardzy.online/create-wish
+- **Create Invitation**: https://cardzy.online/create-invitation
+- **Create Digital Visiting Card**: https://cardzy.online/create-visiting-card
+- **Eid Mubarak Cards**: https://cardzy.online/eid-mubarak-cards
+- **Pricing**: https://cardzy.online/pricing
+- **FAQ**: https://cardzy.online/faq
+- **Celebration Guides**: https://cardzy.online/guide
+- **Authors & Editorial Team**: https://cardzy.online/authors
+- **About Us**: https://cardzy.online/about
+- **Contact Us**: https://cardzy.online/contact
+- **Privacy Policy**: https://cardzy.online/privacy-policy
+- **Cookie Policy**: https://cardzy.online/cookies
+- **Terms of Service**: https://cardzy.online/terms-of-service
+- **Social Media Campaign**: https://cardzy.online/campaign

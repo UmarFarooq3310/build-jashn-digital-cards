@@ -1,28 +1,41 @@
-# Cardzy: Digital Wish Cards & Event Invitations
+# Cardzy: Digital Wish Cards, Event Invitations & Smart vCards
 
-> Cardzy is a global web application for creating interactive, animated digital wish cards and multi-event invitation websites with WhatsApp RSVP tracking, Google Maps integration, live countdown timers, and support for 18 international languages.
+> Cardzy is a global web application for creating interactive, animated 3D digital wish cards, multi-event invitation websites with WhatsApp RSVP tracking, Google Maps integration, live countdown timers, and executive smart digital business cards (vCards) across 18 international languages.
+> Comprehensive bundled text library: https://cardzy.online/llms-full.txt
 
 ## Key Pages & Tools
 
 - [Cardzy Homepage](https://cardzy.online): Create animated digital wish cards and full event invitation websites.
-- [Create Digital Wish Card](https://cardzy.online/create-wish): Create custom animated greeting cards for Eid, Birthdays, Anniversaries, and 34+ occasions.
-- [Create Event Invitation Website](https://cardzy.online/create-invitation): Build full invitation websites for Shaadi, Mehndi, Baraat, Walima, Nikkah, and private events with RSVP tracking.
+- [Create Digital Wish Card](https://cardzy.online/create-wish): Create custom 3D animated greeting cards for Eid, Birthdays, Anniversaries, and 34+ celebratory occasions.
+- [Create Event Invitation Website](https://cardzy.online/create-invitation): Build royal invitation websites for Shaadi, Mehndi, Baraat, Walima, Nikkah, and corporate events with automated WhatsApp RSVP tracking.
+- [Create Digital Visiting Card](https://cardzy.online/create-visiting-card): Executive digital business cards with 1-click contact save (.vcf), QR codes, and custom branding.
 - [Eid Mubarak Cards & Invitations](https://cardzy.online/eid-mubarak-cards): Specialized Ramadan & Eid Mubarak animated cards with Urdu Nastaliq & Arabic typography.
-- [Pricing & Plans](https://cardzy.online/pricing): View Free ($0), Pro ($4 / PKR 1,100), and Business ($18 / PKR 5,000) tiers.
-- [Guides & Help Center](https://cardzy.online/guide): Event planning guides, Pakistani wedding invitation etiquette, and wording ideas.
+- [Pricing & Plans](https://cardzy.online/pricing): View Free ($0 / PKR 0 forever), Pro ($4 / PKR 1,100/mo), and Business ($18 / PKR 5,000/mo) tiers.
+- [Celebration Guides & Help Center](https://cardzy.online/guide): Event planning guides, Pakistani wedding invitation etiquette, and wording templates.
 - [FAQ](https://cardzy.online/faq): Frequently asked questions about digital cards, RSVP tracking, payments (EasyPaisa, JazzCash, Cards), and custom domain links.
-- [Instagram Campaign](https://cardzy.online/campaign): Official social media media kit, 5-slide carousel assets, and branding guidelines.
+- [Editorial Team & Authors](https://cardzy.online/authors): Cultural stylists, technology strategists, and creative editors behind Cardzy.
 
 ## Core Capabilities
 
 - **3D Animated Card Opening**: Realistic envelope unboxing animations with custom background music, confetti, and floating particles.
-- **Multilingual Support (18 Languages)**: English, Urdu (اردو), Arabic (العربية), Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili.
+- **Multilingual Support (18 Languages)**: English, Urdu (اردو with Nastaliq font), Arabic (العربية), Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili.
 - **Interactive Event Features**: 1-click WhatsApp RSVP management, live countdown timers, Google Maps venue navigation pins, dress code notes, and gift registry links.
+- **Paperless Visiting Cards (vCards)**: Instant .vcf contact saving, dynamic QR codes, portfolio links, and social links with zero paper waste.
 - **Instant Digital Delivery**: Share via WhatsApp, SMS, Email, Instagram, or download high-resolution PNG image cards.
+
+## Editorial Team & Authors
+
+- [Umar Farooq](https://cardzy.online/authors/umar-farooq): Senior Cultural Event & Wedding Stylist (B.S. Communication & Design, NUST). Specializing in South Asian wedding wording and Urdu calligraphy.
+- [Kainat](https://cardzy.online/authors/kainat): Tech & Digital Product Strategist (M.S. Information Technology, LUMS). Specializing in smart vCards and corporate paperless networking.
+- [Hasnain](https://cardzy.online/authors/hasnain): Creative & Cultural Events Editor (B.A. Media Arts, UoK). Specializing in 3D animated holiday e-cards and cross-cultural greetings.
 
 ## Contact & Legal
 
+- Entity: Cardzy Digital Solutions
 - Contact Email: cardzyonline@gmail.com
-- WhatsApp Support: +92 309 3518796
-- Privacy Policy: https://cardzy.online/privacy
-- Terms of Service: https://cardzy.online/terms
+- WhatsApp Helpline: +92 309 3518796
+- Contact Page: https://cardzy.online/contact
+- About Us: https://cardzy.online/about
+- Cookie Policy: https://cardzy.online/cookies
+- Privacy Policy: https://cardzy.online/privacy-policy
+- Terms of Service: https://cardzy.online/terms-of-service

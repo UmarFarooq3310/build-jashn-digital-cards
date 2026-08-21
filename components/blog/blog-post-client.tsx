@@ -393,8 +393,14 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
               className="flex items-center gap-3 group/author"
               title={`View author profile: ${post.author.name}`}
             >
-              <div className="w-11 h-11 rounded-full bg-[#D4AF37]/20 border-2 border-[#D4AF37]/50 flex items-center justify-center text-[#D4AF37] font-black text-base group-hover/author:border-[#D4AF37] transition-all shadow-md">
-                {post.author.name[0]}
+              <div className="size-11 rounded-full bg-[#D4AF37]/20 border-2 border-[#D4AF37]/50 flex items-center justify-center text-[#D4AF37] font-black text-base group-hover/author:border-[#D4AF37] transition-all shadow-md overflow-hidden shrink-0">
+                <img
+                  src={`/authors/${authorSlug}.svg`}
+                  alt={post.author.name}
+                  width={44}
+                  height={44}
+                  className="size-full object-cover"
+                />
               </div>
               <div>
                 <div className="text-sm font-bold text-white flex items-center gap-1.5 group-hover/author:text-[#D4AF37] transition-colors">
@@ -533,8 +539,14 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
-              <div className="size-20 rounded-2xl bg-[#D4AF37]/20 border-2 border-[#D4AF37] flex items-center justify-center text-[#D4AF37] font-black text-2xl shrink-0 shadow-lg">
-                {post.author.name[0]}
+              <div className="size-20 rounded-2xl bg-[#D4AF37]/20 border-2 border-[#D4AF37] flex items-center justify-center text-[#D4AF37] font-black text-2xl shrink-0 shadow-lg overflow-hidden">
+                <img
+                  src={`/authors/${authorSlug}.svg`}
+                  alt={post.author.name}
+                  width={80}
+                  height={80}
+                  className="size-full object-cover"
+                />
               </div>
 
               <div className="space-y-2 text-center sm:text-left flex-1">

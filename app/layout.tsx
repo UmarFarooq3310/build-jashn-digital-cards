@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic'
 import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
-import Script from 'next/script'
 import { ToastNotification } from '@/components/ui/toast-notification'
 import { LanguageProvider } from '@/lib/lang/context'
 import './globals.css'
@@ -33,7 +32,7 @@ const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
   variable: '--font-poppins',
   display: 'swap',
-  preload: true,
+  preload: false,
   adjustFontFallback: true,
 })
 
@@ -41,6 +40,8 @@ export const viewport: Viewport = {
   themeColor: '#064e3b',
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 }
 
 import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS, SITE_PUBLISHER, SITE_CREATOR } from '@/lib/seo'
@@ -158,6 +159,7 @@ export default function RootLayout({
             __html: `
               window.openCookiePreferences = window.openCookiePreferences || function() {
                 try {
+                  window.__pendingCookieModal = true;
                   window.dispatchEvent(new CustomEvent('open_cookie_preferences'));
                   document.dispatchEvent(new CustomEvent('open_cookie_preferences'));
                 } catch(e) {}
@@ -169,13 +171,12 @@ export default function RootLayout({
                   var target = e.target && e.target.closest && e.target.closest('[data-open-cookie-preferences], [data-cookie-preferences], a[href="#cookie-preferences"]');
                   if (target) {
                     e.preventDefault();
-                    e.stopPropagation();
                     if (typeof window.openCookiePreferences === 'function') {
                       window.openCookiePreferences();
                     }
                   }
                 } catch(err) {}
-              }, true);
+              }, false);
             `,
           }}
         />

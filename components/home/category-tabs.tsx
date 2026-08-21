@@ -262,7 +262,7 @@ export function CategoryTabs() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  'group relative inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all duration-300 border shadow-xs active:scale-95',
+                  'group relative inline-flex min-h-[48px] items-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-extrabold transition-all duration-300 border shadow-xs active:scale-95 cursor-pointer',
                   isActive
                     ? cn('scale-105', tab.activeClass)
                     : 'bg-card/90 hover:bg-card border-border/80 text-muted-foreground hover:text-foreground hover:border-emerald-500/40 hover:scale-102'

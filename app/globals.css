@@ -115,6 +115,10 @@
 }
 
 @media (max-width: 768px) {
+  /* Prevent iOS input auto-zoom and guarantee mobile legibility */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
   .blur-3xl {
     filter: blur(16px) !important;
   }
@@ -128,6 +132,11 @@
   .shadow-2xl {
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2) !important;
   }
+}
+
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 400px;
 }
 
 /* ----------------------------------------------------------------------------

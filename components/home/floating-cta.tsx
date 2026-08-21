@@ -18,17 +18,17 @@ export function FloatingCTA() {
           <Link
             href="/create-wish"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-xl border border-white/10 active:scale-95 transition-transform"
+            className="flex min-h-[48px] items-center gap-2 bg-teal-600 text-white px-5 py-3 rounded-full font-bold text-sm shadow-xl border border-white/10 active:scale-95 transition-transform"
           >
-            <Sparkles className="size-3.5" />
+            <Sparkles className="size-4" />
             <span>{t('sendWish')}</span>
           </Link>
           <Link
             href="/create-invitation"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 bg-emerald-800 text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-xl border border-white/10 active:scale-95 transition-transform"
+            className="flex min-h-[48px] items-center gap-2 bg-emerald-800 text-white px-5 py-3 rounded-full font-bold text-sm shadow-xl border border-white/10 active:scale-95 transition-transform"
           >
-            <Mail className="size-3.5" />
+            <Mail className="size-4" />
             <span>{t('createInvitation')}</span>
           </Link>
         </div>
@@ -38,7 +38,7 @@ export function FloatingCTA() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "flex h-12 items-center justify-center gap-2 rounded-full px-6 font-bold text-sm text-white transition-all active:scale-95 border border-white/15",
+          "flex min-h-[48px] min-w-[48px] h-12 items-center justify-center gap-2 rounded-full px-6 font-bold text-sm text-white transition-all active:scale-95 border border-white/15 cursor-pointer",
           isOpen 
             ? "bg-zinc-800 ring-4 ring-zinc-800/20 shadow-2xl" 
             : "bg-emerald-800 hover:bg-emerald-900 ring-4 ring-emerald-900/20 shadow-lg"

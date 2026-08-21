@@ -107,17 +107,6 @@ export function AdSenseHandler() {
         ;(window as any).adsbygoogle = (window as any).adsbygoogle || []
         ;(window as any).adsbygoogle.requestNonPersonalizedAds = consentGranted ? 0 : 1
       } catch {}
-
-      // Ensure AdSense script is present in head immediately for bots & users
-      const scriptId = 'google-adsense-dynamic'
-      if (!document.getElementById(scriptId)) {
-        const script = document.createElement('script')
-        script.id = scriptId
-        script.async = true
-        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833'
-        script.setAttribute('crossorigin', 'anonymous')
-        document.head.appendChild(script)
-      }
     }
   }, [pathname, allowed, consentGranted])
 

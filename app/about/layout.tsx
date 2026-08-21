@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'About Cardzy — 3D Digital Cards & Invitation Platform',
-  description: 'Learn about Cardzy, the global digital card and invitation platform for families worldwide. Discover our story, mission, and celebration features.',
+  title: 'About Us | Cardzy',
+  description: 'Learn about Cardzy Digital Solutions — our mission to provide animated digital invitations, greeting cards, and WhatsApp RSVP management with a commitment to privacy and family-safe content.',
   keywords: [
     'about Cardzy',
     'digital cards platform',

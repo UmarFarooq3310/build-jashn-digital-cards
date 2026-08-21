@@ -3,8 +3,8 @@ import type { ReactNode } from 'react'
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Contact Cardzy — Customer Support & Custom Card Orders',
-  description: 'Get in touch with the Cardzy team for support, custom orders, and questions. Reach us via WhatsApp, email, or our contact form for quick help.',
+  title: 'Contact Us | Cardzy',
+  description: 'Contact Cardzy Digital Solutions for support, custom card orders, and questions. Email: cardzyonline@gmail.com — we respond within 24–48 business hours.',
   keywords: [
     'contact Cardzy',
     'Cardzy WhatsApp support',

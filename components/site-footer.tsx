@@ -35,11 +35,11 @@ export function SiteFooter() {
               {t('footerTagline')}
             </p>
             <div className="mt-3 flex flex-col gap-1.5 text-xs text-emerald-200/70">
-              <span>📍 Global HQ: Islamabad / Rawalpindi, Pakistan</span>
+              <span>📍 Global HQ: Cardzy Digital Solutions, Islamabad / Rawalpindi, Pakistan</span>
               <a
                 href="mailto:cardzyonline@gmail.com"
                 suppressHydrationWarning
-                className="hover:text-amber-400 transition-colors inline-flex items-center gap-1 min-h-[44px] py-2"
+                className="hover:text-amber-400 transition-colors inline-flex items-center gap-1 min-h-[48px] py-2"
               >
                 ✉️ cardzyonline@gmail.com
               </a>
@@ -48,7 +48,7 @@ export function SiteFooter() {
                 target="_blank"
                 rel="noopener noreferrer"
                 suppressHydrationWarning
-                className="hover:text-amber-400 transition-colors inline-flex items-center gap-1 min-h-[44px] py-2"
+                className="hover:text-amber-400 transition-colors inline-flex items-center gap-1 min-h-[48px] py-2"
               >
                 💬 WhatsApp: +92 309 3518796
               </a>
@@ -90,6 +90,7 @@ export function SiteFooter() {
                 { href: '/guide/eid-wording-ideas', label: 'Eid Wording & Replies' },
                 { href: '/blog/complete-guide-to-pakistani-wedding-invitation-wording-urdu-english', label: 'Pakistani Wedding Card Text' },
                 { href: '/guide/pakistani-wedding-invitations', label: 'Pakistani Wedding Invitations' },
+                { href: '/authors', label: 'Editorial Authors' },
                 { href: '/guide', label: 'All Celebration Guides' },
               ]}
             />
@@ -111,6 +112,7 @@ export function SiteFooter() {
                 { href: '/pricing', label: t('footerPlans') },
                 { href: '/faq', label: t('faqs') },
                 { href: '/privacy-policy', label: t('footerPrivacy') },
+                { href: '/cookies', label: 'Cookie Policy' },
                 { href: '/terms-of-service', label: 'Terms of Service' },
                 { href: '/disclaimer', label: 'Disclaimer' },
               ]}
@@ -118,43 +120,23 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-6 border-t border-emerald-900/50 pt-4 text-center text-xs text-emerald-200/60 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+        <div className="mt-6 border-t border-emerald-900/50 pt-4 text-center text-xs sm:text-sm text-emerald-200/70 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
           <span>{t('footerCopyright')}</span>
-          <Link href="/" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('home')}</Link>
+          <Link href="/" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">{t('home')}</Link>
           <span>•</span>
-          <Link href="/blog" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('blog')}</Link>
+          <Link href="/about" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">About Us</Link>
           <span>•</span>
-          <Link href="/about" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('footerAbout')}</Link>
+          <Link href="/contact" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">Contact</Link>
           <span>•</span>
-          <Link href="/contact" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">Contact</Link>
+          <Link href="/blog" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">{t('blog')}</Link>
           <span>•</span>
-          <Link href="/privacy-policy" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">{t('footerPrivacy')}</Link>
+          <Link href="/privacy-policy" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">{t('footerPrivacy')}</Link>
           <span>•</span>
-          <Link href="/terms-of-service" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">Terms</Link>
+          <Link href="/cookies" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">Cookies</Link>
           <span>•</span>
-          <Link href="/disclaimer" className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center">Disclaimer</Link>
+          <Link href="/terms-of-service" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">Terms</Link>
           <span>•</span>
-          <button
-            type="button"
-            data-open-cookie-preferences="true"
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              if (typeof window !== 'undefined') {
-                if (typeof window.openCookiePreferences === 'function') {
-                  window.openCookiePreferences()
-                }
-                if (typeof (window as any).openCardzyCookieConsent === 'function') {
-                  (window as any).openCardzyCookieConsent()
-                }
-                window.dispatchEvent(new CustomEvent('open_cookie_preferences'))
-                document.dispatchEvent(new CustomEvent('open_cookie_preferences'))
-              }
-            }}
-            className="hover:text-amber-400 underline py-2 min-h-[44px] flex items-center cursor-pointer bg-transparent border-0 text-emerald-200/60 transition-colors"
-          >
-            🍪 Cookie Preferences
-          </button>
+          <Link href="/disclaimer" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">Disclaimer</Link>
         </div>
       </div>
     </footer>
@@ -176,7 +158,7 @@ function FooterCol({
           <li key={l.href + l.label}>
             <Link
               href={l.href}
-              className="text-xs sm:text-sm text-emerald-200/80 transition-colors hover:text-amber-300 inline-flex items-center py-2 min-h-[44px]"
+              className="text-xs sm:text-sm text-emerald-200/80 transition-colors hover:text-amber-300 inline-flex items-center py-2 min-h-[48px]"
             >
               {l.label}
             </Link>

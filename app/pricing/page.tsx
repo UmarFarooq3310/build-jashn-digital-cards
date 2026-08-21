@@ -204,43 +204,77 @@ export default function PricingPage() {
             </div>
           </div>
 
-          {/* Premium Guide Overview Card */}
-          <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-6xl mx-auto">
+          {/* Detailed Feature Comparison Table & FAQs */}
+          <section className="mt-16 rounded-3xl border border-border/80 bg-card p-6 sm:p-10 shadow-sm text-left space-y-6 max-w-6xl mx-auto">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                <Sparkles className="size-3.5" /> {t('simpleTransparentPricing') || 'Pricing Overview'}
+                <Sparkles className="size-3.5" /> Plan Comparison
               </span>
             </div>
             <h2 className={`text-xl sm:text-2xl font-extrabold text-foreground tracking-tight ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
-              {t('choosePerfectPlan') || 'Transparent Pricing Plans — Cardzy'}
+              Detailed Plan Comparison &amp; Inclusions
             </h2>
-            <p className={`text-xs sm:text-sm text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-sm sm:text-base leading-relaxed' : ''}`}>
-              {t('pricingOverviewDesc') || 'Cardzy offers flexible, transparent pricing tiers designed for individuals, families, corporate teams, and event hosts. Start completely free with our Free Forever Plan to create animated wish cards and digital invitations. Upgrade to Pro or Enterprise for unlimited card creations, custom branding, high-speed WhatsApp RSVP tracking, and priority customer support.'}
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Compare features across Free, Pro, and Business plans to choose the best option for your wedding, corporate announcements, or festive greetings.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
-              <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-                <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
-                  {t('freeForeverPlanTitle') || 'Free Forever Plan'}
-                </h3>
-                <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
-                  {t('freeForeverPlanDesc') || '$0 / Rs 0 forever. Create 3D animated wish cards, custom photo cards, and shareable links with zero hidden fees.'}
-                </p>
-              </div>
-              <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-                <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
-                  {t('proPlan') || 'Pro Plan'}
-                </h3>
-                <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
-                  {t('proPlanDesc') || '$4 / Rs 1,100 per month. Unlock royal wedding invitation themes, executive digital business cards, and automated WhatsApp guest RSVP tracking.'}
-                </p>
-              </div>
-              <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-                <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
-                  {t('enterprisePlan') || 'Enterprise Plan'}
-                </h3>
-                <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
-                  {t('enterprisePlanDesc') || 'Custom corporate pricing. Includes custom domain setup, bulk team vCard management, and dedicated event manager support.'}
-                </p>
+
+            <div className="overflow-x-auto rounded-2xl border border-border">
+              <table className="min-w-full text-left text-xs sm:text-sm">
+                <thead>
+                  <tr className="bg-muted/60 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    <th className="py-3 px-4">Feature</th>
+                    <th className="py-3 px-4">Free Plan</th>
+                    <th className="py-3 px-4">Pro Plan ($4/mo)</th>
+                    <th className="py-3 px-4">Business Plan ($18/mo)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/60">
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-foreground">3D Wish Cards</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">Unlimited Classic</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">Unlimited Premium</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">Unlimited VIP</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-foreground">WhatsApp RSVP Tracking</td>
+                    <td className="py-3 px-4">Basic Direct Link</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">Live Dashboard + Auto Export</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">Multi-Event RSVP Concierge</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-foreground">Watermark Removal</td>
+                    <td className="py-3 px-4 text-muted-foreground">Includes Cardzy Badge</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">100% Removed</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">100% Removed + Custom Logo</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-foreground">Languages &amp; RTL Urdu Nastaliq</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">All 18 Languages</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">All 18 Languages</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">All 18 Languages + Custom Fonts</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-foreground">Support SLA</td>
+                    <td className="py-3 px-4">Email (24–48h)</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">Priority WhatsApp (2–4h)</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">Dedicated Account Manager</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pricing FAQ */}
+            <div className="pt-4 space-y-3">
+              <h3 className="font-bold text-base text-foreground">Frequently Asked Questions about Cardzy Pricing</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm text-muted-foreground">
+                <div className="rounded-xl border border-border/80 bg-background/60 p-4 space-y-1.5">
+                  <h4 className="font-bold text-foreground">Can I use Cardzy completely for free?</h4>
+                  <p>Yes! Our Free Forever tier lets you create and share unlimited 3D greeting cards with full music and text customization without entering credit card details.</p>
+                </div>
+                <div className="rounded-xl border border-border/80 bg-background/60 p-4 space-y-1.5">
+                  <h4 className="font-bold text-foreground">How do I pay in PKR or international currencies?</h4>
+                  <p>We accept JazzCash, EasyPaisa, Nayapay, Sadapay, bank transfers, and international cards. Message our WhatsApp hotline at +92 309 3518796 for instant activation.</p>
+                </div>
               </div>
             </div>
           </section>

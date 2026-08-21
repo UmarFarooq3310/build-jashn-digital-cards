@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="h-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="50%" stop-color="#1e3a8a" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+    <linearGradient id="h-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#818cf8" />
+    </linearGradient>
+    <linearGradient id="h-skin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fed7aa" />
+      <stop offset="100%" stop-color="#fbcfe8" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#h-bg)" />
+  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#h-accent)" stroke-width="3" stroke-dasharray="6,3" opacity="0.6" />
+  <!-- Body/Blazer -->
+  <path d="M45 190 C45 140, 70 128, 100 128 C130 128, 155 140, 155 190 Z" fill="#0f172a" />
+  <path d="M82 128 L100 170 L118 128 Z" fill="#ffffff" />
+  <path d="M96 145 L104 145 L102 185 L98 185 Z" fill="#0284c7" />
+  <!-- Neck -->
+  <rect x="88" y="105" width="24" height="25" rx="6" fill="url(#h-skin)" />
+  <!-- Head -->
+  <ellipse cx="100" cy="78" rx="28" ry="32" fill="url(#h-skin)" />
+  <!-- Modern Hair -->
+  <path d="M68 68 C68 45, 82 38, 100 38 C122 38, 134 46, 132 68 C124 52, 114 46, 98 46 C82 46, 72 54, 68 68 Z" fill="#18181b" />
+  <!-- Eyes -->
+  <circle cx="89" cy="76" r="3" fill="#18181b" />
+  <circle cx="111" cy="76" r="3" fill="#18181b" />
+  <!-- Eyebrows -->
+  <path d="M83 70 Q89 67 95 70" stroke="#18181b" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  <path d="M105 70 Q111 67 117 70" stroke="#18181b" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  <!-- Smile -->
+  <path d="M93 92 Q100 97 107 92" stroke="#9a3412" stroke-width="2" stroke-linecap="round" fill="none" />
+</svg>

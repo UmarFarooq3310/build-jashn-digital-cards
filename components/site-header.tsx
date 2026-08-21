@@ -242,14 +242,14 @@ function SiteHeaderInner() {
 
         <div className="flex items-center gap-1.5 lg:hidden">
           <button
-            className="min-h-[44px] min-w-[44px] rounded-lg p-2.5 text-foreground hover:bg-secondary flex items-center justify-center"
+            className="min-h-[48px] min-w-[48px] rounded-xl p-3 text-foreground hover:bg-secondary flex items-center justify-center cursor-pointer"
             onClick={() => setSearchOpen(true)}
             aria-label="Search"
           >
             <Search className="size-5 text-amber-500" />
           </button>
           <button
-            className="min-h-[44px] min-w-[44px] rounded-lg p-2.5 text-foreground hover:bg-secondary flex items-center justify-center"
+            className="min-h-[48px] min-w-[48px] rounded-xl p-3 text-foreground hover:bg-secondary flex items-center justify-center cursor-pointer"
             onClick={() => setOpen((o) => !o)}
             aria-label="Toggle menu"
           >
@@ -260,7 +260,7 @@ function SiteHeaderInner() {
 
       {open && (
         <div className="border-t border-border bg-background px-4 py-3 lg:hidden">
-          <nav className="flex flex-col gap-1">
+          <nav className="flex flex-col gap-1.5">
             {[
               { href: '/', key: 'home', fallback: 'Home' },
               { href: '/create-wish', key: 'sendWish', fallback: '3D Wish Cards' },
@@ -276,7 +276,7 @@ function SiteHeaderInner() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+                className="rounded-xl px-3 py-3 text-base font-medium text-foreground hover:bg-secondary min-h-[48px] flex items-center"
               >
                 {t(item.key as any) || item.fallback}
               </Link>
@@ -284,10 +284,10 @@ function SiteHeaderInner() {
 
             {/* Mobile language picker */}
             <div className="mt-2 pt-2 border-t border-border notranslate" translate="no">
-              <p className="px-3 pb-1 text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+              <p className="px-3 pb-1 text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5 min-h-[32px]">
                 <Globe className="size-3.5" /> {t('languageLabel')}
               </p>
-              <div className="grid grid-cols-2 gap-1 notranslate" translate="no">
+              <div className="grid grid-cols-2 gap-1.5 notranslate" translate="no">
                 {LANGUAGES.map((l) => (
                   <button
                     key={l.code}
@@ -295,7 +295,7 @@ function SiteHeaderInner() {
                     translate="no"
                     onClick={() => { setLang(l.code); setOpen(false) }}
                     className={cn(
-                      'rounded-lg px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-secondary notranslate',
+                      'rounded-xl px-3 py-2.5 text-sm font-medium text-left transition-colors hover:bg-secondary notranslate min-h-[48px] flex items-center cursor-pointer',
                       lang === l.code ? 'bg-primary/10 text-primary font-bold' : 'text-foreground'
                     )}
                   >
@@ -310,7 +310,7 @@ function SiteHeaderInner() {
                 <Link
                   href="/dashboard"
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-foreground hover:bg-secondary"
+                  className="flex items-center gap-2 rounded-xl px-3 py-3 text-base font-semibold text-foreground hover:bg-secondary min-h-[48px]"
                 >
                   <span className="flex size-6 items-center justify-center rounded-full bg-gradient-to-r from-primary to-emerald-600 text-[10px] font-bold text-white uppercase">
                     {(user.name || 'U').charAt(0)}
@@ -319,7 +319,7 @@ function SiteHeaderInner() {
                 </Link>
                 <button
                   onClick={() => { setOpen(false); handleSignOut() }}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  className="flex items-center gap-2 rounded-xl px-3 py-3 text-base font-medium text-muted-foreground hover:bg-secondary hover:text-foreground min-h-[48px] cursor-pointer"
                 >
                   <LogOut className="size-4" /> {t('signOut')}
                 </button>
@@ -329,42 +329,21 @@ function SiteHeaderInner() {
                 <Link
                   href="/login"
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+                  className="rounded-xl px-3 py-3 text-base font-medium text-foreground hover:bg-secondary min-h-[48px] flex items-center"
                 >
                   {t('logIn')}
                 </Link>
                 <Link
                   href="/signup"
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2 text-sm font-semibold text-primary hover:bg-secondary"
+                  className="rounded-xl px-3 py-3 text-base font-semibold text-primary hover:bg-secondary min-h-[48px] flex items-center"
                 >
                   {t('signUpFree')} →
                 </Link>
               </>
             )}
 
-            <button
-              type="button"
-              data-open-cookie-preferences="true"
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                setOpen(false)
-                if (typeof window !== 'undefined') {
-                  if (typeof window.openCookiePreferences === 'function') {
-                    window.openCookiePreferences()
-                  }
-                  if (typeof (window as any).openCardzyCookieConsent === 'function') {
-                    (window as any).openCardzyCookieConsent()
-                  }
-                  window.dispatchEvent(new CustomEvent('open_cookie_preferences'))
-                  document.dispatchEvent(new CustomEvent('open_cookie_preferences'))
-                }
-              }}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-amber-600 hover:bg-amber-500/10 cursor-pointer border-t border-border/40 mt-1 pt-3"
-            >
-              <span>🍪 Cookie Preferences</span>
-            </button>
+
           </nav>
         </div>
       )}

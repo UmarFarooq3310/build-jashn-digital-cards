@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="k-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c2d12" />
+      <stop offset="50%" stop-color="#9a3412" />
+      <stop offset="100%" stop-color="#c2410c" />
+    </linearGradient>
+    <linearGradient id="k-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <linearGradient id="k-skin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fed7aa" />
+      <stop offset="100%" stop-color="#fbcfe8" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#k-bg)" />
+  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#k-gold)" stroke-width="3" stroke-dasharray="6,3" opacity="0.6" />
+  <!-- Hijab / Scarf Body -->
+  <path d="M45 190 C45 135, 65 125, 100 125 C135 125, 155 135, 155 190 Z" fill="#431407" />
+  <path d="M75 140 C85 160, 115 160, 125 140 L100 185 Z" fill="#78350f" opacity="0.7" />
+  <!-- Hijab Drape Frame -->
+  <path d="M66 85 C66 48, 80 40, 100 40 C120 40, 134 48, 134 85 C134 118, 124 135, 100 135 C76 135, 66 118, 66 85 Z" fill="#78350f" stroke="url(#k-gold)" stroke-width="1.5" />
+  <!-- Face Oval -->
+  <ellipse cx="100" cy="85" rx="24" ry="28" fill="url(#k-skin)" />
+  <!-- Eyes -->
+  <circle cx="90" cy="83" r="3" fill="#18181b" />
+  <circle cx="110" cy="83" r="3" fill="#18181b" />
+  <circle cx="91" cy="82" r="1" fill="#ffffff" />
+  <circle cx="111" cy="82" r="1" fill="#ffffff" />
+  <!-- Lashes -->
+  <path d="M85 79 Q90 77 95 80" stroke="#18181b" stroke-width="2" stroke-linecap="round" fill="none" />
+  <path d="M105 80 Q110 77 115 79" stroke="#18181b" stroke-width="2" stroke-linecap="round" fill="none" />
+  <!-- Lips -->
+  <path d="M94 99 Q100 103 106 99" stroke="#be185d" stroke-width="2.5" stroke-linecap="round" fill="none" />
+</svg>

@@ -92,7 +92,7 @@ export function Hero() {
             </Link>
             <Link
               href="/create-visiting-card"
-              className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground px-3 py-2 underline underline-offset-4"
+              className="inline-flex min-h-[48px] items-center gap-1 text-sm font-bold text-muted-foreground hover:text-foreground px-3 py-2 underline underline-offset-4"
             >
               <span>Smart vCards →</span>
             </Link>

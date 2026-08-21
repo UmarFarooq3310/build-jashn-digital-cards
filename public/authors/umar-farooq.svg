@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="uf-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" />
+      <stop offset="50%" stop-color="#0f766e" />
+      <stop offset="100%" stop-color="#134e4a" />
+    </linearGradient>
+    <linearGradient id="uf-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <linearGradient id="uf-skin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5d0b5" />
+      <stop offset="100%" stop-color="#e2a786" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#uf-bg)" />
+  <!-- Outer Gold Ring -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#uf-gold)" stroke-width="3" stroke-dasharray="6,3" opacity="0.6" />
+  <!-- Body/Sherwani -->
+  <path d="M45 190 C45 140, 70 128, 100 128 C130 128, 155 140, 155 190 Z" fill="#022c22" />
+  <path d="M96 128 L96 190 L104 190 L104 128 Z" fill="url(#uf-gold)" />
+  <circle cx="100" cy="142" r="2.5" fill="#ffffff" />
+  <circle cx="100" cy="154" r="2.5" fill="#ffffff" />
+  <circle cx="100" cy="166" r="2.5" fill="#ffffff" />
+  <!-- Collar -->
+  <path d="M82 128 L100 144 L118 128 Z" fill="#064e3b" stroke="url(#uf-gold)" stroke-width="1.5" />
+  <!-- Neck -->
+  <rect x="88" y="105" width="24" height="25" rx="6" fill="url(#uf-skin)" />
+  <!-- Head -->
+  <ellipse cx="100" cy="80" rx="30" ry="34" fill="url(#uf-skin)" />
+  <!-- Hair & Beard -->
+  <path d="M70 72 C68 50, 80 42, 100 42 C120 42, 132 50, 130 72 C126 56, 116 50, 100 50 C84 50, 74 56, 70 72 Z" fill="#18181b" />
+  <!-- Styled Beard -->
+  <path d="M72 82 C72 108, 86 116, 100 116 C114 116, 128 108, 128 82 C128 92, 122 108, 100 108 C78 108, 72 92, 72 82 Z" fill="#18181b" />
+  <!-- Eyes -->
+  <circle cx="88" cy="78" r="3" fill="#18181b" />
+  <circle cx="112" cy="78" r="3" fill="#18181b" />
+  <!-- Eyebrows -->
+  <path d="M82 72 Q88 70 94 73" stroke="#18181b" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  <path d="M106 73 Q112 70 118 72" stroke="#18181b" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  <!-- Glasses -->
+  <rect x="79" y="72" width="18" height="13" rx="3" fill="none" stroke="url(#uf-gold)" stroke-width="1.8" />
+  <rect x="103" y="72" width="18" height="13" rx="3" fill="none" stroke="url(#uf-gold)" stroke-width="1.8" />
+  <line x1="97" y1="78" x2="103" y2="78" stroke="url(#uf-gold)" stroke-width="1.8" />
+  <!-- Smile -->
+  <path d="M94 96 Q100 100 106 96" stroke="#9a3412" stroke-width="2" stroke-linecap="round" fill="none" />
+</svg>
