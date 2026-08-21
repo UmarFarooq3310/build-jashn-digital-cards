@@ -3,38 +3,31 @@ import { BLOG_POSTS } from '@/lib/blog/data'
 import { BlogIndexClient } from '@/components/blog/blog-index-client'
 import { getPageAlternates, PUBLIC_ROBOTS, SITE_URL, SITE_PUBLISHER } from '@/lib/seo'
 
-interface PageProps {
-  searchParams?: Promise<{ lang?: string }>
-}
+export const dynamic = 'force-static'
 
-export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
-  const resolvedSearchParams = searchParams ? await searchParams : {}
-  const lang = resolvedSearchParams.lang
-
-  return {
-    title: 'Cardzy Blog — Digital Cards & Event Wording Guides',
-    description:
-      'Explore expert guides on creating Pakistani wedding invitations, Eid wish cards with photo, smart digital business cards, and WhatsApp RSVP management.',
-    keywords: [
-      'digital invitation guides',
-      'Pakistani wedding card wording',
-      'Eid wish card tutorial',
-      'smart digital visiting cards',
-      'WhatsApp RSVP tracking',
-      'animated greeting card ideas',
-      'Cardzy blog',
-    ],
-    publisher: SITE_PUBLISHER,
-    alternates: getPageAlternates('/blog', lang),
-    robots: PUBLIC_ROBOTS,
-    openGraph: {
-      title: 'Cardzy Blog - Guides & Tips for Digital Cards',
-      description: 'Expert tips on royal digital invitations, Eid wishes, and smart digital business cards.',
-      url: lang ? `${SITE_URL}/blog?lang=${lang}` : `${SITE_URL}/blog`,
-      siteName: 'Cardzy Digital Cards',
-      type: 'website',
-    },
-  }
+export const metadata: Metadata = {
+  title: 'Cardzy Blog — Digital Cards & Event Wording Guides',
+  description:
+    'Expert guides on Pakistani wedding invitations, Eid wish cards, smart digital business cards (vCards), and WhatsApp RSVP management.',
+  keywords: [
+    'digital invitation guides',
+    'Pakistani wedding card wording',
+    'Eid wish card tutorial',
+    'smart digital visiting cards',
+    'WhatsApp RSVP tracking',
+    'animated greeting card ideas',
+    'Cardzy blog',
+  ],
+  publisher: SITE_PUBLISHER,
+  alternates: getPageAlternates('/blog'),
+  robots: PUBLIC_ROBOTS,
+  openGraph: {
+    title: 'Cardzy Blog - Guides & Tips for Digital Cards',
+    description: 'Expert tips on royal digital invitations, Eid wishes, and smart digital business cards.',
+    url: `${SITE_URL}/blog`,
+    siteName: 'Cardzy Digital Cards',
+    type: 'website',
+  },
 }
 
 export default function BlogIndexPage() {

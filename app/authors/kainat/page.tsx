@@ -5,28 +5,21 @@ import { Award, BookOpen, ExternalLink, GraduationCap, MapPin, CheckCircle2, Shi
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 
-interface PageProps {
-  searchParams?: Promise<{ lang?: string }>
-}
+export const dynamic = 'force-static'
 
-export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
-  const resolvedSearchParams = searchParams ? await searchParams : {}
-  const lang = resolvedSearchParams.lang
-
-  return {
-    title: 'Kainat — Tech & Digital Product Strategist | Cardzy',
-    description:
-      'Kainat is the Tech & Digital Product Strategist at Cardzy. Author of authoritative guides on digital visiting cards (vCards), paperless networking, and event management technology.',
-    keywords: [
-      'Kainat Cardzy',
-      'digital business cards author',
-      'vCard technology expert',
-      'paperless networking strategist',
-      'Cardzy authors',
-    ],
-    alternates: getPageAlternates('/authors/kainat', lang),
-    robots: PUBLIC_ROBOTS,
-  }
+export const metadata: Metadata = {
+  title: 'Kainat — Tech & Digital Product Strategist | Cardzy',
+  description:
+    'Kainat is Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards) and paperless event technology.',
+  keywords: [
+    'Kainat Cardzy',
+    'digital business cards author',
+    'vCard technology expert',
+    'paperless networking strategist',
+    'Cardzy authors',
+  ],
+  alternates: getPageAlternates('/authors/kainat'),
+  robots: PUBLIC_ROBOTS,
 }
 
 // ── Person Structured Data (Schema.org E-E-A-T) ──────────────────────────────
@@ -42,7 +35,7 @@ const personJsonLd = {
   },
   image: 'https://cardzy.online/authors/kainat.svg',
   description:
-    'Tech & Digital Product Strategist at Cardzy specializing in smart digital business cards (vCards), paperless corporate networking, and mobile user experience optimization.',
+    'Tech Strategist at Cardzy specializing in smart digital business cards (vCards), paperless networking, and mobile user experience.',
   alumniOf: {
     '@type': 'CollegeOrUniversity',
     name: 'Lahore University of Management Sciences (LUMS)',

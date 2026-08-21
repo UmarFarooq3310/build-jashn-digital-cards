@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Birthday Wishes Wording Ideas & Card Messages | Cardzy',
   description:
-    'Heartfelt, funny, and formal birthday wish messages for every card. Copy-ready wording for family, friends, and coworkers, plus card design tips.',
+    'Heartfelt, funny, and formal birthday card messages. Copy-ready wording templates for family, friends, and coworkers with design tips.',
   keywords: [
     'birthday wishes wording',
     'birthday messages for friends',

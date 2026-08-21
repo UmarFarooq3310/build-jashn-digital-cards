@@ -1,62 +1,55 @@
 import type { Metadata } from 'next'
-import dynamic from 'next/dynamic'
+import nextDynamic from 'next/dynamic'
 import { Hero } from '@/components/home/hero'
 import { HowItWorks } from '@/components/home/how-it-works'
 import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS, SITE_PUBLISHER } from '@/lib/seo'
 
-interface PageProps {
-  searchParams?: Promise<{ lang?: string }>
-}
+export const dynamic = 'force-static'
 
-export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
-  const resolvedSearchParams = searchParams ? await searchParams : {}
-  const lang = resolvedSearchParams.lang
-
-  return {
+export const metadata: Metadata = {
+  title: 'Cardzy — 3D Digital Cards, Wedding Invitations & Smart vCards',
+  description:
+    'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP, and smart digital business cards in 18 languages with Cardzy.',
+  keywords: DEFAULT_KEYWORDS,
+  publisher: SITE_PUBLISHER,
+  alternates: getPageAlternates('/'),
+  robots: PUBLIC_ROBOTS,
+  openGraph: {
     title: 'Cardzy — 3D Digital Cards, Wedding Invitations & Smart vCards',
     description:
-      'Design, customize, and share interactive 3D digital wish cards, wedding invitations with automated WhatsApp RSVP tracking, and executive smart digital business cards (vCards) in 18 languages.',
-    keywords: DEFAULT_KEYWORDS,
-    publisher: SITE_PUBLISHER,
-    alternates: getPageAlternates('/', lang),
-    robots: PUBLIC_ROBOTS,
-    openGraph: {
-      title: 'Cardzy — 3D Digital Cards, Wedding Invitations & Smart vCards',
-      description:
-        'Design, customize, and share interactive 3D digital wish cards, wedding invitations with automated WhatsApp RSVP tracking, and executive smart digital business cards (vCards) in 18 languages.',
-      url: 'https://cardzy.online',
-      siteName: 'Cardzy',
-      type: 'website',
-    },
-  }
+      'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP, and smart digital business cards in 18 languages with Cardzy.',
+    url: 'https://cardzy.online',
+    siteName: 'Cardzy',
+    type: 'website',
+  },
 }
 
 
-const AdBanner = dynamic(
+const AdBanner = nextDynamic(
   () => import('@/components/ad-banner').then((mod) => mod.AdBanner)
 )
-const CategoryTabs = dynamic(
+const CategoryTabs = nextDynamic(
   () => import('@/components/home/category-tabs').then((mod) => mod.CategoryTabs)
 )
-const GamingWinnersSection = dynamic(
+const GamingWinnersSection = nextDynamic(
   () => import('@/components/home/gaming-winners-section').then((mod) => mod.GamingWinnersSection)
 )
-const SocialProofSection = dynamic(
+const SocialProofSection = nextDynamic(
   () => import('@/components/home/social-proof').then((mod) => mod.SocialProofSection)
 )
-const InvitationsSection = dynamic(
+const InvitationsSection = nextDynamic(
   () => import('@/components/home/invitations-section').then((mod) => mod.InvitationsSection)
 )
-const ConciergeService = dynamic(
+const ConciergeService = nextDynamic(
   () => import('@/components/home/concierge-service').then((mod) => mod.ConciergeService)
 )
-const StructuredFaqSection = dynamic(
+const StructuredFaqSection = nextDynamic(
   () => import('@/components/home/structured-faq').then((mod) => mod.StructuredFaqSection)
 )
-const HomeCTA = dynamic(
+const HomeCTA = nextDynamic(
   () => import('@/components/home/home-cta').then((mod) => mod.HomeCTA)
 )
-const FloatingCTA = dynamic(
+const FloatingCTA = nextDynamic(
   () => import('@/components/home/floating-cta').then((mod) => mod.FloatingCTA)
 )
 

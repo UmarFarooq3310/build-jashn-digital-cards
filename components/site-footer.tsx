@@ -120,23 +120,11 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-6 border-t border-emerald-900/50 pt-4 text-center text-xs sm:text-sm text-emerald-200/70 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+        <div className="mt-6 border-t border-emerald-900/50 pt-4 text-center text-xs sm:text-sm text-emerald-200/70 flex flex-wrap items-center justify-between gap-4">
           <span>{t('footerCopyright')}</span>
-          <Link href="/" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">{t('home')}</Link>
-          <span>•</span>
-          <Link href="/about" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">About Us</Link>
-          <span>•</span>
-          <Link href="/contact" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">Contact</Link>
-          <span>•</span>
-          <Link href="/blog" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">{t('blog')}</Link>
-          <span>•</span>
-          <Link href="/privacy-policy" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">{t('footerPrivacy')}</Link>
-          <span>•</span>
-          <Link href="/cookies" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">Cookies</Link>
-          <span>•</span>
-          <Link href="/terms-of-service" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">Terms</Link>
-          <span>•</span>
-          <Link href="/disclaimer" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">Disclaimer</Link>
+          <span className="text-xs text-emerald-300/60">
+            Crafted for weddings, religious festivals &amp; contactless smart networking across 18 languages.
+          </span>
         </div>
       </div>
     </footer>
@@ -152,7 +140,7 @@ function FooterCol({
 }) {
   return (
     <div suppressHydrationWarning>
-      <h3 suppressHydrationWarning className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-400">{title}</h3>
+      <p suppressHydrationWarning className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-400">{title}</p>
       <ul className="mt-2.5 space-y-1">
         {links.map((l) => (
           <li key={l.href + l.label}>

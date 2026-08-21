@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Contact Us | Cardzy',
-  description: 'Contact Cardzy Digital Solutions for support, custom card orders, and questions. Email: cardzyonline@gmail.com — we respond within 24–48 business hours.',
+  description: 'Contact Cardzy Digital Solutions for support with digital cards and WhatsApp RSVP. Email: cardzyonline@gmail.com. Fast 24-48h response.',
   keywords: [
     'contact Cardzy',
     'Cardzy WhatsApp support',

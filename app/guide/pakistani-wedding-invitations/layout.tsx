@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Pakistani Wedding Card Text & Urdu Wording | Cardzy',
   description:
-    'Explore 50+ Pakistani wedding card text examples in Urdu and English for Nikkah, Mehndi, Barat & Walima cards with Bismillah and WhatsApp RSVP links.',
+    '50+ Pakistani wedding card text examples in Urdu and English for Nikkah, Mehndi, Barat & Walima cards with Bismillah & WhatsApp RSVP.',
   keywords: [
     'Pakistani wedding card text',
     'wedding invitation wording Urdu',

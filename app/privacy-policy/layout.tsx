@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Privacy Policy & User Data Protection Notice | Cardzy',
   description:
-    'Learn how Cardzy protects user privacy, collects data responsibly, enforces Google AdSense and GDPR compliance, and secures your digital cards.',
+    "Read Cardzy's Privacy Policy. Learn how we protect personal data, enforce Google AdSense & GDPR compliance, and manage cookies securely.",
   keywords: [
     'privacy policy',
     'Cardzy data protection',

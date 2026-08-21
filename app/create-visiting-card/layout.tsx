@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Smart Digital Business Card Maker (vCard) | Cardzy',
   description:
-    'Create interactive smart digital business cards for executives and entrepreneurs in Pakistan. Share via QR code & WhatsApp with 1-tap contact save.',
+    'Create smart digital business cards for executives and entrepreneurs. Share via QR code and WhatsApp with 1-tap .vcf contact saving.',
   keywords: [
     'digital business card',
     'vCard maker',

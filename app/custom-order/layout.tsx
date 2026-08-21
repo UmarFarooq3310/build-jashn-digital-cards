@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Custom Card Design Order - Concierge Service | Cardzy',
   description:
-    'Order custom 3D animated wish cards and wedding invitations crafted by our expert design team. Delivered fast with a shareable WhatsApp live link.',
+    'Order custom 3D animated wish cards and wedding invitations crafted by our design team. Fast delivery with shareable WhatsApp link.',
   keywords: [
     'custom card design',
     'bespoke wedding invitation',

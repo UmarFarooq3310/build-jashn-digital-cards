@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Terms of Service & Acceptable Use Policy | Cardzy',
   description:
-    'Read the official Terms of Service and Acceptable Use Policy for Cardzy digital wish cards, wedding invitation platforms, and digital business cards.',
+    "Review Cardzy's Terms of Service, acceptable use guidelines, limitation of liability, and service agreement for digital invitations.",
   keywords: [
     'terms of service',
     'acceptable use policy',

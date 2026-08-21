@@ -1117,6 +1117,7 @@ export default function AdminPortalPage() {
                             </Link>
                             <Link
                               href={`/create-invitation?edit=${inv.slug}`}
+                              rel="nofollow"
                               className="p-1.5 rounded-lg bg-amber-500/10 text-amber-700 hover:bg-amber-500/20 text-xs font-bold flex items-center gap-1"
                               title="Edit Invitation"
                             >
@@ -1203,6 +1204,7 @@ export default function AdminPortalPage() {
                             </Link>
                             <Link
                               href={`/create-wish?edit=${w.slug}`}
+                              rel="nofollow"
                               className="p-1.5 rounded-lg bg-amber-500/10 text-amber-700 hover:bg-amber-500/20 text-xs font-bold flex items-center gap-1"
                               title="Edit Wish"
                             >

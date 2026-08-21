@@ -6,7 +6,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs'
 export const metadata: Metadata = {
   title: 'Terms of Service | Cardzy',
   description:
-    'Terms of Service and Conditions for Cardzy Digital Solutions (cardzy.online). Review our usage policies, limitation of liability, and service agreement.',
+    "Review Cardzy's Terms of Service, acceptable use guidelines, limitation of liability, and service agreement for digital invitations.",
   alternates: { canonical: 'https://cardzy.online/terms-of-service' },
   robots: { index: true, follow: true },
 }

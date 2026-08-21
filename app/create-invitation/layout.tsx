@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Create Wedding Invitations with WhatsApp RSVP | Cardzy',
   description:
-    'Design 4K animated wedding invitations for Nikkah, Mehndi, Barat & Walima with Google Maps directions, music, and instant WhatsApp RSVP tracking.',
+    'Design 4K animated wedding invitations for Nikkah, Mehndi, Barat & Walima with Google Maps, music, and instant WhatsApp RSVP tracking.',
   keywords: [
     'digital wedding invitation',
     'Pakistani wedding card maker',

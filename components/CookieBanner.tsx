@@ -335,7 +335,7 @@ export function CookieBanner() {
                     </div>
                     <p className="text-xs text-zinc-400 leading-relaxed">
                       Enables relevant ads that support free card generation. See our{' '}
-                      <Link href="/cookies" onClick={closeModal} className="text-amber-400 hover:underline">Cookie Policy</Link>.
+                      <Link href="/cookies" onClick={closeModal} className="text-amber-400 hover:underline">Read Full Cookie Policy</Link>.
                     </p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer shrink-0 mt-1">

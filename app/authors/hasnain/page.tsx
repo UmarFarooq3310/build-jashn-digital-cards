@@ -5,28 +5,21 @@ import { Award, BookOpen, ExternalLink, GraduationCap, MapPin, CheckCircle2, Shi
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 
-interface PageProps {
-  searchParams?: Promise<{ lang?: string }>
-}
+export const dynamic = 'force-static'
 
-export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
-  const resolvedSearchParams = searchParams ? await searchParams : {}
-  const lang = resolvedSearchParams.lang
-
-  return {
-    title: 'Hasnain — Creative & Cultural Events Editor | Cardzy',
-    description:
-      'Hasnain is the Creative & Cultural Events Editor at Cardzy. Author of authoritative guides on 3D animated greeting cards, festive e-cards, and digital celebration etiquette.',
-    keywords: [
-      'Hasnain Cardzy',
-      'holiday ecards editor',
-      '3D greeting card author',
-      'digital celebration etiquette',
-      'Cardzy authors',
-    ],
-    alternates: getPageAlternates('/authors/hasnain', lang),
-    robots: PUBLIC_ROBOTS,
-  }
+export const metadata: Metadata = {
+  title: 'Hasnain — Creative & Cultural Events Editor | Cardzy',
+  description:
+    'Hasnain is Creative Events Editor at Cardzy, crafting guides on 3D animated holiday e-cards, party invites, and digital card etiquette.',
+  keywords: [
+    'Hasnain Cardzy',
+    'holiday ecards editor',
+    '3D greeting card author',
+    'digital celebration etiquette',
+    'Cardzy authors',
+  ],
+  alternates: getPageAlternates('/authors/hasnain'),
+  robots: PUBLIC_ROBOTS,
 }
 
 // ── Person Structured Data (Schema.org E-E-A-T) ──────────────────────────────
@@ -42,7 +35,7 @@ const personJsonLd = {
   },
   image: 'https://cardzy.online/authors/hasnain.svg',
   description:
-    'Creative & Cultural Events Editor at Cardzy specializing in 3D animated greeting cards, cross-cultural celebrations across 18 languages, and instant mobile card sharing etiquette.',
+    'Creative Events Editor at Cardzy specializing in 3D animated greeting cards, holiday celebrations in 18 languages, and card etiquette.',
   alumniOf: {
     '@type': 'CollegeOrUniversity',
     name: 'University of Karachi (UoK)',

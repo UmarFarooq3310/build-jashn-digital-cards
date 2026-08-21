@@ -3,7 +3,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'About Us | Cardzy',
-  description: 'Learn about Cardzy Digital Solutions — our mission to provide animated digital invitations, greeting cards, and WhatsApp RSVP management with a commitment to privacy and family-safe content.',
+  description: 'Learn about Cardzy — creating 3D animated cards, online wedding invitations with WhatsApp RSVP, and smart visiting cards in 18 languages.',
   keywords: [
     'about Cardzy',
     'digital cards platform',

@@ -386,6 +386,17 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.cardzy.online',
+          },
+        ],
+        destination: 'https://cardzy.online/:path*',
+        permanent: true,
+      },
+      {
         source: '/about-us',
         destination: '/about',
         permanent: true,

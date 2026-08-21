@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Disclaimer & Legal Notice | Cardzy',
   description:
-    'Read Cardzy’s official disclaimer regarding digital services, interactive 3D cards, user-generated content, advertising disclosures, and website terms.',
+    'Official disclaimer for Cardzy regarding digital services, 3D animated cards, user content, advertising, and terms of service.',
   keywords: [
     'Cardzy disclaimer',
     'legal notice',

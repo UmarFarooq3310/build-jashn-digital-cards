@@ -6,7 +6,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs'
 export const metadata: Metadata = {
   title: 'Cookie Policy | Cardzy',
   description:
-    'Learn how Cardzy uses cookies and similar technologies to enhance your experience, analyze traffic, and serve relevant ads. Find out how to manage your preferences.',
+    'Learn how Cardzy uses essential, analytics, and Google AdSense advertising cookies, plus how to manage your cookie preferences.',
   alternates: { canonical: 'https://cardzy.online/cookies' },
   robots: { index: true, follow: true },
 }
@@ -17,7 +17,7 @@ const cookieJsonLd = {
   name: 'Cookie Policy — Cardzy',
   url: 'https://cardzy.online/cookies',
   description:
-    'Cardzy cookie policy explaining essential, analytics, and advertising cookies, third-party vendors, and how users can manage their preferences.',
+    'Cardzy cookie policy explaining essential, analytics, and advertising cookies, and how users can easily manage their preferences.',
   publisher: {
     '@type': 'Organization',
     name: 'Cardzy',
@@ -341,7 +341,7 @@ export default function CookiesPage() {
                   rel="noopener noreferrer"
                   className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-0.5"
                 >
-                  Google Ad Settings <ExternalLink className="size-3" />
+                  Google Ad Preferences Portal <ExternalLink className="size-3" />
                 </a>
                 .
               </p>
@@ -625,7 +625,7 @@ export default function CookiesPage() {
                   href="/privacy-policy"
                   className="text-amber-600 dark:text-amber-400 font-semibold hover:underline"
                 >
-                  Privacy Policy
+                  Complete Privacy Policy Document
                 </Link>
                 .
               </p>

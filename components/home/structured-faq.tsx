@@ -1,4 +1,7 @@
+'use client'
+
 import { HelpCircle, ChevronDown, Sparkles, ShieldCheck, Leaf, Smartphone, MessageCircle, Link2 } from 'lucide-react'
+import { useLang } from '@/lib/lang/context'
 
 export interface FAQItem {
   id: string
@@ -47,6 +50,9 @@ export const STRUCTURED_FAQS = [
 ]
 
 export function StructuredFaqSection() {
+  const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
+
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -75,18 +81,18 @@ export function StructuredFaqSection() {
         {/* Section Header */}
         <div className="text-center space-y-3 max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
-            <HelpCircle className="size-3.5" /> High-Value Knowledge Base
+            <HelpCircle className="size-3.5" /> {t('faqKicker') || 'High-Value Knowledge Base'}
           </div>
 
           <h2
             id="faq-heading"
-            className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight"
+            className={`text-2xl sm:text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight ${isUrdu ? 'font-urdu leading-[2]' : ''}`}
           >
-            Frequently Asked Questions About Digital Invitations &amp; Cards
+            {t('faqsMainHeading') || 'Frequently Asked Questions About Digital Invitations & Cards'}
           </h2>
 
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Everything you need to know about animated digital cards, 1-click WhatsApp RSVP tracking, data security, mobile compatibility, and eco-friendly event planning.
+          <p className={`text-sm sm:text-base text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-base' : ''}`}>
+            {t('faqSubDesc') || 'Everything you need to know about animated digital cards, 1-click WhatsApp RSVP tracking, data security, mobile compatibility, and eco-friendly event planning.'}
           </p>
         </div>
 

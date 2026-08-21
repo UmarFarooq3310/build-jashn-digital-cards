@@ -5,28 +5,21 @@ import { Award, BookOpen, ExternalLink, GraduationCap, MapPin, CheckCircle2, Shi
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 
-interface PageProps {
-  searchParams?: Promise<{ lang?: string }>
-}
+export const dynamic = 'force-static'
 
-export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
-  const resolvedSearchParams = searchParams ? await searchParams : {}
-  const lang = resolvedSearchParams.lang
-
-  return {
-    title: 'Umar Farooq — Senior Cultural Event & Wedding Stylist | Cardzy',
-    description:
-      'Umar Farooq is the Senior Cultural Event & Wedding Stylist at Cardzy. Author of authoritative guides on Pakistani wedding invitations, Urdu Nastaliq calligraphy, and WhatsApp RSVP management.',
-    keywords: [
-      'Umar Farooq Cardzy',
-      'Pakistani wedding card stylist',
-      'wedding invitation wording author',
-      'Islamic wedding card expert',
-      'Cardzy authors',
-    ],
-    alternates: getPageAlternates('/authors/umar-farooq', lang),
-    robots: PUBLIC_ROBOTS,
-  }
+export const metadata: Metadata = {
+  title: 'Umar Farooq — Senior Cultural Event & Wedding Stylist | Cardzy',
+  description:
+    'Umar Farooq is Senior Wedding Stylist at Cardzy, authoring guides on Pakistani wedding cards, Urdu calligraphy, and WhatsApp RSVP tech.',
+  keywords: [
+    'Umar Farooq Cardzy',
+    'Pakistani wedding card stylist',
+    'wedding invitation wording author',
+    'Islamic wedding card expert',
+    'Cardzy authors',
+  ],
+  alternates: getPageAlternates('/authors/umar-farooq'),
+  robots: PUBLIC_ROBOTS,
 }
 
 // ── Person Structured Data (Schema.org E-E-A-T) ──────────────────────────────
@@ -42,7 +35,7 @@ const personJsonLd = {
   },
   image: 'https://cardzy.online/authors/umar-farooq.svg',
   description:
-    'Senior Cultural Event & Wedding Stylist at Cardzy specializing in South Asian and Islamic wedding traditions, bilingual Urdu/English wording etiquette, and digital RSVP technology.',
+    'Senior Wedding Stylist at Cardzy specializing in South Asian and Islamic wedding traditions, Urdu/English wording, and RSVP tech.',
   alumniOf: {
     '@type': 'CollegeOrUniversity',
     name: 'National University of Sciences and Technology (NUST)',

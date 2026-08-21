@@ -29,10 +29,11 @@ export function Hero() {
             
             <Link
               href="/create-wish"
+              aria-label="Browse 3D Animated Wish Cards"
               className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-sm hover:bg-emerald-500/20 transition-all"
             >
               <Sparkles className="size-3.5 text-emerald-500 animate-bounce" />
-              <span>{t('createWishCard')} →</span>
+              <span>{t('exploreAllCards') || 'Browse 3D Cards'} →</span>
             </Link>
           </div>
 
@@ -73,6 +74,7 @@ export function Hero() {
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link
               href="/create-wish"
+              aria-label="Start Designing 3D Digital Wish Card"
               className={buttonVariants({ size: 'lg', className: 'h-13 px-6 text-sm sm:text-base font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-950/20 rounded-2xl' })}
             >
               <Sparkles className="size-4 text-amber-300" />
@@ -81,6 +83,7 @@ export function Hero() {
             </Link>
             <Link
               href="/create-invitation"
+              aria-label="Build Royal Wedding Invitation with WhatsApp RSVP"
               className={buttonVariants({
                 size: 'lg',
                 variant: 'outline',
@@ -92,9 +95,10 @@ export function Hero() {
             </Link>
             <Link
               href="/create-visiting-card"
+              aria-label="Create Executive Smart Digital Visiting Card"
               className="inline-flex min-h-[48px] items-center gap-1 text-sm font-bold text-muted-foreground hover:text-foreground px-3 py-2 underline underline-offset-4"
             >
-              <span>Smart vCards →</span>
+              <span>Create Smart vCards →</span>
             </Link>
           </div>
 

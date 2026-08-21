@@ -171,10 +171,10 @@ export function ConciergeService() {
         {mode === 'form' ? (
           <div className="rounded-3xl border border-emerald-500/30 bg-slate-900/80 p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-white/10">
-              <h3 className="text-lg font-extrabold text-emerald-300 flex items-center gap-2">
+              <p className="text-lg font-extrabold text-emerald-300 flex items-center gap-2">
                 <Sparkles className="size-5 text-amber-400" />
-                <span>{t('simpleDetailsFormTitle') || 'Simple Details Form (No design selection needed)'}</span>
-              </h3>
+                <span>{t('conciergeCustomFormTitle') || 'Request Custom Card Design'}</span>
+              </p>
               <span className="text-xs text-slate-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">
                 {t('freeCustomCreationBadge') || '100% Free Custom Creation'}
               </span>
@@ -376,9 +376,9 @@ export function ConciergeService() {
                 <div className="size-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-extrabold text-lg">
                   1
                 </div>
-                <h3 className={cn("font-bold text-lg text-white", isUrdu && "font-urdu text-xl leading-relaxed")}>
+                <p className={cn("font-bold text-lg text-white", isUrdu && "font-urdu text-xl leading-relaxed")}>
                   {t('conciergeStep1Title') || "1. Send Details"}
-                </h3>
+                </p>
                 <p className={cn("text-xs text-slate-300 leading-relaxed", isUrdu && "font-urdu text-sm leading-[2.1]")}>
                   {t('conciergeStep1Desc') || "Send us event names, dates, venue location pins, wish text, or business visiting card info on WhatsApp or Email."}
                 </p>
@@ -388,9 +388,9 @@ export function ConciergeService() {
                 <div className="size-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-extrabold text-lg">
                   2
                 </div>
-                <h3 className={cn("font-bold text-lg text-white", isUrdu && "font-urdu text-xl leading-relaxed")}>
+                <p className={cn("font-bold text-lg text-white", isUrdu && "font-urdu text-xl leading-relaxed")}>
                   {t('conciergeStep2Title') || "2. Expert Custom Design"}
-                </h3>
+                </p>
                 <p className={cn("text-xs text-slate-300 leading-relaxed", isUrdu && "font-urdu text-sm leading-[2.1]")}>
                   {t('conciergeStep2Desc') || "Our expert designer team crafts your customized animated invitation, wish card, or digital visiting card."}
                 </p>
@@ -400,9 +400,9 @@ export function ConciergeService() {
                 <div className="size-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-extrabold text-lg">
                   3
                 </div>
-                <h3 className={cn("font-bold text-lg text-white", isUrdu && "font-urdu text-xl leading-relaxed")}>
+                <p className={cn("font-bold text-lg text-white", isUrdu && "font-urdu text-xl leading-relaxed")}>
                   {t('conciergeStep3Title') || "3. Get Your Live Link"}
-                </h3>
+                </p>
                 <p className={cn("text-xs text-slate-300 leading-relaxed", isUrdu && "font-urdu text-sm leading-[2.1]")}>
                   {t('conciergeStep3Desc') || "We send your ready-to-share WhatsApp link back in minutes so you can send it to guests or clients!"}
                 </p>

@@ -30,9 +30,9 @@ export function Footer() {
 
           {/* Column 1: Products */}
           <div className="space-y-3">
-            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-400">
+            <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-400">
               Digital Cards
-            </h3>
+            </p>
             <ul className="space-y-2 text-xs sm:text-sm text-emerald-200/80">
               <li>
                 <a href="/create-wish" className="hover:text-amber-300 transition-colors inline-flex items-center min-h-[48px] py-1">
@@ -59,9 +59,9 @@ export function Footer() {
 
           {/* Column 2: Guides & Ideas */}
           <div className="space-y-3">
-            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-400">
+            <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-400">
               Celebration Guides
-            </h3>
+            </p>
             <ul className="space-y-2 text-xs sm:text-sm text-emerald-200/80">
               <li>
                 <a href="/guide/eid-wording-ideas" className="hover:text-amber-300 transition-colors inline-flex items-center min-h-[48px] py-1">
@@ -93,9 +93,9 @@ export function Footer() {
 
           {/* Column 3: Company & Legal (Crawlable standard anchor tags) */}
           <div className="space-y-3">
-            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-400">
+            <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-400">
               Company &amp; Legal
-            </h3>
+            </p>
             <ul className="space-y-2 text-xs sm:text-sm text-emerald-200/80">
               <li>
                 <a href="/contact" className="hover:text-amber-300 transition-colors inline-flex items-center min-h-[48px] py-1">
@@ -131,29 +131,12 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar with Standard Anchor Tags */}
-        <div className="mt-8 border-t border-emerald-900/60 pt-6 text-center text-xs sm:text-sm text-emerald-200/70 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+        {/* Bottom Bar */}
+        <div className="mt-8 border-t border-emerald-900/60 pt-6 text-center text-xs sm:text-sm text-emerald-200/70 flex flex-wrap items-center justify-between gap-4">
           <span>&copy; {new Date().getFullYear()} Cardzy Digital Solutions. All rights reserved.</span>
-          <span>•</span>
-          <a href="/contact" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">
-            Contact Us
-          </a>
-          <span>•</span>
-          <a href="/about" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">
-            About Us
-          </a>
-          <span>•</span>
-          <a href="/privacy-policy" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">
-            Privacy Policy
-          </a>
-          <span>•</span>
-          <a href="/cookies" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">
-            Cookie Policy
-          </a>
-          <span>•</span>
-          <a href="/terms-of-service" className="hover:text-amber-400 underline py-2 min-h-[48px] flex items-center px-1">
-            Terms of Service
-          </a>
+          <span className="text-xs text-emerald-300/60">
+            Smart digital celebration cards &amp; contactless executive business vCards.
+          </span>
         </div>
       </div>
     </footer>

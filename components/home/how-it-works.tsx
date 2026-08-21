@@ -62,9 +62,9 @@ export function HowItWorks() {
               <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 font-extrabold text-base border border-teal-500/20">
                 1
               </span>
-              <h3 className="font-bold text-foreground text-sm sm:text-base">
+              <p className="font-bold text-foreground text-sm sm:text-base">
                 Choose Format &amp; Occasion
-              </h3>
+              </p>
             </div>
             <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
               Select 3D animated wish cards, royal wedding invitations with WhatsApp RSVP, or contactless executive smart vCards across 34+ celebration themes.
@@ -77,9 +77,9 @@ export function HowItWorks() {
               <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-extrabold text-base border border-amber-500/20">
                 2
               </span>
-              <h3 className="font-bold text-foreground text-sm sm:text-base">
+              <p className="font-bold text-foreground text-sm sm:text-base">
                 Personalize Photos &amp; Music
-              </h3>
+              </p>
             </div>
             <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
               Upload photos, add synthesized background music (shehnai, dholki, chimes), write custom messages in 18 languages, and attach event venue map links.
@@ -92,9 +92,9 @@ export function HowItWorks() {
               <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-base border border-emerald-500/20">
                 3
               </span>
-              <h3 className="font-bold text-foreground text-sm sm:text-base">
+              <p className="font-bold text-foreground text-sm sm:text-base">
                 Share &amp; Track WhatsApp RSVPs
-              </h3>
+              </p>
             </div>
             <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
               Share directly via WhatsApp, SMS, or QR code. Guests unbox an interactive 3D card on their phone and confirm attendance with real-time RSVP updates.
@@ -108,7 +108,7 @@ export function HowItWorks() {
             <span className="inline-block bg-teal-800 text-white px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase mb-1">
               {t('pricing')}
             </span>
-            <h3 className="text-lg font-extrabold text-foreground">{t('simpleTransparentPricing')}</h3>
+            <p className="text-lg font-extrabold text-foreground">{t('simpleTransparentPricing')}</p>
           </div>
           
           <div className="grid gap-6 md:grid-cols-2">

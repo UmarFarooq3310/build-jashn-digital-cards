@@ -6,7 +6,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs'
 export const metadata: Metadata = {
   title: 'Privacy Policy | Cardzy',
   description:
-    'Read the Cardzy Privacy Policy. Learn how Cardzy Digital Solutions collects, uses, and protects personal data, and how Google AdSense uses cookies for advertising.',
+    "Read Cardzy's Privacy Policy. Learn how we protect personal data, enforce Google AdSense & GDPR compliance, and manage cookies securely.",
   alternates: { canonical: 'https://cardzy.online/privacy-policy' },
   robots: { index: true, follow: true },
 }
@@ -156,7 +156,7 @@ export default function PrivacyPolicyPage() {
                 <li>
                   <strong className="text-foreground">Ad Personalization:</strong> Manage your ad preferences directly via{' '}
                   <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="text-emerald-700 dark:text-emerald-400 underline">
-                    Google Ad Settings
+                    Google Ad Personalization Controls
                   </a>.
                 </li>
               </ul>
@@ -185,7 +185,7 @@ export default function PrivacyPolicyPage() {
                 <li>Right to data portability.</li>
               </ul>
               <p className="pt-1">
-                To exercise any of these rights, email us at <a href="mailto:cardzyonline@gmail.com" className="text-emerald-700 dark:text-emerald-400 font-bold hover:underline">cardzyonline@gmail.com</a>. We will process your request within 30 days free of charge.
+                To exercise any of these rights, email us at <a href="mailto:cardzyonline@gmail.com" className="text-emerald-700 dark:text-emerald-400 font-bold hover:underline">our privacy desk at cardzyonline@gmail.com</a>. We will process your request within 30 days free of charge.
               </p>
             </section>
 
@@ -200,7 +200,7 @@ export default function PrivacyPolicyPage() {
               </p>
               <div className="rounded-xl border border-border/80 bg-muted/30 p-4 space-y-1 text-xs sm:text-sm">
                 <p><strong>Cardzy Digital Solutions</strong></p>
-                <p><strong>Support Email:</strong> <a href="mailto:cardzyonline@gmail.com" className="text-emerald-700 dark:text-emerald-400 underline">cardzyonline@gmail.com</a></p>
+                <p><strong>Support Email:</strong> <a href="mailto:cardzyonline@gmail.com" className="text-emerald-700 dark:text-emerald-400 underline">Email us at cardzyonline@gmail.com</a></p>
                 <p><strong>Contact Page:</strong> <Link href="/contact" className="text-emerald-700 dark:text-emerald-400 underline">cardzy.online/contact</Link></p>
                 <p><strong>Response Time:</strong> Within 24–48 business hours</p>
               </div>

@@ -285,9 +285,9 @@ export function CategoryTabs() {
                   <Sparkles className="size-3.5 text-emerald-500" />
                   {t('globalCelebrations') || 'World Holidays & Global Days'}
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight pt-1">
+                <p className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight pt-1">
                   {t('worldHolidaysTitle') || 'Celebrate Holidays & Traditions Worldwide'}
-                </h3>
+                </p>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   {t('worldHolidaysDesc') || 'From Christmas & Thanksgiving to Diwali, Lunar New Year & Hanukkah, send elegant digital greeting cards across borders.'}
                 </p>
@@ -301,6 +301,7 @@ export function CategoryTabs() {
                       key={o.id}
                       href={`/create-wish?occasion=${o.id}`}
                       rel="nofollow"
+                      aria-label={`Create ${getOccasionLabel(o, lang, t)} Card`}
                       className={cn(
                         "group relative flex flex-col justify-between p-6 rounded-3xl border bg-gradient-to-br transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl overflow-hidden",
                         theme.bg
@@ -316,9 +317,9 @@ export function CategoryTabs() {
                           </span>
                         </div>
 
-                        <h4 className="text-lg font-bold text-foreground tracking-tight group-hover:text-primary transition-colors">
+                        <p className="text-lg font-bold text-foreground tracking-tight group-hover:text-primary transition-colors">
                           {getOccasionLabel(o, lang, t)}
-                        </h4>
+                        </p>
                         <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
                           {getOccasionTagline(o, lang, t)}
                         </p>
@@ -326,7 +327,7 @@ export function CategoryTabs() {
 
                       <div className="mt-6 pt-4 border-t border-border/50 flex items-center justify-between text-xs font-extrabold">
                         <span className={cn("inline-flex items-center gap-1.5 transition-all group-hover:translate-x-1", theme.btnColor)}>
-                          {t('sendWishCardBtn') || 'Create & Send Card'}
+                          <span>{t('createCardFor') || 'Send'} {getOccasionLabel(o, lang, t)} Card</span>
                           <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
                         </span>
                         <span className="text-[10px] font-bold text-muted-foreground/70 uppercase">
@@ -348,9 +349,9 @@ export function CategoryTabs() {
                   <Gem className="size-3.5 text-teal-500" />
                   {t('weddings') || 'Weddings & Celebrations'}
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight pt-1">
+                <p className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight pt-1">
                   {t('celebrateLoveTogetherness') || 'Celebrate Love & Eternal Togetherness'}
-                </h3>
+                </p>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   {t('weddingCardsDesc') || 'Design royal Nikah, Mehndi, Baraat, Walima & Engagement digital cards with live countdown, maps & instant WhatsApp RSVP.'}
                 </p>
@@ -375,6 +376,7 @@ export function CategoryTabs() {
                       key={o.id}
                       href={`/create-wish?occasion=${o.id}`}
                       rel="nofollow"
+                      aria-label={`Create ${t(`occ_${o.id.replace(/-/g, "_")}`) || o.label} Card`}
                       className={cn(
                         "group relative flex flex-col justify-between p-6 rounded-3xl border bg-gradient-to-br transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl overflow-hidden",
                         bgClass
@@ -390,9 +392,9 @@ export function CategoryTabs() {
                           </span>
                         </div>
 
-                        <h4 className="text-lg font-bold text-foreground tracking-tight group-hover:text-teal-600 transition-colors">
+                        <p className="text-lg font-bold text-foreground tracking-tight group-hover:text-teal-600 transition-colors">
                           {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
-                        </h4>
+                        </p>
                         <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
                           {t('weddingCardDescriptionText') || 'Animated card with customizable music, couple names & royal themes.'}
                         </p>
@@ -400,7 +402,7 @@ export function CategoryTabs() {
 
                       <div className="mt-6 pt-4 border-t border-border/50 flex items-center justify-between text-xs font-extrabold">
                         <span className="inline-flex items-center gap-1.5 text-teal-600 dark:text-teal-400 group-hover:translate-x-1 transition-transform">
-                          {t('orderCardBtn') || 'Create Wedding Card'} <ArrowRight className="size-3.5" />
+                          <span>{t('createCardFor') || 'Create'} {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label} Card</span> <ArrowRight className="size-3.5" />
                         </span>
                         <span className="text-[10px] font-bold text-muted-foreground/70 uppercase">
                           {t('rsvpPlusMapsBadge') || 'RSVP + Maps'}
@@ -426,9 +428,9 @@ export function CategoryTabs() {
                       </span>
                     </div>
 
-                    <h4 className="text-lg font-extrabold text-amber-800 dark:text-amber-300 tracking-tight">
+                    <p className="text-lg font-extrabold text-amber-800 dark:text-amber-300 tracking-tight">
                       {t('mughalMehndiTitle') || 'Mughal Royal Mehndi Invitation'}
-                    </h4>
+                    </p>
                     <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
                       {t('mughalMehndiDesc') || 'Full event invitation page with Dholki music, Google Maps, RSVP counter & countdown timer.'}
                     </p>
@@ -455,11 +457,11 @@ export function CategoryTabs() {
                   <Cake className="size-4 text-pink-500" />
                   {t('birthdays') || 'Birthdays & Milestones'}
                 </span>
-                <h3 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground pt-1">
+                <p className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground pt-1">
                   <span className="bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 dark:from-pink-400 dark:via-purple-300 dark:to-indigo-300 bg-clip-text text-transparent">
                     {t('vibrantBirthdayTitle') || 'Vibrant Animated Birthday Greetings'}
                   </span> 🎉
-                </h3>
+                </p>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   {t('vibrantBirthdayDesc') || 'Send sweet, colorful birthday wishes to your friends, family, and loved ones with animated cake candles, playful sparkles, custom music & photo frames.'}
                 </p>
@@ -514,6 +516,8 @@ export function CategoryTabs() {
                   <div className="pt-2 flex flex-wrap items-center gap-3">
                     <Link
                       href="/create-wish?occasion=birthday"
+                      rel="nofollow"
+                      aria-label="Create Personalized Birthday Greeting Card"
                       className="inline-flex h-12 items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:opacity-95 px-7 text-xs sm:text-sm font-black text-white transition-all shadow-lg hover:shadow-pink-500/25 active:scale-98"
                     >
                       <span>{t('createBirthdayCard') || 'Create Birthday Card'}</span>
@@ -521,6 +525,8 @@ export function CategoryTabs() {
                     </Link>
                     <Link
                       href="/create-wish?occasion=birthday"
+                      rel="nofollow"
+                      aria-label="Create Milestone Birthday Card (18th, 21st, 50th)"
                       className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 px-5 text-xs sm:text-sm font-extrabold text-purple-700 dark:text-purple-300 transition-all"
                     >
                       <span>{t('milestoneBirthdayBtn') || 'Milestone Birthday (18th/21st/50th)'}</span>
@@ -559,9 +565,9 @@ export function CategoryTabs() {
                 <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-extrabold tracking-wider bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 uppercase">
                   {t('digitalBusinessVisitingCards') || '💼 Digital Business & Visiting Cards'}
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground pt-1">
+                <p className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground pt-1">
                   {t('smartDigitalVisitingCardsTitle') || 'Smart Digital Visiting Cards with 1-Click Contact Download (.vcf)'}
-                </h3>
+                </p>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   {t('smartDigitalVisitingCardsDesc') || 'Create executive, tech, medical, legal, and real estate digital business cards. Include phone, WhatsApp, Google Maps pin, social profiles, and 1-click Save Contact feature!'}
                 </p>
@@ -633,9 +639,9 @@ export function CategoryTabs() {
                   <Heart className="size-3.5 text-pink-500 fill-pink-500 animate-pulse" />
                   {t('internationalFriendshipDay') || '💕 International Friendship Day 💖'}
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight pt-1">
+                <p className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight pt-1">
                   {t('celebrateFriendshipDayTitle') || 'Celebrate Friendship Day!'}
-                </h3>
+                </p>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   {t('celebrateFriendshipDayDesc') || 'Send personalized 3D animated wish cards, family & friend photo frames, custom music, and heartfelt messages to your best friends on WhatsApp, Instagram, or email.'}
                 </p>
@@ -649,6 +655,7 @@ export function CategoryTabs() {
                       key={o.id}
                       href={`/create-wish?occasion=${o.id}`}
                       rel="nofollow"
+                      aria-label={`Create ${t(`occ_${o.id.replace(/-/g, "_")}`) || o.label} Friendship Card`}
                       className={cn(
                         "group relative flex flex-col justify-between p-6 rounded-3xl border bg-gradient-to-br transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl overflow-hidden",
                         theme.bg
@@ -664,9 +671,9 @@ export function CategoryTabs() {
                           </span>
                         </div>
 
-                        <h4 className="text-lg font-bold text-foreground tracking-tight group-hover:text-rose-600 transition-colors">
+                        <p className="text-lg font-bold text-foreground tracking-tight group-hover:text-rose-600 transition-colors">
                           {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
-                        </h4>
+                        </p>
                         <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
                           {t('friendshipFeat') || 'Send personalized note cards with heartfelt greetings & music.'}
                         </p>
@@ -674,7 +681,7 @@ export function CategoryTabs() {
 
                       <div className="mt-6 pt-4 border-t border-border/50 flex items-center justify-between text-xs font-extrabold">
                         <span className={cn("inline-flex items-center gap-1.5 transition-all group-hover:translate-x-1", theme.btnColor)}>
-                          {t('writeNote') || 'Write Heartfelt Note'} <ArrowRight className="size-3.5" />
+                          <span>{t('writeNoteFor') || 'Write'} {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label} Note</span> <ArrowRight className="size-3.5" />
                         </span>
                         <span className="text-[10px] font-bold text-muted-foreground/70 uppercase">
                           {t('heartfeltCardBadge') || 'Heartfelt Card'}
@@ -695,9 +702,9 @@ export function CategoryTabs() {
                   <Award className="size-3.5 text-amber-500" />
                   {t('festivals') || 'Festivals & Achievements'}
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight pt-1">
+                <p className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight pt-1">
                   {t('celebrateFestivalsMilestones') || 'Celebrate Religious Festivals & Major Achievements'}
-                </h3>
+                </p>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   {t('celebrateFestivalsDesc') || 'Send Eid, Ramadan, Jumma, Hajj, Graduation, New Job, Promotion & Housewarming cards instantly.'}
                 </p>
@@ -714,6 +721,7 @@ export function CategoryTabs() {
                       key={o.id}
                       href={`/create-wish?occasion=${o.id}`}
                       rel="nofollow"
+                      aria-label={`Create ${t(`occ_${o.id.replace(/-/g, "_")}`) || o.label} Card`}
                       className="group flex items-center gap-3 rounded-2xl border border-emerald-500/20 bg-card p-3.5 transition-all hover:border-emerald-500 hover:shadow-md hover:-translate-y-0.5"
                     >
                       <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-xs">
@@ -723,7 +731,9 @@ export function CategoryTabs() {
                         <span className="text-xs font-bold text-foreground leading-tight block group-hover:text-emerald-600 truncate">
                           {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
                         </span>
-                        <span className="text-[10px] text-muted-foreground font-medium">{t('sendWishCardSub') || 'Send Wish Card'}</span>
+                        <span className="text-[10px] text-muted-foreground font-medium">
+                          {t('sendGreetingsTo') || 'Send'} {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
+                        </span>
                       </div>
                     </Link>
                   ))}
@@ -741,6 +751,7 @@ export function CategoryTabs() {
                       key={o.id}
                       href={`/create-wish?occasion=${o.id}`}
                       rel="nofollow"
+                      aria-label={`Create ${t(`occ_${o.id.replace(/-/g, "_")}`) || o.label} Milestone Card`}
                       className="group flex items-center gap-3 rounded-2xl border border-amber-500/20 bg-card p-3.5 transition-all hover:border-amber-500 hover:shadow-md hover:-translate-y-0.5"
                     >
                       <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 group-hover:bg-amber-500 group-hover:text-slate-950 transition-all shadow-xs">
@@ -750,7 +761,9 @@ export function CategoryTabs() {
                         <span className="text-xs font-bold text-foreground leading-tight block group-hover:text-amber-600 truncate">
                           {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
                         </span>
-                        <span className="text-[10px] text-muted-foreground font-medium">{t('congratulateSub') || 'Congratulate'}</span>
+                        <span className="text-[10px] text-muted-foreground font-medium">
+                          {t('congratulateOn') || 'Celebrate'} {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
+                        </span>
                       </div>
                     </Link>
                   ))}

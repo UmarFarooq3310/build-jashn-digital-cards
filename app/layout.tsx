@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
   title: 'Cardzy — 3D Digital Cards, Wedding Invitations & Smart vCards',
   description:
-    'Design, customize, and share interactive 3D digital wish cards, wedding invitations with automated WhatsApp RSVP tracking, and executive smart digital business cards (vCards) in 18 languages.',
+    'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP, and smart digital business cards in 18 languages with Cardzy.',
   keywords: DEFAULT_KEYWORDS,
   authors: [{ name: 'Cardzy Editorial Team', url: 'https://cardzy.online' }],
   creator: SITE_CREATOR,
@@ -99,7 +99,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Cardzy | 3D Animated Digital Wish Cards & Wedding Invitations',
     description:
-      'Create personalized 3D animated wish cards, wedding invitations with RSVP, and executive digital visiting cards.',
+      'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP, and executive digital visiting cards with Cardzy.',
     images: ['/og-image.jpg'],
   },
 }

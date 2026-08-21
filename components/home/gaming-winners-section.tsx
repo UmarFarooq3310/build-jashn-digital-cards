@@ -139,9 +139,9 @@ export function GamingWinnersSection() {
 
                   {/* Title & Tagline */}
                   <div className="space-y-1 text-left">
-                    <h3 className={`text-xl font-extrabold text-white group-hover:text-amber-300 transition-colors ${isUrdu ? 'font-urdu text-2xl leading-relaxed text-right' : ''}`}>
+                    <p className={`text-xl font-extrabold text-white group-hover:text-amber-300 transition-colors ${isUrdu ? 'font-urdu text-2xl leading-relaxed text-right' : ''}`}>
                       {t(card.titleKey, card.titleFallback)}
-                    </h3>
+                    </p>
                     <p className={`text-sm font-bold ${card.accentColor} ${isUrdu ? 'font-urdu text-base leading-relaxed text-right' : ''}`}>
                       "{t(card.taglineKey, card.taglineFallback)}"
                     </p>
@@ -152,9 +152,11 @@ export function GamingWinnersSection() {
                 <div className="pt-6">
                   <Link
                     href={`/create-wish?occasion=${card.slug}`}
+                    rel="nofollow"
+                    aria-label={`Create ${t(card.titleKey, card.titleFallback)} Winner Card`}
                     className={`w-full inline-flex items-center justify-center gap-2 rounded-2xl ${card.btnBg} px-5 py-3 font-black text-xs uppercase tracking-wider shadow-lg transition-all hover:brightness-110 active:scale-95`}
                   >
-                    <span>{t('createWinnerCard') || 'Create Winner Card'}</span>
+                    <span>{t(card.titleKey, card.titleFallback)} {t('winnerCardBtn') || 'Card'}</span>
                     <ArrowRight className="size-4" />
                   </Link>
                 </div>

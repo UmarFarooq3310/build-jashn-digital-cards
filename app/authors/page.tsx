@@ -6,7 +6,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs'
 export const metadata: Metadata = {
   title: 'Editorial Team & Authors | Cardzy',
   description:
-    'Meet the editorial team and cultural stylists at Cardzy Digital Solutions. Expert writers and researchers in wedding styling, event technology, and digital invitation wording.',
+    "Meet Cardzy's editorial team and cultural stylists. Experts in wedding invitation styling, event tech, and digital card wording.",
   alternates: { canonical: 'https://cardzy.online/authors' },
   robots: { index: true, follow: true },
 }
@@ -17,7 +17,7 @@ const authorsJsonLd = {
   name: 'Cardzy Editorial Team & Authors',
   url: 'https://cardzy.online/authors',
   description:
-    'Editorial team at Cardzy Digital Solutions providing expert celebration wording guides, wedding invitation styling, and paperless digital card technology.',
+    'Editorial team at Cardzy providing expert celebration wording guides, wedding invitation styling, and paperless digital card tech.',
   publisher: {
     '@type': 'Organization',
     name: 'Cardzy Digital Solutions',
