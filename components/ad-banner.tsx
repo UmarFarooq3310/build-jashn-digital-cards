@@ -28,7 +28,7 @@ export function AdBanner({ format = 'display', className }: AdBannerProps) {
       if (element.hasAttribute('data-ad-status')) return false
       if (element.hasAttribute('data-adsbygoogle-status')) return false
       if (element.getAttribute('data-adsbygoogle-status') === 'done') return false
-      if (element.children.length > 0) return false
+      if (element.children.length > 0 || element.innerHTML.trim().length > 0) return false
       return true
     }
 
@@ -42,22 +42,6 @@ export function AdBanner({ format = 'display', className }: AdBannerProps) {
       // Ensure element has actual visible dimensions before pushing to AdSense
       const rect = target.getBoundingClientRect()
       if (rect.width <= 0 || target.offsetWidth <= 0) return
-
-      // Check if there is an actual unfilled ins.adsbygoogle in the DOM before pushing
-      const hasUnfilledIns = () => {
-        if (typeof document === 'undefined') return false
-        const allIns = document.querySelectorAll('ins.adsbygoogle')
-        for (let i = 0; i < allIns.length; i++) {
-          const item = allIns[i]
-          const status = item.getAttribute('data-ad-status') || item.getAttribute('data-adsbygoogle-status')
-          if (!status && item.children.length === 0) {
-            return true
-          }
-        }
-        return false
-      }
-
-      if (!hasUnfilledIns()) return
 
       pushedRef.current = true
 
@@ -86,7 +70,7 @@ export function AdBanner({ format = 'display', className }: AdBannerProps) {
     }
 
     // Fallback timer for browsers without IntersectionObserver or fast-scrolling
-    const timer = setTimeout(tryPushAd, 500)
+    const timer = setTimeout(tryPushAd, 800)
 
     return () => {
       if (observer) observer.disconnect()

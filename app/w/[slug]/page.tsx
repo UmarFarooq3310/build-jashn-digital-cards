@@ -287,7 +287,7 @@ function WishPublicContent({ slug }: { slug: string }) {
 
   // ── 2. RECEIVER SCREEN (Clean 100dvh Full-Screen Viewport + Cardzy Make Your Own) ──
   return (
-    <div className="flex min-h-[100dvh] md:h-screen flex-col justify-between items-center relative px-4 py-3 sm:py-4 w-full select-none">
+    <div className="flex min-h-[100dvh] flex-col justify-between items-center relative px-4 py-4 sm:py-6 w-full select-none overflow-y-auto">
       {/* Background Ambient Glow */}
       <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 size-[32rem] rounded-full bg-emerald-500/10 blur-[120px]" />
       <div className="pointer-events-none absolute -bottom-40 left-1/2 -translate-x-1/2 size-[32rem] rounded-full bg-amber-500/10 blur-[120px]" />
@@ -295,8 +295,8 @@ function WishPublicContent({ slug }: { slug: string }) {
       {/* Celebration Effects Rain */}
       {!isSensitive && <ConfettiRain active={rainActive} />}
 
-      {/* Receiver Screen Top Minimal Bar */}
-      <header className="w-full max-w-2xl flex items-center justify-between z-20 py-2 px-4 rounded-full bg-slate-900/50 backdrop-blur-xl border border-white/10 text-white shadow-xl">
+      {/* Receiver Screen Top Minimal Bar (Sticky & never cut off) */}
+      <header className="sticky top-3 w-full max-w-2xl flex items-center justify-between z-30 py-2.5 px-4 rounded-full bg-slate-900/80 backdrop-blur-xl border border-white/15 text-white shadow-2xl shrink-0">
         <Link href="/" className="flex items-center gap-2 group">
           <CardzyLogo className="size-7 transition-transform group-hover:scale-105" />
           <span className="text-sm font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300 bg-clip-text text-transparent">
@@ -314,8 +314,8 @@ function WishPublicContent({ slug }: { slug: string }) {
       </header>
 
       {/* Receiver Screen Main Centered 3D Card Display */}
-      <main className="w-full max-w-4xl lg:max-w-5xl flex-1 flex flex-col items-center justify-center my-auto py-2 sm:py-4 z-10">
-        <div className="w-full flex justify-center">
+      <main className="w-full max-w-4xl lg:max-w-5xl flex-1 flex flex-col items-center justify-center my-auto py-4 sm:py-6 z-10">
+        <div className="w-full flex justify-center py-2">
           <ThreeDCardWrapper
             recipientName={activeWish.recipientName}
             eventTitle={lang === 'ur' ? (occasion?.urdu || occasion?.label || 'مبارک ہو') : (t(`occ_${occasion?.id?.replace(/-/g, '_')}`) || occasion?.label || 'Greetings')}
@@ -333,8 +333,8 @@ function WishPublicContent({ slug }: { slug: string }) {
         </div>
       </main>
 
-      {/* Receiver Screen Footer Control */}
-      <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pb-2 text-center">
+      {/* Receiver Screen Footer Control (Always visible & never cut off) */}
+      <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pt-4 pb-4 text-center shrink-0">
         <div className="flex items-center gap-3 w-full justify-center">
           <button
             onClick={() => setShowShareModal((o) => !o)}

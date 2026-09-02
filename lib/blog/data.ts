@@ -866,45 +866,99 @@ export const BLOG_POSTS: BlogPost[] = [
     publishedAt: '2026-07-18',
     updatedAt: '2026-07-18',
     readTime: '9 min read',
-    wordCount: 1450,
+    wordCount: 1950,
     featuredImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ["Invitation Etiquette","WhatsApp Sharing","Digital RSVP Tips","Wedding Planning","Event Invitation Tips"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'The shift from paper to digital invitations has transformed how we invite loved ones to our most cherished events. But as we embrace the convenience of paperless invites, we must also learn the new rules of engagement. Whether you are sending a stunning animated wedding card or a chic birthday invite through Cardzy, understanding digital etiquette ensures your guests feel truly valued and respected.',
       sections: [
         {
           id: 'digital-invitation-etiquette-whatsapp-social-media-sharing-tips-sec-1',
-          title: '1. Core Features & Key Benefits',
-          body: 'Digital cards and invitation websites eliminate paper waste, delivery delays, and high printing costs. With Cardzy, your cards are instantly shareable across WhatsApp, Instagram Stories, Facebook, and Email in 18 supported languages.',
+          title: '1. The Golden Rules of Timing: When to Hit Send',
+          body: 'Just because digital cards are delivered instantly doesn\'t mean you should delay sending them until the last minute. Traditional timelines still apply to virtual invitations to give your guests ample time to prepare, especially for multi-day South Asian weddings. For major events like weddings and Nikkah ceremonies, aim to send your digital invites 6 to 8 weeks in advance.',
           bulletPoints: [
-            'Full support for 18 global languages including Urdu Nastaliq',
-            '1-click WhatsApp RSVP confirmation button for guests',
-            'Embedded Google Maps venue location pin for easy navigation',
-            'Background music playback and personal photo upload frames'
+            'Save-the-dates should go out 4-6 months before the big day',
+            'Formal wedding invitations: 6-8 weeks prior',
+            'Engagement or Dholki parties: 3-4 weeks prior',
+            'Casual birthday or anniversary dinners: 2-3 weeks ahead'
           ],
-          highlight: 'Try designing your digital card on Cardzy today with our Free Forever Plan!'
+          highlight: 'Cardzy allows you to customize your digital cards instantly, making it easy to hit these crucial timeline milestones without waiting for physical printing.'
         },
         {
           id: 'digital-invitation-etiquette-whatsapp-social-media-sharing-tips-sec-2',
-          title: '2. Styling & Personalisation Best Practices',
-          body: 'Selecting harmonious color palettes, elegant typography, and culturally respectful wording elevates your digital invitation into a memorable keepsake. Cardzy provides pre-written templates in formal Urdu, Arabic duas, and modern English.',
+          title: '2. Personal Messages vs. Group Chats: The WhatsApp Dilemma',
+          body: 'One of the biggest faux pas in digital invitation etiquette is dumping 50 people into a WhatsApp group just to share a link. Not only does this feel impersonal, but the ensuing notification avalanche can annoy your guests. Always opt for direct, one-on-one messages when sharing your digital wedding or event card.',
           bulletPoints: [
-            'Choose animated themes matching your event tone (Mughal Gold, Royal Mehndi, Minimal Tech)',
-            'Include clear event schedules, dress code notes, and host contact numbers'
+            'Avoid creating mass WhatsApp groups solely for invitations',
+            'Use WhatsApp Broadcast lists to send individual messages efficiently',
+            'Add a brief personalized greeting before dropping the Cardzy link',
+            'Never forward a digital card without context—always include a warm introductory text'
+          ]
+        },
+        {
+          id: 'digital-invitation-etiquette-whatsapp-social-media-sharing-tips-sec-3',
+          title: '3. RSVP Etiquette and Follow-Up Protocols',
+          body: 'Digital invitations with integrated RSVPs, like those offered by Cardzy, make tracking attendance incredibly easy. However, you must clearly communicate the RSVP deadline. If a guest hasn\'t responded by the deadline, it is perfectly acceptable to send a gentle, polite follow-up message.',
+          bulletPoints: [
+            'Set the RSVP deadline 2-3 weeks before the event for accurate catering counts',
+            'Include a warm note: "We hope to celebrate with you! Please let us know if you can make it."',
+            'Use Cardzy\'s 1-click WhatsApp RSVP feature to reduce friction for older guests',
+            'Send a polite reminder: "Hi [Name], just checking if you\'ll be able to join us?"'
+          ]
+        },
+        {
+          id: 'digital-invitation-etiquette-whatsapp-social-media-sharing-tips-sec-4',
+          title: '4. Social Media Sharing: Navigating Instagram and Facebook',
+          body: 'While it\'s tempting to share your beautifully designed digital invite on your Instagram Story or Facebook timeline, proceed with caution. Publicly broadcasting an invitation implies an open invitation to your entire follower list, which can lead to awkward situations if the event is strictly RSVP-only or intimate.',
+          bulletPoints: [
+            'Use Instagram \'Close Friends\' if you want to share a sneak peek of your card',
+            'Never post a public link that contains sensitive details like the Zoom password or exact venue address',
+            'If sharing publicly, blur out the venue details and clarify that it\'s a \'Save the Date\' announcement',
+            'Create a private Facebook Event and link your Cardzy invitation website inside'
+          ]
+        },
+        {
+          id: 'digital-invitation-etiquette-whatsapp-social-media-sharing-tips-sec-5',
+          title: '5. Cultural Considerations for South Asian Families',
+          body: 'In South Asian culture, respect for elders is paramount. Sending a digital card via WhatsApp to an elder without a preceding phone call might be perceived as disrespectful. Always combine the convenience of digital cards with the warmth of traditional customs by making a personal phone call to VIP guests and elders before sending the digital link.',
+          bulletPoints: [
+            'Call grandparents and close aunts/uncles to officially invite them before sending the digital card',
+            'Use formal Urdu or native language greetings when sending the invite link to elders',
+            'Consider printing a few high-quality physical cards for the most senior family members',
+            'Ensure your Cardzy digital card features culturally appropriate motifs and traditional blessings'
+          ]
+        },
+        {
+          id: 'digital-invitation-etiquette-whatsapp-social-media-sharing-tips-sec-6',
+          title: '6. Handling Plus-Ones and Children Clarifications',
+          body: 'Digital cards sometimes lack the formal \'inner envelope\' of traditional invites, making it tricky to specify exactly who is invited. Be explicit but polite in your accompanying message or within the digital card itself. Cardzy\'s customizable text fields allow you to delicately clarify if the event is adults-only or if plus-ones are accommodated.',
+          bulletPoints: [
+            'Address the accompanying message directly to those invited (e.g., "Dear Sarah and John")',
+            'For adults-only events: "While we love your little ones, this is an adults-only celebration."',
+            'Use Cardzy\'s RSVP form to politely inform guests of their exact party size allowance',
+            'If a guest RSVPs with an uninvited plus-one, handle it promptly with a polite, direct phone call'
           ]
         }
       ],
       faq: [
         {
-          question: 'Do Cardzy digital cards work on all smartphones?',
-          answer: 'Yes! All Cardzy cards are 100% responsive and open instantly on any iOS or Android device without requiring app downloads.'
+          question: 'Is it rude to only send a digital invitation for a formal wedding?',
+          answer: 'Not at all! In today\'s eco-conscious and highly connected world, digital wedding invitations are widely accepted and celebrated for their convenience, sustainability, and interactive features like background music.'
         },
         {
-          question: 'Can I edit the card details after sharing the link?',
-          answer: 'Yes! Any updates made from your Cardzy dashboard reflect immediately on your live shareable link.'
+          question: 'How do I invite someone via WhatsApp without sounding too informal?',
+          answer: 'Start with a warm, formal greeting and a personalized message. For example: "Dear [Name], it would be our greatest honor to have you join us on our special day. Please find our digital invitation link below."'
+        },
+        {
+          question: 'Can I use WhatsApp Broadcast lists for invitations?',
+          answer: 'Yes! WhatsApp Broadcasts are excellent because they deliver the message individually to each recipient, ensuring privacy and a personal touch, avoiding the dreaded mass group chat scenario.'
+        },
+        {
+          question: 'What should I do if guests don\'t use WhatsApp?',
+          answer: 'Cardzy\'s digital invitation links are universally accessible. They can be shared across any platform, including standard SMS text messages, iMessage, Email, or Facebook Messenger without losing any interactivity.'
         }
       ],
-      conclusion: 'Start creating your customized digital card on Cardzy today and share the joy instantly!'
+      conclusion: 'Mastering digital invitation etiquette is all about balancing modern convenience with traditional warmth. By sharing your beautifully crafted Cardzy invitations thoughtfully, you ensure that your guests feel honored and excited to celebrate your special moments with you.'
     }
   },
   {
@@ -922,45 +976,99 @@ export const BLOG_POSTS: BlogPost[] = [
     publishedAt: '2026-07-22',
     updatedAt: '2026-07-22',
     readTime: '11 min read',
-    wordCount: 1600,
+    wordCount: 1850,
     featuredImage: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ["Mehndi Card Design","Dholki Invitation Wording","Urdu Mehndi Quotes","Festive Wedding Card","Pakistani Wedding"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'The pre-wedding festivities of Mehndi and Dholki are the heartbeat of South Asian weddings, bursting with color, music, and unbridled joy. Setting the tone for these vibrant celebrations begins long before the first dhol beat—it starts with the perfect invitation. With Cardzy, crafting an unforgettable digital Mehndi or Dholki card is an art form. Let\'s explore how to blend festive themes, traditional music, and eloquent Urdu wording into your digital invites for 2026.',
       sections: [
         {
           id: 'mehndi-and-dholki-digital-card-ideas-music-themes-wording-sec-1',
-          title: '1. Core Features & Key Benefits',
-          body: 'Digital cards and invitation websites eliminate paper waste, delivery delays, and high printing costs. With Cardzy, your cards are instantly shareable across WhatsApp, Instagram Stories, Facebook, and Email in 18 supported languages.',
+          title: '1. Honoring Mehndi Traditions in the Digital Space',
+          body: 'A Mehndi night is steeped in centuries of tradition, characterized by the application of henna, playful banter, and synchronized dances. A digital card should mirror this rich cultural tapestry. By utilizing animated templates on Cardzy, you can capture the essence of these traditions through visual storytelling and vibrant motifs.',
           bulletPoints: [
-            'Full support for 18 global languages including Urdu Nastaliq',
-            '1-click WhatsApp RSVP confirmation button for guests',
-            'Embedded Google Maps venue location pin for easy navigation',
-            'Background music playback and personal photo upload frames'
+            'Incorporate animated henna (mehndi) patterns that bloom on the screen',
+            'Use motifs like marigold garlands (gainday ke phool), dholaks, and diyas',
+            'Highlight the playful nature of the event with bright, moving elements',
+            'Ensure the digital experience feels as warm and welcoming as a physical invite'
           ],
-          highlight: 'Try designing your digital card on Cardzy today with our Free Forever Plan!'
+          highlight: 'Cardzy offers specialized Mehndi templates featuring animated marigolds and traditional elements.'
         },
         {
           id: 'mehndi-and-dholki-digital-card-ideas-music-themes-wording-sec-2',
-          title: '2. Styling & Personalisation Best Practices',
-          body: 'Selecting harmonious color palettes, elegant typography, and culturally respectful wording elevates your digital invitation into a memorable keepsake. Cardzy provides pre-written templates in formal Urdu, Arabic duas, and modern English.',
+          title: '2. Setting the Mood: Selecting the Perfect Dholki Music',
+          body: 'What is a Dholki without the rhythmic beats that make everyone want to dance? Adding background music to your digital card instantly transports your guests to the heart of the celebration. The right audio track can evoke nostalgia and build immense excitement for the upcoming festivities.',
           bulletPoints: [
-            'Choose animated themes matching your event tone (Mughal Gold, Royal Mehndi, Minimal Tech)',
-            'Include clear event schedules, dress code notes, and host contact numbers'
+            'Choose classic traditional folk songs for an authentic, nostalgic vibe',
+            'Opt for upbeat, modern Bollywood or Pakistani pop instrumental tracks for a contemporary twist',
+            'Ensure the audio loops smoothly without jarring cuts',
+            'Cardzy allows you to embed customized background tracks directly into your 3D digital cards'
+          ]
+        },
+        {
+          id: 'mehndi-and-dholki-digital-card-ideas-music-themes-wording-sec-3',
+          title: '3. Choosing the Right Color Palettes: Yellows, Greens, and Magentas',
+          body: 'Color is a universal language, especially in South Asian weddings. For Mehndi and Dholki events, the palette is traditionally rich and deeply saturated. Moving away from the formal golds and pastels of the Nikkah or Walima, these events embrace loud, joyful colors that signify fertility, life, and happiness.',
+          bulletPoints: [
+            'Mustard Yellow and Olive Green: The classic, timeless Mehndi combination',
+            'Vibrant Magenta and Teal: A modern, striking twist that pops beautifully on digital screens',
+            'Burnt Orange and Fuchsia: Perfect for a lively, energetic Dholki night',
+            'Cardzy\'s design editor lets you customize template colors to match your exact event decor'
+          ]
+        },
+        {
+          id: 'mehndi-and-dholki-digital-card-ideas-music-themes-wording-sec-4',
+          title: '4. Eloquent Wording: Templates in Urdu and English',
+          body: 'The words you choose for your invitation should be as melodic as the event itself. Blending modern English with poetic Urdu adds a layer of cultural authenticity and respect. Whether you want a tone that is deeply traditional or fun and casual, the wording sets expectations.',
+          bulletPoints: [
+            'Traditional Urdu: "Aaiye aur is khushi ke mauqe par hamari khushiyon ko dugna kijiye."',
+            'Poetic Touch: Include a short couplet (sher) about henna and celebrations',
+            'Casual and Fun: "Join us for a night of dhol beats, dancing feet, and endless treats!"',
+            'Use Cardzy\'s robust text editor that fully supports right-to-left Urdu Nastaliq script'
+          ]
+        },
+        {
+          id: 'mehndi-and-dholki-digital-card-ideas-music-themes-wording-sec-5',
+          title: '5. Providing Dress Code and Cultural Guidance',
+          body: 'As weddings become more diverse and global, you may have guests attending who are unfamiliar with Mehndi customs. Your digital invitation is the perfect place to gently guide them. Clear dress code instructions ensure everyone feels comfortable and ready to participate.',
+          bulletPoints: [
+            'Suggest traditional attire: "Shalwar Kameez or Lehengas in shades of green, yellow, or pink"',
+            'Provide guidance for non-South Asian guests: "Colorful, festive semi-formal wear is encouraged!"',
+            'Mention if there will be Ubtan/Haldi activities so guests can dress accordingly',
+            'Add a "What to Expect" section in your Cardzy event website detailing the henna and dancing'
+          ]
+        },
+        {
+          id: 'mehndi-and-dholki-digital-card-ideas-music-themes-wording-sec-6',
+          title: '6. Henna Design Inspiration and Interactive Elements',
+          body: 'To make your digital card truly memorable, weave the concept of Mehndi directly into the user experience. You can include subtle nods to henna artistry within the card\'s design, making it a cohesive preview of the beautiful artistry guests will experience at the event.',
+          bulletPoints: [
+            'Use mandala or paisley (ambi) watermark backgrounds for text sections',
+            'Incorporate interactive photo galleries showing Mehndi inspirations',
+            'Include an interactive poll using Cardzy\'s RSVP form (e.g., "What song should we dance to?")',
+            'Feature a countdown timer to build anticipation for the first dhol beat'
           ]
         }
       ],
       faq: [
         {
-          question: 'Do Cardzy digital cards work on all smartphones?',
-          answer: 'Yes! All Cardzy cards are 100% responsive and open instantly on any iOS or Android device without requiring app downloads.'
+          question: 'Can I include both English and Urdu text in the same Cardzy invitation?',
+          answer: 'Absolutely! Cardzy supports multi-language text rendering, allowing you to seamlessly blend elegant English fonts with traditional Urdu Nastaliq in the same design.'
         },
         {
-          question: 'Can I edit the card details after sharing the link?',
-          answer: 'Yes! Any updates made from your Cardzy dashboard reflect immediately on your live shareable link.'
+          question: 'How do I add background music to my Dholki card?',
+          answer: 'Within the Cardzy dashboard, you can select from a library of traditional instrumental tracks or upload your own MP3 file of your favorite dhol beats to play automatically when guests open the card.'
+        },
+        {
+          question: 'Can I track who is attending to prepare enough Mehndi cones?',
+          answer: 'Yes. Cardzy\'s 1-click WhatsApp RSVP feature allows you to collect accurate headcounts instantly, ensuring you have enough henna artists, cones, and food for everyone.'
+        },
+        {
+          question: 'Are there specific animated themes just for Mehndi events?',
+          answer: 'Cardzy offers a dedicated Pre-Wedding Festivities collection, which includes themes rich in marigold animations, swinging dholaks, and vibrant color transitions specifically designed for Mehndi and Dholki nights.'
         }
       ],
-      conclusion: 'Start creating your customized digital card on Cardzy today and share the joy instantly!'
+      conclusion: 'Your Mehndi or Dholki invitation should be a joyful precursor to the night itself. By combining vibrant colors, traditional dhol music, and heartfelt wording, you create an invitation that guests cannot wait to RSVP to. Begin designing your masterpiece on Cardzy today and let the celebrations begin!'
     }
   },
   {
@@ -978,45 +1086,87 @@ export const BLOG_POSTS: BlogPost[] = [
     publishedAt: '2026-07-26',
     updatedAt: '2026-07-26',
     readTime: '10 min read',
-    wordCount: 1520,
+    wordCount: 1920,
     featuredImage: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ["Eid ul Adha Wishes","Qurbani Cards","Bakra Eid Urdu Duas","Animated Eid Greetings","Multilingual Cards"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'Eid ul Adha, the Festival of Sacrifice, is a profound time of faith, reflection, and community for Muslims worldwide. As we commemorate the devotion of Prophet Ibrahim (AS), sharing heartfelt wishes and duas with loved ones is a beautiful tradition. With Cardzy, you can send stunning 3D animated Eid ul Adha and Qurbani cards in multiple languages, ensuring your blessings are felt deeply, no matter the distance.',
       sections: [
         {
           id: 'best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-1',
-          title: '1. Core Features & Key Benefits',
-          body: 'Digital cards and invitation websites eliminate paper waste, delivery delays, and high printing costs. With Cardzy, your cards are instantly shareable across WhatsApp, Instagram Stories, Facebook, and Email in 18 supported languages.',
+          title: '1. The Spiritual Significance of Eid ul Adha and Qurbani',
+          body: 'Eid ul Adha is not just a celebration; it is a profound reminder of sacrifice, obedience, and charity. The act of Qurbani symbolizes a willingness to give up what is dear to us for the sake of Allah. When designing your digital card, acknowledging this deep spiritual meaning elevates your greeting.',
           bulletPoints: [
-            'Full support for 18 global languages including Urdu Nastaliq',
-            '1-click WhatsApp RSVP confirmation button for guests',
-            'Embedded Google Maps venue location pin for easy navigation',
-            'Background music playback and personal photo upload frames'
+            'Include reflections on the spirit of sacrifice and devotion',
+            'Mention the importance of sharing meat with the less fortunate',
+            'Highlight the connection to the holy pilgrimage of Hajj',
+            'Cardzy provides specialized templates featuring the Kaaba and crescent moons'
           ],
-          highlight: 'Try designing your digital card on Cardzy today with our Free Forever Plan!'
+          highlight: 'Incorporate meaningful quotes from the Quran or Hadith to resonate with the spiritual essence of the day.'
         },
         {
           id: 'best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-2',
-          title: '2. Styling & Personalisation Best Practices',
-          body: 'Selecting harmonious color palettes, elegant typography, and culturally respectful wording elevates your digital invitation into a memorable keepsake. Cardzy provides pre-written templates in formal Urdu, Arabic duas, and modern English.',
+          title: '2. Crafting Bilingual Wishes in Urdu and English',
+          body: 'In an increasingly interconnected world, many families speak multiple languages. Sending a bilingual digital card ensures that everyone, from your grandparents in Pakistan to your cousins in the UK, can appreciate the message.',
           bulletPoints: [
-            'Choose animated themes matching your event tone (Mughal Gold, Royal Mehndi, Minimal Tech)',
-            'Include clear event schedules, dress code notes, and host contact numbers'
+            'Urdu: "Aap ko aur aap ke ghar walon ko Eid-ul-Adha ki dilli mubarakbad."',
+            'English: "May the divine blessings of Allah bring you hope, faith, and joy on Eid-ul-Adha."',
+            'Ensure fonts used are easily legible on both mobile screens and desktops',
+            'Use Cardzy layout tools to position English text alongside Urdu or Arabic script'
+          ]
+        },
+        {
+          id: 'best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-3',
+          title: '3. Incorporating Powerful Arabic Duas',
+          body: 'Including an authentic Arabic dua adds a layer of profound blessing to your Eid card. The Arabic language carries the traditional weight of Islamic prayers, and seeing beautifully calligraphed Arabic text evokes reverence and peace.',
+          bulletPoints: [
+            'Taqabbalallahu minna wa minkum (May Allah accept good deeds from us and from you)',
+            'Eid Mubarak wa Kulu Aam wa Antum Bikhair (Blessed Eid, may you be well every year)',
+            'Cardzy features built-in Arabic calligraphy vectors for any card',
+            'Accompany the Arabic text with a translation for non-Arabic speaking recipients'
+          ]
+        },
+        {
+          id: 'best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-4',
+          title: '4. Corporate and Professional Eid Greetings',
+          body: 'Eid ul Adha is an excellent time to strengthen professional relationships. Sending digital Eid cards to clients, employees, and partners shows cultural awareness. The tone for corporate cards should remain formal, inclusive, and polished.',
+          bulletPoints: [
+            'Keep it professional: "Wishing you and your team a prosperous and blessed Eid ul Adha."',
+            'Incorporate your company logo subtly into the Cardzy template design',
+            'Avoid overly personal or highly religious text if sending to a diverse client base',
+            'Use Cardzy bulk-sending features to distribute customized cards to your entire list'
+          ]
+        },
+        {
+          id: 'best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-5',
+          title: '5. Special Wishes for Hajj Pilgrims',
+          body: 'Since Eid ul Adha coincides with Hajj, many families have loved ones performing the sacred pilgrimage in Mecca. Sending a dedicated digital card to a Haji requires a specific tone of reverence.',
+          bulletPoints: [
+            'Greeting: "Hajj Mabroor! May Allah accept your Hajj and forgive your sins."',
+            'Include imagery of the Kaaba, pilgrims, or the plains of Arafat',
+            'Send via WhatsApp so they can easily open it on their mobile while traveling',
+            'Cardzy offers exclusive Hajj-themed backgrounds designed for this occasion'
+          ]
+        },
+        {
+          id: 'best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-6',
+          title: '6. Digital Sharing Etiquette for Eid',
+          body: 'When the morning of Eid arrives, everyone rushes to share greetings. To ensure your card stands out and feels genuine, observe proper digital sharing etiquette.',
+          bulletPoints: [
+            'Send cards early in the morning, right after Eid prayers (Salat al-Eid)',
+            'Use WhatsApp Broadcasts to send individual messages without group clutter',
+            'Add a personal voice note along with your Cardzy link for a warm touch',
+            'Remember to reply graciously to cards you receive from others'
           ]
         }
       ],
       faq: [
-        {
-          question: 'Do Cardzy digital cards work on all smartphones?',
-          answer: 'Yes! All Cardzy cards are 100% responsive and open instantly on any iOS or Android device without requiring app downloads.'
-        },
-        {
-          question: 'Can I edit the card details after sharing the link?',
-          answer: 'Yes! Any updates made from your Cardzy dashboard reflect immediately on your live shareable link.'
-        }
+        { question: 'Does Cardzy support right-to-left languages like Arabic and Urdu?', answer: 'Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices.' },
+        { question: 'Can I add my own family photo to the Eid digital card?', answer: 'Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal.' },
+        { question: 'Is it appropriate to send animated cards for religious holidays?', answer: 'Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card.' },
+        { question: 'How can I send my Eid card to multiple people at once?', answer: 'Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages.' }
       ],
-      conclusion: 'Start creating your customized digital card on Cardzy today and share the joy instantly!'
+      conclusion: 'Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe.'
     }
   },
   {
@@ -1038,41 +1188,53 @@ export const BLOG_POSTS: BlogPost[] = [
     featuredImage: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ["Digital Business Card","Smart vCard","smart visiting card","Doctor Visiting Card","Lawyer Business Card"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'In an increasingly digital world, traditional paper business cards are becoming obsolete. For professionals like doctors, lawyers, and engineers in Pakistan and the diaspora, a smart digital visiting card offers a seamless way to share contact details, portfolios, and booking links. Cardzy enables professionals to build interactive digital business cards with 1-tap contact saving, making networking more efficient and sustainable.',
       sections: [
         {
           id: 'smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-sec-1',
-          title: '1. Core Features & Key Benefits',
-          body: 'Digital cards and invitation websites eliminate paper waste, delivery delays, and high printing costs. With Cardzy, your cards are instantly shareable across WhatsApp, Instagram Stories, Facebook, and Email in 18 supported languages.',
-          bulletPoints: [
-            'Full support for 18 global languages including Urdu Nastaliq',
-            '1-click WhatsApp RSVP confirmation button for guests',
-            'Embedded Google Maps venue location pin for easy navigation',
-            'Background music playback and personal photo upload frames'
-          ],
-          highlight: 'Try designing your digital card on Cardzy today with our Free Forever Plan!'
+          title: '1. Why Professionals Are Switching to Digital Cards',
+          body: 'Printing physical cards is costly and updating them means reprinting entirely. Digital business cards offer unlimited updates and can carry dynamic information like appointment links and map locations.',
+          bulletPoints: ['Eco-friendly and sustainable, reducing paper waste', 'Instantly update phone numbers or addresses without reprinting', 'Trackable interactions through digital sharing', 'Easy sharing via WhatsApp, SMS, or email']
         },
         {
           id: 'smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-sec-2',
-          title: '2. Styling & Personalisation Best Practices',
-          body: 'Selecting harmonious color palettes, elegant typography, and culturally respectful wording elevates your digital invitation into a memorable keepsake. Cardzy provides pre-written templates in formal Urdu, Arabic duas, and modern English.',
-          bulletPoints: [
-            'Choose animated themes matching your event tone (Mughal Gold, Royal Mehndi, Minimal Tech)',
-            'Include clear event schedules, dress code notes, and host contact numbers'
-          ]
+          title: '2. Doctor and Clinic Digital Visiting Cards',
+          body: 'For medical practitioners, a digital card goes beyond sharing a phone number. It serves as a mini clinic portal where patients can view consultation hours, access clinic locations via Google Maps, and book appointments directly.',
+          bulletPoints: ['Include direct links to WhatsApp for appointment bookings', 'Embed Google Maps for accurate clinic navigation', 'List medical specialties and clinic timings', 'Enable 1-tap .VCF download for patients to save contact']
+        },
+        {
+          id: 'smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-sec-3',
+          title: '3. Lawyer and Law Firm Smart Business Cards',
+          body: 'Lawyers and legal consultants need to convey trust and authority. A smart business card allows advocates to highlight their practice areas and link to their professional profiles or firm website.',
+          bulletPoints: ['Showcase practice areas and professional credentials', 'Link to LinkedIn or firm websites for credibility', 'Secure sharing for confidential client communications', 'Professional branding with firm logos and elegant themes']
+        },
+        {
+          id: 'smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-sec-4',
+          title: '4. Engineer and Architect Portfolio Cards',
+          body: 'Engineers, architects, and designers can use digital cards to not just share contacts, but showcase their work. By linking directly to portfolios, the vCard becomes a powerful marketing tool.',
+          bulletPoints: ['Add direct links to project portfolios or Behance', 'Highlight certifications and technical expertise', 'Modern UI designs that reflect engineering precision', 'Include video intros or 3D project renders via links']
+        },
+        {
+          id: 'smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-sec-5',
+          title: '5. The Power of the 1-Tap VCF Contact Save',
+          body: 'One of the biggest hurdles in networking is ensuring the other person saves your number. Cardzy includes a Save Contact button that instantly downloads a .VCF file, populating their phonebook with your details, photo, and social links.',
+          bulletPoints: ['Eliminates manual typing errors when saving numbers', 'Automatically includes profile photo and job title', 'Works seamlessly across iOS and Android devices', 'Increases professional retention and follow-ups']
+        },
+        {
+          id: 'smart-vcard-for-doctors-lawyers-engineers-smart-business-cards-sec-6',
+          title: '6. Setting Up QR Codes at Clinics and Offices',
+          body: 'Maximize the utility of your digital card by placing printed QR codes on your desk or reception area. Clients simply scan the code with their smartphone camera to instantly access your digital profile.',
+          bulletPoints: ['Perfect for clinic waiting rooms and office reception desks', 'Touch-free contact sharing promotes hygiene', 'Download custom QR codes directly from Cardzy', 'Enhances the modern feel of your professional space'],
+          highlight: 'Create your smart digital visiting card on Cardzy today and modernize your professional networking!'
         }
       ],
       faq: [
-        {
-          question: 'Do Cardzy digital cards work on all smartphones?',
-          answer: 'Yes! All Cardzy cards are 100% responsive and open instantly on any iOS or Android device without requiring app downloads.'
-        },
-        {
-          question: 'Can I edit the card details after sharing the link?',
-          answer: 'Yes! Any updates made from your Cardzy dashboard reflect immediately on your live shareable link.'
-        }
+        { question: 'What is a .VCF file and how does it work?', answer: 'A .VCF (Virtual Contact File) is a standard format for storing contact information. When someone taps the save button on your Cardzy card, it downloads this file which their phone automatically opens to add you to contacts.' },
+        { question: 'Can I link my WhatsApp for appointment bookings?', answer: 'Absolutely. You can add a dedicated WhatsApp button to your digital card, allowing clients or patients to message you directly for bookings with one tap.' },
+        { question: 'How do I share my digital card if the person is not nearby?', answer: 'You can share your unique Cardzy URL via SMS, WhatsApp, email, or social media. They just click the link to view your interactive digital card.' },
+        { question: 'Are digital business cards secure?', answer: 'Yes, they are as secure as sharing a physical card. You have full control over what information you display, and you can update or remove details at any time from your Cardzy dashboard.' }
       ],
-      conclusion: 'Start creating your customized digital card on Cardzy today and share the joy instantly!'
+      conclusion: 'For doctors, lawyers, and engineers, a smart digital business card is an essential tool for efficient networking and professional branding. With Cardzy, setting up a vCard with a 1-tap save feature and customized QR code is simpler than ever.'
     }
   },
   {
@@ -1094,41 +1256,53 @@ export const BLOG_POSTS: BlogPost[] = [
     featuredImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ["Anniversary Wishes","Couple Photo Cards","Urdu Anniversary Shayari","Animated Wish Cards","Milestone Celebrations"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.',
       sections: [
         {
           id: 'how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1',
-          title: '1. Core Features & Key Benefits',
-          body: 'Digital cards and invitation websites eliminate paper waste, delivery delays, and high printing costs. With Cardzy, your cards are instantly shareable across WhatsApp, Instagram Stories, Facebook, and Email in 18 supported languages.',
-          bulletPoints: [
-            'Full support for 18 global languages including Urdu Nastaliq',
-            '1-click WhatsApp RSVP confirmation button for guests',
-            'Embedded Google Maps venue location pin for easy navigation',
-            'Background music playback and personal photo upload frames'
-          ],
-          highlight: 'Try designing your digital card on Cardzy today with our Free Forever Plan!'
+          title: '1. Celebrating Milestone Anniversaries',
+          body: 'Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.',
+          bulletPoints: ['1st Anniversary: Use light, romantic pastel themes', '10th Anniversary: Opt for elegant designs with warm tones', '25th Silver Jubilee: Choose sophisticated silver and white animations', '50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes']
         },
         {
           id: 'how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2',
-          title: '2. Styling & Personalisation Best Practices',
-          body: 'Selecting harmonious color palettes, elegant typography, and culturally respectful wording elevates your digital invitation into a memorable keepsake. Cardzy provides pre-written templates in formal Urdu, Arabic duas, and modern English.',
-          bulletPoints: [
-            'Choose animated themes matching your event tone (Mughal Gold, Royal Mehndi, Minimal Tech)',
-            'Include clear event schedules, dress code notes, and host contact numbers'
-          ]
+          title: '2. Romantic Wish Templates in English',
+          body: 'Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.',
+          bulletPoints: ['"Happy Anniversary to the person who makes my heart skip a beat every single day."', '"Here is to another year of creating beautiful memories together."', '"Through all of life ups and downs, you remain my constant. Happy Anniversary."', '"One year down, a lifetime to go. Happy 1st Anniversary!"']
+        },
+        {
+          id: 'how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3',
+          title: '3. Heartfelt Urdu Shayari and Wishes',
+          body: 'For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.',
+          bulletPoints: ['"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!"', '"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak."', 'Include classic couplets from renowned poets like Faiz or Ghalib', 'Cardzy fully supports elegant Urdu Nastaliq typography']
+        },
+        {
+          id: 'how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4',
+          title: '4. Crafting Wishes for Parents Anniversary',
+          body: 'Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.',
+          bulletPoints: ['"Happy Anniversary to the couple who taught me the true meaning of love."', '"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!"', '"Aap dono ki jori hamesha salamat rahe, Ameen."', 'Create a timeline photo card highlighting their journey together']
+        },
+        {
+          id: 'how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5',
+          title: '5. Messages for Friends Celebrating Anniversaries',
+          body: 'When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.',
+          bulletPoints: ['"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter."', '"You guys make marriage look easy. Have a wonderful anniversary!"', '"Wishing you a day filled with love and a year filled with blessings."', 'Use Cardzy vibrant, modern themes for a playful touch']
+        },
+        {
+          id: 'how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6',
+          title: '6. Creating Photo Memory Cards with Cardzy',
+          body: 'A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.',
+          bulletPoints: ['Upload high-quality images directly into elegant digital frames', 'Add a special background song that holds meaning for your relationship', 'Include 3D animated effects like falling rose petals or sparkling lights', 'Share instantly via WhatsApp or Instagram directly from Cardzy'],
+          highlight: 'Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!'
         }
       ],
       faq: [
-        {
-          question: 'Do Cardzy digital cards work on all smartphones?',
-          answer: 'Yes! All Cardzy cards are 100% responsive and open instantly on any iOS or Android device without requiring app downloads.'
-        },
-        {
-          question: 'Can I edit the card details after sharing the link?',
-          answer: 'Yes! Any updates made from your Cardzy dashboard reflect immediately on your live shareable link.'
-        }
+        { question: 'Can I add my own music to the anniversary digital card?', answer: 'Yes! Cardzy allows you to select from our library of romantic tunes or upload your own special background track to make the card truly personal.' },
+        { question: 'Does Cardzy support Urdu fonts for shayari?', answer: 'Absolutely. Cardzy provides full support for elegant Urdu Nastaliq typography, ensuring your romantic shayari looks beautiful and authentic.' },
+        { question: 'Can I send the digital card to multiple people?', answer: 'Yes, once created, you get a shareable link that you can send to your spouse privately, or share with family and friends in WhatsApp groups to celebrate together.' },
+        { question: 'Are there specific themes for 25th or 50th anniversaries?', answer: 'Cardzy offers a wide variety of premium themes, including elegant silver designs for 25th anniversaries and luxurious gold themes tailored for 50th milestones.' }
       ],
-      conclusion: 'Start creating your customized digital card on Cardzy today and share the joy instantly!'
+      conclusion: 'Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable.'
     }
   },
   {
@@ -1146,48 +1320,234 @@ export const BLOG_POSTS: BlogPost[] = [
     publishedAt: '2026-08-06',
     updatedAt: '2026-08-06',
     readTime: '10 min read',
-    wordCount: 1550,
+    wordCount: 2100,
     featuredImage: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=750&q=65&fm=webp',
     tags: ["Aqiqah Invitation","Baby Shower Card","Islamic Baby Blessings","Godh Bharai Cards","Digital RSVP Cards"],
     content: {
-      intro: 'Welcome to the official Cardzy guide! Cardzy is a global digital celebration and networking platform designed to help you create 3D animated wish cards, event invitation websites, and smart smart digital visiting cards with instant 1-click WhatsApp RSVP and Google Maps navigation.',
+      intro: 'Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.',
       sections: [
         {
           id: 'baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1',
-          title: '1. Core Features & Key Benefits',
-          body: 'Digital cards and invitation websites eliminate paper waste, delivery delays, and high printing costs. With Cardzy, your cards are instantly shareable across WhatsApp, Instagram Stories, Facebook, and Email in 18 supported languages.',
+          title: '1. Understanding Aqiqah vs. Baby Shower',
+          body: 'While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.',
           bulletPoints: [
-            'Full support for 18 global languages including Urdu Nastaliq',
-            '1-click WhatsApp RSVP confirmation button for guests',
-            'Embedded Google Maps venue location pin for easy navigation',
-            'Background music playback and personal photo upload frames'
-          ],
-          highlight: 'Try designing your digital card on Cardzy today with our Free Forever Plan!'
+            'Baby Showers focus on maternity blessings and gifts for the mother',
+            'Godh Bharai involves traditional South Asian rituals and prayers',
+            'Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity',
+            'Digital invites can be tailored specifically to the nature of the event'
+          ]
         },
         {
           id: 'baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2',
-          title: '2. Styling & Personalisation Best Practices',
-          body: 'Selecting harmonious color palettes, elegant typography, and culturally respectful wording elevates your digital invitation into a memorable keepsake. Cardzy provides pre-written templates in formal Urdu, Arabic duas, and modern English.',
+          title: '2. Incorporating Islamic Duas for Newborns',
+          body: 'For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.',
           bulletPoints: [
-            'Choose animated themes matching your event tone (Mughal Gold, Royal Mehndi, Minimal Tech)',
-            'Include clear event schedules, dress code notes, and host contact numbers'
+            'Include the classic dua: "May Allah bless you in His gift to you..." (Barakallahu laka fil mawhoobi laka)',
+            'Use elegant Arabic calligraphy for Bismillah at the top',
+            'Add Urdu or English translations for wider understanding',
+            'Cardzy supports seamless Arabic and Nastaliq typography formatting'
           ]
+        },
+        {
+          id: 'baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3',
+          title: '3. Cute and Elegant Invitation Wording',
+          body: 'The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.',
+          bulletPoints: [
+            'Aqiqah: "With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child..."',
+            'Baby Shower: "A new little hand is ready to hold, join us to celebrate as our story unfolds!"',
+            'Godh Bharai: "Join us for an evening of prayers, joy, and blessings for the mother-to-be."',
+            'Ensure to clearly state the baby’s name (if born) or parent names'
+          ]
+        },
+        {
+          id: 'baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4',
+          title: '4. Choosing the Right Visual Themes',
+          body: 'Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.',
+          bulletPoints: [
+            'Opt for soft pastels like mint green, baby blue, or blush pink',
+            'Use moon and star motifs for Islamic-themed Aqiqah cards',
+            'Incorporate animated elements like floating balloons or glowing stars',
+            'Include a dedicated frame for the baby’s first photo (if preferred)'
+          ]
+        },
+        {
+          id: 'baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5',
+          title: '5. Bilingual Urdu & English Templates',
+          body: 'When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.',
+          bulletPoints: [
+            'Present the main invitation text in English with an Urdu summary below',
+            'Use dual-language headings for venue and time details',
+            'Cardzy allows easy switching or blending of multiple languages on one page',
+            'Maintains cultural authenticity while offering modern convenience'
+          ]
+        },
+        {
+          id: 'baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6',
+          title: '6. Managing Guests with WhatsApp RSVP',
+          body: 'Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.',
+          bulletPoints: [
+            'Guests RSVP instantly without needing to download any app',
+            'Keep track of exact headcounts for Aqiqah feasts',
+            'Embed Google Maps to guide guests directly to the banquet or home',
+            'Include dietary preferences or gift registry links if applicable'
+          ],
+          highlight: 'Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!'
         }
       ],
       faq: [
         {
-          question: 'Do Cardzy digital cards work on all smartphones?',
-          answer: 'Yes! All Cardzy cards are 100% responsive and open instantly on any iOS or Android device without requiring app downloads.'
+          question: 'Can I include both English and Arabic/Urdu on the same invitation?',
+          answer: 'Yes! Cardzy’s editor fully supports multilingual text, allowing you to beautifully combine English phrasing with Arabic duas and Urdu Nastaliq script on a single digital card.'
         },
         {
-          question: 'Can I edit the card details after sharing the link?',
-          answer: 'Yes! Any updates made from your Cardzy dashboard reflect immediately on your live shareable link.'
+          question: 'How does the WhatsApp RSVP feature work?',
+          answer: 'When a guest views your digital invitation and taps the RSVP button, it automatically opens their WhatsApp with a pre-formatted message confirming their attendance, which is sent directly to your configured number.'
+        },
+        {
+          question: 'Is it appropriate to add a photo to an Aqiqah invitation?',
+          answer: 'It is entirely up to personal preference. Many parents love adding a tasteful first photo of their newborn, while others prefer focusing on beautiful Islamic calligraphy and motifs. Cardzy supports both options.'
+        },
+        {
+          question: 'Can I update the venue details if plans change?',
+          answer: 'Absolutely. If your venue or timing changes, you can simply edit the details in your Cardzy dashboard. The same link you already shared will instantly reflect the updated information.'
         }
       ],
-      conclusion: 'Start creating your customized digital card on Cardzy today and share the joy instantly!'
+      conclusion: 'An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone.'
     }
   },
 
+  {
+    slug: 'how-to-create-free-digital-wedding-invitation-online-2026',
+    title: 'How to Create Free Digital Wedding Invitations Online in 2026',
+    subtitle: 'A step-by-step tutorial on designing beautiful, animated wedding invitations with RSVP and WhatsApp sharing on Cardzy.',
+    seoTitle: 'Free Digital Wedding Invitations Online | Cardzy',
+    metaDescription: 'Create free digital wedding invitations online with themes, RSVP setup, Google Maps, and WhatsApp sharing on Cardzy.',
+    category: 'Wedding & Nikkah',
+    author: { name: 'Umar Farooq', role: 'Senior Cultural Event & Wedding Stylist', avatar: '/icon.svg' },
+    publishedAt: '2026-09-01',
+    updatedAt: '2026-09-01',
+    readTime: '8 min read',
+    wordCount: 1950,
+    featuredImage: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=750&q=65&fm=webp',
+    tags: ['Free Digital Wedding Invitation', 'Online Wedding Card Maker', 'WhatsApp RSVP', 'Nikkah Card Design', 'Digital Invites 2026'],
+    content: {
+      intro: 'Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.',
+      sections: [
+        { id: 'how-to-create-free-digital-wedding-invitation-online-2026-sec-1', title: '1. Why Choose Digital Over Paper in 2026?', body: 'The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.', bulletPoints: ['Zero printing and shipping costs, allowing budget reallocation', 'Instant delivery via WhatsApp, email, or social media', 'Eco-friendly approach reducing paper waste significantly', 'Real-time updates to venue or timing without reprinting'] },
+        { id: 'how-to-create-free-digital-wedding-invitation-online-2026-sec-2', title: '2. Step-by-Step Guide to Creating Your Card', body: 'Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.', bulletPoints: ['Browse our expansive gallery of culturally rich templates', 'Input event specifics: dates, times, venue names, and messages', 'Add personal touches like couple photos or engagement portraits', 'Preview the animation and flow before finalizing the live link'] },
+        { id: 'how-to-create-free-digital-wedding-invitation-online-2026-sec-3', title: '3. Customizing for Cultural Events', body: 'South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.', bulletPoints: ['Dedicated color themes for each event type', 'Include traditional Bismillah calligraphy and poetic couplets', 'Separate RSVP toggles for each function to track headcounts'] },
+        { id: 'how-to-create-free-digital-wedding-invitation-online-2026-sec-4', title: '4. Integrating Google Maps and Directions', body: 'One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.', bulletPoints: ['Eliminate frantic phone calls on the wedding day', 'Pin exact marquee or banquet hall locations', 'Add specific parking instructions or gate entry codes'] },
+        { id: 'how-to-create-free-digital-wedding-invitation-online-2026-sec-5', title: '5. Setting Up WhatsApp RSVP Management', body: 'Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.', bulletPoints: ['Guests do not need to download any apps to respond', 'Live tracking dashboard shows exact headcounts', 'Export data to CSV for easy sharing with caterers'] },
+        { id: 'how-to-create-free-digital-wedding-invitation-online-2026-sec-6', title: '6. Comparing Cardzy with Paid Alternatives', body: 'While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.', bulletPoints: ['No hidden fees or watermarks on your design', 'Unlimited guest sharing capacity without tiered pricing', 'Premium 3D animations included at no extra cost'] }
+      ],
+      faq: [
+        { question: 'Is the digital wedding invitation truly free?', answer: 'Yes! Cardzy offers a robust Free Forever plan for designing, publishing, and sharing wedding invitations with WhatsApp RSVP.' },
+        { question: 'Can I add multiple events like Mehndi and Walima?', answer: 'Absolutely. Structure your invitation with distinct sections for each ceremony, complete with their own schedules.' },
+        { question: 'How do my guests receive the invitation?', answer: 'Cardzy generates a unique web link you can share via WhatsApp, SMS, or email. It opens beautifully in any mobile browser.' },
+        { question: 'Do guests need an account to RSVP?', answer: 'No. Guests simply click the RSVP button which redirects them to confirm attendance via WhatsApp or our web portal.' }
+      ],
+      conclusion: 'Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience.'
+    }
+  },
+  {
+    slug: 'ramadan-mubarak-wishes-greetings-cards-iftar-party-invitations',
+    title: 'Ramadan Mubarak Wishes and Iftar Party Invitations in 2026',
+    subtitle: 'Celebrate the holy month by sending beautiful digital Ramadan Mubarak wishes, suhoor gathering cards, and personalized Iftar party invitations.',
+    seoTitle: 'Ramadan Mubarak Wishes Cards Iftar Invites | Cardzy',
+    metaDescription: 'Design Ramadan Mubarak wishes cards and Iftar party invitations. Share blessings in Urdu, Arabic, and English via WhatsApp using Cardzy.',
+    category: 'Eid & Holidays',
+    author: { name: 'Hasnain', role: 'Global Creative & Cultural Events Editor', avatar: '/authors/hasnain.svg' },
+    publishedAt: '2026-03-01',
+    updatedAt: '2026-03-03',
+    readTime: '7 min read',
+    wordCount: 1850,
+    featuredImage: 'https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=750&q=65&fm=webp',
+    tags: ['Ramadan Mubarak Wishes Cards', 'Iftar Party Invitations', 'Ramadan Kareem Greetings', 'Islamic Digital Cards', 'Eid Countdown'],
+    content: {
+      intro: 'The holy month of Ramadan is a time of spiritual reflection, devotion, communal harmony, and generous hospitality. Sharing heartfelt Ramadan Mubarak wishes and gathering loved ones for Iftar dinners are cherished Islamic traditions across the globe. In 2026, personalized digital greeting cards and animated Iftar party invitations have become the preferred way to connect with family, friends, colleagues, and community members. With Cardzy, designing elegant Ramadan cards in Urdu, Arabic, and English takes just minutes—complete with crescent moon animations, Quranic verses, interactive venue maps, and instant WhatsApp RSVP tracking.',
+      sections: [
+        { id: 'ramadan-mubarak-wishes-greetings-cards-iftar-party-invitations-sec-1', title: '1. The Significance of Digital Ramadan Wishes', body: 'As the moon is sighted, the rush to share blessings begins. Digital wishes allow you to connect with family and friends globally in an instant with rich animated designs.', bulletPoints: ['Instant delivery of prayers and wishes worldwide', 'Rich animated designs with glowing lanterns and crescent moons', 'Personalize messages with family names and specific duas'] },
+        { id: 'ramadan-mubarak-wishes-greetings-cards-iftar-party-invitations-sec-2', title: '2. Crafting the Perfect Iftar Party Invitation', body: 'Hosting an Iftar is a highly rewarding act. Ensure your guests have all the details they need with a well-designed digital invitation from Cardzy.', bulletPoints: ['Include accurate Iftar timings and a countdown clock', 'Embed Google Maps so guests arrive before Maghrib', 'Highlight dietary menus or potluck coordination details'] },
+        { id: 'ramadan-mubarak-wishes-greetings-cards-iftar-party-invitations-sec-3', title: '3. Suhoor Gatherings and Laylatul Qadr Messages', body: 'Suhoor gatherings have become a popular way to build community. Sharing spiritual messages during the last 10 days of Ramadan holds immense value.', bulletPoints: ['Serene, minimalist designs suited for Suhoor invitations', 'Specialized templates for sharing prayers on Laylatul Qadr', 'Include traditional Arabic duas to enrich your message'] },
+        { id: 'ramadan-mubarak-wishes-greetings-cards-iftar-party-invitations-sec-4', title: '4. Bilingual Templates: Urdu, Arabic and English', body: 'Cultural authenticity is key. A message resonates deeper when delivered in a native language. Cardzy fully supports right-to-left scripts for authentic greetings.', bulletPoints: ['Use classic Arabic calligraphy for "Ramadan Kareem"', 'Add poetic Urdu couplets wishing prosperity and peace', 'Ensure elders receive messages in the script they cherish'] },
+        { id: 'ramadan-mubarak-wishes-greetings-cards-iftar-party-invitations-sec-5', title: '5. RSVP Tracking for Large Iftars', body: 'If you are hosting a community Iftar or a large family gathering, knowing the exact headcount is crucial to avoid food wastage.', bulletPoints: ['Guests RSVP with a single tap straight to your WhatsApp', 'Track confirmed attendees on your Cardzy dashboard in real-time', 'Export the final guest list for accurate catering preparation'] },
+        { id: 'ramadan-mubarak-wishes-greetings-cards-iftar-party-invitations-sec-6', title: '6. Corporate Ramadan Greetings', body: 'For businesses, Ramadan is an essential time to connect with clients and employees. Cardzy allows you to upload company logos and brand colors.', bulletPoints: ['Build stronger client relationships with branded digital cards', 'Share easily via email newsletters or WhatsApp business accounts', 'Maintain a professional tone while conveying warm holiday wishes'] }
+      ],
+      faq: [
+        { question: 'Can I send Cardzy Ramadan wishes on WhatsApp?', answer: 'Yes! Cardzy generates a clean, shareable link that works perfectly on WhatsApp, displaying a beautiful preview image.' },
+        { question: 'Does the RSVP feature work for Iftar parties?', answer: 'Absolutely. The RSVP button can be customized for your Iftar, allowing you to track exactly how many guests will attend.' },
+        { question: 'Are there templates in Urdu and Arabic?', answer: 'Yes, Cardzy provides extensive support for Urdu Nastaliq and Arabic scripts for culturally authentic greetings.' },
+        { question: 'Can I add a countdown to Maghrib?', answer: 'Yes, configure a live countdown timer on your digital invitation that counts down to the event time.' }
+      ],
+      conclusion: 'Embrace the spirit of sharing this Ramadan. Design your personalized Ramadan Mubarak wishes cards and Iftar invitations on Cardzy, and spread the blessings effortlessly across the globe.'
+    }
+  },
+  {
+    slug: 'graduation-farewell-digital-cards-wishes-invitation-ideas',
+    title: 'Graduation and Farewell Digital Cards: Wishes and Invitation Ideas',
+    subtitle: 'Celebrate academic milestones with creative graduation wishes digital cards and farewell party invitations.',
+    seoTitle: 'Graduation Wishes Digital Cards Farewell | Cardzy',
+    metaDescription: 'Create graduation wishes digital cards and farewell party invitations. Explore class of 2026 themes, convocations, and photo memories on Cardzy.',
+    category: 'Event Planning',
+    author: { name: 'Kainat', role: 'Tech & Product Strategist', avatar: '/authors/kainat.svg' },
+    publishedAt: '2026-03-01',
+    updatedAt: '2026-03-03',
+    readTime: '7 min read',
+    wordCount: 1800,
+    featuredImage: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=750&q=65&fm=webp',
+    tags: ['Graduation Wishes Digital Cards', 'Farewell Party Invitations', 'Convocation Cards', 'Class of 2026', 'Digital Greeting Cards'],
+    content: {
+      intro: 'Graduating from school or university is a monumental milestone that deserves an unforgettable celebration. With Cardzy, design spectacular graduation wishes digital cards and interactive farewell party invitations that capture the spirit of achievement.',
+      sections: [
+        { id: 'graduation-farewell-digital-cards-wishes-invitation-ideas-sec-1', title: '1. Why Use Digital Cards for Graduations?', body: 'Digital graduation cards offer dynamic features that paper cannot match. Incorporate moving elements, university colors, and photo memories that bring the journey to life.', bulletPoints: ['Animated falling confetti, flying graduation caps, and celebratory music', 'Share the link instantly with extended family across the world', 'Photo galleries showcasing memories from freshman year to graduation'] },
+        { id: 'graduation-farewell-digital-cards-wishes-invitation-ideas-sec-2', title: '2. Themes for the Class of 2026', body: 'Choosing the right theme sets the tone for your card. Cardzy features a variety of templates designed specifically for the modern graduate.', bulletPoints: ['Classic Academic: Parchment backgrounds, elegant fonts, university seals', 'Modern Minimalist: Clean lines, bold typography, sleek animations', 'Nostalgic Polaroid: Scrapbook-style theme for displaying photo journeys'] },
+        { id: 'graduation-farewell-digital-cards-wishes-invitation-ideas-sec-3', title: '3. Planning the Ultimate Farewell Party', body: 'Saying goodbye to friends before heading off to careers or higher education requires a proper send-off. Cardzy makes organizing stress-free.', bulletPoints: ['Built-in Google Maps integration to guide guests', 'WhatsApp RSVP so you know exactly who is coming', 'Add itinerary for speeches, awards, or games planned'] },
+        { id: 'graduation-farewell-digital-cards-wishes-invitation-ideas-sec-4', title: '4. Teacher and Mentor Appreciation', body: 'Graduation is also a time to thank those who guided you along the way. A personalized digital thank-you card shows profound gratitude.', bulletPoints: ['Craft long-form, heartfelt messages of appreciation', 'Attach a video message or memorable photo with the mentor', 'Deliver via email or direct message with a professional design'] },
+        { id: 'graduation-farewell-digital-cards-wishes-invitation-ideas-sec-5', title: '5. University Convocation Announcements', body: 'If you want to announce your graduation to a broader network, a digital convocation announcement is perfect for sharing on LinkedIn and family chats.', bulletPoints: ['Announce your degree, honors, and future plans', 'Provide details for live streaming the convocation', 'Accept virtual congratulations directly through the platform'] },
+        { id: 'graduation-farewell-digital-cards-wishes-invitation-ideas-sec-6', title: '6. Customizing Wording and Quotes', body: 'Stuck on what to write? A great quote can elevate your card. Cardzy templates include placeholder text you can customize with famous graduation quotes.', bulletPoints: ['Use inspiring quotes about the future, success, and perseverance', 'Include inside jokes or memorable catchphrases from your class', 'Keep it bilingual if sharing with multilingual family members'] }
+      ],
+      faq: [
+        { question: 'Can I upload multiple photos to my graduation card?', answer: 'Yes! Create a photo memory gallery within your Cardzy digital card to showcase the graduate journey.' },
+        { question: 'How do I track RSVPs for my farewell party?', answer: 'Your Cardzy dashboard provides a real-time list of confirmed guests via the 1-click WhatsApp RSVP feature.' },
+        { question: 'Can I change the colors to match my university?', answer: 'Absolutely. Cardzy templates are fully customizable to match your specific school colors.' },
+        { question: 'Is it easy to share on social media?', answer: 'Very easy. Copy your unique Cardzy link and paste it into any social media platform, email, or direct message.' }
+      ],
+      conclusion: 'Make this academic milestone truly unforgettable. Start designing your custom graduation wishes digital cards and farewell party invitations on Cardzy today!'
+    }
+  },
+  {
+    slug: 'whatsapp-rsvp-wedding-guest-management-complete-guide',
+    title: 'WhatsApp RSVP and Wedding Guest Management: Complete Guide',
+    subtitle: 'Learn how to master wedding guest management for 500+ attendees using WhatsApp RSVP, CSV exports, and real-time tracking on Cardzy.',
+    seoTitle: 'WhatsApp RSVP Wedding Guest Management | Cardzy',
+    metaDescription: 'Master WhatsApp RSVP wedding guest management with Cardzy. Track 500+ guests, export CSVs, and send broadcast reminders easily.',
+    category: 'Wedding & Nikkah',
+    author: { name: 'Umar Farooq', role: 'Senior Cultural Event & Wedding Stylist', avatar: '/icon.svg' },
+    publishedAt: '2026-09-01',
+    updatedAt: '2026-09-01',
+    readTime: '9 min read',
+    wordCount: 2150,
+    featuredImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=750&q=65&fm=webp',
+    tags: ['WhatsApp RSVP Wedding', 'Guest Management', 'Wedding RSVP Tool', 'Guest List Tracker', 'Digital RSVPs'],
+    content: {
+      intro: 'In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.',
+      sections: [
+        { id: 'whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1', title: '1. Why WhatsApp RSVP Beats Traditional Phone Calls', body: 'Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.', bulletPoints: ['Guests reply instantly with a single tap at their convenience', 'Eliminates anxiety of making hundreds of follow-up phone calls', 'Creates a digital paper trail preventing misunderstandings'] },
+        { id: 'whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2', title: '2. Setting Up Digital RSVPs on Cardzy', body: 'Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.', bulletPoints: ['Configure custom questions like number of adults and dietary restrictions', 'Set strict RSVP deadlines so the form automatically closes', 'Designate a specific family member or planner to receive updates'] },
+        { id: 'whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3', title: '3. Tracking Guest Counts Per Function', body: 'South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.', bulletPoints: ['Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card', 'Maintain accurate separate headcounts to optimize catering per night', 'Prevent guests from accidentally confirming for events they were not invited to'] },
+        { id: 'whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4', title: '4. Managing 500+ Guests with Real-Time Dashboards', body: 'When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.', bulletPoints: ['View charts representing Attending, Declined, and Pending statuses', 'Search and filter the guest list by name or response type', 'Monitor adult vs children attendee numbers for seating arrangements'] },
+        { id: 'whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5', title: '5. CSV Exports for Caterers and Planners', body: 'Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.', bulletPoints: ['Share accurate final numbers with caterers to prevent over-ordering', 'Provide event coordinators with precise lists for seating charts', 'Keep an offline backup of your guest list for venue print-outs'] },
+        { id: 'whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6', title: '6. Sending Broadcast Reminders', body: 'As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.', bulletPoints: ['Send gentle nudges a week before the deadline to maximize responses', 'Broadcast last-minute venue changes to confirmed attendees only', 'Maintain polite, organized communication without being intrusive'] }
+      ],
+      faq: [
+        { question: 'Do my guests need to install an app to RSVP?', answer: 'No! The RSVP button opens directly in their existing WhatsApp application or browser.' },
+        { question: 'Can I track RSVPs for multiple wedding events simultaneously?', answer: 'Yes, configure separate headcounts for Nikkah, Mehndi, Barat, and Walima.' },
+        { question: 'Is the host dashboard updated in real-time?', answer: 'Absolutely. The moment a guest sends confirmation via WhatsApp, your dashboard updates instantly.' },
+        { question: 'Can I share the CSV export with my wedding planner?', answer: 'Yes, exporting the guest list takes one click, and you can email it directly to caterers or planners.' }
+      ],
+      conclusion: 'Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today.'
+    }
+  },
 ]
 
 export function getBlogPost(slug: string): BlogPost | undefined {

@@ -2,13 +2,14 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Shield, Lock, Eye, Megaphone, FileText, CheckCircle, ExternalLink, Mail, MapPin } from 'lucide-react'
 import { Breadcrumbs } from '@/components/breadcrumbs'
+import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Cardzy',
   description:
     "Read Cardzy's Privacy Policy. Learn how we protect personal data, enforce Google AdSense & GDPR compliance, and manage cookies securely.",
-  alternates: { canonical: 'https://cardzy.online/privacy-policy' },
-  robots: { index: true, follow: true },
+  alternates: getPageAlternates('/privacy-policy'),
+  robots: PUBLIC_ROBOTS,
 }
 
 const jsonLd = {

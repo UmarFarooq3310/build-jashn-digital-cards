@@ -507,10 +507,10 @@ export function ThreeDCardWrapper({
           ========================================================= */}
       <div
         className={cn(
-          "w-full rounded-[2.5rem] z-10 no-scrollbar relative",
+          "w-full rounded-[2.5rem] z-10 relative",
           "transition-all duration-700",
           isOpen 
-            ? "relative h-auto opacity-100 pointer-events-auto scale-100" 
+            ? "relative h-auto opacity-100 pointer-events-auto scale-100 max-h-[82vh] sm:max-h-[85vh] overflow-y-auto overscroll-contain" 
             : "absolute inset-0 h-full opacity-0 pointer-events-none scale-95 overflow-hidden"
         )}
         style={{

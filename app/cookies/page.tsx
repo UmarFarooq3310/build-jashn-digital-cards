@@ -2,13 +2,14 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Cookie, Shield, BarChart3, Megaphone, Settings, ExternalLink, Lock, Info } from 'lucide-react'
 import { Breadcrumbs } from '@/components/breadcrumbs'
+import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Cookie Policy | Cardzy',
   description:
     'Learn how Cardzy uses essential, analytics, and Google AdSense advertising cookies, plus how to manage your cookie preferences.',
-  alternates: { canonical: 'https://cardzy.online/cookies' },
-  robots: { index: true, follow: true },
+  alternates: getPageAlternates('/cookies'),
+  robots: PUBLIC_ROBOTS,
 }
 
 const cookieJsonLd = {

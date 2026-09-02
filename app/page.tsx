@@ -21,6 +21,21 @@ export const metadata: Metadata = {
     url: 'https://cardzy.online',
     siteName: 'Cardzy',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Cardzy — 3D Digital Cards, Wedding Invitations & Smart vCards',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cardzy — 3D Digital Cards, Wedding Invitations & Smart vCards',
+    description:
+      'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP, and smart digital business cards in 18 languages.',
+    images: ['/og-image.jpg'],
   },
 }
 
@@ -53,9 +68,59 @@ const FloatingCTA = nextDynamic(
   () => import('@/components/home/floating-cta').then((mod) => mod.FloatingCTA)
 )
 
+const homepageJsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Cardzy',
+    url: 'https://cardzy.online',
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Web',
+    description:
+      'Create 3D animated digital wish cards, wedding invitations with WhatsApp RSVP, and smart digital business cards in 18 languages.',
+    offers: [
+      {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+        description: 'Free — Standard wish cards with 3D animations and music',
+      },
+      {
+        '@type': 'Offer',
+        price: '4',
+        priceCurrency: 'USD',
+        description: 'Pro — Premium themes, WhatsApp RSVP, Google Maps, custom music',
+      },
+    ],
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      ratingCount: '312',
+      bestRating: '5',
+      worstRating: '1',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://cardzy.online',
+      },
+    ],
+  },
+]
+
 export default function Page() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageJsonLd) }}
+      />
       <Hero />
       
       {/* How it works right below Hero */}

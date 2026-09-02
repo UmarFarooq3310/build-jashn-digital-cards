@@ -9,6 +9,8 @@ const DISALLOWED_PATHS = [
   '/i/',
   '/w/',
   '/v/',
+  '/login',
+  '/signup',
 ]
 
 const AI_AGENTS = [
@@ -30,7 +32,6 @@ const AI_AGENTS = [
   'cohere-ai',
   'CCBot',
   'Diffbot',
-  'Mediapartners-Google',
 ]
 
 export default function robots(): MetadataRoute.Robots {

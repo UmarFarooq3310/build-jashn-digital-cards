@@ -5,1337 +5,1733 @@ export const POST_15_SLUG = "how-to-write-heartfelt-wedding-anniversary-wishes-d
 export const POST_15_DATA: Record<string, LocalizedBlogData> = {
   "en": {
     "title": "How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "Express everlasting love with romantic anniversary quotes, Urdu shayari, couple photo frames, and interactive 3D digital cards.",
-    "category": "Event Planning",
+    "subtitle": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards.",
+    "category": "Wedding & Nikkah",
     "seoTitle": "How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "metaDescription": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards."
   },
   "ur": {
-    "title": "ڈیجیٹل کارڈز گائیڈ: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "خوبصورت متحرک کارڈز اور واٹس ایپ RSVP کے ساتھ اپنی تقریبات کو یادگار بنائیں۔",
-    "category": "Event Planning",
-    "seoTitle": "ڈیجیٹل کارڈز گائیڈ: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ",
+    "subtitle": "کارڈزی پر شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔",
+    "category": "شادی و نکاح",
+    "seoTitle": "شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ — Cardzy",
+    "metaDescription": "کارڈزی پر شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔"
   },
   "es": {
-    "title": "Guía Digital Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "Cree tarjetas digitales animadas y comparta invitaciones con seguimiento de RSVP por WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Guía Digital Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "Cómo Redactar Felicitaciones de Aniversario de Boda y Crear Tarjetas Románticas en 3D",
+    "subtitle": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards.",
+    "category": "Boda y Nikkah",
+    "seoTitle": "Cómo Redactar Felicitaciones de Aniversario de Boda y Crear Tarjetas Románticas en 3D — Cardzy",
+    "metaDescription": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards."
   },
   "fr": {
-    "title": "Guide Numérique Cardzy : How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "Créez des cartes numériques animées et partagez vos invitations avec suivi RSVP WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Guide Numérique Cardzy : How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "Rédiger des Vœux d’Anniversaire de Mariage et Créer des Cartes Animées pour Couples",
+    "subtitle": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy.",
+    "category": "Mariage & Nikkah",
+    "seoTitle": "Rédiger des Vœux d’Anniversaire de Mariage et Créer des Cartes Animées pour Couples — Cardzy",
+    "metaDescription": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy."
   },
   "ar": {
-    "title": "دليل كاردزي الرقمي: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "أنشئ بطاقات رقمية متحركة وشارك الدعوات مع متابعة تأكيد الحضور عبر الواتساب.",
-    "category": "Event Planning",
-    "seoTitle": "دليل كاردزي الرقمي: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "أجمل عبارات تهنئة ذكرى الزواج وكيفية تصميم بطاقات متحركة رومانسية للزوجين",
+    "subtitle": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي.",
+    "category": "الزفاف والنكاح",
+    "seoTitle": "أجمل عبارات تهنئة ذكرى الزواج وكيفية تصميم بطاقات متحركة رومانسية للزوجين — Cardzy",
+    "metaDescription": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي."
   },
   "hi": {
-    "title": "Cardzy डिजिटल गाइड: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "एनिमेटेड डिजिटल कार्ड बनाएं और व्हाट्सएप RSVP ट्रैकिंग के साथ आमंत्रण साझा करें।",
-    "category": "Event Planning",
-    "seoTitle": "Cardzy डिजिटल गाइड: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "शादी की सालगिरह के दिल को छू लेने वाले संदेश और एनिमेटेड कपल कार्ड कैसे बनाएं",
+    "subtitle": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।",
+    "category": "शादी और निकाह",
+    "seoTitle": "शादी की सालगिरह के दिल को छू लेने वाले संदेश और एनिमेटेड कपल कार्ड कैसे बनाएं — Cardzy",
+    "metaDescription": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।"
   },
   "zh": {
-    "title": "Cardzy 数字指南：How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "创建动态数字卡片，并使用 WhatsApp RSVP 追踪即时分享请柬。",
-    "category": "Event Planning",
-    "seoTitle": "Cardzy 数字指南：How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "如何撰写感人至深的结婚纪念日祝福语并定制情侣浪漫 3D 电子贺卡",
+    "subtitle": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。",
+    "category": "婚礼与仪式",
+    "seoTitle": "如何撰写感人至深的结婚纪念日祝福语并定制情侣浪漫 3D 电子贺卡 — Cardzy",
+    "metaDescription": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。"
   },
   "pt": {
-    "title": "Guia Digital Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "Crie cartões digitais animados e compartilhe convites com rastreamento de RSVP pelo WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Guia Digital Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "Como Escrever Mensagens de Aniversário de Casamento e Criar Cartões Animados",
+    "subtitle": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy.",
+    "category": "Casamento e Nikkah",
+    "seoTitle": "Como Escrever Mensagens de Aniversário de Casamento e Criar Cartões Animados — Cardzy",
+    "metaDescription": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy."
   },
   "ru": {
-    "title": "Цифровое руководство Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "Создавайте анимированные цифровые открытки и отправляйте приглашения с RSVP в WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Цифровое руководство Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "Как написать душевные поздравления с годовщиной свадьбы и создать открытку для пары",
+    "subtitle": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy.",
+    "category": "Свадьба и Никах",
+    "seoTitle": "Как написать душевные поздравления с годовщиной свадьбы и создать открытку для пары — Cardzy",
+    "metaDescription": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy."
   },
   "de": {
-    "title": "Cardzy Digital-Ratgeber: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "Erstellen Sie animierte digitale Karten und teilen Sie Einladungen mit WhatsApp RSVP-Tracking.",
-    "category": "Event Planning",
-    "seoTitle": "Cardzy Digital-Ratgeber: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "Herzerwärmende Glückwünsche zum Hochzeitstag verfassen & romantische Karten erstellen",
+    "subtitle": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy.",
+    "category": "Hochzeit & Nikkah",
+    "seoTitle": "Herzerwärmende Glückwünsche zum Hochzeitstag verfassen & romantische Karten erstellen — Cardzy",
+    "metaDescription": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy."
   },
   "ja": {
-    "title": "Cardzyデジタルガイド：How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "アニメーションデジタルカードを作成し、WhatsAppのRSVP追跡機能で招待状を共有しましょう。",
-    "category": "Event Planning",
-    "seoTitle": "Cardzyデジタルガイド：How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "心温まる結婚記念日のメッセージの書き方とロマンチックな3Dカード作成法",
+    "subtitle": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。",
+    "category": "結婚式＆Nikkah",
+    "seoTitle": "心温まる結婚記念日のメッセージの書き方とロマンチックな3Dカード作成法 — Cardzy",
+    "metaDescription": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。"
   },
   "ko": {
-    "title": "Cardzy 디지털 가이드: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "애니메이션 디지털 카드를 제작하고 WhatsApp RSVP 추적 기능으로 초대장을 공유하세요.",
-    "category": "Event Planning",
-    "seoTitle": "Cardzy 디지털 가이드: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "감동적인 결혼기념일 축하 문구 작성법 및 부부 맞춤형 3D 애니메이션 카드 제작",
+    "subtitle": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요.",
+    "category": "웨딩 & 니카",
+    "seoTitle": "감동적인 결혼기념일 축하 문구 작성법 및 부부 맞춤형 3D 애니메이션 카드 제작 — Cardzy",
+    "metaDescription": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요."
   },
   "it": {
-    "title": "Guida Digitale Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "Crea biglietti digitali animati e condividi inviti con tracciamento RSVP su WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Guida Digitale Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "Come Scrivere Auguri di Anniversario di Nozze e Creare Biglietti Romantici in 3D",
+    "subtitle": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy.",
+    "category": "Matrimonio & Nikkah",
+    "seoTitle": "Come Scrivere Auguri di Anniversario di Nozze e Creare Biglietti Romantici in 3D — Cardzy",
+    "metaDescription": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy."
   },
   "tr": {
-    "title": "Cardzy Dijital Rehber: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "Animasyonlu dijital kartlar oluşturun ve WhatsApp RSVP takibi ile davetiyelerinizi paylaşın.",
-    "category": "Event Planning",
-    "seoTitle": "Cardzy Dijital Rehber: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "Evlilik Yıldönümü Tebrik Mesajları Yazma ve Çiftlere Özel 3D Kart Hazırlama",
+    "subtitle": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin.",
+    "category": "Düğün ve Nikah",
+    "seoTitle": "Evlilik Yıldönümü Tebrik Mesajları Yazma ve Çiftlere Özel 3D Kart Hazırlama — Cardzy",
+    "metaDescription": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin."
   },
   "id": {
-    "title": "Panduan Digital Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "Buat kartu digital animasi dan bagikan undangan dengan pelacakan RSVP WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Panduan Digital Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "Cara Menulis Ucapan Ulang Tahun Pernikahan Romantis & Membuat Kartu Animasi 3D",
+    "subtitle": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy.",
+    "category": "Pernikahan & Akad",
+    "seoTitle": "Cara Menulis Ucapan Ulang Tahun Pernikahan Romantis & Membuat Kartu Animasi 3D — Cardzy",
+    "metaDescription": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy."
   },
   "bn": {
-    "title": "Cardzy ডিজিটাল গাইড: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "অ্যানিমেটেড ডিজিটাল কার্ড তৈরি করুন এবং হোয়াটসঅ্যাপ RSVP ট্র্যাক সহ শেয়ার করুন।",
-    "category": "Event Planning",
-    "seoTitle": "Cardzy ডিজিটাল গাইড: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "বিবাহবার্ষিকীর রোমান্টিক শুভেচ্ছা বার্তা লেখা এবং কাপল কার্ড তৈরির গাইড",
+    "subtitle": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।",
+    "category": "বিয়ে ও নিকাহ",
+    "seoTitle": "বিবাহবার্ষিকীর রোমান্টিক শুভেচ্ছা বার্তা লেখা এবং কাপল কার্ড তৈরির গাইড — Cardzy",
+    "metaDescription": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।"
   },
   "vi": {
-    "title": "Hướng Dẫn Kỹ Thuật Số Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "Tạo thiệp kỹ thuật số hoạt hình và chia sẻ thiệp mời với theo dõi RSVP qua WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Hướng Dẫn Kỹ Thuật Số Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "Cách Viết Lời Chúc Kỷ Niệm Ngày Cưới Ý Nghĩa & Thiết Kế Thiệp Đôi Hoạt Hình",
+    "subtitle": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy.",
+    "category": "Đám Cưới & Hôn Lễ",
+    "seoTitle": "Cách Viết Lời Chúc Kỷ Niệm Ngày Cưới Ý Nghĩa & Thiết Kế Thiệp Đôi Hoạt Hình — Cardzy",
+    "metaDescription": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy."
   },
   "sw": {
-    "title": "Mwongozo wa Kidijitali wa Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards",
-    "subtitle": "Unda kadi za kidijitali za mwendo na ushiriki mialiko kwa ufuatiliaji wa RSVP wa WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Mwongozo wa Kidijitali wa Cardzy: How to Write Heartfelt Wedding Anniversary Wishes & Create Animated Couple Cards — Cardzy",
-    "metaDescription": "Create animated wedding anniversary cards for 1st, 10th, 25th & 50th milestones. Includes romantic quotes, Urdu shayari & photo upload."
+    "title": "Jinsi ya Kuandika Jumbe za Maadhimisho ya Harusi na Kubuni Kadi za Wanandoa za 3D",
+    "subtitle": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy.",
+    "category": "Harusi na Nikkah",
+    "seoTitle": "Jinsi ya Kuandika Jumbe za Maadhimisho ya Harusi na Kubuni Kadi za Wanandoa za 3D — Cardzy",
+    "metaDescription": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy."
   }
 };
 
 export const POST_15_CONTENT: Record<string, LocalizedBlogContent> = {
   "en": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   },
   "ur": {
-    "intro": "خوش آمدید! کارڈزی ایک عالمی ڈیجیٹل جشن اور نیٹ ورکنگ پلیٹ فارم ہے جس کا مقصد آپ کے خاص لمحات جیسے کہ شادی، نکاح، عید، سالگرہ اور کاروباری رابطہ کاری کو جدید، متحرک اور یادگار بنانا ہے۔ اس جامع گائیڈ میں، ہم \"Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards\" پر تفصیل سے روشنی ڈالیں گے تاکہ آپ بغیر کسی دقت کے ایک بہترین ڈیجیٹل کارڈ یا دعوت نامہ تیار کر سکیں۔",
+    "intro": "کارڈزی کے ساتھ شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ کو جدید ترین، دلکش اور یادگار انداز میں منائیں۔ روایتی کاغذ کے کارڈز کے بجائے 3D لفافہ اوپننگ، اردو نستعلیق خطاطی، بیک گراؤنڈ میوزک اور واٹس ایپ آر ایس وی پی کے ساتھ ڈیجیٹل کارڈز بنائیں۔",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. بنیادی اہمیت اور جدید فوائد",
-        "body": "روایتی کاغذی کارڈز کے مقابلے میں ڈیجیٹل کارڈز کا استعمال آپ کے وقت اور اخراجات میں نمایاں بچت فراہم کرتا ہے۔ آپ منٹوں میں اپنا کارڈ خود تیار کر کے واٹس ایپ، انسٹاگرام، یا ای میل کے ذریعے اپنے تمام عزیزوں تک پہنچا سکتے ہیں۔",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ — اہم فیچرز اور گائیڈ",
+        "body": "کارڈزی پر شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
         "bulletPoints": [
-          "18 عالمی زبانوں اور نستعلیق فونٹ کی مکمل سپورٹ",
-          "واٹس ایپ کے ذریعے 1-کلک میں آر ایس وی پی کی تصدیق",
-          "گوگل میپس لوکیشن پن تاکہ مہمان آسانی سے جگہ تلاش کر سکیں",
-          "لائیو الٹی گنتی ٹائمر اور پسندیدہ میوزک چلانے کا آپشن"
-        ],
-        "highlight": "کارڈزی کے مفت پلان کے ساتھ کسی بھی وقت اپنا پہلا کارڈ منٹوں میں تیار کریں!"
-      },
-      {
-        "title": "2. اہم نکات، الفاظ اور ڈیزائننگ کی تجاویز",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "ایک بہترین ڈیجیٹل کارڈ بنانے کے لیے مناسب رنگوں اور خوبصورت الفاظ کا انتخاب نہایت ضروری ہے۔ نکاح اور شادی کی دعوات کے لیے اسلامک خطاطی (بسم اللہ) اور باوقار الفاظ کا استعمال کارڈ کو باوقار بناتا ہے۔",
-        "bulletPoints": [
-          "ایونٹ کے مزاج کے مطابق تھیم کا انتخاب کریں (مغل گولڈ، مہندی وائبرنٹ، وغیرہ)",
-          "مہمانوں کے لیے واضح شیڈول اور لباس کی ہدایت لکھیں",
-          "کارڈ میں ذاتی تصویر اور دعائیہ کلمات شامل کریں"
-        ],
-        "highlight": "کارڈزی پر موجود 50 سے زائد پہلے سے تیار شدہ ٹیمپلیٹس میں سے اپنی پسند کا ڈیزائن منتخب کریں۔"
-      },
-      {
-        "title": "3. واٹس ایپ پر شیئرنگ اور آر ایس وی پی مینجمنٹ",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "اپنا کارڈ تیار کرنے کے بعد آپ کو ایک یونیک لنک حاصل ہوتا ہے۔ اس لنک کو آپ براہ راست واٹس ایپ گروپس یا انفرادی چیٹس میں شیئر کر سکتے ہیں۔ مہمان ایک کلک سے اپنی آمد کی تصدیق کر سکتے ہیں۔",
-        "bulletPoints": [
-          "تمام آر ایس وی پی جوابات آپ کے ڈیش بورڈ میں جمع ہوتے ہیں",
-          "مہمانوں کی فہرست کو CSV فائل میں ڈاون لوڈ کرنے کی سہولت",
-          "شادی سے دو دن پہلے یاد دہانی بھیجنے کی سہولت"
+          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
+          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
+          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
         ]
       },
       {
-        "title": "4. کارآمد مشورے اور تکنیکی ہدایات",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "ہمیشہ اپنے ایونٹ سے 10 سے 14 دن پہلے دعوتی لنک بھیجیں تاکہ مہمان اپنی آمد کی منصوبہ بندی کر سکیں۔ کارڈ کا لنک شیئر کرنے سے پہلے تمام معلومات کی تسلی کر لیں۔",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ — اہم فیچرز اور گائیڈ",
+        "body": "کارڈزی پر شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
         "bulletPoints": [
-          "لنک شیئر کرنے سے پہلے گوگل میپ پن کو خود ٹیسٹ کریں",
-          "اردو اور انگریزی کی بائلنگول ٹیمپلیٹس کا استعمال کریں",
-          "موبائل فرینڈلی ویو کو یقینی بنائیں"
+          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
+          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
+          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ — اہم فیچرز اور گائیڈ",
+        "body": "کارڈزی پر شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "bulletPoints": [
+          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
+          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
+          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ — اہم فیچرز اور گائیڈ",
+        "body": "کارڈزی پر شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "bulletPoints": [
+          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
+          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
+          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ — اہم فیچرز اور گائیڈ",
+        "body": "کارڈزی پر شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "bulletPoints": [
+          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
+          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
+          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ — اہم فیچرز اور گائیڈ",
+        "body": "کارڈزی پر شادی کی سالگرہ کے پرخلوص پیغامات اور اینیمیٹڈ جوڑی کارڈز بنانے کا گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "bulletPoints": [
+          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
+          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
+          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+        ],
+        "highlight": "کارڈزی پر اپنے کارڈ کو اپنی مرضی کے مطابق سجائیں اور فوری شیئر کریں۔"
       }
     ],
     "faq": [
       {
-        "question": "کیا کارڈزی کے ڈیجیٹل کارڈز تمام اسمارٹ فونز پر کھلتے ہیں؟",
-        "answer": "جی ہاں! کارڈزی کے تمام کارڈز 100% رسپانسو ہیں اور بغیر کسی ایپ کے ہر آئی فون اور اینڈرائیڈ ڈیوائس پر فوری کھلتے ہیں۔"
+        "question": "کارڈزی ڈیجیٹل کارڈ کے کیا فوائد ہیں؟",
+        "answer": "کارڈزی پر آپ 3D لفافہ اینیمیشن، پس منظر میوزک، اردو نستعلیق خطاطی اور واٹس ایپ آر ایس وی پی کے ساتھ باآسانی کارڈز بنا سکتے ہیں۔"
       },
       {
-        "question": "کیا میں لائیو لنک شیئر کرنے کے بعد بھی معلومات تبدیل کر سکتا ہوں؟",
-        "answer": "جی بالکل! ڈیش بورڈ سے کی جانے والی تمام ترامیم لائیو لنک پر فوری طور پر بغیر نیا لنک بھیجے اپ ڈیٹ ہو جاتی ہیں۔"
+        "question": "کیا کارڈزی پر کارڈ بنانا مفت ہے؟",
+        "answer": "جی ہاں! آپ کارڈزی پر تمام بنیادی اور اینیمیٹڈ کارڈز بالکل مفت بنا سکتے ہیں اور فوری واٹس ایپ پر شیئر کر سکتے ہیں۔"
       },
       {
-        "question": "کیا میں اپنے کارڈ پر اپنی پسند کا بیک گراؤنڈ میوزک لگا سکتا ہوں؟",
-        "answer": "جی ہاں! آپ اپنی پسند کا میوزک، نعت، یا نغمہ منتخب کر سکتے ہیں اور خوبصورت فریمز میں تصاویر اپ لوڈ کر سکتے ہیں۔"
+        "question": "کیا یہ کارڈ واٹس ایپ پر درست انداز میں کھلتا ہے؟",
+        "answer": "بالکل! کارڈزی لنک واٹس ایپ، ایس ایم ایس اور سوشل میڈیا پر بغیر کسی ایپ ڈاؤن لوڈ کے فوری کھلتا ہے۔"
       },
       {
-        "question": "کارڈزی پر کارڈ کیسے بنایا جاتا ہے؟",
-        "answer": "کارڈ بنانا نہایت آسان ہے! صرف موقع منتخب کریں، معلومات درج کریں اور 2 منٹ میں اپنا لائیو لنک حاصل کریں۔"
+        "question": "کیا مہمانوں کی حاضری (RSVP) کو ٹریک کیا جا سکتا ہے؟",
+        "answer": "جی ہاں! مہمان ایک کلک سے شرکت کی تصدیق کرتے ہیں اور آپ کو لائیو ڈیش بورڈ اور واٹس ایپ پر فوری تعداد معلوم ہو جاتی ہے۔"
       }
     ],
-    "conclusion": "آج ہی کارڈزی (cardzy.online) پر اپنا پسندیدہ متحرک وش کارڈ یا دعوت نامہ بنائیں اور اپنے پیاروں کے ساتھ خوشیاں بانٹیں!"
+    "conclusion": "کارڈزی پر اپنا ڈیجیٹل کارڈ منٹوں میں ڈیزائن کریں، پسندیدہ آڈیو اور تصاویر شامل کریں اور واٹس ایپ پر ایک کلک سے شیئر کریں۔"
   },
   "es": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Celebre Cómo Redactar Felicitaciones de Aniversario de Boda y Crear Tarjetas Románticas en 3D con las innovadoras tarjetas digitales animadas en 3D de Cardzy. Personalice con música, fotos y confirmación RSVP por WhatsApp.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Cómo Redactar Felicitaciones de Aniversario de Boda y Crear Tarjetas Románticas en 3D — Características y Guía",
+        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "Animaciones 3D interactivas y música de fondo personalizada",
+          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
+          "Integración con Google Maps para guiar a los invitados fácilmente"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Cómo Redactar Felicitaciones de Aniversario de Boda y Crear Tarjetas Románticas en 3D — Características y Guía",
+        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "Animaciones 3D interactivas y música de fondo personalizada",
+          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
+          "Integración con Google Maps para guiar a los invitados fácilmente"
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Cómo Redactar Felicitaciones de Aniversario de Boda y Crear Tarjetas Románticas en 3D — Características y Guía",
+        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "bulletPoints": [
+          "Animaciones 3D interactivas y música de fondo personalizada",
+          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
+          "Integración con Google Maps para guiar a los invitados fácilmente"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Cómo Redactar Felicitaciones de Aniversario de Boda y Crear Tarjetas Románticas en 3D — Características y Guía",
+        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "bulletPoints": [
+          "Animaciones 3D interactivas y música de fondo personalizada",
+          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
+          "Integración con Google Maps para guiar a los invitados fácilmente"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Cómo Redactar Felicitaciones de Aniversario de Boda y Crear Tarjetas Románticas en 3D — Características y Guía",
+        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "bulletPoints": [
+          "Animaciones 3D interactivas y música de fondo personalizada",
+          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
+          "Integración con Google Maps para guiar a los invitados fácilmente"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Cómo Redactar Felicitaciones de Aniversario de Boda y Crear Tarjetas Románticas en 3D — Características y Guía",
+        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "bulletPoints": [
+          "Animaciones 3D interactivas y música de fondo personalizada",
+          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
+          "Integración con Google Maps para guiar a los invitados fácilmente"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Diseñe su tarjeta digital personalizada en Cardzy en minutos y compártala al instante por WhatsApp."
   },
   "fr": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Célébrez Rédiger des Vœux d’Anniversaire de Mariage et Créer des Cartes Animées pour Couples avec les faire-part numériques et cartes animées 3D Cardzy. Personnalisez avec musique, photos et suivi RSVP sur WhatsApp.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Rédiger des Vœux d’Anniversaire de Mariage et Créer des Cartes Animées pour Couples — Fonctionnalités et Guide",
+        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "Animations 3D immersives et musique de fond personnalisée",
+          "Gestion instantanée des présences RSVP directement sur WhatsApp",
+          "Intégration Google Maps pour orienter facilement vos invités"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Rédiger des Vœux d’Anniversaire de Mariage et Créer des Cartes Animées pour Couples — Fonctionnalités et Guide",
+        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "Animations 3D immersives et musique de fond personnalisée",
+          "Gestion instantanée des présences RSVP directement sur WhatsApp",
+          "Intégration Google Maps pour orienter facilement vos invités"
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Rédiger des Vœux d’Anniversaire de Mariage et Créer des Cartes Animées pour Couples — Fonctionnalités et Guide",
+        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "bulletPoints": [
+          "Animations 3D immersives et musique de fond personnalisée",
+          "Gestion instantanée des présences RSVP directement sur WhatsApp",
+          "Intégration Google Maps pour orienter facilement vos invités"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Rédiger des Vœux d’Anniversaire de Mariage et Créer des Cartes Animées pour Couples — Fonctionnalités et Guide",
+        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "bulletPoints": [
+          "Animations 3D immersives et musique de fond personnalisée",
+          "Gestion instantanée des présences RSVP directement sur WhatsApp",
+          "Intégration Google Maps pour orienter facilement vos invités"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Rédiger des Vœux d’Anniversaire de Mariage et Créer des Cartes Animées pour Couples — Fonctionnalités et Guide",
+        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "bulletPoints": [
+          "Animations 3D immersives et musique de fond personnalisée",
+          "Gestion instantanée des présences RSVP directement sur WhatsApp",
+          "Intégration Google Maps pour orienter facilement vos invités"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Rédiger des Vœux d’Anniversaire de Mariage et Créer des Cartes Animées pour Couples — Fonctionnalités et Guide",
+        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "bulletPoints": [
+          "Animations 3D immersives et musique de fond personnalisée",
+          "Gestion instantanée des présences RSVP directement sur WhatsApp",
+          "Intégration Google Maps pour orienter facilement vos invités"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "Quels sont les avantages des faire-part numériques Cardzy ?",
+        "answer": "Cardzy permet de créer des faire-part animés 3D avec musique, photos, géolocalisation Google Maps et suivi RSVP par WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "Est-il gratuit de créer une carte sur Cardzy ?",
+        "answer": "Oui ! Vous pouvez créer et partager gratuitement vos cartes animées directement sur WhatsApp."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "Les cartes fonctionnent-elles sur smartphone ?",
+        "answer": "Parfaitement. Le lien s’ouvre instantanément dans tout navigateur mobile sans nécessiter d’application."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "Comment fonctionne le suivi des réponses RSVP ?",
+        "answer": "Les invités confirment leur présence en un clic et votre tableau de bord est mis à jour en temps réel."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Créez votre carte numérique personnalisée sur Cardzy en quelques minutes et partagez-la instantanément sur WhatsApp."
   },
   "ar": {
-    "intro": "مرحباً بكم في منصة كاردزي العالمية للبطاقات الرقمية التفاعلية والدعوات الإلكترونية. تهدف هذه المقالة الشاملة إلى تقديم دليل تفصيلي حول \"Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards\" لمساعدتك في إنشاء دعوات وبطاقات معايدة مبتكرة ومبهرة.",
+    "intro": "مع كاردزي، احتفل بـ أجمل عبارات تهنئة ذكرى الزواج وكيفية تصميم بطاقات متحركة رومانسية للزوجين بأرقى المعايير العصرية والتفاعلية ثلاثية الأبعاد 3D والخطوط الأنيقة، مع إمكانية تحديد موقع الحفل عبر خرائط جوجل وتأكيد الحضور عبر واتساب.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "توفر البطاقات الرقمية التفاعلية مقارنة بالبطاقات الورقية التقليدية حلولاً عصرية توفر الوقت والتكاليف، وتتيح إمكانية المشاركة الفورية عبر واتساب ووسائل التواصل الاجتماعي بـ 18 لغة عالمية.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. أجمل عبارات تهنئة ذكرى الزواج وكيفية تصميم بطاقات متحركة رومانسية للزوجين — المزايا الأساسية والدليل الشامل",
+        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "تعتمد الدعوة الرقمية الناجحة على اختيار الألوان الهادئة، الخطوط العربية الأنيقة، والعبارات الراقية التي تعبر عن الفرح والتقدير للضيوف.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "بمجرد إنشاء دعوتك، يمكنك نسخ الرابط الفريد ومشاركته مباشرة في مجموعات الواتساب. تتيح لك لوحة التحكم متابعة ردود الحضور لحظة بلحظة.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
+          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
+          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "ينصح بإرسال الدعوات الرقمية قبل المناسبة بـ 10-14 يوماً لضمان تأكيد الحضور وتسهيل الترتيبات.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. أجمل عبارات تهنئة ذكرى الزواج وكيفية تصميم بطاقات متحركة رومانسية للزوجين — المزايا الأساسية والدليل الشامل",
+        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
+          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
+          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. أجمل عبارات تهنئة ذكرى الزواج وكيفية تصميم بطاقات متحركة رومانسية للزوجين — المزايا الأساسية والدليل الشامل",
+        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "bulletPoints": [
+          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
+          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
+          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. أجمل عبارات تهنئة ذكرى الزواج وكيفية تصميم بطاقات متحركة رومانسية للزوجين — المزايا الأساسية والدليل الشامل",
+        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "bulletPoints": [
+          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
+          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
+          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. أجمل عبارات تهنئة ذكرى الزواج وكيفية تصميم بطاقات متحركة رومانسية للزوجين — المزايا الأساسية والدليل الشامل",
+        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "bulletPoints": [
+          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
+          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
+          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. أجمل عبارات تهنئة ذكرى الزواج وكيفية تصميم بطاقات متحركة رومانسية للزوجين — المزايا الأساسية والدليل الشامل",
+        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "bulletPoints": [
+          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
+          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
+          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "ما هي مميزات بطاقات كاردزي الرقمية؟",
+        "answer": "تتيح لك كاردزي تصميم بطاقات تفاعلية ثلاثية الأبعاد 3D مع الموسيقى والخط العربي وموقع الحفل وتأكيد الحضور عبر واتساب."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "هل إنشاء البطاقات على كاردزي مجاني؟",
+        "answer": "نعم! يمكنك تصميم ومشاركة جميع البطاقات الأساسية والمتحركة مجاناً ومشاركتها مباشرة عبر واتساب."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "هل تعمل البطاقة بسلاسة عبر واتساب؟",
+        "answer": "نعم، يتم فتح الرابط في أي متصفح هاتف ذكي فوراً دون الحاجة لتثبيت أي تطبيق."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "كيف يتم تتبع تأكيدات الحضور (RSVP)؟",
+        "answer": "يقوم الضيوف بتأكيد الحضور بنقرة واحدة، وتتلقى الإشعارات فوراً في لوحة التحكم وعبر واتساب."
       }
     ],
-    "conclusion": "أنشئ دعوتك الرقمية المميزة عبر منصة كاردزي اليوم وشارك الفرحة مع عائلتك وأصدقائك بضغطة زر!"
+    "conclusion": "أنشئ بطاقتك الرقمية التفاعلية على كاردزي في دقائق معدودة، وشاركها مباشرة مع أحبابك وضيوفك عبر واتساب."
   },
   "hi": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "कार्डज़ी के साथ शादी की सालगिरह के दिल को छू लेने वाले संदेश और एनिमेटेड कपल कार्ड कैसे बनाएं को आधुनिक 3D एनिमेटेड कार्ड, संगीत और व्हाट्सएप आरएसवीपी के साथ यादगार बनाएं।",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. शादी की सालगिरह के दिल को छू लेने वाले संदेश और एनिमेटेड कपल कार्ड कैसे बनाएं — मुख्य विशेषताएं और गाइड",
+        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
+          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
+          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. शादी की सालगिरह के दिल को छू लेने वाले संदेश और एनिमेटेड कपल कार्ड कैसे बनाएं — मुख्य विशेषताएं और गाइड",
+        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
+          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
+          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. शादी की सालगिरह के दिल को छू लेने वाले संदेश और एनिमेटेड कपल कार्ड कैसे बनाएं — मुख्य विशेषताएं और गाइड",
+        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "bulletPoints": [
+          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
+          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
+          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. शादी की सालगिरह के दिल को छू लेने वाले संदेश और एनिमेटेड कपल कार्ड कैसे बनाएं — मुख्य विशेषताएं और गाइड",
+        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "bulletPoints": [
+          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
+          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
+          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. शादी की सालगिरह के दिल को छू लेने वाले संदेश और एनिमेटेड कपल कार्ड कैसे बनाएं — मुख्य विशेषताएं और गाइड",
+        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "bulletPoints": [
+          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
+          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
+          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. शादी की सालगिरह के दिल को छू लेने वाले संदेश और एनिमेटेड कपल कार्ड कैसे बनाएं — मुख्य विशेषताएं और गाइड",
+        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "bulletPoints": [
+          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
+          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
+          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "कार्डज़ी डिजिटल कार्ड की मुख्य विशेषताएं क्या हैं?",
+        "answer": "कार्डज़ी आपको 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप आरएसवीपी के साथ शानदार कार्ड बनाने की सुविधा देता है।"
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "क्या कार्डज़ी पर कार्ड बनाना मुफ्त है?",
+        "answer": "हाँ! आप सभी बुनियादी और एनिमेटेड कार्ड बिल्कुल मुफ्त बना सकते हैं और तुरंत व्हाट्सएप पर साझा कर सकते हैं।"
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "क्या यह व्हाट्सएप पर सही तरीके से खुलता है?",
+        "answer": "बिल्कुल! कार्डज़ी लिंक किसी भी मोबाइल ब्राउज़र में तुरंत खुलता है, किसी ऐप की आवश्यकता नहीं है।"
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "मेहमानों की उपस्थिति (RSVP) को कैसे ट्रैक करें?",
+        "answer": "मेहमान एक क्लिक में अपनी उपस्थिति की पुष्टि करते हैं और आपको लाइव डैशबोर्ड पर तुरंत संख्या मिल जाती है।"
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "कार्डज़ी पर मिनटों में अपना डिजिटल कार्ड बनाएं और व्हाट्सएप पर तुरंत साझा करें।"
   },
   "zh": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "使用 Cardzy 专属 3D 动态电子请柬与贺卡，为您精彩呈现 如何撰写感人至深的结婚纪念日祝福语并定制情侣浪漫 3D 电子贺卡。支持自定义音乐、照片画廊与 WhatsApp 实时出席回执。",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. 如何撰写感人至深的结婚纪念日祝福语并定制情侣浪漫 3D 电子贺卡 — 核心功能与使用指南",
+        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "精美 3D 动态开封动效与沉浸式背景音乐",
+          "WhatsApp 实时出席回执追踪与宾客人数统计",
+          "内嵌 Google 地图导航，宾客一键精准导航至现场"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. 如何撰写感人至深的结婚纪念日祝福语并定制情侣浪漫 3D 电子贺卡 — 核心功能与使用指南",
+        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "精美 3D 动态开封动效与沉浸式背景音乐",
+          "WhatsApp 实时出席回执追踪与宾客人数统计",
+          "内嵌 Google 地图导航，宾客一键精准导航至现场"
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. 如何撰写感人至深的结婚纪念日祝福语并定制情侣浪漫 3D 电子贺卡 — 核心功能与使用指南",
+        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "bulletPoints": [
+          "精美 3D 动态开封动效与沉浸式背景音乐",
+          "WhatsApp 实时出席回执追踪与宾客人数统计",
+          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. 如何撰写感人至深的结婚纪念日祝福语并定制情侣浪漫 3D 电子贺卡 — 核心功能与使用指南",
+        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "bulletPoints": [
+          "精美 3D 动态开封动效与沉浸式背景音乐",
+          "WhatsApp 实时出席回执追踪与宾客人数统计",
+          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. 如何撰写感人至深的结婚纪念日祝福语并定制情侣浪漫 3D 电子贺卡 — 核心功能与使用指南",
+        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "bulletPoints": [
+          "精美 3D 动态开封动效与沉浸式背景音乐",
+          "WhatsApp 实时出席回执追踪与宾客人数统计",
+          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. 如何撰写感人至深的结婚纪念日祝福语并定制情侣浪漫 3D 电子贺卡 — 核心功能与使用指南",
+        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "bulletPoints": [
+          "精美 3D 动态开封动效与沉浸式背景音乐",
+          "WhatsApp 实时出席回执追踪与宾客人数统计",
+          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "Cardzy 动态电子请柬有哪些核心优势？",
+        "answer": "Cardzy 支持 3D 开封动画、背景音乐、照片画廊、Google 地图导航以及 WhatsApp 实时出席回执追踪。"
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "在 Cardzy 上制作电子请柬是否免费？",
+        "answer": "是的！您可以免费创建并生成专属精美动态请柬，随时随地一键分享。"
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "在手机和社交应用上打开体验如何？",
+        "answer": "无需下载任何 App，宾客在任何手机浏览器中点击链接即可秒级加载高清动态效果。"
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "如何进行宾客出席确认（RSVP）管理？",
+        "answer": "宾客轻点即可确认出席，您的管理后台与 WhatsApp 将实时同步最新出席人数与名单。"
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "立即在 Cardzy 免费创建专属电子请柬，一键即时分享至各大社交平台。"
   },
   "pt": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   },
   "ru": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   },
   "de": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   },
   "ja": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   },
   "ko": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   },
   "it": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   },
   "tr": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   },
   "id": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   },
   "bn": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   },
   "vi": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   },
   "sw": {
-    "intro": "Welcome to the official Cardzy guide on Heartfelt Wedding Anniversary Wishes & Animated Couple Photo Cards. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "A wedding anniversary is a beautiful milestone that celebrates enduring love, commitment, and shared memories. Whether it is your 1st paper anniversary, 25th silver jubilee, or 50th golden celebration, expressing your feelings through heartfelt wishes makes the day unforgettable. With Cardzy, you can transform these loving words into stunning, animated 3D digital cards customized with your own photos and music.",
     "sections": [
       {
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-1",
+        "title": "1. Celebrating Milestone Anniversaries",
+        "body": "Every anniversary is special, but milestones carry unique significance. The 1st anniversary (Paper) symbolizes a blank page of your new life, while the 25th (Silver) and 50th (Gold) represent strength, value, and timeless love.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
-        ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
-      },
-      {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "1st Anniversary: Use light, romantic pastel themes",
+          "10th Anniversary: Opt for elegant designs with warm tones",
+          "25th Silver Jubilee: Choose sophisticated silver and white animations",
+          "50th Golden Jubilee: Go grand with Cardzy luxurious Mughal Gold themes"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-2",
+        "title": "2. Romantic Wish Templates in English",
+        "body": "Finding the right words can be challenging. A great romantic wish blends genuine emotion with a touch of nostalgia. Use these templates to inspire your personalized message on your digital card.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "\"Happy Anniversary to the person who makes my heart skip a beat every single day.\"",
+          "\"Here is to another year of creating beautiful memories together.\"",
+          "\"Through all of life ups and downs, you remain my constant. Happy Anniversary.\"",
+          "\"One year down, a lifetime to go. Happy 1st Anniversary!\""
         ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-3",
+        "title": "3. Heartfelt Urdu Shayari and Wishes",
+        "body": "For South Asian couples, expressing love in Urdu adds a layer of deep cultural romance and poetic beauty. Incorporating classic Urdu shayari into your Cardzy digital card elevates the emotional impact of your greeting.",
+        "bulletPoints": [
+          "\"Tum meri zindagi ka sab se khoobsurat hissa ho. Shadi ki salgirah mubarak!\"",
+          "\"Hamesha sath rehne ki dua ke sath, Salgirah Mubarak.\"",
+          "Include classic couplets from renowned poets like Faiz or Ghalib",
+          "Cardzy fully supports elegant Urdu Nastaliq typography"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-4",
+        "title": "4. Crafting Wishes for Parents Anniversary",
+        "body": "Honoring your parents anniversary is about showing gratitude for the foundation of love they built. Messages for parents should reflect respect, admiration, and joy for their lasting companionship.",
+        "bulletPoints": [
+          "\"Happy Anniversary to the couple who taught me the true meaning of love.\"",
+          "\"May your bond continue to grow stronger. Happy Anniversary, Mom and Dad!\"",
+          "\"Aap dono ki jori hamesha salamat rahe, Ameen.\"",
+          "Create a timeline photo card highlighting their journey together"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-5",
+        "title": "5. Messages for Friends Celebrating Anniversaries",
+        "body": "When wishing friends, keep the tone light, fun, and warm. Acknowledge their teamwork as a couple and wish them continued happiness.",
+        "bulletPoints": [
+          "\"Happy Anniversary to my favorite couple! Here is to many more years of fun and laughter.\"",
+          "\"You guys make marriage look easy. Have a wonderful anniversary!\"",
+          "\"Wishing you a day filled with love and a year filled with blessings.\"",
+          "Use Cardzy vibrant, modern themes for a playful touch"
+        ]
+      },
+      {
+        "id": "how-to-write-heartfelt-wedding-anniversary-wishes-digital-cards-sec-6",
+        "title": "6. Creating Photo Memory Cards with Cardzy",
+        "body": "A picture is worth a thousand words. With Cardzy, you can upload your favorite couple photos into animated 3D frames. Add your favorite romantic background track to create an immersive experience.",
+        "bulletPoints": [
+          "Upload high-quality images directly into elegant digital frames",
+          "Add a special background song that holds meaning for your relationship",
+          "Include 3D animated effects like falling rose petals or sparkling lights",
+          "Share instantly via WhatsApp or Instagram directly from Cardzy"
+        ],
+        "highlight": "Design a breathtaking animated anniversary card on Cardzy today and surprise your loved one!"
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Whether you are celebrating your own milestone or honoring your parents lasting bond, a personalized digital card from Cardzy makes your heartfelt wishes truly unforgettable."
   }
 };

@@ -43,12 +43,19 @@ function CreateWishContent() {
   const { t, lang } = useLang()
   const isUrdu = lang === 'ur' || lang === 'ar'
 
+  const occasionParam = searchParams.get('occasion')
   const editSlug = searchParams.get('edit')
 
   // Free creation for everyone - no login required to send cards
 
-  const [step, setStep] = useState<1 | 2>(1)
-  const [occasionId, setOccasionId] = useState('birthday')
+  const [step, setStep] = useState<1 | 2>(() => {
+    if (editSlug || occasionParam) return 2
+    return 1
+  })
+  const [occasionId, setOccasionId] = useState<string>(() => {
+    if (occasionParam) return occasionParam
+    return 'birthday'
+  })
   const [mobileTab, setMobileTab] = useState<'details' | 'design' | 'preview'>('details')
   const [language, setLanguage] = useState<Language>('en')
   const [message, setMessage] = useState('')
@@ -71,6 +78,7 @@ function CreateWishContent() {
   const [showAiModal, setShowAiModal] = useState(false)
 
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const isGamingOccasion = [
     'pubg-winner',
@@ -119,20 +127,20 @@ function CreateWishContent() {
       const existing = wishes.find((w) => w.slug === editSlug)
       if (existing) {
         setOccasionId(existing.occasionId)
-        setLanguage(existing.language || 'en')
-        setMessage(existing.message || '')
-        setThemeId(existing.themeId || 'mehndi-red')
+        setThemeId(existing.themeId)
         setBorderId(existing.borderId || 'mehndi')
         setBgVariantId(existing.bgVariantId || 'default')
-        setSenderName(existing.senderName || '')
-        setRecipientName(existing.recipientName || '')
-        setRelation(existing.relation || '')
-        setPlayerName(existing.playerName || '')
-        setKillCount(existing.killCount || '')
-        setRank(existing.rank || '')
-        setWinningNumber(existing.winningNumber || '')
-        setPhotoUrl(existing.photoUrl || '')
-        setAudioTrack(existing.audioTrack || 'birthday-festive')
+        setMessage(existing.message)
+        setSenderName(existing.senderName)
+        setRecipientName(existing.recipientName)
+        if (existing.relation) setRelation(existing.relation)
+        setLanguage(existing.language)
+        if (existing.playerName) setPlayerName(existing.playerName)
+        if (existing.killCount) setKillCount(existing.killCount)
+        if (existing.rank) setRank(existing.rank)
+        if (existing.winningNumber) setWinningNumber(existing.winningNumber)
+        if (existing.photoUrl) setPhotoUrl(existing.photoUrl)
+        if (existing.audioTrack) setAudioTrack(existing.audioTrack)
         setStep(2)
       }
     } else {
@@ -140,13 +148,20 @@ function CreateWishContent() {
       if (occParam) {
         setOccasionId(occParam)
         const tPlates = getTemplates(occParam)
-        if (tPlates.length > 0) {
+        if (tPlates.length > 0 && !message) {
           setMessage(getLocalizedTemplateText(tPlates[0], lang))
         }
         setStep(2)
       }
     }
-  }, [searchParams, editSlug, wishes, lang])
+  }, [searchParams, editSlug, wishes, lang, message])
+
+  useEffect(() => {
+    const defaultTemplate = templates[0]
+    if (defaultTemplate && !message && !editSlug) {
+      setMessage(getLocalizedTemplateText(defaultTemplate, lang))
+    }
+  }, [occasionId, lang, templates, message, editSlug])
 
   function handleOccasionSelect(id: string) {
     setOccasionId(id)
@@ -208,50 +223,71 @@ function CreateWishContent() {
   async function handleFinish() {
     const errs = runValidation()
     setErrors(errs)
-    if (Object.keys(errs).length > 0) {
-      const firstError = Object.values(errs)[0] || t('completeAllRequiredFields', 'Please complete all required fields marked in red.')
+    const errKeys = Object.keys(errs)
+    if (errKeys.length > 0) {
+      const firstKey = errKeys[0]
+      const firstError = errs[firstKey] || t('completeAllRequiredFields', 'Please complete all required fields marked in red.')
       showToast(firstError, 'error')
-      if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-        setMobileTab('details')
+      if (typeof window !== 'undefined') {
+        if (window.innerWidth < 1024) {
+          setMobileTab('details')
+        }
+        setTimeout(() => {
+          const el = document.getElementById(`field-${firstKey}`) || document.querySelector(`[name="${firstKey}"]`)
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            ;(el as HTMLElement).focus()
+          }
+        }, 120)
       }
       return
     }
 
-    // Fallback premium themes/borders for non-pro users so anyone can create without signup
-    let finalThemeId = themeId
-    let finalBorderId = borderId
+    setIsSubmitting(true)
+    try {
+      // Fallback premium themes/borders for non-pro users so anyone can create without signup
+      let finalThemeId = themeId
+      let finalBorderId = borderId
 
-    const selectedTheme = THEMES.find((t) => t.id === themeId)
-    const selectedBorder = BORDERS.find((b) => b.id === borderId)
-    if ((selectedTheme?.isPremium || selectedBorder?.isPremium) && !isPro) {
-      finalThemeId = 'emerald-classic'
-      finalBorderId = 'mehndi'
-    }
+      const selectedTheme = THEMES.find((t) => t.id === themeId)
+      const selectedBorder = BORDERS.find((b) => b.id === borderId)
+      if ((selectedTheme?.isPremium || selectedBorder?.isPremium) && !isPro) {
+        finalThemeId = 'emerald-classic'
+        finalBorderId = 'mehndi'
+      }
 
-    const payload = {
-      occasionId,
-      message: message || (lang === 'ur' ? templates[0]?.ur : templates[0]?.en) || 'Winner Winner Chicken Dinner!',
-      language,
-      themeId: finalThemeId,
-      borderId: finalBorderId,
-      bgVariantId,
-      senderName: senderName.trim() || user?.name || (isGamingOccasion ? 'Victory Squad' : 'A Well Wisher'),
-      recipientName: (isGamingOccasion && playerName.trim()) ? playerName.trim() : (recipientName.trim() || 'Winner'),
-      relation,
-      playerName: playerName.trim(),
-      killCount: killCount.trim(),
-      rank: rank.trim(),
-      winningNumber: winningNumber.trim(),
-      photoUrl,
-      audioTrack,
-    }
+      const payload = {
+        occasionId,
+        message: message || (lang === 'ur' ? templates[0]?.ur : templates[0]?.en) || 'Winner Winner Chicken Dinner!',
+        language,
+        themeId: finalThemeId,
+        borderId: finalBorderId,
+        bgVariantId,
+        senderName: senderName.trim() || user?.name || (isGamingOccasion ? 'Victory Squad' : 'A Well Wisher'),
+        recipientName: (isGamingOccasion && playerName.trim()) ? playerName.trim() : (recipientName.trim() || 'Winner'),
+        relation,
+        playerName: playerName.trim(),
+        killCount: killCount.trim(),
+        rank: rank.trim(),
+        winningNumber: winningNumber.trim(),
+        photoUrl,
+        audioTrack,
+      }
 
-    if (editSlug) {
-      await updateWish(editSlug, payload)
-      router.push(`/w/${editSlug}?mode=sender`)
-    } else {
-      const wish = await createWish(payload)
-      router.push(`/w/${wish.slug}?mode=sender`)
+      if (editSlug) {
+        await updateWish(editSlug, payload)
+        showToast(t('wishUpdatedSuccess', 'Wish card updated successfully! 🎉'), 'success')
+        router.push(`/w/${editSlug}?mode=sender`)
+      } else {
+        const wish = await createWish(payload)
+        showToast(t('wishCreatedSuccess', 'Wish card created successfully! 🚀'), 'success')
+        router.push(`/w/${wish.slug}?mode=sender`)
+      }
+    } catch (err: any) {
+      console.error('Failed to create wish card:', err)
+      showToast(err?.message || 'Failed to generate wish card. Please try again.', 'error')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -402,6 +438,7 @@ function CreateWishContent() {
                             Player / Squad Name *
                           </label>
                           <input
+                            id="field-playerName"
                             type="text"
                             value={playerName}
                             onChange={(e) => handleFieldChange('playerName', e.target.value, setPlayerName)}
@@ -423,6 +460,7 @@ function CreateWishContent() {
                             Score / Kill Count <span className="text-slate-400 font-normal">(optional, numbers)</span>
                           </label>
                           <input
+                            id="field-killCount"
                             type="text"
                             value={killCount}
                             onChange={(e) => handleFieldChange('killCount', e.target.value, setKillCount)}
@@ -444,6 +482,7 @@ function CreateWishContent() {
                             Rank <span className="text-slate-400 font-normal">(e.g. 1, #1)</span>
                           </label>
                           <input
+                            id="field-rank"
                             type="text"
                             value={rank}
                             onChange={(e) => handleFieldChange('rank', e.target.value, setRank)}
@@ -466,6 +505,7 @@ function CreateWishContent() {
                               Winning Number <span className="text-slate-400 font-normal">(for Number/Bingo)</span>
                             </label>
                             <input
+                              id="field-winningNumber"
                               type="text"
                               value={winningNumber}
                               onChange={(e) => setWinningNumber(e.target.value)}
@@ -480,6 +520,7 @@ function CreateWishContent() {
                             Sender Name / Clan <span className="text-slate-400 font-normal">(optional)</span>
                           </label>
                           <input
+                            id="field-gamingSenderName"
                             type="text"
                             value={senderName}
                             onChange={(e) => setSenderName(e.target.value)}
@@ -520,6 +561,7 @@ function CreateWishContent() {
                             {t('recipientNameLabel') || 'Recipient Name *'}
                           </label>
                           <input
+                            id="field-recipientName"
                             type="text"
                             value={recipientName}
                             onChange={(e) => handleFieldChange('recipientName', e.target.value, setRecipientName)}
@@ -543,6 +585,7 @@ function CreateWishContent() {
                             {t('senderNameLabel') || 'Your Name (Sender) *'}
                           </label>
                           <input
+                            id="field-senderName"
                             type="text"
                             value={senderName}
                             onChange={(e) => handleFieldChange('senderName', e.target.value, setSenderName)}
@@ -621,6 +664,7 @@ function CreateWishContent() {
 
                     <div>
                       <textarea
+                        id="field-message"
                         rows={3}
                         dir={lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(message) ? 'rtl' : 'ltr'}
                         value={message}
@@ -731,9 +775,17 @@ function CreateWishContent() {
                   </Button>
                   <Button
                     onClick={handleFinish}
-                    className="w-full sm:w-auto bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold h-11 px-8 rounded-full shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
+                    disabled={isSubmitting}
+                    className="w-full sm:w-auto bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold h-11 px-8 rounded-full shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-60"
                   >
-                    {t('createAndShareWishCardBtn') || 'Create & Share Wish Card 🚀'}
+                    {isSubmitting ? (
+                      <>
+                        <Sparkles className="size-4 animate-spin" />
+                        <span>{t('generatingCard', 'Generating Wish Card...')}</span>
+                      </>
+                    ) : (
+                      t('createAndShareWishCardBtn') || 'Create & Share Wish Card 🚀'
+                    )}
                   </Button>
                 </div>
               </div>
@@ -743,7 +795,7 @@ function CreateWishContent() {
 
         {/* Desktop Right Column — Sticky Live Animated Card Preview */}
         <div className="hidden lg:block lg:col-span-5 space-y-4">
-          <div className="sticky top-24 rounded-3xl border border-border bg-card p-6 shadow-xl text-center backdrop-blur-md">
+          <div className="sticky top-24 rounded-3xl border border-border bg-card p-6 shadow-xl text-center backdrop-blur-md max-h-[calc(100vh-120px)] overflow-y-auto overscroll-contain">
             <p className="mb-4 text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center justify-center gap-1.5">
               <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
             </p>
@@ -798,9 +850,17 @@ function CreateWishContent() {
 
             <Button
               onClick={handleFinish}
-              className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all"
+              disabled={isSubmitting}
+              className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
             >
-              {editSlug ? t('saveChanges') : t('createWishBtn')}
+              {isSubmitting ? (
+                <>
+                  <Sparkles className="size-4 animate-spin" />
+                  <span>{t('generatingCard', 'Generating...')}</span>
+                </>
+              ) : (
+                editSlug ? t('saveChanges') : t('createWishBtn')
+              )}
             </Button>
           </div>
         </div>
@@ -855,20 +915,12 @@ export default function CreateWishPage() {
   const isUrdu = lang === 'ur' || lang === 'ar'
 
   return (
-    <div className="py-4 md:py-6 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center w-full">
-      <h1 className={`text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-[#7A1E2B] font-serif mb-2 ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
-        {t('create3dAnimatedWishCardsTitle') || 'Create 3D Animated Wish Cards'}
-      </h1>
-      <h2 className={`text-[#5A4530] text-sm sm:text-base max-w-xl mx-auto font-medium mb-6 ${isUrdu ? 'font-urdu text-base leading-relaxed' : ''}`}>
-        {t('createWishSubTitle') || 'Animated Wishes & Event Invitations — Cardzy'}
-      </h2>
-      <Suspense fallback={
-        <div className="flex py-20 items-center justify-center">
-          <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />
-        </div>
-      }>
-        <CreateWishContent />
-      </Suspense>
-    </div>
+    <Suspense fallback={
+      <div className="flex py-20 items-center justify-center">
+        <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />
+      </div>
+    }>
+      <CreateWishContent />
+    </Suspense>
   )
 }

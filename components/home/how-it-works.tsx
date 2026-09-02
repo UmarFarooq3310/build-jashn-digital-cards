@@ -55,11 +55,15 @@ export function HowItWorks() {
         />
 
         {/* 3-Step Horizontal Stepper */}
-        <div className="grid gap-4 sm:gap-6 md:grid-cols-3 max-w-6xl mx-auto mb-12">
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-3 max-w-6xl mx-auto mb-12 relative">
+          {/* Connecting dots between cards (desktop only) */}
+          <div className="hidden md:block absolute top-1/2 left-[33.33%] w-[33.33%] -translate-y-1/2 border-t-2 border-dashed border-emerald-500/15 pointer-events-none z-0" />
+
           {/* Step 1 */}
-          <div className="hiw-step relative rounded-2xl border border-teal-500/10 bg-card p-5 sm:p-6 shadow-sm flex flex-col gap-3">
+          <div className="hiw-step relative rounded-2xl border border-teal-500/15 bg-card p-5 sm:p-6 shadow-sm flex flex-col gap-3 hover:shadow-md hover:border-teal-500/30 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-teal-500 to-teal-600 rounded-l-2xl" />
             <div className="flex items-center gap-3">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 font-extrabold text-base border border-teal-500/20">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 font-extrabold text-lg border border-teal-500/20 ring-4 ring-teal-500/10">
                 1
               </span>
               <p className="font-bold text-foreground text-sm sm:text-base">
@@ -72,9 +76,10 @@ export function HowItWorks() {
           </div>
 
           {/* Step 2 */}
-          <div className="hiw-step relative rounded-2xl border border-teal-500/10 bg-card p-5 sm:p-6 shadow-sm flex flex-col gap-3">
+          <div className="hiw-step relative rounded-2xl border border-teal-500/15 bg-card p-5 sm:p-6 shadow-sm flex flex-col gap-3 hover:shadow-md hover:border-amber-500/30 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-amber-500 to-amber-600 rounded-l-2xl" />
             <div className="flex items-center gap-3">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-extrabold text-base border border-amber-500/20">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 font-extrabold text-lg border border-amber-500/20 ring-4 ring-amber-500/10">
                 2
               </span>
               <p className="font-bold text-foreground text-sm sm:text-base">
@@ -87,9 +92,10 @@ export function HowItWorks() {
           </div>
 
           {/* Step 3 */}
-          <div className="hiw-step relative rounded-2xl border border-teal-500/10 bg-card p-5 sm:p-6 shadow-sm flex flex-col gap-3">
+          <div className="hiw-step relative rounded-2xl border border-teal-500/15 bg-card p-5 sm:p-6 shadow-sm flex flex-col gap-3 hover:shadow-md hover:border-emerald-500/30 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-emerald-500 to-emerald-600 rounded-l-2xl" />
             <div className="flex items-center gap-3">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-base border border-emerald-500/20">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold text-lg border border-emerald-500/20 ring-4 ring-emerald-500/10">
                 3
               </span>
               <p className="font-bold text-foreground text-sm sm:text-base">
@@ -103,7 +109,10 @@ export function HowItWorks() {
         </div>
 
         {/* Free vs Premium Pricing Indicator */}
-        <div className="pricing-box max-w-6xl mx-auto rounded-3xl border border-teal-500/15 bg-gradient-to-br from-violet-50 via-card to-violet-100 p-6 sm:p-8 shadow-md">
+        <div className="pricing-box max-w-6xl mx-auto rounded-3xl border border-teal-500/15 bg-gradient-to-br from-violet-50 via-card to-violet-100 p-6 sm:p-8 shadow-md relative overflow-hidden">
+          {/* Gold top accent */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[2px] bg-gradient-to-r from-transparent via-amber-500/60 to-transparent" />
+
           <div className="text-center mb-6">
             <span className="inline-block bg-teal-800 text-white px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider uppercase mb-1">
               {t('pricing')}
@@ -112,7 +121,7 @@ export function HowItWorks() {
           </div>
           
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-2 p-4 rounded-2xl bg-card border border-teal-500/10 shadow-sm relative overflow-hidden">
+            <div className="space-y-2 p-4 rounded-2xl bg-card/80 backdrop-blur-sm border border-teal-500/10 shadow-sm relative overflow-hidden hover:shadow-md transition-shadow">
               <div className="absolute top-0 right-0 bg-teal-100 text-teal-900 px-2 py-0.5 rounded-bl-xl text-[10px] font-bold">
                 {t('freeForever')}
               </div>
@@ -124,7 +133,7 @@ export function HowItWorks() {
               </p>
             </div>
             
-            <div className="space-y-2 p-4 rounded-2xl bg-card border border-emerald-500/20 shadow-sm relative overflow-hidden">
+            <div className="space-y-2 p-4 rounded-2xl bg-card/80 backdrop-blur-sm border border-emerald-500/20 shadow-sm relative overflow-hidden hover:shadow-md transition-shadow">
               <div className="absolute top-0 right-0 bg-emerald-900/10 text-emerald-950 px-2 py-0.5 rounded-bl-xl text-[10px] font-bold">
                 {t('cardzyProPremium')}
               </div>

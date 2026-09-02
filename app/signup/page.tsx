@@ -146,7 +146,8 @@ function SignupPageContent() {
   const { user, signUp, signInWithGoogle, migrateGuestCards, showToast } = useJashn()
 
   const [signupStep, setSignupStep] = useState<1 | 2>(1)
-  const { t } = useLang()
+  const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState(searchParams.get('email') ?? '')
@@ -164,7 +165,7 @@ function SignupPageContent() {
       if (success) {
         const currentUser = useJashn.getState().user
         if (currentUser) await migrateGuestCards(currentUser.uid)
-        showToast('Signed in with Google successfully!', 'success')
+        showToast(t('googleSuccessToast') || 'Signed in with Google successfully!', 'success')
         window.location.href = redirect
       }
     } catch (e: any) {
@@ -214,7 +215,7 @@ function SignupPageContent() {
     } else {
       setErrors((prev) => { const c = { ...prev }; delete c.email; return c })
     }
-  }, [email])
+  }, [email, t])
 
   useEffect(() => {
     if (!name) return
@@ -223,7 +224,7 @@ function SignupPageContent() {
     } else {
       setErrors((prev) => { const c = { ...prev }; delete c.name; return c })
     }
-  }, [name])
+  }, [name, t])
 
   useEffect(() => {
     if (!confirmPassword) return
@@ -232,7 +233,7 @@ function SignupPageContent() {
     } else {
       setErrors((prev) => { const c = { ...prev }; delete c.confirmPassword; return c })
     }
-  }, [confirmPassword, password])
+  }, [confirmPassword, password, t])
 
   const isStep1Valid =
     name.trim().length >= 2 &&
@@ -277,7 +278,7 @@ function SignupPageContent() {
     if (success) {
       const currentUser = useJashn.getState().user
       if (currentUser) await migrateGuestCards(currentUser.uid)
-      showToast('Account created successfully!', 'success')
+      showToast(t('accountCreatedSuccessToast') || 'Account created successfully!', 'success')
       router.push(redirect)
     } else {
       const msg = t('emailAlreadyRegistered') || 'This email is already registered. Please sign in instead.'
@@ -289,7 +290,7 @@ function SignupPageContent() {
   return (
     <>
       <GoogleOneTap redirectTo={redirect} />
-      <div ref={cardRef} className="w-full max-w-md mx-auto space-y-6 rounded-3xl border border-border bg-card p-8 shadow-xl relative overflow-hidden my-4">
+      <div ref={cardRef} className={`w-full max-w-md mx-auto space-y-6 rounded-3xl border border-border bg-card p-8 shadow-xl relative overflow-hidden my-4 ${isUrdu ? 'font-urdu' : ''}`}>
           <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary via-gold to-emerald-500" />
 
           <div className="text-center">
@@ -354,7 +355,7 @@ function SignupPageContent() {
               {/* Divider */}
               <div className="flex items-center gap-3 text-[11px] text-muted-foreground font-medium">
                 <span className="flex-1 h-px bg-border" />
-                {t('orContinueWith')}
+                {t('orSignUpWith') || 'or sign up with'}
                 <span className="flex-1 h-px bg-border" />
               </div>
 
@@ -401,7 +402,7 @@ function SignupPageContent() {
               {/* Strength meter */}
               <div className="space-y-2 p-3 rounded-2xl bg-muted/50 border border-border/50">
                 <div className="flex justify-between items-center text-xs font-semibold">
-                  <span className="text-muted-foreground">{t('passwordStrength') || 'Strength:'}</span>
+                  <span className="text-muted-foreground">{t('strengthLabel') || 'Strength:'}</span>
                   <span className={cn(
                     strengthScore <= 50 ? 'text-destructive' : strengthScore === 75 ? 'text-amber-600' : 'text-emerald-700'
                   )}>
@@ -426,10 +427,10 @@ function SignupPageContent() {
                 </div>
                 <div className="grid grid-cols-2 gap-1.5 pt-1 text-[10px] font-medium">
                   {[
-                    { ok: hasMinLength, label: t('pwdMin8') || 'Min 8 characters' },
-                    { ok: hasMixedCase, label: t('pwdUpperLower') || 'Upper & lower case' },
-                    { ok: hasNumber, label: t('pwdNumber') || 'At least 1 number' },
-                    { ok: hasSpecial, label: t('pwdSpecial') || 'Special character' },
+                    { ok: hasMinLength, label: t('pwdMin8') || 'Min 8 chars' },
+                    { ok: hasMixedCase, label: t('pwdUpperLower') || 'Upper & lower' },
+                    { ok: hasNumber, label: t('pwdNumber') || '1 number' },
+                    { ok: hasSpecial, label: t('pwdSpecial') || '1 special char' },
                   ].map(({ ok, label }) => (
                     <div key={label} className="flex items-center gap-1.5">
                       {ok ? <Check className="size-3.5 text-emerald-600" /> : <X className="size-3.5 text-muted-foreground" />}
@@ -440,7 +441,7 @@ function SignupPageContent() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-foreground mb-1">Confirm Password</label>
+                <label className="block text-xs font-medium text-foreground mb-1">{t('confirmPasswordLabel') || 'Confirm Password'}</label>
                 <div className="relative">
                   <input
                     type="password"
@@ -465,14 +466,14 @@ function SignupPageContent() {
                   onClick={() => setSignupStep(1)}
                   className="py-5 font-semibold rounded-xl w-1/3 hover:bg-muted flex items-center justify-center gap-1"
                 >
-                  <ArrowLeft className="size-4" /> Back
+                  <ArrowLeft className="size-4" /> {t('backBtn') || 'Back'}
                 </Button>
                 <Button
                   type="submit"
                   disabled={!isStep2Valid || isSubmitting}
                   className="w-2/3 py-5 bg-primary hover:bg-primary/90 font-bold text-primary-foreground rounded-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
-                  {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : t('createFreeAccount')}
+                  {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : (t('createFreeAccount') || 'Create Account')}
                 </Button>
               </div>
             </form>
@@ -490,9 +491,12 @@ function SignupPageContent() {
 }
 
 export default function SignupPage() {
+  const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
+
   return (
     <div className="py-6 px-4 max-w-4xl mx-auto w-full">
-      <h1 className="sr-only">Create Your Free Cardzy Account</h1>
+      <h1 className="sr-only">{t('createFreeCardzyAccount') || 'Create Your Free Cardzy Account'}</h1>
       <Suspense fallback={
         <div className="flex min-h-[400px] items-center justify-center">
           <Loader2 className="size-8 animate-spin text-primary" />
@@ -502,30 +506,30 @@ export default function SignupPage() {
       </Suspense>
 
       {/* Premium Guide Overview Card */}
-      <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4">
+      <section className={`mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 ${isUrdu ? 'font-urdu' : ''}`}>
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-            <Sparkles className="size-3.5" /> Free Account Perks
+            <Sparkles className="size-3.5" /> {t('freeAccountPerksBadge') || 'Free Account Perks'}
           </span>
         </div>
         <h2 className="text-xl font-extrabold text-foreground tracking-tight">
-          Create Your Free Cardzy Account Today
+          {t('freeAccountPerksH2') || 'Create Your Free Cardzy Account Today'}
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-          Join thousands of users creating 3D animated wish cards, digital wedding invitations, and smart business vCards on Cardzy. Registration is 100% free with no credit card required. Enjoy instant shareable links, real-time WhatsApp RSVP tracking, customizable audio tracks, and multi-language support across 18 languages.
+          {t('freeAccountPerksDesc') || 'Join thousands of users creating 3D animated wish cards, digital wedding invitations, and smart business vCards on Cardzy. Registration is 100% free with no credit card required. Enjoy instant shareable links, real-time WhatsApp RSVP tracking, customizable audio tracks, and multi-language support across 18 languages.'}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-            <h3 className="font-extrabold text-xs text-foreground">Free Forever Plan</h3>
-            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">$0 / Rs 0 forever. Create animated wish cards and shareable links instantly.</p>
+            <h3 className="font-extrabold text-xs text-foreground">{t('freePerk1Title') || 'Free Forever Plan'}</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{t('freePerk1Desc') || '$0 / Rs 0 forever. Create animated wish cards and shareable links instantly.'}</p>
           </div>
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-            <h3 className="font-extrabold text-xs text-foreground">18 Multilingual Scripts</h3>
-            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Full support for English, Urdu (Nastaliq), Arabic, and global languages.</p>
+            <h3 className="font-extrabold text-xs text-foreground">{t('freePerk2Title') || '18 Multilingual Scripts'}</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{t('freePerk2Desc') || 'Full support for English, Urdu (Nastaliq), Arabic, and global languages.'}</p>
           </div>
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-            <h3 className="font-extrabold text-xs text-foreground">Instant Share Links</h3>
-            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Send your cards directly via WhatsApp, iMessage, or social platforms.</p>
+            <h3 className="font-extrabold text-xs text-foreground">{t('freePerk3Title') || 'Instant Share Links'}</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{t('freePerk3Desc') || 'Send your cards directly via WhatsApp, iMessage, or social platforms.'}</p>
           </div>
         </div>
       </section>

@@ -21,6 +21,29 @@ export const metadata: Metadata = {
   publisher: SITE_PUBLISHER,
   alternates: getPageAlternates('/create-wish'),
   robots: PUBLIC_ROBOTS,
+  openGraph: {
+    title: 'Create 3D Animated Wish Cards with Photos | Cardzy',
+    description:
+      'Design personalized 3D animated greeting cards for Eid, Birthdays, Anniversaries & Ramadan with photos, music, and WhatsApp sharing.',
+    url: 'https://cardzy.online/create-wish',
+    siteName: 'Cardzy',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Create 3D Animated Wish Cards — Cardzy',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Create 3D Animated Wish Cards with Photos | Cardzy',
+    description:
+      'Design personalized 3D animated greeting cards for Eid, Birthdays & more with photos, music, and WhatsApp sharing.',
+    images: ['/og-image.jpg'],
+  },
 }
 
 export default function CreateWishPage() {

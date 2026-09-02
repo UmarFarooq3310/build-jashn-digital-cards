@@ -73,13 +73,13 @@ export default function PricingPage() {
             </h1>
             <h2 className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
               {t('pricingHeaderDesc')}{' '}
-              Ready to start? Design your digital card today using our{' '}
+              {t('pricingBuilderLink')}{' '}
               <Link href="/create-invitation" className="text-primary underline font-semibold hover:opacity-80">
-                Digital Invitation Builder
+                {t('pricingInviteBuilder')}
               </Link>{' '}
-              or craft an executive{' '}
+              {t('pricingOrCraft')}{' '}
               <Link href="/create-visiting-card" className="text-primary underline font-semibold hover:opacity-80">
-                Digital Business Card
+                {t('pricingBusinessCard')}
               </Link>.
             </h2>
           </div>
@@ -90,7 +90,7 @@ export default function PricingPage() {
             {/* Free Plan */}
             <div className="rounded-3xl border border-border bg-card p-8 shadow-sm flex flex-col justify-between text-left">
               <div>
-                <h3 className="text-xl font-bold text-foreground">Free</h3>
+                <h3 className="text-xl font-bold text-foreground">{t('tblFreePlan')}</h3>
                 <p className="text-xs text-muted-foreground mt-1">{t('freePlanDesc')}</p>
                 <div className="my-6">
                   <span className="text-3xl font-extrabold text-foreground">$0 <span className="text-lg font-normal text-muted-foreground">(Rs 0)</span></span>
@@ -208,56 +208,56 @@ export default function PricingPage() {
           <section className="mt-16 rounded-3xl border border-border/80 bg-card p-6 sm:p-10 shadow-sm text-left space-y-6 max-w-6xl mx-auto">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                <Sparkles className="size-3.5" /> Plan Comparison
+                <Sparkles className="size-3.5" /> {t('planComparisonBadge')}
               </span>
             </div>
             <h2 className={`text-xl sm:text-2xl font-extrabold text-foreground tracking-tight ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
-              Detailed Plan Comparison &amp; Inclusions
+              {t('planComparisonH2')}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              Compare features across Free, Pro, and Business plans to choose the best option for your wedding, corporate announcements, or festive greetings.
+              {t('planComparisonDesc')}
             </p>
 
             <div className="overflow-x-auto rounded-2xl border border-border">
               <table className="min-w-full text-left text-xs sm:text-sm">
                 <thead>
                   <tr className="bg-muted/60 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                    <th className="py-3 px-4">Feature</th>
-                    <th className="py-3 px-4">Free Plan</th>
-                    <th className="py-3 px-4">Pro Plan ($4/mo)</th>
-                    <th className="py-3 px-4">Business Plan ($18/mo)</th>
+                    <th className="py-3 px-4">{t('tblFeature')}</th>
+                    <th className="py-3 px-4">{t('tblFreePlan')}</th>
+                    <th className="py-3 px-4">{t('tblProPlan')}</th>
+                    <th className="py-3 px-4">{t('tblBizPlan')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">3D Wish Cards</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">Unlimited Classic</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">Unlimited Premium</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">Unlimited VIP</td>
+                    <td className="py-3 px-4 font-semibold text-foreground">{t('tblRowWish')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowWishFree')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowWishPro')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowWishBiz')}</td>
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">WhatsApp RSVP Tracking</td>
-                    <td className="py-3 px-4">Basic Direct Link</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">Live Dashboard + Auto Export</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">Multi-Event RSVP Concierge</td>
+                    <td className="py-3 px-4 font-semibold text-foreground">{t('tblRowRsvp')}</td>
+                    <td className="py-3 px-4">{t('tblRowRsvpFree')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowRsvpPro')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowRsvpBiz')}</td>
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">Watermark Removal</td>
-                    <td className="py-3 px-4 text-muted-foreground">Includes Cardzy Badge</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">100% Removed</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">100% Removed + Custom Logo</td>
+                    <td className="py-3 px-4 font-semibold text-foreground">{t('tblRowWatermark')}</td>
+                    <td className="py-3 px-4 text-muted-foreground">{t('tblRowWatermarkFree')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowWatermarkPro')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowWatermarkBiz')}</td>
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">Languages &amp; RTL Urdu Nastaliq</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">All 18 Languages</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">All 18 Languages</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">All 18 Languages + Custom Fonts</td>
+                    <td className="py-3 px-4 font-semibold text-foreground">{t('tblRowLangs')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowLangsFree')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowLangsPro')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowLangsBiz')}</td>
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">Support SLA</td>
-                    <td className="py-3 px-4">Email (24–48h)</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">Priority WhatsApp (2–4h)</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">Dedicated Account Manager</td>
+                    <td className="py-3 px-4 font-semibold text-foreground">{t('tblRowSupport')}</td>
+                    <td className="py-3 px-4">{t('tblRowSupportFree')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowSupportPro')}</td>
+                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowSupportBiz')}</td>
                   </tr>
                 </tbody>
               </table>
@@ -265,15 +265,15 @@ export default function PricingPage() {
 
             {/* Pricing FAQ */}
             <div className="pt-4 space-y-3">
-              <h3 className="font-bold text-base text-foreground">Frequently Asked Questions about Cardzy Pricing</h3>
+              <h3 className="font-bold text-base text-foreground">{t('pricingFaqH3')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm text-muted-foreground">
                 <div className="rounded-xl border border-border/80 bg-background/60 p-4 space-y-1.5">
-                  <h4 className="font-bold text-foreground">Can I use Cardzy completely for free?</h4>
-                  <p>Yes! Our Free Forever tier lets you create and share unlimited 3D greeting cards with full music and text customization without entering credit card details.</p>
+                  <h4 className="font-bold text-foreground">{t('pricingFaqQ1')}</h4>
+                  <p>{t('pricingFaqA1')}</p>
                 </div>
                 <div className="rounded-xl border border-border/80 bg-background/60 p-4 space-y-1.5">
-                  <h4 className="font-bold text-foreground">How do I pay in PKR or international currencies?</h4>
-                  <p>We accept JazzCash, EasyPaisa, Nayapay, Sadapay, bank transfers, and international cards. Message our WhatsApp hotline at +92 309 3518796 for instant activation.</p>
+                  <h4 className="font-bold text-foreground">{t('pricingFaqQ2')}</h4>
+                  <p>{t('pricingFaqA2')}</p>
                 </div>
               </div>
             </div>

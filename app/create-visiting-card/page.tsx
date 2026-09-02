@@ -21,6 +21,29 @@ export const metadata: Metadata = {
   publisher: SITE_PUBLISHER,
   alternates: getPageAlternates('/create-visiting-card'),
   robots: PUBLIC_ROBOTS,
+  openGraph: {
+    title: 'Create Smart Digital Business Cards (vCard) | Cardzy',
+    description:
+      'Create smart digital business cards for executives & entrepreneurs. Share via QR code and WhatsApp with 1-tap .vcf contact saving.',
+    url: 'https://cardzy.online/create-visiting-card',
+    siteName: 'Cardzy',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Create Smart Digital Business Cards — Cardzy',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Create Smart Digital Business Cards (vCard) | Cardzy',
+    description:
+      'Create smart digital business cards. Share via QR code and WhatsApp with 1-tap .vcf contact saving.',
+    images: ['/og-image.jpg'],
+  },
 }
 
 export default function CreateVisitingCardPage() {

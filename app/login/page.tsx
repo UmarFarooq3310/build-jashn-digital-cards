@@ -141,7 +141,8 @@ function LoginPageContent() {
 
   const tabParam = searchParams.get('tab')
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(tabParam === 'signup' ? 'signup' : 'login')
-  const { t } = useLang()
+  const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
   const [signupStep, setSignupStep] = useState<1 | 2>(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -198,29 +199,29 @@ function LoginPageContent() {
   useEffect(() => {
     if (!email) return
     if (!validateEmail(email)) {
-      setErrors((prev) => ({ ...prev, email: 'Enter a valid email address' }))
+      setErrors((prev) => ({ ...prev, email: t('enterValidEmail') || 'Enter a valid email address' }))
     } else {
       setErrors((prev) => { const c = { ...prev }; delete c.email; return c })
     }
-  }, [email])
+  }, [email, t])
 
   useEffect(() => {
     if (!name) return
     if (name.trim().length < 2) {
-      setErrors((prev) => ({ ...prev, name: 'Name must be at least 2 characters' }))
+      setErrors((prev) => ({ ...prev, name: t('nameTooShort') || 'Name must be at least 2 characters' }))
     } else {
       setErrors((prev) => { const c = { ...prev }; delete c.name; return c })
     }
-  }, [name])
+  }, [name, t])
 
   useEffect(() => {
     if (!confirmPassword) return
     if (confirmPassword !== password) {
-      setErrors((prev) => ({ ...prev, confirmPassword: 'Passwords do not match' }))
+      setErrors((prev) => ({ ...prev, confirmPassword: t('passwordsDoNotMatch') || 'Passwords do not match' }))
     } else {
       setErrors((prev) => { const c = { ...prev }; delete c.confirmPassword; return c })
     }
-  }, [confirmPassword, password])
+  }, [confirmPassword, password, t])
 
   const isStep1Valid = name.trim().length >= 2 && validateEmail(email) && !errors.name && !errors.email
   const isStep2Valid = strengthScore >= 75 && confirmPassword === password && !errors.confirmPassword
@@ -250,7 +251,7 @@ function LoginPageContent() {
         // Popup flow succeeded — user is signed in, redirect now
         const currentUser = useJashn.getState().user
         if (currentUser) await migrateGuestCards(currentUser.uid)
-        showToast('Signed in with Google successfully!', 'success')
+        showToast(t('googleSuccessToast') || 'Signed in with Google successfully!', 'success')
         window.location.href = redirect
       } else {
         sessionStorage.setItem('google_redirect_pending', '1')
@@ -284,7 +285,7 @@ function LoginPageContent() {
     e.preventDefault()
     setResetError(null)
     if (!validateEmail(resetEmail)) {
-      const msg = 'Please enter a valid email address.'
+      const msg = t('enterValidEmail') || 'Please enter a valid email address.'
       setResetError(msg)
       showToast(msg, 'error')
       return
@@ -294,7 +295,7 @@ function LoginPageContent() {
     setIsResetting(false)
     if (success) {
       setResetSent(true)
-      showToast('Password reset link sent to your email!', 'success')
+      showToast(t('resetEmailSent') || 'Password reset link sent to your email!', 'success')
     } else {
       const msg = 'Could not send reset email. Please check the address.'
       setResetError(msg)
@@ -307,7 +308,7 @@ function LoginPageContent() {
     e.preventDefault()
     setGeneralError(null)
     if (!validateEmail(loginEmail)) {
-      const msg = 'Please enter a valid email address.'
+      const msg = t('enterValidEmail') || 'Please enter a valid email address.'
       setGeneralError(msg)
       showToast(msg, 'error')
       return
@@ -318,10 +319,10 @@ function LoginPageContent() {
     if (success) {
       const currentUser = useJashn.getState().user
       if (currentUser) await migrateGuestCards(currentUser.uid)
-      showToast('Signed in successfully!', 'success')
+      showToast(t('loginSuccessToast') || 'Signed in successfully!', 'success')
       window.location.href = redirect
     } else {
-      const msg = 'Invalid email or password.'
+      const msg = t('invalidEmailOrPassword') || 'Invalid email or password.'
       setGeneralError(msg)
       showToast(msg, 'error')
     }
@@ -348,7 +349,7 @@ function LoginPageContent() {
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!isStep2Valid) {
-      const msg = 'Please ensure your password is secure and matching.'
+      const msg = t('passwordsDoNotMatch') || 'Please ensure your password is secure and matching.'
       setGeneralError(msg)
       showToast(msg, 'error')
       return
@@ -360,10 +361,10 @@ function LoginPageContent() {
     if (success) {
       const currentUser = useJashn.getState().user
       if (currentUser) await migrateGuestCards(currentUser.uid)
-      showToast('Account created successfully!', 'success')
+      showToast(t('accountCreatedSuccessToast') || 'Account created successfully!', 'success')
       window.location.href = redirect
     } else {
-      const msg = 'This email is already registered. Please sign in instead.'
+      const msg = t('emailAlreadyRegistered') || 'This email is already registered. Please sign in instead.'
       setGeneralError(msg)
       showToast(msg, 'error')
     }
@@ -373,19 +374,17 @@ function LoginPageContent() {
     <>
       <GoogleOneTap redirectTo={redirect} />
 
-      {/* Full-page loading overlay — shown when:
-           1. We triggered Google redirect (signInWithRedirect) and page is still here briefly
-           2. Page reloaded after Google auth (sessionStorage flag set) and auth is resolving */}
+      {/* Full-page loading overlay */}
       {isGoogleRedirecting && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/90 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-4 p-8 rounded-3xl border border-border bg-card shadow-xl">
             <Loader2 className="size-10 animate-spin text-primary" />
-            <p className="text-sm font-semibold text-foreground">Signing you in with Google…</p>
-            <p className="text-xs text-muted-foreground">Please wait, do not close this page.</p>
+            <p className="text-sm font-semibold text-foreground">{t('signingInGoogle') || 'Signing you in with Google…'}</p>
+            <p className="text-xs text-muted-foreground">{t('pleaseWaitGoogle') || 'Please wait, do not close this page.'}</p>
           </div>
         </div>
       )}
-      <div ref={cardRef} className="w-full max-w-md mx-auto space-y-6 rounded-3xl border border-border bg-card p-8 shadow-xl relative overflow-hidden my-4">
+      <div ref={cardRef} className={`w-full max-w-md mx-auto space-y-6 rounded-3xl border border-border bg-card p-8 shadow-xl relative overflow-hidden my-4 ${isUrdu ? 'font-urdu' : ''}`}>
           <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-primary via-gold to-emerald-500" />
 
           <div className="text-center">
@@ -458,7 +457,7 @@ function LoginPageContent() {
               </div>
 
               <Button type="submit" disabled={isSubmitting} className="w-full py-5 bg-primary hover:bg-primary/90 font-bold text-primary-foreground rounded-xl flex items-center justify-center">
-                {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : <>Sign In <ArrowRight className="ml-2 size-4" /></>}
+                {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : <>{t('signInBtn') || 'Sign In'} <ArrowRight className="ml-2 size-4" /></>}
               </Button>
 
               {/* Divider */}
@@ -485,7 +484,7 @@ function LoginPageContent() {
                     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                   </svg>
                 )}
-                {t('continueWithGoogle')}
+                {t('signInWithGoogle') || t('continueWithGoogle')}
               </button>
 
               <div className="text-center text-xs text-muted-foreground pt-2 border-t border-border/60">
@@ -507,19 +506,19 @@ function LoginPageContent() {
                     <CheckCircle2 className="size-7 text-emerald-600" />
                   </div>
                   <div>
-                    <p className="font-bold text-foreground text-sm">Reset email sent!</p>
+                    <p className="font-bold text-foreground text-sm">{t('resetEmailSent') || 'Reset email sent!'}</p>
                     <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      We sent a password reset link to<br />
+                      {t('resetEmailSentDesc') || 'We sent a password reset link to'}<br />
                       <span className="font-semibold text-foreground">{resetEmail}</span>
                     </p>
-                    <p className="text-[11px] text-muted-foreground mt-2">Check your spam folder if you don&apos;t see it.</p>
+                    <p className="text-[11px] text-muted-foreground mt-2">{t('checkSpamNote') || 'Check your spam folder if you don\'t see it.'}</p>
                   </div>
                   <Button
                     type="button"
                     onClick={() => { setForgotMode(false); setResetSent(false); setResetEmail('') }}
                     className="w-full py-5 bg-primary hover:bg-primary/90 font-bold text-primary-foreground rounded-xl mt-2"
                   >
-                    Back to Sign In
+                    {t('backToSignIn') || 'Back to Sign In'}
                   </Button>
                 </div>
               ) : (
@@ -530,8 +529,8 @@ function LoginPageContent() {
                       <KeyRound className="size-4 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-foreground">Reset your password</p>
-                      <p className="text-[11px] text-muted-foreground">Enter your email and we&apos;ll send a reset link.</p>
+                      <p className="text-sm font-bold text-foreground">{t('resetYourPassword') || 'Reset your password'}</p>
+                      <p className="text-[11px] text-muted-foreground">{t('resetYourPasswordDesc') || 'Enter your email and we\'ll send a reset link.'}</p>
                     </div>
                   </div>
 
@@ -557,14 +556,14 @@ function LoginPageContent() {
                       onClick={() => { setForgotMode(false); setResetError(null) }}
                       className="py-5 font-semibold rounded-xl w-1/3 hover:bg-muted flex items-center justify-center gap-1"
                     >
-                      <ArrowLeft className="size-4" /> Back
+                      <ArrowLeft className="size-4" /> {t('backBtn') || 'Back'}
                     </Button>
                     <Button
                       type="submit"
                       disabled={isResetting}
                       className="w-2/3 py-5 bg-primary hover:bg-primary/90 font-bold text-primary-foreground rounded-xl flex items-center justify-center"
                     >
-                      {isResetting ? <Loader2 className="size-4 animate-spin" /> : 'Send Reset Link'}
+                      {isResetting ? <Loader2 className="size-4 animate-spin" /> : (t('sendResetLink') || 'Send Reset Link')}
                     </Button>
                   </div>
                 </form>
@@ -576,9 +575,9 @@ function LoginPageContent() {
           {activeTab === 'signup' && (
             <div>
               <div className="flex items-center justify-between mb-4 px-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                <span className={cn(signupStep === 1 ? 'text-primary' : 'text-muted-foreground')}>1. Basic Info</span>
+                <span className={cn(signupStep === 1 ? 'text-primary' : 'text-muted-foreground')}>{t('stepBasicInfo') || '1. Basic Info'}</span>
                 <span className="h-px bg-border flex-1 mx-3" />
-                <span className={cn(signupStep === 2 ? 'text-primary' : 'text-muted-foreground')}>2. Password</span>
+                <span className={cn(signupStep === 2 ? 'text-primary' : 'text-muted-foreground')}>{t('stepPasswordLabel') || '2. Password'}</span>
               </div>
 
               {/* Step 1 */}
@@ -604,7 +603,7 @@ function LoginPageContent() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">Email Address</label>
+                    <label className="block text-xs font-medium text-foreground mb-1">{t('emailAddress')}</label>
                     <EmailSuggestInput
                       value={email}
                       onChange={setEmail}
@@ -618,13 +617,13 @@ function LoginPageContent() {
                     disabled={!isStep1Valid}
                     className="w-full py-5 bg-primary hover:bg-primary/90 font-bold text-primary-foreground rounded-xl disabled:opacity-50 disabled:cursor-not-allowed mt-2"
                   >
-                    Continue <ArrowRight className="ml-2 size-4" />
+                    {t('continueBtn') || 'Continue'} <ArrowRight className="ml-2 size-4" />
                   </Button>
 
                   {/* Divider */}
                   <div className="flex items-center gap-3 text-[11px] text-muted-foreground font-medium">
                     <span className="flex-1 h-px bg-border" />
-                    or sign up with
+                    {t('orSignUpWith') || 'or sign up with'}
                     <span className="flex-1 h-px bg-border" />
                   </div>
 
@@ -645,7 +644,7 @@ function LoginPageContent() {
                         <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                       </svg>
                     )}
-                    Sign up with Google
+                    {t('signUpWithGoogle') || 'Sign up with Google'}
                   </button>
                 </form>
               )}
@@ -654,7 +653,7 @@ function LoginPageContent() {
               {signupStep === 2 && (
                 <form noValidate onSubmit={handleSignupSubmit} className="login-step-fields space-y-4">
                   <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">Password</label>
+                    <label className="block text-xs font-medium text-foreground mb-1">{t('password')}</label>
                     <div className="relative">
                       <input
                         type="password"
@@ -671,18 +670,27 @@ function LoginPageContent() {
                   {/* Strength meter */}
                   <div className="space-y-2 p-3 rounded-2xl bg-muted/50 border border-border/50">
                     <div className="flex justify-between items-center text-xs font-semibold">
-                      <span className="text-muted-foreground">Strength:</span>
+                      <span className="text-muted-foreground">{t('strengthLabel') || 'Strength:'}</span>
                       <span className={cn(strengthScore <= 50 ? 'text-destructive' : strengthScore === 75 ? 'text-amber-600' : 'text-emerald-700')}>
-                        {strengthScore === 0 && 'None'}{strengthScore === 25 && 'Very Weak'}{strengthScore === 50 && 'Weak'}{strengthScore === 75 && 'Moderate'}{strengthScore === 100 && 'Strong'}
+                        {strengthScore === 0 && (t('strengthNone') || 'None')}
+                        {strengthScore === 25 && (t('strengthVeryWeak') || 'Very Weak')}
+                        {strengthScore === 50 && (t('strengthWeak') || 'Weak')}
+                        {strengthScore === 75 && (t('strengthModerate') || 'Moderate')}
+                        {strengthScore === 100 && (t('strengthStrong') || 'Strong')}
                       </span>
                     </div>
                     <div className="h-2 w-full rounded-full bg-border overflow-hidden flex gap-0.5">
-                      {[25, 50, 75, 100].map((t) => (
-                        <div key={t} className={cn('h-full transition-all duration-300', strengthScore >= t ? (strengthScore <= 50 ? 'bg-destructive' : strengthScore === 75 ? 'bg-amber-500' : 'bg-emerald-600') : 'bg-transparent')} style={{ width: '25%' }} />
+                      {[25, 50, 75, 100].map((threshold) => (
+                        <div key={threshold} className={cn('h-full transition-all duration-300', strengthScore >= threshold ? (strengthScore <= 50 ? 'bg-destructive' : strengthScore === 75 ? 'bg-amber-500' : 'bg-emerald-600') : 'bg-transparent')} style={{ width: '25%' }} />
                       ))}
                     </div>
                     <div className="grid grid-cols-2 gap-1.5 pt-1 text-[10px] font-medium">
-                      {[{ ok: hasMinLength, label: 'Min 8 chars' }, { ok: hasMixedCase, label: 'Upper & lower' }, { ok: hasNumber, label: '1 number' }, { ok: hasSpecial, label: '1 special char' }].map(({ ok, label }) => (
+                      {[
+                        { ok: hasMinLength, label: t('pwdMin8') || 'Min 8 chars' },
+                        { ok: hasMixedCase, label: t('pwdUpperLower') || 'Upper & lower' },
+                        { ok: hasNumber, label: t('pwdNumber') || '1 number' },
+                        { ok: hasSpecial, label: t('pwdSpecial') || '1 special char' },
+                      ].map(({ ok, label }) => (
                         <div key={label} className="flex items-center gap-1.5">
                           {ok ? <Check className="size-3.5 text-emerald-600" /> : <X className="size-3.5 text-muted-foreground" />}
                           <span className={ok ? 'text-foreground' : 'text-muted-foreground'}>{label}</span>
@@ -692,7 +700,7 @@ function LoginPageContent() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-foreground mb-1">Confirm Password</label>
+                    <label className="block text-xs font-medium text-foreground mb-1">{t('confirmPasswordLabel') || 'Confirm Password'}</label>
                     <div className="relative">
                       <input
                         type="password"
@@ -712,19 +720,19 @@ function LoginPageContent() {
 
                   <div className="flex items-center gap-3 pt-2">
                     <Button type="button" variant="outline" onClick={() => setSignupStep(1)} className="py-5 font-semibold rounded-xl w-1/3 hover:bg-muted flex items-center justify-center gap-1">
-                      <ArrowLeft className="size-4" /> Back
+                      <ArrowLeft className="size-4" /> {t('backBtn') || 'Back'}
                     </Button>
                     <Button type="submit" disabled={!isStep2Valid || isSubmitting} className="w-2/3 py-5 bg-primary hover:bg-primary/90 font-bold text-primary-foreground rounded-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
-                      {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : 'Create Account'}
+                      {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : (t('createFreeAccount') || 'Create Account')}
                     </Button>
                   </div>
                 </form>
               )}
 
               <div className="text-center text-xs text-muted-foreground pt-4 border-t border-border/60 mt-4">
-                Already have an account?{' '}
+                {t('alreadyHaveAccount')}{' '}
                 <button type="button" onClick={() => { setActiveTab('login'); setGeneralError(null) }} className="text-primary hover:underline font-bold">
-                  Sign In
+                  {t('logIn')}
                 </button>
               </div>
             </div>
@@ -735,9 +743,12 @@ function LoginPageContent() {
 }
 
 export default function LoginPage() {
+  const { t, lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
+
   return (
     <div className="py-6 px-4 max-w-4xl mx-auto w-full">
-      <h1 className="sr-only">Log In to Cardzy</h1>
+      <h1 className="sr-only">{t('loginToCardzyTitle') || 'Log In to Cardzy'}</h1>
       <Suspense fallback={
         <div className="flex min-h-[400px] items-center justify-center">
           <Loader2 className="size-8 animate-spin text-primary" />
@@ -747,30 +758,30 @@ export default function LoginPage() {
       </Suspense>
 
       {/* Premium Guide Overview Card */}
-      <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4">
+      <section className={`mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 ${isUrdu ? 'font-urdu' : ''}`}>
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-            <Sparkles className="size-3.5" /> Account Features
+            <Sparkles className="size-3.5" /> {t('accountFeaturesBadge') || 'Account Features'}
           </span>
         </div>
         <h2 className="text-xl font-extrabold text-foreground tracking-tight">
-          Manage Your Digital Card & Invitation Account
+          {t('accountFeaturesH2') || 'Manage Your Digital Card & Invitation Account'}
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-          Welcome to Cardzy. Log in to your personal dashboard to view your published 3D animated wish cards, digital wedding invitations, and smart business vCards. Track real-time guest attendance through automated WhatsApp RSVP confirmations, view headcount analytics, update event dates or venue locations, and download high-resolution QR codes for easy sharing.
+          {t('accountFeaturesDesc') || 'Welcome to Cardzy. Log in to your personal dashboard to view your published 3D animated wish cards, digital wedding invitations, and smart business vCards. Track real-time guest attendance through automated WhatsApp RSVP confirmations, view headcount analytics, update event dates or venue locations, and download high-resolution QR codes for easy sharing.'}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-            <h3 className="font-extrabold text-xs text-foreground">Real-Time WhatsApp RSVPs</h3>
-            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Monitor guest responses instantly in your account dashboard.</p>
+            <h3 className="font-extrabold text-xs text-foreground">{t('accountFeat1Title') || 'Real-Time WhatsApp RSVPs'}</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{t('accountFeat1Desc') || 'Monitor guest responses instantly in your account dashboard.'}</p>
           </div>
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-            <h3 className="font-extrabold text-xs text-foreground">Edit Cards Anytime</h3>
-            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Update venue pins, timings, or wording without reprinting.</p>
+            <h3 className="font-extrabold text-xs text-foreground">{t('accountFeat2Title') || 'Edit Cards Anytime'}</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{t('accountFeat2Desc') || 'Update venue pins, timings, or wording without reprinting.'}</p>
           </div>
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
-            <h3 className="font-extrabold text-xs text-foreground">Instant Share Links</h3>
-            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">Copy card URLs or download custom QR codes in 1 click.</p>
+            <h3 className="font-extrabold text-xs text-foreground">{t('accountFeat3Title') || 'Instant Share Links'}</h3>
+            <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{t('accountFeat3Desc') || 'Copy card URLs or download custom QR codes in 1 click.'}</p>
           </div>
         </div>
       </section>

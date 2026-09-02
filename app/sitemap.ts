@@ -3,38 +3,42 @@ import { BLOG_POSTS } from '@/lib/blog/data'
 import { SITE_URL, getLanguageAlternates } from '@/lib/seo'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const currentDate = new Date()
+  // Use fixed dates for static pages to prevent Google from distrusting lastmod
+  // Only blog routes use their actual updatedAt timestamps
+  const frequentUpdateDate = new Date('2026-08-25')
+  const monthlyUpdateDate = new Date('2026-08-01')
+  const yearlyUpdateDate = new Date('2026-06-15')
 
   const staticRoutePaths = [
-    { path: '/', changeFrequency: 'daily' as const, priority: 1.0 },
-    { path: '/blog', changeFrequency: 'daily' as const, priority: 0.9 },
-    { path: '/custom-order', changeFrequency: 'daily' as const, priority: 0.9 },
-    { path: '/create-wish', changeFrequency: 'weekly' as const, priority: 0.9 },
-    { path: '/create-invitation', changeFrequency: 'weekly' as const, priority: 0.9 },
-    { path: '/create-visiting-card', changeFrequency: 'weekly' as const, priority: 0.8 },
-    { path: '/pricing', changeFrequency: 'weekly' as const, priority: 0.8 },
-    { path: '/faq', changeFrequency: 'monthly' as const, priority: 0.8 },
-    { path: '/guide', changeFrequency: 'weekly' as const, priority: 0.8 },
-    { path: '/guide/eid-wording-ideas', changeFrequency: 'daily' as const, priority: 0.9 },
-    { path: '/guide/pakistani-wedding-invitations', changeFrequency: 'daily' as const, priority: 0.9 },
-    { path: '/guide/birthday-wishes-wording', changeFrequency: 'weekly' as const, priority: 0.8 },
-    { path: '/eid-mubarak-cards', changeFrequency: 'weekly' as const, priority: 0.9 },
-    { path: '/about', changeFrequency: 'monthly' as const, priority: 0.8 },
-    { path: '/authors', changeFrequency: 'monthly' as const, priority: 0.8 },
-    { path: '/authors/umar-farooq', changeFrequency: 'monthly' as const, priority: 0.7 },
-    { path: '/authors/kainat', changeFrequency: 'monthly' as const, priority: 0.7 },
-    { path: '/authors/hasnain', changeFrequency: 'monthly' as const, priority: 0.7 },
-    { path: '/contact', changeFrequency: 'monthly' as const, priority: 0.8 },
-    { path: '/cookies', changeFrequency: 'monthly' as const, priority: 0.7 },
-    { path: '/privacy-policy', changeFrequency: 'yearly' as const, priority: 0.5 },
-    { path: '/disclaimer', changeFrequency: 'yearly' as const, priority: 0.5 },
-    { path: '/terms-of-service', changeFrequency: 'yearly' as const, priority: 0.5 },
-    { path: '/campaign', changeFrequency: 'weekly' as const, priority: 0.8 },
+    { path: '/', changeFrequency: 'daily' as const, priority: 1.0, lastModified: frequentUpdateDate },
+    { path: '/blog', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
+    { path: '/custom-order', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
+    { path: '/create-wish', changeFrequency: 'weekly' as const, priority: 0.9, lastModified: monthlyUpdateDate },
+    { path: '/create-invitation', changeFrequency: 'weekly' as const, priority: 0.9, lastModified: monthlyUpdateDate },
+    { path: '/create-visiting-card', changeFrequency: 'weekly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
+    { path: '/pricing', changeFrequency: 'weekly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
+    { path: '/faq', changeFrequency: 'monthly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
+    { path: '/guide', changeFrequency: 'weekly' as const, priority: 0.8, lastModified: frequentUpdateDate },
+    { path: '/guide/eid-wording-ideas', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
+    { path: '/guide/pakistani-wedding-invitations', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
+    { path: '/guide/birthday-wishes-wording', changeFrequency: 'weekly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
+    { path: '/eid-mubarak-cards', changeFrequency: 'weekly' as const, priority: 0.9, lastModified: monthlyUpdateDate },
+    { path: '/about', changeFrequency: 'monthly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
+    { path: '/authors', changeFrequency: 'monthly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
+    { path: '/authors/umar-farooq', changeFrequency: 'monthly' as const, priority: 0.7, lastModified: monthlyUpdateDate },
+    { path: '/authors/kainat', changeFrequency: 'monthly' as const, priority: 0.7, lastModified: monthlyUpdateDate },
+    { path: '/authors/hasnain', changeFrequency: 'monthly' as const, priority: 0.7, lastModified: monthlyUpdateDate },
+    { path: '/contact', changeFrequency: 'monthly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
+    { path: '/cookies', changeFrequency: 'monthly' as const, priority: 0.7, lastModified: yearlyUpdateDate },
+    { path: '/privacy-policy', changeFrequency: 'yearly' as const, priority: 0.5, lastModified: yearlyUpdateDate },
+    { path: '/disclaimer', changeFrequency: 'yearly' as const, priority: 0.5, lastModified: yearlyUpdateDate },
+    { path: '/terms-of-service', changeFrequency: 'yearly' as const, priority: 0.5, lastModified: yearlyUpdateDate },
+    { path: '/campaign', changeFrequency: 'weekly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
   ]
 
   const staticRoutes: MetadataRoute.Sitemap = staticRoutePaths.map((route) => ({
     url: route.path === '/' ? SITE_URL : `${SITE_URL}${route.path}`,
-    lastModified: currentDate,
+    lastModified: route.lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
     alternates: {

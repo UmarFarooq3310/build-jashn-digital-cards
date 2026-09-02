@@ -170,10 +170,251 @@ const BLOG_UI_STRINGS: Record<string, Record<string, string>> = {
     vi: 'Tìm kiếm bài viết, lời chúc đám cưới...',
     sw: 'Tafuta makala, maneno ya harusi, kadi...',
   },
+  blogBreadcrumb: {
+    en: 'Blog & Guides',
+    ur: 'بلاگ اور گائیڈز',
+    ar: 'المدونة والأدلة',
+    es: 'Blog y Guías',
+    fr: 'Blog & Guides',
+    hi: 'ब्लॉग और गाइड',
+    zh: '博客与指南',
+    pt: 'Blog e Guias',
+    ru: 'Блог и руководства',
+    de: 'Blog & Ratgeber',
+    ja: 'ブログ＆ガイド',
+    ko: '블로그 & 가이드',
+    it: 'Blog e Guide',
+    tr: 'Blog ve Rehberler',
+    id: 'Blog & Panduan',
+    bn: 'ব্লগ ও গাইড',
+    vi: 'Blog & Hướng Dẫn',
+    sw: 'Blogu na Miongozo',
+  },
+  catAll: {
+    en: 'All',
+    ur: 'تمام مضامین',
+    ar: 'الكل',
+    es: 'Todos',
+    fr: 'Tous',
+    hi: 'सभी लेख',
+    zh: '全部',
+    pt: 'Todos',
+    ru: 'Все',
+    de: 'Alle',
+    ja: 'すべて',
+    ko: '전체',
+    it: 'Tutti',
+    tr: 'Tümü',
+    id: 'Semua',
+    bn: 'সব',
+    vi: 'Tất cả',
+    sw: 'Zote',
+  },
+  'Wedding & Nikkah': {
+    en: 'Wedding & Nikkah',
+    ur: 'شادی و نکاح',
+    ar: 'الزفاف والنكاح',
+    es: 'Boda y Nikkah',
+    fr: 'Mariage & Nikkah',
+    hi: 'शादी और निकाह',
+    zh: '婚礼与仪式',
+    pt: 'Casamento e Nikkah',
+    ru: 'Свадьба и Никах',
+    de: 'Hochzeit & Nikkah',
+    ja: '結婚式＆Nikkah',
+    ko: '웨딩 & 니카',
+    it: 'Matrimonio & Nikkah',
+    tr: 'Düğün ve Nikah',
+    id: 'Pernikahan & Akad',
+    bn: 'বিয়ে ও নিকাহ',
+    vi: 'Đám Cưới & Hôn Lễ',
+    sw: 'Harusi na Nikkah',
+  },
+  'Eid & Holidays': {
+    en: 'Eid & Holidays',
+    ur: 'عید اور تعطیلات',
+    ar: 'العيد والمناسبات',
+    es: 'Eid y Festividades',
+    fr: 'Aïd & Fêtes',
+    hi: 'ईद और त्योहार',
+    zh: '开斋节与节日',
+    pt: 'Eid e Feriados',
+    ru: 'Эйд и Праздники',
+    de: 'Eid & Feiertage',
+    ja: 'Eid＆祝日',
+    ko: '이드 & 축제',
+    it: 'Eid e Festività',
+    tr: 'Bayram ve Tatiller',
+    id: 'Idul Fitri & Liburan',
+    bn: 'ঈদ ও ছুটির দিন',
+    vi: 'Lễ Eid & Ngày Lễ',
+    sw: 'Eid na Sikukuu',
+  },
+  'Business & vCards': {
+    en: 'Business & vCards',
+    ur: 'ڈیجیٹل وزٹنگ کارڈز',
+    ar: 'بطاقات الأعمال الرقمية',
+    es: 'Negocios y vCards',
+    fr: 'Affaires & vCards',
+    hi: 'बिजनेस और डिजिटल कार्ड',
+    zh: '商务与数字名片',
+    pt: 'Negócios e vCards',
+    ru: 'Бизнес и vCard',
+    de: 'Business & vCards',
+    ja: 'ビジネス＆デジタル名刺',
+    ko: '비즈니스 & vCard',
+    it: 'Business e vCard',
+    tr: 'İş Dünyası ve vCard',
+    id: 'Bisnis & vCard',
+    bn: 'ব্যবসা ও ডিজিটাল কার্ড',
+    vi: 'Kinh Doanh & Danh Thiếp',
+    sw: 'Biashara na vCard',
+  },
+  'Event Planning': {
+    en: 'Event Planning',
+    ur: 'تقاریب اور آر ایس وی پی',
+    ar: 'تخطيط المناسبات وإدارتها',
+    es: 'Planificación de Eventos',
+    fr: 'Organisation d\'Événements',
+    hi: 'इवेंट प्लानिंग व आरएसवीपी',
+    zh: '活动策划与管理',
+    pt: 'Planeamento de Eventos',
+    ru: 'Организация событий',
+    de: 'Event-Planung',
+    ja: 'イベント企画・管理',
+    ko: '이벤트 기획 & RSVP',
+    it: 'Pianificazione Eventi',
+    tr: 'Etkinlik Planlama',
+    id: 'Perencanaan Acara',
+    bn: 'অনুষ্ঠান পরিকল্পনা',
+    vi: 'Lên Kế Hoạch Sự Kiện',
+    sw: 'Mipango ya Sherehe',
+  },
+  results: {
+    en: 'Results',
+    ur: 'نتائج',
+    ar: 'النتائج',
+    es: 'Resultados',
+    fr: 'Résultats',
+    hi: 'परिणाम',
+    zh: '搜索结果',
+    pt: 'Resultados',
+    ru: 'Результаты',
+    de: 'Ergebnisse',
+    ja: '検索結果',
+    ko: '검색 결과',
+    it: 'Risultati',
+    tr: 'Sonuçlar',
+    id: 'Hasil',
+    bn: 'ফলাফল',
+    vi: 'Kết quả',
+    sw: 'Matokeo',
+  },
+  resetFilters: {
+    en: 'Reset filters',
+    ur: 'فلٹرز ری سیٹ کریں',
+    ar: 'إعادة تعيين الفلاتر',
+    es: 'Restablecer filtros',
+    fr: 'Réinitialiser les filtres',
+    hi: 'फ़िल्टर रीसेट करें',
+    zh: '重置筛选',
+    pt: 'Redefinir filtros',
+    ru: 'Сбросить фильтры',
+    de: 'Filter zurücksetzen',
+    ja: 'フィルターをリセット',
+    ko: '필터 초기화',
+    it: 'Reimposta filtri',
+    tr: 'Filtreleri sıfırla',
+    id: 'Atur ulang filter',
+    bn: 'ফিল্টার রিসেট করুন',
+    vi: 'Đặt lại bộ lọc',
+    sw: 'Weka upya vichungi',
+  },
+  noArticles: {
+    en: 'No articles match your search',
+    ur: 'آپ کی تلاش کے مطابق کوئی مضمون نہیں ملا',
+    ar: 'لا توجد مقالات مطابقة لبحثك',
+    es: 'No se encontraron artículos para tu búsqueda',
+    fr: 'Aucun article ne correspond à votre recherche',
+    hi: 'आपकी खोज से मेल खाता कोई लेख नहीं मिला',
+    zh: '未找到匹配的文章',
+    pt: 'Nenhum artigo encontrado',
+    ru: 'По вашему запросу ничего не найдено',
+    de: 'Keine Artikel gefunden',
+    ja: '一致する記事は見つかりませんでした',
+    ko: '검색어와 일치하는 아티클이 없습니다',
+    it: 'Nessun articolo corrisponde alla tua ricerca',
+    tr: 'Aramanızla eşleşen makale bulunamadı',
+    id: 'Tidak ada artikel yang cocok dengan pencarian Anda',
+    bn: 'আপনার অনুসন্ধানের সাথে মেলে এমন কোনো নিবন্ধ পাওয়া যায়নি',
+    vi: 'Không tìm thấy bài viết nào phù hợp',
+    sw: 'Hakuna makala yaliyolingana na utafutaji wako',
+  },
+  noArticlesDesc: {
+    en: 'Try adjusting your search query or selecting "All" categories.',
+    ur: 'تلاش کے الفاظ تبدیل کریں یا "تمام" کیٹیگری منتخب کریں۔',
+    ar: 'جرّب تعديل كلمات البحث أو اختيار "جميع" الفئات.',
+    es: 'Intente ajustar su búsqueda o seleccione "Todos".',
+    fr: 'Essayez d\'ajuster votre recherche ou sélectionnez "Tous".',
+    hi: 'अपनी खोज बदलें या "सभी" श्रेणी चुनें।',
+    zh: '请尝试调整搜索关键词或选择“全部”分类。',
+    pt: 'Tente ajustar os termos de pesquisa ou selecione a categoria "Todos".',
+    ru: 'Попробуйте изменить поисковый запрос или выбрать категорию «Все».',
+    de: 'Versuchen Sie die Suchanfrage anzupassen oder wählen Sie „Alle“.',
+    ja: '検索キーワードを変更するか「すべて」を選択してください。',
+    ko: '검색어를 변경하거나 "전체" 카테고리를 선택해 보세요.',
+    it: 'Prova a modificare i termini di ricerca o seleziona "Tutti".',
+    tr: 'Arama teriminizi değiştirmeyi veya "Tümü" kategorisini seçmeyi deneyin.',
+    id: 'Coba sesuaikan kata kunci atau pilih kategori "Semua".',
+    bn: 'অনুসন্ধান পরিবর্তন করুন বা "সব" বিভাগ নির্বাচন করুন।',
+    vi: 'Hãy thử điều chỉnh từ khóa tìm kiếm hoặc chọn danh mục "Tất cả".',
+    sw: 'Jaribu kurekebisha maneno ya utafutaji au chagua aina ya "Zote".',
+  },
+  published: {
+    en: 'Published:',
+    ur: 'شائع کردہ:',
+    ar: 'تاريخ النشر:',
+    es: 'Publicado:',
+    fr: 'Publié le :',
+    hi: 'प्रकाशित:',
+    zh: '发布于：',
+    pt: 'Publicado:',
+    ru: 'Опубликовано:',
+    de: 'Veröffentlicht:',
+    ja: '公開日:',
+    ko: '발행일:',
+    it: 'Pubblicato:',
+    tr: 'Yayınlanma:',
+    id: 'Diterbitkan:',
+    bn: 'প্রকাশিত:',
+    vi: 'Đã đăng:',
+    sw: 'Ilichapishwa:',
+  },
+  minRead: {
+    en: 'min read',
+    ur: 'منٹ مطالعہ',
+    ar: 'دقائق للقراءة',
+    es: 'min de lectura',
+    fr: 'min de lecture',
+    hi: 'मिनट का समय',
+    zh: '分钟阅读',
+    pt: 'min de leitura',
+    ru: 'мин чтения',
+    de: 'Min. Lesezeit',
+    ja: '分で読める',
+    ko: '분 소요',
+    it: 'min di lettura',
+    tr: 'dk okuma',
+    id: 'mnt membaca',
+    bn: 'মিনিট পড়া',
+    vi: 'phút đọc',
+    sw: 'dakika za kusoma',
+  },
 }
 
 export function BlogIndexClient() {
   const { lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('All')
 
@@ -211,13 +452,18 @@ export function BlogIndexClient() {
   const featuredPost = searchQuery.trim() === '' && selectedCategory === 'All' ? localizedPosts[0] : null
   const gridPosts = featuredPost ? localizedPosts.slice(1) : filteredPosts
 
+  const formatReadTime = (rt: string) => {
+    const digits = rt.replace(/\D/g, '') || '5'
+    return `${digits} ${tUI('minRead')}`
+  }
+
   return (
-    <div className="min-h-screen bg-[#07080c] text-white pb-20 selection:bg-[#D4AF37] selection:text-slate-950">
+    <div className={`min-h-screen bg-[#07080c] text-white pb-20 selection:bg-[#D4AF37] selection:text-slate-950 ${isUrdu ? 'font-urdu' : ''}`}>
       {/* Top Breadcrumbs */}
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-4">
         <Breadcrumbs
           isDark
-          items={[{ label: 'Blog & Guides', href: '/blog' }]}
+          items={[{ label: tUI('blogBreadcrumb'), href: '/blog' }]}
         />
       </div>
 
@@ -278,7 +524,7 @@ export function BlogIndexClient() {
                       : 'bg-white/5 border border-white/10 text-zinc-300 hover:border-[#D4AF37]/40 hover:text-white'
                   )}
                 >
-                  {cat}
+                  {cat === 'All' ? tUI('catAll') : (tUI(cat) || cat)}
                 </button>
               ))}
             </div>
@@ -301,15 +547,15 @@ export function BlogIndexClient() {
             <div className="lg:col-span-7 space-y-4">
               <div className="flex flex-wrap items-center gap-3 text-xs">
                 <span className="px-3 py-1 rounded-full bg-[#D4AF37] text-slate-950 font-extrabold uppercase tracking-wider text-[10px]">
-                  {featuredPost.category}
+                  {tUI(featuredPost.category) || featuredPost.category}
                 </span>
                 <span className="text-zinc-400 flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  {featuredPost.readTime}
+                  {formatReadTime(featuredPost.readTime)}
                 </span>
                 <span className="text-zinc-400 flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  {featuredPost.publishedAt}
+                  {tUI('published')} {featuredPost.publishedAt}
                 </span>
               </div>
 
@@ -359,7 +605,7 @@ export function BlogIndexClient() {
             <Crown className="w-4 h-4 text-[#D4AF37]" />
             <span>
               {searchQuery || selectedCategory !== 'All'
-                ? `Results (${gridPosts.length})`
+                ? `${tUI('results')} (${gridPosts.length})`
                 : tUI('allArticles')}
             </span>
           </div>
@@ -373,7 +619,7 @@ export function BlogIndexClient() {
               }}
               className="text-xs text-zinc-400 hover:text-amber-400 underline font-medium"
             >
-              Reset filters
+              {tUI('resetFilters')}
             </button>
           )}
         </div>
@@ -396,7 +642,7 @@ export function BlogIndexClient() {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#D4AF37] text-slate-950 font-extrabold text-[10px] uppercase tracking-wider shadow-md">
-                    {post.category}
+                    {tUI(post.category) || post.category}
                   </div>
                 </div>
 
@@ -405,7 +651,7 @@ export function BlogIndexClient() {
                     <div className="flex items-center gap-3 text-[11px] text-zinc-400">
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3 text-[#D4AF37]" />
-                        {post.readTime}
+                        {formatReadTime(post.readTime)}
                       </span>
                       <span>•</span>
                       <span>{post.publishedAt}</span>
@@ -431,8 +677,8 @@ export function BlogIndexClient() {
         ) : (
           <div className="text-center py-16 rounded-3xl border border-dashed border-white/10 bg-[#0a0a0c] space-y-3">
             <Search className="w-8 h-8 text-zinc-500 mx-auto" />
-            <h3 className="text-base font-bold text-white">No articles match your search</h3>
-            <p className="text-xs text-zinc-400">Try adjusting your search query or selecting &ldquo;All&rdquo; categories.</p>
+            <h3 className="text-base font-bold text-white">{tUI('noArticles')}</h3>
+            <p className="text-xs text-zinc-400">{tUI('noArticlesDesc')}</p>
           </div>
         )}
       </section>

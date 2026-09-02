@@ -119,14 +119,24 @@ export function CookieBanner() {
     const handler = () => openModal()
     window.addEventListener('cardzy:open-cookie-prefs', handler)
 
-    // Load stored consent
-    const stored = loadConsent()
-    setConsent(stored)
-    if (stored) {
-      // Replay consent signals on every page load so gtag is in sync
-      pushGtagConsent(stored.analytics, stored.advertising)
-      // Seed modal toggles with existing choices
-      setPrefs(stored)
+    // Check if user requested to show or reset cookies via URL
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search)
+      if (urlParams.has('cookies') || urlParams.has('reset-cookies') || urlParams.has('show-cookies') || urlParams.has('cookie-consent')) {
+        localStorage.removeItem(CONSENT_KEY)
+        localStorage.removeItem('cardzy_cookie_consent')
+        setConsent(null)
+      } else {
+        // Load stored consent
+        const stored = loadConsent()
+        setConsent(stored)
+        if (stored) {
+          // Replay consent signals on every page load so gtag is in sync
+          pushGtagConsent(stored.analytics, stored.advertising)
+          // Seed modal toggles with existing choices
+          setPrefs(stored)
+        }
+      }
     }
 
     return () => {
@@ -159,9 +169,11 @@ export function CookieBanner() {
       {/* ── First-visit banner (shown until user decides) ── */}
       {consent === null && !showModal && (
         <div
+          id="cookie-consent-banner"
+          data-cookie-root="true"
           role="region"
           aria-label="Cookie consent"
-          className="fixed bottom-4 left-3 right-3 z-[2147483644] mx-auto max-w-xl sm:left-auto sm:right-5 sm:bottom-5 sm:mx-0 notranslate"
+          className="fixed bottom-4 left-3 right-3 z-[2147483647] mx-auto max-w-xl sm:left-auto sm:right-5 sm:bottom-5 sm:mx-0 notranslate pointer-events-auto animate-in fade-in slide-in-from-bottom-5"
         >
           <div className="rounded-2xl border border-amber-500/50 bg-[#0b0d13]/97 p-5 text-white shadow-2xl backdrop-blur-xl">
             {/* Header row */}
@@ -230,9 +242,25 @@ export function CookieBanner() {
         </div>
       )}
 
+      {/* ── Persistent Floating Cookie Settings Badge (when consent previously saved) ── */}
+      {consent !== null && !showModal && (
+        <button
+          type="button"
+          onClick={openModal}
+          data-cookie-root="true"
+          aria-label="Cookie Preferences"
+          className="fixed bottom-4 left-4 z-[999999] group flex items-center gap-2 rounded-full border border-amber-500/40 bg-slate-950/90 px-3.5 py-2 text-xs font-bold text-slate-200 shadow-xl backdrop-blur-md hover:bg-slate-900 hover:text-white hover:border-amber-400 transition-all hover:scale-105 active:scale-95 notranslate pointer-events-auto"
+        >
+          <Cookie className="size-4 text-amber-400 group-hover:rotate-12 transition-transform" />
+          <span className="hidden sm:inline">Cookie Settings</span>
+        </button>
+      )}
+
       {/* ── Preferences modal (portal to body) ── */}
       {createPortal(
         <div
+          id="cardzy-cookie-modal-root"
+          data-cookie-root="true"
           role="dialog"
           aria-modal="true"
           aria-labelledby="cookie-prefs-title"
@@ -242,9 +270,9 @@ export function CookieBanner() {
             display: showModal ? 'flex' : 'none',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'rgba(0,0,0,0.82)',
-            backdropFilter: 'blur(6px)',
-            WebkitBackdropFilter: 'blur(6px)',
+            backgroundColor: 'rgba(0,0,0,0.85)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
             padding: '1rem',
           }}
           className="notranslate"

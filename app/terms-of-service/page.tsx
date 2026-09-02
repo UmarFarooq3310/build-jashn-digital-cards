@@ -2,13 +2,14 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { FileText, ShieldAlert, CheckCircle2, HelpCircle, Mail, Globe, Scale } from 'lucide-react'
 import { Breadcrumbs } from '@/components/breadcrumbs'
+import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Terms of Service | Cardzy',
   description:
     "Review Cardzy's Terms of Service, acceptable use guidelines, limitation of liability, and service agreement for digital invitations.",
-  alternates: { canonical: 'https://cardzy.online/terms-of-service' },
-  robots: { index: true, follow: true },
+  alternates: getPageAlternates('/terms-of-service'),
+  robots: PUBLIC_ROBOTS,
 }
 
 const jsonLd = {

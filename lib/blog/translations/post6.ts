@@ -4,1338 +4,1302 @@ export const POST_6_SLUG = "ultimate-guide-to-creating-online-invitation-cards-w
 
 export const POST_6_DATA: Record<string, LocalizedBlogData> = {
   "en": {
-    "title": "The Ultimate Guide to Creating Online Digital Invitation Cards with Live WhatsApp RSVP Tracking (2026)",
-    "subtitle": "Create interactive invitation websites with gold foil animations, music, venue maps, and WhatsApp RSVP buttons.",
-    "category": "Event Planning",
-    "seoTitle": "Create Online Digital Invitation Cards with WhatsApp RSVP — Cardzy",
-    "metaDescription": "Learn how to build digital invitation websites on Cardzy with interactive 3D templates, embedded Google Maps, custom music, and live WhatsApp RSVP tracking."
-  },
-  "es": {
-    "title": "Guía Definitiva para Crear Invitaciones Digitales Online con RSVP por WhatsApp",
-    "subtitle": "Cree webs de invitación interactivas con animaciones doradas, música, mapas de ubicación y botones de confirmación por WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Crear Invitaciones Digitales Online con RSVP por WhatsApp — Cardzy",
-    "metaDescription": "Aprenda a crear webs de invitación digital en Cardzy con plantillas 3D interactivas, Google Maps integrado, música y seguimiento de RSVP por WhatsApp."
-  },
-  "fr": {
-    "title": "Guide Ultime des Invitations Numériques avec Suivi RSVP WhatsApp",
-    "subtitle": "Créez des sites d'invitation interactifs avec animations dorées, musique, cartes et boutons de suivi RSVP WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Créer des Invitations Numériques en Ligne avec RSVP WhatsApp — Cardzy",
-    "metaDescription": "Apprenez à créer des sites d'invitation numérique sur Cardzy avec modèles 3D interactifs, Google Maps intégré et suivi RSVP WhatsApp."
-  },
-  "ar": {
-    "title": "الدليل الشامل لإنشاء بطاقات الدعوة الرقمية مع تتبع الحضور عبر واتساب",
-    "subtitle": "أنشئ مواقع دعوات تفاعلية مع مؤثرات ذهبية وموسيقى وخريطة الموقع وأزرار تأكيد الحضور عبر واتساب.",
-    "category": "Event Planning",
-    "seoTitle": "إنشاء بطاقات دعوة رقمية مع تأكيد الحضور عبر واتساب — كاردزي",
-    "metaDescription": "تعلم كيفية بناء موقع دعوة رقمي عبر كاردزي بقوالب 3D تفاعلية وموقع الخريطة وتتبع الحضور المباشر عبر واتساب."
-  },
-  "hi": {
-    "title": "ऑनलाइन डिजिटल निमंत्रण कार्ड और व्हाट्सएप आरएसवीपी बनाने की अल्टीमेट गाइड",
-    "subtitle": "गोल्ड फ़ॉइल एनिमेशन, संगीत, मैप्स और व्हाट्सएप आरएसवीपी बटन के साथ इंटरैक्टिव डिजिटल कार्ड बनाएं।",
-    "category": "Event Planning",
-    "seoTitle": "व्हाट्सएप आरएसवीपी के साथ ऑनलाइन डिजिटल निमंत्रण कार्ड — कार्डज़ी",
-    "metaDescription": "कार्डज़ी पर 3D टेम्प्लेट, गूगल मैप्स, म्यूजिक और व्हाट्सएप आरएसवीपी ट्रैकिंग के साथ डिजिटल निमंत्रण वेबसाइट बनाना सीखें।"
-  },
-  "zh": {
-    "title": "制作在线数字请柬与 WhatsApp Live RSVP 追踪终极指南",
-    "subtitle": "轻松创建带有烫金动态特效、门票音乐、地图导航及 WhatsApp RSVP 确认按钮的数字请柬网站。",
-    "category": "Event Planning",
-    "seoTitle": "在线创建含 WhatsApp RSVP 的数字请柬网站 — Cardzy",
-    "metaDescription": "学习如何在 Cardzy 上利用 3D 沉浸式模板、内置 Google 地图定位、背景音乐及 WhatsApp 实时 RSVP 功能创建电子请柬网站。"
-  },
-  "pt": {
-    "title": "Guia Definitivo para Criar Convites Digitais Online com RSVP no WhatsApp",
-    "subtitle": "Crie sites de convite interativos com animações em folha de ouro, música, mapas e botões WhatsApp RSVP.",
-    "category": "Event Planning",
-    "seoTitle": "Criar Convites Digitais Online com RSVP WhatsApp — Cardzy",
-    "metaDescription": "Aprenda a criar sites de convite digital no Cardzy com modelos 3D interativos, Google Maps integrado e rastreamento RSVP no WhatsApp."
-  },
-  "ru": {
-    "title": "Полное руководство по созданию онлайн-приглашений с отслеживанием RSVP",
-    "subtitle": "Создавайте интерактивные сайты-приглашения с золотой анимацией, музыкой, картой и кнопкой WhatsApp RSVP.",
-    "category": "Event Planning",
-    "seoTitle": "Онлайн цифровые пригласительные с RSVP в WhatsApp — Cardzy",
-    "metaDescription": "Узнайте, как создавать сайты цифровых приглашений на Cardzy с интерактивными 3D-шаблонами, картами Google и RSVP в WhatsApp."
-  },
-  "de": {
-    "title": "Der ultimative Leitfaden für digitale Online-Einladungen mit WhatsApp RSVP",
-    "subtitle": "Erstellen Sie interaktive Einladungs-Websites mit Goldfolien-Animationen, Musik, Karten und WhatsApp RSVP.",
-    "category": "Event Planning",
-    "seoTitle": "Online Digitale Einladungen mit WhatsApp RSVP erstellen — Cardzy",
-    "metaDescription": "Erstellen Sie digitale Einladungs-Websites auf Cardzy mit interaktiven 3D-Vorlagen, Google Maps, Musik und WhatsApp RSVP."
-  },
-  "ja": {
-    "title": "リアルタイムWhatsApp RSVP付きオンラインデジタル招待状の作成究極ガイド",
-    "subtitle": "ゴールドフォイルアニメーション、音楽、会場マップ、WhatsApp RSVPボタンを備えた体験型招待状サイトを作成。",
-    "category": "Event Planning",
-    "seoTitle": "WhatsApp RSVP機能付きオンラインデジタル招待状の作成 — Cardzy",
-    "metaDescription": "Cardzyで3Dテンプレート、Googleマップ、音楽、WhatsApp RSVPライブ追跡を備えたデジタル招待状サイトの作成方法を解説。"
-  },
-  "ko": {
-    "title": "실시간 WhatsApp RSVP 기능이 포함된 온라인 디지털 초대장 제작 가이드",
-    "subtitle": "골드 포일 애니메이션, 배경 음악, 위치 지도, WhatsApp RSVP 버튼이 포함된 인터랙티브 초대장 웹사이트를 제작하세요.",
-    "category": "Event Planning",
-    "seoTitle": "WhatsApp RSVP 기능이 있는 온라인 디지털 청첩장 만들기 — Cardzy",
-    "metaDescription": "Cardzy에서 3D 템플릿, Google 지도, 배경 음악, 실시간 WhatsApp RSVP 추적이 포함된 디지털 초대장 웹사이트 구축 방법을 알아보세요."
-  },
-  "it": {
-    "title": "Guida Definitiva alla Creazione di Inviti Digitali con Tracciamento RSVP WhatsApp",
-    "subtitle": "Crea siti di invito interattivi con animazioni dorate, musica, mappe del luogo e pulsanti RSVP WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Crea Inviti Digitali Online con RSVP WhatsApp — Cardzy",
-    "metaDescription": "Impara a creare siti di invito digitale su Cardzy con modelli 3D interattivi, Google Maps integrato, musica e tracciamento RSVP su WhatsApp."
-  },
-  "tr": {
-    "title": "WhatsApp LCV Takipli Online Dijital Davetiye Oluşturma Rehberi",
-    "subtitle": "Altın yaldız animasyonları, müzik, haritalar ve WhatsApp LCV butonlarıyla etkileşimli davetiye web siteleri oluşturun.",
-    "category": "Event Planning",
-    "seoTitle": "WhatsApp LCV ile Online Dijital Davetiye Kartı Oluşturma — Cardzy",
-    "metaDescription": "Cardzy'de etkileşimli 3D şablonlar, Google Haritalar, müzik ve canlı WhatsApp LCV takibi ile dijital davetiye siteleri oluşturmayı öğrenin."
-  },
-  "id": {
-    "title": "Panduan Utama Membuat Kartu Undangan Digital Online dengan RSVP WhatsApp",
-    "subtitle": "Buat situs undangan interaktif dengan animasi emas, musik, peta lokasi, dan tombol RSVP WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Buat Kartu Undangan Digital Online dengan RSVP WhatsApp — Cardzy",
-    "metaDescription": "Pelajari cara membuat situs undangan digital di Cardzy dengan templat 3D interaktif, Google Maps, musik, dan pelacakan RSVP WhatsApp."
+    "title": "Online Invitation Cards with Live WhatsApp RSVP Tracking (2026)",
+    "subtitle": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for Online Invitation Cards with Live WhatsApp RSVP Tracking (2026).",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Online Invitation Cards with Live WhatsApp RSVP Tracking (2026) — Cardzy",
+    "metaDescription": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for Online Invitation Cards with Live WhatsApp RSVP Tracking (2026)."
   },
   "ur": {
-    "title": "آن لائن ڈیجیٹل انویٹیشن کارڈز اور واٹس ایپ آر ایس وی پی گائیڈ",
-    "subtitle": "شادی، سالگرہ اور کاروباری تقاریب کے لیے اینیمیٹڈ ویب سائٹس بنانے کا مکمل طریقہ",
-    "category": "Event Planning",
-    "seoTitle": "آن لائن انویٹیشن کارڈز اور واٹس ایپ آر ایس وی پی — کارڈزی",
-    "metaDescription": "کارڈزی پر اپنی شادی، اینیورسری یا سالگرہ کے لیے شاہانہ 3D ڈیجیٹل انویٹیشن ویب سائٹ بنائیں۔ لائیو واٹس ایپ آر ایس وی پی ٹریکنگ کے ساتھ۔"
+    "title": "آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ",
+    "subtitle": "کارڈزی پر آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔",
+    "category": "شادی و نکاح",
+    "seoTitle": "آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ — Cardzy",
+    "metaDescription": "کارڈزی پر آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔"
+  },
+  "es": {
+    "title": "Tarjetas de Invitación Digitales con Seguimiento de RSVP en Vivo por WhatsApp (2026)",
+    "subtitle": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para Online Invitation Cards with Live WhatsApp RSVP Tracking (2026).",
+    "category": "Boda y Nikkah",
+    "seoTitle": "Tarjetas de Invitación Digitales con Seguimiento de RSVP en Vivo por WhatsApp (2026) — Cardzy",
+    "metaDescription": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para Online Invitation Cards with Live WhatsApp RSVP Tracking (2026)."
+  },
+  "fr": {
+    "title": "Faire-Part Numériques en Ligne avec Suivi des Réponses RSVP par WhatsApp (2026)",
+    "subtitle": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy.",
+    "category": "Mariage & Nikkah",
+    "seoTitle": "Faire-Part Numériques en Ligne avec Suivi des Réponses RSVP par WhatsApp (2026) — Cardzy",
+    "metaDescription": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy."
+  },
+  "ar": {
+    "title": "دليل إنشاء بطاقات الدعوة الرقمية عبر الإنترنت مع تتبع الحضور المباشر عبر واتساب",
+    "subtitle": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي.",
+    "category": "الزفاف والنكاح",
+    "seoTitle": "دليل إنشاء بطاقات الدعوة الرقمية عبر الإنترنت مع تتبع الحضور المباشر عبر واتساب — Cardzy",
+    "metaDescription": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي."
+  },
+  "hi": {
+    "title": "लाइव व्हाट्सएप आरएसवीपी ट्रैकिंग के साथ ऑनलाइन डिजिटल निमंत्रण पत्र गाइड (2026)",
+    "subtitle": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।",
+    "category": "शादी और निकाह",
+    "seoTitle": "लाइव व्हाट्सएप आरएसवीपी ट्रैकिंग के साथ ऑनलाइन डिजिटल निमंत्रण पत्र गाइड (2026) — Cardzy",
+    "metaDescription": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।"
+  },
+  "zh": {
+    "title": "在线电子请柬制作全攻略：集成 WhatsApp 实时 RSVP 宾客回执追踪（2026版）",
+    "subtitle": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。",
+    "category": "婚礼与仪式",
+    "seoTitle": "在线电子请柬制作全攻略：集成 WhatsApp 实时 RSVP 宾客回执追踪（2026版） — Cardzy",
+    "metaDescription": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。"
+  },
+  "pt": {
+    "title": "Convites Digitais Online com Rastreamento de RSVP em Tempo Real no WhatsApp (2026)",
+    "subtitle": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy.",
+    "category": "Casamento e Nikkah",
+    "seoTitle": "Convites Digitais Online com Rastreamento de RSVP em Tempo Real no WhatsApp (2026) — Cardzy",
+    "metaDescription": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy."
+  },
+  "ru": {
+    "title": "Создание электронных приглашений онлайн с отслеживанием ответов в WhatsApp (2026)",
+    "subtitle": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy.",
+    "category": "Свадьба и Никах",
+    "seoTitle": "Создание электронных приглашений онлайн с отслеживанием ответов в WhatsApp (2026) — Cardzy",
+    "metaDescription": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy."
+  },
+  "de": {
+    "title": "Online-Einladungskarten mit Live-WhatsApp-RSVP-Verwaltung (Leitfaden 2026)",
+    "subtitle": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy.",
+    "category": "Hochzeit & Nikkah",
+    "seoTitle": "Online-Einladungskarten mit Live-WhatsApp-RSVP-Verwaltung (Leitfaden 2026) — Cardzy",
+    "metaDescription": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy."
+  },
+  "ja": {
+    "title": "WhatsAppリアルタイム出欠確認付きオンライン招待状作成ガイド（2026年版）",
+    "subtitle": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。",
+    "category": "結婚式＆Nikkah",
+    "seoTitle": "WhatsAppリアルタイム出欠確認付きオンライン招待状作成ガイド（2026年版） — Cardzy",
+    "metaDescription": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。"
+  },
+  "ko": {
+    "title": "실시간 WhatsApp 참석 확인(RSVP) 기능을 갖춘 모바일 청첩장 제작 가이드 (2026)",
+    "subtitle": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요.",
+    "category": "웨딩 & 니카",
+    "seoTitle": "실시간 WhatsApp 참석 확인(RSVP) 기능을 갖춘 모바일 청첩장 제작 가이드 (2026) — Cardzy",
+    "metaDescription": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요."
+  },
+  "it": {
+    "title": "Inviti Digitali Online con Tracciamento RSVP in Tempo Reale su WhatsApp (2026)",
+    "subtitle": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy.",
+    "category": "Matrimonio & Nikkah",
+    "seoTitle": "Inviti Digitali Online con Tracciamento RSVP in Tempo Reale su WhatsApp (2026) — Cardzy",
+    "metaDescription": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy."
+  },
+  "tr": {
+    "title": "Canlı WhatsApp LCV Takibi ile Çevrimiçi Dijital Davetiye Hazırlama Rehberi (2026)",
+    "subtitle": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin.",
+    "category": "Düğün ve Nikah",
+    "seoTitle": "Canlı WhatsApp LCV Takibi ile Çevrimiçi Dijital Davetiye Hazırlama Rehberi (2026) — Cardzy",
+    "metaDescription": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin."
+  },
+  "id": {
+    "title": "Panduan Membuat Undangan Digital Online dengan Konfirmasi WhatsApp RSVP Real-Time (2026)",
+    "subtitle": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy.",
+    "category": "Pernikahan & Akad",
+    "seoTitle": "Panduan Membuat Undangan Digital Online dengan Konfirmasi WhatsApp RSVP Real-Time (2026) — Cardzy",
+    "metaDescription": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy."
   },
   "bn": {
-    "title": "হোয়াটসঅ্যাপ আরএসভিপি সহ অনলাইন ডিজিটাল আমন্ত্রণ কার্ড তৈরির শীর্ষ নির্দেশিকা",
-    "subtitle": "গোল্ড ফয়েল অ্যানিমেশন, মিউজিক, গুগল ম্যাপস এবং হোয়াটসঅ্যাপ আরএসভিপি বাটন সহ ইন্টারঅ্যাক্টিভ ডিজিটাল ইনভিটেশন ওয়েবসাইট তৈরি করুন।",
-    "category": "Event Planning",
-    "seoTitle": "হোয়াটসঅ্যাপ আরএসভিপি সহ অনলাইন ডিজিটাল ইনভিটেশন কার্ড — কার্ডজি",
-    "metaDescription": "কার্ডজিতে ৩ডি টেমপ্লেট, গুগল ম্যাপস, মিউজিক এবং হোয়াটসঅ্যাপ আরএসভিপি ট্র্যাকিং সহ ডিজিটাল ইনভিটেশন ওয়েবসাইট তৈরি করতে শিখুন।"
+    "title": "লাইভ হোয়াটসঅ্যাপ আরএসভিপি ট্র্যাকিং সহ অনলাইন ডিজিটাল নিমন্ত্রণপত্র তৈরির গাইড (২০২৬)",
+    "subtitle": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।",
+    "category": "বিয়ে ও নিকাহ",
+    "seoTitle": "লাইভ হোয়াটসঅ্যাপ আরএসভিপি ট্র্যাকিং সহ অনলাইন ডিজিটাল নিমন্ত্রণপত্র তৈরির গাইড (২০২৬) — Cardzy",
+    "metaDescription": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।"
   },
   "vi": {
-    "title": "Hướng Dẫn Tạo Thiệp Mời Kỹ Thuật Số Online Kèm Theo Dõi RSVP WhatsApp",
-    "subtitle": "Tạo website thiệp mời tương tác với hiệu ứng mạ vàng, âm nhạc, bản đồ vị trí và nút RSVP WhatsApp.",
-    "category": "Event Planning",
-    "seoTitle": "Tạo Thiệp Mời Kỹ Thuật Số Online Kèm RSVP WhatsApp — Cardzy",
-    "metaDescription": "Học cách tạo website thiệp mời kỹ thuật số trên Cardzy với mẫu 3D tương tác, Google Maps, âm nhạc và theo dõi RSVP WhatsApp."
+    "title": "Thiết Kế Thiệp Mời Kỹ Thuật Số Trực Tuyến Tích Hợp Xác Nhận Tham Dự WhatsApp (2026)",
+    "subtitle": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy.",
+    "category": "Đám Cưới & Hôn Lễ",
+    "seoTitle": "Thiết Kế Thiệp Mời Kỹ Thuật Số Trực Tuyến Tích Hợp Xác Nhận Tham Dự WhatsApp (2026) — Cardzy",
+    "metaDescription": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy."
   },
   "sw": {
-    "title": "Mwongozo Mkuu wa Kuunda Kadi za Mwaliko wa Kidijitali na RSVP za WhatsApp",
-    "subtitle": "Unda tovuti za kadi za mialiko zenye uhuishaji wa dhahabu, muziki, ramani za ukumbi na vifungo vya RSVP.",
-    "category": "Event Planning",
-    "seoTitle": "Unda Kadi za Mialiko ya Kidijitali Mtandaoni zenye RSVP ya WhatsApp — Cardzy",
-    "metaDescription": "Jifunze jinsi ya kuunda tovuti za mialiko ya kidijitali kwenye Cardzy ukitumia vigezo vya 3D, Google Maps na RSVP ya WhatsApp."
+    "title": "Kadi za Mialiko za Kidijitali zenye Ufuatiliaji wa Moja kwa Moja wa RSVP ya WhatsApp (2026)",
+    "subtitle": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy.",
+    "category": "Harusi na Nikkah",
+    "seoTitle": "Kadi za Mialiko za Kidijitali zenye Ufuatiliaji wa Moja kwa Moja wa RSVP ya WhatsApp (2026) — Cardzy",
+    "metaDescription": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy."
   }
 };
 
 export const POST_6_CONTENT: Record<string, LocalizedBlogContent> = {
   "en": {
-    "intro": "Welcome to the official Cardzy guide on creating online invitation cards with WhatsApp RSVP. Start creating your interactive cards directly from the [Cardzy homepage](/) or build an event card with our [Digital Invitation Maker](/create-invitation). In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates or design directly with our [Digital Invitation Maker](/create-invitation)."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host. For full guest management guidelines, read [how to manage wedding guest lists and WhatsApp RSVPs effortlessly](/blog/how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly).",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link. For cost comparisons, read our guide on [digital vs paper wedding invitations](/blog/digital-vs-paper-wedding-invitations-cost-eco-comparison).",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on the [Cardzy homepage](/) today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   },
   "ur": {
-    "intro": "خوش آمدید! کارڈزی ایک عالمی ڈیجیٹل جشن اور نیٹ ورکنگ پلیٹ فارم ہے جس کا مقصد آپ کے خاص لمحات جیسے کہ شادی، نکاح، عید، سالگرہ اور کاروباری رابطہ کاری کو جدید، متحرک اور یادگار بنانا ہے۔ اس جامع گائیڈ میں، ہم \"Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages\" پر تفصیل سے روشنی ڈالیں گے تاکہ آپ بغیر کسی دقت کے ایک بہترین ڈیجیٹل کارڈ یا دعوت نامہ تیار کر سکیں۔",
+    "intro": "کارڈزی کے ساتھ آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ کو جدید ترین، دلکش اور یادگار انداز میں منائیں۔ روایتی کاغذ کے کارڈز کے بجائے 3D لفافہ اوپننگ، اردو نستعلیق خطاطی، بیک گراؤنڈ میوزک اور واٹس ایپ آر ایس وی پی کے ساتھ ڈیجیٹل کارڈز بنائیں۔",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. بنیادی اہمیت اور جدید فوائد",
-        "body": "روایتی کاغذی کارڈز کے مقابلے میں ڈیجیٹل کارڈز کا استعمال آپ کے وقت اور اخراجات میں نمایاں بچت فراہم کرتا ہے۔ آپ منٹوں میں اپنا کارڈ خود تیار کر کے واٹس ایپ، انسٹاگرام، یا ای میل کے ذریعے اپنے تمام عزیزوں تک پہنچا سکتے ہیں۔",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ — اہم فیچرز اور گائیڈ",
+        "body": "کارڈزی پر آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
         "bulletPoints": [
-          "18 عالمی زبانوں اور نستعلیق فونٹ کی مکمل سپورٹ",
-          "واٹس ایپ کے ذریعے 1-کلک میں آر ایس وی پی کی تصدیق",
-          "گوگل میپس لوکیشن پن تاکہ مہمان آسانی سے جگہ تلاش کر سکیں",
-          "لائیو الٹی گنتی ٹائمر اور پسندیدہ میوزک چلانے کا آپشن"
+          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
+          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
+          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
         ],
-        "highlight": "کارڈزی کے مفت پلان کے ساتھ کسی بھی وقت اپنا پہلا کارڈ منٹوں میں تیار کریں!"
+        "highlight": "کارڈزی پر اپنے کارڈ کو اپنی مرضی کے مطابق سجائیں اور فوری شیئر کریں۔"
       },
       {
-        "title": "2. اہم نکات، الفاظ اور ڈیزائننگ کی تجاویز",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "ایک بہترین ڈیجیٹل کارڈ بنانے کے لیے مناسب رنگوں اور خوبصورت الفاظ کا انتخاب نہایت ضروری ہے۔ نکاح اور شادی کی دعوات کے لیے اسلامک خطاطی (بسم اللہ) اور باوقار الفاظ کا استعمال کارڈ کو باوقار بناتا ہے۔",
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ — اہم فیچرز اور گائیڈ",
+        "body": "کارڈزی پر آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
         "bulletPoints": [
-          "ایونٹ کے مزاج کے مطابق تھیم کا انتخاب کریں (مغل گولڈ، مہندی وائبرنٹ، وغیرہ)",
-          "مہمانوں کے لیے واضح شیڈول اور لباس کی ہدایت لکھیں",
-          "کارڈ میں ذاتی تصویر اور دعائیہ کلمات شامل کریں"
-        ],
-        "highlight": "کارڈزی پر موجود 50 سے زائد پہلے سے تیار شدہ ٹیمپلیٹس میں سے اپنی پسند کا ڈیزائن منتخب کریں۔"
-      },
-      {
-        "title": "3. واٹس ایپ پر شیئرنگ اور آر ایس وی پی مینجمنٹ",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "اپنا کارڈ تیار کرنے کے بعد آپ کو ایک یونیک لنک حاصل ہوتا ہے۔ اس لنک کو آپ براہ راست واٹس ایپ گروپس یا انفرادی چیٹس میں شیئر کر سکتے ہیں۔ مہمان ایک کلک سے اپنی آمد کی تصدیق کر سکتے ہیں۔",
-        "bulletPoints": [
-          "تمام آر ایس وی پی جوابات آپ کے ڈیش بورڈ میں جمع ہوتے ہیں",
-          "مہمانوں کی فہرست کو CSV فائل میں ڈاون لوڈ کرنے کی سہولت",
-          "شادی سے دو دن پہلے یاد دہانی بھیجنے کی سہولت"
+          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
+          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
+          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
         ]
       },
       {
-        "title": "4. کارآمد مشورے اور تکنیکی ہدایات",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "ہمیشہ اپنے ایونٹ سے 10 سے 14 دن پہلے دعوتی لنک بھیجیں تاکہ مہمان اپنی آمد کی منصوبہ بندی کر سکیں۔ کارڈ کا لنک شیئر کرنے سے پہلے تمام معلومات کی تسلی کر لیں۔",
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ — اہم فیچرز اور گائیڈ",
+        "body": "کارڈزی پر آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
         "bulletPoints": [
-          "لنک شیئر کرنے سے پہلے گوگل میپ پن کو خود ٹیسٹ کریں",
-          "اردو اور انگریزی کی بائلنگول ٹیمپلیٹس کا استعمال کریں",
-          "موبائل فرینڈلی ویو کو یقینی بنائیں"
+          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
+          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
+          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+        ]
+      },
+      {
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ — اہم فیچرز اور گائیڈ",
+        "body": "کارڈزی پر آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "bulletPoints": [
+          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
+          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
+          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+        ]
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ — اہم فیچرز اور گائیڈ",
+        "body": "کارڈزی پر آن لائن ڈیجیٹل دعوت نامے اور لائیو واٹس ایپ آر ایس وی پی بنانے کی جامع گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "bulletPoints": [
+          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
+          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
+          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
         ]
       }
     ],
     "faq": [
       {
-        "question": "کیا کارڈزی کے ڈیجیٹل کارڈز تمام اسمارٹ فونز پر کھلتے ہیں؟",
-        "answer": "جی ہاں! کارڈزی کے تمام کارڈز 100% رسپانسو ہیں اور بغیر کسی ایپ کے ہر آئی فون اور اینڈرائیڈ ڈیوائس پر فوری کھلتے ہیں۔"
+        "question": "کارڈزی ڈیجیٹل کارڈ کے کیا فوائد ہیں؟",
+        "answer": "کارڈزی پر آپ 3D لفافہ اینیمیشن، پس منظر میوزک، اردو نستعلیق خطاطی اور واٹس ایپ آر ایس وی پی کے ساتھ باآسانی کارڈز بنا سکتے ہیں۔"
       },
       {
-        "question": "کیا میں لائیو لنک شیئر کرنے کے بعد بھی معلومات تبدیل کر سکتا ہوں؟",
-        "answer": "جی بالکل! ڈیش بورڈ سے کی جانے والی تمام ترامیم لائیو لنک پر فوری طور پر بغیر نیا لنک بھیجے اپ ڈیٹ ہو جاتی ہیں۔"
+        "question": "کیا کارڈزی پر کارڈ بنانا مفت ہے؟",
+        "answer": "جی ہاں! آپ کارڈزی پر تمام بنیادی اور اینیمیٹڈ کارڈز بالکل مفت بنا سکتے ہیں اور فوری واٹس ایپ پر شیئر کر سکتے ہیں۔"
       },
       {
-        "question": "کیا میں اپنے کارڈ پر اپنی پسند کا بیک گراؤنڈ میوزک لگا سکتا ہوں؟",
-        "answer": "جی ہاں! آپ اپنی پسند کا میوزک، نعت، یا نغمہ منتخب کر سکتے ہیں اور خوبصورت فریمز میں تصاویر اپ لوڈ کر سکتے ہیں۔"
+        "question": "کیا یہ کارڈ واٹس ایپ پر درست انداز میں کھلتا ہے؟",
+        "answer": "بالکل! کارڈزی لنک واٹس ایپ، ایس ایم ایس اور سوشل میڈیا پر بغیر کسی ایپ ڈاؤن لوڈ کے فوری کھلتا ہے۔"
       },
       {
-        "question": "کارڈزی پر کارڈ کیسے بنایا جاتا ہے؟",
-        "answer": "کارڈ بنانا نہایت آسان ہے! صرف موقع منتخب کریں، معلومات درج کریں اور 2 منٹ میں اپنا لائیو لنک حاصل کریں۔"
+        "question": "کیا مہمانوں کی حاضری (RSVP) کو ٹریک کیا جا سکتا ہے؟",
+        "answer": "جی ہاں! مہمان ایک کلک سے شرکت کی تصدیق کرتے ہیں اور آپ کو لائیو ڈیش بورڈ اور واٹس ایپ پر فوری تعداد معلوم ہو جاتی ہے۔"
       }
     ],
-    "conclusion": "آج ہی کارڈزی (cardzy.online) پر اپنا پسندیدہ متحرک وش کارڈ یا دعوت نامہ بنائیں اور اپنے پیاروں کے ساتھ خوشیاں بانٹیں!"
+    "conclusion": "کارڈزی پر اپنا ڈیجیٹل کارڈ منٹوں میں ڈیزائن کریں، پسندیدہ آڈیو اور تصاویر شامل کریں اور واٹس ایپ پر ایک کلک سے شیئر کریں۔"
   },
   "es": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Celebre Tarjetas de Invitación Digitales con Seguimiento de RSVP en Vivo por WhatsApp (2026) con las innovadoras tarjetas digitales animadas en 3D de Cardzy. Personalice con música, fotos y confirmación RSVP por WhatsApp.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. Tarjetas de Invitación Digitales con Seguimiento de RSVP en Vivo por WhatsApp (2026) — Características y Guía",
+        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Animaciones 3D interactivas y música de fondo personalizada",
+          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
+          "Integración con Google Maps para guiar a los invitados fácilmente"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. Tarjetas de Invitación Digitales con Seguimiento de RSVP en Vivo por WhatsApp (2026) — Características y Guía",
+        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
         "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "Animaciones 3D interactivas y música de fondo personalizada",
+          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
+          "Integración con Google Maps para guiar a los invitados fácilmente"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Tarjetas de Invitación Digitales con Seguimiento de RSVP en Vivo por WhatsApp (2026) — Características y Guía",
+        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "Animaciones 3D interactivas y música de fondo personalizada",
+          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
+          "Integración con Google Maps para guiar a los invitados fácilmente"
+        ]
+      },
+      {
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Tarjetas de Invitación Digitales con Seguimiento de RSVP en Vivo por WhatsApp (2026) — Características y Guía",
+        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "bulletPoints": [
+          "Animaciones 3D interactivas y música de fondo personalizada",
+          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
+          "Integración con Google Maps para guiar a los invitados fácilmente"
+        ]
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Tarjetas de Invitación Digitales con Seguimiento de RSVP en Vivo por WhatsApp (2026) — Características y Guía",
+        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "bulletPoints": [
+          "Animaciones 3D interactivas y música de fondo personalizada",
+          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
+          "Integración con Google Maps para guiar a los invitados fácilmente"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Diseñe su tarjeta digital personalizada en Cardzy en minutos y compártala al instante por WhatsApp."
   },
   "fr": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Célébrez Faire-Part Numériques en Ligne avec Suivi des Réponses RSVP par WhatsApp (2026) avec les faire-part numériques et cartes animées 3D Cardzy. Personnalisez avec musique, photos et suivi RSVP sur WhatsApp.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. Faire-Part Numériques en Ligne avec Suivi des Réponses RSVP par WhatsApp (2026) — Fonctionnalités et Guide",
+        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Animations 3D immersives et musique de fond personnalisée",
+          "Gestion instantanée des présences RSVP directement sur WhatsApp",
+          "Intégration Google Maps pour orienter facilement vos invités"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. Faire-Part Numériques en Ligne avec Suivi des Réponses RSVP par WhatsApp (2026) — Fonctionnalités et Guide",
+        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
         "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "Animations 3D immersives et musique de fond personnalisée",
+          "Gestion instantanée des présences RSVP directement sur WhatsApp",
+          "Intégration Google Maps pour orienter facilement vos invités"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Faire-Part Numériques en Ligne avec Suivi des Réponses RSVP par WhatsApp (2026) — Fonctionnalités et Guide",
+        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "Animations 3D immersives et musique de fond personnalisée",
+          "Gestion instantanée des présences RSVP directement sur WhatsApp",
+          "Intégration Google Maps pour orienter facilement vos invités"
+        ]
+      },
+      {
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Faire-Part Numériques en Ligne avec Suivi des Réponses RSVP par WhatsApp (2026) — Fonctionnalités et Guide",
+        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "bulletPoints": [
+          "Animations 3D immersives et musique de fond personnalisée",
+          "Gestion instantanée des présences RSVP directement sur WhatsApp",
+          "Intégration Google Maps pour orienter facilement vos invités"
+        ]
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Faire-Part Numériques en Ligne avec Suivi des Réponses RSVP par WhatsApp (2026) — Fonctionnalités et Guide",
+        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "bulletPoints": [
+          "Animations 3D immersives et musique de fond personnalisée",
+          "Gestion instantanée des présences RSVP directement sur WhatsApp",
+          "Intégration Google Maps pour orienter facilement vos invités"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "Quels sont les avantages des faire-part numériques Cardzy ?",
+        "answer": "Cardzy permet de créer des faire-part animés 3D avec musique, photos, géolocalisation Google Maps et suivi RSVP par WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "Est-il gratuit de créer une carte sur Cardzy ?",
+        "answer": "Oui ! Vous pouvez créer et partager gratuitement vos cartes animées directement sur WhatsApp."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "Les cartes fonctionnent-elles sur smartphone ?",
+        "answer": "Parfaitement. Le lien s’ouvre instantanément dans tout navigateur mobile sans nécessiter d’application."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "Comment fonctionne le suivi des réponses RSVP ?",
+        "answer": "Les invités confirment leur présence en un clic et votre tableau de bord est mis à jour en temps réel."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Créez votre carte numérique personnalisée sur Cardzy en quelques minutes et partagez-la instantanément sur WhatsApp."
   },
   "ar": {
-    "intro": "مرحباً بكم في منصة كاردزي العالمية للبطاقات الرقمية التفاعلية والدعوات الإلكترونية. تهدف هذه المقالة الشاملة إلى تقديم دليل تفصيلي حول \"Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages\" لمساعدتك في إنشاء دعوات وبطاقات معايدة مبتكرة ومبهرة.",
+    "intro": "مع كاردزي، احتفل بـ دليل إنشاء بطاقات الدعوة الرقمية عبر الإنترنت مع تتبع الحضور المباشر عبر واتساب بأرقى المعايير العصرية والتفاعلية ثلاثية الأبعاد 3D والخطوط الأنيقة، مع إمكانية تحديد موقع الحفل عبر خرائط جوجل وتأكيد الحضور عبر واتساب.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "توفر البطاقات الرقمية التفاعلية مقارنة بالبطاقات الورقية التقليدية حلولاً عصرية توفر الوقت والتكاليف، وتتيح إمكانية المشاركة الفورية عبر واتساب ووسائل التواصل الاجتماعي بـ 18 لغة عالمية.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. دليل إنشاء بطاقات الدعوة الرقمية عبر الإنترنت مع تتبع الحضور المباشر عبر واتساب — المزايا الأساسية والدليل الشامل",
+        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
+          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
+          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "تعتمد الدعوة الرقمية الناجحة على اختيار الألوان الهادئة، الخطوط العربية الأنيقة، والعبارات الراقية التي تعبر عن الفرح والتقدير للضيوف.",
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. دليل إنشاء بطاقات الدعوة الرقمية عبر الإنترنت مع تتبع الحضور المباشر عبر واتساب — المزايا الأساسية والدليل الشامل",
+        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
         "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "بمجرد إنشاء دعوتك، يمكنك نسخ الرابط الفريد ومشاركته مباشرة في مجموعات الواتساب. تتيح لك لوحة التحكم متابعة ردود الحضور لحظة بلحظة.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
+          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
+          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "ينصح بإرسال الدعوات الرقمية قبل المناسبة بـ 10-14 يوماً لضمان تأكيد الحضور وتسهيل الترتيبات.",
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. دليل إنشاء بطاقات الدعوة الرقمية عبر الإنترنت مع تتبع الحضور المباشر عبر واتساب — المزايا الأساسية والدليل الشامل",
+        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
+          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
+          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+        ]
+      },
+      {
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. دليل إنشاء بطاقات الدعوة الرقمية عبر الإنترنت مع تتبع الحضور المباشر عبر واتساب — المزايا الأساسية والدليل الشامل",
+        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "bulletPoints": [
+          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
+          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
+          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+        ]
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. دليل إنشاء بطاقات الدعوة الرقمية عبر الإنترنت مع تتبع الحضور المباشر عبر واتساب — المزايا الأساسية والدليل الشامل",
+        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "bulletPoints": [
+          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
+          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
+          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "ما هي مميزات بطاقات كاردزي الرقمية؟",
+        "answer": "تتيح لك كاردزي تصميم بطاقات تفاعلية ثلاثية الأبعاد 3D مع الموسيقى والخط العربي وموقع الحفل وتأكيد الحضور عبر واتساب."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "هل إنشاء البطاقات على كاردزي مجاني؟",
+        "answer": "نعم! يمكنك تصميم ومشاركة جميع البطاقات الأساسية والمتحركة مجاناً ومشاركتها مباشرة عبر واتساب."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "هل تعمل البطاقة بسلاسة عبر واتساب؟",
+        "answer": "نعم، يتم فتح الرابط في أي متصفح هاتف ذكي فوراً دون الحاجة لتثبيت أي تطبيق."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "كيف يتم تتبع تأكيدات الحضور (RSVP)؟",
+        "answer": "يقوم الضيوف بتأكيد الحضور بنقرة واحدة، وتتلقى الإشعارات فوراً في لوحة التحكم وعبر واتساب."
       }
     ],
-    "conclusion": "أنشئ دعوتك الرقمية المميزة عبر منصة كاردزي اليوم وشارك الفرحة مع عائلتك وأصدقائك بضغطة زر!"
+    "conclusion": "أنشئ بطاقتك الرقمية التفاعلية على كاردزي في دقائق معدودة، وشاركها مباشرة مع أحبابك وضيوفك عبر واتساب."
   },
   "hi": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "कार्डज़ी के साथ लाइव व्हाट्सएप आरएसवीपी ट्रैकिंग के साथ ऑनलाइन डिजिटल निमंत्रण पत्र गाइड (2026) को आधुनिक 3D एनिमेटेड कार्ड, संगीत और व्हाट्सएप आरएसवीपी के साथ यादगार बनाएं।",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. लाइव व्हाट्सएप आरएसवीपी ट्रैकिंग के साथ ऑनलाइन डिजिटल निमंत्रण पत्र गाइड (2026) — मुख्य विशेषताएं और गाइड",
+        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
+          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
+          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. लाइव व्हाट्सएप आरएसवीपी ट्रैकिंग के साथ ऑनलाइन डिजिटल निमंत्रण पत्र गाइड (2026) — मुख्य विशेषताएं और गाइड",
+        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
         "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
+          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
+          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. लाइव व्हाट्सएप आरएसवीपी ट्रैकिंग के साथ ऑनलाइन डिजिटल निमंत्रण पत्र गाइड (2026) — मुख्य विशेषताएं और गाइड",
+        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
+          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
+          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+        ]
+      },
+      {
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. लाइव व्हाट्सएप आरएसवीपी ट्रैकिंग के साथ ऑनलाइन डिजिटल निमंत्रण पत्र गाइड (2026) — मुख्य विशेषताएं और गाइड",
+        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "bulletPoints": [
+          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
+          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
+          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+        ]
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. लाइव व्हाट्सएप आरएसवीपी ट्रैकिंग के साथ ऑनलाइन डिजिटल निमंत्रण पत्र गाइड (2026) — मुख्य विशेषताएं और गाइड",
+        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "bulletPoints": [
+          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
+          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
+          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "कार्डज़ी डिजिटल कार्ड की मुख्य विशेषताएं क्या हैं?",
+        "answer": "कार्डज़ी आपको 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप आरएसवीपी के साथ शानदार कार्ड बनाने की सुविधा देता है।"
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "क्या कार्डज़ी पर कार्ड बनाना मुफ्त है?",
+        "answer": "हाँ! आप सभी बुनियादी और एनिमेटेड कार्ड बिल्कुल मुफ्त बना सकते हैं और तुरंत व्हाट्सएप पर साझा कर सकते हैं।"
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "क्या यह व्हाट्सएप पर सही तरीके से खुलता है?",
+        "answer": "बिल्कुल! कार्डज़ी लिंक किसी भी मोबाइल ब्राउज़र में तुरंत खुलता है, किसी ऐप की आवश्यकता नहीं है।"
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "मेहमानों की उपस्थिति (RSVP) को कैसे ट्रैक करें?",
+        "answer": "मेहमान एक क्लिक में अपनी उपस्थिति की पुष्टि करते हैं और आपको लाइव डैशबोर्ड पर तुरंत संख्या मिल जाती है।"
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "कार्डज़ी पर मिनटों में अपना डिजिटल कार्ड बनाएं और व्हाट्सएप पर तुरंत साझा करें।"
   },
   "zh": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "使用 Cardzy 专属 3D 动态电子请柬与贺卡，为您精彩呈现 在线电子请柬制作全攻略：集成 WhatsApp 实时 RSVP 宾客回执追踪（2026版）。支持自定义音乐、照片画廊与 WhatsApp 实时出席回执。",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. 在线电子请柬制作全攻略：集成 WhatsApp 实时 RSVP 宾客回执追踪（2026版） — 核心功能与使用指南",
+        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "精美 3D 动态开封动效与沉浸式背景音乐",
+          "WhatsApp 实时出席回执追踪与宾客人数统计",
+          "内嵌 Google 地图导航，宾客一键精准导航至现场"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. 在线电子请柬制作全攻略：集成 WhatsApp 实时 RSVP 宾客回执追踪（2026版） — 核心功能与使用指南",
+        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
         "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
-      },
-      {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
+          "精美 3D 动态开封动效与沉浸式背景音乐",
+          "WhatsApp 实时出席回执追踪与宾客人数统计",
+          "内嵌 Google 地图导航，宾客一键精准导航至现场"
         ]
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. 在线电子请柬制作全攻略：集成 WhatsApp 实时 RSVP 宾客回执追踪（2026版） — 核心功能与使用指南",
+        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
         "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
+          "精美 3D 动态开封动效与沉浸式背景音乐",
+          "WhatsApp 实时出席回执追踪与宾客人数统计",
+          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+        ]
+      },
+      {
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. 在线电子请柬制作全攻略：集成 WhatsApp 实时 RSVP 宾客回执追踪（2026版） — 核心功能与使用指南",
+        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "bulletPoints": [
+          "精美 3D 动态开封动效与沉浸式背景音乐",
+          "WhatsApp 实时出席回执追踪与宾客人数统计",
+          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+        ]
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. 在线电子请柬制作全攻略：集成 WhatsApp 实时 RSVP 宾客回执追踪（2026版） — 核心功能与使用指南",
+        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "bulletPoints": [
+          "精美 3D 动态开封动效与沉浸式背景音乐",
+          "WhatsApp 实时出席回执追踪与宾客人数统计",
+          "内嵌 Google 地图导航，宾客一键精准导航至现场"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "Cardzy 动态电子请柬有哪些核心优势？",
+        "answer": "Cardzy 支持 3D 开封动画、背景音乐、照片画廊、Google 地图导航以及 WhatsApp 实时出席回执追踪。"
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "在 Cardzy 上制作电子请柬是否免费？",
+        "answer": "是的！您可以免费创建并生成专属精美动态请柬，随时随地一键分享。"
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "在手机和社交应用上打开体验如何？",
+        "answer": "无需下载任何 App，宾客在任何手机浏览器中点击链接即可秒级加载高清动态效果。"
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "如何进行宾客出席确认（RSVP）管理？",
+        "answer": "宾客轻点即可确认出席，您的管理后台与 WhatsApp 将实时同步最新出席人数与名单。"
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "立即在 Cardzy 免费创建专属电子请柬，一键即时分享至各大社交平台。"
   },
   "pt": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   },
   "ru": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   },
   "de": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   },
   "ja": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   },
   "ko": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   },
   "it": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   },
   "tr": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   },
   "id": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   },
   "bn": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   },
   "vi": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   },
   "sw": {
-    "intro": "Welcome to the official Cardzy guide on Mastering Ramadan Greetings & Dua Card Etiquette Across 18 Languages. Cardzy is a global digital celebration and networking platform that empowers individuals, families, and businesses to design interactive 3D animated wish cards, digital event invitation websites, and smart smart visiting cards. In this comprehensive guide, we explore expert design strategies, cultural wording protocols, instant 1-click WhatsApp RSVP features, and Google Maps venue integration.",
+    "intro": "Organizing a wedding no longer requires expensive paper cards or slow mail delivery. Modern digital invitations let you invite guests instantly on WhatsApp. On Cardzy, you can design 4K animated cards in under 5 minutes. Include music, Google Maps directions, and live RSVP tracking easily.",
     "sections": [
       {
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-overview-and-fundamentals",
-        "title": "1. Overview, Significance & Modern Advantages",
-        "body": "Digital invitations and wish cards represent the evolution of modern celebrations. Traditional paper invitations suffer from long printing lead times, expensive courier charges, and high environmental waste. Cardzy digital cards resolve all these bottlenecks by providing instantaneous link generation, dynamic real-time updates, and native support across 18 global languages.",
+        "id": "the-evolution-of-digital-invitations",
+        "title": "1. The Evolution of Digital Invitations in 2026",
+        "body": "For decades, physical paper invitations were considered the only respectful medium for wedding announcements. However, paper invitations come with severe logistical limitations: high printing costs, lost mail, inability to update venue changes, and zero tracking for guest attendance. Cardzy solves these challenges by combining royal aesthetic themes (Obsidian Gold, Emerald Velvet, Royal Sapphire) with cutting-edge web performance. Guests receive a single, elegant web link or QR code via WhatsApp or SMS that opens instantly without downloading any app. On opening, guests are greeted with fluid background particle animations, traditional Bismillah or floral motifs, and embedded audio soundtracks that create an emotional, memorable experience.",
         "bulletPoints": [
-          "Native support for 18 languages including Urdu Nastaliq and Arabic script",
-          "1-click WhatsApp RSVP response button for effortless guest management",
-          "Embedded Google Maps venue pin eliminating navigation confusion for guests",
-          "Live countdown timers and background music playback to build event excitement"
+          "Instant delivery to hundreds of guests globally with 0 shipping costs",
+          "Interactive features: Google Maps navigation, live countdown timer, and WhatsApp RSVP button",
+          "Multi-language support across 18 languages for international family members",
+          "Real-time RSVP status updates delivered directly to the host’s WhatsApp"
         ],
-        "highlight": "Experience the ease of Cardzy digital cards today with our Free Forever Plan — no credit card required!"
+        "highlight": "Cardzy digital cards deliver a 4K royal experience that paper cards simply cannot match, saving up to 90% on wedding stationery costs."
       },
       {
-        "title": "2. Key Design Strategies & Cultural Wording Etiquette",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-design-and-wording-strategies",
-        "body": "Crafting a visually captivating and culturally resonant invitation requires paying close attention to color harmony, typography contrast, and respectful phrasing. For Islamic Nikkah ceremonies and Pakistani weddings, incorporating traditional Bismillah calligraphy alongside modern English or Urdu poetic couplets creates a perfect balance of heritage and contemporary luxury.",
-        "bulletPoints": [
-          "Select theme palettes that match your event mood (e.g. Royal Mughal Gold, Vibrant Henna, Executive Charcoal)",
-          "Provide clear event timings, dress code guidelines, and venue directions",
-          "Upload high-resolution couple or personal photos into animated frames"
-        ],
-        "highlight": "Browse through 50+ professionally curated templates on Cardzy for weddings, holidays, birthdays, and business cards."
+        "id": "how-whatsapp-rsvp-tracking-works",
+        "title": "2. How Live WhatsApp RSVP Tracking Works on Cardzy",
+        "body": "One of the most stressful aspects of wedding planning is determining exact guest counts for catering, seating arrangements, and hall capacity. Traditional paper cards rely on unreturned response cards or awkward phone follow-ups. Cardzy streamlines this process with a direct-to-WhatsApp RSVP integration. When a guest taps the \"Confirm RSVP\" button on your Cardzy invitation website, a pre-formatted WhatsApp message is generated with their response (Attending / Not Attending, Number of Guests, and Event Preferences). Tapping send delivers the response straight to the host’s personal WhatsApp number in seconds, eliminating manual spreadsheet data entry and catering budget guesswork.",
+        "bulletPoints": []
       },
       {
-        "title": "3. Seamless WhatsApp Sharing & Guest Management",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-whatsapp-sharing-and-rsvp",
-        "body": "Once your card or invitation website is created on Cardzy, you receive a clean shareable link. Distribute this link in WhatsApp family groups, Instagram Stories, SMS, or email. Guests click the link to view the animated invitation and tap the WhatsApp RSVP button to send their confirmation directly to the host.",
-        "bulletPoints": [
-          "Real-time guest RSVP logging visible inside your Cardzy Dashboard",
-          "Export complete guest lists to CSV for catering and seating arrangements",
-          "Send automated event reminders 2 days prior to maximize headcount accuracy"
-        ]
+        "id": "step-by-step-guide-to-creating-your-cardzy-invitation",
+        "title": "3. Step-by-Step Tutorial: Creating Your Invitation Website on Cardzy",
+        "body": "Building your invitation card on Cardzy requires zero technical or coding skills. Follow these 4 simple steps: Step 1: Visit Cardzy.online/create-invitation and select your ceremony type (Wedding, Nikkah, Mehndi, Walima, Birthday, or Anniversary). Step 2: Enter your event details, including host names, venue address, date, time, and custom message or heartfelt quotes and blessings. Step 3: Choose your visual theme, border frame, canvas texture, and background music (or upload your own audio). Step 4: Preview your 4K card live in real-time, click Save & Share, and send your instant invitation link via WhatsApp, Instagram, or SMS.",
+        "bulletPoints": []
       },
       {
-        "title": "4. Pro Tips for Maximum Guest Engagement",
-        "id": "mastering-ramadan-greetings-dua-card-etiquette-multilingual-pro-tips-and-execution",
-        "body": "To ensure maximum attendance and guest appreciation, send wedding invitations 10–14 days before the event. For Eid and birthday wishes, sharing early on Chand Raat or the morning of the celebration delivers the highest emotional impact. Double check all venue location pins and time notes prior to sharing your live link.",
-        "bulletPoints": [
-          "Verify venue location pins on Google Maps before mass sharing",
-          "Utilize bilingual Urdu-English templates for multigenerational guest list appeal",
-          "Cardzy invitations automatically optimize for flawless mobile touchscreen viewing"
-        ]
+        "id": "bilingual-and-multilingual-card-customization",
+        "title": "4. Bilingual & Multilingual Card Customization for International Weddings",
+        "body": "In global South Asian, Arab, and multicultural weddings, guests often span multiple generations and countries. Elders appreciate traditional Nastaliq or Arabic calligraphy, while younger overseas guests prefer clear English details. Cardzy natively supports 18 languages—including Urdu, Arabic, English, Spanish, French, Hindi, Chinese, Portuguese, Russian, German, Japanese, Korean, Italian, Turkish, Indonesian, Bengali, Vietnamese, and Swahili. Hosts can switch language contexts with a single tap, ensuring every guest feels honored and included regardless of where they live.",
+        "bulletPoints": []
+      },
+      {
+        "id": "seo-and-sharing-best-practices",
+        "title": "5. Best Practices for Sharing Your Digital Invitation Link",
+        "body": "To ensure maximum engagement and response rate, share your Cardzy invitation link directly in WhatsApp family groups, broadcast lists, and personal direct messages. You can also generate a custom QR code from Cardzy to print on physical welcome signboards at the venue entrance, allowing guests to scan and access live event schedules, Google Maps directions, and photo galleries instantly on their phones.",
+        "bulletPoints": []
       }
     ],
     "faq": [
       {
-        "question": "Do Cardzy digital cards open on all mobile devices?",
-        "answer": "Yes! Cardzy digital cards are 100% responsive and open instantly on any iPhone, Android device, laptop, or tablet without requiring app downloads."
+        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
+        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
       },
       {
-        "question": "Can I edit event details after the invitation link is shared?",
-        "answer": "Yes! Updates made inside your Cardzy Dashboard immediately reflect on the live link without requiring you to resend a new link."
+        "question": "¿Es gratuito crear invitaciones en Cardzy?",
+        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
       },
       {
-        "question": "Can I customize the background music and photo frames?",
-        "answer": "Yes! Cardzy allows you to select background music tracks (nasheeds, festive dholki beats, romantic instrumental music) and upload personal photo frames."
+        "question": "¿Funciona bien en WhatsApp y móviles?",
+        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
       },
       {
-        "question": "How quickly can I create a card on Cardzy?",
-        "answer": "Creating a card takes less than 2 minutes! Choose your occasion, select a theme, fill in details, and generate your live link instantly."
+        "question": "¿Cómo funciona la confirmación RSVP?",
+        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
       }
     ],
-    "conclusion": "Elevate your next celebration with Cardzy! Craft your custom 3D animated wish card, digital event invitation, or smart vCard on cardzy.online today and experience effortless sharing across the globe."
+    "conclusion": "Transform how you invite your loved ones to your milestone celebrations. Upgrade to a royal 4K digital invitation card on Cardzy today and experience stress-free WhatsApp RSVP tracking. Visit https://cardzy.online/create-invitation to start building now!"
   }
 };

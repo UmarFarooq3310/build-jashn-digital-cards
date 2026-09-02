@@ -1,16 +1,7 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Mail, MapPin, Clock, MessageSquare, CheckCircle, HelpCircle } from 'lucide-react'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 import { ContactForm } from '@/components/contact-form'
-
-export const metadata: Metadata = {
-  title: 'Contact Us | Cardzy',
-  description:
-    'Contact Cardzy Digital Solutions for support with digital cards and WhatsApp RSVP. Email: cardzyonline@gmail.com. Fast 24-48h response.',
-  alternates: { canonical: 'https://cardzy.online/contact' },
-  robots: { index: true, follow: true },
-}
 
 // ── Structured Data JSON-LD ──────────────────────────────────────────────────
 

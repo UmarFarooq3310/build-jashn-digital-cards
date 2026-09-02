@@ -63,12 +63,12 @@ const RAW_OCCASIONS: any[] = [
   { id: 'baby-shower', label: 'Baby Shower', tagline: 'Congratulations Baby Shower!', urdu: 'بیبی شاور مبارک', category: 'Family', icon: 'Gift', bgImage: '/occasions/new-baby.jpg', bgGradient: 'linear-gradient(160deg,#f48fb1,#81d4fa)' },
 
   // GAMING & ESPORTS WINNER
-  { id: 'pubg-winner', label: 'PUBG Winner', tagline: 'Winner Winner Chicken Dinner!', urdu: 'ونر ونر چکن ڈنر!', category: 'Gaming', icon: 'Trophy', bgGradient: 'linear-gradient(160deg,#090d16,#1e293b)' },
-  { id: 'free-fire-winner', label: 'Free Fire Winner', tagline: 'Booyah! Victory Royale', urdu: 'بویا! شاندار فتح!', category: 'Gaming', icon: 'Flame', bgGradient: 'linear-gradient(160deg,#1c0a00,#7c2d12)' },
-  { id: 'ludo-champion', label: 'Ludo Champion', tagline: 'Ludo Champion of the Day!', urdu: 'لوڈو چیمپئن آف دی ڈے!', category: 'Gaming', icon: 'Gamepad2', bgGradient: 'linear-gradient(160deg,#1e1b4b,#4338ca)' },
-  { id: 'number-draw-winner', label: 'Number Draw Winner', tagline: 'You Hit the Winning Number!', urdu: 'نمبر ڈرا فاتح!', category: 'Gaming', icon: 'Hash', bgGradient: 'linear-gradient(160deg,#042f2e,#0f766e)' },
-  { id: 'bingo-winner', label: 'Bingo Winner', tagline: 'BINGO! You’re the Winner!', urdu: 'بنگو فاتح!', category: 'Gaming', icon: 'Sparkles', bgGradient: 'linear-gradient(160deg,#311b92,#6a1b9a)' },
-  { id: 'esports-winner', label: 'Esports Tournament Winner', tagline: 'Tournament Champion!', urdu: 'ٹورنامنٹ چیمپئن!', category: 'Gaming', icon: 'Trophy', bgGradient: 'linear-gradient(160deg,#0f172a,#0284c7)' },
+  { id: 'pubg-winner', label: 'PUBG Winner', tagline: 'Winner Winner Chicken Dinner!', urdu: 'ونر ونر چکن ڈنر!', category: 'Gaming', icon: 'Trophy', bgGradient: 'linear-gradient(135deg,#1f1604,#452d0a,#120c02)' },
+  { id: 'free-fire-winner', label: 'Free Fire Winner', tagline: 'Booyah! Victory Royale', urdu: 'بویا! شاندار فتح!', category: 'Gaming', icon: 'Flame', bgGradient: 'linear-gradient(135deg,#2e0d06,#52180d,#160502)' },
+  { id: 'ludo-champion', label: 'Ludo Champion', tagline: 'Ludo Champion of the Day!', urdu: 'لوڈو چیمپئن آف دی ڈے!', category: 'Gaming', icon: 'Gamepad2', bgGradient: 'linear-gradient(135deg,#15183b,#2c326b,#0d0e24)' },
+  { id: 'number-draw-winner', label: 'Number Draw Winner', tagline: 'You Hit the Winning Number!', urdu: 'نمبر ڈرا فاتح!', category: 'Gaming', icon: 'Hash', bgGradient: 'linear-gradient(135deg,#042e25,#0c5746,#021a15)' },
+  { id: 'bingo-winner', label: 'Bingo Winner', tagline: 'BINGO! You’re the Winner!', urdu: 'بنگو فاتح!', category: 'Gaming', icon: 'Sparkles', bgGradient: 'linear-gradient(135deg,#2e1042,#521c73,#1a0726)' },
+  { id: 'esports-winner', label: 'Esports Tournament Winner', tagline: 'Tournament Champion!', urdu: 'ٹورنامنٹ چیمپئن!', category: 'Gaming', icon: 'Trophy', bgGradient: 'linear-gradient(135deg,#072b47,#0e4b7a,#031829)' },
 ]
 
 export const OCCASIONS: Occasion[] = RAW_OCCASIONS.map(occ => {

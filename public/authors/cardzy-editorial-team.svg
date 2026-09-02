@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="team-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090a0f" />
+      <stop offset="50%" stop-color="#141824" />
+      <stop offset="100%" stop-color="#050608" />
+    </linearGradient>
+    <linearGradient id="team-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="50%" stop-color="#d4af37" />
+      <stop offset="100%" stop-color="#996515" />
+    </linearGradient>
+    <linearGradient id="team-emerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#team-bg)" />
+  <!-- Outer Gold Ring -->
+  <circle cx="100" cy="100" r="88" fill="none" stroke="url(#team-gold)" stroke-width="2.5" stroke-dasharray="6,3" opacity="0.8" />
+  <!-- Shield Badge -->
+  <path d="M60 55 L140 55 C140 105, 100 145, 100 155 C100 145, 60 105, 60 55 Z" fill="#0f172a" stroke="url(#team-gold)" stroke-width="2" />
+  <!-- Crown Icon -->
+  <path d="M78 80 L88 100 L100 75 L112 100 L122 80 L122 108 L78 108 Z" fill="url(#team-gold)" />
+  <circle cx="78" cy="76" r="3" fill="#fde047" />
+  <circle cx="100" cy="71" r="3.5" fill="#fde047" />
+  <circle cx="122" cy="76" r="3" fill="#fde047" />
+  <!-- Stars -->
+  <circle cx="100" cy="122" r="2.5" fill="url(#team-emerald)" />
+  <circle cx="88" cy="126" r="2" fill="url(#team-emerald)" />
+  <circle cx="112" cy="126" r="2" fill="url(#team-emerald)" />
+  <!-- Sparkles -->
+  <path d="M100 135 L102 140 L107 142 L102 144 L100 149 L98 144 L93 142 L98 140 Z" fill="url(#team-gold)" />
+</svg>

@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+import Script from 'next/script'
 import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
 import { ToastNotification } from '@/components/ui/toast-notification'
@@ -29,10 +30,9 @@ const SiteFooter = dynamic(
 
 const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700', '800'],
   variable: '--font-poppins',
   display: 'swap',
-  preload: false,
   adjustFontFallback: true,
 })
 
@@ -55,7 +55,6 @@ export const metadata: Metadata = {
   authors: [{ name: 'Cardzy Editorial Team', url: 'https://cardzy.online' }],
   creator: SITE_CREATOR,
   publisher: SITE_PUBLISHER,
-  generator: 'v0.app',
   alternates: getPageAlternates('/'),
   robots: PUBLIC_ROBOTS,
   verification: {
@@ -112,6 +111,13 @@ const jsonLd = [
     url: 'https://cardzy.online',
     logo: 'https://cardzy.online/android-chrome-512x512.png',
     image: 'https://cardzy.online/android-chrome-512x512.png',
+    email: 'cardzyonline@gmail.com',
+    telephone: '+923093518796',
+    sameAs: [
+      'https://www.tiktok.com/@cardzyonline',
+      'https://www.instagram.com/cardzyonline',
+      'https://www.facebook.com/cardzyonline',
+    ],
   },
   {
     '@context': 'https://schema.org',
@@ -120,11 +126,6 @@ const jsonLd = [
     url: 'https://cardzy.online',
     description:
       'Create stunning 3D animated digital wish cards, digital wedding invitations with WhatsApp RSVP tracking, and executive digital visiting cards.',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://cardzy.online/search?q={search_term_string}',
-      'query-input': 'required name=search_term_string',
-    },
   },
 ]
 
@@ -136,24 +137,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head suppressHydrationWarning>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
-        <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://jashn-app-e3888.firebaseapp.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://jashn-app-e3888.firebaseapp.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        <meta name="google-adsense-account" content="ca-pub-8899224608517833" />
-        <meta name="google-site-verification" content="google8c02e6f18e222682" />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
-          crossOrigin="anonymous"
-        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -247,8 +233,53 @@ export default function RootLayout({
             `,
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                if (typeof window === 'undefined') return;
+                function isAdError(msg, src) {
+                  if (!msg && !src) return false;
+                  var str = (String(msg || '') + ' ' + String(src || '')).toLowerCase();
+                  return str.indexOf('adsbygoogle') !== -1 ||
+                         str.indexOf('tagerror') !== -1 ||
+                         str.indexOf('all \\'ins\\' elements') !== -1 ||
+                         str.indexOf('already have ads') !== -1 ||
+                         str.indexOf('no_div') !== -1 ||
+                         str.indexOf('pagead2') !== -1;
+                }
+                window.addEventListener('error', function(e) {
+                  if (e && (isAdError(e.message, e.filename) || isAdError(e.error && e.error.message, e.filename))) {
+                    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+                    if (e.preventDefault) e.preventDefault();
+                    return true;
+                  }
+                }, true);
+                window.addEventListener('unhandledrejection', function(e) {
+                  if (e && (isAdError(e.reason && e.reason.message, '') || isAdError(e.reason, ''))) {
+                    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+                    if (e.preventDefault) e.preventDefault();
+                  }
+                }, true);
+                var origOnError = window.onerror;
+                window.onerror = function(msg, url, line, col, err) {
+                  if (isAdError(msg, url) || (err && isAdError(err.message, url))) {
+                    return true;
+                  }
+                  if (origOnError) return origOnError.apply(this, arguments);
+                  return false;
+                };
+              })();
+            `,
+          }}
+        />
       </head>
       <body className="bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]" suppressHydrationWarning>
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
         <LanguageProvider>
           <CookieBanner />
           <AdSenseCleaner />

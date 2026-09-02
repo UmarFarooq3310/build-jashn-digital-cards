@@ -1,4 +1,5 @@
 import { LocalizedBlogData, LocalizedBlogContent } from './types'
+
 import { POST_1_SLUG, POST_1_DATA, POST_1_CONTENT } from './post1'
 import { POST_2_SLUG, POST_2_DATA, POST_2_CONTENT } from './post2'
 import { POST_3_SLUG, POST_3_DATA, POST_3_CONTENT } from './post3'
@@ -9,13 +10,16 @@ import { POST_7_SLUG, POST_7_DATA, POST_7_CONTENT } from './post7'
 import { POST_8_SLUG, POST_8_DATA, POST_8_CONTENT } from './post8'
 import { POST_9_SLUG, POST_9_DATA, POST_9_CONTENT } from './post9'
 import { POST_10_SLUG, POST_10_DATA, POST_10_CONTENT } from './post10'
-
 import { POST_11_SLUG, POST_11_DATA, POST_11_CONTENT } from './post11'
 import { POST_12_SLUG, POST_12_DATA, POST_12_CONTENT } from './post12'
 import { POST_13_SLUG, POST_13_DATA, POST_13_CONTENT } from './post13'
 import { POST_14_SLUG, POST_14_DATA, POST_14_CONTENT } from './post14'
 import { POST_15_SLUG, POST_15_DATA, POST_15_CONTENT } from './post15'
 import { POST_16_SLUG, POST_16_DATA, POST_16_CONTENT } from './post16'
+import { POST_17_SLUG, POST_17_DATA, POST_17_CONTENT } from './post17'
+import { POST_18_SLUG, POST_18_DATA, POST_18_CONTENT } from './post18'
+import { POST_19_SLUG, POST_19_DATA, POST_19_CONTENT } from './post19'
+import { POST_20_SLUG, POST_20_DATA, POST_20_CONTENT } from './post20'
 
 export const ALL_MULTILINGUAL_BLOG_DATA: Record<string, Record<string, LocalizedBlogData>> = {
   [POST_1_SLUG]: POST_1_DATA,
@@ -34,6 +38,10 @@ export const ALL_MULTILINGUAL_BLOG_DATA: Record<string, Record<string, Localized
   [POST_14_SLUG]: POST_14_DATA,
   [POST_15_SLUG]: POST_15_DATA,
   [POST_16_SLUG]: POST_16_DATA,
+  [POST_17_SLUG]: POST_17_DATA,
+  [POST_18_SLUG]: POST_18_DATA,
+  [POST_19_SLUG]: POST_19_DATA,
+  [POST_20_SLUG]: POST_20_DATA,
 }
 
 export const ALL_MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, LocalizedBlogContent>> = {
@@ -53,4 +61,8 @@ export const ALL_MULTILINGUAL_BLOG_CONTENTS: Record<string, Record<string, Local
   [POST_14_SLUG]: POST_14_CONTENT,
   [POST_15_SLUG]: POST_15_CONTENT,
   [POST_16_SLUG]: POST_16_CONTENT,
+  [POST_17_SLUG]: POST_17_CONTENT,
+  [POST_18_SLUG]: POST_18_CONTENT,
+  [POST_19_SLUG]: POST_19_CONTENT,
+  [POST_20_SLUG]: POST_20_CONTENT,
 }

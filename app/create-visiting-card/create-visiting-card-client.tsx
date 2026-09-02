@@ -146,9 +146,20 @@ export default function CreateVisitingCardPage() {
     e.preventDefault()
     const errsMap = runValidation()
     setErrors(errsMap)
-    if (Object.keys(errsMap).length > 0) {
-      const firstErr = Object.values(errsMap)[0] || t('completeAllRequiredFields', 'Please correct the highlighted errors in the form')
+    const errKeys = Object.keys(errsMap)
+    if (errKeys.length > 0) {
+      const firstKey = errKeys[0]
+      const firstErr = errsMap[firstKey] || t('completeAllRequiredFields', 'Please correct the highlighted errors in the form')
       showToast(firstErr, 'error')
+      if (typeof window !== 'undefined') {
+        setTimeout(() => {
+          const el = document.getElementById(`field-${firstKey}`) || document.querySelector(`[name="${firstKey}"]`)
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            ;(el as HTMLElement).focus()
+          }
+        }, 120)
+      }
       return
     }
 
@@ -171,10 +182,10 @@ export default function CreateVisitingCardPage() {
       })
 
       setCreatedCard(card)
-      showToast('Digital Visiting Card Created Successfully!', 'success')
-    } catch (err) {
+      showToast(t('visitingCardCreatedSuccess', 'Digital Visiting Card Created Successfully! 🎉'), 'success')
+    } catch (err: any) {
       console.error(err)
-      showToast('Failed to create visiting card. Please try again.', 'error')
+      showToast(err?.message || 'Failed to create visiting card. Please try again.', 'error')
     } finally {
       setIsSubmitting(false)
     }
@@ -189,21 +200,7 @@ export default function CreateVisitingCardPage() {
   }
 
   return (
-    <div className="py-10 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl space-y-8">
-          {/* Header Banner */}
-          <div className="text-center space-y-3 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-1.5 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 font-extrabold text-xs uppercase tracking-widest">
-              <CreditCard className="size-4 text-emerald-600" />
-              <span>{t('createVisitingCard') || 'Digital Visiting Cards'}</span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground">
-              {t('createInteractiveVisitingCardTitle') || 'Create Your Interactive Digital Business Card'}
-            </h1>
-            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              {t('createInteractiveVisitingCardSubtitle') || 'Share your digital business card on WhatsApp, Email, or Social Media. Includes 1-click Save Contact (.vcf), Google Maps directions, and 18 language support!'}
-            </p>
-          </div>
+    <div className="space-y-8">
 
           {createdCard ? (
             /* Created Result View */
@@ -377,6 +374,7 @@ export default function CreateVisitingCardPage() {
                     <div className="space-y-1.5">
                       <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('fullNameLabel') || 'Full Name *'}</label>
                       <Input
+                        id="field-fullName"
                         value={fullName}
                         onChange={(e) => {
                           setFullName(e.target.value)
@@ -395,6 +393,7 @@ export default function CreateVisitingCardPage() {
                     <div className="space-y-1.5">
                       <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('jobTitleLabel') || 'Job Title / Designation *'}</label>
                       <Input
+                        id="field-title"
                         value={title}
                         onChange={(e) => {
                           setTitle(e.target.value)
@@ -415,6 +414,7 @@ export default function CreateVisitingCardPage() {
                     <div className="space-y-1.5">
                       <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('companyLabel') || 'Company / Clinic / Brand Name'}</label>
                       <Input
+                        id="field-company"
                         value={company}
                         onChange={(e) => setCompany(e.target.value)}
                         placeholder={t('companyPlaceholder') || 'e.g. Malik Global Enterprises'}
@@ -425,6 +425,7 @@ export default function CreateVisitingCardPage() {
                     <div className="space-y-1.5">
                       <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('phoneLabel') || 'Phone Number *'}</label>
                       <Input
+                        id="field-phone"
                         value={phone}
                         onChange={(e) => {
                           setPhone(e.target.value)
@@ -445,6 +446,7 @@ export default function CreateVisitingCardPage() {
                     <div className="space-y-1.5">
                       <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('whatsAppLabel') || 'WhatsApp Number'}</label>
                       <Input
+                        id="field-whatsapp"
                         value={whatsapp}
                         onChange={(e) => {
                           setWhatsapp(e.target.value)
@@ -463,6 +465,7 @@ export default function CreateVisitingCardPage() {
                     <div className="space-y-1.5">
                       <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('emailLabel') || 'Email Address'}</label>
                       <Input
+                        id="field-email"
                         type="email"
                         value={email}
                         onChange={(e) => {
@@ -484,6 +487,7 @@ export default function CreateVisitingCardPage() {
                     <div className="space-y-1.5">
                       <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('websiteLabel') || 'Website URL'}</label>
                       <Input
+                        id="field-website"
                         value={website}
                         onChange={(e) => {
                           setWebsite(e.target.value)
@@ -502,6 +506,7 @@ export default function CreateVisitingCardPage() {
                     <div className="space-y-1.5">
                       <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('googleMapsLabel') || 'Google Maps Location Link'}</label>
                       <Input
+                        id="field-mapLink"
                         value={mapLink}
                         onChange={(e) => setMapLink(e.target.value)}
                         placeholder={t('googleMapsPlaceholder') || 'e.g. https://maps.google.com/...'}
@@ -513,6 +518,7 @@ export default function CreateVisitingCardPage() {
                   <div className="space-y-1.5 pt-1">
                     <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('officeAddressLabel') || 'Office / Clinic Address'}</label>
                     <Input
+                      id="field-address"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       placeholder={t('officeAddressPlaceholder') || 'e.g. Suite 402, Blue Area, Islamabad'}
@@ -523,6 +529,7 @@ export default function CreateVisitingCardPage() {
                   <div className="space-y-1.5 pt-1">
                     <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('shortBioLabel') || 'Short Professional Bio / Services'}</label>
                     <Textarea
+                      id="field-bio"
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
                       placeholder={t('shortBioPlaceholder') || 'Write a brief intro about your services, clinic, or business...'}
@@ -536,10 +543,19 @@ export default function CreateVisitingCardPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-14 rounded-2xl font-black text-base bg-emerald-700 hover:bg-emerald-600 text-white shadow-xl shadow-emerald-950/20 active:scale-98 transition-all"
+                  className="w-full h-14 rounded-2xl font-black text-base bg-emerald-700 hover:bg-emerald-600 text-white shadow-xl shadow-emerald-950/20 active:scale-98 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
                 >
-                  <span>{isSubmitting ? (t('creatingCardBtn') || 'Creating Card...') : (t('generateCardBtn') || 'Generate Live Digital Visiting Card')}</span>
-                  <ArrowRight className="size-5" />
+                  {isSubmitting ? (
+                    <>
+                      <Sparkles className="size-5 animate-spin" />
+                      <span>{t('creatingCardBtn') || 'Creating Card...'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>{t('generateCardBtn') || 'Generate Live Digital Visiting Card'}</span>
+                      <ArrowRight className="size-5" />
+                    </>
+                  )}
                 </Button>
               </form>
 
@@ -554,7 +570,6 @@ export default function CreateVisitingCardPage() {
               </div>
             </div>
           )}
-        </div>
 
         {/* Premium Guide Overview Card */}
         <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-6xl mx-auto">

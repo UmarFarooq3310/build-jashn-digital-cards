@@ -33,6 +33,7 @@ export const T: Record<string, Record<LangCode, string>> = {
   getStarted: { en: "Get Started", es: "Empezar", fr: "Commencer", ar: "ابدأ الآن", hi: "शुरू करें", zh: "立即开始", pt: "Começar", ru: "Начать", de: "Loslegen", ja: "始める", ko: "시작하기", it: "Inizia", tr: "Başla", id: "Mulai", ur: "شروع کریں", bn: "شुरू করুন", vi: "Bắt Đầu", sw: "Anza" },
   home: { en: "Home", es: "Inicio", fr: "Accueil", ar: "الرئيسية", hi: "होम", zh: "首页", pt: "Início", ru: "Главная", de: "Start", ja: "ホーム", ko: "홈", it: "Home", tr: "Ana Sayfa", id: "Beranda", ur: "ہوم", bn: "হোম", vi: "Trang chủ", sw: "Nyumbani" },
   pricing: { en: "Pricing", es: "Precios", fr: "Tarifs", ar: "الأسعار", hi: "मूल्य निर्धारण", zh: "定价", pt: "Preços", ru: "Цены", de: "Preise", ja: "料金", ko: "요금제", it: "Prezzi", tr: "Fiyatlar", id: "Harga", ur: "قیمتیں", bn: "মূল্য", vi: "Bảng Giá", sw: "Bei" },
+  contact: { en: "Contact", ur: "رابطہ کریں", es: "Contacto", fr: "Contact", ar: "اتصل بنا", hi: "संपर्क करें", zh: "联系我们", pt: "Contato", ru: "Контакты", de: "Kontakt", ja: "お問い合わせ", ko: "문의하기", it: "Contatti", tr: "İletişim", id: "Kontak", bn: "যোগাযোগ", vi: "Liên Hệ", sw: "Wasiliana" },
   blog: { en: "Blog", es: "Blog", fr: "Blog", ar: "مدونة", hi: "ब्लॉग", zh: "博客", pt: "Blog", ru: "Блог", de: "Blog", ja: "ブログ", ko: "블로그", it: "Blog", tr: "Blog", id: "Blog", ur: "بلاگ", bn: "ব্লগ", vi: "Blog", sw: "Blog" },
   faqs: { en: "FAQs", es: "Preguntas", fr: "FAQ", ar: "أسئلة شائعة", hi: "सामान्य प्रश्न", zh: "常见问题", pt: "Perguntas", ru: "FAQ", de: "FAQ", ja: "よくある質問", ko: "자주 묻는 질문", it: "FAQ", tr: "SSS", id: "FAQ", ur: "سوالات", bn: "প্রশ্নাবলী", vi: "Câu hỏi", sw: "Maswali" },
   guides: { en: "Guides", es: "Guías", fr: "Guides", ar: "دليل", hi: "गाइड", zh: "指南", pt: "Guias", ru: "Руководства", de: "Anleitungen", ja: "ガイド", ko: "가이드", it: "Guide", tr: "Rehber", id: "Panduan", ur: "گائیڈ", bn: "গাইড", vi: "Hướng dẫn", sw: "Mwongozo" },
@@ -660,12 +661,23 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  // Load language from localStorage after mount
+  // Load language from URL ?lang= param, then localStorage, then browser language
   useEffect(() => {
+    // Priority 1: URL query parameter (?lang=es, ?lang=ur, etc.)
+    const urlParams = new URLSearchParams(window.location.search)
+    const urlLang = urlParams.get('lang') as LangCode
+    if (urlLang && LANGUAGES.some((l) => l.code === urlLang)) {
+      setLangState(urlLang)
+      localStorage.setItem('cardzy_lang', urlLang)
+      return
+    }
+
+    // Priority 2: Previously saved language in localStorage
     const saved = localStorage.getItem('cardzy_lang') as LangCode
     if (saved && LANGUAGES.some((l) => l.code === saved)) {
       setLangState(saved)
     } else {
+      // Priority 3: Browser language preference
       const browserLang = navigator.language.split('-')[0] as LangCode
       if (LANGUAGES.some((l) => l.code === browserLang)) {
         setLangState(browserLang)

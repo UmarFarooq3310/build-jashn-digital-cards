@@ -7,34 +7,74 @@ export function AdSenseCleaner() {
     if (typeof window === 'undefined') return
 
     // Trap third-party AdSense TagErrors & no_div errors globally
-    const isAdError = (msg: any) => {
-      if (!msg) return false
-      const str = String(msg).toLowerCase()
-      return str.indexOf('adsbygoogle') !== -1 || str.indexOf('no_div') !== -1 || str.indexOf('tagerror') !== -1
+    const isAdError = (msg: any, src?: any) => {
+      if (!msg && !src) return false
+      const str = (String(msg || '') + ' ' + String(src || '')).toLowerCase()
+      return (
+        str.indexOf('adsbygoogle') !== -1 ||
+        str.indexOf('tagerror') !== -1 ||
+        str.indexOf('all \'ins\' elements') !== -1 ||
+        str.indexOf('already have ads') !== -1 ||
+        str.indexOf('no_div') !== -1 ||
+        str.indexOf('pagead2') !== -1
+      )
     }
 
-    const handleError = (e: ErrorEvent) => {
-      if (e && (isAdError(e.message) || isAdError(e.filename) || isAdError(e.error))) {
+    const handleError = (e: any) => {
+      const msg = e?.message || e?.error?.message || String(e)
+      const src = e?.filename || ''
+      if (isAdError(msg, src)) {
         if (e.stopImmediatePropagation) e.stopImmediatePropagation()
         if (e.preventDefault) e.preventDefault()
         return true
       }
     }
 
-    const handleRejection = (e: PromiseRejectionEvent) => {
-      if (e && isAdError(e.reason)) {
+    const handleRejection = (e: any) => {
+      const reason = e?.reason?.message || e?.reason || ''
+      if (isAdError(reason)) {
         if (e.stopImmediatePropagation) e.stopImmediatePropagation()
         if (e.preventDefault) e.preventDefault()
+        return true
       }
     }
 
     window.addEventListener('error', handleError, true)
     window.addEventListener('unhandledrejection', handleRejection, true)
 
+    const origOnError = window.onerror
+    window.onerror = function (message, source, lineno, colno, error) {
+      if (isAdError(message, source) || (error && isAdError(error.message, source))) {
+        return true
+      }
+      if (origOnError) {
+        return origOnError.call(this, message, source, lineno, colno, error)
+      }
+      return false
+    }
+
     // Configure AdSense auto-ads object safely
     try {
       // @ts-ignore
-      window.adsbygoogle = window.adsbygoogle || []
+      const existing = window.adsbygoogle || []
+      const wrapPush = (arr: any) => {
+        if (!arr || arr._isWrapped) return arr
+        const rawPush = arr.push
+        arr.push = function (...args: any[]) {
+          try {
+            return rawPush.apply(this, args)
+          } catch (err: any) {
+            if (isAdError(err?.message || err)) {
+              return 0
+            }
+            return 0
+          }
+        }
+        arr._isWrapped = true
+        return arr
+      }
+      // @ts-ignore
+      window.adsbygoogle = wrapPush(existing)
     } catch (e) {}
 
     const cleanTopMargin = () => {

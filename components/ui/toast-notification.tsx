@@ -43,11 +43,10 @@ export function ToastNotification() {
       hideToast()
     }, 4500)
     return () => clearTimeout(timer)
-  }, [toast, hideToast])
+  }, [toast?.id, toast?.message, hideToast])
 
   if (!toast) return null
 
-  const isUrduRtl = isRtl
   const isError = toast.type === 'error'
 
   const handleClose = () => {
@@ -58,51 +57,38 @@ export function ToastNotification() {
   return (
     <div
       key={(toast as any)?.id || toast.message}
-      dir={isUrduRtl ? 'rtl' : 'ltr'}
-      className="fixed bottom-6 right-4 sm:right-6 z-[9999999] max-w-sm w-[calc(100vw-2rem)] sm:w-auto shadow-2xl transition-all duration-300 pointer-events-auto animate-in fade-in slide-in-from-bottom-5"
+      dir={isRtl ? 'rtl' : 'ltr'}
+      className={cn(
+        "fixed z-[99999999] max-w-sm sm:max-w-md w-[calc(100vw-2rem)] sm:w-auto shadow-2xl transition-all duration-300 pointer-events-auto animate-in fade-in slide-in-from-bottom-5",
+        // Safe offset above mobile bottom bars (bottom-20) and bottom-6 on tablet/desktop
+        "bottom-20 sm:bottom-6",
+        // RTL on bottom-left, LTR on bottom-right
+        isRtl ? "left-4 sm:left-6" : "right-4 sm:right-6"
+      )}
     >
       <div
         className={cn(
-          'flex items-center gap-3 rounded-2xl border p-4 shadow-2xl backdrop-blur-xl transition-all duration-300',
-          isError && 'bg-red-600 text-white border-red-500 shadow-red-600/50',
-          toast.type === 'success' && 'bg-emerald-600 text-white border-emerald-500 shadow-emerald-600/30',
-          toast.type === 'info' && 'bg-slate-900 text-white border-slate-700 shadow-slate-900/30',
-          isUrduRtl && 'font-urdu text-right'
+          'flex items-center gap-3.5 rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl transition-all duration-300',
+          isError && 'bg-red-600/95 text-white border-red-500 shadow-[0_10px_30px_rgba(220,38,38,0.5)]',
+          toast.type === 'success' && 'bg-emerald-600/95 text-white border-emerald-500 shadow-[0_10px_30px_rgba(5,150,105,0.4)]',
+          toast.type === 'info' && 'bg-slate-900/95 text-white border-slate-700 shadow-[0_10px_30px_rgba(15,23,42,0.4)]',
+          isRtl && 'font-urdu text-right'
         )}
-        style={
-          isError
-            ? {
-                backgroundColor: '#dc2626',
-                color: '#ffffff',
-                borderColor: '#ef4444',
-                boxShadow: '0 20px 25px -5px rgba(220, 38, 38, 0.4), 0 8px 10px -6px rgba(220, 38, 38, 0.2)',
-              }
-            : toast.type === 'success'
-            ? {
-                backgroundColor: '#059669',
-                color: '#ffffff',
-                borderColor: '#10b981',
-                boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.3)',
-              }
-            : {
-                backgroundColor: '#0f172a',
-                color: '#ffffff',
-                borderColor: '#334155',
-                boxShadow: '0 20px 25px -5px rgba(15, 23, 42, 0.3)',
-              }
-        }
       >
-        <span className="shrink-0 flex items-center justify-center size-7 rounded-full bg-white/20">
+        <span className="shrink-0 flex items-center justify-center size-8 rounded-full bg-white/20 shadow-inner">
           {toast.type === 'success' && <CheckCircle2 className="size-5 text-white" />}
-          {isError && <AlertCircle className="size-5 text-white" />}
+          {isError && <AlertCircle className="size-5 text-white animate-pulse" />}
           {toast.type === 'info' && <Info className="size-5 text-white" />}
         </span>
-        <p className="text-sm font-bold flex-1 leading-snug text-white" style={{ color: '#ffffff' }}>
-          {toast.message}
-        </p>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-bold leading-snug text-white break-words">
+            {toast.message}
+          </p>
+        </div>
         <button
           type="button"
           onClick={handleClose}
+          aria-label="Close notification"
           className="rounded-lg p-1.5 hover:bg-white/20 text-white/90 hover:text-white transition-colors shrink-0"
         >
           <X className="size-4 text-white" />

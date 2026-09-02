@@ -62,6 +62,9 @@ export function InvitationsSection() {
           className="inv-head"
         />
 
+        {/* Gold ornamental divider */}
+        <div className="mx-auto mb-8 w-24 h-[2px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
+
         <div className="grid gap-8 lg:grid-cols-12 items-center">
           {/* Sample Invitation preview */}
           <div className="inv-card lg:col-span-5 flex justify-center order-2 lg:order-1">
@@ -102,7 +105,7 @@ export function InvitationsSection() {
               {t('oneLinkDesc')}
             </p>
 
-            <div className="grid gap-4 sm:grid-cols-2 pt-2">
+            <div className="grid gap-3 sm:grid-cols-2 pt-2">
               {[
                 t('featWhatsappRsvp'),
                 t('featGoogleMaps'),
@@ -111,7 +114,7 @@ export function InvitationsSection() {
                 t('featHostDashboard'),
                 t('featPremiumAudio'),
               ].map((f) => (
-                <div key={f} className="inv-feature-item flex items-center gap-2 text-xs font-semibold text-foreground">
+                <div key={f} className="inv-feature-item flex items-center gap-2.5 text-xs font-semibold text-foreground bg-emerald-500/5 rounded-xl p-3 border border-emerald-500/10 hover:border-emerald-500/25 transition-colors">
                   <CheckCircle className="size-4 text-emerald-600 shrink-0" />
                   <span>{f}</span>
                 </div>
@@ -121,9 +124,11 @@ export function InvitationsSection() {
             <div className="pt-4 flex flex-wrap items-center gap-4">
               <Link
                 href="/create-invitation"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-emerald-950 px-6 font-bold text-white hover:bg-emerald-900 transition-colors shadow-lg shadow-emerald-950/20 active:scale-95 transition-transform"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-6 font-extrabold text-white transition-all shadow-lg shadow-emerald-950/20 hover:shadow-amber-500/15 active:scale-95"
               >
                 {t('createInvitation')} <ArrowRight className="size-4" />
+                {/* Pulsing gold dot */}
+                <span className="size-2 rounded-full bg-amber-400 animate-pulse" />
               </Link>
               <Link
                 href="/dashboard"

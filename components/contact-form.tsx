@@ -2,8 +2,13 @@
 
 import { useState } from 'react'
 import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
+import { useLang } from '@/lib/lang/context'
+import { CONTACT_T, pt } from '@/lib/lang/page-translations'
 
 export function ContactForm() {
+  const { lang } = useLang()
+  const isUrdu = lang === 'ur' || lang === 'ar'
+
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
   const [formData, setFormData] = useState({
@@ -57,23 +62,22 @@ export function ContactForm() {
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-xs">
+    <div className={`rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-xs ${isUrdu ? 'font-urdu' : ''}`}>
       {status === 'success' ? (
         <div className="text-center py-8 space-y-4 animate-fadeIn">
           <div className="mx-auto size-14 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
             <CheckCircle2 className="size-8" />
           </div>
-          <h3 className="text-xl font-bold text-foreground">Message Received!</h3>
+          <h3 className="text-xl font-bold text-foreground">{pt(CONTACT_T.msgReceived, lang)}</h3>
           <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-            Thank you for reaching out to <strong className="text-foreground">Cardzy Digital Solutions</strong>. 
-            Our team will review your inquiry and respond to your email within <strong className="text-foreground">24–48 business hours</strong>.
+            {pt(CONTACT_T.msgReceivedDesc, lang)}
           </p>
           <button
             type="button"
             onClick={() => setStatus('idle')}
             className="inline-flex items-center gap-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs sm:text-sm font-bold px-5 py-2.5 transition-colors cursor-pointer"
           >
-            Send Another Message
+            {pt(CONTACT_T.sendAnother, lang)}
           </button>
         </div>
       ) : (
@@ -91,7 +95,7 @@ export function ContactForm() {
               htmlFor="name"
               className="block text-xs sm:text-sm font-bold text-foreground mb-1.5"
             >
-              Full Name <span className="text-rose-500" aria-hidden="true">*</span>
+              {pt(CONTACT_T.fullNameLabel, lang)} <span className="text-rose-500" aria-hidden="true">*</span>
             </label>
             <input
               id="name"
@@ -101,7 +105,7 @@ export function ContactForm() {
               value={formData.name}
               onChange={handleChange}
               autoComplete="name"
-              placeholder="e.g. Sarah Ahmed"
+              placeholder={pt(CONTACT_T.fullNamePlaceholder, lang)}
               className="w-full min-h-[48px] rounded-xl border border-border bg-background px-4 py-3 text-base md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
             />
           </div>
@@ -112,7 +116,7 @@ export function ContactForm() {
               htmlFor="email"
               className="block text-xs sm:text-sm font-bold text-foreground mb-1.5"
             >
-              Email Address <span className="text-rose-500" aria-hidden="true">*</span>
+              {pt(CONTACT_T.emailLabel, lang)} <span className="text-rose-500" aria-hidden="true">*</span>
             </label>
             <input
               id="email"
@@ -122,7 +126,7 @@ export function ContactForm() {
               value={formData.email}
               onChange={handleChange}
               autoComplete="email"
-              placeholder="you@example.com"
+              placeholder={pt(CONTACT_T.emailPlaceholder, lang)}
               className="w-full min-h-[48px] rounded-xl border border-border bg-background px-4 py-3 text-base md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
             />
           </div>
@@ -133,7 +137,7 @@ export function ContactForm() {
               htmlFor="subject"
               className="block text-xs sm:text-sm font-bold text-foreground mb-1.5"
             >
-              Subject <span className="text-rose-500" aria-hidden="true">*</span>
+              {pt(CONTACT_T.subjectLabel, lang)} <span className="text-rose-500" aria-hidden="true">*</span>
             </label>
             <select
               id="subject"
@@ -143,15 +147,15 @@ export function ContactForm() {
               onChange={handleChange}
               className="w-full min-h-[48px] rounded-xl border border-border bg-background px-4 py-3 text-base md:text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500 transition cursor-pointer"
             >
-              <option value="">Select an inquiry topic…</option>
-              <option value="General Support">General Support</option>
-              <option value="Digital Wish Cards">Digital Wish Cards</option>
-              <option value="Wedding Invitation & RSVP">Wedding Invitation &amp; RSVP Help</option>
-              <option value="Smart Digital Visiting Card">Smart Digital Visiting Card (vCard)</option>
-              <option value="Custom Order Concierge">Custom Order Concierge</option>
-              <option value="Billing & Plans">Billing &amp; Subscription Plans</option>
-              <option value="Privacy & Data Inquiry">Privacy &amp; Data Inquiry</option>
-              <option value="Other">Other Inquiry</option>
+              <option value="">{pt(CONTACT_T.selectTopic, lang)}</option>
+              <option value="General Support">{pt(CONTACT_T.topicGeneral, lang)}</option>
+              <option value="Digital Wish Cards">{pt(CONTACT_T.topicWish, lang)}</option>
+              <option value="Wedding Invitation & RSVP">{pt(CONTACT_T.topicWedding, lang)}</option>
+              <option value="Smart Digital Visiting Card">{pt(CONTACT_T.topicVCard, lang)}</option>
+              <option value="Custom Order Concierge">{pt(CONTACT_T.topicConcierge, lang)}</option>
+              <option value="Billing & Plans">{pt(CONTACT_T.topicBilling, lang)}</option>
+              <option value="Privacy & Data Inquiry">{pt(CONTACT_T.topicPrivacy, lang)}</option>
+              <option value="Other">{pt(CONTACT_T.topicOther, lang)}</option>
             </select>
           </div>
 
@@ -161,7 +165,7 @@ export function ContactForm() {
               htmlFor="message"
               className="block text-xs sm:text-sm font-bold text-foreground mb-1.5"
             >
-              Message <span className="text-rose-500" aria-hidden="true">*</span>
+              {pt(CONTACT_T.messageLabel, lang)} <span className="text-rose-500" aria-hidden="true">*</span>
             </label>
             <textarea
               id="message"
@@ -170,7 +174,7 @@ export function ContactForm() {
               rows={5}
               value={formData.message}
               onChange={handleChange}
-              placeholder="Please describe how we can assist you in detail..."
+              placeholder={pt(CONTACT_T.messagePlaceholder, lang)}
               className="w-full rounded-xl border border-border bg-background px-4 py-3 text-base md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500 transition resize-none"
             />
           </div>
@@ -184,12 +188,12 @@ export function ContactForm() {
             {status === 'submitting' ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                <span>Sending Message...</span>
+                <span>{pt(CONTACT_T.sendingMessage, lang)}</span>
               </>
             ) : (
               <>
                 <Send className="size-4" />
-                <span>Send Message</span>
+                <span>{pt(CONTACT_T.sendMessageBtn, lang)}</span>
               </>
             )}
           </button>

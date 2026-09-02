@@ -95,7 +95,7 @@ export function ContactClientContent() {
                 {pt(CONTACT_T.operatingGlobally, lang)}
               </p>
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground pt-1 border-t border-border/40">
-                <span>Support Email: <strong className="text-foreground">cardzyonline@gmail.com</strong></span>
+                <span>{pt(CONTACT_T.supportEmailLabel, lang)} <strong className="text-foreground">cardzyonline@gmail.com</strong></span>
               </div>
             </div>
           </div>
@@ -113,11 +113,7 @@ export function ContactClientContent() {
                   {pt(CONTACT_T.sendMessage, lang)}
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
-                  Fill out our contact form below. Our support team responds to all inquiries within{' '}
-                  <strong className="text-foreground">24–48 business hours</strong> via{' '}
-                  <a href="mailto:cardzyonline@gmail.com" className="text-emerald-700 dark:text-emerald-400 font-semibold hover:underline">
-                    our support desk (cardzyonline@gmail.com)
-                  </a>.
+                  {pt(CONTACT_T.formDesc, lang)}
                 </p>
               </div>
 
@@ -130,12 +126,12 @@ export function ContactClientContent() {
                 <h3 className="text-base font-bold text-foreground">{pt(CONTACT_T.howWeHelp, lang)}</h3>
                 <ul className="space-y-2.5 text-xs sm:text-sm text-muted-foreground">
                   {[
-                    '3D Digital Wish Cards & Personalization',
-                    'Wedding Invitations & WhatsApp RSVP Tracking',
-                    'Smart Digital Visiting Cards (vCard) setup',
-                    'Custom Concierge & Event Design Orders',
-                    'Account, Billing & Subscription Upgrades',
-                    'Privacy, Data Protection & GDPR Inquiries',
+                    pt(CONTACT_T.helpItem1, lang),
+                    pt(CONTACT_T.helpItem2, lang),
+                    pt(CONTACT_T.helpItem3, lang),
+                    pt(CONTACT_T.helpItem4, lang),
+                    pt(CONTACT_T.helpItem5, lang),
+                    pt(CONTACT_T.helpItem6, lang),
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
                       <CheckCircle className="size-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
@@ -147,42 +143,42 @@ export function ContactClientContent() {
 
               <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-5 sm:p-6 space-y-2.5">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
-                  Direct Business Details
+                  {pt(CONTACT_T.directDetailsTitle, lang)}
                 </h3>
                 <div className="text-xs sm:text-sm space-y-1.5 text-muted-foreground">
-                  <p><strong>Entity:</strong> Cardzy Digital Solutions</p>
-                  <p><strong>Support Email:</strong> cardzyonline@gmail.com</p>
-                  <p><strong>Response Time:</strong> Within 24–48 business hours</p>
-                  <p><strong>HQ:</strong> Islamabad / Rawalpindi, Pakistan</p>
+                  <p><strong>{pt(CONTACT_T.entityLabel, lang)}</strong> Cardzy Digital Solutions</p>
+                  <p><strong>{pt(CONTACT_T.supportEmailLabel, lang)}</strong> cardzyonline@gmail.com</p>
+                  <p><strong>{pt(CONTACT_T.responseTimeLabel, lang)}</strong> {pt(CONTACT_T.responseTime, lang).replace(/^.*?:\s*/, '')}</p>
+                  <p><strong>{pt(CONTACT_T.hqLabel, lang)}</strong> Islamabad / Rawalpindi, Pakistan</p>
                 </div>
               </div>
 
               <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 space-y-3">
-                <h3 className="text-sm font-bold text-foreground">Quick Policy &amp; Help Links</h3>
+                <h3 className="text-sm font-bold text-foreground">{pt(CONTACT_T.quickLinksTitle, lang)}</h3>
                 <ul className="space-y-2 text-xs sm:text-sm">
                   <li>
                     <Link href="/about" className="text-emerald-700 dark:text-emerald-400 hover:underline font-medium">
-                      → About Cardzy
+                      {pt(CONTACT_T.aboutCardzyLink, lang)}
                     </Link>
                   </li>
                   <li>
                     <Link href="/faq" className="text-emerald-700 dark:text-emerald-400 hover:underline font-medium">
-                      → Frequently Asked Questions
+                      {pt(CONTACT_T.faqLink, lang)}
                     </Link>
                   </li>
                   <li>
                     <Link href="/privacy-policy" className="text-emerald-700 dark:text-emerald-400 hover:underline font-medium">
-                      → Privacy Policy
+                      {pt(CONTACT_T.privacyPolicyLink, lang)}
                     </Link>
                   </li>
                   <li>
                     <Link href="/cookies" className="text-emerald-700 dark:text-emerald-400 hover:underline font-medium">
-                      → Cookie Policy
+                      {pt(CONTACT_T.cookiePolicyLink, lang)}
                     </Link>
                   </li>
                   <li>
                     <Link href="/terms-of-service" className="text-emerald-700 dark:text-emerald-400 hover:underline font-medium">
-                      → Terms of Service
+                      {pt(CONTACT_T.termsOfServiceLink, lang)}
                     </Link>
                   </li>
                 </ul>
@@ -198,27 +194,27 @@ export function ContactClientContent() {
           <div className="flex items-center gap-2">
             <HelpCircle className="size-6 text-emerald-700 dark:text-emerald-400" />
             <h2 className="text-2xl font-extrabold text-foreground tracking-tight">
-              Frequently Asked Questions
+              {pt(CONTACT_T.faqTitle, lang)}
             </h2>
           </div>
 
           <div className="grid gap-3 sm:gap-4">
             {[
               {
-                q: 'What is the best way to contact Cardzy support?',
-                a: 'The most direct way is sending an email to cardzyonline@gmail.com or using the contact form on this page. Our team at Cardzy Digital Solutions guarantees a response within 24–48 business hours.',
+                q: pt(CONTACT_T.faqQ1, lang),
+                a: pt(CONTACT_T.faqA1, lang),
               },
               {
-                q: 'How does digital wedding invitation RSVP work?',
-                a: 'Cardzy invitations include an automated WhatsApp RSVP button. Guests tap the button to confirm their attendance directly with the host, and event organizers can track responses in real time.',
+                q: pt(CONTACT_T.faqQ2, lang),
+                a: pt(CONTACT_T.faqA2, lang),
               },
               {
-                q: 'How do I create and share a digital greeting card?',
-                a: 'Simply choose an occasion on cardzy.online/create-wish, customize the recipient name, theme, and music, and copy your instant link to share via WhatsApp, SMS, or email.',
+                q: pt(CONTACT_T.faqQ3, lang),
+                a: pt(CONTACT_T.faqA3, lang),
               },
               {
-                q: 'Is Cardzy free to use for personal celebrations?',
-                a: 'Yes, Cardzy provides free access to create unlimited personalized 3D wish cards. Optional premium tiers offer custom domain branding, watermark removal, and bulk guest management.',
+                q: pt(CONTACT_T.faqQ4, lang),
+                a: pt(CONTACT_T.faqA4, lang),
               },
             ].map(({ q, a }) => (
               <details
@@ -240,16 +236,16 @@ export function ContactClientContent() {
 
           <div className="pt-2 flex items-center justify-between flex-wrap gap-3">
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Need more help? Visit our full{' '}
+              {pt(CONTACT_T.needMoreHelp, lang)}{' '}
               <Link href="/faq" className="text-emerald-700 dark:text-emerald-400 font-bold hover:underline">
-                Knowledge Base &amp; FAQ Page →
+                {pt(CONTACT_T.knowledgeBaseLink, lang)}
               </Link>
             </p>
             <a
               href="mailto:cardzyonline@gmail.com"
               className="text-xs sm:text-sm text-emerald-700 dark:text-emerald-400 font-bold hover:underline"
             >
-              Email Support: cardzyonline@gmail.com
+              {pt(CONTACT_T.emailSupportFooter, lang)}
             </a>
           </div>
         </div>

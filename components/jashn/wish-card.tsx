@@ -47,6 +47,89 @@ function GamingScorecardHUD({ data }: { data: WishCardData }) {
     }
   }
 
+  const getThemeStyles = (occId: string) => {
+    switch (occId) {
+      case 'pubg-winner':
+        return {
+          border: 'border-amber-400/80',
+          bg: 'bg-gradient-to-b from-[#1c1404] via-[#120d02] to-black',
+          shadow: 'shadow-[0_0_40px_rgba(245,158,11,0.35)]',
+          corner: 'border-amber-400',
+          glow: 'bg-amber-500/25',
+          bannerGradient: 'from-amber-600 via-yellow-400 to-amber-600',
+          titleColor: 'text-amber-300',
+          nameGradient: 'from-amber-200 via-yellow-300 to-amber-100',
+        }
+      case 'free-fire-winner':
+        return {
+          border: 'border-orange-400/80',
+          bg: 'bg-gradient-to-b from-[#240a05] via-[#150402] to-black',
+          shadow: 'shadow-[0_0_40px_rgba(249,115,22,0.35)]',
+          corner: 'border-orange-400',
+          glow: 'bg-orange-500/25',
+          bannerGradient: 'from-orange-600 via-amber-400 to-orange-600',
+          titleColor: 'text-orange-300',
+          nameGradient: 'from-orange-200 via-amber-300 to-orange-100',
+        }
+      case 'ludo-champion':
+        return {
+          border: 'border-indigo-400/80',
+          bg: 'bg-gradient-to-b from-[#0e1026] via-[#08091a] to-black',
+          shadow: 'shadow-[0_0_40px_rgba(99,102,241,0.35)]',
+          corner: 'border-indigo-400',
+          glow: 'bg-indigo-500/25',
+          bannerGradient: 'from-indigo-600 via-violet-400 to-indigo-600',
+          titleColor: 'text-indigo-300',
+          nameGradient: 'from-indigo-200 via-violet-300 to-indigo-100',
+        }
+      case 'number-draw-winner':
+        return {
+          border: 'border-emerald-400/80',
+          bg: 'bg-gradient-to-b from-[#021f18] via-[#01140f] to-black',
+          shadow: 'shadow-[0_0_40px_rgba(16,185,129,0.35)]',
+          corner: 'border-emerald-400',
+          glow: 'bg-emerald-500/25',
+          bannerGradient: 'from-emerald-600 via-teal-400 to-emerald-600',
+          titleColor: 'text-emerald-300',
+          nameGradient: 'from-emerald-200 via-teal-300 to-emerald-100',
+        }
+      case 'bingo-winner':
+        return {
+          border: 'border-fuchsia-400/80',
+          bg: 'bg-gradient-to-b from-[#1f0a2d] via-[#12041b] to-black',
+          shadow: 'shadow-[0_0_40px_rgba(217,70,239,0.35)]',
+          corner: 'border-fuchsia-400',
+          glow: 'bg-fuchsia-500/25',
+          bannerGradient: 'from-fuchsia-600 via-purple-400 to-fuchsia-600',
+          titleColor: 'text-fuchsia-300',
+          nameGradient: 'from-fuchsia-200 via-purple-300 to-fuchsia-100',
+        }
+      case 'esports-winner':
+        return {
+          border: 'border-cyan-400/80',
+          bg: 'bg-gradient-to-b from-[#041b2d] via-[#02101c] to-black',
+          shadow: 'shadow-[0_0_40px_rgba(6,182,212,0.35)]',
+          corner: 'border-cyan-400',
+          glow: 'bg-cyan-500/25',
+          bannerGradient: 'from-cyan-600 via-sky-400 to-cyan-600',
+          titleColor: 'text-cyan-300',
+          nameGradient: 'from-cyan-200 via-sky-300 to-cyan-100',
+        }
+      default:
+        return {
+          border: 'border-amber-400/80',
+          bg: 'bg-gradient-to-b from-[#1c1404] via-[#120d02] to-black',
+          shadow: 'shadow-[0_0_40px_rgba(245,158,11,0.35)]',
+          corner: 'border-amber-400',
+          glow: 'bg-amber-500/25',
+          bannerGradient: 'from-amber-600 via-yellow-400 to-amber-600',
+          titleColor: 'text-amber-300',
+          nameGradient: 'from-amber-200 via-yellow-300 to-amber-100',
+        }
+    }
+  }
+
+  const tStyles = getThemeStyles(data.occasionId)
   const bannerTitle = getBannerTitle(data.occasionId)
   const playerName = data.playerName || data.recipientName || 'PLAYER #1'
   const kills = data.killCount || '15'
@@ -54,20 +137,25 @@ function GamingScorecardHUD({ data }: { data: WishCardData }) {
   const winningNo = data.winningNumber
 
   return (
-    <div className="w-full relative rounded-3xl border-2 border-amber-400/60 bg-gradient-to-b from-slate-950 via-slate-900 to-black p-4 sm:p-6 shadow-[0_0_40px_rgba(245,158,11,0.25)] text-white overflow-hidden space-y-4 my-2">
+    <div className={cn(
+      "w-full relative rounded-3xl border-2 p-4 sm:p-6 text-white overflow-hidden space-y-4 my-2",
+      tStyles.border,
+      tStyles.bg,
+      tStyles.shadow
+    )}>
       {/* Cyber Corner HUD Tech Accents */}
-      <div className="absolute top-2 left-2 size-3 border-t-2 border-l-2 border-amber-400" />
-      <div className="absolute top-2 right-2 size-3 border-t-2 border-r-2 border-amber-400" />
-      <div className="absolute bottom-2 left-2 size-3 border-b-2 border-l-2 border-amber-400" />
-      <div className="absolute bottom-2 right-2 size-3 border-b-2 border-r-2 border-amber-400" />
+      <div className={cn("absolute top-2 left-2 size-3 border-t-2 border-l-2", tStyles.corner)} />
+      <div className={cn("absolute top-2 right-2 size-3 border-t-2 border-r-2", tStyles.corner)} />
+      <div className={cn("absolute bottom-2 left-2 size-3 border-b-2 border-l-2", tStyles.corner)} />
+      <div className={cn("absolute bottom-2 right-2 size-3 border-b-2 border-r-2", tStyles.corner)} />
 
       {/* Glow Backlight */}
-      <div className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 size-48 rounded-full bg-amber-500/20 blur-2xl" />
+      <div className={cn("pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 size-48 rounded-full blur-2xl", tStyles.glow)} />
 
-      {/* PUBG Style Metallic Victory Banner Header */}
-      <div className="relative z-10 mx-auto max-w-md bg-gradient-to-r from-amber-600 via-yellow-400 to-amber-600 p-0.5 rounded-xl shadow-lg">
+      {/* Victory Banner Header */}
+      <div className={cn("relative z-10 mx-auto max-w-md p-0.5 rounded-xl shadow-lg bg-gradient-to-r", tStyles.bannerGradient)}>
         <div className="bg-slate-950 px-4 py-2 rounded-[10px] text-center">
-          <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-300 italic drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+          <span className={cn("text-xs sm:text-sm font-black uppercase tracking-wider italic drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]", tStyles.titleColor)}>
             {bannerTitle}
           </span>
         </div>
@@ -75,43 +163,46 @@ function GamingScorecardHUD({ data }: { data: WishCardData }) {
 
       {/* Player Gamer Tag Spotlight */}
       <div className="relative z-10 text-center space-y-1 py-1">
-        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/10 border border-white/15 text-[10px] font-black uppercase tracking-widest text-slate-300">
+        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/10 border border-white/20 text-[10px] font-black uppercase tracking-widest text-slate-200">
           <span>🎮 GAMER TAG / MVP SQUAD</span>
         </div>
-        <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black italic tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-100 drop-shadow-[0_4px_12px_rgba(245,158,11,0.5)] uppercase">
+        <h3 className={cn(
+          "text-3xl sm:text-4xl lg:text-5xl font-black italic tracking-tight text-transparent bg-clip-text drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] uppercase bg-gradient-to-r",
+          tStyles.nameGradient
+        )}>
           {playerName}
         </h3>
       </div>
 
-      {/* PUBG / Esports Victory Stats - Vertical Stack */}
+      {/* Victory Stats */}
       <div className="relative z-10 flex flex-col gap-2.5 pt-2 w-full max-w-md mx-auto">
         {/* Stat Box 1: Kills / Score */}
-        <div className="flex items-center justify-between rounded-2xl border border-emerald-500/40 bg-emerald-950/40 px-5 py-3 text-left backdrop-blur-md shadow-md">
-          <span className="text-xs font-black uppercase tracking-widest text-emerald-400 flex items-center gap-2">
+        <div className="flex items-center justify-between rounded-2xl border border-emerald-400/60 bg-emerald-950/70 px-5 py-3 text-left backdrop-blur-md shadow-lg">
+          <span className="text-xs font-black uppercase tracking-widest text-emerald-300 flex items-center gap-2">
             🔥 KILLS / SCORE
           </span>
-          <span className="text-2xl sm:text-3xl font-black text-emerald-300 drop-shadow-md">
+          <span className="text-2xl sm:text-3xl font-black text-emerald-200 drop-shadow-md">
             {kills}
           </span>
         </div>
 
         {/* Stat Box 2: Final Rank */}
-        <div className="flex items-center justify-between rounded-2xl border border-amber-500/40 bg-amber-950/40 px-5 py-3 text-left backdrop-blur-md shadow-md">
-          <span className="text-xs font-black uppercase tracking-widest text-amber-400 flex items-center gap-2">
+        <div className="flex items-center justify-between rounded-2xl border border-amber-400/60 bg-amber-950/70 px-5 py-3 text-left backdrop-blur-md shadow-lg">
+          <span className="text-xs font-black uppercase tracking-widest text-amber-300 flex items-center gap-2">
             👑 FINAL RANK
           </span>
-          <span className="text-2xl sm:text-3xl font-black text-amber-300 drop-shadow-md">
+          <span className="text-2xl sm:text-3xl font-black text-amber-200 drop-shadow-md">
             #{rank}
           </span>
         </div>
 
         {/* Stat Box 3: Winning # (Only rendered if present) */}
         {winningNo ? (
-          <div className="flex items-center justify-between rounded-2xl border border-purple-500/40 bg-purple-950/40 px-5 py-3 text-left backdrop-blur-md shadow-md">
-            <span className="text-xs font-black uppercase tracking-widest text-purple-400 flex items-center gap-2">
+          <div className="flex items-center justify-between rounded-2xl border border-purple-400/60 bg-purple-950/70 px-5 py-3 text-left backdrop-blur-md shadow-lg">
+            <span className="text-xs font-black uppercase tracking-widest text-purple-300 flex items-center gap-2">
               🎰 WINNING NUMBER
             </span>
-            <span className="text-2xl sm:text-3xl font-black text-purple-300 drop-shadow-md">
+            <span className="text-2xl sm:text-3xl font-black text-purple-200 drop-shadow-md">
               {winningNo}
             </span>
           </div>
@@ -369,7 +460,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
             return (
               <div
                 className={cn(
-                  "wc-stagger w-full rounded-2xl p-3 sm:p-4 shadow-inner parallax-near transition-all",
+                  "wc-stagger w-full rounded-2xl p-3 sm:p-4 shadow-inner parallax-near transition-all max-h-60 sm:max-h-80 overflow-y-auto overscroll-contain",
                   isRtlScript ? "text-right" : "text-left"
                 )}
                 style={{

@@ -14,14 +14,6 @@ import {
 } from 'lucide-react'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 
-export const metadata: Metadata = {
-  title: 'About Us | Cardzy',
-  description:
-    'Learn about Cardzy — creating 3D animated cards, online wedding invitations with WhatsApp RSVP, and smart visiting cards in 18 languages.',
-  alternates: { canonical: 'https://cardzy.online/about' },
-  robots: { index: true, follow: true },
-}
-
 // ── Organization Structured Data ─────────────────────────────────────────────
 
 const jsonLd = {

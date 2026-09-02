@@ -35,7 +35,7 @@ export function SiteFooter() {
               {t('footerTagline')}
             </p>
             <div className="mt-3 flex flex-col gap-1.5 text-xs text-emerald-200/70">
-              <span>📍 Global HQ: Cardzy Digital Solutions, Islamabad / Rawalpindi, Pakistan</span>
+              <span>{t('globalHqLabel', '📍 Global HQ: Cardzy Digital Solutions, Islamabad / Rawalpindi, Pakistan')}</span>
               <a
                 href="mailto:cardzyonline@gmail.com"
                 suppressHydrationWarning
@@ -81,17 +81,17 @@ export function SiteFooter() {
               links={[
                 { href: '/create-wish', label: t('sendWish') },
                 { href: '/create-invitation', label: t('createInvitation') },
-                { href: '/create-visiting-card', label: 'Create vCard' },
+                { href: '/create-visiting-card', label: t('createVCardFooter', 'Create vCard') },
               ]}
             />
             <FooterCol
-              title="Guides & Wording"
+              title={t('guidesAndWording', 'Guides & Wording')}
               links={[
-                { href: '/guide/eid-wording-ideas', label: 'Eid Wording & Replies' },
-                { href: '/blog/complete-guide-to-pakistani-wedding-invitation-wording-urdu-english', label: 'Pakistani Wedding Card Text' },
-                { href: '/guide/pakistani-wedding-invitations', label: 'Pakistani Wedding Invitations' },
-                { href: '/authors', label: 'Editorial Authors' },
-                { href: '/guide', label: 'All Celebration Guides' },
+                { href: '/guide/eid-wording-ideas', label: t('eidWordingAndReplies', 'Eid Wording & Replies') },
+                { href: '/blog/complete-guide-to-pakistani-wedding-invitation-wording-urdu-english', label: t('pakistaniWeddingCardText', 'Pakistani Wedding Card Text') },
+                { href: '/guide/pakistani-wedding-invitations', label: t('pakistaniWeddingInvitations', 'Pakistani Wedding Invitations') },
+                { href: '/authors', label: t('editorialAuthors', 'Editorial Authors') },
+                { href: '/guide', label: t('allCelebrationGuides', 'All Celebration Guides') },
               ]}
             />
             <FooterCol
@@ -108,13 +108,14 @@ export function SiteFooter() {
                 { href: '/', label: t('home') },
                 { href: '/blog', label: t('blog') },
                 { href: '/about', label: t('footerAbout') },
-                { href: '/contact', label: 'Contact Us' },
+                { href: '/contact', label: t('contactUs', 'Contact Us') },
                 { href: '/pricing', label: t('footerPlans') },
                 { href: '/faq', label: t('faqs') },
                 { href: '/privacy-policy', label: t('footerPrivacy') },
-                { href: '/cookies', label: 'Cookie Policy' },
-                { href: '/terms-of-service', label: 'Terms of Service' },
-                { href: '/disclaimer', label: 'Disclaimer' },
+                { href: '/cookies', label: t('cookiePolicy', 'Cookie Policy') },
+                { label: t('cookiePreferences', 'Cookie Preferences'), onClick: () => { if (typeof window !== 'undefined') window.openCookiePreferences?.() } },
+                { href: '/terms-of-service', label: t('termsOfService', 'Terms of Service') },
+                { href: '/disclaimer', label: t('disclaimer', 'Disclaimer') },
               ]}
             />
           </div>
@@ -123,7 +124,7 @@ export function SiteFooter() {
         <div className="mt-6 border-t border-emerald-900/50 pt-4 text-center text-xs sm:text-sm text-emerald-200/70 flex flex-wrap items-center justify-between gap-4">
           <span>{t('footerCopyright')}</span>
           <span className="text-xs text-emerald-300/60">
-            Crafted for weddings, religious festivals &amp; contactless smart networking across 18 languages.
+            {t('footerCraftedTagline', 'Crafted for weddings, religious festivals & contactless smart networking across 18 languages.')}
           </span>
         </div>
       </div>
@@ -136,20 +137,30 @@ function FooterCol({
   links,
 }: {
   title: string
-  links: { href: string; label: string }[]
+  links: { href?: string; label: string; onClick?: () => void }[]
 }) {
   return (
     <div suppressHydrationWarning>
       <p suppressHydrationWarning className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-400">{title}</p>
       <ul className="mt-2.5 space-y-1">
-        {links.map((l) => (
-          <li key={l.href + l.label}>
-            <Link
-              href={l.href}
-              className="text-xs sm:text-sm text-emerald-200/80 transition-colors hover:text-amber-300 inline-flex items-center py-2 min-h-[48px]"
-            >
-              {l.label}
-            </Link>
+        {links.map((l, idx) => (
+          <li key={(l.href || l.label) + idx}>
+            {l.onClick ? (
+              <button
+                type="button"
+                onClick={l.onClick}
+                className="text-xs sm:text-sm text-emerald-200/80 transition-colors hover:text-amber-300 inline-flex items-center py-2 min-h-[48px] text-left cursor-pointer"
+              >
+                {l.label}
+              </button>
+            ) : (
+              <Link
+                href={l.href || '#'}
+                className="text-xs sm:text-sm text-emerald-200/80 transition-colors hover:text-amber-300 inline-flex items-center py-2 min-h-[48px]"
+              >
+                {l.label}
+              </Link>
+            )}
           </li>
         ))}
       </ul>

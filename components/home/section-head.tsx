@@ -23,7 +23,9 @@ export function SectionHead({
       <p className={cn("text-xs font-bold uppercase tracking-[0.2em]", kickerColor, isUrdu && "font-urdu tracking-normal text-sm")}>
         {kicker}
       </p>
-      <h2 className={cn("mt-2 text-balance font-extrabold tracking-tight text-foreground", isUrdu ? "font-urdu text-2xl sm:text-3xl md:text-4xl leading-[2.2] py-2" : "text-3xl sm:text-4xl leading-tight")}>
+      {/* Decorative gold accent divider */}
+      <span className="mx-auto mt-2.5 block h-0.5 w-16 rounded-full bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
+      <h2 className={cn("mt-3 text-balance font-extrabold tracking-[-0.015em] text-foreground", isUrdu ? "font-urdu text-2xl sm:text-3xl md:text-4xl leading-[2.2] py-2" : "text-3xl sm:text-4xl leading-tight")}>
         {title}
       </h2>
       {desc ? (

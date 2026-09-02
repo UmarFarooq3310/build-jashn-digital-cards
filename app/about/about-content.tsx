@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 import { useLang } from '@/lib/lang/context'
-import { ABOUT_T, pt } from '@/lib/lang/page-translations'
+import { ABOUT_T, CONTACT_T, pt } from '@/lib/lang/page-translations'
 
 export function AboutClientContent() {
   const { lang } = useLang()
@@ -95,7 +95,7 @@ export function AboutClientContent() {
               {pt(ABOUT_T.valuesTitle, lang)}
             </h2>
             <p className="mt-2 text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Cardzy is built upon foundational principles designed to protect users, families, and our planet.
+              {pt(ABOUT_T.valuesSubtitle, lang)}
             </p>
           </div>
 
@@ -142,20 +142,20 @@ export function AboutClientContent() {
           <div className="rounded-3xl border border-border bg-card p-6 sm:p-10 space-y-6 shadow-xs">
             <div className="max-w-2xl space-y-2">
               <h2 className="text-xl sm:text-2xl font-extrabold text-foreground">
-                Direct Business &amp; Contact Information
+                {pt(ABOUT_T.directInfoTitle, lang)}
               </h2>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Need to speak with our team? Cardzy Digital Solutions is committed to providing prompt, transparent communication.
+                {pt(ABOUT_T.directInfoDesc, lang)}
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 text-xs sm:text-sm">
               <div className="space-y-1">
-                <span className="text-muted-foreground font-semibold">Entity Name</span>
+                <span className="text-muted-foreground font-semibold">{pt(ABOUT_T.entityNameLabel, lang)}</span>
                 <p className="font-bold text-foreground">Cardzy Digital Solutions</p>
               </div>
               <div className="space-y-1">
-                <span className="text-muted-foreground font-semibold">Support Email</span>
+                <span className="text-muted-foreground font-semibold">{pt(CONTACT_T.supportEmail, lang)}</span>
                 <p>
                   <a href="mailto:cardzyonline@gmail.com" className="font-bold text-emerald-700 dark:text-emerald-400 hover:underline">
                     cardzyonline@gmail.com
@@ -163,8 +163,8 @@ export function AboutClientContent() {
                 </p>
               </div>
               <div className="space-y-1">
-                <span className="text-muted-foreground font-semibold">Response Time</span>
-                <p className="font-bold text-foreground">Within 24–48 business hours</p>
+                <span className="text-muted-foreground font-semibold">{pt(CONTACT_T.responseTimeLabel, lang).replace(/:$/, '')}</span>
+                <p className="font-bold text-foreground">{pt(ABOUT_T.responseTimeValue, lang)}</p>
               </div>
             </div>
 
@@ -185,7 +185,7 @@ export function AboutClientContent() {
                 href="/contact"
                 className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-muted-foreground hover:text-foreground px-4 py-3 min-h-[48px] underline underline-offset-4"
               >
-                <span>Contact Our Team</span>
+                <span>{pt(ABOUT_T.contactTeamBtn, lang)}</span>
                 <ArrowRight className="size-3.5" />
               </Link>
             </div>

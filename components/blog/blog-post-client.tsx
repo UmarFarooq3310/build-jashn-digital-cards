@@ -222,34 +222,198 @@ const POST_UI_STRINGS: Record<string, Record<string, string>> = {
     vi: 'Xem tất cả hướng dẫn của tác giả này',
     sw: 'Tazama miongozo yote ya mwandishi huyu',
   },
+  blogBreadcrumb: {
+    en: 'Blog & Guides',
+    ur: 'بلاگ اور گائیڈز',
+    ar: 'المدونة والأدلة',
+    es: 'Blog y Guías',
+    fr: 'Blog & Guides',
+    hi: 'ब्लॉग और गाइड',
+    zh: '博客与指南',
+    pt: 'Blog e Guias',
+    ru: 'Блог и руководства',
+    de: 'Blog & Ratgeber',
+    ja: 'ブログ＆ガイド',
+    ko: '블로그 & 가이드',
+    it: 'Blog e Guide',
+    tr: 'Blog ve Rehberler',
+    id: 'Blog & Panduan',
+    bn: 'ব্লগ ও গাইড',
+    vi: 'Blog & Hướng Dẫn',
+    sw: 'Blogu na Miongozo',
+  },
+  verifiedAuthor: {
+    en: 'Verified Author',
+    ur: 'تصدیق شدہ مصنف',
+    ar: 'كاتب موثق',
+    es: 'Autor Verificado',
+    fr: 'Auteur Vérifié',
+    hi: 'सत्यापित लेखक',
+    zh: '认证作者',
+    pt: 'Autor Verificado',
+    ru: 'Верифицированный автор',
+    de: 'Verifizierter Autor',
+    ja: '認証済み著者',
+    ko: '인증된 작성자',
+    it: 'Autore Verificato',
+    tr: 'Doğrulanmış Yazar',
+    id: 'Penulis Terverifikasi',
+    bn: 'যাচাইকৃত লেখক',
+    vi: 'Tác Giả Đã Xác Minh',
+    sw: 'Mwandishi Aliyethibitishwa',
+  },
+  published: {
+    en: 'Published:',
+    ur: 'شائع کردہ:',
+    ar: 'تاريخ النشر:',
+    es: 'Publicado:',
+    fr: 'Publié le :',
+    hi: 'प्रकाशित:',
+    zh: '发布于：',
+    pt: 'Publicado:',
+    ru: 'Опубликовано:',
+    de: 'Veröffentlicht:',
+    ja: '公開日:',
+    ko: '발행일:',
+    it: 'Pubblicato:',
+    tr: 'Yayınlanma:',
+    id: 'Diterbitkan:',
+    bn: 'প্রকাশিত:',
+    vi: 'Đã đăng:',
+    sw: 'Ilichapishwa:',
+  },
+  updated: {
+    en: 'Updated:',
+    ur: 'آخری ترمیم:',
+    ar: 'آخر تحديث:',
+    es: 'Actualizado:',
+    fr: 'Mis à jour :',
+    hi: 'अपडेट किया गया:',
+    zh: '更新于：',
+    pt: 'Atualizado:',
+    ru: 'Обновлено:',
+    de: 'Aktualisiert:',
+    ja: '更新日:',
+    ko: '업데이트일:',
+    it: 'Aggiornato:',
+    tr: 'Güncellenme:',
+    id: 'Diperbarui:',
+    bn: 'সর্বশেষ আপডেট:',
+    vi: 'Cập nhật:',
+    sw: 'Ilisasishwa:',
+  },
+  minRead: {
+    en: 'min read',
+    ur: 'منٹ مطالعہ',
+    ar: 'دقائق للقراءة',
+    es: 'min de lectura',
+    fr: 'min de lecture',
+    hi: 'मिनट का समय',
+    zh: '分钟阅读',
+    pt: 'min de leitura',
+    ru: 'мин чтения',
+    de: 'Min. Lesezeit',
+    ja: '分で読める',
+    ko: '분 소요',
+    it: 'min di lettura',
+    tr: 'dk okuma',
+    id: 'mnt membaca',
+    bn: 'মিনিট পড়া',
+    vi: 'phút đọc',
+    sw: 'dakika za kusoma',
+  },
 }
 
-const AUTHOR_BIOS: Record<string, { bio: string; location: string; credentials: string; instagram: string; tiktok: string }> = {
+const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: string; credentials: Record<string, string>; instagram: string; tiktok: string }> = {
   'Cardzy Editorial Team': {
-    bio: 'The Cardzy Editorial Team consists of certified digital stationery designers, cultural event planners, and multilingual invitation copywriters delivering expert wedding etiquette, RSVP workflows, and digital card guides.',
+    bio: {
+      en: 'The Cardzy Editorial Team consists of certified digital stationery designers, cultural event planners, and multilingual invitation copywriters delivering expert wedding etiquette, RSVP workflows, and digital card guides.',
+      ur: 'کارڈزی ادارتی ٹیم سرٹیفائیڈ ڈیجیٹل ڈیزائنرز اور تقاریب کے ماہرین پر مشتمل ہے جو شادی کے آداب، واٹس ایپ آر ایس وی پی اور جدید کارڈز پر مستند رہنمائی فراہم کرتی ہے۔',
+      ar: 'يتألف فريق تحرير كاردزي من مصممي بطاقات معتمدين وخبراء في تخطيط المناسبات وصياغة بطاقات الدعوة بلغات متعددة.',
+      es: 'El equipo editorial de Cardzy está compuesto por diseñadores de papelería digital y planificadores de eventos certificados.',
+      fr: 'L\'équipe éditoriale de Cardzy rassemble des spécialistes du design de faire-part numériques et de l\'organisation d\'événements.',
+      hi: 'कार्डज़ी संपादकीय टीम में प्रमाणित डिजिटल डिज़ाइनर और इवेंट विशेषज्ञ शामिल हैं जो शादी के शिष्टाचार और आरएसवीपी पर मार्गदर्शन प्रदान करते हैं।',
+      zh: 'Cardzy 编辑团队由认证数字请柬设计师与文化活动策划专家组成，提供专业的请柬文案与 RSVP 流程指南。'
+    },
     location: 'Islamabad / Lahore, Pakistan',
-    credentials: 'Lead Event & Stationery Specialists',
+    credentials: {
+      en: 'Lead Event & Stationery Specialists',
+      ur: 'چیف ایونٹ اور کارڈ اسپیشلسٹ',
+      ar: 'كبار أخصائيي المناسبات والبطاقات',
+      es: 'Especialistas Líderes en Eventos y Papelería',
+      fr: 'Spécialistes en Chef Événements & Faire-part',
+      hi: 'प्रमुख इवेंट और स्टेशनरी विशेषज्ञ',
+      zh: '首席活动与请柬策划专家'
+    },
     instagram: 'https://www.instagram.com/cardzyonline',
     tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
   },
   'Umar Farooq': {
-    bio: 'Senior Cultural Event & Wedding Stylist at Cardzy. Specializing in Pakistani, Islamic, and South Asian wedding traditions, bilingual invitation etiquette in Urdu & English, and WhatsApp RSVP management.',
+    bio: {
+      en: 'Senior Cultural Event & Wedding Stylist at Cardzy. Specializing in Pakistani, Islamic, and South Asian wedding traditions, bilingual invitation etiquette in Urdu & English, and WhatsApp RSVP management.',
+      ur: 'کارڈزی میں سینئر ویڈنگ اور ثقافتی ایونٹ اسٹائلسٹ۔ پاکستانی اور اسلامی روایات، اردو و انگلش کارڈز اور واٹس ایپ آر ایس وی پی مینجمنٹ میں ماہر۔',
+      ar: 'كبير منسقي حفلات الزفاف والفعاليات الثقافية في كاردزي، متخصص في تقاليد الزفاف الإسلامية وإدارة الحضور عبر واتساب.',
+      es: 'Estilista Sénior de Eventos y Bodas en Cardzy, especializado en tradiciones de boda islámicas y gestión de RSVP.',
+      fr: 'Styliste Événementiel et Mariage Senior chez Cardzy, expert des traditions de mariage islamiques et du suivi RSVP.',
+      hi: 'कार्डज़ी में वरिष्ठ सांस्कृतिक कार्यक्रम व वेडिंग स्टाइलिस्ट, इस्लामिक व एशियाई विवाह परंपराओं और व्हाट्सएप आरएसवीपी के विशेषज्ञ।',
+      zh: 'Cardzy 资深文化婚礼策划师，专注伊斯兰与南亚婚礼传统、双语请柬礼仪与 WhatsApp RSVP 智能管理。'
+    },
     location: 'Islamabad / Rawalpindi, Pakistan',
-    credentials: 'Lead Wedding & Cultural Stylist',
+    credentials: {
+      en: 'Lead Wedding & Cultural Stylist',
+      ur: 'چیف ویڈنگ و کلچرل اسٹائلسٹ',
+      ar: 'كبير منسقي حفلات الزفاف والتقاليد',
+      es: 'Estilista Principal de Bodas y Eventos',
+      fr: 'Styliste Principal Mariages & Culture',
+      hi: 'प्रमुख वेडिंग व सांस्कृतिक स्टाइलिस्ट',
+      zh: '首席婚礼与文化造型专家'
+    },
     instagram: 'https://www.instagram.com/cardzyonline',
     tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
   },
   Kainat: {
-    bio: 'Tech & Product Strategist at Cardzy. Leading research on modern digital business cards, executive vCard protocols, and cost-effective digital invitation solutions for global professionals and businesses.',
+    bio: {
+      en: 'Tech & Product Strategist at Cardzy. Leading research on modern digital business cards, executive vCard protocols, and cost-effective digital invitation solutions for global professionals and businesses.',
+      ur: 'کارڈزی میں ٹیک اور پروڈکٹ اسٹریٹجسٹ۔ اسمارٹ ڈیجیٹل وزٹنگ کارڈز، ایگزیکٹو vCard اور جدید کارپوریٹ سلوشنز کے ریسرچ لیڈ۔',
+      ar: 'خبيرة استراتيجيات التكنولوجيا والمنتجات في كاردزي، تقود أبحاث بطاقات الأعمال الرقمية الذكية vCard للشركات والمحترفين.',
+      es: 'Estratega de Producto y Tecnología en Cardzy, liderando investigaciones sobre tarjetas de visita digitales y vCards inteligentes.',
+      fr: 'Stratège Produit et Technologie chez Cardzy, responsable des solutions de cartes de visite digitales et vCards pour professionnels.',
+      hi: 'कार्डज़ी में टेक व प्रोडक्ट रणनीतिकार, डिजिटल बिजनेस कार्ड और स्मार्ट वी-कार्ड नवाचारों की प्रमुख शोधकर्ता।',
+      zh: 'Cardzy 技术与产品战略专家，主导智能 NFC 电子名片、高管 vCard 协议及数字化商务方案研发。'
+    },
     location: 'Lahore / Islamabad, Pakistan',
-    credentials: 'Lead Product & Tech Strategist',
+    credentials: {
+      en: 'Lead Product & Tech Strategist',
+      ur: 'چیف پروڈکٹ و ٹیک اسٹریٹجسٹ',
+      ar: 'كبير خبراء التكنولوجيا والمنتجات',
+      es: 'Estratega Líder de Producto y Tecnología',
+      fr: 'Stratège Principal Produit & Tech',
+      hi: 'प्रमुख प्रोडक्ट व टेक रणनीतिकार',
+      zh: '首席产品与技术战略专家'
+    },
     instagram: 'https://www.instagram.com/cardzyonline',
     tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
   },
   Hasnain: {
-    bio: 'Global Creative & Cultural Events Editor at Cardzy. Crafting guides on 3D animated holiday e-cards, birthday party invitations, and digital sharing etiquette across 18 languages.',
+    bio: {
+      en: 'Global Creative & Cultural Events Editor at Cardzy. Crafting guides on 3D animated holiday e-cards, birthday party invitations, and digital sharing etiquette across 18 languages.',
+      ur: 'کارڈزی کے عالمی تخلیقی ایڈیٹر۔ 3D اینیمیٹڈ کارڈز، سالگرہ کے دعوت نامے اور 18 زبانوں میں ڈیجیٹل شیئرنگ گائیڈز کے مصنف۔',
+      ar: 'محرر الفعاليات الإبداعية العالمية في كاردزي، كاتب أدلة بطاقات التهنئة ثلاثية الأبعاد وأعياد الميلاد عبر 18 لغة.',
+      es: 'Editor Creativo Global en Cardzy, redactor de guías de tarjetas electrónicas 3D animadas e invitaciones de cumpleaños en 18 idiomas.',
+      fr: 'Rédacteur Créatif Global chez Cardzy, auteur de guides sur les cartes de vœux animées 3D et les invitations d\'anniversaire en 18 langues.',
+      hi: 'कार्डज़ी में वैश्विक रचनात्मक संपादक, 3D एनिमेटेड उत्सव ई-कार्ड और जन्मदिन आमंत्रणों पर 18 भाषाओं में मार्गदर्शक।',
+      zh: 'Cardzy 全球创意活动主编，倾力撰写 3D 动态节日电子贺卡、生日请柬及覆盖 18 种语言的分享礼仪指南。'
+    },
     location: 'Karachi / Islamabad, Pakistan',
-    credentials: 'Global Events & Culture Editor',
+    credentials: {
+      en: 'Global Events & Culture Editor',
+      ur: 'چیف ایڈیٹر گلوبل ایونٹس',
+      ar: 'محرر الفعاليات والثقافة العالمية',
+      es: 'Editor Global de Eventos y Cultura',
+      fr: 'Rédacteur Principal Événements & Culture',
+      hi: 'वैश्विक कार्यक्रम व संस्कृति संपादक',
+      zh: '全球活动与文化主编'
+    },
     instagram: 'https://www.instagram.com/cardzyonline',
     tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
   },
@@ -314,10 +478,17 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
     .map((p) => getLocalizedPost(p, lang))
 
   const authorSlug = post.author.name.toLowerCase().replace(/\s+/g, '-')
-  const authorInfo = AUTHOR_BIOS[post.author.name] || AUTHOR_BIOS['Umar Farooq']
+  const rawAuthorInfo = AUTHOR_BIOS[post.author.name] || AUTHOR_BIOS['Umar Farooq']
+  const authorBio = rawAuthorInfo.bio[lang] || rawAuthorInfo.bio.en || Object.values(rawAuthorInfo.bio)[0]
+  const authorCreds = rawAuthorInfo.credentials[lang] || rawAuthorInfo.credentials.en || Object.values(rawAuthorInfo.credentials)[0]
 
   const tUI = (key: string) => {
     return POST_UI_STRINGS[key]?.[lang] || POST_UI_STRINGS[key]?.en || key
+  }
+
+  const formatReadTime = (rt: string) => {
+    const digits = rt.replace(/\D/g, '') || '5'
+    return `${digits} ${tUI('minRead')}`
   }
 
   const handleShare = () => {
@@ -331,13 +502,13 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
   const isRtl = lang === 'ur' || lang === 'ar'
 
   return (
-    <div className="min-h-screen bg-[#07080c] text-white pb-24 selection:bg-[#D4AF37] selection:text-slate-950">
+    <div className={`min-h-screen bg-[#07080c] text-white pb-24 selection:bg-[#D4AF37] selection:text-slate-950 ${isRtl ? 'font-urdu' : ''}`}>
       {/* Breadcrumb Navigation */}
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-4">
         <Breadcrumbs
           isDark
           items={[
-            { label: 'Blog & Guides', href: '/blog' },
+            { label: tUI('blogBreadcrumb'), href: '/blog' },
             { label: post.category, href: '/blog' },
             { label: post.seoTitle || post.title },
           ]}
@@ -351,7 +522,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
             href="/blog"
             className="inline-flex items-center gap-2 text-xs font-extrabold text-[#D4AF37] hover:underline"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
             <span>{tUI('backToBlog')}</span>
           </Link>
 
@@ -361,15 +532,15 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
             </span>
             <span className="text-zinc-400 flex items-center gap-1">
               <Clock className="w-3.5 h-3.5 text-[#D4AF37]" />
-              {post.readTime}
+              {formatReadTime(post.readTime)}
             </span>
             <span className="text-zinc-400 flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5 text-[#D4AF37]" />
-              Published: {post.publishedAt}
+              {tUI('published')} {post.publishedAt}
             </span>
             {post.updatedAt && post.updatedAt !== post.publishedAt && (
               <span className="text-emerald-400/90 flex items-center gap-1 font-medium">
-                • Updated: {post.updatedAt}
+                • {tUI('updated')} {post.updatedAt}
               </span>
             )}
           </div>
@@ -407,7 +578,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
                   <span>{post.author.name}</span>
                   <CheckCircle className="w-3.5 h-3.5 text-[#D4AF37]" />
                   <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-1.5 py-0.2 rounded-sm">
-                    Verified Author
+                    {tUI('verifiedAuthor')}
                   </span>
                 </div>
                 <div className="text-xs text-zinc-400">{post.author.role}</div>
@@ -554,14 +725,14 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
                   <h4 className="text-lg font-extrabold text-white">{post.author.name}</h4>
                   <CheckCircle className="size-4 text-[#D4AF37]" />
                   <span className="text-[11px] font-bold text-amber-300 bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded-full">
-                    {authorInfo.credentials}
+                    {authorCreds}
                   </span>
                 </div>
                 <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                  {authorInfo.bio}
+                  {authorBio}
                 </p>
                 <div className="text-[11px] text-zinc-400 pt-1">
-                  <span>📍 {authorInfo.location}</span>
+                  <span>📍 {rawAuthorInfo.location}</span>
                 </div>
               </div>
             </div>
@@ -572,12 +743,12 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
                 className="inline-flex items-center gap-1.5 font-bold text-[#D4AF37] hover:underline"
               >
                 <span>{tUI('viewAllByAuthor')}</span>
-                <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
+                <ArrowLeft className={`w-3.5 h-3.5 ${isRtl ? '' : 'rotate-180'}`} />
               </Link>
 
               <div className="flex items-center gap-3">
                 <a
-                  href={authorInfo.instagram}
+                  href={rawAuthorInfo.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-400 hover:text-white transition-colors text-xs font-semibold inline-flex items-center gap-1"
@@ -586,7 +757,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
                 </a>
                 <span>•</span>
                 <a
-                  href={authorInfo.tiktok}
+                  href={rawAuthorInfo.tiktok}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-400 hover:text-white transition-colors text-xs font-semibold inline-flex items-center gap-1"

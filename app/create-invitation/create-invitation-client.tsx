@@ -73,6 +73,7 @@ function CreateInvitationContent() {
   const [photoUrl, setPhotoUrl] = useState('')
   const [photoUrl2, setPhotoUrl2] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const selectedType = getInvitationType(typeId)
   const isCouple = selectedType?.couple
@@ -255,54 +256,75 @@ function CreateInvitationContent() {
   async function handleFinish() {
     const errs = runValidation()
     setErrors(errs)
-    if (Object.keys(errs).length > 0) {
-      const firstError = Object.values(errs)[0] || t('checkInputDetails', 'Please check your input details.')
+    const errKeys = Object.keys(errs)
+    if (errKeys.length > 0) {
+      const firstKey = errKeys[0]
+      const firstError = errs[firstKey] || t('checkInputDetails', 'Please check your input details.')
       showToast(firstError, 'error')
-      if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-        setMobileTab('details')
+      if (typeof window !== 'undefined') {
+        if (window.innerWidth < 1024) {
+          setMobileTab('details')
+        }
+        setTimeout(() => {
+          const el = document.getElementById(`field-${firstKey}`) || document.querySelector(`[name="${firstKey}"]`)
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            ;(el as HTMLElement).focus()
+          }
+        }, 120)
       }
       return
     }
 
-    // Fallback premium themes/borders for non-pro users so anyone can create without signup
-    let finalThemeId = themeId
-    let finalBorderId = borderId
+    setIsSubmitting(true)
+    try {
+      // Fallback premium themes/borders for non-pro users so anyone can create without signup
+      let finalThemeId = themeId
+      let finalBorderId = borderId
 
-    const selectedTheme = THEMES.find((t) => t.id === themeId)
-    const selectedBorder = BORDERS.find((b) => b.id === borderId)
-    if ((selectedTheme?.isPremium || selectedBorder?.isPremium) && !isPro) {
-      finalThemeId = 'emerald-classic'
-      finalBorderId = 'mehndi'
-    }
+      const selectedTheme = THEMES.find((t) => t.id === themeId)
+      const selectedBorder = BORDERS.find((b) => b.id === borderId)
+      if ((selectedTheme?.isPremium || selectedBorder?.isPremium) && !isPro) {
+        finalThemeId = 'emerald-classic'
+        finalBorderId = 'mehndi'
+      }
 
-    const cleanedPhone = rsvpPhone.trim().replace(/\s+/g, '')
-    const payload = {
-      typeId,
-      title: title.trim() || selectedType?.label || 'Event Invitation',
-      hostNames: hostNames.trim() || 'Host & Family',
-      groom: groom.trim() || (isCouple ? 'Groom' : ''),
-      bride: bride.trim() || (isCouple ? 'Bride' : ''),
-      date: date || new Date().toISOString().slice(0, 10),
-      time: time || '7:00 PM',
-      venue: venue.trim() || 'Grand Event Venue',
-      city: city.trim() || 'City',
-      mapsLink,
-      dressCode,
-      notes,
-      rsvpPhone: cleanedPhone,
-      themeId: finalThemeId,
-      borderId: finalBorderId,
-      bgVariantId,
-      photoUrl,
-      photoUrl2,
-    }
+      const cleanedPhone = rsvpPhone.trim().replace(/\s+/g, '')
+      const payload = {
+        typeId,
+        title: title.trim() || selectedType?.label || 'Event Invitation',
+        hostNames: hostNames.trim() || 'Host & Family',
+        groom: groom.trim() || (isCouple ? 'Groom' : ''),
+        bride: bride.trim() || (isCouple ? 'Bride' : ''),
+        date: date || new Date().toISOString().slice(0, 10),
+        time: time || '7:00 PM',
+        venue: venue.trim() || 'Grand Event Venue',
+        city: city.trim() || 'City',
+        mapsLink,
+        dressCode,
+        notes,
+        rsvpPhone: cleanedPhone,
+        themeId: finalThemeId,
+        borderId: finalBorderId,
+        bgVariantId,
+        photoUrl,
+        photoUrl2,
+      }
 
-    if (editSlug) {
-      await updateInvitation(editSlug, payload)
-      router.push(`/i/${editSlug}?mode=sender`)
-    } else {
-      const inv = await createInvitation(payload)
-      router.push(`/i/${inv.slug}?mode=sender`)
+      if (editSlug) {
+        await updateInvitation(editSlug, payload)
+        showToast(t('invitationUpdatedSuccess', 'Invitation updated successfully! 🎉'), 'success')
+        router.push(`/i/${editSlug}?mode=sender`)
+      } else {
+        const inv = await createInvitation(payload)
+        showToast(t('invitationCreatedSuccess', 'Invitation created successfully! 🚀'), 'success')
+        router.push(`/i/${inv.slug}?mode=sender`)
+      }
+    } catch (err: any) {
+      console.error('Failed to create invitation:', err)
+      showToast(err?.message || 'Failed to generate invitation. Please try again.', 'error')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -452,6 +474,7 @@ function CreateInvitationContent() {
                           {t('groomName') === 'groomName' ? 'Groom Name' : t('groomName')} *
                         </label>
                         <input
+                          id="field-groom"
                           type="text"
                           required
                           value={groom}
@@ -475,6 +498,7 @@ function CreateInvitationContent() {
                           {t('brideName') === 'brideName' ? 'Bride Name' : t('brideName')} *
                         </label>
                         <input
+                          id="field-bride"
                           type="text"
                           required
                           value={bride}
@@ -500,6 +524,7 @@ function CreateInvitationContent() {
                         {t('eventTitle')} *
                       </label>
                       <input
+                        id="field-title"
                         type="text"
                         required
                         value={title}
@@ -524,6 +549,7 @@ function CreateInvitationContent() {
                       {t('hostNamesLabel')} *
                     </label>
                     <input
+                      id="field-hostNames"
                       type="text"
                       required
                       value={hostNames}
@@ -548,6 +574,7 @@ function CreateInvitationContent() {
                         {t('eventDateLabel')} *
                       </label>
                       <input
+                        id="field-date"
                         type="date"
                         required
                         value={date}
@@ -568,6 +595,7 @@ function CreateInvitationContent() {
                         {t('eventTimeLabel')} *
                       </label>
                       <input
+                        id="field-time"
                         type="time"
                         required
                         value={time}
@@ -591,6 +619,7 @@ function CreateInvitationContent() {
                         {t('venueLabel')} *
                       </label>
                       <input
+                        id="field-venue"
                         type="text"
                         required
                         value={venue}
@@ -613,6 +642,7 @@ function CreateInvitationContent() {
                         {t('cityLabel')} *
                       </label>
                       <input
+                        id="field-city"
                         type="text"
                         required
                         value={city}
@@ -637,6 +667,7 @@ function CreateInvitationContent() {
                       {t('rsvpPhoneLabel')} *
                     </label>
                     <input
+                      id="field-rsvpPhone"
                       type="tel"
                       required
                       value={rsvpPhone}
@@ -875,9 +906,17 @@ function CreateInvitationContent() {
                   </Button>
                   <Button
                     onClick={handleFinish}
-                    className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
+                    disabled={isSubmitting}
+                    className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-60"
                   >
-                    {editSlug ? t('saveInvitationBtn') : t('createAndShareBtn')}
+                    {isSubmitting ? (
+                      <>
+                        <Sparkles className="size-4 animate-spin" />
+                        <span>{t('generatingCard', 'Generating Card...')}</span>
+                      </>
+                    ) : (
+                      editSlug ? t('saveInvitationBtn') : t('createAndShareBtn')
+                    )}
                   </Button>
                 </div>
               </div>
@@ -943,9 +982,17 @@ function CreateInvitationContent() {
 
             <Button
               onClick={handleFinish}
-              className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all"
+              disabled={isSubmitting}
+              className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
             >
-              {editSlug ? t('saveChanges') : t('createAndShareBtn')}
+              {isSubmitting ? (
+                <>
+                  <Sparkles className="size-4 animate-spin" />
+                  <span>{t('generatingCard', 'Generating...')}</span>
+                </>
+              ) : (
+                editSlug ? t('saveChanges') : t('createAndShareBtn')
+              )}
             </Button>
           </div>
         </div>
@@ -1000,20 +1047,12 @@ export default function CreateInvitationPage() {
   const isUrdu = lang === 'ur' || lang === 'ar'
 
   return (
-    <div className="py-4 md:py-6 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center w-full">
-      <h1 className={`text-2xl font-extrabold tracking-tight sm:text-4xl text-[#7B0D1E] mb-2 ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
-        {t('createDigitalWeddingInvitationsHeader') || 'Create Digital Wedding Invitations'}
-      </h1>
-      <h2 className={`text-muted-foreground text-xs sm:text-sm max-w-xl mx-auto font-medium mb-6 ${isUrdu ? 'font-urdu text-sm sm:text-base leading-relaxed' : ''}`}>
-        {t('design4kAnimatedWeddingInvitationsSubHeader') || 'Design 4K Animated Wedding Invitations — Cardzy'}
-      </h2>
-      <Suspense fallback={
-        <div className="flex py-20 items-center justify-center">
-          <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />
-        </div>
-      }>
-        <CreateInvitationContent />
-      </Suspense>
-    </div>
+    <Suspense fallback={
+      <div className="flex py-20 items-center justify-center">
+        <Loader2 className="size-8 animate-spin text-[#7B0D1E]" />
+      </div>
+    }>
+      <CreateInvitationContent />
+    </Suspense>
   )
 }
