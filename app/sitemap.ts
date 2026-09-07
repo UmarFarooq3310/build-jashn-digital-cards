@@ -41,9 +41,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: route.lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
-    alternates: {
-      languages: getLanguageAlternates(route.path),
-    },
   }))
 
   const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({

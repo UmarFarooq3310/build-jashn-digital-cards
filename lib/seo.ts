@@ -72,9 +72,18 @@ export function getLanguageAlternates(path: string): Record<string, string> {
  * dynamically configuring the self-referencing canonical URL and all hreflang alternates.
  */
 export function getPageAlternates(path: string, lang?: string | null) {
+  const isBlogPost = path.startsWith('/blog/') && path !== '/blog'
+  const cleanPath = path === '/' ? '' : path.startsWith('/') ? path : `/${path}`
+  const fullUrl = `${SITE_URL}${cleanPath}`
+
   return {
     canonical: getCanonicalUrl(path, lang),
-    languages: getLanguageAlternates(path),
+    languages: isBlogPost
+      ? getLanguageAlternates(path)
+      : {
+          'x-default': fullUrl,
+          'en': fullUrl,
+        },
   }
 }
 
