@@ -491,13 +491,33 @@ export default function CookiesPage() {
 
               <div className="space-y-4">
                 <div className="rounded-xl border border-border bg-card p-4">
-                  <h3 className="font-bold text-foreground text-sm mb-2">1. Cardzy Cookie Preferences</h3>
-                  <p>
-                    You can review and change your consent at any time by clearing your browser
-                    cookies and reloading the page — our consent banner will reappear on your first
-                    visit. You can then choose to Accept All, Decline Non-Essential, or customise
-                    individual categories.
+                  <h3 className="font-bold text-foreground text-sm mb-2">1. Cardzy Cookie Preferences &amp; Alert</h3>
+                  <p className="mb-3">
+                    You can review and change your consent at any time. Click below to customize your cookie preferences or re-open the initial cookie alert banner:
                   </p>
+                  <div className="flex flex-wrap items-center gap-2 pt-1">
+                    <a
+                      href="#cookie-preferences"
+                      data-open-cookie-preferences="true"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow transition-all cursor-pointer"
+                    >
+                      Open Cookie Preferences
+                    </a>
+                    <a
+                      href="#cookie-alert"
+                      data-show-cookie-alert="true"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-border bg-muted hover:bg-muted/80 text-foreground font-semibold text-xs transition-all cursor-pointer"
+                    >
+                      Show Cookie Alert Banner
+                    </a>
+                    <a
+                      href="#reset-cookies"
+                      data-reset-cookies="true"
+                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-border hover:bg-destructive/10 text-muted-foreground hover:text-destructive font-medium text-xs transition-all cursor-pointer"
+                    >
+                      Reset Consent
+                    </a>
+                  </div>
                 </div>
 
                 <div className="rounded-xl border border-border bg-card p-4">

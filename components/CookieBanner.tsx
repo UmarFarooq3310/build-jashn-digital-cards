@@ -1,9 +1,11 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
-import { Cookie, X, Check, Lock, BarChart3, Sparkles, ShieldCheck, Settings2 } from 'lucide-react'
+import { Cookie, X, Check, Lock, BarChart3, Sparkles, ShieldCheck, Settings2, RotateCcw } from 'lucide-react'
+import { useLang, type LangCode } from '@/lib/lang/context'
+import { COOKIE_TRANSLATIONS } from '@/lib/lang/cookie-translations'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -20,17 +22,13 @@ const CONSENT_KEY = 'cardzy_consent_v3'
 declare global {
   interface Window {
     openCookiePreferences?: () => void
+    openCookieAlert?: () => void
+    showCookieAlert?: () => void
+    openCardzyCookieConsent?: () => void
+    resetCookieConsent?: () => void
     gtag?: (...args: unknown[]) => void
     __pendingCookieModal?: boolean
-  }
-}
-
-// ─── Pre-mount stub so footer/header calls before hydration queue correctly ──
-
-if (typeof window !== 'undefined' && !window.openCookiePreferences) {
-  window.openCookiePreferences = () => {
-    window.__pendingCookieModal = true
-    window.dispatchEvent(new CustomEvent('cardzy:open-cookie-prefs'))
+    __pendingCookieAlert?: boolean
   }
 }
 
@@ -38,6 +36,7 @@ if (typeof window !== 'undefined' && !window.openCookiePreferences) {
 
 function loadConsent(): CookiePrefs | null {
   try {
+    if (typeof window === 'undefined') return null
     const raw = localStorage.getItem(CONSENT_KEY)
     if (!raw) return null
     const parsed = JSON.parse(raw)
@@ -56,8 +55,8 @@ function loadConsent(): CookiePrefs | null {
 
 function saveConsent(prefs: CookiePrefs) {
   try {
+    if (typeof window === 'undefined') return
     localStorage.setItem(CONSENT_KEY, JSON.stringify({ ...prefs, timestamp: Date.now() }))
-    // Legacy keys kept for any existing integrations
     localStorage.setItem('cardzy_cookie_consent', prefs.analytics && prefs.advertising ? 'accepted' : 'declined')
     document.cookie = `cardzy_cookie_consent=${prefs.analytics && prefs.advertising ? 'accepted' : 'declined'}; max-age=31536000; path=/; SameSite=Lax`
   } catch {
@@ -79,11 +78,31 @@ function pushGtagConsent(analytics: boolean, advertising: boolean) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function CookieBanner() {
+  const { lang } = useLang()
+  const activeLang: LangCode = (lang as LangCode) || 'en'
+  const isRtl = activeLang === 'ur' || activeLang === 'ar'
+
+  const tr = useCallback((key: string): string => {
+    return COOKIE_TRANSLATIONS[key]?.[activeLang] || COOKIE_TRANSLATIONS[key]?.en || ''
+  }, [activeLang])
+
   const [mounted, setMounted] = useState(false)
   // null = not yet decided (show banner), non-null = decided (hide banner)
   const [consent, setConsent] = useState<CookiePrefs | null>(null)
   const [showModal, setShowModal] = useState(false)
   const [prefs, setPrefs] = useState<CookiePrefs>({ essential: true, analytics: true, advertising: true })
+
+  const triggerToast = useCallback((message: string, type: 'success' | 'info' | 'error' = 'info') => {
+    if (typeof window !== 'undefined') {
+      if (typeof window.showToast === 'function') {
+        window.showToast(message, type)
+      } else {
+        window.dispatchEvent(new CustomEvent('jashn-toast', {
+          detail: { id: Date.now() + Math.random(), message, type }
+        }))
+      }
+    }
+  }, [])
 
   const openModal = useCallback(() => {
     setShowModal(true)
@@ -93,6 +112,25 @@ export function CookieBanner() {
     setShowModal(false)
   }, [])
 
+  const showAlertBanner = useCallback(() => {
+    setShowModal(false)
+    setConsent(null)
+    triggerToast(tr('toastNoticeActive'), 'info')
+  }, [triggerToast, tr])
+
+  const resetConsent = useCallback((withToast = false) => {
+    try {
+      localStorage.removeItem(CONSENT_KEY)
+      localStorage.removeItem('cardzy_cookie_consent')
+      localStorage.removeItem('cookie_consent')
+    } catch {}
+    setShowModal(false)
+    setConsent(null)
+    if (withToast) {
+      triggerToast(tr('toastReset'), 'info')
+    }
+  }, [triggerToast, tr])
+
   // Accept / decline helpers
   const accept = useCallback((analytics: boolean, advertising: boolean) => {
     const p: CookiePrefs = { essential: true, analytics, advertising }
@@ -100,49 +138,118 @@ export function CookieBanner() {
     pushGtagConsent(analytics, advertising)
     setConsent(p)
     setShowModal(false)
-  }, [])
+    triggerToast(tr('toastSaved'), 'success')
+  }, [triggerToast, tr])
 
-  // On mount: read stored consent, wire up global function + event
+  // Keep handlers in a ref so the mount effect has an immutable empty dependency array
+  const handlersRef = useRef({
+    openModal,
+    closeModal,
+    showAlertBanner,
+    resetConsent,
+    triggerToast,
+    tr,
+  })
+
+  useEffect(() => {
+    handlersRef.current = {
+      openModal,
+      closeModal,
+      showAlertBanner,
+      resetConsent,
+      triggerToast,
+      tr,
+    }
+  })
+
+  // On mount: read stored consent, wire up global functions + events
   useEffect(() => {
     setMounted(true)
 
-    // Replace stub with real opener
-    window.openCookiePreferences = openModal
+    // Wire up global openers
+    window.openCookiePreferences = () => handlersRef.current.openModal()
+    window.openCardzyCookieConsent = () => handlersRef.current.openModal()
+    window.openCookieAlert = () => handlersRef.current.showAlertBanner()
+    window.showCookieAlert = () => handlersRef.current.showAlertBanner()
+    window.resetCookieConsent = () => handlersRef.current.resetConsent(true)
 
-    // If stub was called before mount, open immediately
+    // If pre-mount flags were set, trigger corresponding view
     if (window.__pendingCookieModal) {
       window.__pendingCookieModal = false
-      openModal()
+      handlersRef.current.openModal()
+    }
+    if (window.__pendingCookieAlert) {
+      window.__pendingCookieAlert = false
+      handlersRef.current.showAlertBanner()
     }
 
-    // Also listen via custom event
-    const handler = () => openModal()
-    window.addEventListener('cardzy:open-cookie-prefs', handler)
+    // Event listeners
+    const modalHandler = () => handlersRef.current.openModal()
+    const alertHandler = () => handlersRef.current.showAlertBanner()
+    const resetHandler = () => handlersRef.current.resetConsent(true)
 
-    // Check if user requested to show or reset cookies via URL
+    window.addEventListener('cardzy:open-cookie-prefs', modalHandler)
+    window.addEventListener('open_cookie_preferences', modalHandler)
+    window.addEventListener('cardzy:show-cookie-alert', alertHandler)
+    window.addEventListener('show_cookie_alert', alertHandler)
+    window.addEventListener('reset_cookie_consent', resetHandler)
+
+    // Click delegator for data attributes and anchor links
+    const handleDocumentClick = (e: MouseEvent) => {
+      try {
+        const target = (e.target as HTMLElement)?.closest?.(
+          '[data-open-cookie-preferences], [data-cookie-preferences], [data-show-cookie-alert], [data-reset-cookies], a[href="#cookie-preferences"], a[href="#cookie-alert"]'
+        )
+        if (target) {
+          e.preventDefault()
+          e.stopPropagation()
+          const href = target.getAttribute('href')
+          if (target.hasAttribute('data-show-cookie-alert') || href === '#cookie-alert') {
+            handlersRef.current.showAlertBanner()
+          } else if (target.hasAttribute('data-reset-cookies')) {
+            handlersRef.current.resetConsent(true)
+          } else {
+            handlersRef.current.openModal()
+          }
+        }
+      } catch {}
+    }
+    document.addEventListener('click', handleDocumentClick, true)
+
+    // Check if user requested to show or reset cookies via URL query or hash
     if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search)
-      if (urlParams.has('cookies') || urlParams.has('reset-cookies') || urlParams.has('show-cookies') || urlParams.has('cookie-consent')) {
-        localStorage.removeItem(CONSENT_KEY)
-        localStorage.removeItem('cardzy_cookie_consent')
-        setConsent(null)
+      const search = window.location.search.toLowerCase()
+      const hash = window.location.hash.toLowerCase()
+      const hasCookieTrigger =
+        search.includes('cookie') ||
+        search.includes('reset') ||
+        hash.includes('cookie') ||
+        hash.includes('privacy-choices')
+
+      if (hasCookieTrigger) {
+        handlersRef.current.resetConsent(false)
+        setTimeout(() => {
+          handlersRef.current.triggerToast(handlersRef.current.tr('toastNoticeActive'), 'info')
+        }, 350)
       } else {
-        // Load stored consent
         const stored = loadConsent()
         setConsent(stored)
         if (stored) {
-          // Replay consent signals on every page load so gtag is in sync
           pushGtagConsent(stored.analytics, stored.advertising)
-          // Seed modal toggles with existing choices
           setPrefs(stored)
         }
       }
     }
 
     return () => {
-      window.removeEventListener('cardzy:open-cookie-prefs', handler)
+      window.removeEventListener('cardzy:open-cookie-prefs', modalHandler)
+      window.removeEventListener('open_cookie_preferences', modalHandler)
+      window.removeEventListener('cardzy:show-cookie-alert', alertHandler)
+      window.removeEventListener('show_cookie_alert', alertHandler)
+      window.removeEventListener('reset_cookie_consent', resetHandler)
+      document.removeEventListener('click', handleDocumentClick, true)
     }
-  }, [openModal])
+  }, [])
 
   // Prevent background scroll when modal open
   useEffect(() => {
@@ -159,23 +266,35 @@ export function CookieBanner() {
     return () => window.removeEventListener('keydown', handler)
   }, [showModal, closeModal])
 
-  // ─── Render ────────────────────────────────────────────────────────────────
-
   // Don't render anything during SSR
-  if (!mounted) return null
+  if (!mounted || typeof document === 'undefined') return null
 
   return (
     <>
-      {/* ── First-visit banner (shown until user decides) ── */}
-      {consent === null && !showModal && (
+      {/* ── First-visit banner (portal directly to body with maximum z-index) ── */}
+      {consent === null && !showModal && createPortal(
         <div
           id="cookie-consent-banner"
           data-cookie-root="true"
           role="region"
-          aria-label="Cookie consent"
-          className="fixed bottom-4 left-3 right-3 z-[2147483647] mx-auto max-w-xl sm:left-auto sm:right-5 sm:bottom-5 sm:mx-0 notranslate pointer-events-auto animate-in fade-in slide-in-from-bottom-5"
+          aria-label={tr('noticeTitle')}
+          dir={isRtl ? 'rtl' : 'ltr'}
+          style={{
+            position: 'fixed',
+            bottom: '16px',
+            left: '12px',
+            right: '12px',
+            zIndex: 2147483647,
+            maxWidth: '576px',
+            margin: '0 auto',
+            pointerEvents: 'auto',
+            display: 'block',
+            visibility: 'visible',
+            opacity: 1,
+          }}
+          className={`sm:left-auto sm:right-5 sm:bottom-5 sm:mx-0 pointer-events-auto ${isRtl ? 'font-urdu text-right' : ''}`}
         >
-          <div className="rounded-2xl border border-amber-500/50 bg-[#0b0d13]/97 p-5 text-white shadow-2xl backdrop-blur-xl">
+          <div className="rounded-2xl border border-amber-500/60 bg-[#0b0d13]/98 p-5 text-white shadow-[0_20px_60px_rgba(0,0,0,0.9)] backdrop-blur-2xl">
             {/* Header row */}
             <div className="flex items-start justify-between gap-3 mb-3">
               <div className="flex items-center gap-2.5">
@@ -183,17 +302,17 @@ export function CookieBanner() {
                   <Cookie className="size-5 text-amber-400" />
                 </div>
                 <div>
-                  <p className="font-extrabold text-sm text-white leading-tight">Cookie & Privacy Notice</p>
+                  <p className="font-extrabold text-sm text-white leading-tight">{tr('noticeTitle')}</p>
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400">
-                    <ShieldCheck className="size-3" /> GDPR · ePrivacy
+                    <ShieldCheck className="size-3" /> {tr('complianceBadge')}
                   </span>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => accept(false, false)}
-                className="rounded-lg p-1.5 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors shrink-0"
-                aria-label="Decline and close"
+                className="rounded-lg p-1.5 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors shrink-0 cursor-pointer"
+                aria-label="Close"
               >
                 <X className="size-4" />
               </button>
@@ -201,16 +320,15 @@ export function CookieBanner() {
 
             {/* Body */}
             <p className="text-xs text-zinc-300 leading-relaxed mb-4">
-              We use cookies to enhance your browsing experience, provide personalised content, and
-              analyse site traffic in compliance with our{' '}
+              {tr('noticeBody')}{' '}
               <Link href="/privacy-policy" className="text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-2">
-                Privacy Policy
+                {tr('privacyPolicy')}
               </Link>
-              . See our{' '}
+              {tr('seeOur')}
               <Link href="/cookies" className="text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-2">
-                Cookie Policy
-              </Link>{' '}
-              for details.
+                {tr('cookiePolicy')}
+              </Link>
+              {tr('forDetails')}
             </p>
 
             {/* Actions */}
@@ -218,42 +336,59 @@ export function CookieBanner() {
               <button
                 type="button"
                 onClick={openModal}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded-xl border border-white/15 bg-white/8 hover:bg-white/15 text-xs font-bold text-zinc-300 hover:text-white transition-all"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded-xl border border-white/15 bg-white/8 hover:bg-white/15 text-xs font-bold text-zinc-300 hover:text-white transition-all cursor-pointer"
               >
                 <Settings2 className="size-3.5 text-amber-400" />
-                Customise
+                {tr('customise')}
               </button>
               <button
                 type="button"
                 onClick={() => accept(false, false)}
-                className="px-4 py-2 min-h-[44px] rounded-xl border border-white/15 bg-white/8 hover:bg-white/15 text-xs font-bold text-zinc-300 hover:text-white transition-all"
+                className="px-4 py-2 min-h-[44px] rounded-xl border border-white/15 bg-white/8 hover:bg-white/15 text-xs font-bold text-zinc-300 hover:text-white transition-all cursor-pointer"
               >
-                Decline
+                {tr('decline')}
               </button>
               <button
                 type="button"
                 onClick={() => accept(true, true)}
-                className="px-5 py-2 min-h-[44px] rounded-xl bg-gradient-to-r from-amber-500 to-emerald-500 hover:opacity-90 text-slate-950 text-xs font-black shadow-lg transition-all ml-auto"
+                className={`px-5 py-2 min-h-[44px] rounded-xl bg-gradient-to-r from-amber-500 to-emerald-500 hover:opacity-90 text-slate-950 text-xs font-black shadow-lg transition-all cursor-pointer ${isRtl ? 'mr-auto' : 'ml-auto'}`}
               >
-                Accept All
+                {tr('acceptAll')}
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
-      {/* ── Persistent Floating Cookie Settings Badge (when consent previously saved) ── */}
-      {consent !== null && !showModal && (
-        <button
-          type="button"
-          onClick={openModal}
+      {/* ── Persistent Floating Cookie Settings Badge (when consent has been saved) ── */}
+      {consent !== null && !showModal && createPortal(
+        <div
+          id="cookie-settings-persistent-badge"
           data-cookie-root="true"
-          aria-label="Cookie Preferences"
-          className="fixed bottom-4 left-4 z-[999999] group flex items-center gap-2 rounded-full border border-amber-500/40 bg-slate-950/90 px-3.5 py-2 text-xs font-bold text-slate-200 shadow-xl backdrop-blur-md hover:bg-slate-900 hover:text-white hover:border-amber-400 transition-all hover:scale-105 active:scale-95 notranslate pointer-events-auto"
+          dir={isRtl ? 'rtl' : 'ltr'}
+          style={{
+            position: 'fixed',
+            bottom: '16px',
+            left: isRtl ? 'auto' : '16px',
+            right: isRtl ? '16px' : 'auto',
+            zIndex: 2147483640,
+            pointerEvents: 'auto',
+          }}
+          className={`pointer-events-auto ${isRtl ? 'font-urdu' : ''}`}
         >
-          <Cookie className="size-4 text-amber-400 group-hover:rotate-12 transition-transform" />
-          <span className="hidden sm:inline">Cookie Settings</span>
-        </button>
+          <button
+            type="button"
+            onClick={openModal}
+            data-cookie-root="true"
+            aria-label={tr('cookieSettings')}
+            className="group flex items-center gap-2 rounded-full border border-amber-500/50 bg-[#0b0d13]/95 px-3.5 py-2 text-xs font-bold text-amber-300 shadow-2xl backdrop-blur-md hover:bg-slate-900 hover:text-white hover:border-amber-400 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            <Cookie className="size-4 text-amber-400 group-hover:rotate-12 transition-transform" />
+            <span>{tr('cookieSettings')}</span>
+          </button>
+        </div>,
+        document.body
       )}
 
       {/* ── Preferences modal (portal to body) ── */}
@@ -264,8 +399,10 @@ export function CookieBanner() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="cookie-prefs-title"
+          dir={isRtl ? 'rtl' : 'ltr'}
           style={{
-            position: 'fixed', inset: 0,
+            position: 'fixed',
+            inset: 0,
             zIndex: 2147483647,
             display: showModal ? 'flex' : 'none',
             alignItems: 'center',
@@ -274,8 +411,9 @@ export function CookieBanner() {
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',
             padding: '1rem',
+            pointerEvents: showModal ? 'auto' : 'none',
           }}
-          className="notranslate"
+          className={isRtl ? 'font-urdu text-right' : ''}
           onClick={(e) => { if (e.target === e.currentTarget) closeModal() }}
         >
           <div
@@ -291,17 +429,17 @@ export function CookieBanner() {
                 </div>
                 <div>
                   <h2 id="cookie-prefs-title" className="font-extrabold text-base text-white leading-tight">
-                    Cookie Preferences
+                    {tr('modalTitle')}
                   </h2>
                   <p className="text-[11px] text-zinc-400 mt-0.5">
-                    Choose which cookies you allow us to use.
+                    {tr('modalSubtitle')}
                   </p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={closeModal}
-                className="rounded-xl p-2 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors shrink-0"
+                className="rounded-xl p-2 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors shrink-0 cursor-pointer"
                 aria-label="Close"
               >
                 <X className="size-5" />
@@ -309,21 +447,21 @@ export function CookieBanner() {
             </div>
 
             {/* Modal body */}
-            <div className="overflow-y-auto p-5 space-y-3" style={{ maxHeight: 'calc(90vh - 140px)' }}>
+            <div className="overflow-y-auto p-5 space-y-3" style={{ maxHeight: 'calc(90vh - 160px)' }}>
               {/* Essential — always on */}
               <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2 text-sm font-bold text-white">
                       <Lock className="size-3.5 text-emerald-400 shrink-0" />
-                      Strictly Essential
+                      {tr('essentialTitle')}
                     </div>
                     <p className="text-xs text-zinc-400 leading-relaxed">
-                      Required for login, card drafts, and language settings. Cannot be disabled.
+                      {tr('essentialDesc')}
                     </p>
                   </div>
                   <span className="shrink-0 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold">
-                    Always On
+                    {tr('essentialBadge')}
                   </span>
                 </div>
               </div>
@@ -334,10 +472,10 @@ export function CookieBanner() {
                   <div className="space-y-0.5 pr-2">
                     <div className="flex items-center gap-2 text-sm font-bold text-white">
                       <BarChart3 className="size-3.5 text-cyan-400 shrink-0" />
-                      Analytics & Performance
+                      {tr('analyticsTitle')}
                     </div>
                     <p className="text-xs text-zinc-400 leading-relaxed">
-                      Measures traffic and page speed (Google Analytics) to help us improve the site.
+                      {tr('analyticsDesc')}
                     </p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
@@ -359,11 +497,11 @@ export function CookieBanner() {
                   <div className="space-y-0.5 pr-2">
                     <div className="flex items-center gap-2 text-sm font-bold text-white">
                       <Sparkles className="size-3.5 text-amber-400 shrink-0" />
-                      Google AdSense & Advertising
+                      {tr('advertisingTitle')}
                     </div>
                     <p className="text-xs text-zinc-400 leading-relaxed">
-                      Enables relevant ads that support free card generation. See our{' '}
-                      <Link href="/cookies" onClick={closeModal} className="text-amber-400 hover:underline">Read Full Cookie Policy</Link>.
+                      {tr('advertisingDesc')}{' '}
+                      <Link href="/cookies" onClick={closeModal} className="text-amber-400 hover:underline">{tr('readPolicy')}</Link>.
                     </p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
@@ -378,6 +516,18 @@ export function CookieBanner() {
                   </label>
                 </div>
               </div>
+
+              {/* Reset Banner button inside modal */}
+              <div className="pt-1 flex items-center justify-between text-xs text-zinc-400">
+                <span>{tr('wantToSeeNoticeAgain')}</span>
+                <button
+                  type="button"
+                  onClick={() => resetConsent(true)}
+                  className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 hover:underline font-semibold cursor-pointer"
+                >
+                  <RotateCcw className="size-3" /> {tr('reopenAlertBanner')}
+                </button>
+              </div>
             </div>
 
             {/* Modal footer */}
@@ -385,25 +535,25 @@ export function CookieBanner() {
               <button
                 type="button"
                 onClick={() => accept(false, false)}
-                className="px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 bg-white/8 hover:bg-white/15 text-xs font-bold text-zinc-300 hover:text-white transition-all"
+                className="px-4 py-2.5 min-h-[44px] rounded-xl border border-white/15 bg-white/8 hover:bg-white/15 text-xs font-bold text-zinc-300 hover:text-white transition-all cursor-pointer"
               >
-                Decline All
+                {tr('declineAll')}
               </button>
-              <div className="flex items-center gap-2 ml-auto">
+              <div className={`flex items-center gap-2 ${isRtl ? 'mr-auto' : 'ml-auto'}`}>
                 <button
                   type="button"
                   onClick={() => accept(prefs.analytics, prefs.advertising)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold transition-all"
+                  className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold transition-all cursor-pointer"
                 >
                   <Check className="size-3.5" />
-                  Save Choices
+                  {tr('saveChoices')}
                 </button>
                 <button
                   type="button"
                   onClick={() => accept(true, true)}
-                  className="px-5 py-2.5 min-h-[44px] rounded-xl bg-gradient-to-r from-amber-500 to-emerald-500 hover:opacity-90 text-slate-950 text-xs font-black shadow-lg transition-all"
+                  className="px-5 py-2.5 min-h-[44px] rounded-xl bg-gradient-to-r from-amber-500 to-emerald-500 hover:opacity-90 text-slate-950 text-xs font-black shadow-lg transition-all cursor-pointer"
                 >
-                  Accept All
+                  {tr('acceptAll')}
                 </button>
               </div>
             </div>

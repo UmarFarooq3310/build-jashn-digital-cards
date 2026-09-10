@@ -6,13 +6,15 @@ import { getPageAlternates, PUBLIC_ROBOTS, SITE_PUBLISHER } from '@/lib/seo'
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Create 3D Animated Wish Cards with Photos | Cardzy',
+  title: 'Urdu Eid Wishes & 3D Animated Wish Card Maker | Cardzy',
   description:
-    'Design and personalize 3D animated greeting cards for Eid, Birthdays, Anniversaries, and Ramadan with photos, music, and WhatsApp sharing.',
+    'Create 3D animated cards with Urdu Eid wishes, birthday greetings & family photos. Add music and send interactive card links via WhatsApp. Try it free today!',
   keywords: [
+    'Urdu Eid wishes',
     '3D animated wish cards',
     'online greeting card maker',
     'Eid Mubarak card with photo',
+    'Urdu Eid Mubarak wishes',
     'animated birthday card',
     'custom anniversary card',
     'WhatsApp wish card',
@@ -22,9 +24,9 @@ export const metadata: Metadata = {
   alternates: getPageAlternates('/create-wish'),
   robots: PUBLIC_ROBOTS,
   openGraph: {
-    title: 'Create 3D Animated Wish Cards with Photos | Cardzy',
+    title: 'Urdu Eid Wishes & 3D Animated Wish Card Maker | Cardzy',
     description:
-      'Design personalized 3D animated greeting cards for Eid, Birthdays, Anniversaries & Ramadan with photos, music, and WhatsApp sharing.',
+      'Create 3D animated cards with Urdu Eid wishes, birthday greetings & family photos. Add music and send interactive card links via WhatsApp. Try it free today!',
     url: 'https://cardzy.online/create-wish',
     siteName: 'Cardzy',
     type: 'website',
@@ -33,15 +35,15 @@ export const metadata: Metadata = {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Create 3D Animated Wish Cards — Cardzy',
+        alt: 'Urdu Eid Wishes & 3D Animated Wish Card Maker — Cardzy',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Create 3D Animated Wish Cards with Photos | Cardzy',
+    title: 'Urdu Eid Wishes & 3D Animated Wish Card Maker | Cardzy',
     description:
-      'Design personalized 3D animated greeting cards for Eid, Birthdays & more with photos, music, and WhatsApp sharing.',
+      'Create 3D animated cards with Urdu Eid wishes, birthday greetings & family photos. Add music and send interactive card links via WhatsApp. Try it free today!',
     images: ['/og-image.jpg'],
   },
 }

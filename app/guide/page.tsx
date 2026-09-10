@@ -5,10 +5,13 @@ import { getPageAlternates, PUBLIC_ROBOTS, SITE_PUBLISHER } from '@/lib/seo'
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Celebration Guides & Wording Ideas — Cardzy Digital Cards',
+  title: 'Wedding Card Wording & Urdu Celebration Guides | Cardzy',
   description:
-    'Explore expert guides for digital invitations, holiday cards, and wedding announcements with copy-ready wording for every occasion.',
+    'Explore copy-ready wedding card wording, Urdu Eid wishes, and celebration etiquette guides. Curated by cultural stylists for WhatsApp sharing. Browse guides!',
   keywords: [
+    'wedding card wording',
+    'Urdu Eid wishes',
+    'Pakistani wedding card text',
     'digital invitation guides',
     'wedding card wording ideas',
     'Eid greeting messages',
@@ -19,6 +22,22 @@ export const metadata: Metadata = {
   publisher: SITE_PUBLISHER,
   alternates: getPageAlternates('/guide'),
   robots: PUBLIC_ROBOTS,
+  openGraph: {
+    title: 'Wedding Card Wording & Urdu Celebration Guides | Cardzy',
+    description:
+      'Explore copy-ready wedding card wording, Urdu Eid wishes, and celebration etiquette guides. Curated by cultural stylists for WhatsApp sharing. Browse guides!',
+    url: 'https://cardzy.online/guide',
+    siteName: 'Cardzy',
+    type: 'website',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Wedding Card Wording & Celebration Guides' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Wedding Card Wording & Urdu Celebration Guides | Cardzy',
+    description:
+      'Explore copy-ready wedding card wording, Urdu Eid wishes, and celebration etiquette guides. Curated by cultural stylists for WhatsApp sharing. Browse guides!',
+    images: ['/og-image.jpg'],
+  },
 }
 
 import { Breadcrumbs } from '@/components/breadcrumbs'

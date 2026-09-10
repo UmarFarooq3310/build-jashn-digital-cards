@@ -121,11 +121,29 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-6 border-t border-emerald-900/50 pt-4 text-center text-xs sm:text-sm text-emerald-200/70 flex flex-wrap items-center justify-between gap-4">
-          <span>{t('footerCopyright')}</span>
-          <span className="text-xs text-emerald-300/60">
-            {t('footerCraftedTagline', 'Crafted for weddings, religious festivals & contactless smart networking across 18 languages.')}
-          </span>
+        <div className="mt-8 border-t border-emerald-900/50 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left text-xs sm:text-sm text-emerald-200/70">
+            <span>{t('footerCopyright')}</span>
+            <span className="hidden sm:inline text-emerald-300/40">•</span>
+            <span className="text-xs text-emerald-300/60">
+              {t('footerCraftedTagline', 'Crafted for weddings, religious festivals & contactless smart networking across 18 languages.')}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <a
+              href="https://sellwithboost.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center transition-opacity hover:opacity-90"
+            >
+              <img
+                src="https://sellwithboost.com/badge/listing.svg"
+                alt="Listed on Sell With boost"
+                style={{ height: '40px', width: 'auto' }}
+              />
+            </a>
+          </div>
         </div>
       </div>
     </footer>

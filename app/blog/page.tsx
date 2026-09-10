@@ -6,10 +6,12 @@ import { getPageAlternates, PUBLIC_ROBOTS, SITE_URL, SITE_PUBLISHER } from '@/li
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Cardzy Blog — Digital Cards & Event Wording Guides',
+  title: 'Wedding Card Wording & Digital Card Guides | Cardzy Blog',
   description:
-    'Expert guides on Pakistani wedding invitations, Eid wish cards, smart digital business cards (vCards), and WhatsApp RSVP management.',
+    'Expert guides on wedding card wording in Urdu & English, 3D animated Eid wishes, and WhatsApp RSVP tools. Explore free wording templates and start creating!',
   keywords: [
+    'wedding card wording',
+    'Urdu Eid wishes',
     'digital invitation guides',
     'Pakistani wedding card wording',
     'Eid wish card tutorial',
@@ -22,11 +24,19 @@ export const metadata: Metadata = {
   alternates: getPageAlternates('/blog'),
   robots: PUBLIC_ROBOTS,
   openGraph: {
-    title: 'Cardzy Blog - Guides & Tips for Digital Cards',
-    description: 'Expert tips on royal digital invitations, Eid wishes, and smart digital business cards.',
+    title: 'Wedding Card Wording & Digital Card Guides | Cardzy Blog',
+    description:
+      'Expert guides on wedding card wording in Urdu & English, 3D animated Eid wishes, and WhatsApp RSVP tools. Explore free wording templates and start creating!',
     url: `${SITE_URL}/blog`,
     siteName: 'Cardzy Digital Cards',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Wedding Card Wording & Digital Card Guides | Cardzy Blog',
+    description:
+      'Expert guides on wedding card wording in Urdu & English, 3D animated Eid wishes, and WhatsApp RSVP tools. Explore free wording templates and start creating!',
+    images: ['/og-image.jpg'],
   },
 }
 

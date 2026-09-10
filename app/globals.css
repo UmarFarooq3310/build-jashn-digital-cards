@@ -1207,7 +1207,14 @@ header {
   padding-top: 0px !important;
 }
 
-body > *:not(.app-root-layout):not(script):not(style):not(link) {
+/* Hide rogue third-party auto-injected wrappers (Google Translate bar, Google auto-placed top frames)
+   while explicitly protecting application portals (Cookie banner, modal, toasts, dialogs) */
+body > .goog-te-banner-frame,
+body > .goog-te-balloon-frame,
+body > .google-auto-placed,
+body > div.google-auto-placed,
+body > iframe[name^="google_ads_"],
+body > .skiptranslate:not(#cookie-consent-banner):not(#cardzy-cookie-modal-root):not(#cookie-settings-persistent-badge):not(#cardzy-toast-root):not([data-cookie-root]):not([data-toast-root]) {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -1220,6 +1227,19 @@ body > *:not(.app-root-layout):not(script):not(style):not(link) {
   top: -9999px !important;
   left: -9999px !important;
   pointer-events: none !important;
+}
+
+/* Ensure Cookie banner, modal, persistent badge, and toasts are always visible on top */
+#cookie-consent-banner,
+#cardzy-cookie-modal-root,
+#cookie-settings-persistent-badge,
+#cardzy-toast-root,
+[data-cookie-root],
+[data-toast-root] {
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 2147483647 !important;
+  pointer-events: auto !important;
 }
 
 font {

@@ -6,13 +6,15 @@ import { getPageAlternates, PUBLIC_ROBOTS, SITE_PUBLISHER } from '@/lib/seo'
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Create Wedding Invitations with WhatsApp RSVP | Cardzy',
+  title: 'Create Wedding Invitations & Urdu Cards with RSVP | Cardzy',
   description:
-    'Design 4K animated wedding invitations for Nikkah, Mehndi, Barat & Walima with Google Maps, music, and instant WhatsApp RSVP tracking.',
+    'Design luxury animated wedding invitations with Urdu wording, Google Maps, background music & 1-click WhatsApp RSVP tracking. Build your dream invite free!',
   keywords: [
-    'digital wedding invitation',
+    'wedding card wording',
     'Pakistani wedding card maker',
+    'digital wedding invitation',
     'Nikkah invitation online',
+    'wedding invitation wording Urdu',
     'Mehndi card',
     'Barat invitation',
     'Walima digital card',
@@ -22,6 +24,22 @@ export const metadata: Metadata = {
   publisher: SITE_PUBLISHER,
   alternates: getPageAlternates('/create-invitation'),
   robots: PUBLIC_ROBOTS,
+  openGraph: {
+    title: 'Create Wedding Invitations & Urdu Cards with RSVP | Cardzy',
+    description:
+      'Design luxury animated wedding invitations with Urdu wording, Google Maps, background music & 1-click WhatsApp RSVP tracking. Build your dream invite free!',
+    url: 'https://cardzy.online/create-invitation',
+    siteName: 'Cardzy',
+    type: 'website',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Create Wedding Invitations with RSVP' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Create Wedding Invitations & Urdu Cards with RSVP | Cardzy',
+    description:
+      'Design luxury animated wedding invitations with Urdu wording, Google Maps, background music & 1-click WhatsApp RSVP tracking. Build your dream invite free!',
+    images: ['/og-image.jpg'],
+  },
 }
 
 export default function CreateInvitationPage() {

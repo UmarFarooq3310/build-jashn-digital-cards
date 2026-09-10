@@ -10,6 +10,9 @@ export const SUPPORTED_LANGS = [
 export type SupportedLang = (typeof SUPPORTED_LANGS)[number]
 
 export const DEFAULT_KEYWORDS = [
+  'Urdu Eid wishes',
+  'wedding card wording',
+  'Pakistani wedding card text',
   'digital wish cards',
   '3D animated greeting cards',
   'digital wedding invitations',

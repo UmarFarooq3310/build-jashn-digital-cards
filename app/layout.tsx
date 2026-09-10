@@ -151,14 +151,33 @@ export default function RootLayout({
                 } catch(e) {}
               };
               window.openCardzyCookieConsent = window.openCookiePreferences;
-              window.showCookieAlert = window.openCookiePreferences;
+              window.showCookieAlert = window.showCookieAlert || function() {
+                try {
+                  window.__pendingCookieAlert = true;
+                  window.dispatchEvent(new CustomEvent('show_cookie_alert'));
+                  document.dispatchEvent(new CustomEvent('show_cookie_alert'));
+                } catch(e) {}
+              };
+              window.openCookieAlert = window.showCookieAlert;
+              window.resetCookieConsent = window.resetCookieConsent || function() {
+                try {
+                  localStorage.removeItem('cardzy_consent_v3');
+                  localStorage.removeItem('cardzy_cookie_consent');
+                  localStorage.removeItem('cookie_consent');
+                  if (typeof window.showCookieAlert === 'function') window.showCookieAlert();
+                } catch(e) {}
+              };
               document.addEventListener('click', function(e) {
                 try {
-                  var target = e.target && e.target.closest && e.target.closest('[data-open-cookie-preferences], [data-cookie-preferences], a[href="#cookie-preferences"]');
+                  var target = e.target && e.target.closest && e.target.closest('[data-open-cookie-preferences], [data-cookie-preferences], [data-show-cookie-alert], [data-reset-cookies], a[href="#cookie-preferences"], a[href="#cookie-alert"]');
                   if (target) {
                     e.preventDefault();
-                    if (typeof window.openCookiePreferences === 'function') {
-                      window.openCookiePreferences();
+                    if (target.hasAttribute('data-show-cookie-alert') || target.getAttribute('href') === '#cookie-alert') {
+                      if (typeof window.showCookieAlert === 'function') window.showCookieAlert();
+                    } else if (target.hasAttribute('data-reset-cookies')) {
+                      if (typeof window.resetCookieConsent === 'function') window.resetCookieConsent();
+                    } else {
+                      if (typeof window.openCookiePreferences === 'function') window.openCookiePreferences();
                     }
                   }
                 } catch(err) {}
@@ -183,7 +202,10 @@ export default function RootLayout({
               }
               #cookie-consent-banner,
               #cardzy-cookie-modal-root,
-              [data-cookie-root] {
+              #cookie-settings-persistent-badge,
+              #cardzy-toast-root,
+              [data-cookie-root],
+              [data-toast-root] {
                 visibility: visible !important;
                 opacity: 1 !important;
                 z-index: 2147483647 !important;
@@ -196,8 +218,8 @@ export default function RootLayout({
               .goog-te-spinner-pos,
               .goog-te-banner,
               #google_translate_element,
-              body > .skiptranslate:not(#cookie-consent-banner):not(#cardzy-cookie-modal-root),
-              div.skiptranslate:not(#cookie-consent-banner):not(#cardzy-cookie-modal-root) {
+              body > .skiptranslate:not(#cookie-consent-banner):not(#cardzy-cookie-modal-root):not(#cookie-settings-persistent-badge):not(#cardzy-toast-root):not([data-cookie-root]):not([data-toast-root]),
+              div.skiptranslate:not(#cookie-consent-banner):not(#cardzy-cookie-modal-root):not(#cookie-settings-persistent-badge):not(#cardzy-toast-root):not([data-cookie-root]):not([data-toast-root]) {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
