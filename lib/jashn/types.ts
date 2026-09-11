@@ -88,6 +88,16 @@ export interface JashnUser {
   planActivatedAt?: number
   planExpiresAt?: number
   createdAt: number
+  // Tracking & Origin metadata
+  createdLocation?: string
+  country?: string
+  countryCode?: string
+  city?: string
+  region?: string
+  ip?: string
+  device?: string
+  browser?: string
+  os?: string
 }
 
 export interface RsvpGuest {
@@ -99,6 +109,14 @@ export interface RsvpGuest {
   guestCount: number
   note?: string
   createdAt: number
+  // Tracking & Origin metadata
+  createdLocation?: string
+  country?: string
+  countryCode?: string
+  city?: string
+  ip?: string
+  device?: string
+  browser?: string
 }
 
 export interface Wish {
@@ -124,6 +142,16 @@ export interface Wish {
   audioTrack?: string
   viewCount: number
   createdAt: number
+  // Tracking & Origin metadata
+  createdLocation?: string
+  country?: string
+  countryCode?: string
+  city?: string
+  region?: string
+  ip?: string
+  device?: string
+  browser?: string
+  os?: string
 }
 
 export interface Invitation {
@@ -152,6 +180,16 @@ export interface Invitation {
   rsvpCount: number
   viewCount?: number
   createdAt: number
+  // Tracking & Origin metadata
+  createdLocation?: string
+  country?: string
+  countryCode?: string
+  cityOrigin?: string
+  region?: string
+  ip?: string
+  device?: string
+  browser?: string
+  os?: string
 }
 
 export type VisitingCardCategory =
@@ -201,4 +239,14 @@ export interface VisitingCard {
   }
   viewCount: number
   createdAt: number
+  // Tracking & Origin metadata
+  createdLocation?: string
+  country?: string
+  countryCode?: string
+  city?: string
+  region?: string
+  ip?: string
+  device?: string
+  browser?: string
+  os?: string
 }

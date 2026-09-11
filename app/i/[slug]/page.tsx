@@ -24,7 +24,7 @@ import { decodeShortInvitation } from '@/lib/jashn/codec'
 import { getInvitationType } from '@/lib/jashn/invitations'
 import type { Invitation } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
-import { db, isFirebaseConfigured } from '@/lib/firebase'
+import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, onSnapshot } from 'firebase/firestore'
 
 function InvitationPublicContent({ slug }: { slug: string }) {
@@ -55,9 +55,10 @@ function InvitationPublicContent({ slug }: { slug: string }) {
     let unsubscribe: (() => void) | undefined
     setIsLoading(true)
 
-    if (isFirebaseConfigured && db) {
+    const activeDb = getFirebaseDb() || db
+    if (isFirebaseConfigured && activeDb) {
       try {
-        const docRef = doc(db, 'invitations', slug)
+        const docRef = doc(activeDb, 'invitations', slug)
         unsubscribe = onSnapshot(docRef, (docSnap) => {
           if (docSnap.exists()) {
             const data = docSnap.data() as Invitation

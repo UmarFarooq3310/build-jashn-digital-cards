@@ -18,7 +18,7 @@ import { getOccasion } from '@/lib/jashn/occasions'
 import { decodeShortWish } from '@/lib/jashn/codec'
 import type { Wish } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
-import { db, isFirebaseConfigured } from '@/lib/firebase'
+import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, onSnapshot } from 'firebase/firestore'
 
 function WishPublicContent({ slug }: { slug: string }) {
@@ -48,9 +48,10 @@ function WishPublicContent({ slug }: { slug: string }) {
     let unsubscribe: (() => void) | undefined
     setIsLoading(true)
 
-    if (isFirebaseConfigured && db) {
+    const activeDb = getFirebaseDb() || db
+    if (isFirebaseConfigured && activeDb) {
       try {
-        const docRef = doc(db, 'wishes', slug)
+        const docRef = doc(activeDb, 'wishes', slug)
         unsubscribe = onSnapshot(docRef, (docSnap) => {
           if (docSnap.exists()) {
             const data = docSnap.data() as Wish

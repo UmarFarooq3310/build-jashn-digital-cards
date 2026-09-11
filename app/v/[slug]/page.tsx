@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, use } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { db } from '@/lib/firebase'
+import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc, updateDoc, increment } from 'firebase/firestore'
 import { useJashn } from '@/lib/jashn/store'
 import type { VisitingCard } from '@/lib/jashn/types'
@@ -66,9 +66,10 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
         return
       }
 
-      if (db) {
+      const activeDb = getFirebaseDb() || db
+      if (isFirebaseConfigured && activeDb) {
         try {
-          const docRef = doc(db, 'visitingCards', slug)
+          const docRef = doc(activeDb, 'visitingCards', slug)
           const docSnap = await getDoc(docRef)
           if (docSnap.exists()) {
             const fetchedCard = docSnap.data() as VisitingCard

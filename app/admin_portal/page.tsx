@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import {
   ShieldCheck,
@@ -27,11 +27,17 @@ import {
   Trash2,
   ExternalLink,
   FileText,
+  Globe,
+  MapPin,
+  Smartphone,
+  Monitor,
+  Activity,
+  Compass,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useJashn } from '@/lib/jashn/store'
-import { db } from '@/lib/firebase'
+import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import { cn } from '@/lib/utils'
 import type { JashnUser, Plan, Invitation, Wish, VisitingCard, RsvpGuest } from '@/lib/jashn/types'
@@ -44,6 +50,225 @@ function formatDateStandard(timestamp?: number): string {
   const mm = String(d.getMonth() + 1).padStart(2, '0')
   const dd = String(d.getDate()).padStart(2, '0')
   return `${yyyy}-${mm}-${dd}`
+}
+
+function formatDateTime(timestamp?: number | string): string {
+  if (!timestamp) return '—'
+  const t = typeof timestamp === 'string' ? Number(timestamp) || Date.parse(timestamp) : timestamp
+  if (!t || isNaN(t)) return '—'
+  const d = new Date(t)
+  return d.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  })
+}
+
+function formatRelativeTime(timestamp?: number | string): string {
+  if (!timestamp) return ''
+  const t = typeof timestamp === 'string' ? Number(timestamp) || Date.parse(timestamp) : timestamp
+  if (!t || isNaN(t)) return ''
+  const diffMs = Date.now() - t
+  if (diffMs < 0) return 'Just now'
+  const diffSec = Math.floor(diffMs / 1000)
+  if (diffSec < 60) return 'Just now'
+  const diffMin = Math.floor(diffSec / 60)
+  if (diffMin < 60) return `${diffMin}m ago`
+  const diffHour = Math.floor(diffMin / 60)
+  if (diffHour < 24) return `${diffHour}h ago`
+  const diffDays = Math.floor(diffHour / 24)
+  if (diffDays === 1) return 'Yesterday'
+  if (diffDays < 30) return `${diffDays}d ago`
+  const diffMonths = Math.floor(diffDays / 30)
+  return `${diffMonths}mo ago`
+}
+
+function getCountryFlag(countryCodeOrName?: string): string {
+  if (!countryCodeOrName) return '🌐'
+  const val = countryCodeOrName.trim().toUpperCase()
+  if (val.length === 2) {
+    try {
+      const codePoints = val.split('').map((char) => 127397 + char.charCodeAt(0))
+      return String.fromCodePoint(...codePoints)
+    } catch {
+      // fallback below
+    }
+  }
+  const low = countryCodeOrName.toLowerCase()
+  if (low.includes('pakistan')) return '🇵🇰'
+  if (low.includes('emirates') || low.includes('uae') || low.includes('dubai')) return '🇦🇪'
+  if (low.includes('saudi')) return '🇸🇦'
+  if (low.includes('united states') || low.includes('usa') || low.includes('america')) return '🇺🇸'
+  if (low.includes('united kingdom') || low.includes('uk') || low.includes('britain') || low.includes('england')) return '🇬🇧'
+  if (low.includes('india')) return '🇮🇳'
+  if (low.includes('canada')) return '🇨🇦'
+  if (low.includes('australia')) return '🇦🇺'
+  if (low.includes('germany')) return '🇩🇪'
+  if (low.includes('turkey')) return '🇹🇷'
+  if (low.includes('qatar')) return '🇶🇦'
+  if (low.includes('oman')) return '🇴🇲'
+  if (low.includes('kuwait')) return '🇰🇼'
+  if (low.includes('bahrain')) return '🇧🇭'
+  return '🌐'
+}
+
+interface OriginInfo {
+  locationText: string
+  flag: string
+  country: string
+  city: string
+  device?: string
+  browser?: string
+  ip?: string
+}
+
+function inferOrigin(item: {
+  country?: string
+  countryCode?: string
+  city?: string
+  cityOrigin?: string
+  region?: string
+  createdLocation?: string
+  device?: string
+  browser?: string
+  os?: string
+  ip?: string
+  phone?: string
+  rsvpPhone?: string
+  address?: string
+  venue?: string
+}): OriginInfo {
+  // If explicitly tracked and valid
+  if (item.createdLocation && item.createdLocation !== 'Web Client' && item.createdLocation !== 'Unknown Country') {
+    const flag = getCountryFlag(item.countryCode || item.country)
+    return {
+      locationText: item.createdLocation,
+      flag,
+      country: item.country || '',
+      city: item.cityOrigin || item.city || '',
+      device: item.device,
+      browser: item.browser,
+      ip: item.ip,
+    }
+  }
+
+  // Check phone code
+  const phone = item.phone || item.rsvpPhone || ''
+  if (phone.startsWith('+92') || phone.startsWith('03') || phone.startsWith('92')) {
+    return {
+      locationText: item.city ? `${item.city}, Pakistan` : 'Pakistan',
+      flag: '🇵🇰',
+      country: 'Pakistan',
+      city: item.city || '',
+      device: item.device,
+      browser: item.browser,
+      ip: item.ip,
+    }
+  }
+  if (phone.startsWith('+971')) {
+    return {
+      locationText: 'Dubai, UAE',
+      flag: '🇦🇪',
+      country: 'UAE',
+      city: item.city || 'Dubai',
+      device: item.device,
+      browser: item.browser,
+      ip: item.ip,
+    }
+  }
+  if (phone.startsWith('+966')) {
+    return {
+      locationText: 'Saudi Arabia',
+      flag: '🇸🇦',
+      country: 'Saudi Arabia',
+      city: item.city || 'Riyadh',
+      device: item.device,
+      browser: item.browser,
+      ip: item.ip,
+    }
+  }
+  if (phone.startsWith('+1')) {
+    return {
+      locationText: 'United States',
+      flag: '🇺🇸',
+      country: 'USA',
+      city: item.city || '',
+      device: item.device,
+      browser: item.browser,
+      ip: item.ip,
+    }
+  }
+  if (phone.startsWith('+44')) {
+    return {
+      locationText: 'United Kingdom',
+      flag: '🇬🇧',
+      country: 'UK',
+      city: item.city || 'London',
+      device: item.device,
+      browser: item.browser,
+      ip: item.ip,
+    }
+  }
+
+  // Check venue or city or address
+  const textToCheck = `${item.city || ''} ${item.venue || ''} ${item.address || ''}`.toLowerCase()
+  if (
+    textToCheck.includes('lahore') ||
+    textToCheck.includes('karachi') ||
+    textToCheck.includes('islamabad') ||
+    textToCheck.includes('rawalpindi') ||
+    textToCheck.includes('faisalabad') ||
+    textToCheck.includes('multan') ||
+    textToCheck.includes('peshawar') ||
+    textToCheck.includes('quetta')
+  ) {
+    return {
+      locationText: item.city ? `${item.city}, Pakistan` : 'Pakistan',
+      flag: '🇵🇰',
+      country: 'Pakistan',
+      city: item.city || '',
+      device: item.device,
+      browser: item.browser,
+      ip: item.ip,
+    }
+  }
+  if (textToCheck.includes('dubai') || textToCheck.includes('abu dhabi') || textToCheck.includes('sharjah')) {
+    return {
+      locationText: 'United Arab Emirates',
+      flag: '🇦🇪',
+      country: 'UAE',
+      city: 'Dubai',
+      device: item.device,
+      browser: item.browser,
+      ip: item.ip,
+    }
+  }
+
+  if (item.country) {
+    const flag = getCountryFlag(item.countryCode || item.country)
+    return {
+      locationText: item.city ? `${item.city}, ${item.country}` : item.country,
+      flag,
+      country: item.country,
+      city: item.city || '',
+      device: item.device,
+      browser: item.browser,
+      ip: item.ip,
+    }
+  }
+
+  return {
+    locationText: item.city || 'Global (Online)',
+    flag: '🌐',
+    country: 'Global',
+    city: item.city || '',
+    device: item.device,
+    browser: item.browser,
+    ip: item.ip,
+  }
 }
 
 export default function AdminPortalPage() {
@@ -217,73 +442,95 @@ export default function AdminPortalPage() {
   const [firestoreWishes, setFirestoreWishes] = useState<Wish[]>([])
   const [firestoreVisitingCards, setFirestoreVisitingCards] = useState<VisitingCard[]>([])
   const [firestoreRsvps, setFirestoreRsvps] = useState<RsvpGuest[]>([])
+  const [isFirestoreLoading, setIsFirestoreLoading] = useState(false)
+  const [firestoreError, setFirestoreError] = useState<string | null>(null)
+  const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null)
 
-  useEffect(() => {
-    async function loadFirestoreAll() {
-      if (!db) return
+  const loadFirestoreAll = useCallback(async () => {
+    const activeDb = getFirebaseDb() || db
+    if (!isFirebaseConfigured || !activeDb) {
+      setFirestoreError(
+        'Cloud Database (Firebase) is not connected on this deployment. Missing NEXT_PUBLIC_FIREBASE_* environment variables.'
+      )
+      return
+    }
 
+    setIsFirestoreLoading(true)
+    setFirestoreError(null)
+
+    try {
       // 1. Users
       try {
-        const snap = await getDocs(collection(db, 'users'))
+        const snap = await getDocs(collection(activeDb, 'users'))
         const list: JashnUser[] = []
         snap.forEach((docSnap) => {
           if (docSnap.exists()) list.push(docSnap.data() as JashnUser)
         })
-        if (list.length > 0) setFirestoreUsers(list)
-      } catch (e) {
+        setFirestoreUsers(list)
+      } catch (e: any) {
         console.error('Failed to fetch users from Firestore:', e)
       }
 
       // 2. Invitations
       try {
-        const snap = await getDocs(collection(db, 'invitations'))
+        const snap = await getDocs(collection(activeDb, 'invitations'))
         const list: Invitation[] = []
         snap.forEach((docSnap) => {
           if (docSnap.exists()) list.push(docSnap.data() as Invitation)
         })
-        if (list.length > 0) setFirestoreInvitations(list)
-      } catch (e) {
+        setFirestoreInvitations(list)
+      } catch (e: any) {
         console.error('Failed to fetch invitations from Firestore:', e)
       }
 
       // 3. Wishes
       try {
-        const snap = await getDocs(collection(db, 'wishes'))
+        const snap = await getDocs(collection(activeDb, 'wishes'))
         const list: Wish[] = []
         snap.forEach((docSnap) => {
           if (docSnap.exists()) list.push(docSnap.data() as Wish)
         })
-        if (list.length > 0) setFirestoreWishes(list)
-      } catch (e) {
+        setFirestoreWishes(list)
+      } catch (e: any) {
         console.error('Failed to fetch wishes from Firestore:', e)
       }
 
       // 4. Visiting Cards
       try {
-        const snap = await getDocs(collection(db, 'visitingCards'))
+        const snap = await getDocs(collection(activeDb, 'visitingCards'))
         const list: VisitingCard[] = []
         snap.forEach((docSnap) => {
           if (docSnap.exists()) list.push(docSnap.data() as VisitingCard)
         })
-        if (list.length > 0) setFirestoreVisitingCards(list)
-      } catch (e) {
+        setFirestoreVisitingCards(list)
+      } catch (e: any) {
         console.error('Failed to fetch visiting cards from Firestore:', e)
       }
 
       // 5. RSVPs
       try {
-        const snap = await getDocs(collection(db, 'rsvps'))
+        const snap = await getDocs(collection(activeDb, 'rsvps'))
         const list: RsvpGuest[] = []
         snap.forEach((docSnap) => {
           if (docSnap.exists()) list.push(docSnap.data() as RsvpGuest)
         })
-        if (list.length > 0) setFirestoreRsvps(list)
-      } catch (e) {
+        setFirestoreRsvps(list)
+      } catch (e: any) {
         console.error('Failed to fetch RSVPs from Firestore:', e)
       }
+
+      setLastSyncedAt(Date.now())
+    } catch (err: any) {
+      console.error('Failed to load Firestore data:', err)
+      setFirestoreError(err?.message || 'Failed to sync with cloud database')
+    } finally {
+      setIsFirestoreLoading(false)
     }
-    loadFirestoreAll()
   }, [])
+
+  useEffect(() => {
+    loadFirestoreAll()
+  }, [loadFirestoreAll])
 
   // Merged Invitations list (store + Firestore)
   const invitations = useMemo(() => {
@@ -294,9 +541,12 @@ export default function AdminPortalPage() {
     })
     firestoreInvitations.forEach((i) => {
       const key = i.slug || i.id
-      if (key) map.set(key, i)
+      if (key) {
+        const existing = map.get(key)
+        map.set(key, existing ? { ...existing, ...i } : i)
+      }
     })
-    return Array.from(map.values())
+    return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
   }, [storeInvitations, firestoreInvitations])
 
   // Merged Wishes list (store + Firestore)
@@ -308,9 +558,12 @@ export default function AdminPortalPage() {
     })
     firestoreWishes.forEach((w) => {
       const key = w.slug || w.id
-      if (key) map.set(key, w)
+      if (key) {
+        const existing = map.get(key)
+        map.set(key, existing ? { ...existing, ...w } : w)
+      }
     })
-    return Array.from(map.values())
+    return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
   }, [storeWishes, firestoreWishes])
 
   // Merged Visiting Cards list (store + Firestore)
@@ -323,9 +576,12 @@ export default function AdminPortalPage() {
     })
     firestoreVisitingCards.forEach((vc: VisitingCard) => {
       const key = vc.slug || vc.id
-      if (key) map.set(key, vc)
+      if (key) {
+        const existing = map.get(key)
+        map.set(key, existing ? { ...existing, ...vc } : vc)
+      }
     })
-    return Array.from(map.values())
+    return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
   }, [storeVisitingCards, firestoreVisitingCards])
 
   // Merged RSVPs list (store + Firestore)
@@ -336,9 +592,12 @@ export default function AdminPortalPage() {
       if (r.id) map.set(r.id, r)
     })
     firestoreRsvps.forEach((r: RsvpGuest) => {
-      if (r.id) map.set(r.id, r)
+      if (r.id) {
+        const existing = map.get(r.id)
+        map.set(r.id, existing ? { ...existing, ...r } : r)
+      }
     })
-    return Array.from(map.values())
+    return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
   }, [storeRsvps, firestoreRsvps])
 
   // RSVPs filtered by the selected invitation slug (or all if none selected)
@@ -363,16 +622,22 @@ export default function AdminPortalPage() {
       if (key) map.set(key, u)
     })
 
-    // 2. Firestore users
+    // 2. Firestore users (rich merge)
     firestoreUsers.forEach((u) => {
       const key = u.uid || u.email
-      if (key) map.set(key, u)
+      if (key) {
+        const existing = map.get(key)
+        map.set(key, existing ? { ...existing, ...u } : u)
+      }
     })
 
     // 3. Current user
     if (currentUser) {
       const key = currentUser.uid || currentUser.email
-      if (key) map.set(key, currentUser)
+      if (key) {
+        const existing = map.get(key)
+        map.set(key, existing ? { ...existing, ...currentUser } : currentUser)
+      }
     }
 
     // 4. Creators from Invitations
@@ -385,6 +650,13 @@ export default function AdminPortalPage() {
             email: `user_${inv.creatorId.slice(0, 6)}@cardzy.online`,
             plan: 'free',
             createdAt: inv.createdAt || Date.now(),
+            createdLocation: inv.createdLocation,
+            country: inv.country,
+            countryCode: inv.countryCode,
+            city: inv.cityOrigin || inv.city,
+            device: inv.device,
+            browser: inv.browser,
+            ip: inv.ip,
           })
         }
       }
@@ -400,13 +672,43 @@ export default function AdminPortalPage() {
             email: `user_${w.creatorId.slice(0, 6)}@cardzy.online`,
             plan: 'free',
             createdAt: w.createdAt || Date.now(),
+            createdLocation: w.createdLocation,
+            country: w.country,
+            countryCode: w.countryCode,
+            city: w.city,
+            device: w.device,
+            browser: w.browser,
+            ip: w.ip,
           })
         }
       }
     })
 
-    return Array.from(map.values())
-  }, [registeredUsers, firestoreUsers, currentUser, invitations, wishes])
+    // 6. Creators from Visiting Cards
+    visitingCards.forEach((vc) => {
+      if (vc.creatorId && vc.creatorId !== 'guest') {
+        if (!map.has(vc.creatorId)) {
+          map.set(vc.creatorId, {
+            uid: vc.creatorId,
+            name: vc.fullName || 'Visiting Card Creator',
+            email: vc.email || `user_${vc.creatorId.slice(0, 6)}@cardzy.online`,
+            phone: vc.phone,
+            plan: 'free',
+            createdAt: vc.createdAt || Date.now(),
+            createdLocation: vc.createdLocation,
+            country: vc.country,
+            countryCode: vc.countryCode,
+            city: vc.city,
+            device: vc.device,
+            browser: vc.browser,
+            ip: vc.ip,
+          })
+        }
+      }
+    })
+
+    return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+  }, [registeredUsers, firestoreUsers, currentUser, invitations, wishes, visitingCards])
 
   // Stats calculation
   const stats = useMemo(() => {
@@ -458,7 +760,9 @@ export default function AdminPortalPage() {
         const matchName = u.name?.toLowerCase().includes(query)
         const matchEmail = u.email?.toLowerCase().includes(query)
         const matchUid = u.uid?.toLowerCase().includes(query)
-        return matchName || matchEmail || matchUid
+        const matchPhone = u.phone?.toLowerCase().includes(query)
+        const matchLoc = (u.createdLocation || u.country || u.city || '')?.toLowerCase().includes(query)
+        return matchName || matchEmail || matchUid || matchPhone || matchLoc
       }
       return true
     })
@@ -468,6 +772,146 @@ export default function AdminPortalPage() {
     await adminUpdateUserPlan(uid, plan, selectedDurationDays)
     showToast(`Updated user plan to ${plan.toUpperCase()} for ${selectedDurationDays} days!`, 'success')
   }
+
+  // ── Geolocation and Country Aggregation ──────────────────────────────────
+  const geoCountryStats = useMemo(() => {
+    const counts: Record<string, { country: string; flag: string; count: number }> = {}
+
+    const track = (origin: OriginInfo) => {
+      const c = origin.country || 'Global / Online'
+      if (!counts[c]) {
+        counts[c] = { country: c, flag: origin.flag || '🌐', count: 0 }
+      }
+      counts[c].count++
+    }
+
+    allUsersList.forEach((u) => track(inferOrigin(u)))
+    invitations.forEach((inv) =>
+      track(
+        inferOrigin({
+          country: inv.country,
+          countryCode: inv.countryCode,
+          city: inv.cityOrigin || inv.city,
+          createdLocation: inv.createdLocation,
+          phone: inv.rsvpPhone,
+          venue: inv.venue,
+        })
+      )
+    )
+    wishes.forEach((w) =>
+      track(
+        inferOrigin({
+          country: w.country,
+          countryCode: w.countryCode,
+          city: w.city,
+          createdLocation: w.createdLocation,
+        })
+      )
+    )
+    visitingCards.forEach((vc) =>
+      track(
+        inferOrigin({
+          country: vc.country,
+          countryCode: vc.countryCode,
+          city: vc.city,
+          createdLocation: vc.createdLocation,
+          phone: vc.phone,
+        })
+      )
+    )
+
+    return Object.values(counts).sort((a, b) => b.count - a.count)
+  }, [allUsersList, invitations, wishes, visitingCards])
+
+  // ── Recent Real-Time Activity Feed ───────────────────────────────────────
+  const recentActivities = useMemo(() => {
+    interface ActivityItem {
+      type: 'user' | 'invitation' | 'wish' | 'visiting_card'
+      typeLabel: string
+      title: string
+      subtitle: string
+      time: number
+      origin: OriginInfo
+      link?: string
+    }
+
+    const items: ActivityItem[] = []
+
+    allUsersList.forEach((u) => {
+      if (u.createdAt) {
+        items.push({
+          type: 'user',
+          typeLabel: 'User Signup',
+          title: u.name || 'New User',
+          subtitle: `${u.email} • Plan: ${u.plan.toUpperCase()}`,
+          time: u.createdAt,
+          origin: inferOrigin(u),
+        })
+      }
+    })
+
+    invitations.forEach((inv) => {
+      if (inv.createdAt) {
+        items.push({
+          type: 'invitation',
+          typeLabel: 'Invitation Created',
+          title: inv.title || 'Event Invitation',
+          subtitle: `By ${inv.hostNames || 'Host'} • ${inv.city || inv.venue || 'Event'}`,
+          time: inv.createdAt,
+          origin: inferOrigin({
+            country: inv.country,
+            countryCode: inv.countryCode,
+            city: inv.cityOrigin || inv.city,
+            createdLocation: inv.createdLocation,
+            phone: inv.rsvpPhone,
+            venue: inv.venue,
+          }),
+          link: `/i/${inv.slug}`,
+        })
+      }
+    })
+
+    wishes.forEach((w) => {
+      if (w.createdAt) {
+        items.push({
+          type: 'wish',
+          typeLabel: 'Wish Card Created',
+          title: `${w.senderName || 'Sender'} → ${w.recipientName || 'Recipient'}`,
+          subtitle: `Occasion: ${w.occasionId} • "${(w.message || '').slice(0, 45)}..."`,
+          time: w.createdAt,
+          origin: inferOrigin({
+            country: w.country,
+            countryCode: w.countryCode,
+            city: w.city,
+            createdLocation: w.createdLocation,
+          }),
+          link: `/w/${w.slug}`,
+        })
+      }
+    })
+
+    visitingCards.forEach((vc) => {
+      if (vc.createdAt) {
+        items.push({
+          type: 'visiting_card',
+          typeLabel: 'Visiting Card',
+          title: vc.fullName || 'Digital Card',
+          subtitle: `${vc.title || 'Professional'} • ${vc.company || 'Company'}`,
+          time: vc.createdAt,
+          origin: inferOrigin({
+            country: vc.country,
+            countryCode: vc.countryCode,
+            city: vc.city,
+            createdLocation: vc.createdLocation,
+            phone: vc.phone,
+          }),
+          link: `/v/${vc.slug}`,
+        })
+      }
+    })
+
+    return items.sort((a, b) => (b.time || 0) - (a.time || 0))
+  }, [allUsersList, invitations, wishes, visitingCards])
 
   // 🔒 Render Admin Login Lock Gate if not authorized
   if (!mounted) return null
@@ -617,18 +1061,28 @@ export default function AdminPortalPage() {
 
   function handleDownloadInvitationsPdf() {
     const rowsHtml = invitations.length === 0
-      ? `<tr><td colspan="7" style="text-align:center; padding: 25px; color: #64748b;">No active invitations recorded.</td></tr>`
-      : invitations.map((i, idx) => `
+      ? `<tr><td colspan="8" style="text-align:center; padding: 25px; color: #64748b;">No active invitations recorded.</td></tr>`
+      : invitations.map((i, idx) => {
+          const origin = inferOrigin({
+            country: i.country,
+            countryCode: i.countryCode,
+            city: i.cityOrigin || i.city,
+            createdLocation: i.createdLocation,
+            phone: i.rsvpPhone,
+            venue: i.venue,
+          })
+          return `
           <tr>
             <td>${idx + 1}</td>
             <td><strong>${i.title || 'Invitation'}</strong><br/><span style="font-size: 11px; color: #64748b;">${i.groom || ''} & ${i.bride || ''}</span></td>
             <td><strong>${i.hostNames || 'Host'}</strong><br/><span style="font-size: 11px; color: #64748b;">ID: ${i.creatorId}</span></td>
             <td><span style="padding: 2px 8px; border-radius: 10px; background: #e0e7ff; color: #3730a3; font-weight: 700; font-size: 10px;">${(i.typeId || 'event').toUpperCase()}</span></td>
             <td>${i.date || 'TBD'} ${i.time || ''}<br/><span style="font-size: 11px; color: #64748b;">${i.venue || i.city || '—'}</span></td>
+            <td><strong>${formatDateTime(i.createdAt)}</strong><br/><span style="font-size: 11px; color: #059669;">${origin.flag} ${origin.locationText}</span></td>
             <td><strong>${i.rsvpPhone || '—'}</strong></td>
             <td><strong>${i.rsvpCount} RSVPs</strong><br/><span style="font-size: 11px; color: #64748b;">${i.viewCount || 1} views</span></td>
           </tr>
-        `).join('')
+        `}).join('')
 
     printPdfReport(
       'Active Invitations Database Report',
@@ -637,24 +1091,32 @@ export default function AdminPortalPage() {
         { label: 'Total Active Invitations', value: `${invitations.length} Cards` },
         { label: 'Total RSVPs Received', value: `${invitations.reduce((a, b) => a + (b.rsvpCount || 0), 0)} Responses` },
       ],
-      ['#', 'Event & Couple', 'Host / Creator', 'Category', 'Date & Venue', 'RSVP Contact', 'Stats'],
+      ['#', 'Event & Couple', 'Host / Creator', 'Category', 'Date & Venue', 'Created When & Where', 'RSVP Contact', 'Stats'],
       rowsHtml
     )
   }
 
   function handleDownloadWishesPdf() {
     const rowsHtml = wishes.length === 0
-      ? `<tr><td colspan="6" style="text-align:center; padding: 25px; color: #64748b;">No wish cards recorded.</td></tr>`
-      : wishes.map((w, idx) => `
+      ? `<tr><td colspan="7" style="text-align:center; padding: 25px; color: #64748b;">No wish cards recorded.</td></tr>`
+      : wishes.map((w, idx) => {
+          const origin = inferOrigin({
+            country: w.country,
+            countryCode: w.countryCode,
+            city: w.city,
+            createdLocation: w.createdLocation,
+          })
+          return `
           <tr>
             <td>${idx + 1}</td>
             <td><strong>${w.senderName || 'Well Wisher'}</strong></td>
             <td><strong>${w.recipientName || 'Friend'}</strong><br/><span style="font-size: 11px; color: #64748b;">Relation: ${w.relation || '—'}</span></td>
             <td><span style="padding: 2px 8px; border-radius: 10px; background: #fef3c7; color: #92400e; font-weight: 700; font-size: 10px;">${(w.occasionId || 'wish').toUpperCase()}</span></td>
+            <td><strong>${formatDateTime(w.createdAt)}</strong><br/><span style="font-size: 11px; color: #d97706;">${origin.flag} ${origin.locationText}</span></td>
             <td style="max-width: 250px; font-size: 11px; color: #475569;">${w.message}</td>
             <td><strong>${w.viewCount} views</strong></td>
           </tr>
-        `).join('')
+        `}).join('')
 
     printPdfReport(
       'Greeting Wishes & Cards Database Report',
@@ -663,22 +1125,24 @@ export default function AdminPortalPage() {
         { label: 'Total Wishes Created', value: `${wishes.length} Cards` },
         { label: 'Total Views Tracked', value: `${wishes.reduce((a, b) => a + (b.viewCount || 0), 0)} Views` },
       ],
-      ['#', 'Sender (Who Sent)', 'Recipient (Who Received)', 'Occasion', 'Wish Message Text', 'Views'],
+      ['#', 'Sender (Who Sent)', 'Recipient (Who Received)', 'Occasion', 'Created When & Where', 'Wish Message Text', 'Views'],
       rowsHtml
     )
   }
 
   function handleDownloadUsersPdf() {
     const rowsHtml = allUsersList.length === 0
-      ? `<tr><td colspan="6" style="text-align:center; padding: 25px; color: #64748b;">No registered users found.</td></tr>`
+      ? `<tr><td colspan="7" style="text-align:center; padding: 25px; color: #64748b;">No registered users found.</td></tr>`
       : allUsersList.map((u, idx) => {
           const now = Date.now()
           const isExpired = u.planExpiresAt ? now > u.planExpiresAt : false
+          const origin = inferOrigin(u)
           return `
             <tr>
               <td>${idx + 1}</td>
               <td><strong>${u.name || 'Jashn User'}</strong><br/><span style="font-size: 11px; color: #64748b;">${u.email}</span></td>
               <td>${u.phone || 'N/A'}</td>
+              <td><strong>${formatDateTime(u.createdAt)}</strong><br/><span style="font-size: 11px; color: #4f46e5;">${origin.flag} ${origin.locationText}</span></td>
               <td><span style="padding: 2px 8px; border-radius: 10px; font-weight: 700; font-size: 10px; ${u.plan === 'business' ? 'background: #f3e8ff; color: #6b21a8;' : u.plan === 'pro' ? 'background: #fef3c7; color: #92400e;' : 'background: #f1f5f9; color: #475569;'}">${u.plan.toUpperCase()}</span></td>
               <td>${u.planActivatedAt ? new Date(u.planActivatedAt).toLocaleDateString() : '—'}</td>
               <td>${isExpired ? '<strong style="color: #dc2626;">Expired</strong>' : u.planExpiresAt ? new Date(u.planExpiresAt).toLocaleDateString() : 'No Limit'}</td>
@@ -694,7 +1158,7 @@ export default function AdminPortalPage() {
         { label: 'Active Pro Accounts', value: `${stats.proCount} Users` },
         { label: 'Active Business Accounts', value: `${stats.bizCount} Users` },
       ],
-      ['#', 'User Name & Email', 'Phone', 'Subscription Plan', 'Activated Date', 'Plan Expiry Status'],
+      ['#', 'User Name & Email', 'Phone', 'Registered When & From', 'Subscription Plan', 'Activated Date', 'Plan Expiry Status'],
       rowsHtml
     )
   }
@@ -705,18 +1169,42 @@ export default function AdminPortalPage() {
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 sm:p-8 shadow-2xl border border-indigo-500/20">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/20 text-xs font-semibold tracking-wider uppercase">
-                <ShieldCheck className="size-4 text-amber-400" /> Master Admin Data Control
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/20 text-xs font-semibold tracking-wider uppercase">
+                  <ShieldCheck className="size-4 text-amber-400" /> Master Admin Data Control
+                </div>
+                {isFirebaseConfigured ? (
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 text-xs font-semibold">
+                    <span className="size-2 rounded-full bg-emerald-400 animate-pulse" /> Cloud Firestore Live
+                  </div>
+                ) : (
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 text-xs font-semibold">
+                    <AlertTriangle className="size-3.5 text-amber-400" /> Local Storage Mode
+                  </div>
+                )}
               </div>
               <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
                 Cardzy Management Hub
               </h1>
               <p className="text-slate-300 text-sm max-w-2xl">
                 Generate printable PDF reports for all system databases (Guest RSVPs, Invitations, Wish Cards, and User Accounts).
+                {lastSyncedAt && (
+                  <span className="block text-xs text-slate-400 mt-1">
+                    Last Cloud Sync: {new Date(lastSyncedAt).toLocaleTimeString()} • {firestoreInvitations.length} Cloud Invs • {firestoreWishes.length} Cloud Wishes • {firestoreUsers.length} Cloud Users
+                  </span>
+                )}
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
+              <Button
+                onClick={() => loadFirestoreAll()}
+                disabled={isFirestoreLoading}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg hover:shadow-emerald-500/25 transition-all flex items-center gap-1.5 text-xs"
+              >
+                <RefreshCw className={cn("size-3.5", isFirestoreLoading && "animate-spin")} />
+                {isFirestoreLoading ? 'Syncing...' : 'Sync Cloud Data'}
+              </Button>
               <Button
                 onClick={() => downloadAllGuestsPdf()}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg hover:shadow-indigo-500/25 transition-all flex items-center gap-1.5 text-xs"
@@ -751,6 +1239,28 @@ export default function AdminPortalPage() {
             </div>
           </div>
         </div>
+
+        {!isFirebaseConfigured && (
+          <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-xs text-amber-200 flex items-start gap-3">
+            <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
+            <div className="space-y-1">
+              <p className="font-bold text-sm text-amber-100">Firebase Cloud Database Not Connected</p>
+              <p className="text-amber-200/80 leading-relaxed">
+                This deployment is missing the required Firebase environment variables (<code className="bg-amber-900/40 px-1.5 py-0.5 rounded text-amber-300 font-mono text-[11px]">NEXT_PUBLIC_FIREBASE_*</code>). Currently, you are viewing local browser data only. To see real-time submissions from all users across the published site, add these environment variables in your Vercel Project Settings and redeploy.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {firestoreError && isFirebaseConfigured && (
+          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs text-rose-200 flex items-start gap-3">
+            <AlertCircle className="size-5 shrink-0 text-rose-400 mt-0.5" />
+            <div className="space-y-1">
+              <p className="font-bold text-sm text-rose-100">Firestore Sync Notice</p>
+              <p className="text-rose-200/80 leading-relaxed">{firestoreError}</p>
+            </div>
+          </div>
+        )}
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
@@ -815,6 +1325,139 @@ export default function AdminPortalPage() {
             )
           })}
         </div>
+
+        {/* Real-Time Activity & Geolocation Radar (Shown in Overview tab) */}
+        {adminSection === 'all' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Top Countries / Geolocation Summary */}
+            <div className="bg-card border border-border rounded-3xl p-6 shadow-xl space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-bold text-foreground flex items-center gap-2">
+                  <Globe className="size-4 text-indigo-600" />
+                  Origin & Geolocation
+                </h3>
+                <span className="text-[11px] font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                  Real-time
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Distribution of where users register and cards are created across Cardzy.
+              </p>
+
+              {/* Country Badges / List */}
+              <div className="space-y-2.5 pt-1">
+                {geoCountryStats.length === 0 ? (
+                  <div className="py-6 text-center text-xs text-muted-foreground">
+                    No location data recorded yet.
+                  </div>
+                ) : (
+                  geoCountryStats.slice(0, 6).map((item) => (
+                    <div
+                      key={item.country}
+                      className="flex items-center justify-between p-2.5 rounded-2xl bg-muted/40 hover:bg-muted/60 transition-colors text-xs"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-lg leading-none shrink-0">{item.flag}</span>
+                        <span className="font-semibold text-foreground truncate">{item.country}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400">
+                          {item.count}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground">events</span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Live Activity & Creation Stream */}
+            <div className="lg:col-span-2 bg-card border border-border rounded-3xl p-6 shadow-xl space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-bold text-foreground flex items-center gap-2">
+                  <Activity className="size-4 text-emerald-600 animate-pulse" />
+                  Live Real-Time Activity & Creation Stream
+                </h3>
+                <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+                  <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                  Live Feed
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Chronological timeline of latest user registrations, event invitations, greeting wishes, and visiting cards.
+              </p>
+
+              <div className="divide-y divide-border/60">
+                {recentActivities.length === 0 ? (
+                  <div className="py-8 text-center text-xs text-muted-foreground">
+                    No activity recorded yet.
+                  </div>
+                ) : (
+                  recentActivities.slice(0, 5).map((act, i) => (
+                    <div key={i} className="py-3 first:pt-1 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                      <div className="flex items-start gap-3 min-w-0">
+                        <div className={cn(
+                          "size-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5",
+                          act.type === 'user' ? 'bg-indigo-500/10 text-indigo-600' :
+                          act.type === 'invitation' ? 'bg-emerald-500/10 text-emerald-600' :
+                          act.type === 'wish' ? 'bg-amber-500/10 text-amber-600' :
+                          'bg-purple-500/10 text-purple-600'
+                        )}>
+                          {act.type === 'user' ? <Users className="size-4" /> :
+                           act.type === 'invitation' ? <Calendar className="size-4" /> :
+                           act.type === 'wish' ? <Sparkles className="size-4" /> :
+                           <CreditCard className="size-4" />}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-bold text-foreground">{act.title}</span>
+                            <span className={cn(
+                              "px-2 py-0.5 rounded-md text-[10px] font-bold uppercase",
+                              act.type === 'user' ? 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-400' :
+                              act.type === 'invitation' ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400' :
+                              act.type === 'wish' ? 'bg-amber-500/15 text-amber-800 dark:text-amber-400' :
+                              'bg-purple-500/15 text-purple-700 dark:text-purple-400'
+                            )}>
+                              {act.typeLabel}
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-muted-foreground mt-0.5 truncate max-w-sm">
+                            {act.subtitle}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 shrink-0 sm:text-right">
+                        <div>
+                          <div className="flex items-center sm:justify-end gap-1 font-semibold text-foreground">
+                            <span>{act.origin.flag}</span>
+                            <span className="truncate max-w-[150px]">{act.origin.locationText}</span>
+                          </div>
+                          <div className="text-[10px] text-muted-foreground flex items-center sm:justify-end gap-1 mt-0.5">
+                            <Clock className="size-3 text-muted-foreground" />
+                            <span>{formatDateTime(act.time)} • {formatRelativeTime(act.time) || 'Recently'}</span>
+                          </div>
+                        </div>
+
+                        {act.link && (
+                          <Link
+                            href={act.link}
+                            target="_blank"
+                            className="p-1.5 rounded-lg bg-muted hover:bg-muted/80 text-foreground transition-colors shrink-0"
+                            title="Open Link"
+                          >
+                            <ExternalLink className="size-3.5" />
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* 1. USER ACCOUNTS SECTION */}
         {(adminSection === 'all' || adminSection === 'users') && (
@@ -897,6 +1540,7 @@ export default function AdminPortalPage() {
                 <thead className="bg-muted/40 border-b border-border text-xs uppercase font-semibold text-muted-foreground">
                   <tr>
                     <th className="py-3.5 px-4">User Details</th>
+                    <th className="py-3.5 px-4">Registered When & From</th>
                     <th className="py-3.5 px-4">Current Package</th>
                     <th className="py-3.5 px-4">Activated Date</th>
                     <th className="py-3.5 px-4">Package Expiry</th>
@@ -906,7 +1550,7 @@ export default function AdminPortalPage() {
                 <tbody className="divide-y divide-border/60">
                   {filteredUsers.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="py-8 text-center text-muted-foreground">
+                      <td colSpan={6} className="py-8 text-center text-muted-foreground">
                         No user accounts found matching your query.
                       </td>
                     </tr>
@@ -917,6 +1561,7 @@ export default function AdminPortalPage() {
                       const daysLeft = u.planExpiresAt
                         ? Math.ceil((u.planExpiresAt - now) / (1000 * 60 * 60 * 24))
                         : null
+                      const userOrigin = inferOrigin(u)
 
                       return (
                         <tr key={u.uid || u.email} className="hover:bg-muted/20 transition-colors">
@@ -924,6 +1569,43 @@ export default function AdminPortalPage() {
                             <div className="font-bold text-foreground">{u.name || 'Jashn User'}</div>
                             <div className="text-xs text-muted-foreground font-mono">{u.email}</div>
                             {u.phone && <div className="text-[11px] text-muted-foreground/80">{u.phone}</div>}
+                          </td>
+
+                          <td className="py-4 px-4 text-xs">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5">
+                                <Clock className="size-3.5 text-indigo-500 shrink-0" />
+                                <span className="font-bold text-foreground">
+                                  {formatDateTime(u.createdAt)}
+                                </span>
+                                {u.createdAt ? (
+                                  <span className="text-[10px] text-muted-foreground font-medium px-1.5 py-0.5 rounded bg-muted/60">
+                                    {formatRelativeTime(u.createdAt)}
+                                  </span>
+                                ) : null}
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-base shrink-0 leading-none">{userOrigin.flag}</span>
+                                <span className="font-semibold text-foreground truncate max-w-[190px]">
+                                  {userOrigin.locationText}
+                                </span>
+                              </div>
+                              {(userOrigin.device || userOrigin.ip) && (
+                                <div className="flex flex-wrap items-center gap-1 text-[10px]">
+                                  {userOrigin.device && (
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 font-medium">
+                                      {userOrigin.device.includes('Mobile') ? <Smartphone className="size-2.5" /> : <Monitor className="size-2.5" />}
+                                      {userOrigin.device} {userOrigin.browser ? `• ${userOrigin.browser}` : ''}
+                                    </span>
+                                  )}
+                                  {userOrigin.ip && userOrigin.ip !== '127.0.0.1' && (
+                                    <span className="px-1.5 py-0.5 rounded bg-muted/70 text-muted-foreground font-mono">
+                                      IP: {userOrigin.ip}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
                           </td>
 
                           <td className="py-4 px-4">
@@ -1047,6 +1729,7 @@ export default function AdminPortalPage() {
                     <th className="py-3.5 px-4">Host / Sender</th>
                     <th className="py-3.5 px-4">Category</th>
                     <th className="py-3.5 px-4">Schedule & Venue</th>
+                    <th className="py-3.5 px-4">Created When & Where</th>
                     <th className="py-3.5 px-4">RSVP Contact</th>
                     <th className="py-3.5 px-4">Stats</th>
                     <th className="py-3.5 px-4 text-right">Admin Actions</th>
@@ -1055,32 +1738,81 @@ export default function AdminPortalPage() {
                 <tbody className="divide-y divide-border/60">
                   {invitations.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="py-8 text-center text-muted-foreground">No active invitations found.</td>
+                      <td colSpan={8} className="py-8 text-center text-muted-foreground">No active invitations found.</td>
                     </tr>
                   ) : (
-                    invitations.map((inv) => (
-                      <tr key={inv.id} className="hover:bg-muted/20 transition-colors">
-                        <td className="py-4 px-4">
-                          <div className="font-bold text-foreground">{inv.title || 'Event Invitation'}</div>
-                          {(inv.groom || inv.bride) && (
-                            <div className="text-xs font-medium text-emerald-700">{inv.groom || ''} & {inv.bride || ''}</div>
-                          )}
-                          <div className="text-[10px] text-muted-foreground font-mono">Slug: {inv.slug}</div>
-                        </td>
-                        <td className="py-4 px-4">
-                          <div className="font-semibold text-xs text-foreground">{inv.hostNames || 'Host'}</div>
-                          <div className="text-[11px] text-muted-foreground font-mono">Creator: {inv.creatorId}</div>
-                        </td>
-                        <td className="py-4 px-4">
-                          <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-700 text-xs font-bold uppercase">
-                            {inv.typeId || 'Event'}
-                          </span>
-                        </td>
-                        <td className="py-4 px-4 text-xs text-muted-foreground">
-                          <div className="font-bold text-foreground">{inv.date || 'Date TBD'} {inv.time ? `• ${inv.time}` : ''}</div>
-                          <div>{inv.venue || inv.city || 'Location N/A'}</div>
-                          {inv.dressCode && <div className="text-[11px] italic">Dress: {inv.dressCode}</div>}
-                        </td>
+                    invitations.map((inv) => {
+                      const invOrigin = inferOrigin({
+                        country: inv.country,
+                        countryCode: inv.countryCode,
+                        city: inv.cityOrigin || inv.city,
+                        createdLocation: inv.createdLocation,
+                        device: inv.device,
+                        browser: inv.browser,
+                        ip: inv.ip,
+                        phone: inv.rsvpPhone,
+                        venue: inv.venue,
+                      })
+
+                      return (
+                        <tr key={inv.id} className="hover:bg-muted/20 transition-colors">
+                          <td className="py-4 px-4">
+                            <div className="font-bold text-foreground">{inv.title || 'Event Invitation'}</div>
+                            {(inv.groom || inv.bride) && (
+                              <div className="text-xs font-medium text-emerald-700">{inv.groom || ''} & {inv.bride || ''}</div>
+                            )}
+                            <div className="text-[10px] text-muted-foreground font-mono">Slug: {inv.slug}</div>
+                          </td>
+                          <td className="py-4 px-4">
+                            <div className="font-semibold text-xs text-foreground">{inv.hostNames || 'Host'}</div>
+                            <div className="text-[11px] text-muted-foreground font-mono">Creator: {inv.creatorId}</div>
+                          </td>
+                          <td className="py-4 px-4">
+                            <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-700 text-xs font-bold uppercase">
+                              {inv.typeId || 'Event'}
+                            </span>
+                          </td>
+                          <td className="py-4 px-4 text-xs text-muted-foreground">
+                            <div className="font-bold text-foreground">{inv.date || 'Date TBD'} {inv.time ? `• ${inv.time}` : ''}</div>
+                            <div>{inv.venue || inv.city || 'Location N/A'}</div>
+                            {inv.dressCode && <div className="text-[11px] italic">Dress: {inv.dressCode}</div>}
+                          </td>
+                          <td className="py-4 px-4 text-xs">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5">
+                                <Clock className="size-3.5 text-emerald-600 shrink-0" />
+                                <span className="font-bold text-foreground">
+                                  {formatDateTime(inv.createdAt)}
+                                </span>
+                                {inv.createdAt ? (
+                                  <span className="text-[10px] text-muted-foreground font-medium px-1.5 py-0.5 rounded bg-muted/60">
+                                    {formatRelativeTime(inv.createdAt)}
+                                  </span>
+                                ) : null}
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-base shrink-0 leading-none">{invOrigin.flag}</span>
+                                <span className="font-semibold text-foreground truncate max-w-[180px]">
+                                  {invOrigin.locationText}
+                                </span>
+                              </div>
+                              {(invOrigin.device || invOrigin.ip) && (
+                                <div className="flex flex-wrap items-center gap-1 text-[10px]">
+                                  {invOrigin.device && (
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium">
+                                      {invOrigin.device.includes('Mobile') ? <Smartphone className="size-2.5" /> : <Monitor className="size-2.5" />}
+                                      {invOrigin.device} {invOrigin.browser ? `• ${invOrigin.browser}` : ''}
+                                    </span>
+                                  )}
+                                  {invOrigin.ip && invOrigin.ip !== '127.0.0.1' && (
+                                    <span className="px-1.5 py-0.5 rounded bg-muted/70 text-muted-foreground font-mono">
+                                      IP: {invOrigin.ip}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </td>
                         <td className="py-4 px-4 text-xs font-mono text-muted-foreground">
                           {inv.rsvpPhone ? (
                             <span className="text-emerald-600 font-semibold">{inv.rsvpPhone}</span>
@@ -1134,8 +1866,9 @@ export default function AdminPortalPage() {
                           </div>
                         </td>
                       </tr>
-                    ))
-                  )}
+                    )
+                  })
+                )}
                 </tbody>
               </table>
             </div>
@@ -1166,6 +1899,7 @@ export default function AdminPortalPage() {
                     <th className="py-3.5 px-4">Sender (Who Sent)</th>
                     <th className="py-3.5 px-4">Recipient (Who Received)</th>
                     <th className="py-3.5 px-4">Occasion & Style</th>
+                    <th className="py-3.5 px-4">Created When & Where</th>
                     <th className="py-3.5 px-4">Card Message</th>
                     <th className="py-3.5 px-4">Views</th>
                     <th className="py-3.5 px-4 text-right">Admin Actions</th>
@@ -1174,22 +1908,69 @@ export default function AdminPortalPage() {
                 <tbody className="divide-y divide-border/60">
                   {wishes.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="py-8 text-center text-muted-foreground">No wishes recorded.</td>
+                      <td colSpan={7} className="py-8 text-center text-muted-foreground">No wishes recorded.</td>
                     </tr>
                   ) : (
-                    wishes.map((w) => (
-                      <tr key={w.id} className="hover:bg-muted/20 transition-colors">
-                        <td className="py-4 px-4 font-bold text-foreground">{w.senderName || 'Well Wisher'}</td>
-                        <td className="py-4 px-4">
-                          <div className="font-semibold text-foreground">{w.recipientName || 'Friend'}</div>
-                          {w.relation && <div className="text-[11px] text-muted-foreground">Relation: {w.relation}</div>}
-                        </td>
-                        <td className="py-4 px-4">
-                          <span className="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 text-xs font-bold uppercase">
-                            {w.occasionId}
-                          </span>
-                          <div className="text-[10px] text-muted-foreground mt-1 font-mono">Theme: {w.themeId || 'default'}</div>
-                        </td>
+                    wishes.map((w) => {
+                      const wishOrigin = inferOrigin({
+                        country: w.country,
+                        countryCode: w.countryCode,
+                        city: w.city,
+                        createdLocation: w.createdLocation,
+                        device: w.device,
+                        browser: w.browser,
+                        ip: w.ip,
+                      })
+
+                      return (
+                        <tr key={w.id} className="hover:bg-muted/20 transition-colors">
+                          <td className="py-4 px-4 font-bold text-foreground">{w.senderName || 'Well Wisher'}</td>
+                          <td className="py-4 px-4">
+                            <div className="font-semibold text-foreground">{w.recipientName || 'Friend'}</div>
+                            {w.relation && <div className="text-[11px] text-muted-foreground">Relation: {w.relation}</div>}
+                          </td>
+                          <td className="py-4 px-4">
+                            <span className="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 text-xs font-bold uppercase">
+                              {w.occasionId}
+                            </span>
+                            <div className="text-[10px] text-muted-foreground mt-1 font-mono">Theme: {w.themeId || 'default'}</div>
+                          </td>
+                          <td className="py-4 px-4 text-xs">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5">
+                                <Clock className="size-3.5 text-amber-500 shrink-0" />
+                                <span className="font-bold text-foreground">
+                                  {formatDateTime(w.createdAt)}
+                                </span>
+                                {w.createdAt ? (
+                                  <span className="text-[10px] text-muted-foreground font-medium px-1.5 py-0.5 rounded bg-muted/60">
+                                    {formatRelativeTime(w.createdAt)}
+                                  </span>
+                                ) : null}
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-base shrink-0 leading-none">{wishOrigin.flag}</span>
+                                <span className="font-semibold text-foreground truncate max-w-[180px]">
+                                  {wishOrigin.locationText}
+                                </span>
+                              </div>
+                              {(wishOrigin.device || wishOrigin.ip) && (
+                                <div className="flex flex-wrap items-center gap-1 text-[10px]">
+                                  {wishOrigin.device && (
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-400 font-medium">
+                                      {wishOrigin.device.includes('Mobile') ? <Smartphone className="size-2.5" /> : <Monitor className="size-2.5" />}
+                                      {wishOrigin.device} {wishOrigin.browser ? `• ${wishOrigin.browser}` : ''}
+                                    </span>
+                                  )}
+                                  {wishOrigin.ip && wishOrigin.ip !== '127.0.0.1' && (
+                                    <span className="px-1.5 py-0.5 rounded bg-muted/70 text-muted-foreground font-mono">
+                                      IP: {wishOrigin.ip}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </td>
                         <td className="py-4 px-4 text-xs text-muted-foreground max-w-xs leading-snug">{w.message}</td>
                         <td className="py-4 px-4 text-xs font-bold text-foreground">{w.viewCount}</td>
                         <td className="py-4 px-4 text-right">
@@ -1221,8 +2002,9 @@ export default function AdminPortalPage() {
                           </div>
                         </td>
                       </tr>
-                    ))
-                  )}
+                    )
+                  })
+                )}
                 </tbody>
               </table>
             </div>
@@ -1257,6 +2039,7 @@ export default function AdminPortalPage() {
                     <th className="py-3.5 px-4">Full Name & Title</th>
                     <th className="py-3.5 px-4">Company & Category</th>
                     <th className="py-3.5 px-4">Contact Info</th>
+                    <th className="py-3.5 px-4">Created When & Where</th>
                     <th className="py-3.5 px-4">Views</th>
                     <th className="py-3.5 px-4 text-right">Actions</th>
                   </tr>
@@ -1264,30 +2047,79 @@ export default function AdminPortalPage() {
                 <tbody className="divide-y divide-border">
                   {(!visitingCards || visitingCards.length === 0) ? (
                     <tr>
-                      <td colSpan={5} className="py-8 text-center text-xs text-muted-foreground">
+                      <td colSpan={6} className="py-8 text-center text-xs text-muted-foreground">
                         No visiting cards created yet.
                       </td>
                     </tr>
                   ) : (
-                    visitingCards.map((vc) => (
-                      <tr key={vc.id} className="hover:bg-muted/20 transition-colors">
-                        <td className="py-4 px-4">
-                          <div className="font-bold text-foreground text-sm">{vc.fullName}</div>
-                          <div className="text-xs text-muted-foreground font-medium">{vc.title}</div>
-                          <div className="text-[10px] text-muted-foreground mt-0.5 font-mono">Theme: {vc.themeId || 'executive-gold'}</div>
-                        </td>
-                        <td className="py-4 px-4">
-                          <div className="text-xs font-bold text-foreground">{vc.company || '—'}</div>
-                          <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-extrabold text-[10px] uppercase">
-                            {vc.category || 'Business'}
-                          </span>
-                        </td>
-                        <td className="py-4 px-4 text-xs space-y-0.5 text-muted-foreground">
-                          {vc.phone && <div>📞 {vc.phone}</div>}
-                          {vc.email && <div>✉️ {vc.email}</div>}
-                          {vc.address && <div className="truncate max-w-[160px]">📍 {vc.address}</div>}
-                        </td>
-                        <td className="py-4 px-4 text-xs font-bold text-foreground">{vc.viewCount || 0}</td>
+                    visitingCards.map((vc) => {
+                      const vcOrigin = inferOrigin({
+                        country: vc.country,
+                        countryCode: vc.countryCode,
+                        city: vc.city,
+                        createdLocation: vc.createdLocation,
+                        device: vc.device,
+                        browser: vc.browser,
+                        ip: vc.ip,
+                        phone: vc.phone || vc.whatsapp,
+                        address: vc.address,
+                      })
+
+                      return (
+                        <tr key={vc.id} className="hover:bg-muted/20 transition-colors">
+                          <td className="py-4 px-4">
+                            <div className="font-bold text-foreground text-sm">{vc.fullName}</div>
+                            <div className="text-xs text-muted-foreground font-medium">{vc.title}</div>
+                            <div className="text-[10px] text-muted-foreground mt-0.5 font-mono">Theme: {vc.themeId || 'executive-gold'}</div>
+                          </td>
+                          <td className="py-4 px-4">
+                            <div className="text-xs font-bold text-foreground">{vc.company || '—'}</div>
+                            <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-extrabold text-[10px] uppercase">
+                              {vc.category || 'Business'}
+                            </span>
+                          </td>
+                          <td className="py-4 px-4 text-xs space-y-0.5 text-muted-foreground">
+                            {vc.phone && <div>📞 {vc.phone}</div>}
+                            {vc.email && <div>✉️ {vc.email}</div>}
+                            {vc.address && <div className="truncate max-w-[160px]">📍 {vc.address}</div>}
+                          </td>
+                          <td className="py-4 px-4 text-xs">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5">
+                                <Clock className="size-3.5 text-emerald-600 shrink-0" />
+                                <span className="font-bold text-foreground">
+                                  {formatDateTime(vc.createdAt)}
+                                </span>
+                                {vc.createdAt ? (
+                                  <span className="text-[10px] text-muted-foreground font-medium px-1.5 py-0.5 rounded bg-muted/60">
+                                    {formatRelativeTime(vc.createdAt)}
+                                  </span>
+                                ) : null}
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-base shrink-0 leading-none">{vcOrigin.flag}</span>
+                                <span className="font-semibold text-foreground truncate max-w-[180px]">
+                                  {vcOrigin.locationText}
+                                </span>
+                              </div>
+                              {(vcOrigin.device || vcOrigin.ip) && (
+                                <div className="flex flex-wrap items-center gap-1 text-[10px]">
+                                  {vcOrigin.device && (
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium">
+                                      {vcOrigin.device.includes('Mobile') ? <Smartphone className="size-2.5" /> : <Monitor className="size-2.5" />}
+                                      {vcOrigin.device} {vcOrigin.browser ? `• ${vcOrigin.browser}` : ''}
+                                    </span>
+                                  )}
+                                  {vcOrigin.ip && vcOrigin.ip !== '127.0.0.1' && (
+                                    <span className="px-1.5 py-0.5 rounded bg-muted/70 text-muted-foreground font-mono">
+                                      IP: {vcOrigin.ip}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                          <td className="py-4 px-4 text-xs font-bold text-foreground">{vc.viewCount || 0}</td>
                         <td className="py-4 px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
                             <Link
@@ -1309,7 +2141,8 @@ export default function AdminPortalPage() {
                           </div>
                         </td>
                       </tr>
-                    ))
+                      )
+                    })
                   )}
                 </tbody>
               </table>
@@ -1432,7 +2265,7 @@ export default function AdminPortalPage() {
                     <th className="py-3.5 px-4">Guest Count</th>
                     <th className="py-3.5 px-4">Special Note</th>
                     {!rsvpFilterSlug && <th className="py-3.5 px-4">Event</th>}
-                    <th className="py-3.5 px-4">Date Submitted</th>
+                    <th className="py-3.5 px-4">Submitted When & From</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
@@ -1453,39 +2286,73 @@ export default function AdminPortalPage() {
                       </td>
                     </tr>
                   ) : (
-                    filteredRsvps.map((r, idx) => (
-                      <tr key={r.id || idx} className="hover:bg-muted/20 transition-colors">
-                        <td className="py-3.5 px-4 text-xs text-muted-foreground font-mono">{idx + 1}</td>
-                        <td className="py-3.5 px-4 font-bold text-foreground">{r.guestName || 'Anonymous'}</td>
-                        <td className="py-3.5 px-4 text-xs font-mono text-muted-foreground">{r.phone || '—'}</td>
-                        <td className="py-3.5 px-4">
-                          <span className={cn(
-                            'px-2 py-0.5 rounded-full text-xs font-bold',
-                            String(r.attending).toLowerCase() === 'no'
-                              ? 'bg-rose-500/10 text-rose-600'
-                              : String(r.attending).toLowerCase() === 'maybe'
-                              ? 'bg-amber-500/10 text-amber-700'
-                              : 'bg-emerald-500/10 text-emerald-700'
-                          )}>
-                            {r.attending || 'Yes'}
-                          </span>
-                        </td>
-                        <td className="py-3.5 px-4 text-xs font-bold text-foreground">{r.guestCount || 1}</td>
-                        <td className="py-3.5 px-4 text-xs text-muted-foreground max-w-[150px] truncate">{r.note || '—'}</td>
-                        {!rsvpFilterSlug && (
+                    filteredRsvps.map((r, idx) => {
+                      const rOrigin = inferOrigin({
+                        country: r.country,
+                        countryCode: r.countryCode,
+                        city: r.city,
+                        createdLocation: r.createdLocation,
+                        phone: r.phone,
+                        device: r.device,
+                        browser: r.browser,
+                        ip: r.ip,
+                      })
+
+                      return (
+                        <tr key={r.id || idx} className="hover:bg-muted/20 transition-colors">
+                          <td className="py-3.5 px-4 text-xs text-muted-foreground font-mono">{idx + 1}</td>
+                          <td className="py-3.5 px-4 font-bold text-foreground">{r.guestName || 'Anonymous'}</td>
+                          <td className="py-3.5 px-4 text-xs font-mono text-muted-foreground">{r.phone || '—'}</td>
                           <td className="py-3.5 px-4">
-                            <button
-                              onClick={() => { setRsvpFilterSlug(r.invitationSlug); setAdminSection('rsvps') }}
-                              className="text-xs font-mono text-indigo-600 hover:underline truncate max-w-[120px] block"
-                              title={r.invitationSlug}
-                            >
-                              {invitations.find(i => i.slug === r.invitationSlug)?.title || r.invitationSlug}
-                            </button>
+                            <span className={cn(
+                              'px-2 py-0.5 rounded-full text-xs font-bold',
+                              String(r.attending).toLowerCase() === 'no'
+                                ? 'bg-rose-500/10 text-rose-600'
+                                : String(r.attending).toLowerCase() === 'maybe'
+                                ? 'bg-amber-500/10 text-amber-700'
+                                : 'bg-emerald-500/10 text-emerald-700'
+                            )}>
+                              {r.attending || 'Yes'}
+                            </span>
                           </td>
-                        )}
-                        <td className="py-3.5 px-4 text-xs text-muted-foreground">{new Date(r.createdAt || Date.now()).toLocaleString()}</td>
-                      </tr>
-                    ))
+                          <td className="py-3.5 px-4 text-xs font-bold text-foreground">{r.guestCount || 1}</td>
+                          <td className="py-3.5 px-4 text-xs text-muted-foreground max-w-[150px] truncate">{r.note || '—'}</td>
+                          {!rsvpFilterSlug && (
+                            <td className="py-3.5 px-4">
+                              <button
+                                onClick={() => { setRsvpFilterSlug(r.invitationSlug); setAdminSection('rsvps') }}
+                                className="text-xs font-mono text-indigo-600 hover:underline truncate max-w-[120px] block"
+                                title={r.invitationSlug}
+                              >
+                                {invitations.find(i => i.slug === r.invitationSlug)?.title || r.invitationSlug}
+                              </button>
+                            </td>
+                          )}
+                          <td className="py-3.5 px-4 text-xs">
+                            <div className="space-y-1">
+                              <div className="font-bold text-foreground flex items-center gap-1.5">
+                                <Clock className="size-3.5 text-indigo-500 shrink-0" />
+                                <span>{formatDateTime(r.createdAt)}</span>
+                                {r.createdAt ? (
+                                  <span className="text-[10px] text-muted-foreground font-medium px-1.5 py-0.5 rounded bg-muted/60">
+                                    {formatRelativeTime(r.createdAt)}
+                                  </span>
+                                ) : null}
+                              </div>
+                              <div className="flex items-center gap-1.5 text-muted-foreground">
+                                <span className="text-base shrink-0 leading-none">{rOrigin.flag}</span>
+                                <span className="truncate max-w-[150px] font-medium">{rOrigin.locationText}</span>
+                              </div>
+                              {(rOrigin.device || rOrigin.ip) && (
+                                <div className="text-[10px] text-muted-foreground/80">
+                                  {rOrigin.device} {rOrigin.ip && rOrigin.ip !== '127.0.0.1' ? `• ${rOrigin.ip}` : ''}
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })
                   )}
                 </tbody>
               </table>

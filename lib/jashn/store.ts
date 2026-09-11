@@ -3,6 +3,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Invitation, JashnUser, Plan, Wish, RsvpGuest, VisitingCard } from './types'
+import { getClientTracking } from './tracking'
 import { db, auth, isFirebaseConfigured, getFirebaseAuth, getFirebaseDb } from '../firebase'
 import {
   createUserWithEmailAndPassword,
@@ -51,6 +52,21 @@ function slugify(): string {
 
 function uid(): string {
   return Math.random().toString(36).slice(2, 12)
+}
+
+function cleanForFirestore<T>(data: T): T {
+  if (data === null || data === undefined) return data
+  if (typeof data !== 'object') return data
+  if (Array.isArray(data)) {
+    return data.map((item) => cleanForFirestore(item)) as unknown as T
+  }
+  const result: Record<string, any> = {}
+  for (const [key, val] of Object.entries(data as Record<string, any>)) {
+    if (val !== undefined) {
+      result[key] = typeof val === 'object' && val !== null ? cleanForFirestore(val) : val
+    }
+  }
+  return result as T
 }
 
 interface JashnState {
@@ -137,6 +153,7 @@ export const useJashn = create<JashnState>()(
           const firebaseUser = userCredential.user
           await updateProfile(firebaseUser, { displayName: name })
           
+          const tracking = await getClientTracking()
           const newUser: JashnUser = {
             uid: firebaseUser.uid,
             name,
@@ -144,12 +161,21 @@ export const useJashn = create<JashnState>()(
             phone,
             plan: 'free',
             createdAt: Date.now(),
+            createdLocation: tracking.createdLocation,
+            country: tracking.country,
+            countryCode: tracking.countryCode,
+            city: tracking.city,
+            region: tracking.region,
+            ip: tracking.ip,
+            device: tracking.device,
+            browser: tracking.browser,
+            os: tracking.os,
           }
 
           const activeDb = getFirebaseDb() || db
           if (activeDb) {
             try {
-              await setDoc(doc(activeDb, 'users', firebaseUser.uid), newUser)
+              await setDoc(doc(activeDb, 'users', firebaseUser.uid), cleanForFirestore(newUser))
             } catch (e: any) {
               console.warn('Firestore setDoc notice (operating offline):', e?.message || e)
             }
@@ -250,14 +276,24 @@ export const useJashn = create<JashnState>()(
               if (userSnap.exists()) {
                 userData = userSnap.data() as JashnUser
               } else {
+                const tracking = await getClientTracking()
                 userData = {
                   uid: firebaseUser.uid,
                   name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Cardzy User',
                   email: firebaseUser.email || '',
                   plan: 'free',
                   createdAt: Date.now(),
+                  createdLocation: tracking.createdLocation,
+                  country: tracking.country,
+                  countryCode: tracking.countryCode,
+                  city: tracking.city,
+                  region: tracking.region,
+                  ip: tracking.ip,
+                  device: tracking.device,
+                  browser: tracking.browser,
+                  os: tracking.os,
                 }
-                await setDoc(userRef, userData)
+                await setDoc(userRef, cleanForFirestore(userData))
               }
             } catch (e) {
               console.error('Failed to sync Google user to Firestore:', e)
@@ -265,12 +301,22 @@ export const useJashn = create<JashnState>()(
           }
 
           if (!userData) {
+            const tracking = await getClientTracking()
             userData = {
               uid: firebaseUser.uid,
               name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Cardzy User',
               email: firebaseUser.email || '',
               plan: 'free',
               createdAt: Date.now(),
+              createdLocation: tracking.createdLocation,
+              country: tracking.country,
+              countryCode: tracking.countryCode,
+              city: tracking.city,
+              region: tracking.region,
+              ip: tracking.ip,
+              device: tracking.device,
+              browser: tracking.browser,
+              os: tracking.os,
             }
           }
 
@@ -353,14 +399,24 @@ export const useJashn = create<JashnState>()(
             if (userSnap.exists()) {
               userData = userSnap.data() as JashnUser
             } else {
+              const tracking = await getClientTracking()
               const newUser: JashnUser = {
                 uid: uidToUse,
                 name,
                 email,
                 plan: 'free',
                 createdAt: Date.now(),
+                createdLocation: tracking.createdLocation,
+                country: tracking.country,
+                countryCode: tracking.countryCode,
+                city: tracking.city,
+                region: tracking.region,
+                ip: tracking.ip,
+                device: tracking.device,
+                browser: tracking.browser,
+                os: tracking.os,
               }
-              await setDoc(userRef, newUser)
+              await setDoc(userRef, cleanForFirestore(newUser))
               userData = newUser
             }
           } catch (e) {
@@ -369,12 +425,22 @@ export const useJashn = create<JashnState>()(
         }
 
         if (!userData) {
+          const tracking = await getClientTracking()
           userData = {
             uid: uidToUse,
             name,
             email,
             plan: 'free',
             createdAt: Date.now(),
+            createdLocation: tracking.createdLocation,
+            country: tracking.country,
+            countryCode: tracking.countryCode,
+            city: tracking.city,
+            region: tracking.region,
+            ip: tracking.ip,
+            device: tracking.device,
+            browser: tracking.browser,
+            os: tracking.os,
           }
         }
 
@@ -405,9 +471,10 @@ export const useJashn = create<JashnState>()(
 
         const updatedUser = { ...currentUser, plan }
 
-        if (isFirebaseConfigured && db && currentUser.uid) {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb && currentUser.uid) {
           try {
-            await setDoc(doc(db, 'users', currentUser.uid), { plan }, { merge: true })
+            await setDoc(doc(activeDb, 'users', currentUser.uid), { plan }, { merge: true })
           } catch (e) {
             console.error('Failed to update user plan in Firestore:', e)
           }
@@ -428,15 +495,16 @@ export const useJashn = create<JashnState>()(
           invitations: s.invitations.map((i) => (i.creatorId === 'guest' ? { ...i, creatorId: userId } : i)),
         }))
 
-        if (isFirebaseConfigured && db) {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
           try {
             for (const wish of guestWishes) {
               const updatedWish = { ...wish, creatorId: userId }
-              await setDoc(doc(db, 'wishes', wish.slug), updatedWish)
+              await setDoc(doc(activeDb, 'wishes', wish.slug), cleanForFirestore(updatedWish))
             }
             for (const inv of guestInvs) {
               const updatedInv = { ...inv, creatorId: userId }
-              await setDoc(doc(db, 'invitations', inv.slug), updatedInv)
+              await setDoc(doc(activeDb, 'invitations', inv.slug), cleanForFirestore(updatedInv))
             }
           } catch (e) {
             console.error('Failed to migrate guest cards to Firestore:', e)
@@ -448,16 +516,17 @@ export const useJashn = create<JashnState>()(
         let currentUser = get().user
         if (!currentUser) return
 
+        const activeDb = getFirebaseDb() || db
         if (!currentUser.uid) {
           const generatedUid = uid()
           currentUser = { ...currentUser, uid: generatedUid }
           set({ user: currentUser })
 
-          if (isFirebaseConfigured && db) {
+          if (isFirebaseConfigured && activeDb) {
             try {
               const userKey = (currentUser.email || currentUser.uid || '').toLowerCase()
               if (userKey) {
-                await setDoc(doc(db, 'users', userKey), { uid: generatedUid }, { merge: true })
+                await setDoc(doc(activeDb, 'users', userKey), cleanForFirestore({ uid: generatedUid }), { merge: true })
               }
             } catch (e) {
               console.error('Failed to update missing user uid:', e)
@@ -465,9 +534,9 @@ export const useJashn = create<JashnState>()(
           }
         }
 
-        if (isFirebaseConfigured && db) {
+        if (isFirebaseConfigured && activeDb) {
           try {
-            const invQ = query(collection(db, 'invitations'), where('creatorId', '==', currentUser.uid))
+            const invQ = query(collection(activeDb, 'invitations'), where('creatorId', '==', currentUser.uid))
             const invSnap = await getDocs(invQ)
             const fetchedInvs = invSnap.docs.map((doc) => {
               const d = doc.data() as Invitation
@@ -477,13 +546,18 @@ export const useJashn = create<JashnState>()(
               return d
             })
 
-            const wishQ = query(collection(db, 'wishes'), where('creatorId', '==', currentUser.uid))
+            const wishQ = query(collection(activeDb, 'wishes'), where('creatorId', '==', currentUser.uid))
             const wishSnap = await getDocs(wishQ)
             const fetchedWishes = wishSnap.docs.map((doc) => doc.data() as Wish)
+
+            const vcQ = query(collection(activeDb, 'visitingCards'), where('creatorId', '==', currentUser.uid))
+            const vcSnap = await getDocs(vcQ)
+            const fetchedVcs = vcSnap.docs.map((doc) => doc.data() as VisitingCard)
 
             set((s) => {
               const otherInvs = s.invitations.filter((li) => li.creatorId !== currentUser.uid)
               const otherWishes = s.wishes.filter((lw) => lw.creatorId !== currentUser.uid)
+              const otherVcs = (s.visitingCards || []).filter((lvc) => lvc.creatorId !== currentUser.uid)
 
               const invsMap = new Map<string, Invitation>()
               otherInvs.forEach((i) => invsMap.set(i.slug, i))
@@ -493,9 +567,14 @@ export const useJashn = create<JashnState>()(
               otherWishes.forEach((w) => wishesMap.set(w.slug, w))
               fetchedWishes.forEach((w) => wishesMap.set(w.slug, w))
 
+              const vcsMap = new Map<string, VisitingCard>()
+              otherVcs.forEach((vc) => vcsMap.set(vc.slug, vc))
+              fetchedVcs.forEach((vc) => vcsMap.set(vc.slug, vc))
+
               return {
                 invitations: Array.from(invsMap.values()),
                 wishes: Array.from(wishesMap.values()),
+                visitingCards: Array.from(vcsMap.values()),
               }
             })
           } catch (e) {
@@ -505,6 +584,7 @@ export const useJashn = create<JashnState>()(
       },
 
       createWish: async (data) => {
+        const tracking = await getClientTracking()
         const wish: Wish = {
           ...data,
           id: uid(),
@@ -512,11 +592,21 @@ export const useJashn = create<JashnState>()(
           creatorId: get().user?.uid ?? 'guest',
           viewCount: 0,
           createdAt: Date.now(),
+          createdLocation: tracking.createdLocation,
+          country: tracking.country,
+          countryCode: tracking.countryCode,
+          city: tracking.city,
+          region: tracking.region,
+          ip: tracking.ip,
+          device: tracking.device,
+          browser: tracking.browser,
+          os: tracking.os,
         }
 
-        if (isFirebaseConfigured && db) {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
           try {
-            await setDoc(doc(db, 'wishes', wish.slug), wish)
+            await setDoc(doc(activeDb, 'wishes', wish.slug), cleanForFirestore(wish))
           } catch (err) {
             console.error('Failed to save wish to Firestore:', err)
           }
@@ -527,6 +617,7 @@ export const useJashn = create<JashnState>()(
       },
 
       createInvitation: async (data) => {
+        const tracking = await getClientTracking()
         const inv: Invitation = {
           ...data,
           id: uid(),
@@ -535,11 +626,21 @@ export const useJashn = create<JashnState>()(
           rsvpCount: 0,
           viewCount: 0,
           createdAt: Date.now(),
+          createdLocation: tracking.createdLocation,
+          country: tracking.country,
+          countryCode: tracking.countryCode,
+          cityOrigin: tracking.city,
+          region: tracking.region,
+          ip: tracking.ip,
+          device: tracking.device,
+          browser: tracking.browser,
+          os: tracking.os,
         }
 
-        if (isFirebaseConfigured && db) {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
           try {
-            await setDoc(doc(db, 'invitations', inv.slug), inv)
+            await setDoc(doc(activeDb, 'invitations', inv.slug), cleanForFirestore(inv))
           } catch (err) {
             console.error('Failed to save invitation to Firestore:', err)
           }
@@ -550,6 +651,7 @@ export const useJashn = create<JashnState>()(
       },
 
       createVisitingCard: async (data) => {
+        const tracking = await getClientTracking()
         const vc: VisitingCard = {
           ...data,
           id: uid(),
@@ -557,11 +659,21 @@ export const useJashn = create<JashnState>()(
           creatorId: get().user?.uid ?? 'guest',
           viewCount: 0,
           createdAt: Date.now(),
+          createdLocation: tracking.createdLocation,
+          country: tracking.country,
+          countryCode: tracking.countryCode,
+          city: tracking.city,
+          region: tracking.region,
+          ip: tracking.ip,
+          device: tracking.device,
+          browser: tracking.browser,
+          os: tracking.os,
         }
 
-        if (isFirebaseConfigured && db) {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
           try {
-            await setDoc(doc(db, 'visitingCards', vc.slug), vc)
+            await setDoc(doc(activeDb, 'visitingCards', vc.slug), cleanForFirestore(vc))
           } catch (err) {
             console.error('Failed to save visiting card to Firestore:', err)
           }
@@ -582,8 +694,9 @@ export const useJashn = create<JashnState>()(
           ),
         }))
 
-        if (isFirebaseConfigured && db) {
-          updateDoc(doc(db, 'wishes', slug), {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
+          updateDoc(doc(activeDb, 'wishes', slug), {
             viewCount: increment(1),
           }).catch((err) => {
             console.error('Failed to increment wish view in Firestore:', err)
@@ -598,8 +711,9 @@ export const useJashn = create<JashnState>()(
           ),
         }))
 
-        if (isFirebaseConfigured && db) {
-          updateDoc(doc(db, 'invitations', slug), {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
+          updateDoc(doc(activeDb, 'invitations', slug), {
             viewCount: increment(1),
           }).catch((err) => {
             console.error('Failed to increment invitation view in Firestore:', err)
@@ -614,8 +728,9 @@ export const useJashn = create<JashnState>()(
           ),
         }))
 
-        if (isFirebaseConfigured && db) {
-          updateDoc(doc(db, 'visitingCards', slug), {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
+          updateDoc(doc(activeDb, 'visitingCards', slug), {
             viewCount: increment(1),
           }).catch((err) => {
             console.error('Failed to increment visiting card view in Firestore:', err)
@@ -630,8 +745,9 @@ export const useJashn = create<JashnState>()(
           ),
         }))
 
-        if (isFirebaseConfigured && db) {
-          updateDoc(doc(db, 'invitations', slug), {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
+          updateDoc(doc(activeDb, 'invitations', slug), {
             rsvpCount: increment(1),
           }).catch((err) => {
             console.error('Failed to increment invitation rsvp in Firestore:', err)
@@ -644,8 +760,9 @@ export const useJashn = create<JashnState>()(
           wishes: s.wishes.filter((w) => w.slug !== slug),
         }))
 
-        if (isFirebaseConfigured && db) {
-          deleteDoc(doc(db, 'wishes', slug)).catch((err) => {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
+          deleteDoc(doc(activeDb, 'wishes', slug)).catch((err) => {
             console.error('Failed to delete wish from Firestore:', err)
           })
         }
@@ -656,8 +773,9 @@ export const useJashn = create<JashnState>()(
           invitations: s.invitations.filter((i) => i.slug !== slug),
         }))
 
-        if (isFirebaseConfigured && db) {
-          deleteDoc(doc(db, 'invitations', slug)).catch((err) => {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
+          deleteDoc(doc(activeDb, 'invitations', slug)).catch((err) => {
             console.error('Failed to delete invitation from Firestore:', err)
           })
         }
@@ -668,8 +786,9 @@ export const useJashn = create<JashnState>()(
           visitingCards: s.visitingCards.filter((v) => v.slug !== slug),
         }))
 
-        if (isFirebaseConfigured && db) {
-          deleteDoc(doc(db, 'visitingCards', slug)).catch((err) => {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
+          deleteDoc(doc(activeDb, 'visitingCards', slug)).catch((err) => {
             console.error('Failed to delete visiting card from Firestore:', err)
           })
         }
@@ -680,9 +799,10 @@ export const useJashn = create<JashnState>()(
           wishes: s.wishes.map((w) => (w.slug === slug ? { ...w, ...data } : w)),
         }))
 
-        if (isFirebaseConfigured && db) {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
           try {
-            await setDoc(doc(db, 'wishes', slug), data, { merge: true })
+            await setDoc(doc(activeDb, 'wishes', slug), cleanForFirestore(data), { merge: true })
           } catch (err) {
             console.error('Failed to update wish in Firestore:', err)
           }
@@ -694,9 +814,10 @@ export const useJashn = create<JashnState>()(
           invitations: s.invitations.map((i) => (i.slug === slug ? { ...i, ...data } : i)),
         }))
 
-        if (isFirebaseConfigured && db) {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
           try {
-            await setDoc(doc(db, 'invitations', slug), data, { merge: true })
+            await setDoc(doc(activeDb, 'invitations', slug), cleanForFirestore(data), { merge: true })
           } catch (err) {
             console.error('Failed to update invitation in Firestore:', err)
           }
@@ -708,9 +829,10 @@ export const useJashn = create<JashnState>()(
           visitingCards: s.visitingCards.map((v) => (v.slug === slug ? { ...v, ...data } : v)),
         }))
 
-        if (isFirebaseConfigured && db) {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
           try {
-            await setDoc(doc(db, 'visitingCards', slug), data, { merge: true })
+            await setDoc(doc(activeDb, 'visitingCards', slug), cleanForFirestore(data), { merge: true })
           } catch (err) {
             console.error('Failed to update visiting card in Firestore:', err)
           }
@@ -747,11 +869,12 @@ export const useJashn = create<JashnState>()(
           return { registeredUsers: updatedRegistered, user: updatedUser }
         })
 
-        if (isFirebaseConfigured && db) {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
           try {
             await setDoc(
-              doc(db, 'users', uidToUpdate),
-              { plan: newPlan, planActivatedAt, planExpiresAt: planExpiresAt || null },
+              doc(activeDb, 'users', uidToUpdate),
+              cleanForFirestore({ plan: newPlan, planActivatedAt, planExpiresAt: planExpiresAt || null }),
               { merge: true }
             )
           } catch (e) {
@@ -818,17 +941,26 @@ export const useJashn = create<JashnState>()(
       },
 
       addRsvp: async (guestData) => {
+        const tracking = await getClientTracking()
         const newRsvp: RsvpGuest = {
           ...guestData,
           id: uid(),
           createdAt: Date.now(),
+          createdLocation: tracking.createdLocation,
+          country: tracking.country,
+          countryCode: tracking.countryCode,
+          city: tracking.city,
+          ip: tracking.ip,
+          device: tracking.device,
+          browser: tracking.browser,
         }
         set((s) => ({ rsvps: [newRsvp, ...(s.rsvps || [])] }))
         get().incrementRsvp(guestData.invitationSlug)
 
-        if (isFirebaseConfigured && db) {
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
           try {
-            await setDoc(doc(db, 'rsvps', newRsvp.id), newRsvp)
+            await setDoc(doc(activeDb, 'rsvps', newRsvp.id), cleanForFirestore(newRsvp))
           } catch (err) {
             console.error('Failed to save RSVP to Firestore:', err)
           }
