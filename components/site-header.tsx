@@ -121,52 +121,54 @@ function SiteHeaderInner() {
   }
 
   return (
-    <header className="sticky top-0 z-[100] border-b border-emerald-900/20 bg-background/95 backdrop-blur-md shadow-sm transition-all w-full">
-      <div className="flex h-16 w-full max-w-full items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" onClick={handleNavClick} className="flex items-center gap-2.5 group shrink-0">
-          <CardzyLogo className="size-9 transition-transform group-hover:scale-105" />
-          <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-800 to-amber-600 dark:from-emerald-400 dark:to-amber-400 bg-clip-text text-transparent">
+    <header className="sticky top-0 z-[100] border-b border-emerald-900/20 bg-background/95 backdrop-blur-md shadow-sm transition-all w-full overflow-x-clip">
+      <div className="flex h-16 w-full max-w-full items-center justify-between px-3 sm:px-4 lg:px-3 xl:px-5 2xl:px-8">
+        <Link href="/" onClick={handleNavClick} className="flex items-center gap-2 xl:gap-2.5 group shrink-0">
+          <CardzyLogo className="size-8 xl:size-9 transition-transform group-hover:scale-105" />
+          <span className="text-lg xl:text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-800 to-amber-600 dark:from-emerald-400 dark:to-amber-400 bg-clip-text text-transparent">
             Cardzy
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 xl:gap-2 lg:flex">
+        <nav className="hidden items-center gap-0.5 xl:gap-1 2xl:gap-1.5 lg:flex">
           {[
-            { href: '/', key: 'home', fallback: 'Home' },
-            { href: '/create-wish', key: 'sendWish', fallback: '3D Wish Cards' },
-            { href: '/create-invitation', key: 'createInvitation', fallback: 'Wedding Invitations' },
-            { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Smart vCards' },
-            { href: '/blog', key: 'blog', fallback: 'Guides & Ideas' },
-            { href: '/pricing', key: 'pricing', fallback: 'Pricing' },
-            { href: '/custom-order', key: 'customOrder', fallback: 'Custom Order' },
-            { href: '/faq', key: 'faqs', fallback: 'FAQs' },
-            { href: '/contact', key: 'contact', fallback: 'Contact' },
+            { href: '/', key: 'navHome', fallback: 'Home' },
+            { href: '/create-wish', key: 'navWishes', fallback: 'Wishes' },
+            { href: '/create-invitation', key: 'navInvitations', fallback: 'Invitations' },
+            { href: '/create-visiting-card', key: 'navVCards', fallback: 'vCards' },
+            { href: '/calendar', key: 'navCalendar', fallback: 'Calendar' },
+            { href: '/blog', key: 'navBlog', fallback: 'Blog' },
+            { href: '/pricing', key: 'navPricing', fallback: 'Pricing' },
+            { href: '/custom-order', key: 'navCustom', fallback: 'Custom' },
+            { href: '/faq', key: 'navFaqs', fallback: 'FAQs' },
+            { href: '/contact', key: 'navContact', fallback: 'Contact' },
           ].map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={handleNavClick}
               className={cn(
-                'rounded-xl px-2.5 py-1.5 text-xs xl:text-sm font-semibold text-muted-foreground transition-all hover:bg-emerald-950/10 hover:text-emerald-800 dark:hover:text-amber-400 whitespace-nowrap',
+                'rounded-lg xl:rounded-xl px-1.5 xl:px-2 2xl:px-2.5 py-1 xl:py-1.5 text-xs xl:text-sm font-semibold text-muted-foreground transition-all hover:bg-emerald-950/10 hover:text-emerald-800 dark:hover:text-amber-400 whitespace-nowrap',
+                (lang === 'ur' || lang === 'ar') && 'font-urdu text-xs xl:text-sm',
                 pathname === item.href && 'text-emerald-800 dark:text-amber-400 font-bold bg-emerald-950/5',
               )}
             >
-              {t(item.key as any) || item.fallback}
+              {t(item.key as any, item.fallback)}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex shrink-0">
+        <div className="hidden items-center gap-1.5 xl:gap-2 lg:flex shrink-0">
           {/* Quick Search Button */}
           <button
             type="button"
             onClick={() => setSearchOpen(true)}
-            className="flex items-center gap-2 rounded-full border border-border/80 bg-secondary/50 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary transition-all shadow-2xs whitespace-nowrap"
+            className="flex items-center gap-1.5 rounded-full border border-border/80 bg-secondary/50 px-2 xl:px-2.5 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary transition-all shadow-2xs whitespace-nowrap"
             aria-label="Search guides and templates"
           >
-            <Search className="size-3.5 text-amber-500" />
-            <span className="hidden xl:inline">Search</span>
-            <kbd className="inline-flex items-center gap-0.5 rounded border border-border/80 bg-background/80 px-1.5 py-0.2 text-[10px] font-mono text-muted-foreground">
+            <Search className="size-3.5 text-amber-500 shrink-0" />
+            <span className="hidden 2xl:inline">Search</span>
+            <kbd className="hidden xl:inline-flex items-center gap-0.5 rounded border border-border/80 bg-background/80 px-1 py-0.2 text-[10px] font-mono text-muted-foreground">
               ⌘K
             </kbd>
           </button>
@@ -175,13 +177,14 @@ function SiteHeaderInner() {
           <div ref={langDropdownRef} className="relative z-[9999] notranslate" translate="no">
             <button
               onClick={() => setLangOpen((o) => !o)}
-              className="flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-100 dark:bg-amber-950/40 px-3.5 py-1.5 text-xs font-bold text-amber-950 dark:text-amber-300 transition-all hover:bg-amber-200 shadow-xs whitespace-nowrap notranslate"
+              className="flex items-center gap-1 xl:gap-1.5 rounded-full border border-amber-500/40 bg-amber-100 dark:bg-amber-950/40 px-2 xl:px-2.5 2xl:px-3 py-1 text-xs font-bold text-amber-950 dark:text-amber-300 transition-all hover:bg-amber-200 shadow-xs whitespace-nowrap notranslate"
               aria-label="Select language"
               translate="no"
             >
-              <Globe className="size-3.5 text-amber-600" />
-              <span className="notranslate" translate="no">{currentLang.label}</span>
-              <ChevronDown className={cn('size-3 transition-transform', langOpen && 'rotate-180')} />
+              <Globe className="size-3.5 text-amber-600 shrink-0" />
+              <span className="hidden 2xl:inline notranslate" translate="no">{currentLang.label}</span>
+              <span className="2xl:hidden inline notranslate font-bold uppercase text-[11px]" translate="no">{currentLang.code}</span>
+              <ChevronDown className={cn('size-3 transition-transform shrink-0', langOpen && 'rotate-180')} />
             </button>
             {langOpen && (
               <div className="absolute right-0 top-full mt-2 z-[9999] w-56 rounded-2xl border border-amber-500/40 bg-card shadow-2xl p-2.5 max-h-80 overflow-y-auto ring-1 ring-black/5 notranslate" translate="no">
@@ -207,35 +210,35 @@ function SiteHeaderInner() {
             <>
               <Link
                 href="/dashboard"
-                className="flex items-center gap-2 rounded-full border border-amber-500/30 bg-emerald-950/10 px-3.5 py-1 text-sm font-semibold transition-all hover:bg-emerald-950/20 whitespace-nowrap"
+                className="flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-emerald-950/10 px-2.5 py-1 text-xs xl:text-sm font-semibold transition-all hover:bg-emerald-950/20 whitespace-nowrap"
               >
-                <span className="flex size-7 items-center justify-center rounded-full bg-gradient-to-r from-emerald-700 to-amber-600 text-xs font-bold text-white uppercase shadow-sm">
+                <span className="flex size-6 items-center justify-center rounded-full bg-gradient-to-r from-emerald-700 to-amber-600 text-[10px] font-bold text-white uppercase shadow-sm">
                   {(user.name || 'U').charAt(0)}
                 </span>
-                <span className="text-foreground max-w-[120px] truncate">
+                <span className="text-foreground max-w-[80px] xl:max-w-[120px] truncate">
                   {(user.name || 'User').split(' ')[0]}
                 </span>
               </Link>
               <button
                 onClick={handleSignOut}
-                className="flex items-center gap-1.5 rounded-full border border-border/60 bg-secondary/40 px-3.5 py-1.5 text-xs font-semibold text-muted-foreground transition-all hover:bg-secondary hover:text-foreground whitespace-nowrap"
+                className="flex items-center gap-1 rounded-full border border-border/60 bg-secondary/40 px-2 xl:px-2.5 py-1 text-xs font-semibold text-muted-foreground transition-all hover:bg-secondary hover:text-foreground whitespace-nowrap"
                 aria-label="Sign out"
               >
                 <LogOut className="size-3.5" />
-                {t('signOut')}
+                <span className="hidden xl:inline">{t('signOut')}</span>
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'font-semibold whitespace-nowrap' })}>
-                {t('logIn')}
+              <Link href="/login" className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), "px-2 xl:px-2.5 py-1 text-xs xl:text-sm font-semibold whitespace-nowrap")}>
+                {t('navLogIn', 'Log In')}
               </Link>
-              <Link href="/signup" className={buttonVariants({ variant: 'outline', size: 'sm', className: 'font-bold border-amber-500/30 text-amber-700 hover:bg-amber-500/10 whitespace-nowrap' })}>
-                {t('signUpFree')}
+              <Link href="/signup" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), "px-2 xl:px-3 py-1 text-xs xl:text-sm font-bold border-amber-500/30 text-amber-700 hover:bg-amber-500/10 whitespace-nowrap")}>
+                {t('navSignUp', 'Sign Up')}
               </Link>
             </>
           )}
-          <Link href="/create-wish" className={buttonVariants({ size: 'sm', className: 'font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm rounded-xl whitespace-nowrap' })}>
+          <Link href="/create-wish" className={cn(buttonVariants({ size: 'sm' }), "hidden 2xl:inline-flex px-3 py-1 text-xs xl:text-sm font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm rounded-xl whitespace-nowrap")}>
             {t('getStarted')}
           </Link>
         </div>
@@ -267,6 +270,7 @@ function SiteHeaderInner() {
               { href: '/create-invitation', key: 'createInvitation', fallback: 'Wedding Invitations' },
               { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Smart vCards' },
               { href: '/blog', key: 'blog', fallback: 'Guides & Ideas' },
+              { href: '/calendar', key: 'celebrationCalendar', fallback: 'Celebration Calendar' },
               { href: '/pricing', key: 'pricing', fallback: 'Pricing' },
               { href: '/custom-order', key: 'customOrder', fallback: 'Custom Order' },
               { href: '/faq', key: 'faqs', fallback: 'FAQs' },

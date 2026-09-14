@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cardzy Luxury Card Design Concepts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d131a;
+      color: #e2e8f0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+    .container { max-width: 1300px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 48px; }
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      background: linear-gradient(135deg, #fce09b, #dfba73, #a87c28);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    p.subtitle { color: #94a3b8; font-size: 16px; max-width: 600px; margin: 0 auto; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 32px;
+    }
+    .card {
+      background: #141d27;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(212, 175, 55, 0.6);
+    }
+    .img-wrap {
+      background: #090e14;
+      padding: 16px;
+      text-align: center;
+    }
+    .img-wrap img {
+      width: 100%;
+      height: auto;
+      max-height: 520px;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .content {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .tag {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.15);
+      color: #e5c158;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      color: #f8fafc;
+      margin-bottom: 8px;
+    }
+    p.desc { font-size: 14px; color: #94a3b8; margin-bottom: 16px; flex-grow: 1; }
+    .features {
+      list-style: none;
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .features li::before {
+      content: "✦ ";
+      color: #e5c158;
+    }
+    .btn {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      background: linear-gradient(135deg, #dfba73, #a87c28);
+      color: #121008;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Cardzy Luxury Card Concepts</h1>
+      <p class="subtitle">High-resolution visual design directions exploring modern aesthetic stationery, tactile materials, and 3D depth.</p>
+    </header>
+
+    <div class="grid">
+      <!-- Design 1 -->
+      <div class="card">
+        <div class="img-wrap">
+          <a href="/concepts/royal-mughal.jpg" target="_blank">
+            <img src="/concepts/royal-mughal.jpg" alt="Royal Mughal Heirloom" />
+          </a>
+        </div>
+        <div class="content">
+          <span class="tag">Design 1 · Traditional Royalty</span>
+          <h2>Royal Mughal Heirloom</h2>
+          <p class="desc">Designed for Nikkah, Barat, Walima, and Milestone Anniversaries. Deep emerald velvet backdrop with antique 24k distressed gold foil arch filigree.</p>
+          <ul class="features">
+            <li>Architectural Mughal Mihrab / Arch Border</li>
+            <li>Embossed 24k Gold Leaf Calligraphy</li>
+            <li>Warm Candlelight Floating Bokeh Dust</li>
+            <li>Regal Royal Wax Seal RSVP Button</li>
+          </ul>
+          <a href="/concepts/royal-mughal.jpg" target="_blank" class="btn">Open Full Resolution Image ↗</a>
+        </div>
+      </div>
+
+      <!-- Design 2 -->
+      <div class="card">
+        <div class="img-wrap">
+          <a href="/concepts/modern-ivory.jpg" target="_blank">
+            <img src="/concepts/modern-ivory.jpg" alt="Modern Ivory & Frosted Glass" />
+          </a>
+        </div>
+        <div class="content">
+          <span class="tag">Design 2 · Contemporary Chic</span>
+          <h2>Modern Ivory & Frosted Glass</h2>
+          <p class="desc">Designed for Save-The-Dates, Receptions, Western & Fusion Weddings. Soft deckle-edge torn paper with a floating frosted glass panel.</p>
+          <ul class="features">
+            <li>Natural Textured Deckle-Edge Paper</li>
+            <li>Translucent Floating Acrylic Glass (Glassmorphism)</li>
+            <li>High-Fashion Editorial Serif Typography</li>
+            <li>Delicate Watercolor Olive Botanical Wreath</li>
+          </ul>
+          <a href="/concepts/modern-ivory.jpg" target="_blank" class="btn">Open Full Resolution Image ↗</a>
+        </div>
+      </div>
+
+      <!-- Design 3 -->
+      <div class="card">
+        <div class="img-wrap">
+          <a href="/concepts/birthday-wish.jpg" target="_blank">
+            <img src="/concepts/birthday-wish.jpg" alt="Midnight 3D Gold Birthday Wish" />
+          </a>
+        </div>
+        <div class="content">
+          <span class="tag">Design 3 · 3D Festive Wish</span>
+          <h2>Midnight 3D Gold & Balloons</h2>
+          <p class="desc">Designed for 3D Wish Cards, Milestone Birthdays, and Celebrations. Floating 3D metallic gold balloons, warm fairy lights, and embossed tablet.</p>
+          <ul class="features">
+            <li>Dimensional 3D Balloons with Specular Reflection</li>
+            <li>Cotton Letterpress Tablet with Pressed Gold Corners</li>
+            <li>Glowing "Tap to Unbox Your Surprise" CTA</li>
+            <li>Warm Drifting Golden Confetti Bokeh</li>
+          </ul>
+          <a href="/concepts/birthday-wish.jpg" target="_blank" class="btn">Open Full Resolution Image ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

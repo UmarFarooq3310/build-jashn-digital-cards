@@ -1,6 +1,8 @@
 'use client'
 
-import { useState, forwardRef } from 'react'
+import { useState, useRef, forwardRef } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 import {
   Phone,
   Mail,
@@ -54,8 +56,10 @@ export const VisitingCardView = forwardRef<HTMLDivElement, VisitingCardProps>(fu
   const [showQrModal, setShowQrModal] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
   const { t, lang } = useLang()
+  const wrapRef = useRef<HTMLDivElement>(null)
 
   const theme = getVisitingCardTheme(data.themeId)
+  const isLight = theme.id === 'minimal-clean' || theme.textColor === '#0f172a'
 
   // Language auto-detection
   const cardLang = data.language || lang || 'en'
@@ -123,6 +127,52 @@ END:VCARD`
       : `Hello ${data.fullName || ''}! I am reaching out to you via your Cardzy Digital Business Card.`
   )
 
+  useGSAP(() => {
+    const wrap = wrapRef.current
+    if (!wrap) return
+    const card = wrap.querySelector<HTMLElement>('.visiting-card-surface')
+    if (!card) return
+
+    let rect: DOMRect | null = null
+
+    const onEnter = () => {
+      rect = card.getBoundingClientRect()
+    }
+
+    const onMove = (e: MouseEvent) => {
+      if (!rect) rect = card.getBoundingClientRect()
+      const dx = ((e.clientX - rect.left) / rect.width - 0.5) * 2
+      const dy = ((e.clientY - rect.top) / rect.height - 0.5) * 2
+      gsap.to(card, {
+        rotateY: dx * 7,
+        rotateX: -dy * 7,
+        duration: 0.35,
+        ease: 'power2.out',
+        transformPerspective: 1000,
+      })
+    }
+
+    const onLeave = () => {
+      rect = null
+      gsap.to(card, {
+        rotateY: 0,
+        rotateX: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+      })
+    }
+
+    wrap.addEventListener('mouseenter', onEnter)
+    wrap.addEventListener('mousemove', onMove)
+    wrap.addEventListener('mouseleave', onLeave)
+
+    return () => {
+      wrap.removeEventListener('mouseenter', onEnter)
+      wrap.removeEventListener('mousemove', onMove)
+      wrap.removeEventListener('mouseleave', onLeave)
+    }
+  }, { scope: wrapRef })
+
   return (
     <div className="w-full max-w-md mx-auto space-y-4 font-sans select-none">
       {/* Dynamic Keyframes */}
@@ -138,52 +188,81 @@ END:VCARD`
       `}</style>
 
       {/* Main 3D Flip Card Container */}
-      <div className="perspective-1000 relative">
+      <div ref={wrapRef} className="relative w-full" style={{ perspective: '1000px' }}>
         <div
           ref={ref}
           className={cn(
-            'relative overflow-hidden rounded-[32px] p-6 sm:p-8 transition-all duration-700 border-2 border-[#D4AF37]/50 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl',
+            'visiting-card-surface relative overflow-hidden rounded-[32px] p-6 sm:p-8 transition-all duration-500 border-2 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl',
+            isLight ? 'border-slate-300/80 shadow-[0_15px_45px_rgba(0,0,0,0.12)]' : 'border-[#D4AF37]/50 shadow-[0_20px_60px_rgba(0,0,0,0.6)]',
             isRtl && 'text-right'
           )}
           dir={isRtl ? 'rtl' : 'ltr'}
           style={{
             background: theme.bgGradient,
             color: theme.textColor,
-            animation: 'pulseBorder 4s ease-in-out infinite',
+            transformStyle: 'preserve-3d',
+            animation: isLight ? 'none' : 'pulseBorder 4s ease-in-out infinite',
           }}
         >
           {/* Metallic Sheen Light Reflection */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none opacity-40 mix-blend-overlay" />
-          <div className="absolute -top-32 -right-32 size-72 rounded-full bg-[#D4AF37]/20 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-32 -left-32 size-72 rounded-full bg-emerald-500/15 blur-3xl pointer-events-none" />
+          <div className={cn("absolute inset-0 bg-gradient-to-r from-transparent pointer-events-none mix-blend-overlay", isLight ? "via-black/5 opacity-25" : "via-white/10 opacity-40")} />
+          <div className={cn("absolute -top-32 -right-32 size-72 rounded-full blur-3xl pointer-events-none", isLight ? "bg-teal-500/10" : "bg-[#D4AF37]/20")} />
+          <div className={cn("absolute -bottom-32 -left-32 size-72 rounded-full blur-3xl pointer-events-none", isLight ? "bg-slate-400/10" : "bg-emerald-500/15")} />
 
-          {/* Gold Decorative Corner Trim */}
-          <div className="absolute top-4 left-4 size-5 border-t-2 border-l-2 border-[#D4AF37]/70 pointer-events-none" />
-          <div className="absolute top-4 right-4 size-5 border-t-2 border-r-2 border-[#D4AF37]/70 pointer-events-none" />
-          <div className="absolute bottom-4 left-4 size-5 border-b-2 border-l-2 border-[#D4AF37]/70 pointer-events-none" />
-          <div className="absolute bottom-4 right-4 size-5 border-b-2 border-r-2 border-[#D4AF37]/70 pointer-events-none" />
+          {/* Decorative Corner Trim */}
+          <div className={cn("absolute top-4 left-4 size-5 border-t-2 border-l-2 pointer-events-none", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
+          <div className={cn("absolute top-4 right-4 size-5 border-t-2 border-r-2 pointer-events-none", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
+          <div className={cn("absolute bottom-4 left-4 size-5 border-b-2 border-l-2 pointer-events-none", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
+          <div className={cn("absolute bottom-4 right-4 size-5 border-b-2 border-r-2 pointer-events-none", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
 
           {/* Front Side View */}
           {!isFlipped ? (
             <div className="relative z-10 space-y-5">
-              {/* Header Badges */}
-              <div className="flex items-center justify-between">
+              {/* Header Badges & Flip Button */}
+              <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-950/80 px-3.5 py-1 text-[10px] font-extrabold uppercase tracking-widest border border-[#D4AF37]/40 text-[#D4AF37] shadow-sm backdrop-blur-md">
-                    <Cpu className="size-3 text-[#D4AF37]" />
+                  <span className={cn(
+                    "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1 text-[10px] font-extrabold uppercase tracking-widest border shadow-sm backdrop-blur-md",
+                    isLight
+                      ? "bg-white/80 border-slate-300 text-teal-800"
+                      : "bg-slate-950/80 border-[#D4AF37]/40 text-[#D4AF37]"
+                  )}>
+                    <Cpu className={cn("size-3", isLight ? "text-teal-700" : "text-[#D4AF37]")} />
                     <span>{translatedCategory}</span>
                   </span>
 
-                  <span className="inline-flex items-center gap-1 text-[9px] font-extrabold text-emerald-300 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/40 uppercase tracking-wider backdrop-blur-md">
+                  <span className="inline-flex items-center gap-1 text-[9px] font-extrabold text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/40 uppercase tracking-wider backdrop-blur-md">
                     <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     <span>Verified vCard</span>
                   </span>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => setIsFlipped(true)}
+                  title={t('viewQr') || 'View QR Code'}
+                  aria-label={t('viewQr') || 'View QR Code'}
+                  className={cn(
+                    "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border backdrop-blur-md transition-all active:scale-95 cursor-pointer shadow-sm ml-auto",
+                    isLight
+                      ? "bg-white/90 hover:bg-white text-slate-800 border-slate-300"
+                      : "bg-slate-950/80 hover:bg-slate-900 text-[#D4AF37] border-[#D4AF37]/40"
+                  )}
+                >
+                  <QrCode className="size-3" />
+                  <span>{t('viewQr') || 'QR Code'}</span>
+                  <RotateCw className="size-2.5 opacity-80" />
+                </button>
               </div>
 
               {/* Profile Avatar & Primary Details */}
               <div className={cn('flex items-center gap-4 pt-1', isRtl && 'flex-row-reverse')}>
-                <div className="relative size-20 sm:size-24 shrink-0 rounded-2xl bg-gradient-to-br from-[#D4AF37]/30 via-white/10 to-black/40 border-2 border-[#D4AF37] overflow-hidden flex items-center justify-center shadow-2xl font-black text-3xl uppercase text-[#D4AF37]">
+                <div className={cn(
+                  "relative size-20 sm:size-24 shrink-0 rounded-2xl border-2 overflow-hidden flex items-center justify-center shadow-2xl font-black text-3xl uppercase",
+                  isLight
+                    ? "bg-white border-slate-300 text-teal-800"
+                    : "bg-gradient-to-br from-[#D4AF37]/30 via-white/10 to-black/40 border-[#D4AF37] text-[#D4AF37]"
+                )}>
                   {data.avatarUrl ? (
                     <img
                       src={data.avatarUrl}
@@ -200,19 +279,31 @@ END:VCARD`
 
                 <div className={cn('space-y-1.5 flex-1 min-w-0', isRtl && 'space-y-2')}>
                   <div className={cn('flex items-center gap-1.5 flex-wrap', isRtl && 'flex-row-reverse')}>
-                    <h2 className={cn('text-xl sm:text-2xl font-extrabold tracking-tight text-white leading-snug break-words', isRtl && 'font-urdu')}>
+                    <h2 className={cn(
+                      'text-xl sm:text-2xl font-extrabold tracking-tight leading-snug break-words',
+                      isLight ? 'text-slate-900' : 'text-white',
+                      isRtl && 'font-urdu'
+                    )}>
                       {data.fullName || 'Your Full Name'}
                     </h2>
-                    <ShieldCheck className="size-5 text-[#D4AF37] shrink-0" />
+                    <ShieldCheck className={cn("size-5 shrink-0", isLight ? "text-teal-600" : "text-[#D4AF37]")} />
                   </div>
 
-                  <p className={cn('text-xs sm:text-sm font-bold text-[#F5E6A8] flex items-center gap-1.5 leading-snug break-words', isRtl && 'flex-row-reverse font-urdu')}>
-                    <Briefcase className="size-3.5 shrink-0 text-[#D4AF37]" />
+                  <p className={cn(
+                    'text-xs sm:text-sm font-bold flex items-center gap-1.5 leading-snug break-words',
+                    isLight ? 'text-teal-800' : 'text-[#F5E6A8]',
+                    isRtl && 'flex-row-reverse font-urdu'
+                  )}>
+                    <Briefcase className={cn("size-3.5 shrink-0", isLight ? "text-teal-700" : "text-[#D4AF37]")} />
                     <span>{translatedTitle}</span>
                   </p>
 
                   {data.company && (
-                    <p className={cn('text-xs font-semibold text-zinc-300 flex items-center gap-1.5 leading-snug break-words', isRtl && 'flex-row-reverse font-urdu')}>
+                    <p className={cn(
+                      'text-xs font-semibold flex items-center gap-1.5 leading-snug break-words',
+                      isLight ? 'text-slate-600' : 'text-zinc-300',
+                      isRtl && 'flex-row-reverse font-urdu'
+                    )}>
                       <Building2 className="size-3.5 shrink-0 text-zinc-400" />
                       <span>{data.company}</span>
                     </p>
@@ -220,14 +311,21 @@ END:VCARD`
                 </div>
               </div>
 
-              <div className="h-px bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent my-2" />
+              <div className={cn("h-px my-2", isLight ? "bg-gradient-to-r from-transparent via-slate-300 to-transparent" : "bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent")} />
 
               {/* Direct Contact Information Box */}
-              <div className="bg-slate-950/60 backdrop-blur-xl rounded-2xl p-4 border border-white/10 space-y-2 text-xs">
+              <div className={cn(
+                "backdrop-blur-xl rounded-2xl p-4 border space-y-2 text-xs",
+                isLight ? "bg-white/80 border-slate-200/80 shadow-xs text-slate-800" : "bg-slate-950/60 border-white/10 text-white"
+              )}>
                 {data.phone && (
                   <a
                     href={`tel:${cleanPhone}`}
-                    className={cn('flex items-center gap-3 font-bold text-white hover:text-[#D4AF37] transition-colors', isRtl && 'flex-row-reverse')}
+                    className={cn(
+                      'flex items-center gap-3 font-bold transition-colors',
+                      isLight ? 'text-slate-800 hover:text-teal-700' : 'text-white hover:text-[#D4AF37]',
+                      isRtl && 'flex-row-reverse'
+                    )}
                   >
                     <div className="size-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/40">
                       <Phone className="size-4" />
@@ -239,7 +337,11 @@ END:VCARD`
                 {data.email && (
                   <a
                     href={`mailto:${data.email}`}
-                    className={cn('flex items-center gap-3 font-bold text-white hover:text-sky-300 transition-colors', isRtl && 'flex-row-reverse')}
+                    className={cn(
+                      'flex items-center gap-3 font-bold transition-colors',
+                      isLight ? 'text-slate-800 hover:text-sky-600' : 'text-white hover:text-sky-300',
+                      isRtl && 'flex-row-reverse'
+                    )}
                   >
                     <div className="size-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/40">
                       <Mail className="size-4" />
@@ -253,7 +355,11 @@ END:VCARD`
                     href={data.website.startsWith('http') ? data.website : `https://${data.website}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={cn('flex items-center gap-3 font-bold text-white hover:text-[#D4AF37] transition-colors', isRtl && 'flex-row-reverse')}
+                    className={cn(
+                      'flex items-center gap-3 font-bold transition-colors',
+                      isLight ? 'text-slate-800 hover:text-teal-700' : 'text-white hover:text-[#D4AF37]',
+                      isRtl && 'flex-row-reverse'
+                    )}
                   >
                     <div className="size-8 rounded-xl bg-[#D4AF37]/20 text-[#D4AF37] flex items-center justify-center shrink-0 border border-[#D4AF37]/40">
                       <Globe className="size-4" />
@@ -268,13 +374,16 @@ END:VCARD`
                       <MapPin className="size-4" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <span className="text-zinc-200 font-medium leading-relaxed block text-xs">{data.address}</span>
+                      <span className={cn("font-medium leading-relaxed block text-xs", isLight ? "text-slate-700" : "text-zinc-200")}>{data.address}</span>
                       {data.mapLink && (
                         <a
                           href={data.mapLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-[11px] font-extrabold text-[#D4AF37] hover:underline mt-1"
+                          className={cn(
+                            "inline-flex items-center gap-1.5 text-[11px] font-extrabold hover:underline mt-1",
+                            isLight ? "text-teal-700" : "text-[#D4AF37]"
+                          )}
                         >
                           <span>{t('officeLocationPin') || 'Open Office Location in Maps'}</span>
                           <ExternalLink className="size-3" />
@@ -287,7 +396,10 @@ END:VCARD`
 
               {/* Professional Bio */}
               {data.bio && (
-                <div className="bg-slate-950/40 p-3.5 rounded-2xl backdrop-blur-md border border-white/10 text-xs leading-relaxed text-zinc-300 font-medium">
+                <div className={cn(
+                  "p-3.5 rounded-2xl backdrop-blur-md border text-xs leading-relaxed font-medium",
+                  isLight ? "bg-white/70 border-slate-200 text-slate-700" : "bg-slate-950/40 border-white/10 text-zinc-300"
+                )}>
                   {data.bio}
                 </div>
               )}
@@ -299,9 +411,12 @@ END:VCARD`
                     href={`tel:${data.phone}`}
                     title={isRtl ? 'کال کریں' : (t('callNow') || 'Call')}
                     aria-label={t('callNow') || 'Call'}
-                    className="flex-1 flex items-center justify-center p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all backdrop-blur-md border border-white/15 active:scale-95 text-white shadow-sm"
+                    className={cn(
+                      "flex-1 flex items-center justify-center p-3 rounded-2xl transition-all backdrop-blur-md border active:scale-95 shadow-sm",
+                      isLight ? "bg-white/90 hover:bg-white text-slate-800 border-slate-300/80" : "bg-white/10 hover:bg-white/20 text-white border-white/15"
+                    )}
                   >
-                    <Phone className="size-5 text-emerald-400" />
+                    <Phone className="size-5 text-emerald-500" />
                   </a>
                 )}
 
@@ -323,9 +438,12 @@ END:VCARD`
                     href={`mailto:${data.email}?subject=Business%20Inquiry`}
                     title={isRtl ? 'ای میل' : (t('sendEmail') || 'Email')}
                     aria-label={t('sendEmail') || 'Email'}
-                    className="flex-1 flex items-center justify-center p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all backdrop-blur-md border border-white/15 active:scale-95 text-white shadow-sm"
+                    className={cn(
+                      "flex-1 flex items-center justify-center p-3 rounded-2xl transition-all backdrop-blur-md border active:scale-95 shadow-sm",
+                      isLight ? "bg-white/90 hover:bg-white text-slate-800 border-slate-300/80" : "bg-white/10 hover:bg-white/20 text-white border-white/15"
+                    )}
                   >
-                    <Mail className="size-5 text-sky-400" />
+                    <Mail className="size-5 text-sky-500" />
                   </a>
                 )}
 
@@ -336,9 +454,12 @@ END:VCARD`
                     rel="noopener noreferrer"
                     title={isRtl ? 'ویب سائٹ' : 'Website'}
                     aria-label="Website"
-                    className="flex-1 flex items-center justify-center p-3 rounded-2xl bg-white/10 hover:bg-white/20 transition-all backdrop-blur-md border border-white/15 active:scale-95 text-white shadow-sm"
+                    className={cn(
+                      "flex-1 flex items-center justify-center p-3 rounded-2xl transition-all backdrop-blur-md border active:scale-95 shadow-sm",
+                      isLight ? "bg-white/90 hover:bg-white text-slate-800 border-slate-300/80" : "bg-white/10 hover:bg-white/20 text-white border-white/15"
+                    )}
                   >
-                    <Globe className="size-5 text-[#D4AF37]" />
+                    <Globe className={cn("size-5", isLight ? "text-teal-600" : "text-[#D4AF37]")} />
                   </a>
                 )}
               </div>
@@ -348,14 +469,23 @@ END:VCARD`
             /* Back Side View (QR & Profile Detail) */
             <div className="relative z-10 space-y-6 text-center py-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-widest">
-                  Executive Profile Back
+                <span className={cn("text-xs font-bold uppercase tracking-widest", isLight ? "text-teal-800" : "text-[#D4AF37]")}>
+                  {t('executiveProfileBack') || 'Executive Profile Back'}
                 </span>
                 <button
+                  type="button"
                   onClick={() => setIsFlipped(false)}
-                  className="p-2 rounded-xl bg-white/10 text-[#D4AF37] hover:bg-white/20 transition-all border border-white/20"
+                  title={t('flipToFront') || 'Flip to Front'}
+                  aria-label={t('flipToFront') || 'Flip to Front'}
+                  className={cn(
+                    "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border backdrop-blur-md transition-all active:scale-95 cursor-pointer",
+                    isLight
+                      ? "bg-white/90 hover:bg-white text-slate-800 border-slate-300"
+                      : "bg-white/10 hover:bg-white/20 text-[#D4AF37] border-[#D4AF37]/30"
+                  )}
                 >
-                  <RotateCw className="size-4" />
+                  <span>{t('front') || 'Front'}</span>
+                  <RotateCw className="size-3" />
                 </button>
               </div>
 
@@ -369,18 +499,21 @@ END:VCARD`
                 />
               </div>
 
-              <div className="space-y-2 text-xs text-zinc-300">
-                <p className="font-bold text-white text-sm">Scan QR Code to Open Digital Profile</p>
-                <p className="max-w-xs mx-auto text-zinc-400">
-                  Hold your mobile camera over this QR code or tap the button below to download the contact file directly.
+              <div className="space-y-2 text-xs">
+                <p className={cn("font-bold text-sm", isLight ? "text-slate-900" : "text-white")}>
+                  {t('scanQrDigitalProfile') || 'Scan QR Code to Open Digital Profile'}
+                </p>
+                <p className={cn("max-w-xs mx-auto", isLight ? "text-slate-600" : "text-zinc-400")}>
+                  {t('scanQrCameraTip') || 'Hold your mobile camera over this QR code or tap the button below to download the contact file directly.'}
                 </p>
               </div>
 
               <button
+                type="button"
                 onClick={downloadVCard}
-                className="w-full py-3.5 rounded-2xl bg-[#D4AF37] text-slate-950 font-black text-xs uppercase tracking-wider"
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#D4AF37] via-[#FFF8DC] to-[#E5C35A] text-slate-950 font-black text-xs uppercase tracking-wider shadow-md hover:brightness-105 active:scale-98 transition-all border border-[#D4AF37]"
               >
-                Save Contact (.vcf)
+                {t('saveContactVcf') || 'Save Contact (.vcf)'}
               </button>
             </div>
           )}

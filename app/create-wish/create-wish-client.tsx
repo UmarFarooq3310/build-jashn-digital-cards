@@ -17,6 +17,7 @@ import { THEMES } from '@/lib/jashn/themes'
 import { BackgroundPicker } from '@/components/jashn/background-picker'
 import { WishCard } from '@/components/jashn/wish-card'
 import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
+import { PreviewCardFit } from '@/components/jashn/preview-card-fit'
 import { useJashn } from '@/lib/jashn/store'
 import { getOccasion, getTemplates, getLocalizedTemplateText } from '@/lib/jashn/occasions'
 import type { Language } from '@/lib/jashn/types'
@@ -44,27 +45,73 @@ function CreateWishContent() {
   const isUrdu = lang === 'ur' || lang === 'ar'
 
   const occasionParam = searchParams.get('occasion')
+  const categoryParam = searchParams.get('category')
+  const messageParam = searchParams.get('message')
+  const recipientParam = searchParams.get('recipient')
+  const senderParam = searchParams.get('sender')
+  const relationParam = searchParams.get('relation')
   const editSlug = searchParams.get('edit')
+
+  const resolveOccasionFromCategory = (cat: string | null): string => {
+    if (!cat) return 'birthday'
+    const c = cat.toLowerCase()
+    const map: Record<string, string> = {
+      islamic: 'milad',
+      eid: 'eid-ul-fitr',
+      ramadan: 'ramadan',
+      christmas: 'christmas',
+      newyear: 'new-year',
+      diwali: 'diwali',
+      halloween: 'halloween',
+      easter: 'easter',
+      holi: 'holi',
+      love: 'valentines',
+      family: 'mothers-day',
+      mother: 'mothers-day',
+      father: 'fathers-day',
+      friendship: 'friendship-day',
+      sibling: 'siblings-day',
+      cultural: 'basant',
+      spiritual: 'shab-e-barat',
+      holiday: 'new-year',
+      achievement: 'graduation',
+      national: 'pakistan-day',
+    }
+    return map[c] || 'birthday'
+  }
 
   // Free creation for everyone - no login required to send cards
 
   const [step, setStep] = useState<1 | 2>(() => {
-    if (editSlug || occasionParam) return 2
+    if (editSlug || occasionParam || categoryParam) return 2
     return 1
   })
   const [occasionId, setOccasionId] = useState<string>(() => {
     if (occasionParam) return occasionParam
+    if (categoryParam) return resolveOccasionFromCategory(categoryParam)
     return 'birthday'
   })
   const [mobileTab, setMobileTab] = useState<'details' | 'design' | 'preview'>('details')
   const [language, setLanguage] = useState<Language>('en')
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState(() => {
+    if (messageParam) return messageParam
+    return ''
+  })
   const [themeId, setThemeId] = useState('mehndi-red')
   const [borderId, setBorderId] = useState('mehndi')
   const [bgVariantId, setBgVariantId] = useState('default')
-  const [senderName, setSenderName] = useState('')
-  const [recipientName, setRecipientName] = useState('')
-  const [relation, setRelation] = useState('Friend')
+  const [senderName, setSenderName] = useState(() => {
+    if (senderParam) return senderParam
+    return ''
+  })
+  const [recipientName, setRecipientName] = useState(() => {
+    if (recipientParam) return recipientParam
+    return ''
+  })
+  const [relation, setRelation] = useState(() => {
+    if (relationParam) return relationParam
+    return 'Friend'
+  })
 
   // Gaming Winner Extra Fields
   const [playerName, setPlayerName] = useState('')
@@ -145,12 +192,26 @@ function CreateWishContent() {
       }
     } else {
       const occParam = searchParams.get('occasion')
-      if (occParam) {
-        setOccasionId(occParam)
-        const tPlates = getTemplates(occParam)
-        if (tPlates.length > 0 && !message) {
-          setMessage(getLocalizedTemplateText(tPlates[0], lang))
+      const catParam = searchParams.get('category')
+      const msgParam = searchParams.get('message')
+      const recParam = searchParams.get('recipient')
+      const sndParam = searchParams.get('sender')
+      const relParam = searchParams.get('relation')
+
+      const resolved = occParam || resolveOccasionFromCategory(catParam)
+      if (occParam || catParam) {
+        setOccasionId(resolved)
+        if (msgParam) {
+          setMessage(msgParam)
+        } else {
+          const tPlates = getTemplates(resolved)
+          if (tPlates.length > 0 && !message) {
+            setMessage(getLocalizedTemplateText(tPlates[0], lang))
+          }
         }
+        if (recParam) setRecipientName(recParam)
+        if (sndParam) setSenderName(sndParam)
+        if (relParam) setRelation(relParam)
         setStep(2)
       }
     }
@@ -795,12 +856,17 @@ function CreateWishContent() {
 
         {/* Desktop Right Column — Sticky Live Animated Card Preview */}
         <div className="hidden lg:block lg:col-span-5 space-y-4">
-          <div className="sticky top-24 rounded-3xl border border-border bg-card p-6 shadow-xl text-center backdrop-blur-md max-h-[calc(100vh-120px)] overflow-y-auto overscroll-contain">
-            <p className="mb-4 text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center justify-center gap-1.5">
-              <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
-            </p>
+          <div className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden" suppressHydrationWarning>
+            <div className="mb-3 flex items-center justify-between px-1">
+              <p className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
+                <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
+              </p>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#7B0D1E]/10 text-[#7B0D1E] border border-[#7B0D1E]/20">
+                <Sparkles className="size-2.5" /> Full Card Fit
+              </span>
+            </div>
 
-            <div>
+            <PreviewCardFit topOffset={80} bottomOffset={24} reservedHeaderHeight={56}>
               <CardAnimationPreview occasionId={occasionId} animationKey={occasionId} className="max-w-md mx-auto" roundedClass="rounded-[2.5rem]">
                 <WishCard
                   data={{
@@ -821,7 +887,7 @@ function CreateWishContent() {
                   }}
                 />
               </CardAnimationPreview>
-            </div>
+            </PreviewCardFit>
           </div>
         </div>
       </div>

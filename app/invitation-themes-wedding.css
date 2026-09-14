@@ -164,12 +164,24 @@
 
 /* ── Nikkah 🤍 ──────────────────────────────────────────────────────────── */
 .inv-type-nikkah {
+  --c-bg1: #1c1000;
+  --c-bg2: #3a1e05;
+  --c-ink: #fff8ee;
+  --c-accent: #f0c060;
+  --c-glow: #ffe090;
+  --c-accent2: #2e7d32;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(240,192,96,0.2) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(46,125,50,0.12) 0%, transparent 40%),
+    linear-gradient(170deg, #1c1000 0%, #3a1e05 50%, #150900 100%);
+}
+
+.inv-type-nikkah.light-bg {
   --c-bg1: #f8f4ed;
   --c-bg2: #e8dfc8;
-  --c-ink: #3d2c1e;
-  --c-accent: #c8860a;
-  --c-glow: #f0c040;
-  --c-accent2: #2e7d32;
+  --c-ink: #2b1704 !important;
+  --c-accent: #8b5e10 !important;
+  --c-glow: #c89830 !important;
   background:
     radial-gradient(ellipse at 50% 0%, rgba(200,134,10,0.14) 0%, transparent 55%),
     radial-gradient(ellipse at 50% 100%, rgba(46,125,50,0.08) 0%, transparent 40%),
@@ -288,12 +300,24 @@
 
 /* ── Walima ✨ ──────────────────────────────────────────────────────────── */
 .inv-type-walima {
+  --c-bg1: #1a1829;
+  --c-bg2: #2b2038;
+  --c-ink: #fff8ee;
+  --c-accent: #f0c060;
+  --c-glow: #ffe090;
+  --c-accent2: #e8c87a;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(244,211,94,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(200,134,10,0.12) 0%, transparent 45%),
+    linear-gradient(155deg, #1a1829 0%, #2b2038 50%, #130f1c 100%);
+}
+
+.inv-type-walima.light-bg {
   --c-bg1: #f5e6c8;
   --c-bg2: #d4b483;
-  --c-ink: #4a3520;
-  --c-accent: #c8860a;
-  --c-glow: #f4d35e;
-  --c-accent2: #e8c87a;
+  --c-ink: #2b1704 !important;
+  --c-accent: #8b5e10 !important;
+  --c-glow: #c89830 !important;
   background:
     radial-gradient(ellipse at 30% 20%, rgba(244,211,94,0.2) 0%, transparent 50%),
     radial-gradient(ellipse at 70% 80%, rgba(200,134,10,0.15) 0%, transparent 45%),

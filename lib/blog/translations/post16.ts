@@ -4,1734 +4,1644 @@ export const POST_16_SLUG = "baby-shower-aqiqah-digital-invitation-ideas-bilingu
 
 export const POST_16_DATA: Record<string, LocalizedBlogData> = {
   "en": {
-    "title": "Baby Shower & Aqiqah Digital Invitation Ideas: Cute Themes & Bilingual Duas",
-    "subtitle": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for Baby Shower & Aqiqah Digital Invitation Ideas: Cute Themes & Bilingual Duas.",
+    "title": "Baby Shower & Aqiqah Digital Invitations: Cute Themes, Islamic Duas & Wording",
+    "subtitle": "Celebrate your newest blessing with pastel themes, traditional Islamic prayers for newborns, venue GPS pins, and gentle dietary notes for family gatherings.",
     "category": "Wedding & Nikkah",
-    "seoTitle": "Baby Shower & Aqiqah Digital Invitation Ideas: Cute Themes & Bilingual Duas — Cardzy",
-    "metaDescription": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for Baby Shower & Aqiqah Digital Invitation Ideas: Cute Themes & Bilingual Duas."
+    "seoTitle": "Aqiqah & Baby Shower Digital Card Wording | Cardzy",
+    "metaDescription": "Plan sweet Baby Showers, Aqiqah, and Godh Bharai ceremonies with bilingual digital invitations. Includes Quranic blessings, venue pins, and RSVP tracking."
   },
   "ur": {
     "title": "عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ",
-    "subtitle": "کارڈزی پر عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔",
-    "category": "شادی و نکاح",
-    "seoTitle": "عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ — Cardzy",
-    "metaDescription": "کارڈزی پر عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔"
+    "subtitle": "اپنے نوزائیدہ بچے کی برکت کو عقیقہ اور بیبی شاور کے خوبصورت ڈیجیٹل کارڈز، فوٹو فریمز اور واٹس ایپ RSVP کے ساتھ منائیں۔",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "عقیقہ اور بیبی شاور ڈیجیٹل کارڈ تحریر و دعائیں — کارڈزی",
+    "metaDescription": "نوزائیدہ بچوں کے لیے عقیقہ اور بیبی شاور کے کارڈز اسلامی دعاؤں، نقشوں اور واٹس ایپ RSVP ٹریکنگ کے ساتھ ڈیزائن کریں۔"
   },
   "es": {
-    "title": "Ideas de Invitaciones Digitales para Baby Shower y Aqiqah: Diseños Tiernos y Bendiciones",
-    "subtitle": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para Baby Shower & Aqiqah Digital Invitation Ideas: Cute Themes & Bilingual Duas.",
-    "category": "Boda y Nikkah",
-    "seoTitle": "Ideas de Invitaciones Digitales para Baby Shower y Aqiqah: Diseños Tiernos y Bendiciones — Cardzy",
-    "metaDescription": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para Baby Shower & Aqiqah Digital Invitation Ideas: Cute Themes & Bilingual Duas."
+    "title": "Invitaciones Digitales para Baby Shower y Aqiqah: Diseños y Bendiciones",
+    "subtitle": "Celebre la llegada de su bebé con invitaciones digitales encantadoras, marcos de fotos y seguimiento de RSVP.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Invitaciones Digitales para Baby Shower y Aqiqah — Cardzy",
+    "metaDescription": "Diseñe invitaciones para Aqiqah y Baby Shower con bendiciones islámicas, mapas GPS y confirmación por WhatsApp."
   },
   "fr": {
-    "title": "Idées de Faire-Part Numériques pour Baby Shower & Aqiqah : Thèmes Adorables & Duas",
-    "subtitle": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy.",
-    "category": "Mariage & Nikkah",
-    "seoTitle": "Idées de Faire-Part Numériques pour Baby Shower & Aqiqah : Thèmes Adorables & Duas — Cardzy",
-    "metaDescription": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy."
+    "title": "Faire-Part Numérique Baby Shower & Aqiqah : Thèmes Mignons & Douas",
+    "subtitle": "Célébrez la naissance de votre enfant avec des invitations numériques élégantes, cadres photos et gestion RSVP.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Faire-Part Numérique Aqiqah et Baby Shower — Cardzy",
+    "metaDescription": "Créez de superbes faire-part pour Aqiqah et Baby Shower avec invocations, plans d'accès et RSVP WhatsApp."
   },
   "ar": {
-    "title": "أفكار دعوات العقيقة وحفلات استقبال المولود: ثيمات مميزة وأدعية باللغتين",
-    "subtitle": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي.",
-    "category": "الزفاف والنكاح",
-    "seoTitle": "أفكار دعوات العقيقة وحفلات استقبال المولود: ثيمات مميزة وأدعية باللغتين — Cardzy",
-    "metaDescription": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي."
+    "title": "دعوات العقيقة وحفلات استقبال المولود الرقمية: ثيمات مميزة وأدعية إسلامية",
+    "subtitle": "احتفل بقدوم مولودك الجديد مع بطاقات دعوة رقمية للعقيقة واستقبال المواليد مع إطارات الصور ومتابعة تأكيد الحضور.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "صيغ دعوات العقيقة واستقبال المولود — كاردزي",
+    "metaDescription": "صمم بطاقات دعوة رقمية للعقيقة مع أدعية إسلامية للمولود وخرائط الوصول وتأكيد الحضور عبر الواتساب."
   },
   "hi": {
-    "title": "बेबी शॉवर और अकीका डिजिटल कार्ड के विचार: सुंदर थीम और द्विभाषी दुआएं",
-    "subtitle": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।",
-    "category": "शादी और निकाह",
-    "seoTitle": "बेबी शॉवर और अकीका डिजिटल कार्ड के विचार: सुंदर थीम और द्विभाषी दुआएं — Cardzy",
-    "metaDescription": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।"
+    "title": "अक़ीक़ा और बेबी शॉवर डिजिटल आमंत्रण: प्यारे थीम्स, इस्लामिक दुआएं और शब्द",
+    "subtitle": "अपने नवजात शिशु के आगमन का जश्न प्यारे अक़ीक़ा और बेबी शॉवर डिजिटल निमंत्रण और फोटो फ्रेम के साथ मनाएं।",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "अक़ीक़ा और बेबी शॉवर डिजिटल कार्ड — कार्डज़ी",
+    "metaDescription": "इस्लामिक दुआओं, स्थान मानचित्र और 1-क्लिक व्हाट्सएप RSVP के साथ अक़ीक़ा और बेबी शॉवर डिजिटल कार्ड बनाएं।"
   },
   "zh": {
-    "title": "宝宝满月宴、新生儿迎新派对（Aqiqah）电子请柬创意与双语祝福文案",
-    "subtitle": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。",
-    "category": "婚礼与仪式",
-    "seoTitle": "宝宝满月宴、新生儿迎新派对（Aqiqah）电子请柬创意与双语祝福文案 — Cardzy",
-    "metaDescription": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。"
+    "title": "新生儿满月酒、Aqiqah 祈福与 Baby Shower 电子请柬制作指南",
+    "subtitle": "为宝宝的降临设计温馨可爱的电子请柬，内嵌婴儿照片相框、祝福祈祷文及 WhatsApp RSVP 即时回复功能。",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Baby Shower 与新生儿满月电子请柬 — Cardzy",
+    "metaDescription": "使用 Cardzy 制作可爱的 Aqiqah 与 Baby Shower 电子请柬，支持双语祝福语、地图导航与在线回执。"
   },
   "pt": {
-    "title": "Ideias de Convites Digitais para Chá de Bebê e Aqiqah: Temas Encantadores e Orações",
-    "subtitle": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy.",
-    "category": "Casamento e Nikkah",
-    "seoTitle": "Ideias de Convites Digitais para Chá de Bebê e Aqiqah: Temas Encantadores e Orações — Cardzy",
-    "metaDescription": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy."
+    "title": "Convites Digitais para Chá de Bebê e Aqiqah: Temas Fofos e Bênçãos",
+    "subtitle": "Celebre a chegada do seu bebê com convites digitais personalizados, molduras de fotos e confirmação de presença.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Convites Digitais de Chá de Bebê e Aqiqah — Cardzy",
+    "metaDescription": "Crie convites para Chá de Bebê e Aqiqah com bênçãos, mapas e confirmação de presença pelo WhatsApp."
   },
   "ru": {
-    "title": "Идеи электронных приглашений на Акику и Бэби Шауэр: Милые темы и молитвы",
-    "subtitle": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy.",
-    "category": "Свадьба и Никах",
-    "seoTitle": "Идеи электронных приглашений на Акику и Бэби Шауэр: Милые темы и молитвы — Cardzy",
-    "metaDescription": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy."
+    "title": "Электронные приглашения на Акику и Бэби Шауэр: Темы, Дуа и Тексты",
+    "subtitle": "Отпразднуйте рождение ребенка с красивыми цифровыми приглашениями на Акику с рамками для фото и RSVP.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Приглашения на Акику и Бэби Шауэр — Cardzy",
+    "metaDescription": "Создайте цифровые пригласительные на Акику с мусульманскими молитвами (дуа), геолокацией и ответами в WhatsApp."
   },
   "de": {
-    "title": "Baby-Shower- & Aqiqah-Einladungen digital gestalten: Schöne Themen & Segenswünsche",
-    "subtitle": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy.",
-    "category": "Hochzeit & Nikkah",
-    "seoTitle": "Baby-Shower- & Aqiqah-Einladungen digital gestalten: Schöne Themen & Segenswünsche — Cardzy",
-    "metaDescription": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy."
+    "title": "Baby Shower & Aqiqah digitale Einladungen: Schöne Designs & Segenswünsche",
+    "subtitle": "Feiern Sie die Geburt Ihres Kindes mit bezaubernden digitalen Einladungen, Fotorahmen und RSVP-Tracking.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Aqiqah & Baby Shower Digitale Einladungen — Cardzy",
+    "metaDescription": "Gestalten Sie Einladungen für Aqiqah und Baby Shower mit islamischen Duas, Google Maps und WhatsApp-RSVP."
   },
   "ja": {
-    "title": "ベビーシャワー＆Aqiqahデジタル招待状のアイデア：かわいいテーマと祝福メッセージ",
-    "subtitle": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。",
-    "category": "結婚式＆Nikkah",
-    "seoTitle": "ベビーシャワー＆Aqiqahデジタル招待状のアイデア：かわいいテーマと祝福メッセージ — Cardzy",
-    "metaDescription": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。"
+    "title": "ベビーシャワー＆アキーカ（Aqiqah）デジタル招待状：かわいいテーマと祝福の言葉",
+    "subtitle": "写真フレームや出欠確認機能を備えたデジタル招待状で、赤ちゃんの誕生を温かくお祝いしましょう。",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "ベビーシャワー＆アキーカ デジタル招待状 — Cardzy",
+    "metaDescription": "祈りの言葉、地図ナビゲーション、1タップWhatsApp RSVPを備えたアキーカ＆ベビーシャワー招待状を作成。"
   },
   "ko": {
-    "title": "베이비 샤워 및 아기 탄생(Aqiqah) 모바일 초대장 아이디어: 귀여운 테마와 축복 문구",
-    "subtitle": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요.",
-    "category": "웨딩 & 니카",
-    "seoTitle": "베이비 샤워 및 아기 탄생(Aqiqah) 모바일 초대장 아이디어: 귀여운 테마와 축복 문구 — Cardzy",
-    "metaDescription": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요."
+    "title": "베이비 샤워 및 아키카(Aqiqah) 디지털 초대장: 사랑스러운 테마와 축복 문구",
+    "subtitle": "사진 프레임과 실시간 참석 확인(RSVP) 기능을 갖춘 디지털 초대장으로 아기의 탄생을 축하하세요.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "베이비 샤워 및 아키카 디지털 초대장 — Cardzy",
+    "metaDescription": "축복 기도문, 오시는 길 지도 및 1클릭 WhatsApp 참석 확인 기능이 있는 아키카 및 베이비 샤워 초대장 제작."
   },
   "it": {
-    "title": "Idee per Inviti Digitali Baby Shower e Aqiqah: Temi Deliziosi e Benedizioni",
-    "subtitle": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy.",
-    "category": "Matrimonio & Nikkah",
-    "seoTitle": "Idee per Inviti Digitali Baby Shower e Aqiqah: Temi Deliziosi e Benedizioni — Cardzy",
-    "metaDescription": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy."
+    "title": "Inviti Digitali per Baby Shower e Aqiqah: Temi Delicati e Benedizioni",
+    "subtitle": "Festeggia l'arrivo del tuo bambino con inviti digitali animati, cornici fotografiche e gestione delle presenze.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Inviti Digitali per Aqiqah e Baby Shower — Cardzy",
+    "metaDescription": "Crea inviti digitali per Aqiqah e Baby Shower con preghiere, mappe e tracciamento RSVP su WhatsApp."
   },
   "tr": {
-    "title": "Baby Shower ve Akika İçin Dijital Davetiye Fikirleri: Sevimli Temalar ve Dualar",
-    "subtitle": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin.",
-    "category": "Düğün ve Nikah",
-    "seoTitle": "Baby Shower ve Akika İçin Dijital Davetiye Fikirleri: Sevimli Temalar ve Dualar — Cardzy",
-    "metaDescription": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin."
+    "title": "Akika ve Baby Shower Dijital Davetiyeleri: Şirin Temalar ve İslami Dualar",
+    "subtitle": "Bebeğinizin doğumunu fotoğraf çerçeveleri ve LCV takibi içeren sevimli dijital davetiyelerle kutlayın.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Akika ve Baby Shower Davetiye Sözleri — Cardzy",
+    "metaDescription": "İslami dualar, harita konumu ve tek tıkla WhatsApp LCV takibi içeren Akika ve Baby Shower davetiyesi tasarlayın."
   },
   "id": {
-    "title": "Ide Undangan Digital Aqiqah & Baby Shower: Tema Menggemaskan dan Doa Syukur",
-    "subtitle": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy.",
-    "category": "Pernikahan & Akad",
-    "seoTitle": "Ide Undangan Digital Aqiqah & Baby Shower: Tema Menggemaskan dan Doa Syukur — Cardzy",
-    "metaDescription": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy."
+    "title": "Undangan Digital Aqiqah & Baby Shower: Tema Cantik, Doa & Kata-Kata",
+    "subtitle": "Sambut kelahiran buah hati dengan undangan digital Aqiqah yang dilengkapi bingkai foto dan RSVP WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Undangan Digital Aqiqah & Baby Shower — Cardzy",
+    "metaDescription": "Desain undangan digital Aqiqah dengan doa Islami untuk bayi, peta lokasi, dan konfirmasi kehadiran WhatsApp."
   },
   "bn": {
-    "title": "আকিকা ও বেবি শাওয়ার ডিজিটাল নিমন্ত্রণপত্রের আইডিয়া: সুন্দর থিম ও ইসলামিক দোয়া",
-    "subtitle": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।",
-    "category": "বিয়ে ও নিকাহ",
-    "seoTitle": "আকিকা ও বেবি শাওয়ার ডিজিটাল নিমন্ত্রণপত্রের আইডিয়া: সুন্দর থিম ও ইসলামিক দোয়া — Cardzy",
-    "metaDescription": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।"
+    "title": "আকিকা এবং বেবি শাওয়ার ডিজিটাল নিমন্ত্রণপত্র: সুন্দর থিম, ইসলামিক দোয়া ও বার্তা",
+    "subtitle": "আপনার নবজাতকের শুভ আগমনকে ছবির ফ্রেম এবং হোয়াটসঅ্যাপ RSVP ট্র্যাকিং সহ সুন্দর ডিজিটাল কার্ডে উদযাপন করুন।",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "আকিকা ও বেবি শাওয়ার ডিজিটাল কার্ড — কার্ডজি",
+    "metaDescription": "ইসলামিক দোয়া, ভেন্যু ম্যাপ এবং হোয়াটসঅ্যাপ RSVP ট্র্যাকিং সহ আকিকা ও বেবি শাওয়ার কার্ড তৈরি করুন।"
   },
   "vi": {
-    "title": "Ý Tưởng Thiệp Mời Tiệc Đầy Tháng, Thôi Nôi & Chào Đón Em Bé: Chủ Đề Dễ Thương",
-    "subtitle": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy.",
-    "category": "Đám Cưới & Hôn Lễ",
-    "seoTitle": "Ý Tưởng Thiệp Mời Tiệc Đầy Tháng, Thôi Nôi & Chào Đón Em Bé: Chủ Đề Dễ Thương — Cardzy",
-    "metaDescription": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy."
+    "title": "Thiệp Mời Đầy Tháng, Thôi Nôi & Baby Shower Kỹ Thuật Số",
+    "subtitle": "Chào đón thiên thần nhỏ với những mẫu thiệp mời kỹ thuật số đáng yêu kèm khung ảnh và xác nhận tham dự RSVP.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Thiệp Mời Baby Shower & Thôi Nôi — Cardzy",
+    "metaDescription": "Tạo thiệp mời thôi nôi và tiệc mừng bé với lời chúc ý nghĩa, bản đồ Google Maps và nút RSVP tiện lợi."
   },
   "sw": {
-    "title": "Mawazo ya Kadi za Kidijitali za Aqiqah na Baby Shower: Mandhari Nzuri na Dua",
-    "subtitle": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy.",
-    "category": "Harusi na Nikkah",
-    "seoTitle": "Mawazo ya Kadi za Kidijitali za Aqiqah na Baby Shower: Mandhari Nzuri na Dua — Cardzy",
-    "metaDescription": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy."
+    "title": "Mialiko ya Kidijitali ya Aqiqah na Baby Shower: Mandhari Nzuri na Dua za Kiislamu",
+    "subtitle": "Sherehekea kuzaliwa kwa mtoto wako kwa kadi za kidijitali zenye picha na ufuatiliaji wa RSVP wa WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "Mialiko ya Kidijitali ya Aqiqah na Baby Shower — Cardzy",
+    "metaDescription": "Buni mialiko ya Aqiqah na Baby Shower yenye dua za Kiislamu, ramani na uthibitisho wa RSVP kupitia WhatsApp."
   }
 };
 
 export const POST_16_CONTENT: Record<string, LocalizedBlogContent> = {
   "en": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "ur": {
-    "intro": "کارڈزی کے ساتھ عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ کو جدید ترین، دلکش اور یادگار انداز میں منائیں۔ روایتی کاغذ کے کارڈز کے بجائے 3D لفافہ اوپننگ، اردو نستعلیق خطاطی، بیک گراؤنڈ میوزک اور واٹس ایپ آر ایس وی پی کے ساتھ ڈیجیٹل کارڈز بنائیں۔",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عقیقہ اور بیبی شاور کے ڈیجیٹل کارڈز: خوبصورت تھیمز، اسلامی دعائیں اور الفاظ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
-        ],
-        "highlight": "کارڈزی پر اپنے کارڈ کو اپنی مرضی کے مطابق سجائیں اور فوری شیئر کریں۔"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "کارڈزی ڈیجیٹل کارڈ کے کیا فوائد ہیں؟",
-        "answer": "کارڈزی پر آپ 3D لفافہ اینیمیشن، پس منظر میوزک، اردو نستعلیق خطاطی اور واٹس ایپ آر ایس وی پی کے ساتھ باآسانی کارڈز بنا سکتے ہیں۔"
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "کیا کارڈزی پر کارڈ بنانا مفت ہے؟",
-        "answer": "جی ہاں! آپ کارڈزی پر تمام بنیادی اور اینیمیٹڈ کارڈز بالکل مفت بنا سکتے ہیں اور فوری واٹس ایپ پر شیئر کر سکتے ہیں۔"
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "کیا یہ کارڈ واٹس ایپ پر درست انداز میں کھلتا ہے؟",
-        "answer": "بالکل! کارڈزی لنک واٹس ایپ، ایس ایم ایس اور سوشل میڈیا پر بغیر کسی ایپ ڈاؤن لوڈ کے فوری کھلتا ہے۔"
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "کیا مہمانوں کی حاضری (RSVP) کو ٹریک کیا جا سکتا ہے؟",
-        "answer": "جی ہاں! مہمان ایک کلک سے شرکت کی تصدیق کرتے ہیں اور آپ کو لائیو ڈیش بورڈ اور واٹس ایپ پر فوری تعداد معلوم ہو جاتی ہے۔"
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "کارڈزی پر اپنا ڈیجیٹل کارڈ منٹوں میں ڈیزائن کریں، پسندیدہ آڈیو اور تصاویر شامل کریں اور واٹس ایپ پر ایک کلک سے شیئر کریں۔"
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "es": {
-    "intro": "Celebre Ideas de Invitaciones Digitales para Baby Shower y Aqiqah: Diseños Tiernos y Bendiciones con las innovadoras tarjetas digitales animadas en 3D de Cardzy. Personalice con música, fotos y confirmación RSVP por WhatsApp.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Ideas de Invitaciones Digitales para Baby Shower y Aqiqah: Diseños Tiernos y Bendiciones — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Ideas de Invitaciones Digitales para Baby Shower y Aqiqah: Diseños Tiernos y Bendiciones — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Ideas de Invitaciones Digitales para Baby Shower y Aqiqah: Diseños Tiernos y Bendiciones — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Ideas de Invitaciones Digitales para Baby Shower y Aqiqah: Diseños Tiernos y Bendiciones — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Ideas de Invitaciones Digitales para Baby Shower y Aqiqah: Diseños Tiernos y Bendiciones — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Ideas de Invitaciones Digitales para Baby Shower y Aqiqah: Diseños Tiernos y Bendiciones — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "Diseñe su tarjeta digital personalizada en Cardzy en minutos y compártala al instante por WhatsApp."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "fr": {
-    "intro": "Célébrez Idées de Faire-Part Numériques pour Baby Shower & Aqiqah : Thèmes Adorables & Duas avec les faire-part numériques et cartes animées 3D Cardzy. Personnalisez avec musique, photos et suivi RSVP sur WhatsApp.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Idées de Faire-Part Numériques pour Baby Shower & Aqiqah : Thèmes Adorables & Duas — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Idées de Faire-Part Numériques pour Baby Shower & Aqiqah : Thèmes Adorables & Duas — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Idées de Faire-Part Numériques pour Baby Shower & Aqiqah : Thèmes Adorables & Duas — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Idées de Faire-Part Numériques pour Baby Shower & Aqiqah : Thèmes Adorables & Duas — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Idées de Faire-Part Numériques pour Baby Shower & Aqiqah : Thèmes Adorables & Duas — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Idées de Faire-Part Numériques pour Baby Shower & Aqiqah : Thèmes Adorables & Duas — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "Quels sont les avantages des faire-part numériques Cardzy ?",
-        "answer": "Cardzy permet de créer des faire-part animés 3D avec musique, photos, géolocalisation Google Maps et suivi RSVP par WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "Est-il gratuit de créer une carte sur Cardzy ?",
-        "answer": "Oui ! Vous pouvez créer et partager gratuitement vos cartes animées directement sur WhatsApp."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "Les cartes fonctionnent-elles sur smartphone ?",
-        "answer": "Parfaitement. Le lien s’ouvre instantanément dans tout navigateur mobile sans nécessiter d’application."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "Comment fonctionne le suivi des réponses RSVP ?",
-        "answer": "Les invités confirment leur présence en un clic et votre tableau de bord est mis à jour en temps réel."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "Créez votre carte numérique personnalisée sur Cardzy en quelques minutes et partagez-la instantanément sur WhatsApp."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "ar": {
-    "intro": "مع كاردزي، احتفل بـ أفكار دعوات العقيقة وحفلات استقبال المولود: ثيمات مميزة وأدعية باللغتين بأرقى المعايير العصرية والتفاعلية ثلاثية الأبعاد 3D والخطوط الأنيقة، مع إمكانية تحديد موقع الحفل عبر خرائط جوجل وتأكيد الحضور عبر واتساب.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. أفكار دعوات العقيقة وحفلات استقبال المولود: ثيمات مميزة وأدعية باللغتين — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. أفكار دعوات العقيقة وحفلات استقبال المولود: ثيمات مميزة وأدعية باللغتين — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. أفكار دعوات العقيقة وحفلات استقبال المولود: ثيمات مميزة وأدعية باللغتين — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. أفكار دعوات العقيقة وحفلات استقبال المولود: ثيمات مميزة وأدعية باللغتين — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. أفكار دعوات العقيقة وحفلات استقبال المولود: ثيمات مميزة وأدعية باللغتين — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. أفكار دعوات العقيقة وحفلات استقبال المولود: ثيمات مميزة وأدعية باللغتين — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "ما هي مميزات بطاقات كاردزي الرقمية؟",
-        "answer": "تتيح لك كاردزي تصميم بطاقات تفاعلية ثلاثية الأبعاد 3D مع الموسيقى والخط العربي وموقع الحفل وتأكيد الحضور عبر واتساب."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "هل إنشاء البطاقات على كاردزي مجاني؟",
-        "answer": "نعم! يمكنك تصميم ومشاركة جميع البطاقات الأساسية والمتحركة مجاناً ومشاركتها مباشرة عبر واتساب."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "هل تعمل البطاقة بسلاسة عبر واتساب؟",
-        "answer": "نعم، يتم فتح الرابط في أي متصفح هاتف ذكي فوراً دون الحاجة لتثبيت أي تطبيق."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "كيف يتم تتبع تأكيدات الحضور (RSVP)؟",
-        "answer": "يقوم الضيوف بتأكيد الحضور بنقرة واحدة، وتتلقى الإشعارات فوراً في لوحة التحكم وعبر واتساب."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "أنشئ بطاقتك الرقمية التفاعلية على كاردزي في دقائق معدودة، وشاركها مباشرة مع أحبابك وضيوفك عبر واتساب."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "hi": {
-    "intro": "कार्डज़ी के साथ बेबी शॉवर और अकीका डिजिटल कार्ड के विचार: सुंदर थीम और द्विभाषी दुआएं को आधुनिक 3D एनिमेटेड कार्ड, संगीत और व्हाट्सएप आरएसवीपी के साथ यादगार बनाएं।",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. बेबी शॉवर और अकीका डिजिटल कार्ड के विचार: सुंदर थीम और द्विभाषी दुआएं — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. बेबी शॉवर और अकीका डिजिटल कार्ड के विचार: सुंदर थीम और द्विभाषी दुआएं — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. बेबी शॉवर और अकीका डिजिटल कार्ड के विचार: सुंदर थीम और द्विभाषी दुआएं — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. बेबी शॉवर और अकीका डिजिटल कार्ड के विचार: सुंदर थीम और द्विभाषी दुआएं — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. बेबी शॉवर और अकीका डिजिटल कार्ड के विचार: सुंदर थीम और द्विभाषी दुआएं — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. बेबी शॉवर और अकीका डिजिटल कार्ड के विचार: सुंदर थीम और द्विभाषी दुआएं — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "कार्डज़ी डिजिटल कार्ड की मुख्य विशेषताएं क्या हैं?",
-        "answer": "कार्डज़ी आपको 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप आरएसवीपी के साथ शानदार कार्ड बनाने की सुविधा देता है।"
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "क्या कार्डज़ी पर कार्ड बनाना मुफ्त है?",
-        "answer": "हाँ! आप सभी बुनियादी और एनिमेटेड कार्ड बिल्कुल मुफ्त बना सकते हैं और तुरंत व्हाट्सएप पर साझा कर सकते हैं।"
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "क्या यह व्हाट्सएप पर सही तरीके से खुलता है?",
-        "answer": "बिल्कुल! कार्डज़ी लिंक किसी भी मोबाइल ब्राउज़र में तुरंत खुलता है, किसी ऐप की आवश्यकता नहीं है।"
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "मेहमानों की उपस्थिति (RSVP) को कैसे ट्रैक करें?",
-        "answer": "मेहमान एक क्लिक में अपनी उपस्थिति की पुष्टि करते हैं और आपको लाइव डैशबोर्ड पर तुरंत संख्या मिल जाती है।"
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "कार्डज़ी पर मिनटों में अपना डिजिटल कार्ड बनाएं और व्हाट्सएप पर तुरंत साझा करें।"
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "zh": {
-    "intro": "使用 Cardzy 专属 3D 动态电子请柬与贺卡，为您精彩呈现 宝宝满月宴、新生儿迎新派对（Aqiqah）电子请柬创意与双语祝福文案。支持自定义音乐、照片画廊与 WhatsApp 实时出席回执。",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. 宝宝满月宴、新生儿迎新派对（Aqiqah）电子请柬创意与双语祝福文案 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. 宝宝满月宴、新生儿迎新派对（Aqiqah）电子请柬创意与双语祝福文案 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. 宝宝满月宴、新生儿迎新派对（Aqiqah）电子请柬创意与双语祝福文案 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. 宝宝满月宴、新生儿迎新派对（Aqiqah）电子请柬创意与双语祝福文案 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. 宝宝满月宴、新生儿迎新派对（Aqiqah）电子请柬创意与双语祝福文案 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. 宝宝满月宴、新生儿迎新派对（Aqiqah）电子请柬创意与双语祝福文案 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "Cardzy 动态电子请柬有哪些核心优势？",
-        "answer": "Cardzy 支持 3D 开封动画、背景音乐、照片画廊、Google 地图导航以及 WhatsApp 实时出席回执追踪。"
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "在 Cardzy 上制作电子请柬是否免费？",
-        "answer": "是的！您可以免费创建并生成专属精美动态请柬，随时随地一键分享。"
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "在手机和社交应用上打开体验如何？",
-        "answer": "无需下载任何 App，宾客在任何手机浏览器中点击链接即可秒级加载高清动态效果。"
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "如何进行宾客出席确认（RSVP）管理？",
-        "answer": "宾客轻点即可确认出席，您的管理后台与 WhatsApp 将实时同步最新出席人数与名单。"
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "立即在 Cardzy 免费创建专属电子请柬，一键即时分享至各大社交平台。"
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "pt": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "ru": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "de": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "ja": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "ko": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "it": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "tr": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "id": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "bn": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "vi": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   },
   "sw": {
-    "intro": "Welcoming a new life into the world is a momentous occasion deeply rooted in culture and faith. Whether you are hosting an Islamic Aqiqah on the seventh day, a traditional South Asian Godh Bharai, or a modern Baby Shower, setting the right tone starts with the invitation. Cardzy provides beautiful, bilingual digital invitations that allow you to seamlessly blend traditional Islamic blessings with modern aesthetic designs and practical RSVP features.",
+    "intro": "Welcoming a newborn into the world is one of life's most sacred and joyous blessings. In Muslim, South Asian, and global communities, this arrival is marked with beloved traditions: the Islamic Aqiqah (the sunnah sacrifice, hair-shaving, and communal feast), the South Asian Godh Bharai (celebration of the expectant mother), or modern baby showers. Coordinating these gatherings requires balancing religious reverence with playful warmth. Cardzy digital invitations provide sweet pastel themes, authentic Arabic and Urdu duas for newborns, and seamless WhatsApp RSVP management so hosts can focus on family instead of logistical headaches.",
     "sections": [
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-1",
-        "title": "1. Understanding Aqiqah vs. Baby Shower",
-        "body": "While both celebrate a newborn, they have distinct traditions. A Baby Shower (or Godh Bharai) is typically held before the birth to bless the expecting mother. An Aqiqah is an Islamic tradition performed after birth, usually on the 7th day, involving the sacrifice of an animal and shaving the baby’s head as an act of gratitude to Allah.",
+        "id": "sec-1",
+        "title": "1. The Sacred Traditions: Aqiqah, Godh Bharai & Baby Showers",
+        "body": "While modern baby showers celebrate the expectant mother before birth, the Aqiqah is the sacred Islamic sunnah performed after the baby arrives—typically on the 7th, 14th, or 21st day. It involves naming the newborn, shaving the baby's first hair, weighing it against silver for charity, and offering a sacrificial feast to feed relatives and the underprivileged. Digital invitations allow families to honor these traditions with dignified Islamic aesthetics and warm hospitality.",
         "bulletPoints": [
-          "Baby Showers focus on maternity blessings and gifts for the mother",
-          "Godh Bharai involves traditional South Asian rituals and prayers",
-          "Aqiqah is a sunnah focusing on gratitude, sacrifice, and charity",
-          "Digital invites can be tailored specifically to the nature of the event"
+          "Sacred Sunnah Framing: Incorporate Hadith references and prayers for the newborn's righteousness (Taqwa) and health",
+          "Bilingual Calligraphy: Display traditional Arabic Bismillah and blessings alongside modern English details",
+          "Family Celebration: Welcome relatives and community members to share in the blessed feast"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-2",
-        "title": "2. Incorporating Islamic Duas for Newborns",
-        "body": "For an Aqiqah invitation, starting with a beautiful Islamic prayer sets a spiritual tone. Including traditional Arabic duas alongside their translations shows reverence and invites guests to share in your prayers for the child’s righteous future.",
+        "id": "sec-2",
+        "title": "2. Authentic Bilingual Wording & Quranic Duas for Newborns",
+        "body": "The wording of an Aqiqah invitation should invoke divine protection for the child while extending a warm welcome to guests. Here are curated wording templates ready for Cardzy cards:",
         "bulletPoints": [
-          "Include the classic dua: \"May Allah bless you in His gift to you...\" (Barakallahu laka fil mawhoobi laka)",
-          "Use elegant Arabic calligraphy for Bismillah at the top",
-          "Add Urdu or English translations for wider understanding",
-          "Cardzy supports seamless Arabic and Nastaliq typography formatting"
+          "Traditional Quranic Dua: 'بَارَكَ اللَّهُ لَكَ فِي المَوْهُوبِ لَكَ، وَشَكَرْتَ الوَاهِبَ، وَبَلَغَ أَشُدَّهُ، وَرُزِقْتَ بِرَّهُ' (May Allah bless you in His gift to you, may you give thanks to the Giver, may the child reach maturity, and may you be granted their piety.)",
+          "Urdu Aqiqah Template: 'اللہ تعالیٰ کے فضل و کرم سے ہمارے ہاں رحمت/نعمت کی ولادت ہوئی ہے۔ اس پرمسرت موقع پر ہم عقیقہ اور دعوتِ طعام کا اہتمام کر رہے ہیں۔ آپ کی دعاؤں اور شرکت کے منتظر۔'",
+          "Warm English Invitation: 'With grateful hearts and immense joy, we welcome our precious baby [Baby Name] into the world. Please join our family for the blessed Aqiqah Ceremony and lunch feast.'"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-3",
-        "title": "3. Cute and Elegant Invitation Wording",
-        "body": "The wording of your invitation should reflect the joy of the occasion. Depending on the formality of your event, you can choose sweet, playful language for a baby shower or formal, gracious wording for an Aqiqah.",
+        "id": "sec-3",
+        "title": "3. Pastel Themes & Sweet Nursery Visual Aesthetics",
+        "body": "Visual themes for baby celebrations should feel soft, serene, and heartwarming. Cardzy offers gentle color palettes and playful motifs:",
         "bulletPoints": [
-          "Aqiqah: \"With the blessings of Allah, we invite you to the Aqiqah ceremony of our beloved child...\"",
-          "Baby Shower: \"A new little hand is ready to hold, join us to celebrate as our story unfolds!\"",
-          "Godh Bharai: \"Join us for an evening of prayers, joy, and blessings for the mother-to-be.\"",
-          "Ensure to clearly state the baby’s name (if born) or parent names"
+          "Pastel Harmony: Soft powder blue, blush rose, gender-neutral sage green, and warm cream gold",
+          "Charming Nursery Motifs: Floating clouds, celestial crescent moons, stars, and soft watercolor floral garlands",
+          "Baby Portrait Badge: Upload your baby's first newborn photoshoot portrait inside a glowing medallion"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-4",
-        "title": "4. Choosing the Right Visual Themes",
-        "body": "Visual aesthetics play a huge role in digital cards. For baby-centric events, soft color palettes work best. Cardzy offers themes that range from traditional Islamic motifs for Aqiqahs to cute, modern pastel designs for baby showers.",
+        "id": "sec-4",
+        "title": "4. Eliminating Guest Confusion: Google Maps Venue Directions",
+        "body": "Family dawats and Aqiqah lunches are often held at private residences, farmhouses, or banquet halls. Guests trying to navigate residential streets frequently get lost. With Cardzy, embed your exact Google Maps location pin right into the digital card. Guests tap a single button and receive turn-by-turn navigation straight to your front gate.",
         "bulletPoints": [
-          "Opt for soft pastels like mint green, baby blue, or blush pink",
-          "Use moon and star motifs for Islamic-themed Aqiqah cards",
-          "Incorporate animated elements like floating balloons or glowing stars",
-          "Include a dedicated frame for the baby’s first photo (if preferred)"
+          "One-Tap GPS Navigation: Eliminates lost guests driving in circles on celebration day",
+          "Gate Instructions: Add specific neighborhood gate entry details or security gate clearances",
+          "Parking Notes: Guide guests to designated street parking or valet areas"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-5",
-        "title": "5. Bilingual Urdu & English Templates",
-        "body": "When inviting diverse family members, offering details in both English and Urdu ensures everyone feels included. A bilingual digital card bridges the gap between older relatives who prefer Urdu and friends who prefer English.",
+        "id": "sec-5",
+        "title": "5. Managing Catering Headcounts with 1-Click WhatsApp RSVP",
+        "body": "Traditional Aqiqah feasts feature generous mutton, biryani, or barbecue menus. Guessing guest numbers leads to over-ordering by dozens of portions or running short of food. Cardzy's WhatsApp RSVP module lets guests confirm attendance in five seconds, providing you with verified headcounts to hand directly to your catering team.",
         "bulletPoints": [
-          "Present the main invitation text in English with an Urdu summary below",
-          "Use dual-language headings for venue and time details",
-          "Cardzy allows easy switching or blending of multiple languages on one page",
-          "Maintains cultural authenticity while offering modern convenience"
+          "Quick Family Confirmation: Guests specify number of adults and children attending",
+          "Dietary Considerations: Note mild options for young children or special elder dietary needs",
+          "Real-Time Host Dashboard: Track confirmed attendees live on your smartphone"
         ]
       },
       {
-        "id": "baby-shower-aqiqah-digital-invitation-ideas-bilingual-templates-sec-6",
-        "title": "6. Managing Guests with WhatsApp RSVP",
-        "body": "Hosting a family event can be chaotic. Cardzy’s digital invitations feature a 1-click WhatsApp RSVP button, making it incredibly easy for guests to confirm their attendance directly to your phone, helping you manage catering and seating efficiently.",
+        "id": "sec-6",
+        "title": "6. Sharing Announcements with Overseas Family",
+        "body": "When grandparents, aunts, and uncles live overseas in London, Houston, Toronto, or Jeddah, a Cardzy digital card serves as a formal birth announcement. Share the link into family WhatsApp groups so everyone can admire the baby portrait, read the selected baby name and its meaning, and leave virtual blessings.",
         "bulletPoints": [
-          "Guests RSVP instantly without needing to download any app",
-          "Keep track of exact headcounts for Aqiqah feasts",
-          "Embed Google Maps to guide guests directly to the banquet or home",
-          "Include dietary preferences or gift registry links if applicable"
-        ],
-        "highlight": "Create your beautiful, bilingual Aqiqah or Baby Shower invitation on Cardzy today!"
+          "Global Birth Announcement: Share the live link across international messaging groups with zero shipping delays",
+          "Name & Meaning Highlight: Display your child's name, pronunciation, and spiritual meaning prominently",
+          "Permanent Family Memory: The digital card URL remains live as a cherished keepsake of your baby's first milestone"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Can I include both the Aqiqah sacrifice and dinner details on the card?",
+        "answer": "Yes! You can outline the complete schedule: morning Dua/Ceremony and evening Feast timings on the same invitation."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I upload a picture of my newborn to the card?",
+        "answer": "Yes! Cardzy supports high-resolution photo uploads with lovely glowing borders."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it possible to track RSVPs for an Aqiqah lunch?",
+        "answer": "Absolutely. Guests tap the RSVP button on the card link to confirm attendance, and responses update your live dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I send this to relatives in other countries?",
+        "answer": "Yes, Cardzy digital cards open instantly on any smartphone worldwide without downloading an app."
       }
     ],
-    "conclusion": "An Aqiqah, Godh Bharai, or Baby Shower is a beautiful celebration of family and faith. By using Cardzy’s elegant, bilingual digital invitations, you can honor your cultural traditions, seamlessly manage your guest list, and create a lasting digital keepsake of your child’s first milestone."
+    "conclusion": "Welcoming your child into the community is a memory you will cherish forever. Honor the milestone with elegance, faith, and seamless hospitality. Create your custom Aqiqah or Baby Shower digital invitation on Cardzy today!"
   }
 };

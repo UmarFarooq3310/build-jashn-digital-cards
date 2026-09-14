@@ -249,7 +249,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
 
   // ── 2. RECEIVER SCREEN (Clean 100dvh Full-Screen Viewport + Cardzy Make Your Own) ──
   return (
-    <div className="flex min-h-[100dvh] flex-col justify-between items-center relative overflow-hidden px-4 py-4 sm:py-6 bg-[#050507] text-white w-full select-none">
+    <div className="flex min-h-[100dvh] flex-col justify-between items-center relative overflow-y-auto px-4 py-4 sm:py-6 bg-[#050507] text-white w-full select-none">
       {/* Gold Ambient Background Glow */}
       <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 size-[32rem] rounded-full bg-[#D4AF37]/10 blur-[120px]" />
 

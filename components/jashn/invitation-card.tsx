@@ -632,34 +632,66 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
           {/* Couple headline or event title */}
           {isCouple ? (
-            <div className="ic-stagger inv-parallax-near text-center">
-              <p className={cn(
-                "shimmer-text font-extrabold tracking-tight",
-                (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose" : "text-xl sm:text-2xl md:text-4xl leading-tight"
-              )}>
-                {data.groom || t('groom', 'Groom')} <span style={{ color: 'var(--c-accent)', opacity: 0.7 }}>{t('andWord', '&')}</span> {data.bride || t('bride', 'Bride')}
-              </p>
+            <div className="ic-stagger inv-parallax-near text-center w-full px-2">
+              {/* Optional custom event subtitle/title if present (e.g. Milestone Wedding Anniversaries (Silver & Golden)) */}
+              {data.title && data.title !== type?.label && (
+                <div className="mb-2 max-w-full">
+                  <span
+                    className={cn(
+                      "inline-block text-xs sm:text-sm font-extrabold tracking-wider uppercase px-3.5 py-1 rounded-full border border-[var(--c-accent)]/30 bg-[var(--c-accent)]/10 text-center max-w-full text-balance leading-snug shadow-xs",
+                      (lang === 'ur' || lang === 'ar') && "font-urdu text-sm sm:text-base tracking-normal leading-relaxed"
+                    )}
+                    style={{ color: 'var(--c-accent)' }}
+                  >
+                    {data.title}
+                  </span>
+                </div>
+              )}
+
+              <div
+                className={cn(
+                  "shimmer-text font-extrabold flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-5 gap-y-1 sm:gap-y-2 text-center w-full my-1 leading-normal",
+                  (lang === 'ur' || lang === 'ar')
+                    ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose"
+                    : "text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-normal"
+                )}
+              >
+                <span className="inline-block whitespace-nowrap max-w-full text-center">
+                  {data.groom || t('groom', 'Groom')}
+                </span>
+                <span
+                  className="inline-flex items-center justify-center font-serif italic text-base sm:text-xl md:text-2xl px-2 sm:px-3 opacity-80 shrink-0 select-none"
+                  style={{ color: 'var(--c-accent)' }}
+                  aria-hidden="true"
+                >
+                  {t('andWord', '&')}
+                </span>
+                <span className="inline-block whitespace-nowrap max-w-full text-center">
+                  {data.bride || t('bride', 'Bride')}
+                </span>
+              </div>
+
               {data.hostNames && (
                 <p className={cn(
-                  "mt-1 opacity-75 tracking-wide",
-                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm leading-loose" : "text-xs sm:text-sm"
+                  "mt-2 opacity-80 tracking-wide text-balance px-2",
+                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm leading-loose" : "text-xs sm:text-sm leading-relaxed"
                 )}>
                   {data.hostNames} {t('joyfullyInvite')}
                 </p>
               )}
             </div>
           ) : (
-            <div className="ic-stagger inv-parallax-near text-center">
+            <div className="ic-stagger inv-parallax-near text-center w-full px-2">
               <h2 className={cn(
-                "shimmer-text font-extrabold tracking-tight",
-                (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose" : "text-xl sm:text-2xl md:text-4xl leading-snug"
+                "shimmer-text font-extrabold tracking-normal leading-snug text-balance px-2",
+                (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose" : "text-xl sm:text-2xl md:text-3xl lg:text-4xl"
               )}>
                 {data.title || data.hostNames || (t(`type_${type?.id.replace(/-/g, '_')}`) || type?.label)}
               </h2>
               {data.hostNames && data.title && (
                 <p className={cn(
-                  "mt-1 opacity-75 tracking-wide",
-                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm leading-loose" : "text-xs sm:text-sm"
+                  "mt-2 opacity-80 tracking-wide text-balance px-2",
+                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm leading-loose" : "text-xs sm:text-sm leading-relaxed"
                 )}>{t('hostedBy')} {data.hostNames}</p>
               )}
             </div>
@@ -691,6 +723,13 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
             )}
           </div>
 
+          {/* ── Live Countdown Flip Clock ── */}
+          {showCountdown && data.date && (
+            <div className="ic-stagger inv-parallax-near my-1.5 flex flex-col items-center scale-90 sm:scale-100">
+              <Countdown date={data.date} time={data.time} />
+            </div>
+          )}
+
           {/* Personal notes / message */}
           {data.notes && (
             <div
@@ -708,7 +747,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                   "text-xs sm:text-sm italic leading-relaxed opacity-90 whitespace-pre-line",
                   (lang === 'ur' || lang === 'ar') ? "font-urdu text-right" : "text-left"
                 )}
-                style={{ fontStyle: 'italic' }}
+                style={{ fontStyle: 'italic', color: 'var(--c-ink)' }}
               >
                 &ldquo;{data.notes}&rdquo;
               </p>
@@ -722,7 +761,10 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
             className="relative z-10 px-4 pb-4 pt-2 flex flex-col items-center gap-0.5"
             style={{ borderTop: '1px solid color-mix(in oklab,var(--c-accent) 18%,transparent)' }}
           >
-            <p className={lang === 'ur' ? "font-urdu text-xs opacity-65" : "text-[10px] sm:text-xs font-semibold opacity-65"}>
+            <p
+              className={lang === 'ur' ? "font-urdu text-xs opacity-80" : "text-[10px] sm:text-xs font-semibold opacity-80"}
+              style={{ color: 'var(--c-ink)' }}
+            >
               {t('madeWithCardzy')}
             </p>
           </div>

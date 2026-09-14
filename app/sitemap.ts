@@ -5,12 +5,13 @@ import { SITE_URL, getLanguageAlternates } from '@/lib/seo'
 export default function sitemap(): MetadataRoute.Sitemap {
   // Use fixed dates for static pages to prevent Google from distrusting lastmod
   // Only blog routes use their actual updatedAt timestamps
-  const frequentUpdateDate = new Date('2026-08-25')
-  const monthlyUpdateDate = new Date('2026-08-01')
+  const frequentUpdateDate = new Date('2026-09-10')
+  const monthlyUpdateDate = new Date('2026-09-01')
   const yearlyUpdateDate = new Date('2026-06-15')
 
   const staticRoutePaths = [
     { path: '/', changeFrequency: 'daily' as const, priority: 1.0, lastModified: frequentUpdateDate },
+    { path: '/calendar', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
     { path: '/blog', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
     { path: '/custom-order', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
     { path: '/create-wish', changeFrequency: 'weekly' as const, priority: 0.9, lastModified: monthlyUpdateDate },
@@ -41,6 +42,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: route.lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
+    alternates: {
+      languages: getLanguageAlternates(route.path),
+    },
   }))
 
   const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({

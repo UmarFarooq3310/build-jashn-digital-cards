@@ -5,129 +5,129 @@ export const POST_13_SLUG = "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-e
 export const POST_13_DATA: Record<string, LocalizedBlogData> = {
   "en": {
     "title": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
-    "subtitle": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings.",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
     "category": "Eid & Holidays",
-    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
-    "metaDescription": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings."
+    "seoTitle": "Urdu Eid ul Adha Wishes & Bakra Eid Cards | Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "ur": {
-    "title": "عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات",
-    "subtitle": "کارڈزی پر عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔",
-    "category": "عید اور تعطیلات",
-    "seoTitle": "عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات — Cardzy",
-    "metaDescription": "کارڈزی پر عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔"
+    "title": "کارڈزی گائیڈ: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — کارڈزی",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "es": {
-    "title": "Las Mejores Felicitaciones para Eid al-Adha: Tarjetas Animadas, Duas y Mensajes",
-    "subtitle": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings.",
-    "category": "Eid y Festividades",
-    "seoTitle": "Las Mejores Felicitaciones para Eid al-Adha: Tarjetas Animadas, Duas y Mensajes — Cardzy",
-    "metaDescription": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings."
+    "title": "Guía Cardzy: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "fr": {
-    "title": "Meilleurs Vœux pour l’Aïd el-Kébir : Cartes Animées, Invocations et Textes Multilingues",
-    "subtitle": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy.",
-    "category": "Aïd & Fêtes",
-    "seoTitle": "Meilleurs Vœux pour l’Aïd el-Kébir : Cartes Animées, Invocations et Textes Multilingues — Cardzy",
-    "metaDescription": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy."
+    "title": "Guide Cardzy: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "ar": {
-    "title": "أفضل بطاقات تهنئة عيد الأضحى المبارك: أدعية مأثورة ورسائل تهنئة متعددة اللغات",
-    "subtitle": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي.",
-    "category": "العيد والمناسبات",
-    "seoTitle": "أفضل بطاقات تهنئة عيد الأضحى المبارك: أدعية مأثورة ورسائل تهنئة متعددة اللغات — Cardzy",
-    "metaDescription": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي."
+    "title": "دليل كاردزي: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — كاردزي",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "hi": {
-    "title": "ईद उल-अजहा और कुर्बानी की शुभकामनाएं: एनिमेटेड कार्ड, दुआएं और बहुभाषी संदेश",
-    "subtitle": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।",
-    "category": "ईद और त्योहार",
-    "seoTitle": "ईद उल-अजहा और कुर्बानी की शुभकामनाएं: एनिमेटेड कार्ड, दुआएं और बहुभाषी संदेश — Cardzy",
-    "metaDescription": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।"
+    "title": "कार्डज़ी गाइड: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — कार्डज़ी",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "zh": {
-    "title": "古尔邦节（宰牲节）专属 3D 电子贺卡与祈祷祝福语精选",
-    "subtitle": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。",
-    "category": "开斋节与节日",
-    "seoTitle": "古尔邦节（宰牲节）专属 3D 电子贺卡与祈祷祝福语精选 — Cardzy",
-    "metaDescription": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。"
+    "title": "Cardzy 电子卡片指南: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "pt": {
-    "title": "Melhores Votos para Eid ul Adha: Cartões Animados, Orações e Mensagens Bilíngues",
-    "subtitle": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy.",
-    "category": "Eid e Feriados",
-    "seoTitle": "Melhores Votos para Eid ul Adha: Cartões Animados, Orações e Mensagens Bilíngues — Cardzy",
-    "metaDescription": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy."
+    "title": "Guia Cardzy: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "ru": {
-    "title": "Лучшие поздравления с праздником Курбан-байрам (Эйд аль-Адха): Открытки и дуа",
-    "subtitle": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy.",
-    "category": "Эйд и Праздники",
-    "seoTitle": "Лучшие поздравления с праздником Курбан-байрам (Эйд аль-Адха): Открытки и дуа — Cardzy",
-    "metaDescription": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy."
+    "title": "Руководство Cardzy: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "de": {
-    "title": "Die besten Eid ul-Adha & Kurban-Grüße: 3D-animierte Karten, Bittgebete und Texte",
-    "subtitle": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy.",
-    "category": "Eid & Feiertage",
-    "seoTitle": "Die besten Eid ul-Adha & Kurban-Grüße: 3D-animierte Karten, Bittgebete und Texte — Cardzy",
-    "metaDescription": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy."
+    "title": "Cardzy Ratgeber: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "ja": {
-    "title": "Eid ul Adha（犠牲祭）お祝いデジタルカード：アニメーション＆多言語メッセージ",
-    "subtitle": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。",
-    "category": "Eid＆祝日",
-    "seoTitle": "Eid ul Adha（犠牲祭）お祝いデジタルカード：アニメーション＆多言語メッセージ — Cardzy",
-    "metaDescription": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。"
+    "title": "Cardzy ガイド: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "ko": {
-    "title": "이드 알아드하(Eid ul Adha) 축하 모바일 카드: 3D 애니메이션 & 축복 메시지",
-    "subtitle": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요.",
-    "category": "이드 & 축제",
-    "seoTitle": "이드 알아드하(Eid ul Adha) 축하 모바일 카드: 3D 애니메이션 & 축복 메시지 — Cardzy",
-    "metaDescription": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요."
+    "title": "Cardzy 가이드: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "it": {
-    "title": "I Migliori Auguri per Eid al-Adha: Biglietti Animati, Preghiere e Messaggi Multilingue",
-    "subtitle": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy.",
-    "category": "Eid e Festività",
-    "seoTitle": "I Migliori Auguri per Eid al-Adha: Biglietti Animati, Preghiere e Messaggi Multilingue — Cardzy",
-    "metaDescription": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy."
+    "title": "Guida Cardzy: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "tr": {
-    "title": "En Güzel Kurban Bayramı Tebrik Mesajları: 3D Animasyonlu Kartlar ve Dualar",
-    "subtitle": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin.",
-    "category": "Bayram ve Tatiller",
-    "seoTitle": "En Güzel Kurban Bayramı Tebrik Mesajları: 3D Animasyonlu Kartlar ve Dualar — Cardzy",
-    "metaDescription": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin."
+    "title": "Cardzy Rehberi: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "id": {
-    "title": "Kumpulan Ucapan Selamat Hari Raya Idul Adha & Qurban: Kartu Animasi 3D dan Doa",
-    "subtitle": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy.",
-    "category": "Idul Fitri & Liburan",
-    "seoTitle": "Kumpulan Ucapan Selamat Hari Raya Idul Adha & Qurban: Kartu Animasi 3D dan Doa — Cardzy",
-    "metaDescription": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy."
+    "title": "Panduan Cardzy: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "bn": {
-    "title": "পবিত্র ঈদুল আজহা ও কোরবানির শুভেচ্ছা কার্ড: দোয়া এবং বহুভাষিক বার্তা",
-    "subtitle": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।",
-    "category": "ঈদ ও ছুটির দিন",
-    "seoTitle": "পবিত্র ঈদুল আজহা ও কোরবানির শুভেচ্ছা কার্ড: দোয়া এবং বহুভাষিক বার্তা — Cardzy",
-    "metaDescription": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।"
+    "title": "কার্ডজি গাইড: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — কার্ডজি",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "vi": {
-    "title": "Lời Chúc Lễ Eid ul Adha Ý Nghĩa: Thiệp Hoạt Hình 3D, Lời Cầu Nguyện & Lời Chúc",
-    "subtitle": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy.",
-    "category": "Lễ Eid & Ngày Lễ",
-    "seoTitle": "Lời Chúc Lễ Eid ul Adha Ý Nghĩa: Thiệp Hoạt Hình 3D, Lời Cầu Nguyện & Lời Chúc — Cardzy",
-    "metaDescription": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy."
+    "title": "Hướng Dẫn Cardzy: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   },
   "sw": {
-    "title": "Kadi Bora za Eid ul Adha na Ujumbe wa Sikukuu ya Kuchinja: Kadi za 3D na Dua",
-    "subtitle": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy.",
-    "category": "Eid na Sikukuu",
-    "seoTitle": "Kadi Bora za Eid ul Adha na Ujumbe wa Sikukuu ya Kuchinja: Kadi za 3D na Dua — Cardzy",
-    "metaDescription": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy."
+    "title": "Mwongozo wa Cardzy: Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings",
+    "subtitle": "Honoring the spirit of sacrifice and charity with dignified Islamic calligraphy, heartfelt family blessings, and multilingual greetings for loved ones near and far.",
+    "category": "Eid & Holidays",
+    "seoTitle": "Best Eid ul Adha & Qurbani Wishes: Animated Cards, Duas & Multilingual Greetings — Cardzy",
+    "metaDescription": "Send authentic Eid ul Adha wishes with Arabic calligraphy, warm Urdu duas, and 3D animated cards. Personalize with family photos and festive greeting audio."
   }
 };
 
@@ -205,533 +205,569 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
   },
   "ur": {
-    "intro": "کارڈزی کے ساتھ عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات کو جدید ترین، دلکش اور یادگار انداز میں منائیں۔ روایتی کاغذ کے کارڈز کے بجائے 3D لفافہ اوپننگ، اردو نستعلیق خطاطی، بیک گراؤنڈ میوزک اور واٹس ایپ آر ایس وی پی کے ساتھ ڈیجیٹل کارڈز بنائیں۔",
+    "intro": "Eid ul Adha, the Festival of Sacrifice, is a profound time of faith, reflection, and community for Muslims worldwide. As we commemorate the devotion of Prophet Ibrahim (AS), sharing heartfelt wishes and duas with loved ones is a beautiful tradition. With Cardzy, you can send stunning 3D animated Eid ul Adha and Qurbani cards in multiple languages, ensuring your blessings are felt deeply, no matter the distance.",
     "sections": [
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-1",
-        "title": "1. عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "title": "1. The Spiritual Significance of Eid ul Adha and Qurbani",
+        "body": "Eid ul Adha is not just a celebration; it is a profound reminder of sacrifice, obedience, and charity. The act of Qurbani symbolizes a willingness to give up what is dear to us for the sake of Allah. When designing your digital card, acknowledging this deep spiritual meaning elevates your greeting.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Include reflections on the spirit of sacrifice and devotion",
+          "Mention the importance of sharing meat with the less fortunate",
+          "Highlight the connection to the holy pilgrimage of Hajj",
+          "Cardzy provides specialized templates featuring the Kaaba and crescent moons"
         ],
-        "highlight": "کارڈزی پر اپنے کارڈ کو اپنی مرضی کے مطابق سجائیں اور فوری شیئر کریں۔"
+        "highlight": "Incorporate meaningful quotes from the Quran or Hadith to resonate with the spiritual essence of the day."
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-2",
-        "title": "2. عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "title": "2. Crafting Bilingual Wishes in Urdu and English",
+        "body": "In an increasingly interconnected world, many families speak multiple languages. Sending a bilingual digital card ensures that everyone, from your grandparents in Pakistan to your cousins in the UK, can appreciate the message.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Urdu: \"Aap ko aur aap ke ghar walon ko Eid-ul-Adha ki dilli mubarakbad.\"",
+          "English: \"May the divine blessings of Allah bring you hope, faith, and joy on Eid-ul-Adha.\"",
+          "Ensure fonts used are easily legible on both mobile screens and desktops",
+          "Use Cardzy layout tools to position English text alongside Urdu or Arabic script"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-3",
-        "title": "3. عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "title": "3. Incorporating Powerful Arabic Duas",
+        "body": "Including an authentic Arabic dua adds a layer of profound blessing to your Eid card. The Arabic language carries the traditional weight of Islamic prayers, and seeing beautifully calligraphed Arabic text evokes reverence and peace.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Taqabbalallahu minna wa minkum (May Allah accept good deeds from us and from you)",
+          "Eid Mubarak wa Kulu Aam wa Antum Bikhair (Blessed Eid, may you be well every year)",
+          "Cardzy features built-in Arabic calligraphy vectors for any card",
+          "Accompany the Arabic text with a translation for non-Arabic speaking recipients"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-4",
-        "title": "4. عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "title": "4. Corporate and Professional Eid Greetings",
+        "body": "Eid ul Adha is an excellent time to strengthen professional relationships. Sending digital Eid cards to clients, employees, and partners shows cultural awareness. The tone for corporate cards should remain formal, inclusive, and polished.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Keep it professional: \"Wishing you and your team a prosperous and blessed Eid ul Adha.\"",
+          "Incorporate your company logo subtly into the Cardzy template design",
+          "Avoid overly personal or highly religious text if sending to a diverse client base",
+          "Use Cardzy bulk-sending features to distribute customized cards to your entire list"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-5",
-        "title": "5. عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "title": "5. Special Wishes for Hajj Pilgrims",
+        "body": "Since Eid ul Adha coincides with Hajj, many families have loved ones performing the sacred pilgrimage in Mecca. Sending a dedicated digital card to a Haji requires a specific tone of reverence.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Greeting: \"Hajj Mabroor! May Allah accept your Hajj and forgive your sins.\"",
+          "Include imagery of the Kaaba, pilgrims, or the plains of Arafat",
+          "Send via WhatsApp so they can easily open it on their mobile while traveling",
+          "Cardzy offers exclusive Hajj-themed backgrounds designed for this occasion"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-6",
-        "title": "6. عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عید الاضحیٰ اور قربانی کے بہترین وش کارڈز: دعائیں، اینیمیشن اور کثیر لسانی پیغامات کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "title": "6. Digital Sharing Etiquette for Eid",
+        "body": "When the morning of Eid arrives, everyone rushes to share greetings. To ensure your card stands out and feels genuine, observe proper digital sharing etiquette.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Send cards early in the morning, right after Eid prayers (Salat al-Eid)",
+          "Use WhatsApp Broadcasts to send individual messages without group clutter",
+          "Add a personal voice note along with your Cardzy link for a warm touch",
+          "Remember to reply graciously to cards you receive from others"
         ]
       }
     ],
     "faq": [
       {
-        "question": "کارڈزی ڈیجیٹل کارڈ کے کیا فوائد ہیں؟",
-        "answer": "کارڈزی پر آپ 3D لفافہ اینیمیشن، پس منظر میوزک، اردو نستعلیق خطاطی اور واٹس ایپ آر ایس وی پی کے ساتھ باآسانی کارڈز بنا سکتے ہیں۔"
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "کیا کارڈزی پر کارڈ بنانا مفت ہے؟",
-        "answer": "جی ہاں! آپ کارڈزی پر تمام بنیادی اور اینیمیٹڈ کارڈز بالکل مفت بنا سکتے ہیں اور فوری واٹس ایپ پر شیئر کر سکتے ہیں۔"
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "کیا یہ کارڈ واٹس ایپ پر درست انداز میں کھلتا ہے؟",
-        "answer": "بالکل! کارڈزی لنک واٹس ایپ، ایس ایم ایس اور سوشل میڈیا پر بغیر کسی ایپ ڈاؤن لوڈ کے فوری کھلتا ہے۔"
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "کیا مہمانوں کی حاضری (RSVP) کو ٹریک کیا جا سکتا ہے؟",
-        "answer": "جی ہاں! مہمان ایک کلک سے شرکت کی تصدیق کرتے ہیں اور آپ کو لائیو ڈیش بورڈ اور واٹس ایپ پر فوری تعداد معلوم ہو جاتی ہے۔"
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
-    "conclusion": "کارڈزی پر اپنا ڈیجیٹل کارڈ منٹوں میں ڈیزائن کریں، پسندیدہ آڈیو اور تصاویر شامل کریں اور واٹس ایپ پر ایک کلک سے شیئر کریں۔"
+    "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
   },
   "es": {
-    "intro": "Celebre Las Mejores Felicitaciones para Eid al-Adha: Tarjetas Animadas, Duas y Mensajes con las innovadoras tarjetas digitales animadas en 3D de Cardzy. Personalice con música, fotos y confirmación RSVP por WhatsApp.",
+    "intro": "Eid ul Adha, the Festival of Sacrifice, is a profound time of faith, reflection, and community for Muslims worldwide. As we commemorate the devotion of Prophet Ibrahim (AS), sharing heartfelt wishes and duas with loved ones is a beautiful tradition. With Cardzy, you can send stunning 3D animated Eid ul Adha and Qurbani cards in multiple languages, ensuring your blessings are felt deeply, no matter the distance.",
     "sections": [
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-1",
-        "title": "1. Las Mejores Felicitaciones para Eid al-Adha: Tarjetas Animadas, Duas y Mensajes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "title": "1. The Spiritual Significance of Eid ul Adha and Qurbani",
+        "body": "Eid ul Adha is not just a celebration; it is a profound reminder of sacrifice, obedience, and charity. The act of Qurbani symbolizes a willingness to give up what is dear to us for the sake of Allah. When designing your digital card, acknowledging this deep spiritual meaning elevates your greeting.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Include reflections on the spirit of sacrifice and devotion",
+          "Mention the importance of sharing meat with the less fortunate",
+          "Highlight the connection to the holy pilgrimage of Hajj",
+          "Cardzy provides specialized templates featuring the Kaaba and crescent moons"
         ],
         "highlight": "Incorporate meaningful quotes from the Quran or Hadith to resonate with the spiritual essence of the day."
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-2",
-        "title": "2. Las Mejores Felicitaciones para Eid al-Adha: Tarjetas Animadas, Duas y Mensajes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "title": "2. Crafting Bilingual Wishes in Urdu and English",
+        "body": "In an increasingly interconnected world, many families speak multiple languages. Sending a bilingual digital card ensures that everyone, from your grandparents in Pakistan to your cousins in the UK, can appreciate the message.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Urdu: \"Aap ko aur aap ke ghar walon ko Eid-ul-Adha ki dilli mubarakbad.\"",
+          "English: \"May the divine blessings of Allah bring you hope, faith, and joy on Eid-ul-Adha.\"",
+          "Ensure fonts used are easily legible on both mobile screens and desktops",
+          "Use Cardzy layout tools to position English text alongside Urdu or Arabic script"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-3",
-        "title": "3. Las Mejores Felicitaciones para Eid al-Adha: Tarjetas Animadas, Duas y Mensajes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "title": "3. Incorporating Powerful Arabic Duas",
+        "body": "Including an authentic Arabic dua adds a layer of profound blessing to your Eid card. The Arabic language carries the traditional weight of Islamic prayers, and seeing beautifully calligraphed Arabic text evokes reverence and peace.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Taqabbalallahu minna wa minkum (May Allah accept good deeds from us and from you)",
+          "Eid Mubarak wa Kulu Aam wa Antum Bikhair (Blessed Eid, may you be well every year)",
+          "Cardzy features built-in Arabic calligraphy vectors for any card",
+          "Accompany the Arabic text with a translation for non-Arabic speaking recipients"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-4",
-        "title": "4. Las Mejores Felicitaciones para Eid al-Adha: Tarjetas Animadas, Duas y Mensajes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "title": "4. Corporate and Professional Eid Greetings",
+        "body": "Eid ul Adha is an excellent time to strengthen professional relationships. Sending digital Eid cards to clients, employees, and partners shows cultural awareness. The tone for corporate cards should remain formal, inclusive, and polished.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Keep it professional: \"Wishing you and your team a prosperous and blessed Eid ul Adha.\"",
+          "Incorporate your company logo subtly into the Cardzy template design",
+          "Avoid overly personal or highly religious text if sending to a diverse client base",
+          "Use Cardzy bulk-sending features to distribute customized cards to your entire list"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-5",
-        "title": "5. Las Mejores Felicitaciones para Eid al-Adha: Tarjetas Animadas, Duas y Mensajes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "title": "5. Special Wishes for Hajj Pilgrims",
+        "body": "Since Eid ul Adha coincides with Hajj, many families have loved ones performing the sacred pilgrimage in Mecca. Sending a dedicated digital card to a Haji requires a specific tone of reverence.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Greeting: \"Hajj Mabroor! May Allah accept your Hajj and forgive your sins.\"",
+          "Include imagery of the Kaaba, pilgrims, or the plains of Arafat",
+          "Send via WhatsApp so they can easily open it on their mobile while traveling",
+          "Cardzy offers exclusive Hajj-themed backgrounds designed for this occasion"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-6",
-        "title": "6. Las Mejores Felicitaciones para Eid al-Adha: Tarjetas Animadas, Duas y Mensajes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "title": "6. Digital Sharing Etiquette for Eid",
+        "body": "When the morning of Eid arrives, everyone rushes to share greetings. To ensure your card stands out and feels genuine, observe proper digital sharing etiquette.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Send cards early in the morning, right after Eid prayers (Salat al-Eid)",
+          "Use WhatsApp Broadcasts to send individual messages without group clutter",
+          "Add a personal voice note along with your Cardzy link for a warm touch",
+          "Remember to reply graciously to cards you receive from others"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
-    "conclusion": "Diseñe su tarjeta digital personalizada en Cardzy en minutos y compártala al instante por WhatsApp."
+    "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
   },
   "fr": {
-    "intro": "Célébrez Meilleurs Vœux pour l’Aïd el-Kébir : Cartes Animées, Invocations et Textes Multilingues avec les faire-part numériques et cartes animées 3D Cardzy. Personnalisez avec musique, photos et suivi RSVP sur WhatsApp.",
+    "intro": "Eid ul Adha, the Festival of Sacrifice, is a profound time of faith, reflection, and community for Muslims worldwide. As we commemorate the devotion of Prophet Ibrahim (AS), sharing heartfelt wishes and duas with loved ones is a beautiful tradition. With Cardzy, you can send stunning 3D animated Eid ul Adha and Qurbani cards in multiple languages, ensuring your blessings are felt deeply, no matter the distance.",
     "sections": [
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-1",
-        "title": "1. Meilleurs Vœux pour l’Aïd el-Kébir : Cartes Animées, Invocations et Textes Multilingues — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "title": "1. The Spiritual Significance of Eid ul Adha and Qurbani",
+        "body": "Eid ul Adha is not just a celebration; it is a profound reminder of sacrifice, obedience, and charity. The act of Qurbani symbolizes a willingness to give up what is dear to us for the sake of Allah. When designing your digital card, acknowledging this deep spiritual meaning elevates your greeting.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Include reflections on the spirit of sacrifice and devotion",
+          "Mention the importance of sharing meat with the less fortunate",
+          "Highlight the connection to the holy pilgrimage of Hajj",
+          "Cardzy provides specialized templates featuring the Kaaba and crescent moons"
         ],
         "highlight": "Incorporate meaningful quotes from the Quran or Hadith to resonate with the spiritual essence of the day."
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-2",
-        "title": "2. Meilleurs Vœux pour l’Aïd el-Kébir : Cartes Animées, Invocations et Textes Multilingues — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "title": "2. Crafting Bilingual Wishes in Urdu and English",
+        "body": "In an increasingly interconnected world, many families speak multiple languages. Sending a bilingual digital card ensures that everyone, from your grandparents in Pakistan to your cousins in the UK, can appreciate the message.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Urdu: \"Aap ko aur aap ke ghar walon ko Eid-ul-Adha ki dilli mubarakbad.\"",
+          "English: \"May the divine blessings of Allah bring you hope, faith, and joy on Eid-ul-Adha.\"",
+          "Ensure fonts used are easily legible on both mobile screens and desktops",
+          "Use Cardzy layout tools to position English text alongside Urdu or Arabic script"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-3",
-        "title": "3. Meilleurs Vœux pour l’Aïd el-Kébir : Cartes Animées, Invocations et Textes Multilingues — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "title": "3. Incorporating Powerful Arabic Duas",
+        "body": "Including an authentic Arabic dua adds a layer of profound blessing to your Eid card. The Arabic language carries the traditional weight of Islamic prayers, and seeing beautifully calligraphed Arabic text evokes reverence and peace.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Taqabbalallahu minna wa minkum (May Allah accept good deeds from us and from you)",
+          "Eid Mubarak wa Kulu Aam wa Antum Bikhair (Blessed Eid, may you be well every year)",
+          "Cardzy features built-in Arabic calligraphy vectors for any card",
+          "Accompany the Arabic text with a translation for non-Arabic speaking recipients"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-4",
-        "title": "4. Meilleurs Vœux pour l’Aïd el-Kébir : Cartes Animées, Invocations et Textes Multilingues — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "title": "4. Corporate and Professional Eid Greetings",
+        "body": "Eid ul Adha is an excellent time to strengthen professional relationships. Sending digital Eid cards to clients, employees, and partners shows cultural awareness. The tone for corporate cards should remain formal, inclusive, and polished.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Keep it professional: \"Wishing you and your team a prosperous and blessed Eid ul Adha.\"",
+          "Incorporate your company logo subtly into the Cardzy template design",
+          "Avoid overly personal or highly religious text if sending to a diverse client base",
+          "Use Cardzy bulk-sending features to distribute customized cards to your entire list"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-5",
-        "title": "5. Meilleurs Vœux pour l’Aïd el-Kébir : Cartes Animées, Invocations et Textes Multilingues — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "title": "5. Special Wishes for Hajj Pilgrims",
+        "body": "Since Eid ul Adha coincides with Hajj, many families have loved ones performing the sacred pilgrimage in Mecca. Sending a dedicated digital card to a Haji requires a specific tone of reverence.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Greeting: \"Hajj Mabroor! May Allah accept your Hajj and forgive your sins.\"",
+          "Include imagery of the Kaaba, pilgrims, or the plains of Arafat",
+          "Send via WhatsApp so they can easily open it on their mobile while traveling",
+          "Cardzy offers exclusive Hajj-themed backgrounds designed for this occasion"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-6",
-        "title": "6. Meilleurs Vœux pour l’Aïd el-Kébir : Cartes Animées, Invocations et Textes Multilingues — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "title": "6. Digital Sharing Etiquette for Eid",
+        "body": "When the morning of Eid arrives, everyone rushes to share greetings. To ensure your card stands out and feels genuine, observe proper digital sharing etiquette.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Send cards early in the morning, right after Eid prayers (Salat al-Eid)",
+          "Use WhatsApp Broadcasts to send individual messages without group clutter",
+          "Add a personal voice note along with your Cardzy link for a warm touch",
+          "Remember to reply graciously to cards you receive from others"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Quels sont les avantages des faire-part numériques Cardzy ?",
-        "answer": "Cardzy permet de créer des faire-part animés 3D avec musique, photos, géolocalisation Google Maps et suivi RSVP par WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "Est-il gratuit de créer une carte sur Cardzy ?",
-        "answer": "Oui ! Vous pouvez créer et partager gratuitement vos cartes animées directement sur WhatsApp."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "Les cartes fonctionnent-elles sur smartphone ?",
-        "answer": "Parfaitement. Le lien s’ouvre instantanément dans tout navigateur mobile sans nécessiter d’application."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "Comment fonctionne le suivi des réponses RSVP ?",
-        "answer": "Les invités confirment leur présence en un clic et votre tableau de bord est mis à jour en temps réel."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
-    "conclusion": "Créez votre carte numérique personnalisée sur Cardzy en quelques minutes et partagez-la instantanément sur WhatsApp."
+    "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
   },
   "ar": {
-    "intro": "مع كاردزي، احتفل بـ أفضل بطاقات تهنئة عيد الأضحى المبارك: أدعية مأثورة ورسائل تهنئة متعددة اللغات بأرقى المعايير العصرية والتفاعلية ثلاثية الأبعاد 3D والخطوط الأنيقة، مع إمكانية تحديد موقع الحفل عبر خرائط جوجل وتأكيد الحضور عبر واتساب.",
+    "intro": "Eid ul Adha, the Festival of Sacrifice, is a profound time of faith, reflection, and community for Muslims worldwide. As we commemorate the devotion of Prophet Ibrahim (AS), sharing heartfelt wishes and duas with loved ones is a beautiful tradition. With Cardzy, you can send stunning 3D animated Eid ul Adha and Qurbani cards in multiple languages, ensuring your blessings are felt deeply, no matter the distance.",
     "sections": [
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-1",
-        "title": "1. أفضل بطاقات تهنئة عيد الأضحى المبارك: أدعية مأثورة ورسائل تهنئة متعددة اللغات — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "title": "1. The Spiritual Significance of Eid ul Adha and Qurbani",
+        "body": "Eid ul Adha is not just a celebration; it is a profound reminder of sacrifice, obedience, and charity. The act of Qurbani symbolizes a willingness to give up what is dear to us for the sake of Allah. When designing your digital card, acknowledging this deep spiritual meaning elevates your greeting.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Include reflections on the spirit of sacrifice and devotion",
+          "Mention the importance of sharing meat with the less fortunate",
+          "Highlight the connection to the holy pilgrimage of Hajj",
+          "Cardzy provides specialized templates featuring the Kaaba and crescent moons"
         ],
         "highlight": "Incorporate meaningful quotes from the Quran or Hadith to resonate with the spiritual essence of the day."
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-2",
-        "title": "2. أفضل بطاقات تهنئة عيد الأضحى المبارك: أدعية مأثورة ورسائل تهنئة متعددة اللغات — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "title": "2. Crafting Bilingual Wishes in Urdu and English",
+        "body": "In an increasingly interconnected world, many families speak multiple languages. Sending a bilingual digital card ensures that everyone, from your grandparents in Pakistan to your cousins in the UK, can appreciate the message.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Urdu: \"Aap ko aur aap ke ghar walon ko Eid-ul-Adha ki dilli mubarakbad.\"",
+          "English: \"May the divine blessings of Allah bring you hope, faith, and joy on Eid-ul-Adha.\"",
+          "Ensure fonts used are easily legible on both mobile screens and desktops",
+          "Use Cardzy layout tools to position English text alongside Urdu or Arabic script"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-3",
-        "title": "3. أفضل بطاقات تهنئة عيد الأضحى المبارك: أدعية مأثورة ورسائل تهنئة متعددة اللغات — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "title": "3. Incorporating Powerful Arabic Duas",
+        "body": "Including an authentic Arabic dua adds a layer of profound blessing to your Eid card. The Arabic language carries the traditional weight of Islamic prayers, and seeing beautifully calligraphed Arabic text evokes reverence and peace.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Taqabbalallahu minna wa minkum (May Allah accept good deeds from us and from you)",
+          "Eid Mubarak wa Kulu Aam wa Antum Bikhair (Blessed Eid, may you be well every year)",
+          "Cardzy features built-in Arabic calligraphy vectors for any card",
+          "Accompany the Arabic text with a translation for non-Arabic speaking recipients"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-4",
-        "title": "4. أفضل بطاقات تهنئة عيد الأضحى المبارك: أدعية مأثورة ورسائل تهنئة متعددة اللغات — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "title": "4. Corporate and Professional Eid Greetings",
+        "body": "Eid ul Adha is an excellent time to strengthen professional relationships. Sending digital Eid cards to clients, employees, and partners shows cultural awareness. The tone for corporate cards should remain formal, inclusive, and polished.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Keep it professional: \"Wishing you and your team a prosperous and blessed Eid ul Adha.\"",
+          "Incorporate your company logo subtly into the Cardzy template design",
+          "Avoid overly personal or highly religious text if sending to a diverse client base",
+          "Use Cardzy bulk-sending features to distribute customized cards to your entire list"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-5",
-        "title": "5. أفضل بطاقات تهنئة عيد الأضحى المبارك: أدعية مأثورة ورسائل تهنئة متعددة اللغات — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "title": "5. Special Wishes for Hajj Pilgrims",
+        "body": "Since Eid ul Adha coincides with Hajj, many families have loved ones performing the sacred pilgrimage in Mecca. Sending a dedicated digital card to a Haji requires a specific tone of reverence.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Greeting: \"Hajj Mabroor! May Allah accept your Hajj and forgive your sins.\"",
+          "Include imagery of the Kaaba, pilgrims, or the plains of Arafat",
+          "Send via WhatsApp so they can easily open it on their mobile while traveling",
+          "Cardzy offers exclusive Hajj-themed backgrounds designed for this occasion"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-6",
-        "title": "6. أفضل بطاقات تهنئة عيد الأضحى المبارك: أدعية مأثورة ورسائل تهنئة متعددة اللغات — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "title": "6. Digital Sharing Etiquette for Eid",
+        "body": "When the morning of Eid arrives, everyone rushes to share greetings. To ensure your card stands out and feels genuine, observe proper digital sharing etiquette.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Send cards early in the morning, right after Eid prayers (Salat al-Eid)",
+          "Use WhatsApp Broadcasts to send individual messages without group clutter",
+          "Add a personal voice note along with your Cardzy link for a warm touch",
+          "Remember to reply graciously to cards you receive from others"
         ]
       }
     ],
     "faq": [
       {
-        "question": "ما هي مميزات بطاقات كاردزي الرقمية؟",
-        "answer": "تتيح لك كاردزي تصميم بطاقات تفاعلية ثلاثية الأبعاد 3D مع الموسيقى والخط العربي وموقع الحفل وتأكيد الحضور عبر واتساب."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "هل إنشاء البطاقات على كاردزي مجاني؟",
-        "answer": "نعم! يمكنك تصميم ومشاركة جميع البطاقات الأساسية والمتحركة مجاناً ومشاركتها مباشرة عبر واتساب."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "هل تعمل البطاقة بسلاسة عبر واتساب؟",
-        "answer": "نعم، يتم فتح الرابط في أي متصفح هاتف ذكي فوراً دون الحاجة لتثبيت أي تطبيق."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "كيف يتم تتبع تأكيدات الحضور (RSVP)؟",
-        "answer": "يقوم الضيوف بتأكيد الحضور بنقرة واحدة، وتتلقى الإشعارات فوراً في لوحة التحكم وعبر واتساب."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
-    "conclusion": "أنشئ بطاقتك الرقمية التفاعلية على كاردزي في دقائق معدودة، وشاركها مباشرة مع أحبابك وضيوفك عبر واتساب."
+    "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
   },
   "hi": {
-    "intro": "कार्डज़ी के साथ ईद उल-अजहा और कुर्बानी की शुभकामनाएं: एनिमेटेड कार्ड, दुआएं और बहुभाषी संदेश को आधुनिक 3D एनिमेटेड कार्ड, संगीत और व्हाट्सएप आरएसवीपी के साथ यादगार बनाएं।",
+    "intro": "Eid ul Adha, the Festival of Sacrifice, is a profound time of faith, reflection, and community for Muslims worldwide. As we commemorate the devotion of Prophet Ibrahim (AS), sharing heartfelt wishes and duas with loved ones is a beautiful tradition. With Cardzy, you can send stunning 3D animated Eid ul Adha and Qurbani cards in multiple languages, ensuring your blessings are felt deeply, no matter the distance.",
     "sections": [
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-1",
-        "title": "1. ईद उल-अजहा और कुर्बानी की शुभकामनाएं: एनिमेटेड कार्ड, दुआएं और बहुभाषी संदेश — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "title": "1. The Spiritual Significance of Eid ul Adha and Qurbani",
+        "body": "Eid ul Adha is not just a celebration; it is a profound reminder of sacrifice, obedience, and charity. The act of Qurbani symbolizes a willingness to give up what is dear to us for the sake of Allah. When designing your digital card, acknowledging this deep spiritual meaning elevates your greeting.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Include reflections on the spirit of sacrifice and devotion",
+          "Mention the importance of sharing meat with the less fortunate",
+          "Highlight the connection to the holy pilgrimage of Hajj",
+          "Cardzy provides specialized templates featuring the Kaaba and crescent moons"
         ],
         "highlight": "Incorporate meaningful quotes from the Quran or Hadith to resonate with the spiritual essence of the day."
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-2",
-        "title": "2. ईद उल-अजहा और कुर्बानी की शुभकामनाएं: एनिमेटेड कार्ड, दुआएं और बहुभाषी संदेश — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "title": "2. Crafting Bilingual Wishes in Urdu and English",
+        "body": "In an increasingly interconnected world, many families speak multiple languages. Sending a bilingual digital card ensures that everyone, from your grandparents in Pakistan to your cousins in the UK, can appreciate the message.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Urdu: \"Aap ko aur aap ke ghar walon ko Eid-ul-Adha ki dilli mubarakbad.\"",
+          "English: \"May the divine blessings of Allah bring you hope, faith, and joy on Eid-ul-Adha.\"",
+          "Ensure fonts used are easily legible on both mobile screens and desktops",
+          "Use Cardzy layout tools to position English text alongside Urdu or Arabic script"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-3",
-        "title": "3. ईद उल-अजहा और कुर्बानी की शुभकामनाएं: एनिमेटेड कार्ड, दुआएं और बहुभाषी संदेश — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "title": "3. Incorporating Powerful Arabic Duas",
+        "body": "Including an authentic Arabic dua adds a layer of profound blessing to your Eid card. The Arabic language carries the traditional weight of Islamic prayers, and seeing beautifully calligraphed Arabic text evokes reverence and peace.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Taqabbalallahu minna wa minkum (May Allah accept good deeds from us and from you)",
+          "Eid Mubarak wa Kulu Aam wa Antum Bikhair (Blessed Eid, may you be well every year)",
+          "Cardzy features built-in Arabic calligraphy vectors for any card",
+          "Accompany the Arabic text with a translation for non-Arabic speaking recipients"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-4",
-        "title": "4. ईद उल-अजहा और कुर्बानी की शुभकामनाएं: एनिमेटेड कार्ड, दुआएं और बहुभाषी संदेश — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "title": "4. Corporate and Professional Eid Greetings",
+        "body": "Eid ul Adha is an excellent time to strengthen professional relationships. Sending digital Eid cards to clients, employees, and partners shows cultural awareness. The tone for corporate cards should remain formal, inclusive, and polished.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Keep it professional: \"Wishing you and your team a prosperous and blessed Eid ul Adha.\"",
+          "Incorporate your company logo subtly into the Cardzy template design",
+          "Avoid overly personal or highly religious text if sending to a diverse client base",
+          "Use Cardzy bulk-sending features to distribute customized cards to your entire list"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-5",
-        "title": "5. ईद उल-अजहा और कुर्बानी की शुभकामनाएं: एनिमेटेड कार्ड, दुआएं और बहुभाषी संदेश — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "title": "5. Special Wishes for Hajj Pilgrims",
+        "body": "Since Eid ul Adha coincides with Hajj, many families have loved ones performing the sacred pilgrimage in Mecca. Sending a dedicated digital card to a Haji requires a specific tone of reverence.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Greeting: \"Hajj Mabroor! May Allah accept your Hajj and forgive your sins.\"",
+          "Include imagery of the Kaaba, pilgrims, or the plains of Arafat",
+          "Send via WhatsApp so they can easily open it on their mobile while traveling",
+          "Cardzy offers exclusive Hajj-themed backgrounds designed for this occasion"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-6",
-        "title": "6. ईद उल-अजहा और कुर्बानी की शुभकामनाएं: एनिमेटेड कार्ड, दुआएं और बहुभाषी संदेश — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "title": "6. Digital Sharing Etiquette for Eid",
+        "body": "When the morning of Eid arrives, everyone rushes to share greetings. To ensure your card stands out and feels genuine, observe proper digital sharing etiquette.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Send cards early in the morning, right after Eid prayers (Salat al-Eid)",
+          "Use WhatsApp Broadcasts to send individual messages without group clutter",
+          "Add a personal voice note along with your Cardzy link for a warm touch",
+          "Remember to reply graciously to cards you receive from others"
         ]
       }
     ],
     "faq": [
       {
-        "question": "कार्डज़ी डिजिटल कार्ड की मुख्य विशेषताएं क्या हैं?",
-        "answer": "कार्डज़ी आपको 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप आरएसवीपी के साथ शानदार कार्ड बनाने की सुविधा देता है।"
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "क्या कार्डज़ी पर कार्ड बनाना मुफ्त है?",
-        "answer": "हाँ! आप सभी बुनियादी और एनिमेटेड कार्ड बिल्कुल मुफ्त बना सकते हैं और तुरंत व्हाट्सएप पर साझा कर सकते हैं।"
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "क्या यह व्हाट्सएप पर सही तरीके से खुलता है?",
-        "answer": "बिल्कुल! कार्डज़ी लिंक किसी भी मोबाइल ब्राउज़र में तुरंत खुलता है, किसी ऐप की आवश्यकता नहीं है।"
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "मेहमानों की उपस्थिति (RSVP) को कैसे ट्रैक करें?",
-        "answer": "मेहमान एक क्लिक में अपनी उपस्थिति की पुष्टि करते हैं और आपको लाइव डैशबोर्ड पर तुरंत संख्या मिल जाती है।"
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
-    "conclusion": "कार्डज़ी पर मिनटों में अपना डिजिटल कार्ड बनाएं और व्हाट्सएप पर तुरंत साझा करें।"
+    "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
   },
   "zh": {
-    "intro": "使用 Cardzy 专属 3D 动态电子请柬与贺卡，为您精彩呈现 古尔邦节（宰牲节）专属 3D 电子贺卡与祈祷祝福语精选。支持自定义音乐、照片画廊与 WhatsApp 实时出席回执。",
+    "intro": "Eid ul Adha, the Festival of Sacrifice, is a profound time of faith, reflection, and community for Muslims worldwide. As we commemorate the devotion of Prophet Ibrahim (AS), sharing heartfelt wishes and duas with loved ones is a beautiful tradition. With Cardzy, you can send stunning 3D animated Eid ul Adha and Qurbani cards in multiple languages, ensuring your blessings are felt deeply, no matter the distance.",
     "sections": [
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-1",
-        "title": "1. 古尔邦节（宰牲节）专属 3D 电子贺卡与祈祷祝福语精选 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "title": "1. The Spiritual Significance of Eid ul Adha and Qurbani",
+        "body": "Eid ul Adha is not just a celebration; it is a profound reminder of sacrifice, obedience, and charity. The act of Qurbani symbolizes a willingness to give up what is dear to us for the sake of Allah. When designing your digital card, acknowledging this deep spiritual meaning elevates your greeting.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Include reflections on the spirit of sacrifice and devotion",
+          "Mention the importance of sharing meat with the less fortunate",
+          "Highlight the connection to the holy pilgrimage of Hajj",
+          "Cardzy provides specialized templates featuring the Kaaba and crescent moons"
         ],
         "highlight": "Incorporate meaningful quotes from the Quran or Hadith to resonate with the spiritual essence of the day."
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-2",
-        "title": "2. 古尔邦节（宰牲节）专属 3D 电子贺卡与祈祷祝福语精选 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "title": "2. Crafting Bilingual Wishes in Urdu and English",
+        "body": "In an increasingly interconnected world, many families speak multiple languages. Sending a bilingual digital card ensures that everyone, from your grandparents in Pakistan to your cousins in the UK, can appreciate the message.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Urdu: \"Aap ko aur aap ke ghar walon ko Eid-ul-Adha ki dilli mubarakbad.\"",
+          "English: \"May the divine blessings of Allah bring you hope, faith, and joy on Eid-ul-Adha.\"",
+          "Ensure fonts used are easily legible on both mobile screens and desktops",
+          "Use Cardzy layout tools to position English text alongside Urdu or Arabic script"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-3",
-        "title": "3. 古尔邦节（宰牲节）专属 3D 电子贺卡与祈祷祝福语精选 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "title": "3. Incorporating Powerful Arabic Duas",
+        "body": "Including an authentic Arabic dua adds a layer of profound blessing to your Eid card. The Arabic language carries the traditional weight of Islamic prayers, and seeing beautifully calligraphed Arabic text evokes reverence and peace.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Taqabbalallahu minna wa minkum (May Allah accept good deeds from us and from you)",
+          "Eid Mubarak wa Kulu Aam wa Antum Bikhair (Blessed Eid, may you be well every year)",
+          "Cardzy features built-in Arabic calligraphy vectors for any card",
+          "Accompany the Arabic text with a translation for non-Arabic speaking recipients"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-4",
-        "title": "4. 古尔邦节（宰牲节）专属 3D 电子贺卡与祈祷祝福语精选 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "title": "4. Corporate and Professional Eid Greetings",
+        "body": "Eid ul Adha is an excellent time to strengthen professional relationships. Sending digital Eid cards to clients, employees, and partners shows cultural awareness. The tone for corporate cards should remain formal, inclusive, and polished.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Keep it professional: \"Wishing you and your team a prosperous and blessed Eid ul Adha.\"",
+          "Incorporate your company logo subtly into the Cardzy template design",
+          "Avoid overly personal or highly religious text if sending to a diverse client base",
+          "Use Cardzy bulk-sending features to distribute customized cards to your entire list"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-5",
-        "title": "5. 古尔邦节（宰牲节）专属 3D 电子贺卡与祈祷祝福语精选 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "title": "5. Special Wishes for Hajj Pilgrims",
+        "body": "Since Eid ul Adha coincides with Hajj, many families have loved ones performing the sacred pilgrimage in Mecca. Sending a dedicated digital card to a Haji requires a specific tone of reverence.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Greeting: \"Hajj Mabroor! May Allah accept your Hajj and forgive your sins.\"",
+          "Include imagery of the Kaaba, pilgrims, or the plains of Arafat",
+          "Send via WhatsApp so they can easily open it on their mobile while traveling",
+          "Cardzy offers exclusive Hajj-themed backgrounds designed for this occasion"
         ]
       },
       {
         "id": "best-eid-ul-adha-qurbani-wishes-cards-urdu-arabic-english-sec-6",
-        "title": "6. 古尔邦节（宰牲节）专属 3D 电子贺卡与祈祷祝福语精选 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "title": "6. Digital Sharing Etiquette for Eid",
+        "body": "When the morning of Eid arrives, everyone rushes to share greetings. To ensure your card stands out and feels genuine, observe proper digital sharing etiquette.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Send cards early in the morning, right after Eid prayers (Salat al-Eid)",
+          "Use WhatsApp Broadcasts to send individual messages without group clutter",
+          "Add a personal voice note along with your Cardzy link for a warm touch",
+          "Remember to reply graciously to cards you receive from others"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Cardzy 动态电子请柬有哪些核心优势？",
-        "answer": "Cardzy 支持 3D 开封动画、背景音乐、照片画廊、Google 地图导航以及 WhatsApp 实时出席回执追踪。"
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "在 Cardzy 上制作电子请柬是否免费？",
-        "answer": "是的！您可以免费创建并生成专属精美动态请柬，随时随地一键分享。"
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "在手机和社交应用上打开体验如何？",
-        "answer": "无需下载任何 App，宾客在任何手机浏览器中点击链接即可秒级加载高清动态效果。"
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "如何进行宾客出席确认（RSVP）管理？",
-        "answer": "宾客轻点即可确认出席，您的管理后台与 WhatsApp 将实时同步最新出席人数与名单。"
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
-    "conclusion": "立即在 Cardzy 免费创建专属电子请柬，一键即时分享至各大社交平台。"
+    "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
   },
   "pt": {
     "intro": "Eid ul Adha, the Festival of Sacrifice, is a profound time of faith, reflection, and community for Muslims worldwide. As we commemorate the devotion of Prophet Ibrahim (AS), sharing heartfelt wishes and duas with loved ones is a beautiful tradition. With Cardzy, you can send stunning 3D animated Eid ul Adha and Qurbani cards in multiple languages, ensuring your blessings are felt deeply, no matter the distance.",
@@ -806,20 +842,20 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
@@ -897,20 +933,20 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
@@ -988,20 +1024,20 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
@@ -1079,20 +1115,20 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
@@ -1170,20 +1206,20 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
@@ -1261,20 +1297,20 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
@@ -1352,20 +1388,20 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
@@ -1443,20 +1479,20 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
@@ -1534,20 +1570,20 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
@@ -1625,20 +1661,20 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."
@@ -1716,20 +1752,20 @@ export const POST_13_CONTENT: Record<string, LocalizedBlogContent> = {
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Does Cardzy support right-to-left languages like Arabic and Urdu?",
+        "answer": "Yes! Cardzy has full native support for RTL languages. Our text editor ensures that Arabic and Urdu Nastaliq are rendered beautifully on all devices."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add my own family photo to the Eid digital card?",
+        "answer": "Absolutely. Many Eid templates feature built-in photo frames where you can easily upload a family picture to make your greeting deeply personal."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Is it appropriate to send animated cards for religious holidays?",
+        "answer": "Yes, as long as the animations are respectful and culturally appropriate. Cardzy provides elegant, subtle animations that enhance the spiritual feel of the card."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "How can I send my Eid card to multiple people at once?",
+        "answer": "Generate a unique shareable link from your Cardzy dashboard and send it via a WhatsApp Broadcast list for direct individual messages."
       }
     ],
     "conclusion": "Eid ul Adha is a time of immense spiritual significance, and your greetings should reflect that depth. By blending meaningful text, authentic languages, and beautiful designs on Cardzy, you can send blessings that resonate across the globe."

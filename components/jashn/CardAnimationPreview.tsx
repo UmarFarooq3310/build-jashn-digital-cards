@@ -188,43 +188,6 @@ function BirthdayOverlay() {
           />
         )
       })}
-
-      {/* Candle + flame SVG */}
-      <svg
-        className="anim-candle pointer-events-none absolute"
-        viewBox="0 0 40 70"
-        width={28}
-        height={50}
-        style={{
-          bottom: '14%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          willChange: 'transform',
-        }}
-        aria-hidden="true"
-      >
-        {/* Candle body */}
-        <rect x="14" y="30" width="12" height="30" rx="3" fill="#f9a8d4" />
-        {/* Wick */}
-        <line x1="20" y1="30" x2="20" y2="22" stroke="#6b7280" strokeWidth="1.5" />
-        {/* Flame */}
-        <path
-          className="anim-flame"
-          d="M20 4 C16 10 14 16 20 22 C26 16 24 10 20 4Z"
-          fill="#f97316"
-          style={{
-            transformOrigin: '20px 22px',
-            willChange: 'transform',
-          }}
-        />
-        {/* Flame inner highlight */}
-        <path
-          d="M20 10 C18 14 18 18 20 20 C22 18 22 14 20 10Z"
-          fill="#fef08a"
-          opacity="0.7"
-          style={{ transformOrigin: '20px 20px' }}
-        />
-      </svg>
     </>
   )
 }

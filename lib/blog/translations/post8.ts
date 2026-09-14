@@ -5,1037 +5,1643 @@ export const POST_8_SLUG = "ultimate-guide-to-global-holiday-ecards-christmas-th
 export const POST_8_DATA: Record<string, LocalizedBlogData> = {
   "en": {
     "title": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
-    "subtitle": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026.",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
     "category": "Eid & Holidays",
-    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
-    "metaDescription": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026."
+    "seoTitle": "Global 3D Holiday E-Cards & Wishes Guide | Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "ur": {
-    "title": "عالمی تعطیلات اور سال نو کے لیے اینیمیٹڈ 3D ای کارڈز کی مکمل گائیڈ",
-    "subtitle": "کارڈزی پر عالمی تعطیلات اور سال نو کے لیے اینیمیٹڈ 3D ای کارڈز کی مکمل گائیڈ کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔",
-    "category": "عید اور تعطیلات",
-    "seoTitle": "عالمی تعطیلات اور سال نو کے لیے اینیمیٹڈ 3D ای کارڈز کی مکمل گائیڈ — Cardzy",
-    "metaDescription": "کارڈزی پر عالمی تعطیلات اور سال نو کے لیے اینیمیٹڈ 3D ای کارڈز کی مکمل گائیڈ کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔"
+    "title": "کارڈزی گائیڈ: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — کارڈزی",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "es": {
-    "title": "Guía Completa de Tarjetas Electrónicas para Festividades Globales: Navidad y Año Nuevo 2026",
-    "subtitle": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026.",
-    "category": "Eid y Festividades",
-    "seoTitle": "Guía Completa de Tarjetas Electrónicas para Festividades Globales: Navidad y Año Nuevo 2026 — Cardzy",
-    "metaDescription": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026."
+    "title": "Guía Cardzy: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "fr": {
-    "title": "Guide Ultime des Cartes Virtuelles de Fêtes : Noël, Thanksgiving & Nouvel An 2026",
-    "subtitle": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy.",
-    "category": "Aïd & Fêtes",
-    "seoTitle": "Guide Ultime des Cartes Virtuelles de Fêtes : Noël, Thanksgiving & Nouvel An 2026 — Cardzy",
-    "metaDescription": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy."
+    "title": "Guide Cardzy: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "ar": {
-    "title": "الدليل الشامل لبطاقات التهنئة الإلكترونية للمناسبات العالمية ورأس السنة الجديدة",
-    "subtitle": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي.",
-    "category": "العيد والمناسبات",
-    "seoTitle": "الدليل الشامل لبطاقات التهنئة الإلكترونية للمناسبات العالمية ورأس السنة الجديدة — Cardzy",
-    "metaDescription": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي."
+    "title": "دليل كاردزي: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — كاردزي",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "hi": {
-    "title": "वैश्विक छुट्टियों के ई-कार्ड के लिए अंतिम गाइड: क्रिसमस और नया साल 2026",
-    "subtitle": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।",
-    "category": "ईद और त्योहार",
-    "seoTitle": "वैश्विक छुट्टियों के ई-कार्ड के लिए अंतिम गाइड: क्रिसमस और नया साल 2026 — Cardzy",
-    "metaDescription": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।"
+    "title": "कार्डज़ी गाइड: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — कार्डज़ी",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "zh": {
-    "title": "全球节日电子贺卡终极指南：圣诞节、感恩节与2026新年祝福",
-    "subtitle": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。",
-    "category": "开斋节与节日",
-    "seoTitle": "全球节日电子贺卡终极指南：圣诞节、感恩节与2026新年祝福 — Cardzy",
-    "metaDescription": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。"
+    "title": "Cardzy 电子卡片指南: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "pt": {
-    "title": "Guia Definitivo de Cartões Virtuais para Festas Globais: Natal e Ano Novo 2026",
-    "subtitle": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy.",
-    "category": "Eid e Feriados",
-    "seoTitle": "Guia Definitivo de Cartões Virtuais para Festas Globais: Natal e Ano Novo 2026 — Cardzy",
-    "metaDescription": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy."
+    "title": "Guia Cardzy: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "ru": {
-    "title": "Полное руководство по электронным открыткам: Рождество, Новый Год 2026",
-    "subtitle": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy.",
-    "category": "Эйд и Праздники",
-    "seoTitle": "Полное руководство по электронным открыткам: Рождество, Новый Год 2026 — Cardzy",
-    "metaDescription": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy."
+    "title": "Руководство Cardzy: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "de": {
-    "title": "Der ultimative Leitfaden für Feiertags-E-Cards: Weihnachten & Neujahr 2026",
-    "subtitle": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy.",
-    "category": "Eid & Feiertage",
-    "seoTitle": "Der ultimative Leitfaden für Feiertags-E-Cards: Weihnachten & Neujahr 2026 — Cardzy",
-    "metaDescription": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy."
+    "title": "Cardzy Ratgeber: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "ja": {
-    "title": "世界の祝日＆ホリデー電子カード完全ガイド：クリスマス＆2026年新年",
-    "subtitle": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。",
-    "category": "Eid＆祝日",
-    "seoTitle": "世界の祝日＆ホリデー電子カード完全ガイド：クリスマス＆2026年新年 — Cardzy",
-    "metaDescription": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。"
+    "title": "Cardzy ガイド: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "ko": {
-    "title": "글로벌 연말연시 모바일 카드 완벽 가이드: 크리스마스 & 2026년 새해",
-    "subtitle": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요.",
-    "category": "이드 & 축제",
-    "seoTitle": "글로벌 연말연시 모바일 카드 완벽 가이드: 크리스마스 & 2026년 새해 — Cardzy",
-    "metaDescription": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요."
+    "title": "Cardzy 가이드: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "it": {
-    "title": "Guida Definitiva ai Biglietti Virtuali per le Feste: Natale e Capodanno 2026",
-    "subtitle": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy.",
-    "category": "Eid e Festività",
-    "seoTitle": "Guida Definitiva ai Biglietti Virtuali per le Feste: Natale e Capodanno 2026 — Cardzy",
-    "metaDescription": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy."
+    "title": "Guida Cardzy: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "tr": {
-    "title": "Yılbaşı ve Bayram Tebrik E-Kartları Rehberi: Yeni Yıl 2026",
-    "subtitle": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin.",
-    "category": "Bayram ve Tatiller",
-    "seoTitle": "Yılbaşı ve Bayram Tebrik E-Kartları Rehberi: Yeni Yıl 2026 — Cardzy",
-    "metaDescription": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin."
+    "title": "Cardzy Rehberi: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "id": {
-    "title": "Panduan Lengkap E-Card Liburan Global: Natal & Tahun Baru 2026",
-    "subtitle": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy.",
-    "category": "Idul Fitri & Liburan",
-    "seoTitle": "Panduan Lengkap E-Card Liburan Global: Natal & Tahun Baru 2026 — Cardzy",
-    "metaDescription": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy."
+    "title": "Panduan Cardzy: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "bn": {
-    "title": "আন্তর্জাতিক ছুটির দিনের ই-কার্ড গাইড: ক্রিসমাস ও নতুন বছর ২০২৬",
-    "subtitle": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।",
-    "category": "ঈদ ও ছুটির দিন",
-    "seoTitle": "আন্তর্জাতিক ছুটির দিনের ই-কার্ড গাইড: ক্রিসমাস ও নতুন বছর ২০২৬ — Cardzy",
-    "metaDescription": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।"
+    "title": "কার্ডজি গাইড: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — কার্ডজি",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "vi": {
-    "title": "Cẩm Nang Thiệp Điện Tử Cho Mùa Lễ Hội: Giáng Sinh & Năm Mới 2026",
-    "subtitle": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy.",
-    "category": "Lễ Eid & Ngày Lễ",
-    "seoTitle": "Cẩm Nang Thiệp Điện Tử Cho Mùa Lễ Hội: Giáng Sinh & Năm Mới 2026 — Cardzy",
-    "metaDescription": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy."
+    "title": "Hướng Dẫn Cardzy: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   },
   "sw": {
-    "title": "Mwongozo Kamili wa Kadi za Sikukuu za Kidijitali: Krismasi na Mwaka Mpya 2026",
-    "subtitle": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy.",
-    "category": "Eid na Sikukuu",
-    "seoTitle": "Mwongozo Kamili wa Kadi za Sikukuu za Kidijitali: Krismasi na Mwaka Mpya 2026 — Cardzy",
-    "metaDescription": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy."
+    "title": "Mwongozo wa Cardzy: The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026",
+    "subtitle": "Send warmth across borders with festive 3D animated cards featuring family photos, joyful soundtracks, and holiday greetings in 18 international languages.",
+    "category": "Eid & Holidays",
+    "seoTitle": "The Ultimate Guide to Global Holiday E-Cards: Christmas, Thanksgiving & New Year 2026 — Cardzy",
+    "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages."
   }
 };
 
 export const POST_8_CONTENT: Record<string, LocalizedBlogContent> = {
   "en": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "ur": {
-    "intro": "کارڈزی کے ساتھ عالمی تعطیلات اور سال نو کے لیے اینیمیٹڈ 3D ای کارڈز کی مکمل گائیڈ کو جدید ترین، دلکش اور یادگار انداز میں منائیں۔ روایتی کاغذ کے کارڈز کے بجائے 3D لفافہ اوپننگ، اردو نستعلیق خطاطی، بیک گراؤنڈ میوزک اور واٹس ایپ آر ایس وی پی کے ساتھ ڈیجیٹل کارڈز بنائیں۔",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. عالمی تعطیلات اور سال نو کے لیے اینیمیٹڈ 3D ای کارڈز کی مکمل گائیڈ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عالمی تعطیلات اور سال نو کے لیے اینیمیٹڈ 3D ای کارڈز کی مکمل گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. عالمی تعطیلات اور سال نو کے لیے اینیمیٹڈ 3D ای کارڈز کی مکمل گائیڈ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عالمی تعطیلات اور سال نو کے لیے اینیمیٹڈ 3D ای کارڈز کی مکمل گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
-        ],
-        "highlight": "کارڈزی پر اپنے کارڈ کو اپنی مرضی کے مطابق سجائیں اور فوری شیئر کریں۔"
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. عالمی تعطیلات اور سال نو کے لیے اینیمیٹڈ 3D ای کارڈز کی مکمل گائیڈ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر عالمی تعطیلات اور سال نو کے لیے اینیمیٹڈ 3D ای کارڈز کی مکمل گائیڈ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
         ]
       }
     ],
     "faq": [
       {
-        "question": "کارڈزی ڈیجیٹل کارڈ کے کیا فوائد ہیں؟",
-        "answer": "کارڈزی پر آپ 3D لفافہ اینیمیشن، پس منظر میوزک، اردو نستعلیق خطاطی اور واٹس ایپ آر ایس وی پی کے ساتھ باآسانی کارڈز بنا سکتے ہیں۔"
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "کیا کارڈزی پر کارڈ بنانا مفت ہے؟",
-        "answer": "جی ہاں! آپ کارڈزی پر تمام بنیادی اور اینیمیٹڈ کارڈز بالکل مفت بنا سکتے ہیں اور فوری واٹس ایپ پر شیئر کر سکتے ہیں۔"
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "کیا یہ کارڈ واٹس ایپ پر درست انداز میں کھلتا ہے؟",
-        "answer": "بالکل! کارڈزی لنک واٹس ایپ، ایس ایم ایس اور سوشل میڈیا پر بغیر کسی ایپ ڈاؤن لوڈ کے فوری کھلتا ہے۔"
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "کیا مہمانوں کی حاضری (RSVP) کو ٹریک کیا جا سکتا ہے؟",
-        "answer": "جی ہاں! مہمان ایک کلک سے شرکت کی تصدیق کرتے ہیں اور آپ کو لائیو ڈیش بورڈ اور واٹس ایپ پر فوری تعداد معلوم ہو جاتی ہے۔"
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "کارڈزی پر اپنا ڈیجیٹل کارڈ منٹوں میں ڈیزائن کریں، پسندیدہ آڈیو اور تصاویر شامل کریں اور واٹس ایپ پر ایک کلک سے شیئر کریں۔"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "es": {
-    "intro": "Celebre Guía Completa de Tarjetas Electrónicas para Festividades Globales: Navidad y Año Nuevo 2026 con las innovadoras tarjetas digitales animadas en 3D de Cardzy. Personalice con música, fotos y confirmación RSVP por WhatsApp.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Guía Completa de Tarjetas Electrónicas para Festividades Globales: Navidad y Año Nuevo 2026 — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Guía Completa de Tarjetas Electrónicas para Festividades Globales: Navidad y Año Nuevo 2026 — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
-        ],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Guía Completa de Tarjetas Electrónicas para Festividades Globales: Navidad y Año Nuevo 2026 — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Diseñe su tarjeta digital personalizada en Cardzy en minutos y compártala al instante por WhatsApp."
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "fr": {
-    "intro": "Célébrez Guide Ultime des Cartes Virtuelles de Fêtes : Noël, Thanksgiving & Nouvel An 2026 avec les faire-part numériques et cartes animées 3D Cardzy. Personnalisez avec musique, photos et suivi RSVP sur WhatsApp.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Guide Ultime des Cartes Virtuelles de Fêtes : Noël, Thanksgiving & Nouvel An 2026 — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Guide Ultime des Cartes Virtuelles de Fêtes : Noël, Thanksgiving & Nouvel An 2026 — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
-        ],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Guide Ultime des Cartes Virtuelles de Fêtes : Noël, Thanksgiving & Nouvel An 2026 — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Quels sont les avantages des faire-part numériques Cardzy ?",
-        "answer": "Cardzy permet de créer des faire-part animés 3D avec musique, photos, géolocalisation Google Maps et suivi RSVP par WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "Est-il gratuit de créer une carte sur Cardzy ?",
-        "answer": "Oui ! Vous pouvez créer et partager gratuitement vos cartes animées directement sur WhatsApp."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "Les cartes fonctionnent-elles sur smartphone ?",
-        "answer": "Parfaitement. Le lien s’ouvre instantanément dans tout navigateur mobile sans nécessiter d’application."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "Comment fonctionne le suivi des réponses RSVP ?",
-        "answer": "Les invités confirment leur présence en un clic et votre tableau de bord est mis à jour en temps réel."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Créez votre carte numérique personnalisée sur Cardzy en quelques minutes et partagez-la instantanément sur WhatsApp."
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "ar": {
-    "intro": "مع كاردزي، احتفل بـ الدليل الشامل لبطاقات التهنئة الإلكترونية للمناسبات العالمية ورأس السنة الجديدة بأرقى المعايير العصرية والتفاعلية ثلاثية الأبعاد 3D والخطوط الأنيقة، مع إمكانية تحديد موقع الحفل عبر خرائط جوجل وتأكيد الحضور عبر واتساب.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. الدليل الشامل لبطاقات التهنئة الإلكترونية للمناسبات العالمية ورأس السنة الجديدة — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. الدليل الشامل لبطاقات التهنئة الإلكترونية للمناسبات العالمية ورأس السنة الجديدة — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
-        ],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. الدليل الشامل لبطاقات التهنئة الإلكترونية للمناسبات العالمية ورأس السنة الجديدة — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
         ]
       }
     ],
     "faq": [
       {
-        "question": "ما هي مميزات بطاقات كاردزي الرقمية؟",
-        "answer": "تتيح لك كاردزي تصميم بطاقات تفاعلية ثلاثية الأبعاد 3D مع الموسيقى والخط العربي وموقع الحفل وتأكيد الحضور عبر واتساب."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "هل إنشاء البطاقات على كاردزي مجاني؟",
-        "answer": "نعم! يمكنك تصميم ومشاركة جميع البطاقات الأساسية والمتحركة مجاناً ومشاركتها مباشرة عبر واتساب."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "هل تعمل البطاقة بسلاسة عبر واتساب؟",
-        "answer": "نعم، يتم فتح الرابط في أي متصفح هاتف ذكي فوراً دون الحاجة لتثبيت أي تطبيق."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "كيف يتم تتبع تأكيدات الحضور (RSVP)؟",
-        "answer": "يقوم الضيوف بتأكيد الحضور بنقرة واحدة، وتتلقى الإشعارات فوراً في لوحة التحكم وعبر واتساب."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "أنشئ بطاقتك الرقمية التفاعلية على كاردزي في دقائق معدودة، وشاركها مباشرة مع أحبابك وضيوفك عبر واتساب."
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "hi": {
-    "intro": "कार्डज़ी के साथ वैश्विक छुट्टियों के ई-कार्ड के लिए अंतिम गाइड: क्रिसमस और नया साल 2026 को आधुनिक 3D एनिमेटेड कार्ड, संगीत और व्हाट्सएप आरएसवीपी के साथ यादगार बनाएं।",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. वैश्विक छुट्टियों के ई-कार्ड के लिए अंतिम गाइड: क्रिसमस और नया साल 2026 — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. वैश्विक छुट्टियों के ई-कार्ड के लिए अंतिम गाइड: क्रिसमस और नया साल 2026 — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
-        ],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. वैश्विक छुट्टियों के ई-कार्ड के लिए अंतिम गाइड: क्रिसमस और नया साल 2026 — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
         ]
       }
     ],
     "faq": [
       {
-        "question": "कार्डज़ी डिजिटल कार्ड की मुख्य विशेषताएं क्या हैं?",
-        "answer": "कार्डज़ी आपको 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप आरएसवीपी के साथ शानदार कार्ड बनाने की सुविधा देता है।"
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "क्या कार्डज़ी पर कार्ड बनाना मुफ्त है?",
-        "answer": "हाँ! आप सभी बुनियादी और एनिमेटेड कार्ड बिल्कुल मुफ्त बना सकते हैं और तुरंत व्हाट्सएप पर साझा कर सकते हैं।"
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "क्या यह व्हाट्सएप पर सही तरीके से खुलता है?",
-        "answer": "बिल्कुल! कार्डज़ी लिंक किसी भी मोबाइल ब्राउज़र में तुरंत खुलता है, किसी ऐप की आवश्यकता नहीं है।"
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "मेहमानों की उपस्थिति (RSVP) को कैसे ट्रैक करें?",
-        "answer": "मेहमान एक क्लिक में अपनी उपस्थिति की पुष्टि करते हैं और आपको लाइव डैशबोर्ड पर तुरंत संख्या मिल जाती है।"
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "कार्डज़ी पर मिनटों में अपना डिजिटल कार्ड बनाएं और व्हाट्सएप पर तुरंत साझा करें।"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "zh": {
-    "intro": "使用 Cardzy 专属 3D 动态电子请柬与贺卡，为您精彩呈现 全球节日电子贺卡终极指南：圣诞节、感恩节与2026新年祝福。支持自定义音乐、照片画廊与 WhatsApp 实时出席回执。",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. 全球节日电子贺卡终极指南：圣诞节、感恩节与2026新年祝福 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. 全球节日电子贺卡终极指南：圣诞节、感恩节与2026新年祝福 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
-        ],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. 全球节日电子贺卡终极指南：圣诞节、感恩节与2026新年祝福 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Cardzy 动态电子请柬有哪些核心优势？",
-        "answer": "Cardzy 支持 3D 开封动画、背景音乐、照片画廊、Google 地图导航以及 WhatsApp 实时出席回执追踪。"
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "在 Cardzy 上制作电子请柬是否免费？",
-        "answer": "是的！您可以免费创建并生成专属精美动态请柬，随时随地一键分享。"
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "在手机和社交应用上打开体验如何？",
-        "answer": "无需下载任何 App，宾客在任何手机浏览器中点击链接即可秒级加载高清动态效果。"
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "如何进行宾客出席确认（RSVP）管理？",
-        "answer": "宾客轻点即可确认出席，您的管理后台与 WhatsApp 将实时同步最新出席人数与名单。"
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "立即在 Cardzy 免费创建专属电子请柬，一键即时分享至各大社交平台。"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "pt": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "ru": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "de": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "ja": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "ko": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "it": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "tr": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "id": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "bn": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "vi": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   },
   "sw": {
-    "intro": "In a connected world where friends, relatives, and colleagues live across continents, sending traditional paper holiday cards can be slow and expensive. Digital holiday e-cards have evolved far beyond static images. Modern animated e-cards combine interactive 3D visual effects, festive soundscapes, personal photos, and real-time localization across 18 international languages.",
+    "intro": "When December arrives and family members are scattered between London, Toronto, Dubai, and Sydney, traditional paper holiday cards rarely arrive on time. International postage takes weeks, cards get bent in transit, and half the time you don't even have your cousin's newest apartment address. In 2026, digital holiday e-cards have evolved far beyond flat, impersonal graphics. With Cardzy, you can create immersive 3D holiday cards with custom family portraits, festive melodies, sparkling snow particle physics, and bilingual greetings in 18 languages that open instantly on any phone.",
     "sections": [
       {
-        "id": "christmas-and-new-year-ecards",
-        "title": "1. Christmas & New Year 2026 Animated E-Cards",
-        "body": "Christmas and New Year represent the biggest global season of warmth and reflection. Cardzy provides interactive 3D snow animation, glowing Christmas tree lighting, sparkling fireworks for New Year 2026 countdowns, and custom audio tracks. You can write your greetings in English, Spanish, French, German, Italian, Russian, Portuguese, or Chinese with 1-click WhatsApp and social media sharing.",
+        "id": "the-global-holiday-dilemma",
+        "title": "1. Connecting Families Across Continents Without Postage Delays",
+        "body": "For diaspora families, holiday greetings are deeply personal. Sending generic forwarded images on WhatsApp groups feels thoughtless, while ordering 60 luxury paper cards with overseas courier delivery costs upwards of $150 to $250. Cardzy bridges this divide by providing royal 3D digital cards that can be personalized with your family's holiday portrait, children's milestone photos, and a custom message. The recipient receives an elegant link that unfurls like a velvet greeting card on their screen.",
         "bulletPoints": [
-          "Interactive 3D snowfall, holiday lights, and Santa Claus sleigh animations",
-          "Custom year counter for New Year 2026 celebrations and countdowns",
-          "Photo frame integration for family portraits and holiday photos",
-          "Instant 1-click sharing via WhatsApp, iMessage, and Instagram Stories"
+          "Instant Delivery Across All Time Zones: Schedule or send your card on Christmas Eve, Thanksgiving morning, or midnight on New Year",
+          "Zero Environmental Footprint: Eliminate paper waste, glossy plastic foils, and courier packaging",
+          "Universal Device Compatibility: Flawless responsive rendering on iPhone, Android, tablets, and desktop browsers"
         ]
       },
       {
-        "id": "thanksgiving-and-harvest-wishes",
-        "title": "2. Warm Thanksgiving & Harvest Gratitude Notes",
-        "body": "Thanksgiving is a season for expressing gratitude, love, and togetherness. Cardzy offers warm autumn foliage themes, golden pumpkin accents, and heartfelt message templates so you can thank family members, host families, and remote work colleagues across borders.",
-        "bulletPoints": [],
-        "highlight": "Cardzy e-cards load instantly on any smartphone browser without requiring app downloads."
+        "id": "creating-3d-holiday-keepsake",
+        "title": "2. Creating a 3D Holiday Keepsake: Photos, Greetings & Festive Motion",
+        "body": "What transforms a simple web page into an emotional holiday keepsake? On Cardzy, cards incorporate tactile micro-interactions: falling snow overlays, golden bokeh particles, animated candle glows, and responsive mouse tilt that reacts as the recipient tilts their phone. Adding your high-resolution family photo or children's holiday portraits inside an illuminated gold border creates an heirloom quality digital experience.",
+        "bulletPoints": [
+          "Illuminated Photo Medallion: Upload your family portrait surrounded by glowing holiday garlands",
+          "Festive Audio Pairings: Select instrumental Christmas carols, warm acoustic melodies, or festive chimes",
+          "GSAP Tilt Parallax: Experience realistic depth as the card shifts gently with phone motion"
+        ]
       },
       {
-        "id": "diwali-lunar-new-year-hanukkah",
-        "title": "3. Diwali, Lunar New Year & Global Festival Greetings",
-        "body": "Celebrate Diwali Festival of Lights with glowing 3D diyas, Lunar New Year with red lantern festival effects, Hanukkah with menorah candlelight, and Easter with spring floral aesthetics. Cardzy supports full localized scripts for 18 global languages including English, Hindi, Mandarin, Arabic, Urdu, Spanish, French, and Japanese.",
-        "bulletPoints": []
+        "id": "thanksgiving-and-gratitude-cards",
+        "title": "3. Thanksgiving & Year-End Gratitude: Sincere Messages That Touch Hearts",
+        "body": "Thanksgiving and year-end holidays are fundamentally about gratitude—thanking host families, mentors, colleagues, and lifelong friends. A hasty one-line text message doesn't do justice to years of companionship. Crafting a personalized gratitude card allows you to share meaningful reflections on shared memories from the past year.",
+        "bulletPoints": [
+          "Warm Thanksgiving Wording: 'With grateful hearts, we give thanks for the laughter, kindness, and memories shared together throughout this year.'",
+          "Host Family Appreciation: Express gratitude for holiday dinner hospitality and home-cooked feasts",
+          "Colleague & Mentor Recognition: Thank team members and leaders for guidance and partnership"
+        ]
+      },
+      {
+        "id": "christmas-elegance-typography",
+        "title": "4. Christmas Elegance: Classical Typography & Gold Foil Accents",
+        "body": "Christmas invitations and wish cards require a timeless visual aesthetic. Cardzy's Obsidian Gold and Royal Ruby themes pair classical European serif typography (such as Cormorant and Playfair) with gold foil botanical accents, evergreen holly motifs, and warm candlelight glows. Whether inviting friends to a festive dinner or sending warm Christmas blessings to extended family, the design feels sophisticated and warm.",
+        "bulletPoints": [
+          "Festive Color Palettes: Deep forest green, royal crimson, obsidian black, and champagne gold",
+          "Event RSVP Integration: If hosting Christmas dinner, enable 1-click RSVP to track guest dietary preferences and headcount",
+          "Bilingual Holiday Blessings: Pair traditional English greetings with Spanish, French, or German holiday wishes"
+        ]
+      },
+      {
+        "id": "new-year-2026-countdown",
+        "title": "5. Ringing in New Year 2026: Animated Countdowns & Party Invites",
+        "body": "New Year's Eve is the ultimate celebration of fresh starts, ambitious goals, and lively gatherings. If you are hosting a countdown bash, Cardzy's live countdown module displays the exact days, hours, and minutes until the clock strikes midnight on January 1st. Add your party address with an embedded Google Maps navigation link, dress code notes (e.g. 'Glitz & Glamour / Black Tie'), and an RSVP button so you know how many glasses of bubbly to prepare.",
+        "bulletPoints": [
+          "Live Countdown Clock: Real-time ticker counting down to midnight 2026",
+          "Interactive Venue Pin: Guide guests straight to your penthouse, rooftop, or home party",
+          "Morning-After Photo Gallery: Update the same card link on January 1st with party photos for guests to relive the night"
+        ]
+      },
+      {
+        "id": "multilingual-holiday-wishes",
+        "title": "6. Multilingual Greetings Across 18 Languages: Reaching Every Relative",
+        "body": "Modern families are delightfully diverse. You might have in-laws in Madrid, cousins in Paris, and colleagues in Tokyo. Cardzy natively supports 18 languages, allowing you to compose heartfelt holiday wishes in English, Spanish (¡Feliz Navidad!), French (Joyeux Noël), German (Frohe Weihnachten), Italian (Buon Natale), Arabic (كل عام وأنتم بخير), Japanese, and more. One link bridges every language barrier.",
+        "bulletPoints": [
+          "Instant Localization: Card UI and greetings automatically adapt to your chosen target language",
+          "Cross-Cultural Harmony: Combine traditional blessings with modern festive greetings",
+          "One-Click Social Sharing: Share via WhatsApp, Telegram, iMessage, or email seamlessly"
+        ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is it free to design and share holiday greeting cards on Cardzy?",
+        "answer": "Yes! You can customize photos, holiday themes, background audio, and messages completely free."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I use the card as an invitation for a Christmas or New Year party?",
+        "answer": "Absolutely. You can add event timings, venue location pins via Google Maps, and 1-click WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can international relatives view the card without installing any app?",
+        "answer": "Yes. The card link opens instantly in any mobile browser on iOS, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Does the card support custom background music?",
+        "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
       }
     ],
-    "conclusion": "Spread holiday cheer across the globe in seconds. Create your free 3D animated holiday e-card on Cardzy today at https://cardzy.online/create-wish!"
+    "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal, warm, and memorable. Design your custom 3D animated holiday card on Cardzy today and share the joy of the season with loved ones across the globe!"
   }
 };

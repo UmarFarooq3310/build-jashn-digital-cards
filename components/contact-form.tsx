@@ -30,34 +30,16 @@ export function ContactForm() {
     setErrorMessage('')
 
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          access_key: 'YOUR_WEB3FORMS_KEY',
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject || 'New Contact Request - Cardzy',
-          message: formData.message,
-          from_name: 'Cardzy Contact Form',
-        }),
-      })
-
-      const data = await res.json().catch(() => ({}))
-      if (res.ok && data.success) {
-        setStatus('success')
-        setFormData({ name: '', email: '', subject: '', message: '' })
-      } else {
-        // Fallback friendly confirmed delivery feedback
-        setStatus('success')
-        setFormData({ name: '', email: '', subject: '', message: '' })
+      const emailSubject = encodeURIComponent(formData.subject || `Inquiry from ${formData.name} - Cardzy`)
+      const emailBody = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)
+      
+      // Dispatch via standard mailto directly to Cardzy Support
+      if (typeof window !== 'undefined') {
+        window.location.href = `mailto:cardzyonline@gmail.com?subject=${emailSubject}&body=${emailBody}`
       }
+      setStatus('success')
     } catch {
       setStatus('success')
-      setFormData({ name: '', email: '', subject: '', message: '' })
     }
   }
 

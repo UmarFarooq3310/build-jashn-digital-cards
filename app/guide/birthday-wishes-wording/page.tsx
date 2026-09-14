@@ -11,9 +11,9 @@ const BIRTHDAY_GUIDE_TEXT: Record<string, Record<string, string>> = {
   title: {
     en: 'Birthday Wish Wording Ideas: Heartfelt, Funny & Formal Messages for Every Card',
   },
-  publishedDate: { en: 'Published August 6, 2026' },
+  publishedDate: { en: 'Published August 15, 2026' },
   readTime: { en: '5 min read' },
-  author: { en: 'By Cardzy Editorial Team' },
+  author: { en: 'By Hasnain' },
   introP1: {
     en: "The hardest part of sending a birthday card is rarely the design — it's staring at a blank message box, trying to find words that actually sound like you. Below are wording ideas sorted by tone and relationship, so you can pick one, tweak it with a name or an inside joke, and send it in under a minute.",
   },
@@ -116,7 +116,9 @@ export default function BirthdayGuidePage() {
               <span className="flex items-center gap-1">
                 <Clock className="size-4" /> {getText('readTime')}
               </span>
-              <span>{getText('author')}</span>
+              <Link href="/authors/hasnain" className="hover:text-emerald-600 dark:hover:text-emerald-400 font-semibold transition-colors">
+                {getText('author')}
+              </Link>
             </div>
           </header>
 

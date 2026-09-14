@@ -21,6 +21,7 @@ import { BackgroundPicker } from '@/components/jashn/background-picker'
 import { InvitationCard } from '@/components/jashn/invitation-card'
 import { InvitationTypePicker } from '@/components/jashn/invitation-type-picker'
 import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
+import { PreviewCardFit } from '@/components/jashn/preview-card-fit'
 import { useJashn } from '@/lib/jashn/store'
 import { INVITATION_TYPES, getInvitationType } from '@/lib/jashn/invitations'
 import { getInvitationWordingTemplates, type InvitationWordingTemplate } from '@/lib/jashn/invitation-templates'
@@ -35,9 +36,26 @@ function CreateInvitationContent() {
   const isUrdu = lang === 'ur' || lang === 'ar'
 
   const editSlug = searchParams.get('edit')
+  const typeParam = searchParams.get('type')
+  const titleParam = searchParams.get('title')
+  const notesParam = searchParams.get('notes')
+  const dateParam = searchParams.get('date')
+  const timeParam = searchParams.get('time')
+  const venueParam = searchParams.get('venue')
+  const cityParam = searchParams.get('city')
+  const hostParam = searchParams.get('hostNames') || searchParams.get('host')
+  const groomParam = searchParams.get('groom')
+  const brideParam = searchParams.get('bride')
+  const dressCodeParam = searchParams.get('dressCode')
 
-  const [step, setStep] = useState<1 | 2>(1)
-  const [typeId, setTypeId] = useState('nikkah')
+  const [step, setStep] = useState<1 | 2>(() => {
+    if (editSlug || typeParam || titleParam) return 2
+    return 1
+  })
+  const [typeId, setTypeId] = useState<string>(() => {
+    if (typeParam) return typeParam
+    return 'nikkah'
+  })
   const [mobileTab, setMobileTab] = useState<'details' | 'design' | 'preview'>('details')
 
   const getTodayString = () => {
@@ -55,17 +73,17 @@ function CreateInvitationContent() {
     return `${hh}:${mm}`
   }
 
-  const [title, setTitle] = useState('')
-  const [hostNames, setHostNames] = useState('')
-  const [groom, setGroom] = useState('')
-  const [bride, setBride] = useState('')
-  const [date, setDate] = useState('')
-  const [time, setTime] = useState('')
-  const [venue, setVenue] = useState('')
-  const [city, setCity] = useState('')
+  const [title, setTitle] = useState(() => titleParam || '')
+  const [hostNames, setHostNames] = useState(() => hostParam || '')
+  const [groom, setGroom] = useState(() => groomParam || '')
+  const [bride, setBride] = useState(() => brideParam || '')
+  const [date, setDate] = useState(() => dateParam || '')
+  const [time, setTime] = useState(() => timeParam || '')
+  const [venue, setVenue] = useState(() => venueParam || '')
+  const [city, setCity] = useState(() => cityParam || '')
   const [mapsLink, setMapsLink] = useState('')
-  const [dressCode, setDressCode] = useState('')
-  const [notes, setNotes] = useState('')
+  const [dressCode, setDressCode] = useState(() => dressCodeParam || '')
+  const [notes, setNotes] = useState(() => notesParam || '')
   const [rsvpPhone, setRsvpPhone] = useState('')
   const [themeId, setThemeId] = useState('mehndi-red')
   const [borderId, setBorderId] = useState('mehndi')
@@ -125,11 +143,35 @@ function CreateInvitationContent() {
         setStep(2)
       }
     } else {
-      const typeParam = searchParams.get('type')
-      if (typeParam) {
-        setTypeId(typeParam)
+      const typeP = searchParams.get('type')
+      const titleP = searchParams.get('title')
+      const notesP = searchParams.get('notes')
+      const dateP = searchParams.get('date')
+      const timeP = searchParams.get('time')
+      const venueP = searchParams.get('venue')
+      const cityP = searchParams.get('city')
+      const hostP = searchParams.get('hostNames') || searchParams.get('host')
+      const groomP = searchParams.get('groom')
+      const brideP = searchParams.get('bride')
+      const dressCodeP = searchParams.get('dressCode')
+
+      if (typeP) {
+        setTypeId(typeP)
         setStep(2)
       }
+      if (titleP) {
+        setTitle(titleP)
+        setStep(2)
+      }
+      if (notesP) setNotes(notesP)
+      if (dateP) setDate(dateP)
+      if (timeP) setTime(timeP)
+      if (venueP) setVenue(venueP)
+      if (cityP) setCity(cityP)
+      if (hostP) setHostNames(hostP)
+      if (groomP) setGroom(groomP)
+      if (brideP) setBride(brideP)
+      if (dressCodeP) setDressCode(dressCodeP)
     }
   }, [searchParams, editSlug, invitations])
 
@@ -468,54 +510,71 @@ function CreateInvitationContent() {
                   </h3>
 
                   {isCouple ? (
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <div>
-                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                          {t('groomName') === 'groomName' ? 'Groom Name' : t('groomName')} *
-                        </label>
-                        <input
-                          id="field-groom"
-                          type="text"
-                          required
-                          value={groom}
-                          onChange={(e) => handleFieldChange('groom', e.target.value, setGroom)}
-                          placeholder={t('placeholderGroom')}
-                          dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
-                          className={cn(
-                            "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                            errors.groom ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
-                            (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
+                    <div className="space-y-4">
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div>
+                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            {selectedType?.id === 'anniversary-party' ? (t('partner1Name') || 'Husband / Partner 1 Name') : (t('groomName') === 'groomName' ? 'Groom Name' : t('groomName'))} *
+                          </label>
+                          <input
+                            id="field-groom"
+                            type="text"
+                            required
+                            value={groom}
+                            onChange={(e) => handleFieldChange('groom', e.target.value, setGroom)}
+                            placeholder={selectedType?.id === 'anniversary-party' ? 'e.g. Tariq Mahmood' : t('placeholderGroom')}
+                            dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
+                            className={cn(
+                              "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                              errors.groom ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
+                              (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
+                            )}
+                          />
+                          {errors.groom && (
+                            <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                              <AlertCircle className="size-3 shrink-0" /> {errors.groom}
+                            </p>
                           )}
-                        />
-                        {errors.groom && (
-                          <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                            <AlertCircle className="size-3 shrink-0" /> {errors.groom}
-                          </p>
-                        )}
+                        </div>
+                        <div>
+                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            {selectedType?.id === 'anniversary-party' ? (t('partner2Name') || 'Wife / Partner 2 Name') : (t('brideName') === 'brideName' ? 'Bride Name' : t('brideName'))} *
+                          </label>
+                          <input
+                            id="field-bride"
+                            type="text"
+                            required
+                            value={bride}
+                            onChange={(e) => handleFieldChange('bride', e.target.value, setBride)}
+                            placeholder={selectedType?.id === 'anniversary-party' ? 'e.g. Khadija Begum' : t('placeholderBride')}
+                            dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
+                            className={cn(
+                              "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                              errors.bride ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
+                              (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
+                            )}
+                          />
+                          {errors.bride && (
+                            <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                              <AlertCircle className="size-3 shrink-0" /> {errors.bride}
+                            </p>
+                          )}
+                        </div>
                       </div>
+
                       <div>
                         <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                          {t('brideName') === 'brideName' ? 'Bride Name' : t('brideName')} *
+                          {t('eventTitle')} ({t('optional') || 'Optional'})
                         </label>
                         <input
-                          id="field-bride"
+                          id="field-title-couple"
                           type="text"
-                          required
-                          value={bride}
-                          onChange={(e) => handleFieldChange('bride', e.target.value, setBride)}
-                          placeholder={t('placeholderBride')}
-                          dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
-                          className={cn(
-                            "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                            errors.bride ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
-                            (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
-                          )}
+                          value={title}
+                          onChange={(e) => handleFieldChange('title', e.target.value, setTitle)}
+                          placeholder={selectedType?.label || 'e.g. Milestone Wedding Anniversaries (Silver & Golden)'}
+                          dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                          className="w-full rounded-2xl border border-input p-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
                         />
-                        {errors.bride && (
-                          <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                            <AlertCircle className="size-3 shrink-0" /> {errors.bride}
-                          </p>
-                        )}
                       </div>
                     </div>
                   ) : (
@@ -926,11 +985,17 @@ function CreateInvitationContent() {
 
         {/* Desktop Right Column — Sticky Live Interactive Preview */}
         <div className="hidden lg:block lg:col-span-5 space-y-4">
-          <div className="sticky top-24 rounded-3xl border border-border bg-card p-6 shadow-xl text-center backdrop-blur-md">
-            <p className="mb-4 text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center justify-center gap-1.5">
-              <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
-            </p>
-            <div>
+          <div className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden" suppressHydrationWarning>
+            <div className="mb-3 flex items-center justify-between px-1">
+              <p className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
+                <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
+              </p>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#7B0D1E]/10 text-[#7B0D1E] border border-[#7B0D1E]/20">
+                <Sparkles className="size-2.5" /> Full Card Fit
+              </span>
+            </div>
+
+            <PreviewCardFit topOffset={80} bottomOffset={24} reservedHeaderHeight={56}>
               <CardAnimationPreview occasionId={typeId} animationKey={typeId} className="max-w-sm mx-auto" roundedClass="rounded-3xl">
                 <InvitationCard
                   data={{
@@ -953,7 +1018,7 @@ function CreateInvitationContent() {
                   }}
                 />
               </CardAnimationPreview>
-            </div>
+            </PreviewCardFit>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 import Script from 'next/script'
 import type { Metadata, Viewport } from 'next'
-import { Poppins } from 'next/font/google'
+import { Poppins, Noto_Nastaliq_Urdu } from 'next/font/google'
 import { ToastNotification } from '@/components/ui/toast-notification'
 import { LanguageProvider } from '@/lib/lang/context'
 import './globals.css'
@@ -36,6 +36,13 @@ const poppins = Poppins({
   adjustFontFallback: true,
 })
 
+const notoNastaliq = Noto_Nastaliq_Urdu({
+  subsets: ['arabic'],
+  weight: ['400', '700'],
+  variable: '--font-nastaliq',
+  display: 'swap',
+})
+
 export const viewport: Viewport = {
   themeColor: '#064e3b',
   width: 'device-width',
@@ -52,7 +59,11 @@ export const metadata: Metadata = {
   description:
     'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP, and smart digital business cards in 18 languages with Cardzy.',
   keywords: DEFAULT_KEYWORDS,
-  authors: [{ name: 'Cardzy Editorial Team', url: 'https://cardzy.online' }],
+  authors: [
+    { name: 'Umar Farooq', url: 'https://cardzy.online/authors/umar-farooq' },
+    { name: 'Kainat', url: 'https://cardzy.online/authors/kainat' },
+    { name: 'Hasnain', url: 'https://cardzy.online/authors/hasnain' },
+  ],
   creator: SITE_CREATOR,
   publisher: SITE_PUBLISHER,
   alternates: getPageAlternates('/'),
@@ -135,56 +146,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={poppins.variable} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" className={`${poppins.variable} ${notoNastaliq.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head suppressHydrationWarning>
         <link rel="preconnect" href="https://jashn-app-e3888.firebaseapp.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://jashn-app-e3888.firebaseapp.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.openCookiePreferences = window.openCookiePreferences || function() {
-                try {
-                  window.__pendingCookieModal = true;
-                  window.dispatchEvent(new CustomEvent('open_cookie_preferences'));
-                  document.dispatchEvent(new CustomEvent('open_cookie_preferences'));
-                } catch(e) {}
-              };
-              window.openCardzyCookieConsent = window.openCookiePreferences;
-              window.showCookieAlert = window.showCookieAlert || function() {
-                try {
-                  window.__pendingCookieAlert = true;
-                  window.dispatchEvent(new CustomEvent('show_cookie_alert'));
-                  document.dispatchEvent(new CustomEvent('show_cookie_alert'));
-                } catch(e) {}
-              };
-              window.openCookieAlert = window.showCookieAlert;
-              window.resetCookieConsent = window.resetCookieConsent || function() {
-                try {
-                  localStorage.removeItem('cardzy_consent_v3');
-                  localStorage.removeItem('cardzy_cookie_consent');
-                  localStorage.removeItem('cookie_consent');
-                  if (typeof window.showCookieAlert === 'function') window.showCookieAlert();
-                } catch(e) {}
-              };
-              document.addEventListener('click', function(e) {
-                try {
-                  var target = e.target && e.target.closest && e.target.closest('[data-open-cookie-preferences], [data-cookie-preferences], [data-show-cookie-alert], [data-reset-cookies], a[href="#cookie-preferences"], a[href="#cookie-alert"]');
-                  if (target) {
-                    e.preventDefault();
-                    if (target.hasAttribute('data-show-cookie-alert') || target.getAttribute('href') === '#cookie-alert') {
-                      if (typeof window.showCookieAlert === 'function') window.showCookieAlert();
-                    } else if (target.hasAttribute('data-reset-cookies')) {
-                      if (typeof window.resetCookieConsent === 'function') window.resetCookieConsent();
-                    } else {
-                      if (typeof window.openCookiePreferences === 'function') window.openCookiePreferences();
-                    }
-                  }
-                } catch(err) {}
-              }, false);
-            `,
-          }}
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -255,7 +221,64 @@ export default function RootLayout({
             `,
           }}
         />
-        <script
+      </head>
+      <body className="bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]" suppressHydrationWarning>
+        <Script
+          id="google-adsense"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
+        <Script
+          id="cardzy-cookie-dispatcher"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.openCookiePreferences = window.openCookiePreferences || function() {
+                try {
+                  window.__pendingCookieModal = true;
+                  window.dispatchEvent(new CustomEvent('open_cookie_preferences'));
+                  document.dispatchEvent(new CustomEvent('open_cookie_preferences'));
+                } catch(e) {}
+              };
+              window.openCardzyCookieConsent = window.openCookiePreferences;
+              window.showCookieAlert = window.showCookieAlert || function() {
+                try {
+                  window.__pendingCookieAlert = true;
+                  window.dispatchEvent(new CustomEvent('show_cookie_alert'));
+                  document.dispatchEvent(new CustomEvent('show_cookie_alert'));
+                } catch(e) {}
+              };
+              window.openCookieAlert = window.showCookieAlert;
+              window.resetCookieConsent = window.resetCookieConsent || function() {
+                try {
+                  localStorage.removeItem('cardzy_consent_v3');
+                  localStorage.removeItem('cardzy_cookie_consent');
+                  localStorage.removeItem('cookie_consent');
+                  if (typeof window.showCookieAlert === 'function') window.showCookieAlert();
+                } catch(e) {}
+              };
+              document.addEventListener('click', function(e) {
+                try {
+                  var target = e.target && e.target.closest && e.target.closest('[data-open-cookie-preferences], [data-cookie-preferences], [data-show-cookie-alert], [data-reset-cookies], a[href="#cookie-preferences"], a[href="#cookie-alert"]');
+                  if (target) {
+                    e.preventDefault();
+                    if (target.hasAttribute('data-show-cookie-alert') || target.getAttribute('href') === '#cookie-alert') {
+                      if (typeof window.showCookieAlert === 'function') window.showCookieAlert();
+                    } else if (target.hasAttribute('data-reset-cookies')) {
+                      if (typeof window.resetCookieConsent === 'function') window.resetCookieConsent();
+                    } else {
+                      if (typeof window.openCookiePreferences === 'function') window.openCookiePreferences();
+                    }
+                  }
+                } catch(err) {}
+              }, false);
+            `,
+          }}
+        />
+        <Script
+          id="cardzy-ad-error-trap"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
@@ -294,13 +317,6 @@ export default function RootLayout({
               })();
             `,
           }}
-        />
-      </head>
-      <body className="bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]" suppressHydrationWarning>
-        <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
         />
         <LanguageProvider>
           <CookieBanner />

@@ -61,6 +61,9 @@ const ConciergeService = nextDynamic(
 const StructuredFaqSection = nextDynamic(
   () => import('@/components/home/structured-faq').then((mod) => mod.StructuredFaqSection)
 )
+const FeaturedGuidesSection = nextDynamic(
+  () => import('@/components/home/featured-guides').then((mod) => mod.FeaturedGuidesSection)
+)
 const HomeCTA = nextDynamic(
   () => import('@/components/home/home-cta').then((mod) => mod.HomeCTA)
 )
@@ -92,13 +95,6 @@ const homepageJsonLd = [
         description: 'Pro — Premium themes, WhatsApp RSVP, Google Maps, custom music',
       },
     ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      ratingCount: '312',
-      bestRating: '5',
-      worstRating: '1',
-    },
   },
   {
     '@context': 'https://schema.org',
@@ -146,6 +142,9 @@ export default function Page() {
 
       {/* ❓ High-Value Semantic Structured FAQ Section */}
       <StructuredFaqSection />
+
+      {/* 📚 Editorial Guides & Celebration Wording Section (High-Value E-E-A-T) */}
+      <FeaturedGuidesSection />
 
       {/* Final CTA block */}
       <HomeCTA />

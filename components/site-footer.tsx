@@ -87,6 +87,7 @@ export function SiteFooter() {
             <FooterCol
               title={t('guidesAndWording', 'Guides & Wording')}
               links={[
+                { href: '/calendar', label: t('celebrationCalendar', 'Celebration Calendar') },
                 { href: '/guide/eid-wording-ideas', label: t('eidWordingAndReplies', 'Eid Wording & Replies') },
                 { href: '/blog/complete-guide-to-pakistani-wedding-invitation-wording-urdu-english', label: t('pakistaniWeddingCardText', 'Pakistani Wedding Card Text') },
                 { href: '/guide/pakistani-wedding-invitations', label: t('pakistaniWeddingInvitations', 'Pakistani Wedding Invitations') },
@@ -140,6 +141,9 @@ export function SiteFooter() {
               <img
                 src="https://sellwithboost.com/badge/listing.svg"
                 alt="Listed on Sell With boost"
+                width={160}
+                height={40}
+                loading="lazy"
                 style={{ height: '40px', width: 'auto' }}
               />
             </a>

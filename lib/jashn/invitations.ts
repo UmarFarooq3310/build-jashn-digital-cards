@@ -5,9 +5,9 @@ const RAW_INVITATION_TYPES: any[] = [
   { id: 'wedding-gala', label: 'Wedding Gala & Reception', category: 'Wedding', icon: 'Crown', couple: true, bgImage: '/invitations/barat.jpg', bgGradient: 'linear-gradient(160deg,#8e0f24,#4a0510)' },
   { id: 'mehndi',     label: 'Mehndi Night',            category: 'Wedding',      icon: 'Flower2',       couple: true, bgImage: '/invitations/mehndi.jpg',          bgGradient: 'linear-gradient(160deg,#2e7d32,#f9a825)' },
   { id: 'dholki',     label: 'Dholki',           category: 'Wedding',      icon: 'Music',         couple: true, bgImage: '/invitations/dholki.jpg',          bgGradient: 'linear-gradient(160deg,#880e4f,#f9a825)' },
-  { id: 'nikkah',     label: 'Nikkah Ceremony',             category: 'Wedding',      icon: 'Gem',           couple: true, bgImage: '/invitations/nikkah.jpg',          bgGradient: 'linear-gradient(160deg,#bf8600,#5d4037)' },
+  { id: 'nikkah',     label: 'Nikkah Ceremony',             category: 'Wedding',      icon: 'Gem',           couple: true, bgImage: '/invitations/nikkah.jpg',          bgGradient: 'linear-gradient(160deg,#1c1000,#3a1e05,#120800)' },
   { id: 'barat',      label: 'Barat Day',            category: 'Wedding',      icon: 'Crown',         couple: true, bgImage: '/invitations/barat.jpg',           bgGradient: 'linear-gradient(160deg,#8e0f24,#4a0510)' },
-  { id: 'walima',     label: 'Walima',            category: 'Wedding',      icon: 'Utensils',      couple: true, bgImage: '/invitations/walima.jpg',          bgGradient: 'linear-gradient(160deg,#c8a96e,#5d4037)' },
+  { id: 'walima',     label: 'Walima',            category: 'Wedding',      icon: 'Utensils',      couple: true, bgImage: '/invitations/walima.jpg',          bgGradient: 'linear-gradient(160deg,#1b1528,#352245,#120c1e)' },
   { id: 'engagement', label: 'Engagement Ceremony',            category: 'Wedding',      icon: 'Heart',         couple: true, bgImage: '/invitations/engagement.jpg',      bgGradient: 'linear-gradient(160deg,#880e4f,#c2185b)' },
   { id: 'bridal-shower', label: 'Bridal Shower', category: 'Wedding', icon: 'Heart', couple: false, bgImage: '/invitations/engagement.jpg', bgGradient: 'linear-gradient(160deg,#ad1457,#f48fb1)' },
 
@@ -18,8 +18,17 @@ const RAW_INVITATION_TYPES: any[] = [
   { id: 'iftaar',        label: 'Iftaar Party',  category: 'Religious',    icon: 'Utensils',                  bgImage: '/invitations/iftaar.jpg',          bgGradient: 'linear-gradient(160deg,#1a237e,#311b92)' },
   { id: 'christmas-party', label: 'Christmas & Holiday Party', category: 'Religious', icon: 'TreePine', bgGradient: 'linear-gradient(160deg,#b71c1c,#1b5e20)' },
   { id: 'diwali-party', label: 'Diwali Celebration', category: 'Religious', icon: 'Flame', bgGradient: 'linear-gradient(160deg,#d97706,#b45309)' },
+  { id: 'roza-kushai', label: 'Roza Kushai & Iftar Gathering', category: 'Religious', icon: 'Moon', couple: false, bgGradient: 'linear-gradient(160deg,#064e3b,#10b981)' },
+  { id: 'hajj-dinner', label: 'Hajj / Umrah Dua Gathering', category: 'Religious', icon: 'Star', couple: false, bgGradient: 'linear-gradient(160deg,#78350f,#d97706)' },
+  { id: 'chand-raat-mela', label: 'Chand Raat Mela & Celebration', category: 'Religious', icon: 'Sparkles', couple: false, bgGradient: 'linear-gradient(160deg,#4a044e,#c026d3)' },
+  { id: 'holi-celebration', label: 'Holi Color Festival & Gathering', category: 'Religious', icon: 'Sparkles', couple: false, bgGradient: 'linear-gradient(160deg,#b91c1c,#f59e0b,#ec4899)' },
+  { id: 'easter-brunch', label: 'Easter Sunday Family Gathering', category: 'Religious', icon: 'Egg', couple: false, bgGradient: 'linear-gradient(160deg,#3b0764,#a855f7)' },
+  { id: 'aqiqah-party', label: 'Aqiqah & Baby Celebration', category: 'Religious', icon: 'Baby', couple: false, bgGradient: 'linear-gradient(160deg,#042f2e,#14b8a6)' },
 
   // SOCIAL & GLOBAL EVENTS
+  { id: 'halloween-party', label: 'Halloween Costume Party', category: 'Social', icon: 'Sparkles', couple: false, bgGradient: 'linear-gradient(160deg,#180b28,#ea580c)' },
+  { id: 'new-year-party', label: 'New Year Eve Bash & Celebration', category: 'Social', icon: 'Sparkles', couple: false, bgGradient: 'linear-gradient(160deg,#0f172a,#2563eb,#eab308)' },
+  { id: 'prom-farewell', label: 'Farewell & Prom Gala', category: 'Social', icon: 'Sparkles', couple: false, bgGradient: 'linear-gradient(160deg,#1e1b4b,#4338ca)' },
   { id: 'birthday-party',  label: 'Birthday Party',       category: 'Social',       icon: 'Cake',                      bgImage: '/invitations/birthday-party.jpg',  bgGradient: 'linear-gradient(160deg,#1a237e,#7b1fa2)' },
   { id: 'graduation-party',label: 'Graduation Party',     category: 'Social',       icon: 'GraduationCap',             bgImage: '/invitations/graduation-party.jpg',bgGradient: 'linear-gradient(160deg,#1a237e,#0d47a1)' },
   { id: 'cocktail-party', label: 'Cocktail & Dinner Party', category: 'Social', icon: 'Wine', bgGradient: 'linear-gradient(160deg,#4c1d95,#1e1b4b)' },
@@ -39,6 +48,8 @@ const RAW_INVITATION_TYPES: any[] = [
   { id: 'seminar',        label: 'Seminar / Conference',         category: 'Professional', icon: 'Users',      bgImage: '/invitations/seminar.jpg',         bgGradient: 'linear-gradient(160deg,#1565c0,#283593)' },
   { id: 'product-launch', label: 'Product Launch',    category: 'Professional', icon: 'Rocket',     bgImage: '/invitations/product-launch.jpg',  bgGradient: 'linear-gradient(160deg,#0d1b4c,#4a0e6b)' },
   { id: 'school-function',label: 'School / College Function',          category: 'Professional', icon: 'Building2',  bgImage: '/invitations/school-function.jpg', bgGradient: 'linear-gradient(160deg,#1b5e20,#0d47a1)' },
+  { id: 'teachers-day-event', label: 'Teachers Honor Ceremony', category: 'Professional', icon: 'Award', couple: false, bgGradient: 'linear-gradient(160deg,#172554,#2563eb)' },
+  { id: 'national-day-gala', label: 'National Day Reception', category: 'Professional', icon: 'Flag', couple: false, bgGradient: 'linear-gradient(160deg,#064e3b,#059669)' },
 ]
 
 export const INVITATION_TYPES: InvitationType[] = RAW_INVITATION_TYPES.map(type => {
@@ -71,7 +82,7 @@ export const INVITATION_TYPES: InvitationType[] = RAW_INVITATION_TYPES.map(type 
   if (cat === 'Wedding') {
     bgVariants.push(
       { id: 'wedding-crimson', name: 'Crimson Velvet', bgGradient: 'linear-gradient(160deg,#8e0f24,#4a0510)' },
-      { id: 'wedding-gold', name: 'Mughal Gold', bgGradient: 'linear-gradient(160deg,#bf8600,#5d4037)' },
+      { id: 'wedding-gold', name: 'Mughal Gold', bgGradient: 'linear-gradient(160deg,#241703,#4a3206,#191002)' },
       { id: 'wedding-teal', name: 'Feroza Teal', bgGradient: 'linear-gradient(160deg,#006064,#004d40)' },
       { id: 'wedding-royal', name: 'Royal Indigo', bgGradient: 'linear-gradient(160deg,#1a237e,#bf8600)' },
       { id: 'wedding-emerald-gold', name: 'Emerald & Gold', bgGradient: 'linear-gradient(160deg,#0a2e16,#1e3d2f,#d97706)' },

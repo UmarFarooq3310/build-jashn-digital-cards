@@ -4,1668 +4,1662 @@ export const POST_17_SLUG = "how-to-create-free-digital-wedding-invitation-onlin
 
 export const POST_17_DATA: Record<string, LocalizedBlogData> = {
   "en": {
-    "title": "How to Create Free Digital Wedding Invitations Online in 2026 (Step-by-Step)",
-    "subtitle": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for How to Create Free Digital Wedding Invitations Online in 2026 (Step-by-Step).",
+    "title": "How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
     "category": "Wedding & Nikkah",
-    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 (Step-by-Step) — Cardzy",
-    "metaDescription": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for How to Create Free Digital Wedding Invitations Online in 2026 (Step-by-Step)."
+    "seoTitle": "Free Digital Wedding Card & Invitation Maker | Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "ur": {
-    "title": "مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ",
-    "subtitle": "کارڈزی پر مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔",
-    "category": "شادی و نکاح",
-    "seoTitle": "مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ — Cardzy",
-    "metaDescription": "کارڈزی پر مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔"
+    "title": "کارڈزی گائیڈ: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — کارڈزی",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "es": {
-    "title": "Cómo Crear Invitaciones de Boda Digitales Gratis Online en 2026 (Paso a Paso)",
-    "subtitle": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para How to Create Free Digital Wedding Invitations Online in 2026 (Step-by-Step).",
-    "category": "Boda y Nikkah",
-    "seoTitle": "Cómo Crear Invitaciones de Boda Digitales Gratis Online en 2026 (Paso a Paso) — Cardzy",
-    "metaDescription": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para How to Create Free Digital Wedding Invitations Online in 2026 (Step-by-Step)."
+    "title": "Guía Cardzy: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "fr": {
-    "title": "Comment Créer un Faire-Part de Mariage Numérique Gratuit en Ligne en 2026 (Tutoriel)",
-    "subtitle": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy.",
-    "category": "Mariage & Nikkah",
-    "seoTitle": "Comment Créer un Faire-Part de Mariage Numérique Gratuit en Ligne en 2026 (Tutoriel) — Cardzy",
-    "metaDescription": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy."
+    "title": "Guide Cardzy: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "ar": {
-    "title": "كيفية إنشاء بطاقة دعوة زفاف رقمية مجاناً عبر الإنترنت خطوة بخطوة",
-    "subtitle": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي.",
-    "category": "الزفاف والنكاح",
-    "seoTitle": "كيفية إنشاء بطاقة دعوة زفاف رقمية مجاناً عبر الإنترنت خطوة بخطوة — Cardzy",
-    "metaDescription": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي."
+    "title": "دليل كاردزي: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — كاردزي",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "hi": {
-    "title": "2026 में ऑनलाइन मुफ्त डिजिटल शादी का कार्ड कैसे बनाएं (चरण-दर-चरण गाइड)",
-    "subtitle": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।",
-    "category": "शादी और निकाह",
-    "seoTitle": "2026 में ऑनलाइन मुफ्त डिजिटल शादी का कार्ड कैसे बनाएं (चरण-दर-चरण गाइड) — Cardzy",
-    "metaDescription": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।"
+    "title": "कार्डज़ी गाइड: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — कार्डज़ी",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "zh": {
-    "title": "2026 免费在线制作 3D 动态婚礼电子请柬新手详细教程（图文详解）",
-    "subtitle": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。",
-    "category": "婚礼与仪式",
-    "seoTitle": "2026 免费在线制作 3D 动态婚礼电子请柬新手详细教程（图文详解） — Cardzy",
-    "metaDescription": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。"
+    "title": "Cardzy 电子卡片指南: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "pt": {
-    "title": "Como Criar Convites de Casamento Digitais Gratuitos Online em 2026 (Passo a Passo)",
-    "subtitle": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy.",
-    "category": "Casamento e Nikkah",
-    "seoTitle": "Como Criar Convites de Casamento Digitais Gratuitos Online em 2026 (Passo a Passo) — Cardzy",
-    "metaDescription": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy."
+    "title": "Guia Cardzy: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "ru": {
-    "title": "Как бесплатно создать электронное свадебное приглашение онлайн в 2026 году",
-    "subtitle": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy.",
-    "category": "Свадьба и Никах",
-    "seoTitle": "Как бесплатно создать электронное свадебное приглашение онлайн в 2026 году — Cardzy",
-    "metaDescription": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy."
+    "title": "Руководство Cardzy: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "de": {
-    "title": "Kostenlose digitale Hochzeitseinladungen 2026 online erstellen (Schritt für Schritt)",
-    "subtitle": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy.",
-    "category": "Hochzeit & Nikkah",
-    "seoTitle": "Kostenlose digitale Hochzeitseinladungen 2026 online erstellen (Schritt für Schritt) — Cardzy",
-    "metaDescription": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy."
+    "title": "Cardzy Ratgeber: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "ja": {
-    "title": "2026年版 無料で作成できるオンライン結婚式招待状チュートリアル",
-    "subtitle": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。",
-    "category": "結婚式＆Nikkah",
-    "seoTitle": "2026年版 無料で作成できるオンライン結婚式招待状チュートリアル — Cardzy",
-    "metaDescription": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。"
+    "title": "Cardzy ガイド: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "ko": {
-    "title": "2026년 무료 온라인 모바일 청첩장 만들기 (단계별 완벽 튜토리얼)",
-    "subtitle": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요.",
-    "category": "웨딩 & 니카",
-    "seoTitle": "2026년 무료 온라인 모바일 청첩장 만들기 (단계별 완벽 튜토리얼) — Cardzy",
-    "metaDescription": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요."
+    "title": "Cardzy 가이드: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "it": {
-    "title": "Come Creare Inviti di Matrimonio Digitali Gratuiti Online nel 2026 (Passo Passo)",
-    "subtitle": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy.",
-    "category": "Matrimonio & Nikkah",
-    "seoTitle": "Come Creare Inviti di Matrimonio Digitali Gratuiti Online nel 2026 (Passo Passo) — Cardzy",
-    "metaDescription": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy."
+    "title": "Guida Cardzy: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "tr": {
-    "title": "2026 Yılında Çevrimiçi Ücretsiz Dijital Düğün Davetiyesi Nasıl Hazırlanır (Adım Adım)",
-    "subtitle": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin.",
-    "category": "Düğün ve Nikah",
-    "seoTitle": "2026 Yılında Çevrimiçi Ücretsiz Dijital Düğün Davetiyesi Nasıl Hazırlanır (Adım Adım) — Cardzy",
-    "metaDescription": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin."
+    "title": "Cardzy Rehberi: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "id": {
-    "title": "Cara Membuat Undangan Pernikahan Digital Gratis Online di 2026 (Langkah Demi Langkah)",
-    "subtitle": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy.",
-    "category": "Pernikahan & Akad",
-    "seoTitle": "Cara Membuat Undangan Pernikahan Digital Gratis Online di 2026 (Langkah Demi Langkah) — Cardzy",
-    "metaDescription": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy."
+    "title": "Panduan Cardzy: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "bn": {
-    "title": "২০২৬ সালে অনলাইনে বিনামূল্যে ডিজিটাল বিয়ের কার্ড তৈরির সহজ নিয়ম",
-    "subtitle": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।",
-    "category": "বিয়ে ও নিকাহ",
-    "seoTitle": "২০২৬ সালে অনলাইনে বিনামূল্যে ডিজিটাল বিয়ের কার্ড তৈরির সহজ নিয়ম — Cardzy",
-    "metaDescription": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।"
+    "title": "কার্ডজি গাইড: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — কার্ডজি",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "vi": {
-    "title": "Cách Tự Làm Thiệp Cưới Kỹ Thuật Số Miễn Phí Trực Tuyến Năm 2026 (Hướng Dẫn Chi Tiết)",
-    "subtitle": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy.",
-    "category": "Đám Cưới & Hôn Lễ",
-    "seoTitle": "Cách Tự Làm Thiệp Cưới Kỹ Thuật Số Miễn Phí Trực Tuyến Năm 2026 (Hướng Dẫn Chi Tiết) — Cardzy",
-    "metaDescription": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy."
+    "title": "Hướng Dẫn Cardzy: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   },
   "sw": {
-    "title": "Jinsi ya Kutengeneza Kadi ya Harusi ya Kidijitali ya Bure Mtandaoni 2026 (Hatua kwa Hatua)",
-    "subtitle": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy.",
-    "category": "Harusi na Nikkah",
-    "seoTitle": "Jinsi ya Kutengeneza Kadi ya Harusi ya Kidijitali ya Bure Mtandaoni 2026 (Hatua kwa Hatua) — Cardzy",
-    "metaDescription": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy."
+    "title": "Mwongozo wa Cardzy: How to Create Free Digital Wedding Invitations Online in 2026",
+    "subtitle": "A practical walkthrough for modern couples: choosing royal themes, setting up Nikkah and Walima schedules, and sending elegant links via WhatsApp.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "How to Create Free Digital Wedding Invitations Online in 2026 — Cardzy",
+    "metaDescription": "Step-by-step guide to creating free digital wedding invitations online. Add gold foil themes, WhatsApp RSVP buttons, and Google Maps directions in minutes."
   }
 };
 
 export const POST_17_CONTENT: Record<string, LocalizedBlogContent> = {
   "en": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "ur": {
-    "intro": "کارڈزی کے ساتھ مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ کو جدید ترین، دلکش اور یادگار انداز میں منائیں۔ روایتی کاغذ کے کارڈز کے بجائے 3D لفافہ اوپننگ، اردو نستعلیق خطاطی، بیک گراؤنڈ میوزک اور واٹس ایپ آر ایس وی پی کے ساتھ ڈیجیٹل کارڈز بنائیں۔",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر مفت ڈیجیٹل شادی کا کارڈ آن لائن بنانے کا مکمل مرحلہ وار طریقہ کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "کارڈزی ڈیجیٹل کارڈ کے کیا فوائد ہیں؟",
-        "answer": "کارڈزی پر آپ 3D لفافہ اینیمیشن، پس منظر میوزک، اردو نستعلیق خطاطی اور واٹس ایپ آر ایس وی پی کے ساتھ باآسانی کارڈز بنا سکتے ہیں۔"
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "کیا کارڈزی پر کارڈ بنانا مفت ہے؟",
-        "answer": "جی ہاں! آپ کارڈزی پر تمام بنیادی اور اینیمیٹڈ کارڈز بالکل مفت بنا سکتے ہیں اور فوری واٹس ایپ پر شیئر کر سکتے ہیں۔"
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "کیا یہ کارڈ واٹس ایپ پر درست انداز میں کھلتا ہے؟",
-        "answer": "بالکل! کارڈزی لنک واٹس ایپ، ایس ایم ایس اور سوشل میڈیا پر بغیر کسی ایپ ڈاؤن لوڈ کے فوری کھلتا ہے۔"
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "کیا مہمانوں کی حاضری (RSVP) کو ٹریک کیا جا سکتا ہے؟",
-        "answer": "جی ہاں! مہمان ایک کلک سے شرکت کی تصدیق کرتے ہیں اور آپ کو لائیو ڈیش بورڈ اور واٹس ایپ پر فوری تعداد معلوم ہو جاتی ہے۔"
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "کارڈزی پر اپنا ڈیجیٹل کارڈ منٹوں میں ڈیزائن کریں، پسندیدہ آڈیو اور تصاویر شامل کریں اور واٹس ایپ پر ایک کلک سے شیئر کریں۔"
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "es": {
-    "intro": "Celebre Cómo Crear Invitaciones de Boda Digitales Gratis Online en 2026 (Paso a Paso) con las innovadoras tarjetas digitales animadas en 3D de Cardzy. Personalice con música, fotos y confirmación RSVP por WhatsApp.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Cómo Crear Invitaciones de Boda Digitales Gratis Online en 2026 (Paso a Paso) — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Cómo Crear Invitaciones de Boda Digitales Gratis Online en 2026 (Paso a Paso) — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Cómo Crear Invitaciones de Boda Digitales Gratis Online en 2026 (Paso a Paso) — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Cómo Crear Invitaciones de Boda Digitales Gratis Online en 2026 (Paso a Paso) — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Cómo Crear Invitaciones de Boda Digitales Gratis Online en 2026 (Paso a Paso) — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Cómo Crear Invitaciones de Boda Digitales Gratis Online en 2026 (Paso a Paso) — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Diseñe su tarjeta digital personalizada en Cardzy en minutos y compártala al instante por WhatsApp."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "fr": {
-    "intro": "Célébrez Comment Créer un Faire-Part de Mariage Numérique Gratuit en Ligne en 2026 (Tutoriel) avec les faire-part numériques et cartes animées 3D Cardzy. Personnalisez avec musique, photos et suivi RSVP sur WhatsApp.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Comment Créer un Faire-Part de Mariage Numérique Gratuit en Ligne en 2026 (Tutoriel) — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Comment Créer un Faire-Part de Mariage Numérique Gratuit en Ligne en 2026 (Tutoriel) — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Comment Créer un Faire-Part de Mariage Numérique Gratuit en Ligne en 2026 (Tutoriel) — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Comment Créer un Faire-Part de Mariage Numérique Gratuit en Ligne en 2026 (Tutoriel) — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Comment Créer un Faire-Part de Mariage Numérique Gratuit en Ligne en 2026 (Tutoriel) — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comment Créer un Faire-Part de Mariage Numérique Gratuit en Ligne en 2026 (Tutoriel) — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Quels sont les avantages des faire-part numériques Cardzy ?",
-        "answer": "Cardzy permet de créer des faire-part animés 3D avec musique, photos, géolocalisation Google Maps et suivi RSVP par WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "Est-il gratuit de créer une carte sur Cardzy ?",
-        "answer": "Oui ! Vous pouvez créer et partager gratuitement vos cartes animées directement sur WhatsApp."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "Les cartes fonctionnent-elles sur smartphone ?",
-        "answer": "Parfaitement. Le lien s’ouvre instantanément dans tout navigateur mobile sans nécessiter d’application."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "Comment fonctionne le suivi des réponses RSVP ?",
-        "answer": "Les invités confirment leur présence en un clic et votre tableau de bord est mis à jour en temps réel."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Créez votre carte numérique personnalisée sur Cardzy en quelques minutes et partagez-la instantanément sur WhatsApp."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "ar": {
-    "intro": "مع كاردزي، احتفل بـ كيفية إنشاء بطاقة دعوة زفاف رقمية مجاناً عبر الإنترنت خطوة بخطوة بأرقى المعايير العصرية والتفاعلية ثلاثية الأبعاد 3D والخطوط الأنيقة، مع إمكانية تحديد موقع الحفل عبر خرائط جوجل وتأكيد الحضور عبر واتساب.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. كيفية إنشاء بطاقة دعوة زفاف رقمية مجاناً عبر الإنترنت خطوة بخطوة — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. كيفية إنشاء بطاقة دعوة زفاف رقمية مجاناً عبر الإنترنت خطوة بخطوة — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. كيفية إنشاء بطاقة دعوة زفاف رقمية مجاناً عبر الإنترنت خطوة بخطوة — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. كيفية إنشاء بطاقة دعوة زفاف رقمية مجاناً عبر الإنترنت خطوة بخطوة — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. كيفية إنشاء بطاقة دعوة زفاف رقمية مجاناً عبر الإنترنت خطوة بخطوة — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. كيفية إنشاء بطاقة دعوة زفاف رقمية مجاناً عبر الإنترنت خطوة بخطوة — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "ما هي مميزات بطاقات كاردزي الرقمية؟",
-        "answer": "تتيح لك كاردزي تصميم بطاقات تفاعلية ثلاثية الأبعاد 3D مع الموسيقى والخط العربي وموقع الحفل وتأكيد الحضور عبر واتساب."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "هل إنشاء البطاقات على كاردزي مجاني؟",
-        "answer": "نعم! يمكنك تصميم ومشاركة جميع البطاقات الأساسية والمتحركة مجاناً ومشاركتها مباشرة عبر واتساب."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "هل تعمل البطاقة بسلاسة عبر واتساب؟",
-        "answer": "نعم، يتم فتح الرابط في أي متصفح هاتف ذكي فوراً دون الحاجة لتثبيت أي تطبيق."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "كيف يتم تتبع تأكيدات الحضور (RSVP)؟",
-        "answer": "يقوم الضيوف بتأكيد الحضور بنقرة واحدة، وتتلقى الإشعارات فوراً في لوحة التحكم وعبر واتساب."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "أنشئ بطاقتك الرقمية التفاعلية على كاردزي في دقائق معدودة، وشاركها مباشرة مع أحبابك وضيوفك عبر واتساب."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "hi": {
-    "intro": "कार्डज़ी के साथ 2026 में ऑनलाइन मुफ्त डिजिटल शादी का कार्ड कैसे बनाएं (चरण-दर-चरण गाइड) को आधुनिक 3D एनिमेटेड कार्ड, संगीत और व्हाट्सएप आरएसवीपी के साथ यादगार बनाएं।",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. 2026 में ऑनलाइन मुफ्त डिजिटल शादी का कार्ड कैसे बनाएं (चरण-दर-चरण गाइड) — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. 2026 में ऑनलाइन मुफ्त डिजिटल शादी का कार्ड कैसे बनाएं (चरण-दर-चरण गाइड) — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. 2026 में ऑनलाइन मुफ्त डिजिटल शादी का कार्ड कैसे बनाएं (चरण-दर-चरण गाइड) — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. 2026 में ऑनलाइन मुफ्त डिजिटल शादी का कार्ड कैसे बनाएं (चरण-दर-चरण गाइड) — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. 2026 में ऑनलाइन मुफ्त डिजिटल शादी का कार्ड कैसे बनाएं (चरण-दर-चरण गाइड) — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. 2026 में ऑनलाइन मुफ्त डिजिटल शादी का कार्ड कैसे बनाएं (चरण-दर-चरण गाइड) — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "कार्डज़ी डिजिटल कार्ड की मुख्य विशेषताएं क्या हैं?",
-        "answer": "कार्डज़ी आपको 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप आरएसवीपी के साथ शानदार कार्ड बनाने की सुविधा देता है।"
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "क्या कार्डज़ी पर कार्ड बनाना मुफ्त है?",
-        "answer": "हाँ! आप सभी बुनियादी और एनिमेटेड कार्ड बिल्कुल मुफ्त बना सकते हैं और तुरंत व्हाट्सएप पर साझा कर सकते हैं।"
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "क्या यह व्हाट्सएप पर सही तरीके से खुलता है?",
-        "answer": "बिल्कुल! कार्डज़ी लिंक किसी भी मोबाइल ब्राउज़र में तुरंत खुलता है, किसी ऐप की आवश्यकता नहीं है।"
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "मेहमानों की उपस्थिति (RSVP) को कैसे ट्रैक करें?",
-        "answer": "मेहमान एक क्लिक में अपनी उपस्थिति की पुष्टि करते हैं और आपको लाइव डैशबोर्ड पर तुरंत संख्या मिल जाती है।"
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "कार्डज़ी पर मिनटों में अपना डिजिटल कार्ड बनाएं और व्हाट्सएप पर तुरंत साझा करें।"
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "zh": {
-    "intro": "使用 Cardzy 专属 3D 动态电子请柬与贺卡，为您精彩呈现 2026 免费在线制作 3D 动态婚礼电子请柬新手详细教程（图文详解）。支持自定义音乐、照片画廊与 WhatsApp 实时出席回执。",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. 2026 免费在线制作 3D 动态婚礼电子请柬新手详细教程（图文详解） — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. 2026 免费在线制作 3D 动态婚礼电子请柬新手详细教程（图文详解） — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. 2026 免费在线制作 3D 动态婚礼电子请柬新手详细教程（图文详解） — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. 2026 免费在线制作 3D 动态婚礼电子请柬新手详细教程（图文详解） — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. 2026 免费在线制作 3D 动态婚礼电子请柬新手详细教程（图文详解） — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. 2026 免费在线制作 3D 动态婚礼电子请柬新手详细教程（图文详解） — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Cardzy 动态电子请柬有哪些核心优势？",
-        "answer": "Cardzy 支持 3D 开封动画、背景音乐、照片画廊、Google 地图导航以及 WhatsApp 实时出席回执追踪。"
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "在 Cardzy 上制作电子请柬是否免费？",
-        "answer": "是的！您可以免费创建并生成专属精美动态请柬，随时随地一键分享。"
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "在手机和社交应用上打开体验如何？",
-        "answer": "无需下载任何 App，宾客在任何手机浏览器中点击链接即可秒级加载高清动态效果。"
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "如何进行宾客出席确认（RSVP）管理？",
-        "answer": "宾客轻点即可确认出席，您的管理后台与 WhatsApp 将实时同步最新出席人数与名单。"
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "立即在 Cardzy 免费创建专属电子请柬，一键即时分享至各大社交平台。"
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "pt": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "ru": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "de": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "ja": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "ko": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "it": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "tr": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "id": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "bn": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "vi": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   },
   "sw": {
-    "intro": "Planning a wedding can be overwhelming, but creating the perfect invitation should not be. In 2026, couples are moving away from expensive paper invitations and embracing elegant digital alternatives. Cardzy offers a comprehensive platform to design stunning, free digital wedding invitations online with modern features like WhatsApp RSVP tracking and Google Maps integration.",
+    "intro": "Planning a wedding in 2026 should be an exciting journey of love and anticipation—not a stressful series of printing mishaps, lost envelopes, and budget blowouts. Across Pakistan, the Middle East, India, and diaspora communities in the UK, USA, and Canada, couples are making the smart pivot from printed card boxes to custom interactive digital wedding invitation websites. On Cardzy, you can design a 4K animated wedding card in under five minutes completely free. In this comprehensive step-by-step tutorial, we walk you through creating, customizing, and sharing your dream digital wedding invitation.",
     "sections": [
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-1",
-        "title": "1. Why Choose Digital Over Paper in 2026?",
-        "body": "The shift toward digital wedding invitations is driven by convenience, cost-effectiveness, and environmental consciousness. Paper invitations face delivery delays and massive printing costs that digital alternatives eliminate instantly.",
+        "id": "sec-1",
+        "title": "1. The Modern Shift: Why Couples Choose Digital Over Paper in 2026",
+        "body": "The traditional wedding card industry has long operated on bloated markups. A batch of 350 luxury velvet or acrylic printed cards easily costs PKR 150,000 to PKR 300,000—not counting another PKR 40,000 for domestic couriers and international DHL parcels to relatives in London, New York, or Dubai. When the venue timing inevitably shifts by an hour, the entire print run becomes obsolete. Cardzy eliminates printing bills, delivers instantly across the world with zero shipping fees, and allows you to update event timings in real time from your smartphone dashboard.",
         "bulletPoints": [
-          "Zero printing and shipping costs, allowing budget reallocation",
-          "Instant delivery via WhatsApp, email, or social media",
-          "Eco-friendly approach reducing paper waste significantly",
-          "Real-time updates to venue or timing without reprinting"
+          "Massive Budget Savings: Reallocate hundreds of thousands of rupees toward your honeymoon, photography, or bridal couture",
+          "Instant Global Reach: Deliver invitations to 500+ guests simultaneously via WhatsApp, SMS, or email in seconds",
+          "Live Flexibility: Update venue halls, gate numbers, or schedules anytime without reprinting"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-2",
-        "title": "2. Step-by-Step Guide to Creating Your Card",
-        "body": "Building your free digital wedding invitation on Cardzy is incredibly intuitive. The platform is designed so that anyone, regardless of technical skill, can craft a masterpiece in minutes.",
+        "id": "sec-2",
+        "title": "2. Step-by-Step Guide to Crafting Your Digital Wedding Card on Cardzy",
+        "body": "Building your card on Cardzy is engineered to be intuitive and enjoyable. You don't need any coding or graphic design experience. Here is the simple 4-step workflow:",
         "bulletPoints": [
-          "Browse our expansive gallery of culturally rich templates",
-          "Input event specifics: dates, times, venue names, and messages",
-          "Add personal touches like couple photos or engagement portraits",
-          "Preview the animation and flow before finalizing the live link"
+          "Step 1: Choose Your Celebration Type: Select Nikkah, Barat, Walima, Mehndi, or a Multi-Day Wedding Gala package",
+          "Step 2: Enter Event Schedules: Input host parent names, bride and groom names, date, ceremony time, venue marquee name, and city",
+          "Step 3: Select Your Royal Theme & Borders: Pick from Obsidian Gold, Royal Emerald, Sapphire Velvet, or Ivory Silk with intricate Arabesque borders",
+          "Step 4: Enable RSVP & Maps: Toggle the WhatsApp RSVP module and paste your venue Google Maps pin for instant navigation"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-3",
-        "title": "3. Customizing for Cultural Events",
-        "body": "South Asian and Middle Eastern weddings span multiple days and ceremonies. Cardzy offers multi-page options to accommodate Nikkah, Mehndi, Barat, and Walima within a single invitation link.",
+        "id": "sec-3",
+        "title": "3. Customizing Multi-Event Cultural Functions (Mehndi, Barat & Walima)",
+        "body": "South Asian and Middle Eastern weddings are rarely single-day affairs. They are vibrant multi-day festivals spanning Nikkah, Mehndi, Barat, and Walima. Cardzy allows you to present every ceremony within one cohesive digital card link. You can assign distinct color codes and dress themes for each night (e.g., Festive Mustard & Green for Mehndi; Royal Traditional for Barat; Elegant Western/Black Tie for Walima).",
         "bulletPoints": [
-          "Dedicated color themes for each event type",
-          "Include traditional Bismillah calligraphy and poetic couplets",
-          "Separate RSVP toggles for each function to track headcounts"
+          "Multi-Tab Navigation: Guests toggle easily between Nikkah, Mehndi, Barat, and Walima schedules",
+          "Color-Coded Dress Guidelines: Clearly guide guests on traditional color palettes for each function",
+          "Bilingual Verses: Pair sacred Bismillah calligraphy with Urdu poetry and English formal wording"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-4",
-        "title": "4. Integrating Google Maps and Directions",
-        "body": "One of the biggest pain points for wedding guests is finding the venue. With Cardzy, embed Google Maps directly into your invitation for seamless navigation.",
+        "id": "sec-4",
+        "title": "4. Integrating Google Maps: Never Guide a Lost Guest on Your Wedding Day",
+        "body": "One of the most stressful experiences on a wedding evening is family members calling the groom or father of the bride while they are getting dressed to ask: 'Bhai, hall ka gate kahan hai?'. With Cardzy, an interactive Google Maps button is built directly into the card. Guests tap it, and Google Maps or Apple Maps opens turn-by-turn navigation straight to the marquee valet entrance.",
         "bulletPoints": [
-          "Eliminate frantic phone calls on the wedding day",
-          "Pin exact marquee or banquet hall locations",
-          "Add specific parking instructions or gate entry codes"
+          "One-Click GPS Launch: Direct routing from the guest's location to the hall entrance gate",
+          "Specific Entry Instructions: Include marquee gate numbers, hall names, or valet parking notes",
+          "Zero Frantic Phone Calls: Ensures elderly guests and out-of-town travelers arrive stress-free"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-5",
-        "title": "5. Setting Up WhatsApp RSVP Management",
-        "body": "Managing RSVPs is often a nightmare. Cardzy simplifies this with 1-click WhatsApp RSVP. Guests confirm attendance instantly, and it is logged to your dashboard automatically.",
+        "id": "sec-5",
+        "title": "5. Automating WhatsApp RSVPs: Eliminate Catering Guesswork",
+        "body": "Marquee caterers charge per plate—typically PKR 2,500 to PKR 5,500 per head. Over-ordering by 80 guests wastes hundreds of thousands of rupees, while under-ordering causes panic. Cardzy's 1-click WhatsApp RSVP lets guests confirm their attendance in five seconds. You receive real-time guest numbers on your host dashboard and can export a clean CSV spreadsheet directly to your caterer and event planner.",
         "bulletPoints": [
-          "Guests do not need to download any apps to respond",
-          "Live tracking dashboard shows exact headcounts",
-          "Export data to CSV for easy sharing with caterers"
+          "Frictionless Attendance: Guests confirm attendance with 1 tap directly from the card interface",
+          "Live Host Dashboard: Monitor confirmed, declined, and pending counts in real time",
+          "Caterer CSV Export: Export headcount spreadsheets with one click for catering contracts"
         ]
       },
       {
-        "id": "how-to-create-free-digital-wedding-invitation-online-2026-sec-6",
-        "title": "6. Comparing Cardzy with Paid Alternatives",
-        "body": "While many platforms charge exorbitant fees for premium templates and RSVP features, Cardzy believes every couple deserves a beautiful invitation without breaking the bank.",
+        "id": "sec-6",
+        "title": "6. Sharing Your Card with Royal Etiquette: WhatsApp & Social Sharing",
+        "body": "When sharing your card link on WhatsApp, avoid mass spamming people into giant group chats where everyone leaves. Instead, send the Cardzy link accompanied by a short, personalized voice note or respectful written greeting to family elders. Cardzy automatically renders a high-definition card preview so recipients see your names and wedding date before they even tap.",
         "bulletPoints": [
-          "No hidden fees or watermarks on your design",
-          "Unlimited guest sharing capacity without tiered pricing",
-          "Premium 3D animations included at no extra cost"
+          "Personalized Delivery: Accompany the card link with a warm personal greeting for each family elder",
+          "Rich OpenGraph Previews: Beautiful card thumbnails automatically appear in WhatsApp and iMessage",
+          "Permanent Wedding Memory: The card URL remains live as a digital keepsake of your wedding day"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Is creating a digital wedding invitation on Cardzy really free?",
+        "answer": "Yes! Cardzy provides a robust 100% free plan with animated luxury themes, Google Maps integration, and WhatsApp RSVP tracking."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I add multiple functions like Mehndi, Barat, and Walima on one card?",
+        "answer": "Yes, you can include all your wedding events with separate dates, timings, venues, and dress codes."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Do guests need an account or app to open the invitation?",
+        "answer": "No. The invitation opens instantly in any mobile browser on iPhone, Android, and PC."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can I edit the wedding card details after sending the link?",
+        "answer": "Absolutely. You can edit dates, timings, or venue details anytime in your Cardzy dashboard and the changes update instantly."
       }
     ],
-    "conclusion": "Your wedding journey begins with the perfect invitation. Create a free digital wedding invitation online with Cardzy today, and amaze your guests with a stunning, hassle-free digital experience."
+    "conclusion": "Your wedding represents the beginning of a lifetime of shared dreams. Start your celebration with an invitation that radiates grace, elegance, and modern hospitality. Design your free digital wedding invitation on Cardzy today!"
   }
 };

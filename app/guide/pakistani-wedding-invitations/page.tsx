@@ -33,13 +33,13 @@ const WEDDING_GUIDE_TEXT: Record<string, Record<string, string>> = {
     sw: "Jinsi ya Kutengeneza Mwaliko Bora wa Harusi wa Dijitali: Maneno na Etiquette"
   },
   publishedDate: {
-    en: "Published July 18, 2026", ur: "شائع ہوا: 18 جولائی 2026", es: "Publicado el 18 de julio de 2026", fr: "Publié le 18 juillet 2026", ar: "تاريخ النشر: 18 يوليو 2026", hi: "प्रकाशित: 18 जुलाई 2026", zh: "发布于 2026年7月18日", pt: "Publicado em 18 de julho de 2026", ru: "Опубликовано 18 июля 2026 г.", de: "Veröffentlicht am 18. Juli 2026", ja: "2026年7月18日公開", ko: "2026년 7월 18일 작성됨", it: "Pubblicato il 18 luglio 2026", tr: "Yayınlanma: 18 Temmuz 2026", id: "Diterbitkan 18 Juli 2026", bn: "প্রকাশের তারিখ: ১৮ জুলাই, ২০২৬", vi: "Đăng ngày 18 tháng 7 năm 2026", sw: "Ilichapishwa 18 Julai 2026"
+    en: "Published August 9, 2026", ur: "شائع ہوا: 9 اگست 2026", es: "Publicado el 9 de agosto de 2026", fr: "Publié le 9 août 2026", ar: "تاريخ النشر: 9 أغسطس 2026", hi: "प्रकाशित: 9 अगस्त 2026", zh: "发布于 2026年8月9日", pt: "Publicado em 9 de agosto de 2026", ru: "Опубликовано 9 августа 2026 г.", de: "Veröffentlicht am 9. August 2026", ja: "2026年8月9日公開", ko: "2026년 8월 9일 작성됨", it: "Pubblicato il 9 agosto 2026", tr: "Yayınlanma: 9 Ağustos 2026", id: "Diterbitkan 9 Agustus 2026", bn: "প্রকাশের তারিখ: ৯ আগস্ট, ২০২৬", vi: "Đăng ngày 9 tháng 8 năm 2026", sw: "Ilichapishwa 9 Agosti 2026"
   },
   readTime: {
     en: "6 min read", ur: "6 منٹ مطالعہ", es: "6 min de lectura", fr: "6 min de lecture", ar: "6 دقائق قراءة", hi: "6 मिनट का पाठ", zh: "6 分钟阅读", pt: "6 min de leitura", ru: "6 мин чтения", de: "6 Min. Lesezeit", ja: "6分で読める", ko: "6분 소요", it: "6 min di lettura", tr: "6 dk okuma", id: "6 menit baca", bn: "৬ মিনিট পাঠ", vi: "6 phút đọc", sw: "dakika 6 za kusoma"
   },
   author: {
-    en: "By Cardzy Editorial Team", ur: "کارڈزی کی تحریر", es: "Por el equipo editorial de Cardzy", fr: "Par l'équipe éditoriale Cardzy", ar: "بقلم فريق تحرير Cardzy", hi: "Cardzy संपादकीय टीम द्वारा", zh: "Cardzy 编辑团队", pt: "Pela equipe editorial do Cardzy", ru: "Редакция Cardzy", de: "Von der Cardzy Redaktion", ja: "Cardzy 編集チーム", ko: "Cardzy 에디토리얼 팀", it: "A cura del team editoriale di Cardzy", tr: "Cardzy Editör Ekibi", id: "Oleh Tim Editorial Cardzy", bn: "Cardzy এডিটরিয়াল ٹیم", vi: "Bởi Đội Ngũ Biên Tập Cardzy", sw: "Na Timu ya Hariri ya Cardzy"
+    en: "By Umar Farooq", ur: "تحریر: عمر فاروق", es: "Por Umar Farooq", fr: "Par Umar Farooq", ar: "بقلم عمر فاروق", hi: "उमर फारूक द्वारा", zh: "Umar Farooq 撰写", pt: "Por Umar Farooq", ru: "Автор: Умар Фарук", de: "Von Umar Farooq", ja: "Umar Farooqによる執筆", ko: "Umar Farooq 작성", it: "Di Umar Farooq", tr: "Umar Farooq Tarafından", id: "Oleh Umar Farooq", bn: "উমর ফারুক কর্তৃক", vi: "Bởi Umar Farooq", sw: "Na Umar Farooq"
   },
   introP1: {
     en: "In South Asian traditions, wedding planning is a vibrant journey filled with colors, rituals, and grand events. Historically, printing and distributing physical cards was a heavy logistics task. Today, digital wedding invitations are revolutionizing how couples invite guests.",
@@ -211,7 +211,9 @@ export default function WeddingGuidePage() {
               <span className="flex items-center gap-1">
                 <Clock className="size-4" /> {getText('readTime')}
               </span>
-              <span>{getText('author')}</span>
+              <Link href="/authors/umar-farooq" className="hover:text-emerald-600 dark:hover:text-emerald-400 font-semibold transition-colors">
+                {getText('author')}
+              </Link>
             </div>
           </header>
 

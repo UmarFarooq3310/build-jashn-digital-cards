@@ -325,29 +325,6 @@ const POST_UI_STRINGS: Record<string, Record<string, string>> = {
 }
 
 const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: string; credentials: Record<string, string>; instagram: string; tiktok: string }> = {
-  'Cardzy Editorial Team': {
-    bio: {
-      en: 'The Cardzy Editorial Team consists of certified digital stationery designers, cultural event planners, and multilingual invitation copywriters delivering expert wedding etiquette, RSVP workflows, and digital card guides.',
-      ur: 'کارڈزی ادارتی ٹیم سرٹیفائیڈ ڈیجیٹل ڈیزائنرز اور تقاریب کے ماہرین پر مشتمل ہے جو شادی کے آداب، واٹس ایپ آر ایس وی پی اور جدید کارڈز پر مستند رہنمائی فراہم کرتی ہے۔',
-      ar: 'يتألف فريق تحرير كاردزي من مصممي بطاقات معتمدين وخبراء في تخطيط المناسبات وصياغة بطاقات الدعوة بلغات متعددة.',
-      es: 'El equipo editorial de Cardzy está compuesto por diseñadores de papelería digital y planificadores de eventos certificados.',
-      fr: 'L\'équipe éditoriale de Cardzy rassemble des spécialistes du design de faire-part numériques et de l\'organisation d\'événements.',
-      hi: 'कार्डज़ी संपादकीय टीम में प्रमाणित डिजिटल डिज़ाइनर और इवेंट विशेषज्ञ शामिल हैं जो शादी के शिष्टाचार और आरएसवीपी पर मार्गदर्शन प्रदान करते हैं।',
-      zh: 'Cardzy 编辑团队由认证数字请柬设计师与文化活动策划专家组成，提供专业的请柬文案与 RSVP 流程指南。'
-    },
-    location: 'Islamabad / Lahore, Pakistan',
-    credentials: {
-      en: 'Lead Event & Stationery Specialists',
-      ur: 'چیف ایونٹ اور کارڈ اسپیشلسٹ',
-      ar: 'كبار أخصائيي المناسبات والبطاقات',
-      es: 'Especialistas Líderes en Eventos y Papelería',
-      fr: 'Spécialistes en Chef Événements & Faire-part',
-      hi: 'प्रमुख इवेंट और स्टेशनरी विशेषज्ञ',
-      zh: '首席活动与请柬策划专家'
-    },
-    instagram: 'https://www.instagram.com/cardzyonline',
-    tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
-  },
   'Umar Farooq': {
     bio: {
       en: 'Senior Cultural Event & Wedding Stylist at Cardzy. Specializing in Pakistani, Islamic, and South Asian wedding traditions, bilingual invitation etiquette in Urdu & English, and WhatsApp RSVP management.',
@@ -604,7 +581,8 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
             alt={`${post.title} — Cardzy Featured Master Guide Header`}
             width={1200}
             height={630}
-            loading="lazy"
+            loading="eager"
+            fetchPriority="high"
             className="w-full h-full object-cover"
           />
         </div>
@@ -636,24 +614,24 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
         {/* Main Article Body */}
         <article className={`lg:col-span-8 space-y-8 text-zinc-200 leading-relaxed text-base ${isRtl ? 'dir-rtl' : ''}`}>
           {/* Intro Paragraph */}
-          <div className="p-6 rounded-3xl border border-[#D4AF37]/30 bg-[#D4AF37]/5 backdrop-blur-md text-base leading-relaxed text-zinc-100 font-medium">
+          <div className="p-6 sm:p-7 rounded-3xl border border-[#D4AF37]/30 bg-[#D4AF37]/5 backdrop-blur-md text-base sm:text-lg leading-relaxed text-zinc-100 font-medium">
             {renderTextWithLinks(post.content.intro)}
           </div>
 
           {/* Sections */}
           {post.content.sections.map((section) => (
-            <section key={section.id} id={section.id} className="space-y-4 pt-4 border-t border-white/10 scroll-mt-24">
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight flex items-center gap-2">
+            <section key={section.id} id={section.id} className="space-y-4 pt-6 border-t border-white/10 scroll-mt-24">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white leading-tight flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-[#D4AF37] shrink-0" />
                 <span>{section.title}</span>
               </h3>
 
-              <p className="text-sm sm:text-base leading-relaxed text-zinc-300">{renderTextWithLinks(section.body)}</p>
+              <p className="text-[15px] sm:text-base leading-relaxed text-zinc-200">{renderTextWithLinks(section.body)}</p>
 
               {section.bulletPoints && section.bulletPoints.length > 0 && (
-                <ul className="space-y-2.5 pt-2">
+                <ul className="space-y-3 pt-2">
                   {section.bulletPoints.map((bp, i) => (
-                    <li key={i} className="flex items-start gap-3 text-xs sm:text-sm text-zinc-200">
+                    <li key={i} className="flex items-start gap-3 text-sm sm:text-base leading-relaxed text-zinc-200">
                       <span className="w-2 h-2 rounded-full bg-[#D4AF37] mt-2 shrink-0" />
                       <span>{renderTextWithLinks(bp)}</span>
                     </li>
@@ -662,7 +640,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
               )}
 
               {section.highlight && (
-                <div className="p-4 rounded-2xl border border-[#D4AF37]/40 bg-[#0a0a0c] text-xs font-bold text-[#D4AF37] shadow-inner">
+                <div className="p-4 sm:p-5 rounded-2xl border border-[#D4AF37]/40 bg-[#0a0a0c] text-sm font-semibold text-[#D4AF37] shadow-inner">
                   💡 {renderTextWithLinks(section.highlight)}
                 </div>
               )}
@@ -683,8 +661,8 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
               <div className="space-y-4">
                 {post.content.faq.map((f, idx) => (
                   <div key={idx} className="p-5 rounded-2xl border border-white/10 bg-[#0a0a0c]/80 space-y-2">
-                    <h4 className="text-sm font-bold text-[#D4AF37]">Q: {f.question}</h4>
-                    <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">{f.answer}</p>
+                    <h4 className="text-sm sm:text-base font-bold text-[#D4AF37]">Q: {f.question}</h4>
+                    <p className="text-sm sm:text-base text-zinc-200 leading-relaxed">{f.answer}</p>
                   </div>
                 ))}
               </div>
@@ -697,7 +675,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
               <Crown className="w-4 h-4 text-[#D4AF37]" />
               <span>{tUI('keyTakeaway')}</span>
             </div>
-            <p className="text-sm sm:text-base font-semibold text-white leading-relaxed">
+            <p className="text-base sm:text-lg font-medium text-white leading-relaxed">
               {renderTextWithLinks(post.content.conclusion)}
             </p>
           </div>
@@ -728,7 +706,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
                     {authorCreds}
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                <p className="text-sm sm:text-base text-zinc-300 leading-relaxed">
                   {authorBio}
                 </p>
                 <div className="text-[11px] text-zinc-400 pt-1">

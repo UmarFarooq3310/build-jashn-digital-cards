@@ -28,18 +28,18 @@ const EID_GUIDE_TEXT: Record<string, Record<string, string>> = {
     it: "Idee di Testi Creativi e Messaggi Personalizzati per Biglietti Eid Mubarak",
     tr: "Bayram Tebrik Kartları İçin Yaratıcı Metin ve Mesaj Fikirleri",
     id: "Ide Kata-kata Kreatif & Pesan Khusus untuk Kartu Ucapan Idul Fitri / Adha",
-    bn: "ঈদ মোবারক শুভেচ্ছা کارڈের জন্য চমৎকার ٹیک্সٹ و بار্তার আইডিয়া",
+    bn: "ঈদ মোবারক শুভেচ্ছা কার্ডের জন্য চমৎকার টেক্সট ও বার্তার আইডিয়া",
     vi: "Ý Tưởng Lời Chúc Sáng Tạo & Thông Điệp Tùy Chỉnh Cho Thiệp Eid Mubarak",
     sw: "Mawazo ya Maneno ya Ubunifu na Ujumbe wa Kadi za Eid Mubarak"
   },
   publishedDate: {
-    en: "Published July 8, 2026", ur: "شائع ہوا: 8 جولائی 2026", es: "Publicado el 8 de julio de 2026", fr: "Publié le 8 juillet 2026", ar: "تاريخ النشر: 8 يوليو 2026", hi: "प्रकाशित: 8 जुलाई 2026", zh: "发布于 2026年7月8日", pt: "Publicado em 8 de julho de 2026", ru: "Опубликовано 8 июля 2026 г.", de: "Veröffentlicht am 8. Juli 2026", ja: "2026年7月8日公開", ko: "2026년 7월 8일 작성됨", it: "Pubblicato l'8 luglio 2026", tr: "Yayınlanma: 8 Temmuz 2026", id: "Diterbitkan 8 Juli 2026", bn: "প্রকাশের তারিখ: ৮ জুলাই, ২০২৬", vi: "Đăng ngày 8 tháng 7 năm 2026", sw: "Ilichapishwa 8 Julai 2026"
+    en: "Published August 22, 2026", ur: "شائع ہوا: 22 اگست 2026", es: "Publicado el 22 de agosto de 2026", fr: "Publié le 22 août 2026", ar: "تاريخ النشر: 22 أغسطس 2026", hi: "प्रकाशित: 22 अगस्त 2026", zh: "发布于 2026年8月22日", pt: "Publicado em 22 de agosto de 2026", ru: "Опубликовано 22 августа 2026 г.", de: "Veröffentlicht am 22. August 2026", ja: "2026年8月22日公開", ko: "2026년 8월 22일 작성됨", it: "Pubblicato il 22 agosto 2026", tr: "Yayınlanma: 22 Ağustos 2026", id: "Diterbitkan 22 Agustus 2026", bn: "প্রকাশের তারিখ: ২২ আগস্ট, ২০২৬", vi: "Đăng ngày 22 tháng 8 năm 2026", sw: "Ilichapishwa 22 Agosti 2026"
   },
   readTime: {
     en: "4 min read", ur: "4 منٹ مطالعہ", es: "4 min de lectura", fr: "4 min de lecture", ar: "4 دقائق قراءة", hi: "4 मिनट का पाठ", zh: "4 分钟阅读", pt: "4 min de leitura", ru: "4 мин чтения", de: "4 Min. Lesezeit", ja: "4分で読める", ko: "4분 소요", it: "4 min di lettura", tr: "4 dk okuma", id: "4 menit baca", bn: "৪ মিনিট পাঠ", vi: "4 phút đọc", sw: "dakika 4 za kusoma"
   },
   author: {
-    en: "By Cardzy Editorial Team", ur: "کارڈزی کی تحریر", es: "Por el equipo editorial de Cardzy", fr: "Par l'équipe éditoriale Cardzy", ar: "بقلم فريق تحرير Cardzy", hi: "Cardzy संपादकीय टीम द्वारा", zh: "Cardzy 编辑团队", pt: "Pela equipe editorial do Cardzy", ru: "Редакция Cardzy", de: "Von der Cardzy Redaktion", ja: "Cardzy 編集チーム", ko: "Cardzy 에디토리얼 팀", it: "A cura del team editoriale di Cardzy", tr: "Cardzy Editör Ekibi", id: "Oleh Tim Editorial Cardzy", bn: "Cardzy এডিটরিয়াল ٹیم", vi: "Bởi Đội Ngũ Biên Tập Cardzy", sw: "Na Timu ya Hariri ya Cardzy"
+    en: "By Hasnain", ur: "تحریر: حسنین", es: "Por Hasnain", fr: "Par Hasnain", ar: "بقلم حسنين", hi: "हुसनैन द्वारा", zh: "Hasnain 撰写", pt: "Por Hasnain", ru: "Автор: Хаснайн", de: "Von Hasnain", ja: "Hasnainによる執筆", ko: "Hasnain 작성", it: "Di Hasnain", tr: "Hasnain Tarafından", id: "Oleh Hasnain", bn: "হাসনাইন কর্তৃক", vi: "Bởi Hasnain", sw: "Na Hasnain"
   },
   introP1: {
     en: "Eid-ul-Fitr and Eid-ul-Adha are times of immense gratitude, gathering, and sharing love with family. Sending an animated digital wish card brings back nostalgic holiday warmth with music chimes, calligraphic greetings, and custom designs.",
@@ -264,7 +264,9 @@ export default function EidGuidePage() {
               <span className="flex items-center gap-1">
                 <Clock className="size-4" /> {getText('readTime')}
               </span>
-              <span>{getText('author')}</span>
+              <Link href="/authors/hasnain" className="hover:text-emerald-600 dark:hover:text-emerald-400 font-semibold transition-colors">
+                {getText('author')}
+              </Link>
             </div>
           </header>
 

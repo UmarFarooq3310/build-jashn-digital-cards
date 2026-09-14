@@ -1,5 +1,6 @@
 'use client'
 
+import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLang } from '@/lib/lang/context'
 
@@ -58,7 +59,7 @@ export function BackgroundPicker({
       {variants.map((v) => {
         const active = value === v.id || (!value && v.id === 'default')
         const key = getVariantTranslationKey(v.id)
-        const translatedName = key ? t(key) : v.name
+        const translatedName = key ? (t(key as any) || v.name) : v.name
 
         // CSS gradients must go on the 'background' shorthand property, not
         // 'backgroundImage', otherwise React treats the string as a URL reference.
@@ -73,29 +74,33 @@ export function BackgroundPicker({
             onClick={() => onChange(v.id)}
             aria-pressed={active}
             className={cn(
-              'group relative flex flex-col items-center gap-1.5 rounded-xl border p-2 transition-all text-left w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+              'group relative flex flex-col items-center gap-2 rounded-2xl border p-2.5 transition-all text-center w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7B0D1E]',
               active
-                ? 'border-primary ring-2 ring-primary/30 shadow-sm'
-                : 'border-border hover:border-primary/50 bg-card',
+                ? 'border-[#7B0D1E] ring-2 ring-[#7B0D1E]/30 shadow-sm bg-[#7B0D1E]/6 dark:bg-[#7B0D1E]/15'
+                : 'border-border hover:border-[#7B0D1E]/40 bg-card hover:bg-muted/40',
             )}
           >
-            {/* Colour swatch */}
+            {/* Pure colour swatch without obscuring scrim */}
             <span
-              className="relative flex h-14 w-full items-end overflow-hidden rounded-lg"
+              className="relative flex h-12 sm:h-14 w-full items-center justify-center overflow-hidden rounded-xl border border-black/15 dark:border-white/15 shadow-inner transition-transform group-hover:scale-[1.02]"
               style={swatchStyle}
             >
-              {/* Gradient scrim so the label is always legible over any colour */}
-              <span className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-              {/* Variant name printed inside the swatch for immediate context */}
-              <span className={cn("relative z-10 w-full truncate px-1.5 pb-1 text-[10px] font-bold leading-tight text-white drop-shadow-sm", isUrdu && "font-urdu text-xs")}>
-                {translatedName}
-              </span>
+              {active && (
+                <span className="flex size-6 items-center justify-center rounded-full bg-white/95 text-[#7B0D1E] shadow-md border border-black/10">
+                  <Check className="size-3.5 stroke-[3]" />
+                </span>
+              )}
             </span>
 
-            {/* Active indicator dot */}
-            {active && (
-              <span className="absolute right-2 top-2 size-2.5 rounded-full bg-primary shadow ring-2 ring-white" />
-            )}
+            {/* Variant name printed clearly underneath swatch */}
+            <div className="w-full px-0.5 pt-0.5 text-center min-w-0">
+              <span className={cn(
+                "block truncate text-xs font-bold leading-tight text-foreground transition-colors group-hover:text-[#7B0D1E]",
+                isUrdu && "font-urdu text-sm leading-normal"
+              )}>
+                {translatedName}
+              </span>
+            </div>
           </button>
         )
       })}

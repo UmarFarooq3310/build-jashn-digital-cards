@@ -49,6 +49,7 @@ export function SearchModal({
   const [selectedIndex, setSelectedIndex] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
 
   // Build searchable catalog
   const allItems: SearchItem[] = useMemo(() => {
@@ -174,20 +175,25 @@ export function SearchModal({
     })
   }, [allItems, query, activeTab])
 
-  // Focus input when opened
+  // Focus input & lock body scroll when opened
   useEffect(() => {
     if (open) {
+      const originalOverflow = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
       setTimeout(() => {
         inputRef.current?.focus()
       }, 50)
       setSelectedIndex(0)
+      return () => {
+        document.body.style.overflow = originalOverflow
+      }
     } else {
       setQuery('')
       setActiveTab('all')
     }
   }, [open])
 
-  // Keyboard navigation inside search results
+  // Keyboard navigation & accessibility focus trap inside modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!open) return
@@ -195,6 +201,22 @@ export function SearchModal({
       if (e.key === 'Escape') {
         e.preventDefault()
         onClose()
+      } else if (e.key === 'Tab') {
+        const modal = modalRef.current
+        if (!modal) return
+        const focusables = modal.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+        if (focusables.length === 0) return
+        const first = focusables[0]
+        const last = focusables[focusables.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
       } else if (e.key === 'ArrowDown') {
         e.preventDefault()
         setSelectedIndex((prev) => (prev < filteredItems.length - 1 ? prev + 1 : 0))
@@ -270,6 +292,7 @@ export function SearchModal({
       onClick={onClose}
     >
       <div
+        ref={modalRef}
         className="w-full max-w-3xl rounded-3xl border border-amber-500/40 bg-[#090b10] shadow-[0_25px_70px_rgba(0,0,0,0.9)] ring-1 ring-white/10 overflow-hidden flex flex-col max-h-[85vh] animate-scaleIn"
         onClick={(e) => e.stopPropagation()}
       >

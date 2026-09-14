@@ -167,7 +167,7 @@ function GamingScorecardHUD({ data }: { data: WishCardData }) {
           <span>🎮 GAMER TAG / MVP SQUAD</span>
         </div>
         <h3 className={cn(
-          "text-3xl sm:text-4xl lg:text-5xl font-black italic tracking-tight text-transparent bg-clip-text drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] uppercase bg-gradient-to-r",
+          "text-2xl sm:text-4xl lg:text-5xl font-black italic tracking-tight text-transparent bg-clip-text drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] uppercase bg-gradient-to-r truncate max-w-full px-2",
           tStyles.nameGradient
         )}>
           {playerName}
@@ -391,7 +391,10 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
           {recipientLabel ? (
             <p
-              className="wc-stagger text-xs font-semibold uppercase tracking-[0.2em] opacity-85 parallax-near"
+              className={cn(
+                "wc-stagger font-semibold opacity-85 parallax-near",
+                (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm tracking-normal" : "text-xs uppercase tracking-[0.2em]"
+              )}
               style={{ color: 'var(--c-accent)' }}
             >
               {recipientLabel}
@@ -485,16 +488,59 @@ export const WishCard = forwardRef<HTMLDivElement, {
           {data.senderName ? (
             <p className="wc-stagger text-sm sm:text-base parallax-near">
               <span className="opacity-70">{t('withLove')} </span>
-              <span className="font-bold tracking-wide" style={{ color: 'var(--c-accent)' }}>
+              <span
+                className={cn(
+                  "font-bold",
+                  (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(data.senderName)) ? "font-urdu tracking-normal" : "tracking-wide"
+                )}
+                style={{ color: 'var(--c-accent)' }}
+              >
                 {data.senderName}
               </span>
             </p>
           ) : null}
+
+          {/* 🎂 Birthday Candle — Elegantly positioned UNDER the name */}
+          {data.occasionId === 'birthday' && (
+            <div className="anim-candle wc-stagger flex items-center justify-center -mt-1 my-1 pointer-events-none" aria-hidden="true">
+              <svg
+                viewBox="0 0 40 70"
+                width={28}
+                height={50}
+                style={{ willChange: 'transform' }}
+              >
+                {/* Candle body */}
+                <rect x="14" y="30" width="12" height="30" rx="3" fill="#f9a8d4" />
+                {/* Wick */}
+                <line x1="20" y1="30" x2="20" y2="22" stroke="#6b7280" strokeWidth="1.5" />
+                {/* Flame */}
+                <path
+                  className="anim-flame"
+                  d="M20 4 C16 10 14 16 20 22 C26 16 24 10 20 4Z"
+                  fill="#f97316"
+                  style={{
+                    transformOrigin: '20px 22px',
+                    willChange: 'transform',
+                  }}
+                />
+                {/* Flame inner highlight */}
+                <path
+                  d="M20 10 C18 14 18 18 20 20 C22 18 22 14 20 10Z"
+                  fill="#fef08a"
+                  opacity="0.7"
+                  style={{ transformOrigin: '20px 20px' }}
+                />
+              </svg>
+            </div>
+          )}
         </div>
 
         {watermark ? (
           <div className="relative z-10 mt-2 border-t pt-3 md:pt-4" style={{ borderColor: 'color-mix(in oklab, var(--c-accent) 30%, transparent)' }}>
-            <p className={lang === 'ur' ? "font-urdu text-xs md:text-sm opacity-80" : "text-xs font-semibold opacity-80"}>
+            <p
+              className={lang === 'ur' ? "font-urdu text-xs md:text-sm opacity-80" : "text-xs font-semibold opacity-80"}
+              style={{ color: 'var(--c-ink)' }}
+            >
               {t('madeWithCardzy')} — {t('createYoursFree')}
             </p>
           </div>

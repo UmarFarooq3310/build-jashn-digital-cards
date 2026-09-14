@@ -1,6 +1,348 @@
 import type { LangCode } from './context'
 
 export const EXTRA_T: Record<string, Record<LangCode, string>> = {
+  navHome: {
+    en: "Home", ur: "ہوم", ar: "الرئيسية", es: "Inicio", fr: "Accueil", hi: "होम", zh: "首页", pt: "Início", ru: "Главная", de: "Start", ja: "ホーム", ko: "홈", it: "Home", tr: "Ana Sayfa", id: "Beranda", bn: "হোম", vi: "Trang Chủ", sw: "Nyumbani"
+  },
+  navWishes: {
+    en: "Wishes", ur: "وش کارڈز", ar: "تهاني", es: "Deseos", fr: "Vœux", hi: "शुभकामनाएं", zh: "祝福卡", pt: "Desejos", ru: "Пожелания", de: "Wünsche", ja: "お祝い", ko: "축하", it: "Auguri", tr: "Dilekler", id: "Ucapan", bn: "শুভেচ্ছা", vi: "Lời Chúc", sw: "Heri"
+  },
+  navInvitations: {
+    en: "Invitations", ur: "دعوت نامے", ar: "دعوات", es: "Invitaciones", fr: "Invitations", hi: "निमंत्रण", zh: "请柬", pt: "Convites", ru: "Приглашения", de: "Einladungen", ja: "招待状", ko: "초대장", it: "Inviti", tr: "Davetiyeler", id: "Undangan", bn: "আমন্ত্রণ", vi: "Thiệp Mời", sw: "Mialiko"
+  },
+  navVCards: {
+    en: "vCards", ur: "وزٹنگ کارڈز", ar: "بطاقات عمل", es: "vCards", fr: "vCards", hi: "vCards", zh: "数字名片", pt: "vCards", ru: "Визитки", de: "vCards", ja: "名刺", ko: "명함", it: "vCards", tr: "Kartvizit", id: "vCards", bn: "ভিজিটিং کارڈ", vi: "Danh Thiếp", sw: "vCards"
+  },
+  navCalendar: {
+    en: "Calendar", ur: "کیلنڈر", ar: "التقويم", es: "Calendario", fr: "Calendrier", hi: "कैलेंडर", zh: "日历", pt: "Calendário", ru: "Календарь", de: "Kalender", ja: "カレンダー", ko: "캘린더", it: "Calendario", tr: "Takvim", id: "Kalender", bn: "ক্যালেন্ডার", vi: "Lịch", sw: "Kalenda"
+  },
+  navBlog: {
+    en: "Blog", ur: "بلاگ", ar: "المدونة", es: "Blog", fr: "Blog", hi: "ब्लॉग", zh: "博客", pt: "Blog", ru: "Блог", de: "Blog", ja: "ブログ", ko: "블로그", it: "Blog", tr: "Blog", id: "Blog", bn: "ব্লগ", vi: "Blog", sw: "Blog"
+  },
+  navPricing: {
+    en: "Pricing", ur: "قیمتیں", ar: "الأسعار", es: "Precios", fr: "Tarifs", hi: "मूल्य", zh: "定价", pt: "Preços", ru: "Цены", de: "Preise", ja: "料金", ko: "요금", it: "Prezzi", tr: "Fiyatlar", id: "Harga", bn: "মূল্য", vi: "Bảng Giá", sw: "Bei"
+  },
+  navCustom: {
+    en: "Custom", ur: "کسٹم", ar: "مخصص", es: "A Medida", fr: "Sur Mesure", hi: "कस्टम", zh: "定制", pt: "Sob Medida", ru: "На заказ", de: "Individuell", ja: "カスタム", ko: "맞춤", it: "Su Misura", tr: "Özel", id: "Kustom", bn: "কাস্টম", vi: "Đặt Riêng", sw: "Maalum"
+  },
+  navFaqs: {
+    en: "FAQs", ur: "سوالات", ar: "الأسئلة", es: "FAQs", fr: "FAQ", hi: "FAQs", zh: "常见问答", pt: "FAQs", ru: "FAQ", de: "FAQ", ja: "FAQ", ko: "FAQ", it: "FAQ", tr: "SSS", id: "FAQ", bn: "FAQ", vi: "Hỏi Đáp", sw: "Maswali"
+  },
+  navContact: {
+    en: "Contact", ur: "رابطہ", ar: "اتصال", es: "Contacto", fr: "Contact", hi: "संपर्क", zh: "联系", pt: "Contato", ru: "Контакты", de: "Kontakt", ja: "連絡先", ko: "문의", it: "Contatti", tr: "İletişim", id: "Kontak", bn: "যোগাযোগ", vi: "Liên Hệ", sw: "Mawasiliano"
+  },
+  navSignUp: {
+    en: "Sign Up", ur: "سائن اپ", ar: "تسجيل", es: "Registro", fr: "S'inscrire", hi: "साइन अप", zh: "注册", pt: "Cadastrar", ru: "Регистрация", de: "Registrieren", ja: "登録", ko: "회원가입", it: "Registrati", tr: "Kaydol", id: "Daftar", bn: "সাইন আপ", vi: "Đăng Ký", sw: "Jiandikishe"
+  },
+  navLogIn: {
+    en: "Log In", ur: "لاگ ان", ar: "دخول", es: "Acceder", fr: "Connexion", hi: "लॉग इन", zh: "登录", pt: "Entrar", ru: "Вход", de: "Anmelden", ja: "ログイン", ko: "로그인", it: "Accedi", tr: "Giriş", id: "Masuk", bn: "লগ ইন", vi: "Đăng Nhập", sw: "Ingia"
+  },
+  partner1Name: {
+    en: "Husband / Partner 1 Name", ur: "شوہر / پارٹنر 1 کا نام", ar: "اسم الزوج / الشريك الأول", es: "Nombre del Esposo / Pareja 1", fr: "Nom de l'Époux / Partenaire 1", hi: "पति / साथी 1 का नाम", zh: "丈夫 / 伴侣 1 姓名", pt: "Nome do Esposo / Parceiro 1", ru: "Имя мужа / партнера 1", de: "Name des Ehemanns / Partners 1", ja: "夫／パートナー1のお名前", ko: "남편 / 파트너 1 이름", it: "Nome del Marito / Partner 1", tr: "Eş / Partner 1 Adı", id: "Nama Suami / Pasangan 1", bn: "স্বামী / সঙ্গী ১ এর নাম", vi: "Tên Chồng / Bạn Đời 1", sw: "Jina la Mume / Mwenza 1"
+  },
+  partner2Name: {
+    en: "Wife / Partner 2 Name", ur: "بیوی / پارٹنر 2 کا نام", ar: "اسم الزوجة / الشريك الثاني", es: "Nombre de la Esposa / Pareja 2", fr: "Nom de l'Épouse / Partenaire 2", hi: "पत्नी / साथी 2 का नाम", zh: "妻子 / 伴侣 2 姓名", pt: "Nome da Esposa / Parceira 2", ru: "Имя жены / партнера 2", de: "Name der Ehefrau / Partnerin 2", ja: "妻／パートナー2のお名前", ko: "아내 / 파트너 2 이름", it: "Nome della Moglie / Partner 2", tr: "Eş / Partner 2 Adı", id: "Nama Istri / Pasangan 2", bn: "স্ত্রী / সঙ্গী ২ এর নাম", vi: "Tên Vợ / Bạn Đời 2", sw: "Jina la Mke / Mwenza 2"
+  },
+  celebrationCalendar: {
+    en: "Celebration Calendar", ur: "تقریبات کا کیلنڈر", ar: "تقويم الاحتفالات", es: "Calendario de Celebraciones", fr: "Calendrier des Célébrations", hi: "उत्सव कैलेंडर", zh: "庆典日历", pt: "Calendário de Celebrações", ru: "Календарь праздников", de: "Feierkalender", ja: "祝祭カレンダー", ko: "축제 캘린더", it: "Calendario delle Celebrazioni", tr: "Kutlama Takvimi", id: "Kalender Perayaan", bn: "উদযাপন ক্যালেন্ডার", vi: "Lịch Lễ Hội", sw: "Kalenda ya Sherehe"
+  },
+  type_national_day_gala: {
+    en: "National Day Gala & Reception", ur: "قومی دن کی تقریب و استقبالیہ", ar: "حفل واستقبال اليوم الوطني", es: "Gala y Recepción del Día Nacional", fr: "Gala et Réception de la Fête Nationale", hi: "राष्ट्रीय दिवस समारोह व रिसेप्शन", zh: "国庆招待晚宴", pt: "Gala e Recepção do Dia Nacional", ru: "Торжественный прием ко Дню нации", de: "Nationalfeiertags-Gala & Empfang", ja: "ナショナルデー・ガラ＆レセプション", ko: "국경일 기념 갈라 및 리셉션", it: "Gala e Ricevimento del Giorno Nazionale", tr: "Milli Gün Galası ve Resepsiyonu", id: "Gala & Resepsi Hari Nasional", bn: "জাতীয় দিবসের গালা ও সংবর্ধনা", vi: "Dạ Tiệc & Tiếp Đón Ngày Quốc Khánh", sw: "Gala na Mapokezi ya Siku ya Kitaifa"
+  },
+  type_roza_kushai: {
+    en: "Roza Kushai & Iftar Gathering", ur: "روزہ کشائی و افطار تقریب", ar: "حفل صيام أول وإفطار مبارك", es: "Primer Ayuno y Fiesta de Iftar", fr: "Célébration du Premier Jeûne et Iftar", hi: "रोज़ा कुशाई व इफ्तार मिलन", zh: "首次开斋志庆与斋月聚会", pt: "Celebração do Primeiro Jejum e Iftar", ru: "Празднование первого поста и ифтар", de: "Erstes Fasten & Iftar-Feier", ja: "初めての断食祝いとイフタール", ko: "첫 단식 축하 및 이프타르 모임", it: "Primo Digiuno e Festa di Iftar", tr: "İlk Oruç ve İftar Daveti", id: "Syukuran Puasa Pertama & Buka Puasa Bersama", bn: "রোজা কুশাই ও ইফতার অনুষ্ঠান", vi: "Lễ Kỷ Niệm Nhịn Ăn Đầu Tiên & Tiệc Iftar", sw: "Sherehe ya Mfungo wa Kwanza na Iftar"
+  },
+  type_hajj_dinner: {
+    en: "Hajj / Umrah Dua Gathering", ur: "حج و عمرہ مبارک تقریب و دعا", ar: "حفل ودعاء الحج والعمرة", es: "Reunión de Bendición de Hajj y Umrah", fr: "Rassemblement de Dua pour le Hajj et l'Omra", hi: "हज व उमराह दुआ महफ़िल", zh: "朝觐与副朝祈祷聚会", pt: "Reunião de Bênçãos do Hajj e Umrah", ru: "Торжественный меджлис Хаджа и Умры", de: "Hajj & Umrah Segensfeier", ja: "ハッジ・ウムラ巡礼の祈りの集い", ko: "하지 및 움라 축하 기도 모임", it: "Incontro di Preghiera per Hajj e Umrah", tr: "Hac ve Umre Tebrik ve Dua Yemeği", id: "Syukuran & Doa Bersama Haji / Umrah", bn: "হজ্জ ও ওমরাহ দোয়া মাহফিল", vi: "Lễ Cầu Nguyện Hajj & Umrah", sw: "Mkusanyiko wa Dua za Hajj na Umrah"
+  },
+  type_chand_raat_mela: {
+    en: "Chand Raat Mela & Celebration", ur: "چاند رات میلہ و جشن", ar: "احتفالية ليلة العيد ومهرجان الحناء", es: "Feria y Fiesta de Chand Raat", fr: "Fête foraine et célébration de Chand Raat", hi: "चांद रात मेला व उत्सव", zh: "新月之夜集市庆典", pt: "Feira e Celebração de Chand Raat", ru: "Ярмарка и празднование Чанд Раат", de: "Chand Raat Fest & Basar", ja: "チャンド・ラート前夜祭", ko: "찬드 라트 전야제 축제", it: "Festa di Chand Raat e Fiera", tr: "Arefe Gecesi Şenliği", id: "Malam Takbiran & Festival Chand Raat", bn: "চাঁদ রাত মেলা ও উদযাপন", vi: "Hội Chợ & Lễ Hội Đêm Trăng Chand Raat", sw: "Tamasha la Usiku wa Chand Raat"
+  },
+  type_holi_celebration: {
+    en: "Holi Color Festival & Gathering", ur: "ہولی رنگوں کا تہوار", ar: "مهرجان الألوان هولي", es: "Fiesta de Colores de Holi", fr: "Festival des Couleurs de Holi", hi: "होली रंगोत्सव व मिलन समारोह", zh: "洒红节色彩狂欢派对", pt: "Festival das Cores de Holi", ru: "Праздник красок Холи", de: "Holi Farbenfest & Feier", ja: "ホーリー色彩の祭典", ko: "홀리 색채의 축제 모임", it: "Festa dei Colori di Holi", tr: "Holi Renkler Festivali", id: "Festival Warna Holi & Kumpul Bersama", bn: "হোলি রঙের উৎসব ও মিলনমেলা", vi: "Lễ Hội Sắc Màu Holi", sw: "Tamasha la Rangi la Holi"
+  },
+  type_easter_brunch: {
+    en: "Easter Sunday Family Gathering", ur: "ایسٹر سنڈے خاندانی تقریب", ar: "غداء أحد الفصح العائلي", es: "Almuerzo Familiar de Domingo de Pascua", fr: "Brunch de Pâques en Famille", hi: "ईस्टर संडे पारिवारिक मिलन", zh: "复活节周日家庭早午餐", pt: "Brunch de Páscoa em Família", ru: "Пасхальный семейный обед", de: "Osterbrunch mit der Familie", ja: "イースター・ファミリーサンデーブランチ", ko: "부활절 주일 가족 브런치 모임", it: "Pranzo di Pasqua in Famiglia", tr: "Paskalya Aile Buluşması", id: "Kumpul Keluarga Hari Paskah", bn: "ইস্টার সানডে পারিবারিক মিলন", vi: "Tiệc Gia Đình Chúa Nhật Phục Sinh", sw: "Karamu ya Pasaka ya Familia"
+  },
+  type_aqiqah_party: {
+    en: "Aqiqah & Baby Celebration", ur: "عقیقہ و تقریبِ ولادت", ar: "حفل العقيقة واستقبال المولود", es: "Celebración de Aqiqah y Bebé", fr: "Célébration de la Aqiqah et du Bébé", hi: "अक़ीक़ा व शिशु स्वागत समारोह", zh: "小儿受洗与剃头礼吉庆", pt: "Celebração de Aqiqah e Bebê", ru: "Акика и праздник новорожденного", de: "Aqiqah & Babyfeier", ja: "アキーカ（赤ちゃんの誕生祝い）", ko: "아키카 신생아 탄생 축하연", it: "Festa di Aqiqah per il Neonato", tr: "Akika Kurbanı ve Bebek Tebriği", id: "Tasyakuran Aqiqah & Kelahiran Bayi", bn: "আকিকা ও শিশুর আগমনী অনুষ্ঠান", vi: "Lễ Aqiqah Chào Đón Em Bé", sw: "Sherehe ya Aqiqah ya Mtoto"
+  },
+  type_halloween_party: {
+    en: "Halloween Costume Party", ur: "ہیلووین کاسٹیوم پارٹی", ar: "حفل تنكري للهالوين", es: "Fiesta de Disfraces de Halloween", fr: "Soirée Déguisée d'Halloween", hi: "हैलोवीन कॉस्ट्यूम पार्टी", zh: "万圣节变装假面派对", pt: "Festa a Fantasia de Halloween", ru: "Костюмированная вечеринка на Хэллоуин", de: "Halloween Kostümparty", ja: "ハロウィン・コスチュームパーティー", ko: "할로윈 코스튬 파티", it: "Festa in Maschera di Halloween", tr: "Cadılar Bayramı Kostüm Partisi", id: "Pesta Kostum Halloween", bn: "হ্যালোইন কস্টিউম পার্টি", vi: "Tiệc Hóa Trang Halloween", sw: "Sherehe ya Mavazi ya Halloween"
+  },
+  type_new_year_party: {
+    en: "New Year Eve Bash & Celebration", ur: "نیو ایئر ایو پارٹی و جشن", ar: "حفل سهرة رأس السنة الميلادية", es: "Fiesta de Nochevieja y Fin de Año", fr: "Réveillon du Nouvel An", hi: "नए साल की पूर्व संध्या का जश्न", zh: "跨年狂欢夜派对", pt: "Festa de Réveillon e Ano Novo", ru: "Новогодняя ночь и вечеринка", de: "Silvesterparty & Neujahrsfeier", ja: "ニューイヤーズ・イブ カウントダウンパーティー", ko: "새해 전야 카운트다운 파티", it: "Festa della Notte di San Silvestro", tr: "Yılbaşı Gecesi Kutlama Partisi", id: "Pesta Malam Tahun Baru", bn: "ইংরেজি নববর্ষের প্রাক্কালে উদযাপন", vi: "Đêm Tiệc Đón Giao Thừa Năm Mới", sw: "Sherehe ya Mkesha wa Mwaka Mpya"
+  },
+  type_prom_farewell: {
+    en: "Farewell & Prom Gala", ur: "الوداعی تقریب و پروم گالا", ar: "حفل توديع وتخرج وبروم", es: "Gala de Despedida y Graduación", fr: "Bal de Promo et Soirée d'Adieu", hi: "विदाई समारोह व प्रोम नाइट", zh: "毕业欢送舞会与盛典", pt: "Baile de Formatura e Despedida", ru: "Выпускной бал и прощальный вечер", de: "Abschlussball & Abschiedsgala", ja: "プロム・卒業生を送る会", ko: "송별회 및 프롬 무도회", it: "Ballo di Fine Anno e Festa di Addio", tr: "Mezuniyet Balosu ve Veda Gecesi", id: "Malam Prom & Perpisahan Sekolah", bn: "বিদায় সম্বর্ধনা ও প্রম নাইট", vi: "Dạ Tiệc Chia Tay & Khiêu Vũ Tốt Nghiệp", sw: "Gala ya Kuagana na Prom"
+  },
+  type_teachers_day_event: {
+    en: "Teachers Honor Ceremony", ur: "اساتذہ کے اعزاز میں تقریب", ar: "حفل تكريم المعلمين والأساتذة", es: "Ceremonia de Homenaje a los Profesores", fr: "Cérémonie d'Hommage aux Enseignants", hi: "शिक्षक सम्मान समारोह", zh: "尊师重教表彰典礼", pt: "Cerimônia de Homenagem aos Professores", ru: "Торжественная церемония ко Дню учителя", de: "Lehrer-Ehrung & Festakt", ja: "恩師への感謝と表彰式", ko: "선생님의 날 기념 표창식", it: "Cerimonia in Onore degli Insegnanti", tr: "Öğretmenler Günü Onur Töreni", id: "Upacara Penghormatan Hari Guru", bn: "শিক্ষক সম্মাননা অনুষ্ঠান", vi: "Lễ Tôn Vinh Tri Ân Thầy Cô Giáo", sw: "Hafla ya Kuheshimu Walimu"
+  },
+  cal_cat_islamic: {
+    en: "Islamic & Hijri", ur: "اسلامی و ہجری", ar: "المناسبات الإسلامية والهجرية", es: "Islámico y Hijri", fr: "Islamique et Hégirien", hi: "इस्लामी व हिजरी", zh: "伊斯兰与希吉拉历", pt: "Islâmico e Hijri", ru: "Исламские и Хиджри", de: "Islamisch & Hidschra", ja: "イスラム暦・ヒジュラ暦", ko: "이슬람 및 히즈라력", it: "Islamico e Hijri", tr: "İslami ve Hicri", id: "Islam & Hijriyah", bn: "ইসলামিক ও হিজরি", vi: "Hồi Giáo & Hijri", sw: "Kiislamu na Hijri"
+  },
+  islamic: {
+    en: "Islamic & Hijri", ur: "اسلامی و ہجری", ar: "المناسبات الإسلامية والهجرية", es: "Islámico y Hijri", fr: "Islamique et Hégirien", hi: "इस्लामी व हिजरी", zh: "伊斯兰与希吉拉历", pt: "Islâmico e Hijri", ru: "Исламские и Хиджри", de: "Islamisch & Hidschra", ja: "イスラム暦・ヒジュラ暦", ko: "이슬람 및 히즈拉력", it: "Islamico e Hijri", tr: "İslami ve Hicri", id: "Islam & Hijriyah", bn: "ইসলামিক ও হিজরি", vi: "Hồi Giáo & Hijri", sw: "Kiislamu na Hijri"
+  },
+  cal_cat_global_faiths: {
+    en: "Global Multi-Faith", ur: "عالمی مذاہب و تہوار", ar: "الأديان العالمية والمهرجانات", es: "Religiones Globales", fr: "Religions Mondiales", hi: "वैश्विक बहु-धार्मिक त्योहार", zh: "全球多元宗教节庆", pt: "Religiões Globais", ru: "Мировые религии и праздники", de: "Globale Religionen & Feste", ja: "世界の諸宗教・祝祭", ko: "글로벌 다종교 축제", it: "Religioni Mondiali", tr: "Küresel İnançlar ve Festivaller", id: "Agama Dunia & Festival", bn: "সার্বজনীন বহু-ধর্মীয় উৎসব", vi: "Tôn Giáo Toàn Cầu", sw: "Dini za Kidunia"
+  },
+  global_faiths: {
+    en: "Global Multi-Faith", ur: "عالمی مذاہب و تہوار", ar: "الأديان العالمية والمهرجانات", es: "Religiones Globales", fr: "Religions Mondiales", hi: "वैश्विक बहु-धार्मिक त्योहार", zh: "全球多元宗教节庆", pt: "Religiões Globais", ru: "Мировые религии и праздники", de: "Globale Religionen & Feste", ja: "世界の諸宗教・祝祭", ko: "글로벌 다종교 축제", it: "Religioni Mondiali", tr: "Küresel İnançlar ve Festivaller", id: "Agama Dunia & Festival", bn: "সার্বজনীন বহু-ধর্মীয় উৎসব", vi: "Tôn Giáo Toàn Cầu", sw: "Dini za Kidunia"
+  },
+  cal_cat_family: {
+    en: "Family & Relationships", ur: "خاندان اور رشتے", ar: "العائلة والعلاقات", es: "Familia y Relaciones", fr: "Famille et Relations", hi: "परिवार और रिश्ते", zh: "家庭与亲情", pt: "Família e Relações", ru: "Семья и отношения", de: "Familie & Beziehungen", ja: "家族と絆", ko: "가족 및 관계", it: "Famiglia e Relazioni", tr: "Aile ve İlişkiler", id: "Keluarga & Hubungan", bn: "পরিবার ও সম্পর্ক", vi: "Gia Đình & Tình Thân", sw: "Familia na Mahusiano"
+  },
+  family: {
+    en: "Family & Relationships", ur: "خاندان اور رشتے", ar: "العائلة والعلاقات", es: "Familia y Relaciones", fr: "Famille et Relations", hi: "परिवार और रिश्ते", zh: "家庭与亲情", pt: "Família e Relações", ru: "Семья и отношения", de: "Familie & Beziehungen", ja: "家族と絆", ko: "가족 및 관계", it: "Famiglia e Relazioni", tr: "Aile ve İlişkiler", id: "Keluarga & Hubungan", bn: "পরিবার ও সম্পর্ক", vi: "Gia Đình & Tình Thân", sw: "Familia na Mahusiano"
+  },
+  cal_cat_national: {
+    en: "National & Civic", ur: "قومی اور بین الاقوامی", ar: "الأيام الوطنية والرسمية", es: "Nacional y Cívico", fr: "National et Civique", hi: "राष्ट्रीय व नागरिक", zh: "国家与公民节日", pt: "Nacional e Cívico", ru: "Национальные и гражданские", de: "National & Zivil", ja: "祝日・記念日", ko: "국경일 및 공민의 날", it: "Nazionale e Civico", tr: "Ulusal ve Resmi Günler", id: "Nasional & Sipil", bn: "জাতীয় ও নাগরিক", vi: "Quốc Gia & Dân Sự", sw: "Kitaifa na Kiraia"
+  },
+  national: {
+    en: "National & Civic", ur: "قومی اور بین الاقوامی", ar: "الأيام الوطنية والرسمية", es: "Nacional y Cívico", fr: "National et Civique", hi: "राष्ट्रीय व नागरिक", zh: "国家与公民节日", pt: "Nacional e Cívico", ru: "Национальные и гражданские", de: "National & Zivil", ja: "祝日・記念日", ko: "국경일 및 공민의 날", it: "Nazionale e Civico", tr: "Ulusal ve Resmi Günler", id: "Nasional & Sipil", bn: "জাতীয় ও নাগরিক", vi: "Quốc Gia & Dân Sự", sw: "Kitaifa na Kiraia"
+  },
+  cal_cat_milestones: {
+    en: "Milestones & Seasons", ur: "سنگ میل اور سیزنز", ar: "المحطات الحياتية والمواسم", es: "Hitos y Temporadas", fr: "Étapes et Saisons", hi: "मील के पत्थर व मौसम", zh: "人生里程碑与应季", pt: "Marcos e Temporadas", ru: "Жизненные вехи и сезоны", de: "Meilensteine & Saisons", ja: "人生の節目・シーズン", ko: "인생의 이정표 및 시즌", it: "Tappe e Stagioni", tr: "Dönüm Noktaları ve Sezonlar", id: "Pencapaian Hidup & Musim", bn: "মাইলফলক ও ঋতু", vi: "Cột Mốc & Mùa Lễ", sw: "Mafanikio na Misimu"
+  },
+  milestones: {
+    en: "Milestones & Seasons", ur: "سنگ میل اور سیزنز", ar: "المحطات الحياتية والمواسم", es: "Hitos y Temporadas", fr: "Étapes et Saisons", hi: "मील के पत्थर व मौसम", zh: "人生里程碑与应季", pt: "Marcos e Temporadas", ru: "Жизненные вехи и сезоны", de: "Meilensteine & Saisons", ja: "人生の節目・シーズン", ko: "인생의 이정표 및 시즌", it: "Tappe e Stagioni", tr: "Dönüm Noktaları ve Sezonlar", id: "Pencapaian Hidup & Musim", bn: "মাইলফলক ও ঋতু", vi: "Cột Mốc & Mùa Lễ", sw: "Mafanikio na Misimu"
+  },
+  calNoEventsDesc: {
+    en: "Try resetting your search query or selecting 'All Celebrations' to browse all 80 worldwide festivals.", ur: "اپنی تلاش کو ری سیٹ کریں یا تمام 80 عالمی تہوار دیکھنے کے لیے 'تمام تقریبات' منتخب کریں۔", ar: "جرب إعادة تعيين البحث أو اختيار 'جميع الاحتفالات' لتصفح 80 مناسبة حول العالم.", es: "Intenta restablecer la búsqueda o selecciona 'Todas las Celebraciones' para explorar 80 festivales mundiales.", fr: "Essayez de réinitialiser votre recherche ou sélectionnez 'Toutes les célébrations' pour parcourir les 80 festivals.", hi: "अपनी खोज रीसेट करें या दुनिया भर के 80 त्योहार देखने के लिए 'सभी उत्सव' चुनें।", zh: "尝试重置搜索词或选择“全部庆典”以浏览全球80个节日。", pt: "Tente redefinir a busca ou selecione 'Todas as Celebrações' para ver os 80 festivais mundiais.", ru: "Сбросьте поиск или выберите «Все праздники», чтобы просмотреть все 80 мировых фестивалей.", de: "Filter zurücksetzen oder 'Alle Feiern' wählen, um alle 80 weltweiten Feste zu sehen.", ja: "検索条件をリセットするか「すべてのお祝い」を選択して、世界80以上の祝祭をご覧ください。", ko: "검색어를 재설정하거나 '모든 기념일'을 선택하여 전 세계 80여 개 축제를 확인하세요.", it: "Prova a reimpostare la ricerca o seleziona 'Tutte le Celebrazioni' per sfogliare gli 80 festival.", tr: "Aramanızı sıfırlayın veya 80 dünya festivalini görmek için 'Tüm Kutlamalar'ı seçin.", id: "Coba atur ulang pencarian atau pilih 'Semua Perayaan' untuk melihat 80 festival dunia.", bn: "অনুসন্ধান রিসেট করুন বা ৮০টি বিশ্ব উৎসব দেখতে 'সব উদযাপন' বেছে নিন।", vi: "Thử đặt lại tìm kiếm hoặc chọn 'Tất Cả Lễ Hội' để xem 80 lễ hội thế giới.", sw: "Jaribu kuweka upya utafutaji au chagua 'Sherehe Zote' ili kuona sherehe 80 za ulimwengu."
+  },
+  daysRemaining: {
+    en: "days remaining", ur: "دن باقی", ar: "أيام متبقية", es: "días restantes", fr: "jours restants", hi: "दिन शेष", zh: "天剩余", pt: "dias restantes", ru: "дней осталось", de: "Tage verbleibend", ja: "日後", ko: "일 남음", it: "giorni rimanenti", tr: "gün kaldı", id: "hari tersisa", bn: "দিন বাকি", vi: "ngày còn lại", sw: "siku zilizosalia"
+  },
+  calSyncing: {
+    en: "Syncing...", ur: "ہم وقت سازی جاری ہے...", ar: "جارٍ المزامنة...", es: "Sincronizando...", fr: "Synchronisation...", hi: "सिंक हो रहा है...", zh: "正在同步...", pt: "Sincronizando...", ru: "Синхронизация...", de: "Wird synchronisiert...", ja: "同期中...", ko: "동기화 중...", it: "Sincronizzazione in corso...", tr: "Senkronize ediliyor...", id: "Menyinkronkan...", bn: "সিঙ্ক হচ্ছে...", vi: "Đang đồng bộ...", sw: "Inasawazisha..."
+  },
+  clear: {
+    en: "Clear", ur: "صاف کریں", ar: "مسح", es: "Borrar", fr: "Effacer", hi: "साफ़ करें", zh: "清除", pt: "Limpar", ru: "Очистить", de: "Löschen", ja: "クリア", ko: "지우기", it: "Cancella", tr: "Temizle", id: "Hapus", bn: "মুছে ফেলুন", vi: "Xóa", sw: "Futa"
+  },
+  calAboutTitle: {
+    en: "About Cardzy's Dynamic Rolling Calendar", ur: "کارڈزی کے ڈائنامک رولنگ کیلنڈر کے بارے میں", ar: "حول تقويم كاردزي المتجدد والذكي", es: "Sobre el Calendario Continuo de Cardzy", fr: "À propos du Calendrier Dynamique de Cardzy", hi: "Cardzy के गतिशील वार्षिक कैलेंडर के बारे में", zh: "关于 Cardzy 动态滚动日历", pt: "Sobre o Calendário Dinâmico da Cardzy", ru: "О динамическом календаре Cardzy", de: "Über den dynamischen Cardzy-Kalender", ja: "Cardzyのダイナミック・ローリングカレンダーについて", ko: "Cardzy 다이내믹 캘린더 안내", it: "Informazioni sul Calendario Dinamico Cardzy", tr: "Cardzy Dinamik Takvimi Hakkında", id: "Tentang Kalender Bergulir Dinamis Cardzy", bn: "Cardzy এর গতিশীল ক্যালেন্ডার সম্পর্কে", vi: "Về Lịch Cuộn Động Cardzy", sw: "Kuhusu Kalenda Inayohuishwa ya Cardzy"
+  },
+  calAboutDesc1: {
+    en: "This celebration calendar covers 80 major worldwide occasions including Islamic festivals (Hijri 1448–1449 AH), global religious holidays (Christmas, Easter, Diwali, Hanukkah, Lunar New Year), family relationship days (Mother's Day, Father's Day, Friendship Day), and national civic observances.", ur: "یہ کیلنڈر 80 سے زائد اہم عالمی تقریبات پر مشتمل ہے جن میں اسلامی تہوار (ہجری 1448-1449ھ)، عالمی مذہبی ایام (کرسمس، ایسٹر، دیوالی، ہنوکا، قمری نیا سال)، خاندانی رشتے (مدرز ڈے، فادرز ڈے، فرینڈشپ ڈے) اور قومی و شہری دن شامل ہیں۔", ar: "يغطي هذا التقويم 80 مناسبة عالمية كبرى تشمل الأعياد الإسلامية (1448-1449 هـ)، والأعياد الدينية العالمية (عيد الميلاد، الفصح، ديوالي، حانوكا، رأس السنة القمرية)، ومناسبات العائلة (يوم الأم، يوم الأب، يوم الصداقة)، والمناسبات الوطنية.", es: "Este calendario abarca 80 ocasiones mundiales importantes: festividades islámicas (Hégira 1448-1449), días religiosos globales (Navidad, Pascua, Diwali, Janucá), fechas familiares y cívicas.", fr: "Ce calendrier couvre 80 grandes célébrations mondiales : fêtes islamiques (Hégire 1448-1449), fêtes religieuses mondiales (Noël, Pâques, Diwali), journées familiales et civiques.", hi: "यह कैलेंडर 80 प्रमुख वैश्विक अवसरों को कवर करता है, जिसमें इस्लामी त्योहार (हिजरी 1448-1449), वैश्विक धार्मिक छुट्टियां (क्रिसमस, ईस्टर, दिवाली), पारिवारिक और राष्ट्रीय दिवस शामिल हैं।", zh: "本庆典日历涵盖全球80个重大节日，包括伊斯兰历节庆（希吉拉历1448–1449年）、世界宗教节日（圣诞、复活节、排灯节等）、家庭感恩日及国家法定假日。", pt: "Este calendário cobre 80 grandes ocasiões mundiais, incluindo festivais islâmicos (Hégira 1448–1449), feriados religiosos globais (Natal, Páscoa, Diwali), dias familiares e datas cívicas.", ru: "Этот календарь включает 80 главных мировых событий, включая исламские праздники (Хиджра 1448–1449 гг.), мировые религиозные торжества (Рождество, Пасха, Дивали), семейные и национальные дни.", de: "Dieser Kalender umfasst 80 weltweite Festtage: islamische Feste (Hidschra 1448–1449), religiöse Feiertage (Weihnachten, Ostern, Diwali), Familientage und Nationalfeiertage.", ja: "世界の80の主要な祝祭を網羅。イスラム歴（ヒジュラ暦1448-1449年）、諸宗教の祝祭（クリスマス、イースター、ディワリ）、家族の記念日、各国の祝日を掲載しています。", ko: "이 캘린더는 이슬람 축제(히즈라 1448~1449년), 세계 종교 축제(크리스마스, 부활절, 디왈리), 가족 기념일 및 국경일을 포함한 80개의 글로벌 이벤트를 다룹니다.", it: "Questo calendario copre 80 importanti celebrazioni mondiali, tra cui festività islamiche (Egira 1448-1449), feste religiose globali (Natale, Pasqua, Diwali), ricorrenze familiari e civiche.", tr: "Bu takvim; İslami bayramlar (Hicri 1448–1449), küresel dini bayramlar (Noel, Paskalya, Diwali), aile günleri ve milli bayramlar dahil 80 önemli kutlamayı kapsar.", id: "Kalender ini mencakup 80 perayaan besar dunia termasuk hari raya Islam (Hijriyah 1448–1449), hari keagamaan global (Natal, Paskah, Diwali), hari keluarga, dan hari nasional.", bn: "এই ক্যালেন্ডারে ইসলামিক উৎসব (হিজরি ১৪৪৮-১৪৪৯), সার্বজনীন ধর্মীয় উৎসব (বড়দিন, ইস্টার, দিওয়ালি), পারিবারিক এবং জাতীয় ৮০টি প্রধান দিন অন্তর্ভুক্ত রয়েছে।", vi: "Lịch lễ hội này bao gồm 80 sự kiện kỷ niệm lớn trên thế giới như lễ Hồi giáo (Hijri 1448–1449), lễ tôn giáo toàn cầu (Giáng sinh, Phục sinh, Diwali), ngày gia đình và ngày quốc lễ.", sw: "Kalenda hii inajumuisha maadhimisho makuu 80 ya ulimwengu ikiwa ni pamoja na sherehe za Kiislamu (Hijri 1448–1449), sikukuu za kidini za kimataifa, siku za familia na za kitaifa."
+  },
+  calAboutDesc2: {
+    en: "Daily Rolling Window: The calendar dynamically calculates dates starting from today for the upcoming 365 days. As each day passes, upcoming dates automatically shift forward so you always see what celebration is next on your calendar.", ur: "روزانہ کا رولنگ شیڈول: کیلنڈر آج سے شروع ہو کر اگلے 365 دنوں کی تاریخوں کا متحرک حساب لگاتا ہے۔ جیسے جیسے دن گزرتے ہیں، شیڈول خود بخود آگے بڑھتا ہے تاکہ آپ کو ہمیشہ اگلی تقریب کا علم رہے۔", ar: "نافذة متجددة يومياً: يحسب التقويم التواريخ تلقائياً بدءاً من اليوم ولمدة 365 يوماً قادمة. مع مرور كل يوم، تتقدم التواريخ تلقائياً لتعرف دائماً ما هي المناسبة القادمة.", es: "Ventana móvil diaria: El calendario calcula dinámicamente las fechas desde hoy para los próximos 365 días. Conforme pasa el tiempo, las fechas avanzan automáticamente.", fr: "Fenêtre glissante quotidienne : Le calendrier calcule dynamiquement les dates à partir d'aujourd'hui pour les 365 prochains jours, avançant automatiquement chaque jour.", hi: "दैनिक रोलिंग विंडो: कैलेंडर आज से शुरू होकर आगामी 365 दिनों की तिथियों की गणना करता है। हर दिन बीतने के साथ कार्यक्रम स्वतः आगे बढ़ते हैं।", zh: "365天滚动周期：日历从今天起动态计算未来365天的庆典日期。随着每一天的推移，日程自动顺延，让您随时掌握紧接着的节庆。", pt: "Janela contínua diária: O calendário calcula dinamicamente as datas a partir de hoje para os próximos 365 dias, avançando automaticamente a cada dia.", ru: "Ежедневное скользящее окно: календарь динамически рассчитывает даты начиная с сегодняшнего дня на 365 дней вперед с автоматическим смещением.", de: "Täglich rollierendes Fenster: Der Kalender berechnet dynamisch Termine für die nächsten 365 Tage ab heute. Mit jedem Tag rücken neue Feste automatisch nach.", ja: "毎日のローリング更新：本日を起点に今後365日間の祝祭日をリアルタイム算出。日が経つごとに自動的に次のイベントへとシフトします。", ko: "매일 롤링 캘린더: 오늘부터 향후 365일간의 날짜를 동적으로 계산합니다. 하루가 지날 때마다 일정이 자동으로 갱신되어 다음 축제를 손쉽게 확인합니다.", it: "Finestra mobile quotidiana: Il calendario calcola dinamicamente le date a partire da oggi per i successivi 365 giorni, scorrendo automaticamente in avanti ogni giorno.", tr: "Günlük İlerleyen Takvim: Takvim, bugünden itibaren önümüzdeki 365 günü dinamik olarak hesaplar. Günler geçtikçe takvim otomatik olarak ileri kayar.", id: "Jendela Bergulir Harian: Kalender menghitung tanggal secara dinamis mulai hari ini untuk 365 hari ke depan dan diperbarui otomatis setiap hari.", bn: "দৈনিক রোলিং সূচি: ক্যালেন্ডারটি আজ থেকে পরবর্তী ৩৬৫ দিনের তারিখগুলি স্বয়ংক্রিয়ভাবে হিসাব করে এবং প্রতিদিন এগিয়ে চলে।", vi: "Chu kỳ cuộn 365 ngày mỗi ngày: Lịch tính toán động các ngày lễ bắt đầu từ hôm nay cho 365 ngày tới và tự động cập nhật liên tục.", sw: "Dirisha linalohuishwa kila siku: Kalenda huhesabu tarehe kuanzia leo kwa siku 365 zijazo, ikisonga mbele kiotomatiki kila siku."
+  },
+  calAboutDesc3: {
+    en: "Connected to Free Worldwide Holiday APIs: Features live sync integration with free international holiday data feeds and automatic astronomical calculations.", ur: "مفت عالمی ہالیڈے APIs سے منسلک: بین الاقوامی سرکاری تعطیلات کے مفت ڈیٹا فیڈز اور فلکیاتی حساب کتاب کے ساتھ لائیو ہم آہنگی۔", ar: "متصل بواجهات برمجة العطلات العالمية المجانية: تكامل مباشر مع مصادر العطلات الدولية وحسابات الفلك الدقيقة.", es: "Conectado a APIs gratuitas de festivos mundiales: Sincronización en vivo con datos internacionales y cálculos astronómicos.", fr: "Connecté aux APIs gratuites de jours fériés : Synchronisation en direct avec les flux internationaux et calculs astronomiques.", hi: "फ्री वैश्विक अवकाश एपीआई से जुड़ा हुआ: अंतरराष्ट्रीय अवकाश डेटा और खगोलीय गणनाओं के साथ लाइव सिंक।", zh: "集成全球开放假期接口：支持实时对接免费国际假期API与天文测算引擎。", pt: "Conectado a APIs gratuitas de feriados mundiais: Sincronização em tempo real com fontes internacionais e cálculos astronômicos.", ru: "Подключено к бесплатным мировым праздничным API: прямая синхронизация с международными реестрами и астрономическими расчетами.", de: "Mit kostenlosen weltweiten Feiertags-APIs verbunden: Live-Synchronisierung mit internationalen Feiertagsquellen und astronomischen Berechnungen.", ja: "無料の世界祝祭日APIと連動：国際的な祝日データフィードおよび天文計算とリアルタイムに同期します。", ko: "무료 글로벌 공휴일 API 연동: 세계 공휴일 데이터 및 정밀 천문 계산과 실시간으로 동기화됩니다.", it: "Collegato ad API gratuite per le festività mondiali: Sincronizzazione in tempo reale con feed internazionali e calcoli astronomici.", tr: "Ücretsiz Dünya Tatilleri API'lerine Bağlı: Uluslararası tatil verileri ve astronomik hesaplamalarla canlı senkronizasyon.", id: "Terhubung ke API Hari Libur Dunia Gratis: Integrasi sinkronisasi langsung dengan data internasional dan perhitungan astronomis.", bn: "বিনামূল্যে বিশ্বব্যাপী ছুটির এপিআই সংযুক্ত: আন্তর্জাতিক ছুটির তথ্য এবং জ্যোতির্বিজ্ঞান গণনার সাথে সরাসরি সিঙ্ক।", vi: "Kết nối API Ngày Lễ Quốc Tế Miễn Phí: Đồng bộ trực tiếp với nguồn dữ liệu ngày lễ toàn cầu và tính toán thiên văn.", sw: "Imeunganishwa na API za Bure za Likizo za Ulimwengu: Upatanisho wa moja kwa moja na data za kimataifa na mahesabu ya angani."
+  },
+  calAboutDesc4: {
+    en: "Islamic Lunar Sighting Note: Islamic dates are projected based on standard lunar calendars. Official observance dates are subject to local moon sighting confirmation by regional Ruet-e-Hilal committees.", ur: "اسلامی چاند کی رویت کی وضاحت: اسلامی تاریخیں معیاری قمری تقویم پر مبنی ہیں۔ حتمی تاریخیں متعلقہ رویتِ ہلال کمیٹیوں کی چاند دیکھنے کی تصدیق کے تابع ہیں۔", ar: "تنويه رؤية الهلال: المواعيد الإسلامية تقديرية مبنية على التقويم القمري المعياري، وتخضع للتأكيد الرسمي حسب ثبوت رؤية الهلال من قبل اللجان الشرعية.", es: "Nota sobre el avistamiento lunar: Las fechas islámicas son proyecciones basadas en el calendario lunar y están sujetas a la confirmación local del avistamiento de la luna.", fr: "Note sur l'observation du croissant de lune : Les dates islamiques sont estimées selon le calendrier lunaire et sujettes à la confirmation officielle locale.", hi: "इस्लामी चंद्र दर्शन सूचना: इस्लामी तिथियां चंद्र कैलेंडर पर आधारित हैं और स्थानीय चांद दिखने की पुष्टि के अधीन हैं।", zh: "伊斯兰新月观月说明：伊斯兰历日期依据标准天文算法预估，确切日期须以各地宗教委员会的官方观月公告为准。", pt: "Nota sobre o avistamento da lua: As datas islâmicas são estimativas do calendário lunar e dependem da confirmação oficial local do avistamento do crescente.", ru: "Примечание о наблюдении луны: даты исламских праздников рассчитаны по лунному календарю и зависят от официального наблюдения новолуния духовными комитетами.", de: "Hinweis zur Mondsichtung: Islamische Daten basieren auf dem Mondkalender und unterliegen der offiziellen Bestätigung der lokalen Mondsichtung.", ja: "新月観測に関する注記：イスラム暦の日付は標準的な月齢予測に基づいており、各地域の新月観測委員会による確認により確定します。", ko: "초승달 관측 안내: 이슬람 날짜는 표준 태음력에 기반한 예측이며, 각 지역 위원회의 공식 초승달 관측 발표에 따라 변경될 수 있습니다.", it: "Nota sull'avvistamento della luna: Le date islamiche sono calcolate sul calendario lunare e soggette alla conferma ufficiale dell'avvistamento del crescente lunare.", tr: "Hilal Gözlemi Notu: İslami tarihler standart kameri takvime göre hesaplanmıştır; resmi günler yetkili hilal tespit kurullarının onayına bağlıdır.", id: "Catatan Rukyatul Hilal: Tanggal-tanggal Islam diperkirakan berdasarkan kalender kamariah standar dan bergantung pada sidang isbat rukyatul hilal.", bn: "চাঁদ দেখার ঘোষণা: ইসলামিক তারিখগুলি চন্দ্র ক্যালেন্ডারের ভিত্তিতে আনুমানিক এবং স্থানীয় চাঁদ দেখা কমিটির সিদ্ধান্তের উপর নির্ভরশীল।", vi: "Lưu ý ngắm trăng Hồi giáo: Ngày tháng Hồi giáo được dự báo dựa trên âm lịch chuẩn và phụ thuộc vào xác nhận thấy trăng non thực tế của các ủy ban tôn giáo.", sw: "Taarifa ya Kuandama kwa Mwezi: Tarehe za Kiislamu zinatokana na kalenda ya mwezi na zinategemea uthibitisho rasmi wa kuandama kwa mwezi."
+  },
+  occ_shab_e_miraj: {
+    en: "Shab-e-Miraj", ur: "شبِ معراج مبارک", ar: "ليلة الإسراء والمعراج مباركة", es: "Shab-e-Miraj", fr: "Shab-e-Miraj", hi: "शब-ए-मेराज मुबारक", zh: "登霄夜吉庆", pt: "Shab-e-Miraj", ru: "Мирадж Мубарак", de: "Shab-e-Miraj", ja: "ミラージュの夜", ko: "미라지의 밤", it: "Shab-e-Miraj", tr: "Miraç Kandiliniz Mübarek Olsun", id: "Isra Mi'raj", bn: "শবে মেরাজ মোবারক", vi: "Shab-e-Miraj", sw: "Shab-e-Miraj"
+  },
+  occ_shab_e_barat: {
+    en: "Shab-e-Barat", ur: "شبِ برات مبارک", ar: "ليلة البراءة مباركة", es: "Shab-e-Barat", fr: "Shab-e-Barat", hi: "शब-ए-बरात मुबारक", zh: "白拉台夜吉庆", pt: "Shab-e-Barat", ru: "Бараат Мубарак", de: "Shab-e-Barat", ja: "バラートの夜", ko: "바라트의 밤", it: "Shab-e-Barat", tr: "Berat Kandiliniz Mübarek Olsun", id: "Malam Nisfu Sya'ban", bn: "শবে বরাত মোবারক", vi: "Shab-e-Barat", sw: "Shab-e-Barat"
+  },
+  occ_roza_kushai: {
+    en: "Roza Kushai", ur: "روزہ کشائی مبارک", ar: "مبارك الصيام الأول", es: "Primer Ayuno", fr: "Premier Jeûne", hi: "रोज़ा कुशाई मुबारक", zh: "初次封斋志庆", pt: "Primeiro Jejum", ru: "Первый ураза / пост", de: "Erstes Fasten", ja: "初めての断食のお祝い", ko: "첫 단식 축하", it: "Primo Digiuno", tr: "İlk Oruç Tebriği", id: "Puasa Pertama", bn: "রোজা কুশাই মোবারক", vi: "Lễ Nhịn Ăn Đầu Tiên", sw: "Mfungo wa Kwanza"
+  },
+  occ_laylat_al_qadr: {
+    en: "Laylat al-Qadr", ur: "لیلتہ القدر مبارک", ar: "ليلة القدر المباركة", es: "Laylat al-Qadr", fr: "Nuit du Destin", hi: "शब-ए-क़द्र मुबारक", zh: "尊贵之夜（盖德尔夜）", pt: "Noite do Destino", ru: "Ночь Предопределения (Ляйлят аль-Кадр)", de: "Laylat al-Qadr", ja: "みいつの夜", ko: "권능의 밤", it: "Notte del Destino", tr: "Kadir Geceniz Mübarek Olsun", id: "Malam Lailatul Qadar", bn: "লাইলাতুল কদর মোবারক", vi: "Đêm Định Mệnh Laylat al-Qadr", sw: "Laylat al-Qadr"
+  },
+  occ_chand_raat: {
+    en: "Chand Raat", ur: "چاند رات مبارک", ar: "ليلة العيد مباركة", es: "Chand Raat Mubarak", fr: "Chand Raat Mubarak", hi: "चांद रात मुबारक", zh: "新月之夜吉庆", pt: "Chand Raat Mubarak", ru: "Чанд Раат Мубарак", de: "Chand Raat Mubarak", ja: "チャンド・ラート（新月の夜）", ko: "찬드 라트 무바라크", it: "Chand Raat Mubarak", tr: "Arefe Gecesi Mübarek Olsun", id: "Malam Takbiran Idul Fitri", bn: "চাঁদ রাত মোবারক", vi: "Chand Raat Mubarak", sw: "Chand Raat Mubarak"
+  },
+  occ_day_of_arafah: {
+    en: "Day of Arafah", ur: "یومِ عرفہ مبارک", ar: "يوم عرفة المبارك", es: "Día de Arafah", fr: "Jour d'Arafat", hi: "यौम-ए-अरफ़ा मुबारक", zh: "阿拉法特日", pt: "Dia de Arafah", ru: "День Арафа", de: "Tag von Arafah", ja: "アラファの日", ko: "아라파의 날", it: "Giorno di Arafah", tr: "Arefe Günü Mübarek Olsun", id: "Hari Arafah", bn: "আরাফার দিন মোবারক", vi: "Ngày Arafah", sw: "Siku ya Arafah"
+  },
+  occ_islamic_new_year: {
+    en: "Islamic New Year", ur: "نیا اسلامی سال مبارک", ar: "رأس السنة الهجرية الجديدة", es: "Año Nuevo Islámico", fr: "Nouvel An Islamique", hi: "इस्लामी नया साल मुबारक", zh: "伊斯兰新年吉庆", pt: "Ano Novo Islâmico", ru: "Мусульманский Новый год", de: "Islamisches Neujahr", ja: "イスラム新年", ko: "이슬람 새해", it: "Capodanno Islamico", tr: "Hicri Yeni Yılınız Mübarek Olsun", id: "Tahun Baru Islam (Hijriyah)", bn: "হিজরি নববর্ষ মোবারক", vi: "Năm Mới Hồi Giáo", sw: "Mwaka Mpya wa Kiislamu"
+  },
+  occ_ashura: {
+    en: "Day of Ashura", ur: "یومِ عاشورہ", ar: "يوم عاشوراء", es: "Día de Ashura", fr: "Jour d'Achoura", hi: "यौम-ए-आशूरा", zh: "阿舒拉节", pt: "Dia de Ashura", ru: "День Ашура", de: "Tag von Aschura", ja: "アーシューラーの日", ko: "아슈라의 날", it: "Giorno di Ashura", tr: "Aşure Günü", id: "Hari Asyura", bn: "আশুরা দিবস", vi: "Ngày Ashura", sw: "Siku ya Ashura"
+  },
+  occ_chehlum: {
+    en: "Arbaeen / Chehlum", ur: "چہلم امام حسینؑ", ar: "أربعينية الإمام الحسين", es: "Arbaeen / Chehlum", fr: "Arbaïn / Chehlum", hi: "चेहल्लुम इमाम हुसैन", zh: "阿巴因节 / 彻赫卢姆", pt: "Arbaeen / Chehlum", ru: "Арбаин / Чехлум", de: "Arbaeen / Chehlum", ja: "アルバイン（四十日祭）", ko: "아르바인 추모일", it: "Arbaeen / Chehlum", tr: "Erbain / Çehlum", id: "Arba'in / Chehlum", bn: "চেহলাম", vi: "Arbaeen / Chehlum", sw: "Arbaeen / Chehlum"
+  },
+  occ_gyarvi_sharif: {
+    en: "Gyarvi Sharif", ur: "گیارہویں شریف مبارک", ar: "الحادية عشرة الشريفة مباركة", es: "Gyarvi Sharif", fr: "Gyarvi Sharif", hi: "ग्यारहवीं शरीफ मुबारक", zh: "第十一吉日志庆", pt: "Gyarvi Sharif", ru: "Гьярви Шариф Мубарак", de: "Gyarvi Sharif", ja: "ギャールウィー・シャリーフ", ko: "기아르비 샤리프", it: "Gyarvi Sharif", tr: "Gyarvi Şerif", id: "Gyarvi Syarif", bn: "গিয়ারভী শরীফ মোবারক", vi: "Gyarvi Sharif", sw: "Gyarvi Sharif"
+  },
+  occ_all_saints_day: {
+    en: "All Saints' Day", ur: "آل سینٹس ڈے", ar: "عيد جميع القديسين", es: "Día de Todos los Santos", fr: "Toussaint", hi: "सभी संतों का दिवस", zh: "诸圣节", pt: "Dia de Todos os Santos", ru: "День всех святых", de: "Allerheiligen", ja: "諸聖人の日", ko: "모든 성인의 날", it: "Tutti i Santi", tr: "Tüm Azizler Günü", id: "Hari Raya Semua Orang Kudus", bn: "সমস্ত সাধুদের দিন", vi: "Lễ Các Thánh", sw: "Siku ya Watakatifu Wote"
+  },
+  occ_boxing_day: {
+    en: "Boxing Day", ur: "باکسنگ ڈے مبارک", ar: "يوم الصناديق (بوكسينغ داي)", es: "Boxing Day", fr: "Boxing Day", hi: "बॉक्सिंग डे मुबारक", zh: "节礼日", pt: "Boxing Day", ru: "День подарков (Boxing Day)", de: "Zweiter Weihnachtsfeiertag", ja: "ボクシング・デー", ko: "박싱 데이", it: "Santo Stefano (Boxing Day)", tr: "Hediyeleşme Günü", id: "Boxing Day", bn: "বক্সিং ডে", vi: "Ngày Boxing Day", sw: "Siku ya Sanduku"
+  },
+  occ_orthodox_christmas: {
+    en: "Orthodox Christmas", ur: "آرتھوڈوکس کرسمس", ar: "عيد الميلاد الأرثوذكسي المجيد", es: "Navidad Ortodoxa", fr: "Noël Orthodoxe", hi: "रूढ़िवादी क्रिसमस", zh: "东正教圣诞节", pt: "Natal Ortodoxo", ru: "Православное Рождество", de: "Orthodoxe Weihnachten", ja: "正教会クリスマス", ko: "정교회 성탄절", it: "Natale Ortodosso", tr: "Ortodoks Noel'i", id: "Natal Ortodoks", bn: "অর্থোডক্স ক্রিসমাস", vi: "Giáng Sinh Chính Thống Giáo", sw: "Krismasi ya Kiorthodoksi"
+  },
+  occ_makar_sankranti: {
+    en: "Makar Sankranti & Lohri", ur: "مکر سنکرانتی و لوہڑی", ar: "مهرجان مكر سانكرانتي ولوري", es: "Makar Sankranti y Lohri", fr: "Makar Sankranti et Lohri", hi: "मकर संक्रांति व लोहड़ी", zh: "风筝收获节（玛卡尔桑格拉提）与洛利节", pt: "Makar Sankranti e Lohri", ru: "Макар Санкранти и Лори", de: "Makar Sankranti & Lohri", ja: "マカル・サンクラーンティ＆ローリー", ko: "마카르 산크란티 및 로리", it: "Makar Sankranti e Lohri", tr: "Makar Sankranti ve Lohri", id: "Makar Sankranti & Lohri", bn: "মকর সংক্রান্তি ও লোহরি", vi: "Lễ Hội Makar Sankranti & Lohri", sw: "Makar Sankranti na Lohri"
+  },
+  occ_lantern_festival: {
+    en: "Lantern Festival", ur: "لالٹین فیسٹیول مبارک", ar: "عيد الفوانيس الصيني", es: "Festival de los Faroles", fr: "Fête des Lanternes", hi: "लालटेन उत्सव", zh: "元宵节快乐", pt: "Festival das Lanternas", ru: "Праздник фонарей (Юаньсяоцзе)", de: "Laternenfest", ja: "元宵節・ランタンフェスティバル", ko: "원소절 등불 축제", it: "Festa delle Lanterne", tr: "Fener Festivali", id: "Festival Lampion (Cap Go Meh)", bn: "লণ্ঠন উৎসব", vi: "Tết Nguyên Tiêu (Hội Hoa Đăng)", sw: "Tamasha la Taa za Kichina"
+  },
+  occ_maha_shivratri: {
+    en: "Maha Shivratri", ur: "مہا شیو راتری", ar: "مهرجان مها شيفاراتري", es: "Maha Shivratri", fr: "Maha Shivaratri", hi: "महाशिवरात्रि की शुभकामनाएं", zh: "湿婆之夜节", pt: "Maha Shivratri", ru: "Махашиваратри", de: "Maha Shivratri", ja: "マハー・シヴァラートリー", ko: "마하 시바라트리", it: "Maha Shivratri", tr: "Maha Şivaratri", id: "Maha Shivaratri", bn: "মহা শিবরাত্রি", vi: "Lễ Hội Maha Shivratri", sw: "Maha Shivratri"
+  },
+  occ_nowruz: {
+    en: "Nowruz (Persian New Year)", ur: "نوروز مبارک", ar: "عيد النوروز المبارك", es: "Nowruz (Año Nuevo Persa)", fr: "Norouz (Nouvel An Persan)", hi: "नौरोज़ मुबारक", zh: "诺鲁孜节（波斯新年）", pt: "Nowruz (Ano Novo Persa)", ru: "Навруз Мубарак", de: "Nowruz (Persisches Neujahr)", ja: "ノウルーズ（春分の日・新年の祭り）", ko: "노우루즈 (페르시아 새해)", it: "Nowruz (Capodanno Persiano)", tr: "Nevruz Bayramınız Kutlu Olsun", id: "Nowruz (Tahun Baru Persia)", bn: "নওরোজ মোবারক", vi: "Tết Nowruz Ba Tư", sw: "Nowruz"
+  },
+  occ_purim: {
+    en: "Purim", ur: "پوریم مبارک", ar: "عيد الفور (بوريم)", es: "Purim", fr: "Pourim", hi: "पूरीम मुबारक", zh: "普珥节快乐", pt: "Purim", ru: "Пурим Самеах", de: "Purim", ja: "プーリーム祭", ko: "부림절", it: "Purim", tr: "Purim Bayramı", id: "Purim", bn: "পুরিম", vi: "Lễ Purim", sw: "Purim"
+  },
+  occ_holi: {
+    en: "Holi", ur: "ہولی مبارک", ar: "عيد هولي السعيد", es: "Holi", fr: "Holi", hi: "होली की हार्दिक शुभकामनाएं", zh: "洒红节快乐", pt: "Holi", ru: "С праздником Холи", de: "Holi", ja: "ホーリー祭", ko: "홀리 축제", it: "Holi", tr: "Holi Bayramı", id: "Hari Raya Holi", bn: "শুভ দোলযাত্রা ও হোলি", vi: "Lễ Hội Holi", sw: "Holi"
+  },
+  occ_good_friday: {
+    en: "Good Friday", ur: "گڈ فرائیڈے", ar: "الجمعة العظيمة", es: "Viernes Santo", fr: "Vendredi Saint", hi: "गुड फ्राइडे", zh: "耶稣受难日", pt: "Sexta-feira Santa", ru: "Страстная Пятница", de: "Karfreitag", ja: "受難告知日（グッドフライデー）", ko: "성금요일", it: "Venerdì Santo", tr: "Kutsal Cuma", id: "Jumat Agung", bn: "গুড ফ্রাইডে", vi: "Thứ Sáu Tuần Thánh", sw: "Ijumaa Kuu"
+  },
+  occ_passover: {
+    en: "Passover (Pesach)", ur: "عیدِ فصح (پیساخ)", ar: "عيد الفصح اليهودي (بيساح)", es: "Pésaj", fr: "Pessa'h", hi: "फसह (पेसाच)", zh: "逾越节快乐", pt: "Pêssach", ru: "Песах Самеах", de: "Pessach", ja: "過越の祭り（ペサハ）", ko: "유월절", it: "Pesach", tr: "Hamursuz Bayramı (Pesah)", id: "Paskah Yahudi (Pesakh)", bn: "পাসওভার (পেসাচ)", vi: "Lễ Vượt Qua (Passover)", sw: "Pasaka ya Kiyahudi"
+  },
+  occ_vaisakhi: {
+    en: "Vaisakhi", ur: "بیساکھی مبارک", ar: "عيد فايساخي المبارك", es: "Vaisakhi", fr: "Vaisakhi", hi: "बैसाखी की लख-लख बधाइयां", zh: "收获节（拜萨基节）", pt: "Vaisakhi", ru: "Вайсакхи Мубарак", de: "Vaisakhi", ja: "ヴァイサーキー祭", ko: "바이샤키 축제", it: "Vaisakhi", tr: "Vaisakhi", id: "Vaisakhi", bn: "বৈশাখী উৎসব", vi: "Lễ Hội Vaisakhi", sw: "Vaisakhi"
+  },
+  occ_buddha_purnima: {
+    en: "Buddha Purnima (Vesak)", ur: "بدھ پورنیما", ar: "يوم فيساك (بوذا بورنيما)", es: "Vesak / Buda Purnima", fr: "Vesak / Bouddha Purnima", hi: "बुद्ध पूर्णिमा की शुभकामनाएं", zh: "佛诞节（卫塞节）", pt: "Vesak / Buda Purnima", ru: "Будда Пурнима (Весак)", de: "Vesakh / Buddha Purnima", ja: "花まつり・灌仏会（ウェーサーカ祭）", ko: "부처님 오신 날 (베삭)", it: "Vesak / Buddha Purnima", tr: "Vesak / Buda Purnima", id: "Hari Raya Waisak", bn: "বুদ্ধ পূর্ণিমা", vi: "Đại Lễ Phật Đản (Vesak)", sw: "Vesak / Buddha Purnima"
+  },
+  occ_raksha_bandhan: {
+    en: "Raksha Bandhan", ur: "رکشا بندھن مبارک", ar: "عيد راكشا باندهان السعيد", es: "Raksha Bandhan", fr: "Raksha Bandhan", hi: "रक्षाबंधन की हार्दिक शुभकामनाएं", zh: "兄妹节快乐", pt: "Raksha Bandhan", ru: "Ракша Бандхан", de: "Raksha Bandhan", ja: "ラクシャ・バンダン（兄妹の絆の祭り）", ko: "라크샤 반단", it: "Raksha Bandhan", tr: "Raksha Bandhan", id: "Raksha Bandhan", bn: "রাখিবন্ধন উৎসব", vi: "Lễ Hội Raksha Bandhan", sw: "Raksha Bandhan"
+  },
+  occ_janmashtami: {
+    en: "Krishna Janmashtami", ur: "کرشنا جنم اشٹمی", ar: "عيد كريشنا جانماشتامي", es: "Krishna Janmashtami", fr: "Krishna Janmashtami", hi: "श्रीकृष्ण जन्माष्टमी की शुभकामनाएं", zh: "黑天圣诞节", pt: "Krishna Janmashtami", ru: "Кришна Джанмаштами", de: "Krishna Janmashtami", ja: "クリシュナ生誕祭", ko: "크리슈나 자얀티", it: "Krishna Janmashtami", tr: "Krişna Canmaştami", id: "Krishna Janmashtami", bn: "শ্রীকৃষ্ণ জন্মাষ্টমী", vi: "Lễ Hội Krishna Janmashtami", sw: "Krishna Janmashtami"
+  },
+  occ_daughters_day: {
+    en: "National Daughters Day", ur: "بیٹیوں کا دن مبارک", ar: "يوم الابنة الوطني السعيد", es: "Día de las Hijas", fr: "Fête des Filles", hi: "राष्ट्रीय बेटी दिवस", zh: "女儿节快乐", pt: "Dia das Filhas", ru: "День дочери", de: "Tag der Töchter", ja: "娘の日", ko: "딸의 날", it: "Festa delle Figlie", tr: "Kız Çocukları Günü", id: "Hari Anak Perempuan", bn: "কন্যা দিবস", vi: "Ngày Của Con Gái", sw: "Siku ya Mabinti"
+  },
+  occ_world_smile_day: {
+    en: "World Smile Day", ur: "مسکراہٹ کا عالمی دن", ar: "اليوم العالمي للابتسامة", es: "Día Mundial de la Sonrisa", fr: "Journée Mondiale du Sourire", hi: "विश्व मुस्कान दिवस", zh: "世界微笑日", pt: "Dia Mundial do Sorriso", ru: "Всемирный день улыбки", de: "Welttag des Lächelns", ja: "世界スマイルデー", ko: "세계 미소의 날", it: "Giornata Mondiale del Sorriso", tr: "Dünya Gülümseme Günü", id: "Hari Senyum Sedunia", bn: "বিশ্ব হাসি দিবস", vi: "Ngày Nụ Cười Thế Giới", sw: "Siku ya Tabasamu Duniani"
+  },
+  occ_sweetest_day: {
+    en: "Sweetest Day", ur: "میٹھی یادوں کا دن", ar: "يوم المشاعر الجميلة والحلويات", es: "Sweetest Day", fr: "Sweetest Day", hi: "स्वीटेस्ट डे", zh: "温馨蜜意日", pt: "Sweetest Day", ru: "День самых сладких чувств", de: "Sweetest Day", ja: "スウィーテスト・デー", ko: "스위티스트 데이", it: "Sweetest Day", tr: "Tatlı Gün", id: "Sweetest Day", bn: "সুইটেস্ট ডে", vi: "Ngày Ngọt Ngào Nhất", sw: "Siku Tamu Zaidi"
+  },
+  occ_mens_day: {
+    en: "International Men's Day", ur: "مردوں کا عالمی دن", ar: "اليوم العالمي للرجل", es: "Día Internacional del Hombre", fr: "Journée Internationale de l'Homme", hi: "अंतर्राष्ट्रीय पुरुष दिवस", zh: "国际男人节", pt: "Dia Internacional do Homem", ru: "Международный мужской день", de: "Internationaler Männertag", ja: "国際男性デー", ko: "세계 남성의 날", it: "Giornata Internazionale dell'Uomo", tr: "Dünya Erkekler Günü", id: "Hari Pria Internasional", bn: "আন্তর্জাতিক পুরুষ দিবস", vi: "Ngày Quốc Tế Đàn Ông", sw: "Siku ya Wanaume Duniani"
+  },
+  occ_womens_day: {
+    en: "International Women's Day", ur: "خواتین کا عالمی دن", ar: "اليوم العالمي للمرأة", es: "Día Internacional de la Mujer", fr: "Journée Internationale des Droits des Femmes", hi: "अंतर्राष्ट्रीय महिला दिवस", zh: "三八国际妇女节", pt: "Dia Internacional da Mulher", ru: "Международный женский день (8 Марта)", de: "Internationaler Frauentag", ja: "国際女性デー", ko: "세계 여성의 날", it: "Giornata Internazionale della Donna", tr: "Dünya Kadınlar Günü", id: "Hari Perempuan Internasional", bn: "আন্তর্জাতিক নারী দিবস", vi: "Ngày Quốc Tế Phụ Nữ", sw: "Siku ya Wanawake Duniani"
+  },
+  occ_siblings_day: {
+    en: "National Siblings Day", ur: "بہن بھائیوں کا دن", ar: "اليوم الوطني للأشقاء", es: "Día de los Hermanos", fr: "Journée des Frères et Sœurs", hi: "राष्ट्रीय भाई-बहन दिवस", zh: "兄弟姐妹节", pt: "Dia dos Irmãos", ru: "День братьев и сестер", de: "Geschwistertag", ja: "兄弟姉妹の日", ko: "형제자매의 날", it: "Giornata dei Fratelli e delle Sorelle", tr: "Kardeşler Günü", id: "Hari Saudara Kandung", bn: "ভাই-বোন দিবস", vi: "Ngày Anh Chị Em", sw: "Siku ya Ndugu"
+  },
+  occ_pet_day: {
+    en: "National Pet Day", ur: "پالتو جانوروں کا دن", ar: "اليوم الوطني للحيوانات الأليفة", es: "Día de las Mascotas", fr: "Journée des Animaux de Compagnie", hi: "राष्ट्रीय पालतू पशु दिवस", zh: "宠物节快乐", pt: "Dia dos Animais de Estimação", ru: "День домашних питомцев", de: "Tag der Haustiere", ja: "ペットの日", ko: "반려동물의 날", it: "Festa degli Animali Domestici", tr: "Evcil Hayvanlar Günü", id: "Hari Hewan Peliharaan", bn: "পোষা প্রাণী দিবস", vi: "Ngày Thú Cưng", sw: "Siku ya Wanyama Vipenzi"
+  },
+  occ_parents_day: {
+    en: "Parents' Day", ur: "والدین کا دن", ar: "عيد الوالدين السعيد", es: "Día de los Padres", fr: "Fête des Parents", hi: "माता-पिता दिवस", zh: "父母节", pt: "Dia dos Pais e Mães", ru: "День родителей", de: "Tag der Eltern", ja: "両親の日", ko: "어버이날", it: "Festa dei Genitori", tr: "Anne ve Babalar Günü", id: "Hari Orang Tua", bn: "পিতা-মাতা দিবস", vi: "Ngày Của Cha Mẹ", sw: "Siku ya Wazazi"
+  },
+  occ_sisters_day: {
+    en: "National Sisters Day", ur: "بہنوں کا دن مبارک", ar: "يوم الأخت السعيد", es: "Día de las Hermanas", fr: "Fête des Sœurs", hi: "राष्ट्रीय बहन दिवस", zh: "姐妹节快乐", pt: "Dia das Irmãs", ru: "День сестры", de: "Tag der Schwestern", ja: "姉妹の日", ko: "자매의 날", it: "Festa delle Sorelle", tr: "Kız Kardeşler Günü", id: "Hari Saudari Perempuan", bn: "বোন দিবস", vi: "Ngày Chị Em Gái", sw: "Siku ya Dada"
+  },
+  occ_grandparents_day: {
+    en: "Grandparents' Day", ur: "دادا دادی و نانا نانی کا دن", ar: "عيد الأجداد والجدات", es: "Día de los Abuelos", fr: "Fête des Grands-Parents", hi: "दादा-दादी / नाना-नानी दिवस", zh: "祖父母节", pt: "Dia dos Avós", ru: "День бабушек и дедушек", de: "Großelterntag", ja: "祖父母の日", ko: "조부모의 날", it: "Festa dei Nonni", tr: "Büyükanne ve Büyükbabalar Günü", id: "Hari Kakek & Nenek", bn: "দাদা-দাদী দিবস", vi: "Ngày Ông Bà", sw: "Siku ya Babu na Nyanya"
+  },
+  occ_saudi_national_day: {
+    en: "Saudi National Day", ur: "سعودی قومی دن مبارک", ar: "اليوم الوطني السعودي المجيد", es: "Día Nacional de Arabia Saudita", fr: "Fête Nationale Saoudienne", hi: "सऊदी राष्ट्रीय दिवस", zh: "沙特国庆日", pt: "Dia Nacional da Arábia Saudita", ru: "Национальный день Саудовской Аравии", de: "Saudi-arabischer Nationalfeiertag", ja: "サウジアラビア建国記念日", ko: "사우디 국경일", it: "Festa Nazionale Saudita", tr: "Suudi Milli Günü", id: "Hari Nasional Arab Saudi", bn: "সৌদি জাতীয় দিবস", vi: "Quốc Khánh Ả Rập Xê Út", sw: "Siku ya Kitaifa ya Saudi"
+  },
+  occ_german_unity_day: {
+    en: "German Unity Day", ur: "جرمن یومِ یکجہتی", ar: "يوم الوحدة الألمانية", es: "Día de la Unidad Alemana", fr: "Jour de l'Unité Allemande", hi: "जर्मन एकता दिवस", zh: "德国统一日", pt: "Dia da Unidade Alemã", ru: "День немецкого единства", de: "Tag der Deutschen Einheit", ja: "ドイツ統一の日", ko: "독일 통일의 날", it: "Giorno dell'Unità Tedesca", tr: "Alman Birlik Günü", id: "Hari Kesatuan Jerman", bn: "জার্মান ঐক্য দিবস", vi: "Ngày Thống Nhất Nước Đức", sw: "Siku ya Umoja wa Ujerumani"
+  },
+  occ_iqbal_day: {
+    en: "Iqbal Day", ur: "یومِ اقبال مبارک", ar: "يوم الشاعر العلامة إقبال", es: "Día de Iqbal", fr: "Jour d'Iqbal", hi: "इक़बाल दिवस", zh: "伊克巴尔日", pt: "Dia de Iqbal", ru: "День Икбала", de: "Iqbal-Tag", ja: "イクバールの日", ko: "이크발의 날", it: "Giorno di Iqbal", tr: "İkbal Günü", id: "Hari Iqbal", bn: "ইকবাল দিবস", vi: "Ngày Iqbal", sw: "Siku ya Iqbal"
+  },
+  occ_uae_national_day: {
+    en: "UAE National Day", ur: "متحدہ عرب امارات کا قومی دن", ar: "عيد الاتحاد لدولة الإمارات العربية المتحدة", es: "Día Nacional de los Emiratos Árabes Unidos", fr: "Fête Nationale des Émirats", hi: "संयुक्त अरब अमीरात राष्ट्रीय दिवस", zh: "阿联酋国庆日", pt: "Dia Nacional dos Emirados Árabes Unidos", ru: "Национальный день ОАЭ", de: "VAE-Nationalfeiertag", ja: "アラブ首長国連邦ナショナルデー", ko: "UAE 국경일", it: "Festa Nazionale degli Emirati Arabi Uniti", tr: "BAE Milli Günü", id: "Hari Nasional UEA", bn: "সংযুক্ত আরব আমিরাত জাতীয় দিবস", vi: "Quốc Khánh UAE", sw: "Siku ya Kitaifa ya UAE"
+  },
+  occ_quaid_day: {
+    en: "Quaid-e-Azam Day", ur: "یومِ ولادت قائداعظمؒ", ar: "يوم القائد الأعظم محمد علي جناح", es: "Día de Quaid-e-Azam", fr: "Journée de Quaid-e-Azam", hi: "क़ायदे आज़म दिवस", zh: "国父真纳诞辰纪念日", pt: "Dia de Quaid-e-Azam", ru: "День Каид-э-Азама", de: "Quaid-e-Azam-Tag", ja: "クエイド・アザム生誕記念日", ko: "카이드-에-아잠의 날", it: "Giorno di Quaid-e-Azam", tr: "Kaid-i Azam Günü", id: "Hari Quaid-e-Azam", bn: "কায়েদে আজম দিবস", vi: "Ngày Quaid-e-Azam", sw: "Siku ya Quaid-e-Azam"
+  },
+  occ_australia_day: {
+    en: "Australia Day", ur: "آسٹریلیا ڈے", ar: "اليوم الوطني لأستراليا", es: "Día de Australia", fr: "Fête de l'Australie", hi: "ऑस्ट्रेलिया दिवस", zh: "澳大利亚国庆日", pt: "Dia da Austrália", ru: "День Австралии", de: "Australientag", ja: "オーストラリアの日", ko: "오스트레일리아의 날", it: "Giorno dell'Australia", tr: "Avustralya Günü", id: "Hari Australia", bn: "অস্ট্রেলিয়া দিবস", vi: "Ngày Nước Úc", sw: "Siku ya Australia"
+  },
+  occ_india_republic_day: {
+    en: "Republic Day of India", ur: "یومِ جمہوریہ بھارت", ar: "عيد الجمهورية الهندية", es: "Día de la República de la India", fr: "Jour de la République de l'Inde", hi: "गणतंत्र दिवस की शुभकामनाएं", zh: "印度共和国日", pt: "Dia da República da Índia", ru: "День Республики Индия", de: "Tag der Republik Indien", ja: "インド共和国記念日", ko: "인도 공화국의 날", it: "Festa della Repubblica Indiana", tr: "Hindistan Cumhuriyet Günü", id: "Hari Republik India", bn: "ভারতের প্রজাতন্ত্র দিবস", vi: "Ngày Cộng Hòa Ấn Độ", sw: "Siku ya Jamhuri ya India"
+  },
+  occ_pakistan_day: {
+    en: "Pakistan Day", ur: "یومِ پاکستان مبارک", ar: "يوم باكستان الوطني", es: "Día de Pakistán", fr: "Fête du Pakistan", hi: "पाकिस्तान दिवस की बधाई", zh: "巴基斯坦日", pt: "Dia do Paquistão", ru: "День Пакистана (23 Марта)", de: "Pakistan-Tag", ja: "パキスタンの日", ko: "파키스탄의 날", it: "Giorno del Pakistan", tr: "Pakistan Günü", id: "Hari Pakistan", bn: "পাকিস্তান দিবস", vi: "Ngày Pakistan", sw: "Siku ya Pakistan"
+  },
+  occ_saudi_founding_day: {
+    en: "Saudi Founding Day", ur: "سعودی یومِ تاسیس", ar: "يوم التأسيس السعودي المجيد", es: "Día de la Fundación de Arabia Saudita", fr: "Jour de la Fondation Saoudienne", hi: "सऊदी स्थापना दिवस", zh: "沙特建国日", pt: "Dia da Fundação Saudita", ru: "День основания Саудовской Аравии", de: "Saudi-arabischer Gründungstag", ja: "サウジアラビア建国の日", ko: "사우디 건국의 날", it: "Giorno della Fondazione Saudita", tr: "Suudi Kuruluş Günü", id: "Hari Pendirian Arab Saudi", bn: "সৌদি প্রতিষ্ঠা দিবস", vi: "Ngày Thành Lập Ả Rập Xê Út", sw: "Siku ya Kuanzishwa kwa Saudi"
+  },
+  occ_canada_day: {
+    en: "Canada Day", ur: "کینیڈا ڈے مبارک", ar: "اليوم الوطني لكندا", es: "Día de Canadá", fr: "Fête du Canada", hi: "कनाडा दिवस", zh: "加拿大国庆日", pt: "Dia do Canadá", ru: "День Канады", de: "Kanada-Tag", ja: "カナダ・デー", ko: "캐나다의 날", it: "Festa del Canada", tr: "Kanada Günü", id: "Hari Kanada", bn: "কানাডা দিবস", vi: "Ngày Quốc Khánh Canada", sw: "Siku ya Canada"
+  },
+  occ_us_independence_day: {
+    en: "US 4th of July", ur: "امریکی یومِ آزادی (4 جولائی)", ar: "عيد استقلال الولايات المتحدة (4 يوليو)", es: "4 de Julio - Independencia de EE. UU.", fr: "4 Juillet - Fête de l'Indépendance Américaine", hi: "अमेरिकी स्वतंत्रता दिवस (4 जुलाई)", zh: "美国独立日（7月4日）", pt: "4 de Julho - Independência dos EUA", ru: "День независимости США (4 Июля)", de: "Unabhängigkeitstag der USA (4. Juli)", ja: "アメリカ独立記念日（7月4日）", ko: "미국 독립기념일 (7월 4일)", it: "4 Luglio - Indipendenza degli Stati Uniti", tr: "ABD Bağımsızlık Günü (4 Temmuz)", id: "Hari Kemerdekaan AS (4 Juli)", bn: "আমেরিকান স্বাধীনতা দিবস (৪ঠা জুলাই)", vi: "Ngày Độc Lập Hoa Kỳ (4 tháng 7)", sw: "Siku ya Uhuru wa Marekani (4 Julai)"
+  },
+  occ_india_independence_day: {
+    en: "Independence Day of India", ur: "یومِ آزادی بھارت (15 اگست)", ar: "عيد استقلال الهند (15 أغسطس)", es: "Día de la Independencia de la India", fr: "Fête de l'Indépendance de l'Inde", hi: "स्वतंत्रता दिवस (15 अगस्त) की बधाई", zh: "印度独立日（8月15日）", pt: "Dia da Independência da Índia", ru: "День независимости Индии (15 Августа)", de: "Unabhängigkeitstag Indiens", ja: "インド独立記念日（8月15日）", ko: "인도 독립기념일 (8월 15일)", it: "Festa dell'Indipendenza Indiana", tr: "Hindistan Bağımsızlık Günü", id: "Hari Kemerdekaan India", bn: "ভারতের স্বাধীনতা দিবস (১৫ই আগস্ট)", vi: "Ngày Độc Lập Ấn Độ", sw: "Siku ya Uhuru wa India"
+  },
+  occ_defence_day: {
+    en: "Defence Day of Pakistan", ur: "یومِ دفاع پاکستان (6 ستمبر)", ar: "يوم الدفاع الوطني الباكستاني", es: "Día de la Defensa de Pakistán", fr: "Journée de la Défense du Pakistan", hi: "रक्षा दिवस (पाकिस्तान)", zh: "巴基斯坦国防日（9月6日）", pt: "Dia da Defesa do Paquistão", ru: "День обороны Пакистана", de: "Verteidigungstag Pakistans", ja: "パキスタン国防の日", ko: "파키스탄 국방의 날", it: "Giorno della Difesa del Pakistan", tr: "Pakistan Savunma Günü", id: "Hari Pertahanan Pakistan", bn: "প্রতিরক্ষা দিবস পাকিস্তান", vi: "Ngày Quốc Phòng Pakistan", sw: "Siku ya Ulinzi ya Pakistan"
+  },
+  occ_teachers_day: {
+    en: "World Teachers' Day", ur: "اساتذہ کا عالمی دن", ar: "اليوم العالمي للمعلم", es: "Día Mundial de los Docentes", fr: "Journée Mondiale des Enseignants", hi: "विश्व शिक्षक दिवस", zh: "世界教师日", pt: "Dia Mundial dos Professores", ru: "Всемирный день учителя", de: "Weltlehrertag", ja: "世界教師デー", ko: "세계 교사의 날", it: "Giornata Mondiale degli Insegnanti", tr: "Dünya Öğretmenler Günü", id: "Hari Guru Sedunia", bn: "বিশ্ব শিক্ষক দিবস", vi: "Ngày Nhà Giáo Thế Giới", sw: "Siku ya Walimu Duniani"
+  },
+  calTitle: {
+    en: "Worldwide Celebration & Islamic Calendar", ur: "عالمی تقریبات اور اسلامی کیلنڈر", ar: "التقويم الإسلامي واحتفالات العالم", es: "Calendario de Celebraciones Mundiales e Islámicas", fr: "Calendrier des Célébrations Mondiales et Islamiques", hi: "विश्वव्यापी उत्सव और इस्लामी कैलेंडर", zh: "全球庆典与伊斯兰历法", pt: "Calendário de Celebrações Mundiais e Islâmicas", ru: "Календарь мировых и исламских праздников", de: "Weltweiter Feier- und islamischer Kalender", ja: "世界の祝祭＆イスラム暦カレンダー", ko: "세계 축제 및 이슬람 달력", it: "Calendario delle Celebrazioni Mondiali e Islamiche", tr: "Dünya Çapında Kutlamalar ve İslami Takvim", id: "Kalender Perayaan Sedunia & Islam", bn: "বিশ্বব্যাপী উদযাপন ও ইসলামিক ক্যালেন্ডার", vi: "Lịch Lễ Hội Thế Giới & Hồi Giáo", sw: "Kalenda ya Sherehe za Kidunia na Kiislamu"
+  },
+  calSubtitle: {
+    en: "Explore 80+ celebrations across Islamic, global multi-faith, family, national, and seasonal milestones. Rolling 365-day schedule automatically updated daily.", ur: "اسلامی، عالمی مذاہب، خاندانی، قومی اور موسمی 80 سے زائد تقریبات۔ 365 دن کا لائیو شیڈول جو روزانہ خود بخود اپ ڈیٹ ہوتا ہے۔", ar: "استكشف أكثر من 80 مناسبة إسلامية وعالمية وعائلية ووطنية. جدول زمني متجدد على مدار 365 يوماً يتم تحديثه تلقائياً يومياً.", es: "Explora más de 80 celebraciones islámicas, religiosas, familiares y nacionales. Calendario de 365 días actualizado a diario.", fr: "Découvrez plus de 80 célébrations islamiques, religieuses, familiales et nationales. Calendrier 365 jours mis à jour quotidiennement.", hi: "इस्लामी, बहु-धार्मिक, पारिवारिक और राष्ट्रीय 80+ उत्सव देखें। 365 दिनों का दैनिक ऑटो-अपडेटिंग कैलेंडर।", zh: "探索80多个伊斯兰、跨宗教、家庭与国家庆典。365天滚动日程，每日自动更新。", pt: "Explore mais de 80 celebrações islâmicas, religiosas, familiares e nacionais. Calendário contínuo de 365 dias atualizado diariamente.", ru: "Более 80 исламских, мировых, семейных и национальных праздников. Календарь на 365 дней с ежедневным автообновлением.", de: "Über 80 Feiertage und Anlässe. Rollierender 365-Tage-Kalender mit täglicher Aktualisierung.", ja: "80以上の祝祭と記念日。毎日自動更新される365日ローリングカレンダー。", ko: "이슬람, 세계 종교, 가족 및 국경일 등 80개 이상의 축제. 매일 자동 업데이트되는 365일 캘린더.", it: "Oltre 80 celebrazioni islamiche, religiose, familiari e nazionali. Calendario a scorrimento di 365 giorni aggiornato ogni giorno.", tr: "80'den fazla İslami, evrensel, ailevi ve ulusal kutlama. Günlük otomatik güncellenen 365 günlük takvim.", id: "Jelajahi 80+ perayaan Islam, agama dunia, keluarga, dan nasional. Kalender 365 hari yang diperbarui otomatis setiap hari.", bn: "ইসলামিক, সার্বজনীন, পারিবারিক ও জাতীয় ৮০+ উদযাপন। ৩৬৫ দিনের দৈনিক স্বয়ংক্রিয় ক্যালেন্ডার।", vi: "Khám phá hơn 80 sự kiện kỷ niệm toàn cầu và Hồi giáo. Lịch 365 ngày tự động cập nhật mỗi ngày.", sw: "Gundua sherehe zaidi ya 80 za Kiislamu, kidini, kifamilia na kitaifa. Kalenda ya siku 365 inayohuishwa kila siku."
+  },
+  calHappeningSoon: {
+    en: "Happening Soon · Next Occasions", ur: "بہت جلد آنے والی تقریبات", ar: "قريباً جداً · المناسبات القادمة", es: "Próximamente · Siguientes Ocasiones", fr: "Bientôt · Prochaines Occasions", hi: "जल्द आने वाले अवसर", zh: "即将发生 · 近期庆典", pt: "Acontecendo em Breve · Próximas Ocasiões", ru: "Скоро · Ближайшие события", de: "Demnächst · Kommende Anlässe", ja: "近日開催 · 近日の記念日", ko: "곧 다가오는 행사", it: "In arrivo · Prossime Occasioni", tr: "Pek Yakında · Sıradaki Etkinlikler", id: "Segera Hadir · Acara Mendatang", bn: "শীঘ্রই আসছে · পরবর্তী উপলক্ষ", vi: "Sắp Diễn Ra · Các Dịp Tiếp Theo", sw: "Inakuja Hivi Karibuni · Matukio Yajayo"
+  },
+  calComingUp: {
+    en: "Coming Up Next in the Rolling Year", ur: "آنے والے دنوں کی اہم تقریبات", ar: "المناسبات القادمة في السنة المتجددة", es: "Próximas celebraciones en el año", fr: "À venir dans l'année en cours", hi: "आने वाले दिनों के प्रमुख उत्सव", zh: "未来一年即将迎来的庆典", pt: "Próximas celebrações no ano", ru: "Следующие события года", de: "Als Nächstes im rollierenden Jahr", ja: "今後1年間に控える祝祭", ko: "다가오는 주요 기념일", it: "Prossime celebrazioni dell'anno", tr: "Yıl İçinde Sıradaki Kutlamalar", id: "Mendatang dalam Tahun Berjalan", bn: "আসন্ন বছরের গুরুত্বপূর্ণ উদযাপন", vi: "Các Sự Kiện Tiếp Theo Trong Năm", sw: "Zinazofuata Katika Mwaka Huu"
+  },
+  calSearchPlaceholder: {
+    en: "Search by event, festival, Urdu title, or tradition (e.g. Ramadan, Diwali, Eid, Mother, Pakistan)...", ur: "تہوار، تقریب، اردو نام یا روایت کے ذریعے تلاش کریں (مثلاً رمضان، عید، دیوالی، مدرز ڈے)...", ar: "ابحث بالحدث، العيد، الاسم العربي أو التقليد (مثل رمضان، العيد، ديوالي)...", es: "Buscar por evento, festival o tradición (ej. Ramadán, Navidad, Diwali)...", fr: "Rechercher par événement, fête ou tradition (ex. Ramadan, Noël, Diwali)...", hi: "त्योहार, उत्सव या परंपरा के अनुसार खोजें (उदा. रमजान, ईद, दिवाली)...", zh: "按事件、节日或传统搜索（如斋月、开斋节、排灯节、母亲节）...", pt: "Pesquise por evento, festival ou tradição (ex.: Ramadã, Natal, Diwali)...", ru: "Поиск по событию, празднику или традиции (например, Рамадан, Ид, Дивали)...", de: "Nach Event, Fest oder Tradition suchen (z. B. Ramadan, Eid, Diwali)...", ja: "イベント、祝祭、伝統から検索（例：ラマダン、イード、ディワリ）...", ko: "이벤트, 축제, 전통명으로 검색 (예: 라마단, 이드, 디왈리)...", it: "Cerca per evento, festival o tradizione (es. Ramadan, Eid, Diwali)...", tr: "Etkinlik, bayram veya geleneğe göre ara (ör. Ramazan, Bayram, Diwali)...", id: "Cari berdasarkan acara, festival, atau tradisi (cth. Ramadan, Idul Fitri, Diwali)...", bn: "অনুষ্ঠান, উৎসব বা ঐতিহ্য অনুসারে খুঁজুন (যেমন রমজান, ঈদ, দিওয়ালি)...", vi: "Tìm kiếm theo sự kiện, lễ hội hoặc truyền thống (ví dụ: Ramadan, Eid, Diwali)...", sw: "Tafuta kwa tukio, sherehe au tamaduni (mf. Ramadhani, Eid, Krismasi)..."
+  },
+  calAllCelebrations: {
+    en: "All Celebrations", ur: "تمام تقریبات", ar: "جميع الاحتفالات", es: "Todas las Celebraciones", fr: "Toutes les Célébrations", hi: "सभी उत्सव", zh: "全部庆典", pt: "Todas as Celebrações", ru: "Все праздники", de: "Alle Feiern", ja: "すべてのお祝い", ko: "모든 기념일", it: "Tutte le Celebrazioni", tr: "Tüm Kutlamalar", id: "Semua Perayaan", bn: "সব উদযাপন", vi: "Tất Cả Lễ Hội", sw: "Sherehe Zote"
+  },
+  calAllMonths: {
+    en: "All 12 Months (Next 365 Days)", ur: "تمام 12 مہینے (اگلے 365 دن)", ar: "جميع الأشهر الـ 12 (الـ 365 يوماً القادمة)", es: "Los 12 meses (Próximos 365 días)", fr: "Tous les 12 mois (365 prochains jours)", hi: "सभी 12 महीने (अगले 365 दिन)", zh: "全部 12 个月（未来 365 天）", pt: "Todos os 12 meses (Próximos 365 dias)", ru: "Все 12 месяцев (следующие 365 дней)", de: "Alle 12 Monate (nächste 365 Tage)", ja: "全12か月（今後365日間）", ko: "12개월 전체 (향후 365일)", it: "Tutti i 12 mesi (prossimi 365 giorni)", tr: "Tüm 12 Ay (Gelecek 365 Gün)", id: "Semua 12 Bulan (365 Hari ke Depan)", bn: "১২টি মাস (পরবর্তী ৩৬৫ দিন)", vi: "Tất Cả 12 Tháng (365 Ngày Tới)", sw: "Miezi Yote 12 (Siku 365 Zijazo)"
+  },
+  calMonthLabel: {
+    en: "Month:", ur: "مہینہ:", ar: "الشهر:", es: "Mes:", fr: "Mois :", hi: "महीना:", zh: "月份：", pt: "Mês:", ru: "Месяц:", de: "Monat:", ja: "月:", ko: "월:", it: "Mese:", tr: "Ay:", id: "Bulan:", bn: "মাস:", vi: "Tháng:", sw: "Mwezi:"
+  },
+  calShowing: {
+    en: "Showing", ur: "دکھائے جا رہے ہیں", ar: "عرض", es: "Mostrando", fr: "Affichage de", hi: "दिखा रहा है", zh: "正在显示", pt: "Exibindo", ru: "Показано", de: "Angezeigt werden", ja: "表示中：", ko: "표시 중:", it: "Visualizzazione di", tr: "Gösterilen:", id: "Menampilkan", bn: "প্রদর্শিত হচ্ছে", vi: "Hiển thị", sw: "Inaonyesha"
+  },
+  calEventsScheduled: {
+    en: "events scheduled over the next 365 days", ur: "تقریبات جو اگلے 365 دنوں کے دوران شیڈول ہیں", ar: "مناسبات مجدولة خلال الـ 365 يوماً القادمة", es: "eventos programados en los próximos 365 días", fr: "événements prévus au cours des 365 prochains jours", hi: "अगले 365 दिनों में निर्धारित कार्यक्रम", zh: "未来 365 天内计划的庆典", pt: "eventos agendados nos próximos 365 dias", ru: "событий, запланированных на следующие 365 дней", de: "Ereignisse in den nächsten 365 Tagen", ja: "件のイベント（今後365日間）", ko: "개의 향후 365일간 예정된 행사", it: "eventi programmati nei prossimi 365 giorni", tr: "etkinlik (gelecek 365 gün içinde)", id: "acara dijadwalkan dalam 365 hari ke depan", bn: "টি অনুষ্ঠান পরবর্তী ৩৬৫ দিনে নির্ধারিত", vi: "sự kiện dự kiến trong 365 ngày tới", sw: "matukio yaliyopangwa katika siku 365 zijazo"
+  },
+  calResetFilters: {
+    en: "Reset Filters", ur: "فلٹرز ختم کریں", ar: "إعادة ضبط التصفية", es: "Restablecer filtros", fr: "Réinitialiser les filtres", hi: "फ़िल्टर रीसेट करें", zh: "重置筛选", pt: "Redefinir filtros", ru: "Сбросить фильтры", de: "Filter zurücksetzen", ja: "フィルターをリセット", ko: "필터 초기화", it: "Reimposta filtri", tr: "Filtreleri Sıfırla", id: "Atur Ulang Filter", bn: "ফিল্টার রিসেট করুন", vi: "Đặt Lại Bộ Lọc", sw: "Weka Upya Vichujio"
+  },
+  calNoEventsMatch: {
+    en: "No events match your current filter", ur: "آپ کی تلاش سے مطابقت رکھنے والی کوئی تقریب نہیں ملی", ar: "لا توجد مناسبات تطابق بحثك الحالي", es: "No hay eventos que coincidan con tu búsqueda", fr: "Aucun événement ne correspond à votre recherche", hi: "आपके वर्तमान फ़िल्टर से कोई मेल नहीं मिला", zh: "没有符合当前筛选条件的庆典", pt: "Nenhum evento corresponde ao seu filtro", ru: "Нет событий, соответствующих вашему фильтру", de: "Keine Ereignisse entsprechen Ihren Kriterien", ja: "該当するイベントが見つかりませんでした", ko: "현재 필터와 일치하는 행사가 없습니다", it: "Nessun evento corrisponde ai filtri selezionati", tr: "Geçerli filtrenize uyan etkinlik bulunamadı", id: "Tidak ada acara yang cocok dengan filter Anda", bn: "আপনার ফিল্টারের সাথে কোনো ইভেন্ট মিলেনি", vi: "Không có sự kiện nào khớp với bộ lọc của bạn", sw: "Hakuna matukio yanayolingana na kichujio chako"
+  },
+  calSampleWish: {
+    en: "Sample Wish & Blessing:", ur: "مبارکباد کا نمونہ پیغام:", ar: "نموذج تهنئة ودعاء:", es: "Mensaje de deseo de muestra:", fr: "Exemple de vœu :", hi: "शुभकामना संदेश का नमूना:", zh: "精选祝福文案：", pt: "Exemplo de mensagem de felicitação:", ru: "Пример поздравления:", de: "Beispiel-Glückwunsch:", ja: "メッセージ文例：", ko: "축하 메시지 예시:", it: "Esempio di augurio:", tr: "Örnek Tebrik Mesajı:", id: "Contoh Ucapan & Doa:", bn: "নমুনা শুভেচ্ছা বার্তা:", vi: "Lời Chúc Mẫu:", sw: "Mfano wa Ujumbe wa Heri:"
+  },
+  calCopyWish: {
+    en: "Copy Wish", ur: "پیغام کاپی کریں", ar: "نسخ التهنئة", es: "Copiar deseo", fr: "Copier le vœu", hi: "संदेश कॉपी करें", zh: "复制祝福语", pt: "Copiar mensagem", ru: "Скопировать пожелание", de: "Glückwunsch kopieren", ja: "メッセージをコピー", ko: "메시지 복사", it: "Copia augurio", tr: "Dileği Kopyala", id: "Salin Ucapan", bn: "শুভেচ্ছা কপি করুন", vi: "Sao Chép Lời Chúc", sw: "Nakili Ujumbe"
+  },
+  calCopied: {
+    en: "Copied!", ur: "کاپی ہو گیا!", ar: "تم النسخ!", es: "¡Copiado!", fr: "Copié !", hi: "कॉपी हो गया!", zh: "已复制！", pt: "Copiado!", ru: "Скопировано!", de: "Kopiert!", ja: "コピーしました！", ko: "복사됨!", it: "Copiato!", tr: "Kopyalandı!", id: "Tersalin!", bn: "কপি হয়েছে!", vi: "Đã sao chép!", sw: "Imenakiliwa!"
+  },
+  calSendCard: {
+    en: "Send 3D Card", ur: "3D کارڈ بھیجیں", ar: "أرسل بطاقة ثلاثية الأبعاد", es: "Enviar tarjeta 3D", fr: "Envoyer carte 3D", hi: "3D कार्ड भेजें", zh: "发送 3D 卡片", pt: "Enviar cartão 3D", ru: "Отправить 3D-открытку", de: "3D-Karte senden", ja: "3Dカードを送る", ko: "3D 카드 보내기", it: "Invia biglietto 3D", tr: "3D Kart Gönder", id: "Kirim Kartu 3D", bn: "3D কার্ড পাঠান", vi: "Gửi Thiệp 3D", sw: "Tuma Kadi ya 3D"
+  },
+  calCreateInvitation: {
+    en: "Create Invitation", ur: "دعوت نامہ بنائیں", ar: "إنشاء دعوة", es: "Crear invitación", fr: "Créer une invitation", hi: "निमंत्रण बनाएं", zh: "创建邀请函", pt: "Criar convite", ru: "Создать приглашение", de: "Einladung erstellen", ja: "招待状を作成", ko: "초대장 만들기", it: "Crea invito", tr: "Davetiye Oluştur", id: "Buat Undangan", bn: "আমন্ত্রণ তৈরি করুন", vi: "Tạo Thiệp Mời", sw: "Unda Mwaliko"
+  },
+  calHappeningToday: {
+    en: "Happening Today! 🎉", ur: "آج کی تقریب! 🎉", ar: "يحدث اليوم! 🎉", es: "¡Hoy! 🎉", fr: "Aujourd'hui ! 🎉", hi: "आज है! 🎉", zh: "就在今天！🎉", pt: "Acontecendo Hoje! 🎉", ru: "Сегодня! 🎉", de: "Heute! 🎉", ja: "本日開催！🎉", ko: "오늘입니다! 🎉", it: "Oggi! 🎉", tr: "Bugün! 🎉", id: "Hari Ini! 🎉", bn: "আজকের উৎসব! 🎉", vi: "Hôm nay! 🎉", sw: "Inafanyika Leo! 🎉"
+  },
+  calLiveSyncBadge: {
+    en: "Live Worldwide Holiday API Connected", ur: "لائیو عالمی ہالیڈے اے پی آئی منسلک ہے", ar: "متصل مباشرة بواجهة عطلات العالم الرسمية", es: "API mundial de días festivos en vivo conectada", fr: "API mondiale des jours fériés connectée en direct", hi: "लाइव वैश्विक अवकाश एपीआई से कनेक्टेड", zh: "已连接实时全球公共假日接口", pt: "API global de feriados ao vivo conectada", ru: "Подключен официальный API мировых праздников", de: "Live weltweite Feiertags-API verbunden", ja: "世界の祝日APIにリアルタイム接続中", ko: "실시간 글로벌 공휴일 API 연결됨", it: "API festività mondiali connessa in tempo reale", tr: "Canlı Dünya Tatilleri API'si Bağlı", id: "Terhubung ke API Hari Libur Dunia Langsung", bn: "লাইভ বিশ্বব্যাপী ছুটির এপিআই সংযুক্ত", vi: "Đã kết nối API ngày lễ toàn cầu trực tiếp", sw: "Imeunganishwa na API ya Likizo za Ulimwengu"
+  },
+  calSyncNow: {
+    en: "Sync Live Holidays", ur: "لائیو ہالیڈیز اپ ڈیٹ کریں", ar: "تحديث الإجازات الحية", es: "Sincronizar festivos en vivo", fr: "Synchroniser les jours fériés", hi: "लाइव छुट्टियां सिंक करें", zh: "同步实时公共假日", pt: "Sincronizar feriados ao vivo", ru: "Синхронизировать праздники", de: "Feiertage synchronisieren", ja: "祝日を同期", ko: "공휴일 실시간 동기화", it: "Sincronizza festività live", tr: "Canlı Tatilleri Senkronize Et", id: "Sinkronkan Hari Libur", bn: "ছুটির তথ্য আপডেট করুন", vi: "Đồng Bộ Ngày Lễ", sw: "Sawazisha Likizo"
+  },
   faqPageSubtitle: {
     en: 'Everything you need to know about Cardzy digital wish cards, wedding invitations, visiting cards, pricing, and features.',
     ur: 'کارڈزی ڈیجیٹل وش کارڈز، شادی کے دعوت نامے، وزٹنگ کارڈز اور قیمتوں کے بارے میں تمام معلومات۔',

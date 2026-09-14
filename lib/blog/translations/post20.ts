@@ -4,1644 +4,1644 @@ export const POST_20_SLUG = "whatsapp-rsvp-wedding-guest-management-complete-gui
 
 export const POST_20_DATA: Record<string, LocalizedBlogData> = {
   "en": {
-    "title": "WhatsApp RSVP & Wedding Guest Management: Complete Host Guide for 500+ Attendees",
-    "subtitle": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for WhatsApp RSVP & Wedding Guest Management: Complete Host Guide for 500+ Attendees.",
-    "category": "Event Planning",
-    "seoTitle": "WhatsApp RSVP & Wedding Guest Management: Complete Host Guide for 500+ Attendees — Cardzy",
-    "metaDescription": "Explore master tips, wording templates, and WhatsApp sharing features on Cardzy for WhatsApp RSVP & Wedding Guest Management: Complete Host Guide for 500+ Attendees."
+    "title": "WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP Wedding Guest Management | Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "ur": {
-    "title": "واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان",
-    "subtitle": "کارڈزی پر واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔",
-    "category": "تقاریب اور آر ایس وی پی",
-    "seoTitle": "واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان — Cardzy",
-    "metaDescription": "کارڈزی پر واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان کے لیے خوبصورت ڈیزائنز، اردو الفاظ اور واٹس ایپ شیئرنگ کے فیچرز دیکھیں۔"
+    "title": "کارڈزی گائیڈ: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — کارڈزی",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "es": {
-    "title": "Gestión de Invitados de Boda y RSVP por WhatsApp: Guía Completa para Más de 500 Asistentes",
-    "subtitle": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para WhatsApp RSVP & Wedding Guest Management: Complete Host Guide for 500+ Attendees.",
-    "category": "Planificación de Eventos",
-    "seoTitle": "Gestión de Invitados de Boda y RSVP por WhatsApp: Guía Completa para Más de 500 Asistentes — Cardzy",
-    "metaDescription": "Descubra consejos expertos, plantillas de texto y funciones de WhatsApp en Cardzy para WhatsApp RSVP & Wedding Guest Management: Complete Host Guide for 500+ Attendees."
+    "title": "Guía Cardzy: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "fr": {
-    "title": "Gestion des Invités de Mariage et RSVP WhatsApp : Guide Complet pour Plus de 500 Convives",
-    "subtitle": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy.",
-    "category": "Organisation d'Événements",
-    "seoTitle": "Gestion des Invités de Mariage et RSVP WhatsApp : Guide Complet pour Plus de 500 Convives — Cardzy",
-    "metaDescription": "Découvrez des conseils d’experts, des modèles de texte et le partage WhatsApp sur Cardzy."
+    "title": "Guide Cardzy: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "ar": {
-    "title": "الدليل الشامل لتنظيم وإدارة حضور ضيوف الزفاف عبر واتساب لأكثر من 500 ضيف",
-    "subtitle": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي.",
-    "category": "تخطيط المناسبات وإدارتها",
-    "seoTitle": "الدليل الشامل لتنظيم وإدارة حضور ضيوف الزفاف عبر واتساب لأكثر من 500 ضيف — Cardzy",
-    "metaDescription": "اكتشف أفضل النصائح والنماذج وطريقة المشاركة السريعة عبر واتساب على كاردزي."
+    "title": "دليل كاردزي: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — كاردزي",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "hi": {
-    "title": "व्हाट्सएप आरएसवीपी और शादी के मेहमान प्रबंधन: 500+ मेहमानों के लिए संपूर्ण मेजबान गाइड",
-    "subtitle": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।",
-    "category": "इवेंट प्लानिंग व आरएसवीपी",
-    "seoTitle": "व्हाट्सएप आरएसवीपी और शादी के मेहमान प्रबंधन: 500+ मेहमानों के लिए संपूर्ण मेजबान गाइड — Cardzy",
-    "metaDescription": "कार्डज़ी पर सुंदर डिज़ाइन, भाषा संदेश और व्हाट्सएप शेयरिंग के फीचर्स देखें।"
+    "title": "कार्डज़ी गाइड: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — कार्डज़ी",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "zh": {
-    "title": "500+ 超大型婚宴宾客智能管理全指南：基于 WhatsApp RSVP 的全流程把控",
-    "subtitle": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。",
-    "category": "活动策划与管理",
-    "seoTitle": "500+ 超大型婚宴宾客智能管理全指南：基于 WhatsApp RSVP 的全流程把控 — Cardzy",
-    "metaDescription": "在 Cardzy 上探索专业建议、精美文案模板与智能 WhatsApp 分享功能。"
+    "title": "Cardzy 电子卡片指南: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "pt": {
-    "title": "Gestão de Convidados de Casamento e RSVP no WhatsApp: Guia Completo para 500+ Pessoas",
-    "subtitle": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy.",
-    "category": "Planeamento de Eventos",
-    "seoTitle": "Gestão de Convidados de Casamento e RSVP no WhatsApp: Guia Completo para 500+ Pessoas — Cardzy",
-    "metaDescription": "Veja dicas de especialistas, modelos de texto e recursos de partilha no WhatsApp na Cardzy."
+    "title": "Guia Cardzy: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "ru": {
-    "title": "Управление списками гостей на свадьбе через WhatsApp RSVP: Руководство для 500+ гостей",
-    "subtitle": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy.",
-    "category": "Организация событий",
-    "seoTitle": "Управление списками гостей на свадьбе через WhatsApp RSVP: Руководство для 500+ гостей — Cardzy",
-    "metaDescription": "Советы экспертов, шаблоны текстов и удобный шеринг в WhatsApp на платформе Cardzy."
+    "title": "Руководство Cardzy: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "de": {
-    "title": "WhatsApp-RSVP & Gästemanagement für Hochzeiten: Leitfaden für 500+ Gäste",
-    "subtitle": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy.",
-    "category": "Event-Planung",
-    "seoTitle": "WhatsApp-RSVP & Gästemanagement für Hochzeiten: Leitfaden für 500+ Gäste — Cardzy",
-    "metaDescription": "Entdecken Sie Experten-Tipps, Textvorlagen und WhatsApp-Sharing-Funktionen auf Cardzy."
+    "title": "Cardzy Ratgeber: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "ja": {
-    "title": "500人規模の結婚式出欠管理をWhatsAppでスマートに完結させる完全マニュアル",
-    "subtitle": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。",
-    "category": "イベント企画・管理",
-    "seoTitle": "500人規模の結婚式出欠管理をWhatsAppでスマートに完結させる完全マニュアル — Cardzy",
-    "metaDescription": "Cardzyで専門家のアドバイス、テンプレート、WhatsApp共有機能をチェックしましょう。"
+    "title": "Cardzy ガイド: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "ko": {
-    "title": "500명 이상 대규모 웨딩 하객을 위한 WhatsApp RSVP 실전 관리 가이드",
-    "subtitle": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요.",
-    "category": "이벤트 기획 & RSVP",
-    "seoTitle": "500명 이상 대규모 웨딩 하객을 위한 WhatsApp RSVP 실전 관리 가이드 — Cardzy",
-    "metaDescription": "Cardzy에서 제공하는 전문가 팁, 텍스트 템플릿 및 WhatsApp 공유 기능을 확인하세요."
+    "title": "Cardzy 가이드: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "it": {
-    "title": "Gestione degli Invitati di Nozze e RSVP su WhatsApp: Guida Completa per 500+ Ospiti",
-    "subtitle": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy.",
-    "category": "Pianificazione Eventi",
-    "seoTitle": "Gestione degli Invitati di Nozze e RSVP su WhatsApp: Guida Completa per 500+ Ospiti — Cardzy",
-    "metaDescription": "Scopri i consigli degli esperti, i modelli di testo e le funzioni WhatsApp su Cardzy."
+    "title": "Guida Cardzy: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "tr": {
-    "title": "500+ Kişilik Düğünlerde WhatsApp LCV ve Davetli Yönetimi Rehberi",
-    "subtitle": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin.",
-    "category": "Etkinlik Planlama",
-    "seoTitle": "500+ Kişilik Düğünlerde WhatsApp LCV ve Davetli Yönetimi Rehberi — Cardzy",
-    "metaDescription": "Cardzy ile uzman tavsiyeleri, davet metinleri ve WhatsApp paylaşım özelliklerini keşfedin."
+    "title": "Cardzy Rehberi: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "id": {
-    "title": "Panduan Lengkap Manajemen Tamu Pernikahan & WhatsApp RSVP untuk 500+ Undangan",
-    "subtitle": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy.",
-    "category": "Perencanaan Acara",
-    "seoTitle": "Panduan Lengkap Manajemen Tamu Pernikahan & WhatsApp RSVP untuk 500+ Undangan — Cardzy",
-    "metaDescription": "Temukan tips ahli, contoh teks, dan fitur berbagi WhatsApp di Cardzy."
+    "title": "Panduan Cardzy: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "bn": {
-    "title": "৫০০+ অতিথির বিয়ের জন্য হোয়াটসঅ্যাপ আরএসভিপি ও মেহমান ম্যানেজমেন্টের সহজ নির্দেশিকা",
-    "subtitle": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।",
-    "category": "অনুষ্ঠান পরিকল্পনা",
-    "seoTitle": "৫০০+ অতিথির বিয়ের জন্য হোয়াটসঅ্যাপ আরএসভিপি ও মেহমান ম্যানেজমেন্টের সহজ নির্দেশিকা — Cardzy",
-    "metaDescription": "কার্ডজিতে চমৎকার ডিজাইন, টেক্সট টেমপ্লেট এবং হোয়াটসঅ্যাপ শেয়ারিং সুবিধা দেখুন।"
+    "title": "কার্ডজি গাইড: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — কার্ডজি",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "vi": {
-    "title": "Quản Lý Danh Sách 500+ Khách Mời Đám Cưới & Xác Nhận Tham Dự Qua WhatsApp Toàn Diện",
-    "subtitle": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy.",
-    "category": "Lên Kế Hoạch Sự Kiện",
-    "seoTitle": "Quản Lý Danh Sách 500+ Khách Mời Đám Cưới & Xác Nhận Tham Dự Qua WhatsApp Toàn Diện — Cardzy",
-    "metaDescription": "Khám phá lời khuyên chuyên gia, mẫu câu và tính năng chia sẻ WhatsApp trên Cardzy."
+    "title": "Hướng Dẫn Cardzy: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   },
   "sw": {
-    "title": "Usimamizi Kamili wa Wageni 500+ wa Harusi na Uthibitisho wa RSVP ya WhatsApp",
-    "subtitle": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy.",
-    "category": "Mipango ya Sherehe",
-    "seoTitle": "Usimamizi Kamili wa Wageni 500+ wa Harusi na Uthibitisho wa RSVP ya WhatsApp — Cardzy",
-    "metaDescription": "Gundua vidokezo vya wataalamu, mifano ya maneno na vipengele vya WhatsApp kwenye Cardzy."
+    "title": "Mwongozo wa Cardzy: WhatsApp RSVP and Wedding Guest Management: Complete Guide",
+    "subtitle": "Tired of guessing marquee catering numbers? How automated WhatsApp RSVPs, multi-event headcounts, and CSV exports keep large South Asian weddings stress-free.",
+    "category": "Wedding & Nikkah",
+    "seoTitle": "WhatsApp RSVP and Wedding Guest Management: Complete Guide — Cardzy",
+    "metaDescription": "Manage 500+ wedding guests with automated WhatsApp RSVPs. Track separate Nikkah, Mehndi, and Walima headcounts and export clean CSVs for your caterer."
   }
 };
 
 export const POST_20_CONTENT: Record<string, LocalizedBlogContent> = {
   "en": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "ur": {
-    "intro": "کارڈزی کے ساتھ واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان کو جدید ترین، دلکش اور یادگار انداز میں منائیں۔ روایتی کاغذ کے کارڈز کے بجائے 3D لفافہ اوپننگ، اردو نستعلیق خطاطی، بیک گراؤنڈ میوزک اور واٹس ایپ آر ایس وی پی کے ساتھ ڈیجیٹل کارڈز بنائیں۔",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان — اہم فیچرز اور گائیڈ",
-        "body": "کارڈزی پر واٹس ایپ آر ایس وی پی اور شادی کے مہمانوں کی مکمل مینجمنٹ گائیڈ برائے 500+ مہمان کے لیے خصوصی 3D اینیمیشنز، اردو خطاطی، لائیو لوکیشن اور موبائل فرینڈلی ڈیزائن دستیاب ہیں۔ یہ کارڈز تمام اسمارٹ فونز پر بغیر کسی ایپ کے تیزی سے کھلتے ہیں۔",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "3D لفافہ اوپننگ اینیمیشن اور جشن کا پرمسرت بیک گراؤنڈ میوزک",
-          "واٹس ایپ پر ایک کلک سے فوری شیئرنگ اور مہمانوں کی حاضری (RSVP) کا نظام",
-          "گوگل میپس لوکیشن لنک تاکہ تمام مہمان باآسانی وقت پر پہنچ سکیں"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "کارڈزی ڈیجیٹل کارڈ کے کیا فوائد ہیں؟",
-        "answer": "کارڈزی پر آپ 3D لفافہ اینیمیشن، پس منظر میوزک، اردو نستعلیق خطاطی اور واٹس ایپ آر ایس وی پی کے ساتھ باآسانی کارڈز بنا سکتے ہیں۔"
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "کیا کارڈزی پر کارڈ بنانا مفت ہے؟",
-        "answer": "جی ہاں! آپ کارڈزی پر تمام بنیادی اور اینیمیٹڈ کارڈز بالکل مفت بنا سکتے ہیں اور فوری واٹس ایپ پر شیئر کر سکتے ہیں۔"
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "کیا یہ کارڈ واٹس ایپ پر درست انداز میں کھلتا ہے؟",
-        "answer": "بالکل! کارڈزی لنک واٹس ایپ، ایس ایم ایس اور سوشل میڈیا پر بغیر کسی ایپ ڈاؤن لوڈ کے فوری کھلتا ہے۔"
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "کیا مہمانوں کی حاضری (RSVP) کو ٹریک کیا جا سکتا ہے؟",
-        "answer": "جی ہاں! مہمان ایک کلک سے شرکت کی تصدیق کرتے ہیں اور آپ کو لائیو ڈیش بورڈ اور واٹس ایپ پر فوری تعداد معلوم ہو جاتی ہے۔"
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "کارڈزی پر اپنا ڈیجیٹل کارڈ منٹوں میں ڈیزائن کریں، پسندیدہ آڈیو اور تصاویر شامل کریں اور واٹس ایپ پر ایک کلک سے شیئر کریں۔"
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "es": {
-    "intro": "Celebre Gestión de Invitados de Boda y RSVP por WhatsApp: Guía Completa para Más de 500 Asistentes con las innovadoras tarjetas digitales animadas en 3D de Cardzy. Personalice con música, fotos y confirmación RSVP por WhatsApp.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Gestión de Invitados de Boda y RSVP por WhatsApp: Guía Completa para Más de 500 Asistentes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Gestión de Invitados de Boda y RSVP por WhatsApp: Guía Completa para Más de 500 Asistentes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Gestión de Invitados de Boda y RSVP por WhatsApp: Guía Completa para Más de 500 Asistentes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Gestión de Invitados de Boda y RSVP por WhatsApp: Guía Completa para Más de 500 Asistentes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. Gestión de Invitados de Boda y RSVP por WhatsApp: Guía Completa para Más de 500 Asistentes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Gestión de Invitados de Boda y RSVP por WhatsApp: Guía Completa para Más de 500 Asistentes — Características y Guía",
-        "body": "Cardzy ofrece una experiencia interactiva única con animaciones 3D, música de fondo personalizada, navegación por Google Maps y confirmación de invitados por WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Animaciones 3D interactivas y música de fondo personalizada",
-          "Confirmación instantánea de asistencia RSVP directa en WhatsApp",
-          "Integración con Google Maps para guiar a los invitados fácilmente"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Diseñe su tarjeta digital personalizada en Cardzy en minutos y compártala al instante por WhatsApp."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "fr": {
-    "intro": "Célébrez Gestion des Invités de Mariage et RSVP WhatsApp : Guide Complet pour Plus de 500 Convives avec les faire-part numériques et cartes animées 3D Cardzy. Personnalisez avec musique, photos et suivi RSVP sur WhatsApp.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Gestion des Invités de Mariage et RSVP WhatsApp : Guide Complet pour Plus de 500 Convives — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Gestion des Invités de Mariage et RSVP WhatsApp : Guide Complet pour Plus de 500 Convives — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Gestion des Invités de Mariage et RSVP WhatsApp : Guide Complet pour Plus de 500 Convives — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Gestion des Invités de Mariage et RSVP WhatsApp : Guide Complet pour Plus de 500 Convives — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. Gestion des Invités de Mariage et RSVP WhatsApp : Guide Complet pour Plus de 500 Convives — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Gestion des Invités de Mariage et RSVP WhatsApp : Guide Complet pour Plus de 500 Convives — Fonctionnalités et Guide",
-        "body": "Cardzy offre une expérience interactive de premier plan avec des animations 3D, de la musique personnalisée, un plan Google Maps et un suivi RSVP WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Animations 3D immersives et musique de fond personnalisée",
-          "Gestion instantanée des présences RSVP directement sur WhatsApp",
-          "Intégration Google Maps pour orienter facilement vos invités"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Quels sont les avantages des faire-part numériques Cardzy ?",
-        "answer": "Cardzy permet de créer des faire-part animés 3D avec musique, photos, géolocalisation Google Maps et suivi RSVP par WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "Est-il gratuit de créer une carte sur Cardzy ?",
-        "answer": "Oui ! Vous pouvez créer et partager gratuitement vos cartes animées directement sur WhatsApp."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "Les cartes fonctionnent-elles sur smartphone ?",
-        "answer": "Parfaitement. Le lien s’ouvre instantanément dans tout navigateur mobile sans nécessiter d’application."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "Comment fonctionne le suivi des réponses RSVP ?",
-        "answer": "Les invités confirment leur présence en un clic et votre tableau de bord est mis à jour en temps réel."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Créez votre carte numérique personnalisée sur Cardzy en quelques minutes et partagez-la instantanément sur WhatsApp."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "ar": {
-    "intro": "مع كاردزي، احتفل بـ الدليل الشامل لتنظيم وإدارة حضور ضيوف الزفاف عبر واتساب لأكثر من 500 ضيف بأرقى المعايير العصرية والتفاعلية ثلاثية الأبعاد 3D والخطوط الأنيقة، مع إمكانية تحديد موقع الحفل عبر خرائط جوجل وتأكيد الحضور عبر واتساب.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. الدليل الشامل لتنظيم وإدارة حضور ضيوف الزفاف عبر واتساب لأكثر من 500 ضيف — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. الدليل الشامل لتنظيم وإدارة حضور ضيوف الزفاف عبر واتساب لأكثر من 500 ضيف — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. الدليل الشامل لتنظيم وإدارة حضور ضيوف الزفاف عبر واتساب لأكثر من 500 ضيف — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. الدليل الشامل لتنظيم وإدارة حضور ضيوف الزفاف عبر واتساب لأكثر من 500 ضيف — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. الدليل الشامل لتنظيم وإدارة حضور ضيوف الزفاف عبر واتساب لأكثر من 500 ضيف — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. الدليل الشامل لتنظيم وإدارة حضور ضيوف الزفاف عبر واتساب لأكثر من 500 ضيف — المزايا الأساسية والدليل الشامل",
-        "body": "توفر منصة كاردزي بطاقات تفاعلية متطورة ثلاثية الأبعاد 3D مع الخطوط العربية الأصيلة وموقع الحفل التفاعلي وتأكيد الحضور المباشر عبر واتساب.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "مؤثرات بصرية متحركة ثلاثية الأبعاد 3D مع خلفيات موسيقية راقية",
-          "مشاركة فورية عبر واتساب وإدارة حضور الضيوف بكل سهولة",
-          "تضمين موقع الحفل عبر خرائط جوجل لإرشاد الضيوف بدقة"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "ما هي مميزات بطاقات كاردزي الرقمية؟",
-        "answer": "تتيح لك كاردزي تصميم بطاقات تفاعلية ثلاثية الأبعاد 3D مع الموسيقى والخط العربي وموقع الحفل وتأكيد الحضور عبر واتساب."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "هل إنشاء البطاقات على كاردزي مجاني؟",
-        "answer": "نعم! يمكنك تصميم ومشاركة جميع البطاقات الأساسية والمتحركة مجاناً ومشاركتها مباشرة عبر واتساب."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "هل تعمل البطاقة بسلاسة عبر واتساب؟",
-        "answer": "نعم، يتم فتح الرابط في أي متصفح هاتف ذكي فوراً دون الحاجة لتثبيت أي تطبيق."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "كيف يتم تتبع تأكيدات الحضور (RSVP)؟",
-        "answer": "يقوم الضيوف بتأكيد الحضور بنقرة واحدة، وتتلقى الإشعارات فوراً في لوحة التحكم وعبر واتساب."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "أنشئ بطاقتك الرقمية التفاعلية على كاردزي في دقائق معدودة، وشاركها مباشرة مع أحبابك وضيوفك عبر واتساب."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "hi": {
-    "intro": "कार्डज़ी के साथ व्हाट्सएप आरएसवीपी और शादी के मेहमान प्रबंधन: 500+ मेहमानों के लिए संपूर्ण मेजबान गाइड को आधुनिक 3D एनिमेटेड कार्ड, संगीत और व्हाट्सएप आरएसवीपी के साथ यादगार बनाएं।",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. व्हाट्सएप आरएसवीपी और शादी के मेहमान प्रबंधन: 500+ मेहमानों के लिए संपूर्ण मेजबान गाइड — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. व्हाट्सएप आरएसवीपी और शादी के मेहमान प्रबंधन: 500+ मेहमानों के लिए संपूर्ण मेजबान गाइड — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. व्हाट्सएप आरएसवीपी और शादी के मेहमान प्रबंधन: 500+ मेहमानों के लिए संपूर्ण मेजबान गाइड — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. व्हाट्सएप आरएसवीपी और शादी के मेहमान प्रबंधन: 500+ मेहमानों के लिए संपूर्ण मेजबान गाइड — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. व्हाट्सएप आरएसवीपी और शादी के मेहमान प्रबंधन: 500+ मेहमानों के लिए संपूर्ण मेजबान गाइड — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. व्हाट्सएप आरएसवीपी और शादी के मेहमान प्रबंधन: 500+ मेहमानों के लिए संपूर्ण मेजबान गाइड — मुख्य विशेषताएं और गाइड",
-        "body": "कार्डज़ी 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप उपस्थिति ट्रैकिंग के साथ एक संपूर्ण डिजिटल अनुभव प्रदान करता है।",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "3D एनिमेटेड लिफाफा और उत्सव का पृष्ठभूमि संगीत",
-          "व्हाट्सएप पर एक क्लिक में तुरंत शेयरिंग और आरएसवीपी ट्रैकिंग",
-          "अतिथियों की सुविधा के लिए एकीकृत गूगल मैप्स लोकेशन"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "कार्डज़ी डिजिटल कार्ड की मुख्य विशेषताएं क्या हैं?",
-        "answer": "कार्डज़ी आपको 3D एनिमेशन, पृष्ठभूमि संगीत, गूगल मैप्स और व्हाट्सएप आरएसवीपी के साथ शानदार कार्ड बनाने की सुविधा देता है।"
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "क्या कार्डज़ी पर कार्ड बनाना मुफ्त है?",
-        "answer": "हाँ! आप सभी बुनियादी और एनिमेटेड कार्ड बिल्कुल मुफ्त बना सकते हैं और तुरंत व्हाट्सएप पर साझा कर सकते हैं।"
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "क्या यह व्हाट्सएप पर सही तरीके से खुलता है?",
-        "answer": "बिल्कुल! कार्डज़ी लिंक किसी भी मोबाइल ब्राउज़र में तुरंत खुलता है, किसी ऐप की आवश्यकता नहीं है।"
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "मेहमानों की उपस्थिति (RSVP) को कैसे ट्रैक करें?",
-        "answer": "मेहमान एक क्लिक में अपनी उपस्थिति की पुष्टि करते हैं और आपको लाइव डैशबोर्ड पर तुरंत संख्या मिल जाती है।"
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "कार्डज़ी पर मिनटों में अपना डिजिटल कार्ड बनाएं और व्हाट्सएप पर तुरंत साझा करें।"
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "zh": {
-    "intro": "使用 Cardzy 专属 3D 动态电子请柬与贺卡，为您精彩呈现 500+ 超大型婚宴宾客智能管理全指南：基于 WhatsApp RSVP 的全流程把控。支持自定义音乐、照片画廊与 WhatsApp 实时出席回执。",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. 500+ 超大型婚宴宾客智能管理全指南：基于 WhatsApp RSVP 的全流程把控 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. 500+ 超大型婚宴宾客智能管理全指南：基于 WhatsApp RSVP 的全流程把控 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. 500+ 超大型婚宴宾客智能管理全指南：基于 WhatsApp RSVP 的全流程把控 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. 500+ 超大型婚宴宾客智能管理全指南：基于 WhatsApp RSVP 的全流程把控 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. 500+ 超大型婚宴宾客智能管理全指南：基于 WhatsApp RSVP 的全流程把控 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. 500+ 超大型婚宴宾客智能管理全指南：基于 WhatsApp RSVP 的全流程把控 — 核心功能与使用指南",
-        "body": "Cardzy 为您提供沉浸式 3D 动态开封特效、精美背景音乐、高精度 Google 地图导航与智能 WhatsApp RSVP 出席回执管理。",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "精美 3D 动态开封动效与沉浸式背景音乐",
-          "WhatsApp 实时出席回执追踪与宾客人数统计",
-          "内嵌 Google 地图导航，宾客一键精准导航至现场"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "Cardzy 动态电子请柬有哪些核心优势？",
-        "answer": "Cardzy 支持 3D 开封动画、背景音乐、照片画廊、Google 地图导航以及 WhatsApp 实时出席回执追踪。"
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "在 Cardzy 上制作电子请柬是否免费？",
-        "answer": "是的！您可以免费创建并生成专属精美动态请柬，随时随地一键分享。"
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "在手机和社交应用上打开体验如何？",
-        "answer": "无需下载任何 App，宾客在任何手机浏览器中点击链接即可秒级加载高清动态效果。"
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "如何进行宾客出席确认（RSVP）管理？",
-        "answer": "宾客轻点即可确认出席，您的管理后台与 WhatsApp 将实时同步最新出席人数与名单。"
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "立即在 Cardzy 免费创建专属电子请柬，一键即时分享至各大社交平台。"
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "pt": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "ru": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "de": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "ja": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "ko": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "it": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "tr": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "id": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "bn": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "vi": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   },
   "sw": {
-    "intro": "In the fast-paced world of modern event planning, relying on manual phone calls and paper RSVP cards is a recipe for chaos, especially for large South Asian weddings. This guide explores why digital RSVPs are replacing traditional methods and how Cardzy real-time tracking helps you execute a flawlessly organized wedding.",
+    "intro": "Ask any family who has hosted a large Pakistani or South Asian wedding with 500+ attendees about their most stressful memory, and they will almost certainly say: the guest list. Calling hundreds of extended relatives individually takes weeks of awkward phone conversations. Even worse, half the families say 'Insha'Allah we will try to come', leaving the hosts completely blind when booking marquee capacity and ordering catering dishes. In 2026, modern event hosts have replaced phone call chaos with automated WhatsApp RSVPs. With Cardzy, your digital invitation tracks guest confirmations live, segments headcounts across multiple functions, and exports clean spreadsheets for caterers with a single click.",
     "sections": [
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-1",
-        "title": "1. Why WhatsApp RSVP Beats Traditional Phone Calls",
-        "body": "Traditional RSVP methods demand excessive time from hosts. Calling hundreds of guests leads to unanswered calls and inaccurate tallies. WhatsApp offers a frictionless alternative used by billions.",
+        "id": "sec-1",
+        "title": "1. Why Traditional Phone Call RSVPs Fail in Large Celebrations",
+        "body": "Traditional RSVP methods simply do not work for large weddings. Printed response cards sent via postal mail are rarely mailed back, and calling 300 households manually requires dozens of hours that families do not have during the busy weeks leading up to a wedding. Furthermore, phone confirmations are notoriously unreliable: aunties forget how many children they promised to bring, relatives assume uninvited cousins are included, and miscommunication leads to either massive food waste or panicked shortages on the night.",
         "bulletPoints": [
-          "Guests reply instantly with a single tap at their convenience",
-          "Eliminates anxiety of making hundreds of follow-up phone calls",
-          "Creates a digital paper trail preventing misunderstandings"
+          "Massive Time Drain: Calling 300+ families consumes 40+ hours of stressful follow-ups",
+          "Inaccurate Catering Numbers: Marquee caterers charge per dish (PKR 2,500 to PKR 5,500 per head), making guesswork extremely expensive",
+          "Digital Paper Trail: WhatsApp RSVPs create an unambiguous record of exactly who confirmed for which event"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-2",
-        "title": "2. Setting Up Digital RSVPs on Cardzy",
-        "body": "Activating the RSVP feature on your Cardzy digital wedding invitation is seamless. Toggle the feature on and input the phone number where you wish to receive notifications.",
+        "id": "sec-2",
+        "title": "2. How Cardzy 1-Click WhatsApp RSVP Works for Guests",
+        "body": "The genius of Cardzy's RSVP system lies in zero friction. Guests do not need to download an app, create an account, or fill out a tedious 10-field web form. When they open your digital invitation link on their smartphone, an elegant 'Confirm Attendance / RSVP' button is prominently displayed. Tapping it opens an intuitive confirmation modal where they select their party size and submit in under five seconds.",
         "bulletPoints": [
-          "Configure custom questions like number of adults and dietary restrictions",
-          "Set strict RSVP deadlines so the form automatically closes",
-          "Designate a specific family member or planner to receive updates"
+          "Zero App Downloads: Runs natively in the guest's mobile browser on any smartphone",
+          "Party Size Selection: Guests confirm whether they are attending with 1, 2, or 5 family members",
+          "Instant Notification: Responses are logged immediately to your host dashboard and sent to your WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-3",
-        "title": "3. Tracking Guest Counts Per Function",
-        "body": "South Asian weddings have multi-event structures. Aunties might attend Mehndi, colleagues only the Walima, and close family attends Nikkah. Cardzy lets you segment RSVPs per event.",
+        "id": "sec-3",
+        "title": "3. Multi-Function Segmentation: Tracking Nikkah, Mehndi, Barat & Walima",
+        "body": "South Asian weddings are multi-event marathons with different guest lists for each night. Your close friends might attend the Mehndi dance party, colleagues attend the Walima banquet, and immediate relatives attend the sacred Nikkah. Cardzy allows you to configure separate RSVP headcounts for each ceremony within the same invitation link, ensuring guests only confirm for the specific functions they are invited to.",
         "bulletPoints": [
-          "Create distinct RSVP buttons for Mehndi, Barat, and Walima on the same card",
-          "Maintain accurate separate headcounts to optimize catering per night",
-          "Prevent guests from accidentally confirming for events they were not invited to"
+          "Granular Headcount Tracking: Maintain separate verified numbers for Nikkah, Mehndi, Barat, and Walima",
+          "Prevent Uninvited Function Spillovers: Clearly communicate which ceremonies each tier of guests is invited to",
+          "Catering Optimization: Pay only for the exact required dishes for each individual evening"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-4",
-        "title": "4. Managing 500+ Guests with Real-Time Dashboards",
-        "body": "When your guest list scales into hundreds, the Cardzy host dashboard transforms data into actionable, easy-to-read visual metrics that update the second a guest confirms.",
+        "id": "sec-4",
+        "title": "4. Real-Time Host Dashboard: Visual Analytics for 500+ Guests",
+        "body": "As the wedding date approaches, the Cardzy host dashboard transforms messy guest lists into clear, actionable visual metrics. You can see live charts showing total Confirmed, Declined, and Pending responses at a glance, search for specific relatives by name, and monitor adult versus child headcounts for hall table arrangements.",
         "bulletPoints": [
-          "View charts representing Attending, Declined, and Pending statuses",
-          "Search and filter the guest list by name or response type",
-          "Monitor adult vs children attendee numbers for seating arrangements"
+          "Live Status Overview: Clear visual breakdown of Attending, Declined, and Pending responses",
+          "Search & Filter: Instantly look up any relative or family group to verify their confirmation status",
+          "Real-Time Sync: The dashboard updates the exact second a guest confirms on WhatsApp"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-5",
-        "title": "5. CSV Exports for Caterers and Planners",
-        "body": "Your catering hall and event planners need hard numbers. With a single click, Cardzy lets you export your entire live guest list into a clean, formatted CSV file.",
+        "id": "sec-5",
+        "title": "5. One-Click CSV Export for Caterers and Event Coordinators",
+        "body": "When your marquee manager and catering chef demand final headcounts three days before the event, you don't need to spend hours compiling scraps of paper or WhatsApp notes. With a single tap in Cardzy, export your entire live guest list into a beautifully formatted CSV or Excel spreadsheet ready to email directly to your event planner.",
         "bulletPoints": [
-          "Share accurate final numbers with caterers to prevent over-ordering",
-          "Provide event coordinators with precise lists for seating charts",
-          "Keep an offline backup of your guest list for venue print-outs"
+          "Instant CSV Download: Formatted spreadsheets ready for caterers, decorators, and stage managers",
+          "Dietary Special Notes: Export special requests such as diabetic-friendly desserts or vegetarian meals",
+          "Offline Security Backup: Keep a printed physical copy at the marquee entrance gate for host check-ins"
         ]
       },
       {
-        "id": "whatsapp-rsvp-wedding-guest-management-complete-guide-sec-6",
-        "title": "6. Sending Broadcast Reminders",
-        "body": "As the RSVP deadline approaches, there will always be stragglers. Copy a polite reminder from your dashboard and broadcast it to pending guests via WhatsApp.",
+        "id": "sec-6",
+        "title": "6. Courteous Broadcast Reminders: Following Up Without Awkwardness",
+        "body": "No matter how organized you are, there will always be guests who delay confirming their RSVP. Following up individually can feel uncomfortable. Cardzy provides pre-written polite reminder templates you can broadcast via WhatsApp 10 days before the event date, nudging pending guests to confirm with a single tap before the catering deadline closes.",
         "bulletPoints": [
-          "Send gentle nudges a week before the deadline to maximize responses",
-          "Broadcast last-minute venue changes to confirmed attendees only",
-          "Maintain polite, organized communication without being intrusive"
+          "Polite Automated Wording: Respectful, culturally sensitive follow-up templates that preserve family warmth",
+          "Deadline Urgency: Gentle reminders that explain catering headcount deadlines clearly",
+          "Broadcast Flexibility: Send reminders exclusively to pending guests without bothering confirmed attendees"
         ]
       }
     ],
     "faq": [
       {
-        "question": "¿Cuáles son las ventajas de las tarjetas digitales Cardzy?",
-        "answer": "Cardzy le permite crear tarjetas animadas en 3D con música, fotos, ubicación en Google Maps y confirmación RSVP por WhatsApp."
+        "question": "Do guests need an app to RSVP on WhatsApp?",
+        "answer": "No! The RSVP button opens directly in their browser and redirects to WhatsApp without downloading any extra app."
       },
       {
-        "question": "¿Es gratuito crear invitaciones en Cardzy?",
-        "answer": "¡Sí! Puede diseñar y compartir tarjetas digitales interactivas de forma gratuita y enviarlas al instante."
+        "question": "Can I track RSVPs for separate events like Nikkah, Mehndi, and Walima?",
+        "answer": "Yes, Cardzy allows you to configure separate headcounts for each individual wedding function."
       },
       {
-        "question": "¿Funciona bien en WhatsApp y móviles?",
-        "answer": "Funciona perfectamente en cualquier smartphone sin necesidad de que los invitados descarguen ninguna aplicación."
+        "question": "Can I export the guest list to Excel or CSV?",
+        "answer": "Yes! Exporting your verified guest list takes one click from your host dashboard."
       },
       {
-        "question": "¿Cómo funciona la confirmación RSVP?",
-        "answer": "Los invitados confirman asistencia con un solo clic y usted recibe las respuestas en tiempo real en su panel y por WhatsApp."
+        "question": "Can guests update their RSVP if their party size changes?",
+        "answer": "Yes, guests can re-open the card link and update their attendance numbers at any time."
       }
     ],
-    "conclusion": "Take the stress out of wedding planning by upgrading to a modern, digital solution. Master WhatsApp RSVP wedding guest management with Cardzy today."
+    "conclusion": "Hosting a 500+ guest wedding should be a celebration of joy, family honor, and lifelong memories—not a nightmare of catering spreadsheets and unanswered phone calls. Upgrade your wedding coordination with automated WhatsApp RSVPs on Cardzy today!"
   }
 };
