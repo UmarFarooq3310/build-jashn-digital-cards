@@ -37,9 +37,14 @@ export function CardDecor({
         </>
       )}
 
-      {/* 2. Mughal Arch — full arched frame */}
+      {/* 2. Mughal Arch — architectural gold foil Mihrab arch frame */}
       {borderId === 'mughal-arch' && (
-        <span className="mughal-arch absolute pointer-events-none" aria-hidden="true" />
+        <RoyalMughalArch />
+      )}
+
+      {/* Cyber Gaming HUD — esports high-tech neon frame */}
+      {borderId === 'cyber-hud' && (
+        <CyberGamingHud />
       )}
 
       {/* 3. Royal Gold — double-line full frame */}
@@ -954,5 +959,112 @@ function StarField() {
         />
       ))}
     </span>
+  )
+}
+
+export function RoyalMughalArch() {
+  return (
+    <div className="absolute inset-1.5 sm:inset-2.5 pointer-events-none z-10 select-none overflow-hidden" aria-hidden="true">
+      <svg
+        className="w-full h-full"
+        viewBox="0 0 400 600"
+        preserveAspectRatio="none"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ filter: 'drop-shadow(0 2px 10px rgba(212,175,55,0.35))' }}
+      >
+        <defs>
+          <linearGradient id="goldFoilGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFF2B8" />
+            <stop offset="25%" stopColor="#E2BD68" />
+            <stop offset="50%" stopColor="#C29738" />
+            <stop offset="75%" stopColor="#F9E6A2" />
+            <stop offset="100%" stopColor="#9C711D" />
+          </linearGradient>
+        </defs>
+
+        {/* Outer Border with rounded bottom and cusped Islamic Mihrab arch top */}
+        <path
+          d="M 18,582 L 18,150 C 18,90 75,50 135,32 C 165,22 188,10 200,4 C 212,10 235,22 265,32 C 325,50 382,90 382,150 L 382,582 C 382,590 376,594 368,594 L 32,594 C 24,594 18,590 18,582 Z"
+          stroke="url(#goldFoilGradient)"
+          strokeWidth="2.5"
+          fill="none"
+        />
+
+        {/* Inner delicate dashed hairline arch */}
+        <path
+          d="M 26,576 L 26,152 C 26,96 80,58 138,40 C 167,30 188,18 200,12 C 212,18 233,30 262,40 C 320,58 374,96 374,152 L 374,576 C 374,582 370,586 362,586 L 38,586 C 30,586 26,582 26,576 Z"
+          stroke="url(#goldFoilGradient)"
+          strokeWidth="1"
+          strokeDasharray="4 2.5"
+          opacity="0.8"
+          fill="none"
+        />
+
+        {/* Bottom decorative plinth lines */}
+        <line x1="16" y1="568" x2="384" y2="568" stroke="url(#goldFoilGradient)" strokeWidth="1.2" opacity="0.7" />
+        <line x1="26" y1="571" x2="374" y2="571" stroke="url(#goldFoilGradient)" strokeWidth="0.6" opacity="0.5" />
+
+        {/* Top arch apex jewel ornament */}
+        <circle cx="200" cy="6" r="3.5" fill="url(#goldFoilGradient)" />
+        <circle cx="200" cy="6" r="6" stroke="url(#goldFoilGradient)" strokeWidth="0.75" opacity="0.7" />
+
+        {/* Corner floral arabesque motifs */}
+        <path d="M 22,558 C 32,558 40,566 40,576 M 22,546 C 36,546 48,558 48,572" stroke="url(#goldFoilGradient)" strokeWidth="1" opacity="0.7" fill="none" />
+        <path d="M 378,558 C 368,558 360,566 360,576 M 378,546 C 364,546 352,558 352,572" stroke="url(#goldFoilGradient)" strokeWidth="1" opacity="0.7" fill="none" />
+      </svg>
+    </div>
+  )
+}
+
+export function CyberGamingHud() {
+  return (
+    <div className="absolute inset-1.5 sm:inset-2.5 pointer-events-none z-10 select-none overflow-hidden" aria-hidden="true">
+      <svg
+        className="w-full h-full"
+        viewBox="0 0 400 600"
+        preserveAspectRatio="none"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ filter: 'drop-shadow(0 0 10px rgba(6,182,212,0.45))' }}
+      >
+        <defs>
+          <linearGradient id="cyberNeonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#06B6D4" />
+            <stop offset="50%" stopColor="#3B82F6" />
+            <stop offset="100%" stopColor="#F59E0B" />
+          </linearGradient>
+        </defs>
+
+        {/* Outer Tech Frame with chamfered / angled corners */}
+        <path
+          d="M 36,16 L 364,16 L 384,36 L 384,564 L 364,584 L 36,584 L 16,564 L 16,36 Z"
+          stroke="url(#cyberNeonGradient)"
+          strokeWidth="1.5"
+          opacity="0.8"
+          fill="none"
+        />
+
+        {/* Corner HUD Brackets */}
+        <path d="M 12,44 L 12,24 L 24,12 L 44,12" stroke="#06B6D4" strokeWidth="2.5" fill="none" />
+        <path d="M 356,12 L 376,12 L 388,24 L 388,44" stroke="#06B6D4" strokeWidth="2.5" fill="none" />
+        <path d="M 12,556 L 12,576 L 24,588 L 44,588" stroke="#F59E0B" strokeWidth="2.5" fill="none" />
+        <path d="M 356,588 L 376,588 L 388,576 L 388,556" stroke="#F59E0B" strokeWidth="2.5" fill="none" />
+
+        {/* Center Tech Crosshairs */}
+        <line x1="188" y1="16" x2="212" y2="16" stroke="#06B6D4" strokeWidth="3" />
+        <circle cx="200" cy="16" r="2.5" fill="#06B6D4" />
+        <line x1="188" y1="584" x2="212" y2="584" stroke="#F59E0B" strokeWidth="3" />
+
+        {/* Data telemetry tick marks */}
+        <line x1="16" y1="280" x2="24" y2="280" stroke="#06B6D4" strokeWidth="1.5" opacity="0.8" />
+        <line x1="16" y1="290" x2="28" y2="290" stroke="#06B6D4" strokeWidth="2" />
+        <line x1="16" y1="300" x2="24" y2="300" stroke="#06B6D4" strokeWidth="1.5" opacity="0.8" />
+
+        <line x1="384" y1="280" x2="376" y2="280" stroke="#F59E0B" strokeWidth="1.5" opacity="0.8" />
+        <line x1="384" y1="290" x2="372" y2="290" stroke="#F59E0B" strokeWidth="2" />
+        <line x1="384" y1="300" x2="376" y2="300" stroke="#F59E0B" strokeWidth="1.5" opacity="0.8" />
+      </svg>
+    </div>
   )
 }

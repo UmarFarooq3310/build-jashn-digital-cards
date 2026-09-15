@@ -61,6 +61,13 @@ export const BORDERS = [
     isPremium: true,
     preview: 'woven',
   },
+  {
+    id: 'cyber-hud',
+    name: 'Cyber Gaming HUD',
+    desc: 'Esports glowing tech brackets & reticles',
+    isPremium: true,
+    preview: 'cyber',
+  },
 ]
 
 /** Small SVG preview of each border style */
@@ -160,6 +167,17 @@ function BorderPreview({ type, accent = '#c8a44a' }: { type: string; accent?: st
             stroke={c} strokeWidth={0.6} opacity={0.3} />
         </svg>
       )
+    case 'cyber':
+      return (
+        <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} fill="none">
+          <path d="M5 10 L5 5 L10 5" stroke="#06B6D4" strokeWidth={1.5} />
+          <path d={`M${W-5} 10 L${W-5} 5 L${W-10} 5`} stroke="#06B6D4" strokeWidth={1.5} />
+          <path d={`M5 ${H-10} L5 ${H-5} L10 ${H-5}`} stroke="#F59E0B" strokeWidth={1.5} />
+          <path d={`M${W-5} ${H-10} L${W-5} ${H-5} L${W-10} ${H-5}`} stroke="#F59E0B" strokeWidth={1.5} />
+          <circle cx={W/2} cy={H/2} r={2.5} stroke="#06B6D4" strokeWidth={0.8} />
+          <line x1={W/2-6} y1={H/2} x2={W/2+6} y2={H/2} stroke="#06B6D4" strokeWidth={0.6} opacity={0.7} />
+        </svg>
+      )
     default:
       return <div className="w-12 h-8 rounded border opacity-40" style={{ borderColor: c }} />
   }
@@ -189,6 +207,7 @@ export function BorderPicker({
       case 'royal-gold': return { nameKey: 'borderNameRoyalGold', descKey: 'borderDescRoyalGold' }
       case 'double-frame': return { nameKey: 'borderNameDoubleFrame', descKey: 'borderDescDoubleFrame' }
       case 'woven': return { nameKey: 'borderNameWoven', descKey: 'borderDescWoven' }
+      case 'cyber-hud': return { nameKey: 'borderNameCyberHud', descKey: 'borderDescCyberHud' }
       default: return { nameKey: '', descKey: '' }
     }
   }

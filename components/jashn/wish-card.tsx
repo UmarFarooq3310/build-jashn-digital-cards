@@ -220,7 +220,14 @@ export const WishCard = forwardRef<HTMLDivElement, {
   const { lang, t } = useLang()
   const occasion = getOccasion(data.occasionId)
   const theme = getTheme(data.themeId)
-  const isIslamic = occasion?.category === 'Islamic'
+  const isIslamic =
+    occasion?.category === 'Islamic' ||
+    (occasion?.category as string) === 'Religious' ||
+    [
+      'eid-ul-fitr', 'eid-ul-adha', 'ramadan', 'jumma', 'hajj', 'umrah', 'milad',
+      'roza-kushai', 'iftaar', 'hajj-dinner', 'eid-party', 'shab-e-barat', 'shab-e-meraj'
+    ].includes(data.occasionId)
+
   const isGamingWinner = [
     'pubg-winner',
     'free-fire-winner',
@@ -229,6 +236,8 @@ export const WishCard = forwardRef<HTMLDivElement, {
     'bingo-winner',
     'esports-winner',
   ].includes(data.occasionId)
+
+  const defaultBorderId = isIslamic ? 'mughal-arch' : (isGamingWinner ? 'cyber-hud' : 'mehndi')
 
   const categoryPatternClass = getCategoryPatternClass(occasion?.category)
   const patternClass = occasion?.patternOverlay || categoryPatternClass
@@ -373,7 +382,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
         className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl px-4 py-4 sm:px-6 sm:py-5 lg:py-6 text-center shadow-xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
         style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
       >
-        <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId} decorations={occasion?.decorations} />
+        <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId || defaultBorderId} decorations={occasion?.decorations} />
 
         {patternClass && (
           <div className={`card-bg-pattern absolute inset-0 ${patternClass}`} aria-hidden="true" />
@@ -382,6 +391,36 @@ export const WishCard = forwardRef<HTMLDivElement, {
         <div className="card-texture" aria-hidden="true" />
         <div className="card-vignette" aria-hidden="true" />
         <div className="card-silk" aria-hidden="true" />
+
+        {/* Premium Royal Mughal Atmospheric Layers */}
+        <div className="damask-overlay" aria-hidden="true" />
+        <div className="deep-vignette" aria-hidden="true" />
+        <div className="silk-sweep" aria-hidden="true" />
+        <div className="royal-inner-glow" aria-hidden="true" />
+
+        {/* Warm Golden Bokeh Orbs */}
+        <div className="bokeh-layer" aria-hidden="true">
+          <div className="bokeh-orb" style={{ width: 50, height: 50, top: '12%', left: '10%', '--bokeh-dur': '10s', '--bokeh-delay': '0.5s', '--bokeh-dx': '10px', '--bokeh-dy': '-15px', '--bokeh-dx2': '-12px', '--bokeh-dy2': '10px', '--bokeh-dx3': '8px', '--bokeh-dy3': '-8px' } as React.CSSProperties} />
+          <div className="bokeh-orb" style={{ width: 35, height: 35, top: '45%', right: '15%', '--bokeh-dur': '9s', '--bokeh-delay': '2s', '--bokeh-dx': '-10px', '--bokeh-dy': '12px', '--bokeh-dx2': '8px', '--bokeh-dy2': '-10px', '--bokeh-dx3': '-6px', '--bokeh-dy3': '8px' } as React.CSSProperties} />
+          <div className="bokeh-orb" style={{ width: 40, height: 40, bottom: '25%', left: '20%', '--bokeh-dur': '11s', '--bokeh-delay': '3.5s', '--bokeh-dx': '14px', '--bokeh-dy': '-10px', '--bokeh-dx2': '-8px', '--bokeh-dy2': '6px', '--bokeh-dx3': '10px', '--bokeh-dy3': '-12px' } as React.CSSProperties} />
+        </div>
+
+        {/* Rising Gold Dust Particles */}
+        <div className="gold-dust-layer" aria-hidden="true">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div
+              key={i}
+              className="gold-dust-particle"
+              style={{
+                left: `${10 + (i * 10)}%`,
+                bottom: `${8 + (i % 3) * 20}%`,
+                '--dust-dur': `${5.5 + (i % 4) * 1.2}s`,
+                '--dust-delay': `${i * 0.8}s`,
+                '--dust-dx': `${(i % 2 === 0 ? 1 : -1) * (6 + (i % 5) * 4)}px`,
+              } as React.CSSProperties}
+            />
+          ))}
+        </div>
 
         <AnimatedBackgroundDecor category={occasion?.category} occasionId={data.occasionId} />
 
@@ -400,6 +439,28 @@ export const WishCard = forwardRef<HTMLDivElement, {
               {recipientLabel}
             </p>
           ) : null}
+
+          {/* Sacred Islamic Bismillah Calligraphy Crest */}
+          {isIslamic && (
+            <div className="flex flex-col items-center justify-center my-1 wc-stagger select-none pointer-events-none max-w-full px-2" aria-hidden="true">
+              <div className="flex items-center justify-center gap-2 mb-1 opacity-90">
+                <span className="h-px w-6 sm:w-10 bg-gradient-to-r from-transparent to-[var(--c-accent)]" />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ color: 'var(--c-accent)' }} className="opacity-95 shrink-0">
+                  <path d="M12 2L14.5 7L20 7L16 11L18 16.5L12 13.5L6 16.5L8 11L4 7L9.5 7L12 2Z" />
+                </svg>
+                <span className="h-px w-6 sm:w-10 bg-gradient-to-l from-transparent to-[var(--c-accent)]" />
+              </div>
+              <div
+                className="font-urdu text-base sm:text-lg md:text-xl font-bold tracking-normal leading-relaxed text-center px-4 py-0.5 rounded-full border border-[var(--c-accent)]/30 bg-[var(--c-accent)]/10 shadow-2xs"
+                style={{
+                  color: 'var(--c-accent)',
+                  textShadow: '0 0 14px color-mix(in oklab, var(--c-accent) 45%, transparent)',
+                }}
+              >
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+              </div>
+            </div>
+          )}
 
           {data.photoUrl ? (
             <div className="avatar-float-anim relative my-1" style={{ filter: 'drop-shadow(0 8px 22px rgba(0,0,0,0.4))' }}>
@@ -438,7 +499,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
           {occasion && (
             <h2
               className={cn(
-                "wc-stagger shimmer-text text-balance font-extrabold tracking-tight parallax-near",
+                "wc-stagger shimmer-text gold-foil-emboss text-balance font-extrabold tracking-tight parallax-near",
                 (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose py-1" : "text-xl sm:text-2xl md:text-3xl lg:text-4xl"
               )}
             >

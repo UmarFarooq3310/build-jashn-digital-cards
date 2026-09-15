@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Sparkles, BookOpen, Volume2, VolumeX } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLang } from '@/lib/lang/context'
@@ -15,6 +15,7 @@ interface ThreeDCardWrapperProps {
   occasionIdOrCategory: string
   isIslamic?: boolean
   isSensitive?: boolean
+  autoOpen?: boolean
   onOpened?: () => void
 }
 
@@ -25,12 +26,46 @@ export function ThreeDCardWrapper({
   occasionIdOrCategory,
   isIslamic = false,
   isSensitive = false,
+  autoOpen = true,
   onOpened,
 }: ThreeDCardWrapperProps) {
   const { t, lang } = useLang()
   const [isOpen, setIsOpen] = useState(false)
   const [hasOpened, setHasOpened] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const autoOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Interactive 3D tilt & shine values (moved up for auto-open useEffect)
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0, px: 50, py: 50 })
+  const [isAudioActive, setIsAudioActive] = useState(false)
+
+  // Auto-open the card after 3 seconds if user doesn't tap it first
+  useEffect(() => {
+    if (!autoOpen || isOpen || hasOpened) return
+
+    autoOpenTimerRef.current = setTimeout(() => {
+      if (!isOpen && !hasOpened) {
+        setIsOpen(true)
+        setHasOpened(true)
+        setTilt({ rx: 0, ry: 0, px: 50, py: 50 })
+
+        if (!isSensitive) {
+          celebrationAudio.playMelody(occasionIdOrCategory)
+          setIsAudioActive(true)
+        }
+
+        if (onOpened) {
+          onOpened()
+        }
+      }
+    }, 3000)
+
+    return () => {
+      if (autoOpenTimerRef.current) {
+        clearTimeout(autoOpenTimerRef.current)
+      }
+    }
+  }, [autoOpen, isOpen, hasOpened, isSensitive, occasionIdOrCategory, onOpened])
 
   useGSAP(() => {
     if (!isOpen) return
@@ -221,9 +256,6 @@ export function ThreeDCardWrapper({
     }
   }, { dependencies: [isOpen, occasionIdOrCategory], scope: containerRef })
   
-  // Interactive 3D tilt & shine values
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0, px: 50, py: 50 })
-
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isOpen || !containerRef.current) return
     const rect = containerRef.current.getBoundingClientRect()
@@ -244,8 +276,6 @@ export function ThreeDCardWrapper({
     setTilt({ rx: 0, ry: 0, px: 50, py: 50 })
   }
 
-  const [isAudioActive, setIsAudioActive] = useState(false)
-
   const handleToggleAudio = (e: React.MouseEvent) => {
     e.stopPropagation()
     const active = celebrationAudio.toggle(occasionIdOrCategory)
@@ -254,6 +284,11 @@ export function ThreeDCardWrapper({
 
   const handleOpen = () => {
     if (isOpen) return
+    // Cancel auto-open timer if user opened manually
+    if (autoOpenTimerRef.current) {
+      clearTimeout(autoOpenTimerRef.current)
+      autoOpenTimerRef.current = null
+    }
     setIsOpen(true)
     setHasOpened(true)
     setTilt({ rx: 0, ry: 0, px: 50, py: 50 }) // Reset tilt immediately on open
@@ -496,7 +531,7 @@ export function ThreeDCardWrapper({
             </p>
           ) : null}
           
-          <p className="text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5 drop-shadow-sm" style={{ color: coverBorderColor }}>
+          <p className="text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5 drop-shadow-sm pulse-hint" style={{ color: coverBorderColor }}>
             {t('tapToOpenCard')}
           </p>
         </div>

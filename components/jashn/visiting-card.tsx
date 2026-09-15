@@ -189,6 +189,12 @@ END:VCARD`
 
       {/* Main 3D Flip Card Container */}
       <div ref={wrapRef} className="relative w-full" style={{ perspective: '1000px' }}>
+        {/* Ambient Backlight Glow Blob */}
+        <div
+          className="pointer-events-none absolute -inset-6 -z-10 rounded-full opacity-30 blur-3xl transition-opacity"
+          style={{ background: isLight ? 'radial-gradient(circle, #0d9488 0%, transparent 70%)' : 'radial-gradient(circle, #D4AF37 0%, transparent 70%)' }}
+        />
+
         <div
           ref={ref}
           className={cn(
@@ -221,8 +227,19 @@ END:VCARD`
               {/* Header Badges & Flip Button */}
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 flex-wrap">
+                  {/* Executive Smart NFC Chip */}
+                  <div
+                    className="size-7 rounded-md border border-amber-300/60 bg-gradient-to-tr from-amber-500 via-amber-300 to-amber-600 shadow-xs relative overflow-hidden flex items-center justify-center shrink-0"
+                    title="Smart Contact NFC Chip"
+                    aria-hidden="true"
+                  >
+                    <div className="absolute inset-x-0 top-1/2 h-[1px] bg-amber-900/40" />
+                    <div className="absolute inset-y-0 left-1/2 w-[1px] bg-amber-900/40" />
+                    <div className="size-3.5 rounded-full border border-amber-900/40 bg-amber-400/80" />
+                  </div>
+
                   <span className={cn(
-                    "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1 text-[10px] font-extrabold uppercase tracking-widest border shadow-sm backdrop-blur-md",
+                    "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest border shadow-xs backdrop-blur-md",
                     isLight
                       ? "bg-white/80 border-slate-300 text-teal-800"
                       : "bg-slate-950/80 border-[#D4AF37]/40 text-[#D4AF37]"

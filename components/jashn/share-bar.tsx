@@ -41,21 +41,27 @@ export function ShareBar({
     setDownloading(true)
     try {
       const { toPng } = await import('html-to-image')
-      const width = captureRef.current.offsetWidth
-      const height = captureRef.current.offsetHeight
+      const naturalWidth = captureRef.current.offsetWidth
+      const naturalHeight = captureRef.current.offsetHeight
+      
+      // Standardize capture to a clean, high-resolution desktop width (minimum 620px)
+      // so when saved on mobile screens, the resulting PNG has the exact same spacious, crisp desktop proportions!
+      const targetWidth = Math.max(620, naturalWidth)
+      const scale = targetWidth / naturalWidth
+      const targetHeight = Math.round(naturalHeight * scale)
       
       const dataUrl = await toPng(captureRef.current, {
         cacheBust: true,
-        width,
-        height,
+        width: targetWidth,
+        height: targetHeight,
         pixelRatio: 2,
         style: {
-          transform: 'none',
-          transformOrigin: 'unset',
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
           animation: 'none',
           transition: 'none',
-          width: `${width}px`,
-          height: `${height}px`,
+          width: `${naturalWidth}px`,
+          height: `${naturalHeight}px`,
           margin: '0',
         },
       })

@@ -266,6 +266,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                 eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
                 occasionIdOrCategory={activeInvitation.typeId}
                 isIslamic={isIslamic}
+                autoOpen={false}
                 onOpened={() => {
                   setRainActive(true)
                 }}

@@ -37,6 +37,12 @@ export const EXTRA_T: Record<string, Record<LangCode, string>> = {
   navLogIn: {
     en: "Log In", ur: "لاگ ان", ar: "دخول", es: "Acceder", fr: "Connexion", hi: "लॉग इन", zh: "登录", pt: "Entrar", ru: "Вход", de: "Anmelden", ja: "ログイン", ko: "로그인", it: "Accedi", tr: "Giriş", id: "Masuk", bn: "লগ ইন", vi: "Đăng Nhập", sw: "Ingia"
   },
+  borderNameCyberHud: {
+    en: "Cyber Gaming HUD", ur: "سائبر گیمنگ فریم", ar: "إطار الألعاب السيبراني", es: "Marco Cyber Gaming", fr: "Cadre Cyber Gaming", hi: "साइबर गेमिंग फ्रेम", zh: "赛博电竞 HUD 边框", pt: "Borda Cyber Gaming", ru: "Рамка Cyber Gaming", de: "Cyber Gaming Rahmen", ja: "サイバーゲーミングHUD", ko: "사이버 게이밍 HUD", it: "Bordo Cyber Gaming", tr: "Siber Oyuncu Çerçevesi", id: "Bingkai Cyber Gaming", bn: "সাইবার গেমিং ফ্রেম", vi: "Khung Cyber Gaming", sw: "Fremu ya Cyber Gaming"
+  },
+  borderDescCyberHud: {
+    en: "Esports glowing tech brackets & reticles", ur: "چمکتار نیون گیمنگ بریکٹس اور نشانات", ar: "أقواس وشبكات تقنية نيون مضيئة", es: "Soportes y retículas tecnológicas de neón brillantes", fr: "Supports et réticules technologiques néon brillants", hi: "चमकदार नियॉन गेमिंग कोष्ठक और रेटिकल्स", zh: "高光发光科技战术拐角与准星", pt: "Suportes e retículos tecnológicos brilhantes", ru: "Светящиеся киберспортивные уголки и прицелы", de: "Leuchtende Esports-Klammern & Fadenkreuze", ja: "ネオン輝くeスポーツ風ブラケット＆レティクル", ko: "빛나는 e스포츠 테크 브래킷과 조준선", it: "Supporti e reticoli tecnologici al neon", tr: "Parlayan espor neon köşeleri ve nişangahları", id: "Braket teknologi neon bercahaya esports", bn: "উজ্জ্বল নিয়ন গেমিং ব্র্যাকেট এবং ক্রসহেয়ার", vi: "Góc viền công nghệ neon phát sáng phong cách esports", sw: "Mabano na vidokezo vyenye mwanga wa neon wa michezo"
+  },
   partner1Name: {
     en: "Husband / Partner 1 Name", ur: "شوہر / پارٹنر 1 کا نام", ar: "اسم الزوج / الشريك الأول", es: "Nombre del Esposo / Pareja 1", fr: "Nom de l'Époux / Partenaire 1", hi: "पति / साथी 1 का नाम", zh: "丈夫 / 伴侣 1 姓名", pt: "Nome do Esposo / Parceiro 1", ru: "Имя мужа / партнера 1", de: "Name des Ehemanns / Partners 1", ja: "夫／パートナー1のお名前", ko: "남편 / 파트너 1 이름", it: "Nome del Marito / Partner 1", tr: "Eş / Partner 1 Adı", id: "Nama Suami / Pasangan 1", bn: "স্বামী / সঙ্গী ১ এর নাম", vi: "Tên Chồng / Bạn Đời 1", sw: "Jina la Mume / Mwenza 1"
   },

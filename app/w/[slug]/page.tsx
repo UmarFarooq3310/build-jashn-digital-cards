@@ -244,6 +244,7 @@ function WishPublicContent({ slug }: { slug: string }) {
                 occasionIdOrCategory={activeWish.occasionId}
                 isIslamic={isIslamic}
                 isSensitive={isSensitive}
+                autoOpen={false}
                 onOpened={() => {
                   if (!isSensitive) {
                     setRainActive(true)

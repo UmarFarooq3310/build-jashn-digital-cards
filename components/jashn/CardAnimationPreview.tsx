@@ -23,6 +23,12 @@ function classifyOccasion(occasionId: string) {
   const occasion = getOccasion(id)
   const category = occasion?.category ?? ''
 
+  const isGaming =
+    category === 'Gaming' ||
+    id === 'game-night' || id === 'gaming' || id === 'esports' || id === 'lan-party' ||
+    id === 'pubg-winner' || id === 'free-fire-winner' || id === 'ludo-champion' ||
+    id === 'number-draw-winner' || id === 'bingo-winner' || id === 'esports-winner'
+
   const isWedding =
     id === 'nikah' || id === 'shaadi' || id === 'anniversary' ||
     category === 'Family'
@@ -34,8 +40,10 @@ function classifyOccasion(occasionId: string) {
 
   const isIslamic =
     category === 'Islamic' ||
+    (category as string) === 'Religious' ||
     id === 'eid-ul-fitr' || id === 'eid-ul-adha' || id === 'ramadan' ||
-    id === 'jumma' || id === 'hajj' || id === 'umrah' || id === 'milad'
+    id === 'jumma' || id === 'hajj' || id === 'umrah' || id === 'milad' ||
+    id === 'roza-kushai' || id === 'iftaar' || id === 'hajj-dinner' || id === 'eid-party'
 
   const isFriendship =
     id === 'friendship-day' || id === 'thank-you' || id === 'miss-you' ||
@@ -50,7 +58,8 @@ function classifyOccasion(occasionId: string) {
     id === 'business-launch' || id === 'new-home' ||
     category === 'Achievements' || category === 'National'
 
-  // Resolve priority: mehndi before wedding (mehndi IS in Family category)
+  // Resolve priority: gaming first, mehndi before wedding (mehndi IS in Family category)
+  if (isGaming) return 'gaming'
   if (isMehndi) return 'mehndi'
   if (isBirthday) return 'birthday'
   if (isIslamic) return 'islamic'
@@ -358,6 +367,45 @@ function DefaultOverlay() {
   )
 }
 
+/** Gaming: Cyber scanline sweep + HUD corner telemetry */
+function GamingOverlay() {
+  return (
+    <>
+      {/* Laser / Cyber Scanline */}
+      <div
+        className="anim-cyber-scanline pointer-events-none absolute inset-x-0 h-14"
+        style={{
+          background: 'linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.28), rgba(245, 158, 11, 0.12), transparent)',
+          top: '-60px',
+          willChange: 'transform',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Cyber Corner HUD Brackets */}
+      <div
+        className="anim-cyber-hud pointer-events-none absolute inset-3 border border-cyan-500/20 rounded-2xl"
+        style={{ willChange: 'opacity' }}
+        aria-hidden="true"
+      >
+        <div className="absolute top-2 left-2.5 flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
+          <span className="text-[8px] font-mono tracking-widest text-cyan-400/80 uppercase">HUD // ACTIVE</span>
+        </div>
+        <div className="absolute top-2 right-2.5 flex items-center gap-1">
+          <span className="text-[8px] font-mono tracking-widest text-amber-400/80">MATCH.READY</span>
+        </div>
+        <div className="absolute bottom-2 left-2.5 flex items-center gap-1">
+          <span className="text-[7px] font-mono tracking-widest text-cyan-500/60">+ 100 HP</span>
+        </div>
+        <div className="absolute bottom-2 right-2.5 flex items-center gap-1">
+          <span className="text-[7px] font-mono tracking-widest text-amber-500/60">SYS // OK</span>
+        </div>
+      </div>
+    </>
+  )
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function CardAnimationPreview({
@@ -375,6 +423,44 @@ export default function CardAnimationPreview({
       const ctx = gsap.context(() => {
         const root = containerRef.current
         if (!root) return
+
+        // ── GAMING / ESPORTS / GAME NIGHT ─────────────────────────────────────
+        if (type === 'gaming') {
+          const tl = gsap.timeline()
+
+          const hudBorders = root.querySelectorAll('.cyber-hud, .border-corners')
+          if (hudBorders.length > 0) {
+            tl.fromTo(hudBorders, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0)
+          }
+
+          const scanline = root.querySelectorAll('.anim-cyber-scanline')
+          if (scanline.length > 0) {
+            tl.fromTo(
+              scanline,
+              { y: -60, opacity: 0 },
+              {
+                y: 650,
+                opacity: 0.9,
+                duration: 2.8,
+                ease: 'power1.inOut',
+                repeat: -1,
+              },
+              0,
+            )
+          }
+
+          const hud = root.querySelectorAll('.anim-cyber-hud')
+          if (hud.length > 0) {
+            tl.fromTo(
+              hud,
+              { opacity: 0.35 },
+              { opacity: 0.85, duration: 1.4, ease: 'sine.inOut', yoyo: true, repeat: -1 },
+              0,
+            )
+          }
+
+          return () => tl.kill()
+        }
 
         // ── WEDDING / NIKAH / SHAADI / ANNIVERSARY ──────────────────────────
         if (type === 'wedding') {
@@ -717,6 +803,7 @@ export default function CardAnimationPreview({
       {children}
 
       {/* ── Animation Overlays ── */}
+      {type === 'gaming' && <GamingOverlay />}
       {type === 'wedding' && <WeddingOverlay />}
       {type === 'mehndi' && <MehndiOverlay />}
       {type === 'birthday' && <BirthdayOverlay />}

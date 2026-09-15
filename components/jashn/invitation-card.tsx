@@ -305,8 +305,55 @@ function OrnamentDivider() {
   )
 }
 
-/** Top ornament crown / star cluster */
-function TopOrnament({ hasCouple }: { hasCouple: boolean }) {
+/** Top ornament crown / Islamic Bismillah / Cyber Gaming badge */
+function TopOrnament({
+  hasCouple,
+  isIslamic,
+  isGaming,
+}: {
+  hasCouple: boolean
+  isIslamic?: boolean
+  isGaming?: boolean
+}) {
+  if (isIslamic) {
+    return (
+      <div className="flex flex-col items-center justify-center my-1 ic-stagger select-none pointer-events-none max-w-full px-2" aria-hidden="true">
+        {/* Crescent and 8-pointed star rosette */}
+        <div className="flex items-center justify-center gap-2 mb-1 opacity-90">
+          <span className="h-px w-6 sm:w-10 bg-gradient-to-r from-transparent to-[var(--c-accent)]" />
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ color: 'var(--c-accent)' }} className="opacity-95 shrink-0">
+            <path d="M12 2L14.5 7L20 7L16 11L18 16.5L12 13.5L6 16.5L8 11L4 7L9.5 7L12 2Z" />
+          </svg>
+          <span className="h-px w-6 sm:w-10 bg-gradient-to-l from-transparent to-[var(--c-accent)]" />
+        </div>
+
+        {/* Sacred Bismillah Calligraphy */}
+        <div
+          className="font-urdu text-base sm:text-lg md:text-xl font-bold tracking-normal leading-relaxed text-center px-4 py-0.5 rounded-full border border-[var(--c-accent)]/30 bg-[var(--c-accent)]/10 shadow-2xs"
+          style={{
+            color: 'var(--c-accent)',
+            textShadow: '0 0 14px color-mix(in oklab, var(--c-accent) 45%, transparent)',
+          }}
+        >
+          بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+        </div>
+      </div>
+    )
+  }
+
+  if (isGaming) {
+    return (
+      <div className="flex items-center justify-center gap-2 my-1 ic-stagger select-none pointer-events-none" aria-hidden="true">
+        <span className="h-px w-6 bg-gradient-to-r from-transparent to-cyan-400" />
+        <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full border border-cyan-400/50 bg-cyan-950/40 text-cyan-300 text-[10px] font-mono uppercase tracking-widest shadow-[0_0_12px_rgba(6,182,212,0.4)]">
+          <span className="size-1.5 rounded-full bg-cyan-400 animate-ping" />
+          MATCH READY
+        </span>
+        <span className="h-px w-6 bg-gradient-to-l from-transparent to-cyan-400" />
+      </div>
+    )
+  }
+
   return (
     <div className="flex items-center justify-center gap-1.5 mb-1 ic-stagger" aria-hidden="true">
       <Star className="size-2.5 fill-current opacity-60" style={{ color: 'var(--c-accent)' }} />
@@ -327,7 +374,8 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
   const type = getInvitationType(resolvedTypeId)
   const theme = getTheme(data.themeId)
   const typeTheme = getInvitationTypeTheme(resolvedTypeId)
-  const isIslamic = type?.category === 'Religious'
+  const isIslamic = type?.category === 'Religious' || resolvedTypeId === 'nikkah' || resolvedTypeId === 'roza-kushai' || resolvedTypeId === 'hajj-dinner' || resolvedTypeId === 'eid-party' || resolvedTypeId === 'milad' || resolvedTypeId === 'iftaar'
+  const isGaming = resolvedTypeId === 'game-night'
   const isCouple = type?.couple && (data.groom || data.bride)
   const categoryPatternClass = getCategoryPatternClass(type?.category)
   const patternClass = type?.patternOverlay || categoryPatternClass
@@ -521,7 +569,13 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
         style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
       >
         {/* Decor layer (anchored to card frame) */}
-        <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId} typeDecor={typeTheme?.decor} decorations={type?.decorations} />
+        <CardDecor
+          theme={theme}
+          islamic={isIslamic}
+          borderId={data.borderId || (isIslamic ? 'mughal-arch' : (isGaming ? 'cyber-hud' : 'mehndi'))}
+          typeDecor={typeTheme?.decor}
+          decorations={type?.decorations}
+        />
 
         {/* Background pattern layer */}
         {patternClass && (
@@ -532,6 +586,38 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
         <div className="card-texture" aria-hidden="true" />
         <div className="card-vignette" aria-hidden="true" />
         <div className="card-silk" aria-hidden="true" />
+
+        {/* Premium Royal Mughal Atmospheric Layers */}
+        <div className="damask-overlay" aria-hidden="true" />
+        <div className="deep-vignette" aria-hidden="true" />
+        <div className="silk-sweep" aria-hidden="true" />
+        <div className="royal-inner-glow" aria-hidden="true" />
+
+        {/* Warm Golden Bokeh Orbs */}
+        <div className="bokeh-layer" aria-hidden="true">
+          <div className="bokeh-orb" style={{ width: 60, height: 60, top: '10%', left: '8%', '--bokeh-dur': '9s', '--bokeh-delay': '0s', '--bokeh-dx': '12px', '--bokeh-dy': '-18px', '--bokeh-dx2': '-8px', '--bokeh-dy2': '14px', '--bokeh-dx3': '15px', '--bokeh-dy3': '-6px' } as React.CSSProperties} />
+          <div className="bokeh-orb" style={{ width: 40, height: 40, top: '30%', right: '12%', '--bokeh-dur': '11s', '--bokeh-delay': '1.5s', '--bokeh-dx': '-15px', '--bokeh-dy': '10px', '--bokeh-dx2': '12px', '--bokeh-dy2': '-16px', '--bokeh-dx3': '-10px', '--bokeh-dy3': '8px' } as React.CSSProperties} />
+          <div className="bokeh-orb" style={{ width: 50, height: 50, bottom: '20%', left: '15%', '--bokeh-dur': '10s', '--bokeh-delay': '3s', '--bokeh-dx': '18px', '--bokeh-dy': '-12px', '--bokeh-dx2': '-14px', '--bokeh-dy2': '8px', '--bokeh-dx3': '10px', '--bokeh-dy3': '-14px' } as React.CSSProperties} />
+          <div className="bokeh-orb" style={{ width: 35, height: 35, top: '55%', right: '20%', '--bokeh-dur': '8s', '--bokeh-delay': '2s', '--bokeh-dx': '-8px', '--bokeh-dy': '-20px', '--bokeh-dx2': '10px', '--bokeh-dy2': '12px', '--bokeh-dx3': '-12px', '--bokeh-dy3': '-5px' } as React.CSSProperties} />
+          <div className="bokeh-orb" style={{ width: 28, height: 28, top: '75%', left: '60%', '--bokeh-dur': '12s', '--bokeh-delay': '4s', '--bokeh-dx': '10px', '--bokeh-dy': '-8px', '--bokeh-dx2': '-6px', '--bokeh-dy2': '10px', '--bokeh-dx3': '8px', '--bokeh-dy3': '-12px' } as React.CSSProperties} />
+        </div>
+
+        {/* Rising Gold Dust Particles */}
+        <div className="gold-dust-layer" aria-hidden="true">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div
+              key={i}
+              className="gold-dust-particle"
+              style={{
+                left: `${8 + (i * 7.5)}%`,
+                bottom: `${5 + (i % 4) * 15}%`,
+                '--dust-dur': `${5 + (i % 5) * 1.5}s`,
+                '--dust-delay': `${i * 0.6}s`,
+                '--dust-dx': `${(i % 2 === 0 ? 1 : -1) * (8 + (i % 6) * 5)}px`,
+              } as React.CSSProperties}
+            />
+          ))}
+        </div>
 
         {/* Ambient Animated backgrounds */}
         <AnimatedBackgroundDecor category={type?.category} occasionId={resolvedTypeId} />
@@ -546,14 +632,14 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
         <div className="relative z-10 flex flex-col items-center px-4 py-5 sm:px-6 sm:py-6 md:px-8 md:py-7 gap-2.5 sm:gap-3.5 text-center">
 
           {/* Top ornament */}
-          <TopOrnament hasCouple={!!isCouple} />
+          <TopOrnament hasCouple={!!isCouple} isIslamic={isIslamic} isGaming={isGaming} />
 
           {/* Type label (Urdu or English depending on selected site language) */}
           {type && (
             <div className="ic-stagger inv-parallax-mid flex flex-col items-center">
               <p
                 className={cn(
-                  "text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] font-extrabold opacity-85",
+                  "gold-foil-text text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] font-extrabold opacity-85",
                   (lang === 'ur' || lang === 'ar') && "font-urdu text-sm sm:text-base tracking-normal"
                 )}
                 style={{ color: 'var(--c-accent)' }}
@@ -638,7 +724,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                 <div className="mb-2 max-w-full">
                   <span
                     className={cn(
-                      "inline-block text-xs sm:text-sm font-extrabold tracking-wider uppercase px-3.5 py-1 rounded-full border border-[var(--c-accent)]/30 bg-[var(--c-accent)]/10 text-center max-w-full text-balance leading-snug shadow-xs",
+                      "gold-cartouche inline-block text-xs sm:text-sm font-extrabold tracking-wider uppercase px-3.5 py-1 rounded-full border border-[var(--c-accent)]/30 bg-[var(--c-accent)]/10 text-center max-w-full text-balance leading-snug shadow-xs",
                       (lang === 'ur' || lang === 'ar') && "font-urdu text-sm sm:text-base tracking-normal leading-relaxed"
                     )}
                     style={{ color: 'var(--c-accent)' }}
@@ -650,7 +736,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
               <div
                 className={cn(
-                  "shimmer-text font-extrabold flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-5 gap-y-1 sm:gap-y-2 text-center w-full my-1 leading-normal",
+                  "shimmer-text gold-foil-emboss font-extrabold flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-5 gap-y-1 sm:gap-y-2 text-center w-full my-1 leading-normal",
                   (lang === 'ur' || lang === 'ar')
                     ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose"
                     : "text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-normal"
@@ -683,7 +769,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
           ) : (
             <div className="ic-stagger inv-parallax-near text-center w-full px-2">
               <h2 className={cn(
-                "shimmer-text font-extrabold tracking-normal leading-snug text-balance px-2",
+                "shimmer-text gold-foil-emboss font-extrabold tracking-normal leading-snug text-balance px-2",
                 (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose" : "text-xl sm:text-2xl md:text-3xl lg:text-4xl"
               )}>
                 {data.title || data.hostNames || (t(`type_${type?.id.replace(/-/g, '_')}`) || type?.label)}

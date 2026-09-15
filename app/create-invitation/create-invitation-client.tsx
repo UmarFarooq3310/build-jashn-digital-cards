@@ -946,6 +946,7 @@ function CreateInvitationContent() {
                               photoUrl,
                               photoUrl2,
                             }}
+                            showCountdown={false}
                           />
                         </CardAnimationPreview>
                       </div>
@@ -1016,6 +1017,7 @@ function CreateInvitationContent() {
                     photoUrl,
                     photoUrl2,
                   }}
+                  showCountdown={false}
                 />
               </CardAnimationPreview>
             </PreviewCardFit>
