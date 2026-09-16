@@ -261,7 +261,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
             </div>
 
             {/* 3D Invitation Card Display */}
-            <div className="my-6 py-4 flex justify-center">
+            <div className="my-4 flex justify-center">
               <ThreeDCardWrapper
                 eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
                 occasionIdOrCategory={activeInvitation.typeId}
@@ -271,7 +271,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                   setRainActive(true)
                 }}
               >
-                <InvitationCard ref={cardRef} data={activeInvitation} watermark={true} showCountdown={true} />
+                <InvitationCard ref={cardRef} data={activeInvitation} watermark={true} showCountdown={false} />
               </ThreeDCardWrapper>
             </div>
 

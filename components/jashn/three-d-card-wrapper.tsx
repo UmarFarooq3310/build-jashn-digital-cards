@@ -545,7 +545,7 @@ export function ThreeDCardWrapper({
           "w-full rounded-[2.5rem] z-10 relative",
           "transition-all duration-700",
           isOpen 
-            ? "relative h-auto opacity-100 pointer-events-auto scale-100 max-h-[82vh] sm:max-h-[85vh] overflow-y-auto overscroll-contain" 
+            ? "relative h-auto opacity-100 pointer-events-auto scale-100 card-viewport-fit" 
             : "absolute inset-0 h-full opacity-0 pointer-events-none scale-95 overflow-hidden"
         )}
         style={{

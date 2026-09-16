@@ -56,15 +56,15 @@ function FlipUnit({ value, label }: { value: number; label: string }) {
 
         {/* Top half — static current value */}
         <div
-          className="countdown-unit-top-half absolute top-0 inset-x-0 flex items-end justify-center pb-0.5 overflow-hidden"
+          className="countdown-unit-top-half absolute top-0 inset-x-0 overflow-hidden text-center"
           style={{
             height: '50%',
             background: 'color-mix(in oklab, var(--c-accent) 8%, rgba(0,0,0,0.18))',
           }}
         >
           <span
-            className="text-2xl font-extrabold tabular-nums leading-none"
-            style={{ color: 'var(--c-ink)' }}
+            className="text-2xl font-extrabold tabular-nums block"
+            style={{ color: 'var(--c-ink)', lineHeight: '52px' }}
           >
             {str}
           </span>
@@ -72,12 +72,12 @@ function FlipUnit({ value, label }: { value: number; label: string }) {
 
         {/* Bottom half — static current value */}
         <div
-          className="absolute bottom-0 inset-x-0 flex items-start justify-center pt-0.5 overflow-hidden"
+          className="absolute bottom-0 inset-x-0 overflow-hidden text-center"
           style={{ height: '50%' }}
         >
           <span
-            className="text-2xl font-extrabold tabular-nums leading-none"
-            style={{ color: 'var(--c-ink)', opacity: 0.85 }}
+            className="text-2xl font-extrabold tabular-nums block"
+            style={{ color: 'var(--c-ink)', opacity: 0.85, lineHeight: '52px', marginTop: '-26px' }}
           >
             {str}
           </span>

@@ -281,20 +281,20 @@ export function CookieBanner() {
           dir={isRtl ? 'rtl' : 'ltr'}
           style={{
             position: 'fixed',
-            bottom: '16px',
-            left: '12px',
-            right: '12px',
+            bottom: '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
             zIndex: 2147483647,
-            maxWidth: '576px',
-            margin: '0 auto',
+            width: 'calc(100% - 24px)',
+            maxWidth: '560px',
             pointerEvents: 'auto',
             display: 'block',
             visibility: 'visible',
             opacity: 1,
           }}
-          className={`sm:left-auto sm:right-5 sm:bottom-5 sm:mx-0 pointer-events-auto ${isRtl ? 'font-urdu text-right' : ''}`}
+          className={`pointer-events-auto transition-all animate-in slide-in-from-bottom-5 fade-in duration-300 ${isRtl ? 'font-urdu text-right' : ''}`}
         >
-          <div className="rounded-2xl border border-amber-500/60 bg-[#0b0d13]/98 p-5 text-white shadow-[0_20px_60px_rgba(0,0,0,0.9)] backdrop-blur-2xl">
+          <div className="rounded-3xl border border-amber-500/50 bg-[#090b10]/95 p-4 sm:p-5 text-slate-100 shadow-[0_24px_70px_rgba(0,0,0,0.85)] backdrop-blur-2xl ring-1 ring-white/10">
             {/* Header row */}
             <div className="flex items-start justify-between gap-3 mb-3">
               <div className="flex items-center gap-2.5">

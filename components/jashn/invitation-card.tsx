@@ -629,7 +629,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
         <CardAnimLayers typeId={resolvedTypeId} />
 
         {/* ── Card body ──────────────────────────────────────────────── */}
-        <div className="relative z-10 flex flex-col items-center px-4 py-5 sm:px-6 sm:py-6 md:px-8 md:py-7 gap-2.5 sm:gap-3.5 text-center">
+        <div className="relative z-10 flex flex-col items-center px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-5 gap-2 sm:gap-3 text-center">
 
           {/* Top ornament */}
           <TopOrnament hasCouple={!!isCouple} isIslamic={isIslamic} isGaming={isGaming} />
@@ -785,27 +785,75 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
           <OrnamentDivider />
 
-          {/* ── Event details as responsive grid (2-cols on desktop) ── */}
-          <div className="ic-stagger grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+          {/* ── Event details as elegant centered flowing text (printed card style) ── */}
+          <div className="ic-stagger inv-parallax-near flex flex-col items-center gap-2.5 sm:gap-3 w-full text-center px-3">
+            {/* Date in gold cartouche frame */}
             {data.date && (
-              <DetailPill icon={<CalendarDays className="size-4" />}>
-                {formatDate(data.date, lang)}
-              </DetailPill>
+              <div className="gold-cartouche">
+                <span
+                  className={cn(
+                    "font-bold tracking-wider",
+                    (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm sm:text-base" : "text-sm sm:text-base uppercase"
+                  )}
+                  style={{ color: 'var(--c-accent)' }}
+                >
+                  {formatDate(data.date, lang)}
+                </span>
+              </div>
             )}
+
+            {/* Time */}
             {data.time && (
-              <DetailPill icon={<Clock className="size-4" />}>
+              <p
+                className={cn(
+                  "font-semibold tracking-wide opacity-90",
+                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm sm:text-base" : "text-xs sm:text-sm italic"
+                )}
+                style={{ color: 'var(--c-ink)' }}
+              >
                 {formatTime12h(data.time, lang)}
-              </DetailPill>
+              </p>
             )}
+
+            {/* Venue & City */}
             {(data.venue || data.city) && (
-              <DetailPill icon={<MapPin className="size-4" />}>
-                {[data.venue, data.city].filter(Boolean).join(' · ')}
-              </DetailPill>
+              <div className="flex flex-col items-center gap-0.5">
+                {data.venue && (
+                  <p
+                    className={cn(
+                      "font-bold tracking-wide",
+                      (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm sm:text-base" : "text-sm sm:text-base"
+                    )}
+                    style={{ color: 'var(--c-ink)' }}
+                  >
+                    {data.venue}
+                  </p>
+                )}
+                {data.city && (
+                  <p
+                    className={cn(
+                      "opacity-80 tracking-wider",
+                      (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm" : "text-xs sm:text-sm uppercase"
+                    )}
+                    style={{ color: 'var(--c-ink)' }}
+                  >
+                    {data.city}
+                  </p>
+                )}
+              </div>
             )}
+
+            {/* Dress Code */}
             {data.dressCode && (
-              <DetailPill icon={<Shirt className="size-4" />}>
+              <p
+                className={cn(
+                  "italic opacity-80 tracking-wide",
+                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm" : "text-[11px] sm:text-xs"
+                )}
+                style={{ color: 'var(--c-accent)' }}
+              >
                 {data.dressCode}
-              </DetailPill>
+              </p>
             )}
           </div>
 
@@ -816,24 +864,16 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
             </div>
           )}
 
-          {/* Personal notes / message */}
+          {/* Personal notes / message — elegant calligraphy style */}
           {data.notes && (
-            <div
-              className={cn(
-                "ic-stagger w-full rounded-xl px-3.5 py-2.5 sm:px-5 sm:py-3 shadow-xs backdrop-blur-md",
-                (lang === 'ur' || lang === 'ar') ? "text-right" : "text-left"
-              )}
-              style={{
-                background: 'color-mix(in oklab,var(--c-accent) 7%,transparent)',
-                border: '1px solid color-mix(in oklab,var(--c-accent) 15%,transparent)',
-              }}
-            >
+            <div className="ic-stagger flex flex-col items-center w-full px-4 sm:px-6">
+              <OrnamentDivider />
               <p
                 className={cn(
-                  "text-xs sm:text-sm italic leading-relaxed opacity-90 whitespace-pre-line",
-                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-right" : "text-left"
+                  "text-xs sm:text-sm leading-relaxed opacity-90 whitespace-pre-line text-center text-balance mt-1",
+                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-right w-full" : "italic"
                 )}
-                style={{ fontStyle: 'italic', color: 'var(--c-ink)' }}
+                style={{ fontStyle: (lang === 'ur' || lang === 'ar') ? 'normal' : 'italic', color: 'var(--c-accent)' }}
               >
                 &ldquo;{data.notes}&rdquo;
               </p>

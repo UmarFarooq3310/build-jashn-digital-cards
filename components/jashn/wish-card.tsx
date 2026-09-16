@@ -524,19 +524,15 @@ export const WishCard = forwardRef<HTMLDivElement, {
             return (
               <div
                 className={cn(
-                  "wc-stagger w-full rounded-2xl p-3 sm:p-4 shadow-inner parallax-near transition-all max-h-60 sm:max-h-80 overflow-y-auto overscroll-contain",
-                  isRtlScript ? "text-right" : "text-left"
+                  "wc-stagger w-full px-4 sm:px-6 parallax-near transition-all max-h-60 sm:max-h-80 overflow-y-auto overscroll-contain",
+                  isRtlScript ? "text-right" : "text-center"
                 )}
-                style={{
-                  background: 'color-mix(in oklab, var(--c-accent) 8%, transparent)',
-                  border: '1px solid color-mix(in oklab, var(--c-accent) 18%, transparent)',
-                }}
               >
                 <p className={cn(
                   "text-balance transition-all",
                   isRtlScript
                     ? "font-urdu text-base sm:text-lg md:text-xl leading-loose text-right"
-                    : "text-sm sm:text-base leading-relaxed opacity-95 text-left"
+                    : "text-sm sm:text-base leading-relaxed opacity-95 italic"
                 )}
                 style={{ color: 'var(--c-ink)' }}
                 >

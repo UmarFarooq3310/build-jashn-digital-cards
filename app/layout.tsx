@@ -18,6 +18,12 @@ const AdSenseHandler = dynamic(
 const Analytics = dynamic(
   () => import('@vercel/analytics/next').then((mod) => mod.Analytics)
 )
+const PushNotificationPrompt = dynamic(
+  () => import('@/components/push-notification-prompt').then((mod) => mod.PushNotificationPrompt)
+)
+const LivePresenceTracker = dynamic(
+  () => import('@/components/live-presence-tracker').then((mod) => mod.LivePresenceTracker)
+)
 
 import { CookieBanner } from '@/components/CookieBanner'
 
@@ -331,6 +337,8 @@ export default function RootLayout({
             <SiteFooter />
           </div>
           <ToastNotification />
+          <PushNotificationPrompt />
+          <LivePresenceTracker />
           {process.env.NODE_ENV === 'production' && process.env.VERCEL === '1' && <Analytics />}
         </LanguageProvider>
       </body>

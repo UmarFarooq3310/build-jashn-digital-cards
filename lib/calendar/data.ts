@@ -119,15 +119,15 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "ruleType": "scheduled",
     "scheduledDates": [
       {
-        "date": "2026-09-25",
+        "date": "2026-08-25",
         "hijriNote": "12 Rabi-ul-Awwal 1448 AH"
       },
       {
-        "date": "2027-09-14",
+        "date": "2027-08-14",
         "hijriNote": "12 Rabi-ul-Awwal 1449 AH"
       },
       {
-        "date": "2028-09-02",
+        "date": "2028-08-03",
         "hijriNote": "12 Rabi-ul-Awwal 1450 AH"
       }
     ],
@@ -148,12 +148,16 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "ruleType": "scheduled",
     "scheduledDates": [
       {
-        "date": "2026-10-23",
+        "date": "2026-09-23",
         "hijriNote": "11 Rabi-us-Sani 1448 AH"
       },
       {
-        "date": "2027-10-12",
+        "date": "2027-09-12",
         "hijriNote": "11 Rabi-us-Sani 1449 AH"
+      },
+      {
+        "date": "2028-08-31",
+        "hijriNote": "11 Rabi-us-Sani 1450 AH"
       }
     ],
     "greetings": {
@@ -173,11 +177,15 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "ruleType": "scheduled",
     "scheduledDates": [
       {
-        "date": "2027-01-06",
+        "date": "2026-01-16",
+        "hijriNote": "27 Rajab 1447 AH"
+      },
+      {
+        "date": "2027-01-05",
         "hijriNote": "27 Rajab 1448 AH"
       },
       {
-        "date": "2027-12-26",
+        "date": "2027-12-25",
         "hijriNote": "27 Rajab 1449 AH"
       }
     ],
@@ -197,6 +205,10 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "description": "The night of records and forgiveness on 15th Shaban. Believers engage in night-long worship, Quran recitation, and seeking pardon from loved ones.",
     "ruleType": "scheduled",
     "scheduledDates": [
+      {
+        "date": "2026-02-03",
+        "hijriNote": "15 Shaban 1447 AH"
+      },
       {
         "date": "2027-01-23",
         "hijriNote": "15 Shaban 1448 AH"
@@ -223,6 +235,10 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "ruleType": "scheduled",
     "scheduledDates": [
       {
+        "date": "2026-02-18",
+        "hijriNote": "1 Ramadan 1447 AH"
+      },
+      {
         "date": "2027-02-08",
         "hijriNote": "1 Ramadan 1448 AH"
       },
@@ -247,6 +263,10 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "description": "Celebration honoring children observing their very first fast, marked with rose garlands, special iftar feasts, and family blessings.",
     "ruleType": "scheduled",
     "scheduledDates": [
+      {
+        "date": "2026-03-04",
+        "hijriNote": "15 Ramadan 1447 AH"
+      },
       {
         "date": "2027-02-22",
         "hijriNote": "15 Ramadan 1448 AH"
@@ -273,7 +293,11 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "ruleType": "scheduled",
     "scheduledDates": [
       {
-        "date": "2027-03-06",
+        "date": "2026-03-15",
+        "hijriNote": "27 Ramadan 1447 AH"
+      },
+      {
+        "date": "2027-03-05",
         "hijriNote": "27 Ramadan 1448 AH"
       },
       {
@@ -297,6 +321,10 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "description": "The joyful evening marking the sighting of the Shawwal crescent. Vibrant night bazaars, mehndi application, and family celebrations.",
     "ruleType": "scheduled",
     "scheduledDates": [
+      {
+        "date": "2026-03-19",
+        "hijriNote": "29/30 Ramadan 1447 AH"
+      },
       {
         "date": "2027-03-09",
         "hijriNote": "29/30 Ramadan 1448 AH"
@@ -323,6 +351,10 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "ruleType": "scheduled",
     "scheduledDates": [
       {
+        "date": "2026-03-20",
+        "hijriNote": "1 Shawwal 1447 AH"
+      },
+      {
         "date": "2027-03-10",
         "hijriNote": "1 Shawwal 1448 AH"
       },
@@ -347,6 +379,10 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "description": "Millions of pilgrims assemble in Makkah and Mina to perform the sacred fifth pillar of Islam.",
     "ruleType": "scheduled",
     "scheduledDates": [
+      {
+        "date": "2026-05-26",
+        "hijriNote": "8 Dhu al-Hijjah 1447 AH"
+      },
       {
         "date": "2027-05-15",
         "hijriNote": "8 Dhu al-Hijjah 1448 AH"
@@ -373,6 +409,10 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "ruleType": "scheduled",
     "scheduledDates": [
       {
+        "date": "2026-05-26",
+        "hijriNote": "9 Dhu al-Hijjah 1447 AH"
+      },
+      {
         "date": "2027-05-16",
         "hijriNote": "9 Dhu al-Hijjah 1448 AH"
       },
@@ -398,6 +438,10 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "ruleType": "scheduled",
     "scheduledDates": [
       {
+        "date": "2026-05-27",
+        "hijriNote": "10 Dhu al-Hijjah 1447 AH"
+      },
+      {
         "date": "2027-05-17",
         "hijriNote": "10 Dhu al-Hijjah 1448 AH"
       },
@@ -416,14 +460,18 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
   },
   {
     "id": "islamic-new-year",
-    "title": "Islamic New Year (1st Muharram 1449 AH)",
+    "title": "Islamic New Year (1st Muharram)",
     "urduTitle": "نیا اسلامی سال (یکم محرم الحرام)",
     "category": "islamic",
     "description": "The beginning of the new Hijri calendar year commemorating the historic migration (Hijrah) of Prophet Muhammad (PBUH) from Makkah to Madinah.",
     "ruleType": "scheduled",
     "scheduledDates": [
       {
-        "date": "2027-06-05",
+        "date": "2026-06-16",
+        "hijriNote": "1 Muharram 1448 AH"
+      },
+      {
+        "date": "2027-06-06",
         "hijriNote": "1 Muharram 1449 AH"
       },
       {
@@ -432,8 +480,8 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
       }
     ],
     "greetings": {
-      "en": "Hijri New Year Mubarak! May the new Islamic year 1449 bring peace, renewed faith, and harmony to our world.",
-      "ur": "نیا ہجری سال 1449 مبارک! دعا ہے کہ یہ سال امتِ مسلمہ اور آپ کے گھرانے کے لیے امن و سلامتی کا پیامبر ہو۔"
+      "en": "Hijri New Year Mubarak! May the new Islamic year bring peace, renewed faith, and harmony to our world.",
+      "ur": "نیا ہجری سال مبارک! دعا ہے کہ یہ سال امتِ مسلمہ اور آپ کے گھرانے کے لیے امن و سلامتی کا پیامبر ہو۔"
     },
     "ctaText": "Send New Hijri Year Card",
     "ctaLink": "/create-wish?category=islamic",
@@ -448,7 +496,11 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "ruleType": "scheduled",
     "scheduledDates": [
       {
-        "date": "2027-06-14",
+        "date": "2026-06-25",
+        "hijriNote": "10 Muharram 1448 AH"
+      },
+      {
+        "date": "2027-06-15",
         "hijriNote": "10 Muharram 1449 AH"
       },
       {
@@ -473,7 +525,11 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "ruleType": "scheduled",
     "scheduledDates": [
       {
-        "date": "2027-07-24",
+        "date": "2026-08-04",
+        "hijriNote": "20 Safar 1448 AH"
+      },
+      {
+        "date": "2027-07-25",
         "hijriNote": "20 Safar 1449 AH"
       },
       {
@@ -488,6 +544,93 @@ export const ALL_WORLDWIDE_EVENTS: CalendarEventDef[] = [
     "ctaText": "Send Memorial Card",
     "ctaLink": "/create-wish?category=islamic",
     "emoji": "🖤"
+  },
+  {
+    "id": "jummat-ul-wida",
+    "title": "Jummat-ul-Wida (Last Friday of Ramadan)",
+    "urduTitle": "جمعۃ الوداع (رمضان کا آخری جمعہ)",
+    "category": "islamic",
+    "description": "The last Friday of Ramadan, observed with special congregational prayers, heartfelt supplications for the Ummah, and remembrance of Al-Aqsa.",
+    "ruleType": "scheduled",
+    "scheduledDates": [
+      {
+        "date": "2026-03-13",
+        "hijriNote": "Last Friday, Ramadan 1447 AH"
+      },
+      {
+        "date": "2027-03-05",
+        "hijriNote": "Last Friday, Ramadan 1448 AH"
+      },
+      {
+        "date": "2028-02-18",
+        "hijriNote": "Last Friday, Ramadan 1449 AH"
+      }
+    ],
+    "greetings": {
+      "en": "Jummat-ul-Wida Mubarak! May the blessings of the last Friday of Ramadan bring peace and forgiveness to all.",
+      "ur": "جمعۃ الوداع مبارک! رمضان المبارک کے آخری جمعے کی سعادت حاصل ہو اور دعائیں قبول ہوں۔"
+    },
+    "ctaText": "Send Jumma Dua Card",
+    "ctaLink": "/create-wish?category=islamic",
+    "emoji": "🤲"
+  },
+  {
+    "id": "youm-e-ali",
+    "title": "Youm-e-Ali (Birth of Hazrat Ali R.A.)",
+    "urduTitle": "یومِ علی (ولادتِ حضرت علی کرم اللہ وجہہ)",
+    "category": "islamic",
+    "description": "Celebrating the birth of Hazrat Ali ibn Abi Talib (R.A.), the fourth Caliph and the Lion of Allah, born on 13 Rajab inside the Holy Kaaba.",
+    "ruleType": "scheduled",
+    "scheduledDates": [
+      {
+        "date": "2026-12-22",
+        "hijriNote": "13 Rajab 1448 AH"
+      },
+      {
+        "date": "2027-12-11",
+        "hijriNote": "13 Rajab 1449 AH"
+      },
+      {
+        "date": "2028-11-29",
+        "hijriNote": "13 Rajab 1450 AH"
+      }
+    ],
+    "greetings": {
+      "en": "Youm-e-Ali Mubarak! May the courage and justice of Hazrat Ali (R.A.) inspire us all on this blessed day.",
+      "ur": "یومِ علی المرتضیٰ مبارک! شیرِ خدا حضرت علی کرم اللہ وجہہ کی ولادت کا مبارک دن۔ اللہ ہمیں ان کے نقشِ قدم پر چلنے کی توفیق دے۔"
+    },
+    "ctaText": "Send Youm-e-Ali Card",
+    "ctaLink": "/create-wish?category=islamic",
+    "emoji": "⚔️"
+  },
+  {
+    "id": "urs-data-ganj-bakhsh",
+    "title": "Urs of Data Ganj Bakhsh (Hazrat Ali Hujwiri R.A.)",
+    "urduTitle": "عرسِ حضرت داتا گنج بخش علی ہجویری رحمۃ اللہ علیہ",
+    "category": "islamic",
+    "description": "Annual Urs commemorating the great Sufi saint Hazrat Ali Hujwiri (Data Ganj Bakhsh) in Lahore, Pakistan. Devotees gather at the shrine for spiritual devotion and Qawwali.",
+    "ruleType": "scheduled",
+    "scheduledDates": [
+      {
+        "date": "2026-11-01",
+        "hijriNote": "18-19 Safar 1448 AH"
+      },
+      {
+        "date": "2027-10-22",
+        "hijriNote": "18-19 Safar 1449 AH"
+      },
+      {
+        "date": "2028-10-10",
+        "hijriNote": "18-19 Safar 1450 AH"
+      }
+    ],
+    "greetings": {
+      "en": "On the blessed occasion of the Urs of Data Ganj Bakhsh, may spiritual light and divine blessings enrich your life.",
+      "ur": "عرسِ داتا گنج بخش رحمۃ اللہ علیہ کی مبارکباد! ان کی روحانیت اور برکت ہمیشہ آپ کے ساتھ رہے۔"
+    },
+    "ctaText": "Send Spiritual Card",
+    "ctaLink": "/create-wish?category=islamic",
+    "emoji": "🕌"
   },
   {
     "id": "halloween",
@@ -1768,6 +1911,9 @@ export const EVENT_OCCASIONS_MAP: Record<string, { occasion: string; invitationT
   'islamic-new-year': { occasion: 'islamic-new-year', invitationType: 'quran-khatam' },
   'day-of-ashura': { occasion: 'ashura', invitationType: 'quran-khatam' },
   'chehlum-imam-hussain': { occasion: 'chehlum', invitationType: 'quran-khatam' },
+  'jummat-ul-wida': { occasion: 'jumma', invitationType: 'quran-khatam' },
+  'youm-e-ali': { occasion: 'youm-e-ali', invitationType: 'quran-khatam' },
+  'urs-data-ganj-bakhsh': { occasion: 'urs', invitationType: 'quran-khatam' },
   'halloween': { occasion: 'halloween', invitationType: 'halloween-party' },
   'all-saints-day': { occasion: 'all-saints-day', invitationType: 'dinner-party' },
   'diwali': { occasion: 'diwali', invitationType: 'diwali-party' },

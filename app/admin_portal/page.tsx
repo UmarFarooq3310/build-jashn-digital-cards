@@ -33,12 +33,16 @@ import {
   Monitor,
   Activity,
   Compass,
+  Bell,
+  Send,
+  MousePointerClick,
+  XCircle,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useJashn } from '@/lib/jashn/store'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, query, orderBy, limit, onSnapshot } from 'firebase/firestore'
 import { cn } from '@/lib/utils'
 import type { JashnUser, Plan, Invitation, Wish, VisitingCard, RsvpGuest } from '@/lib/jashn/types'
 import { SiteHeader } from '@/components/site-header'
@@ -295,10 +299,49 @@ export default function AdminPortalPage() {
     showToast,
   } = useJashn()
 
-  const [adminSection, setAdminSection] = useState<'all' | 'invitations' | 'wishes' | 'visiting_cards' | 'rsvps' | 'users'>('all')
+  const [adminSection, setAdminSection] = useState<'all' | 'invitations' | 'wishes' | 'visiting_cards' | 'rsvps' | 'users' | 'push_notifications' | 'live_users'>('all')
   const [searchTerm, setSearchTerm] = useState('')
   // Which invitation's RSVPs to show — null means all
   const [rsvpFilterSlug, setRsvpFilterSlug] = useState<string | null>(null)
+
+  // ── Real-Time Active Users State (Live Presence) ─────────────────────────
+  const [liveActiveSessions, setLiveActiveSessions] = useState<any[]>([])
+
+  useEffect(() => {
+    let unsub = () => {}
+    async function listenLivePresence() {
+      try {
+        const firestoreDb = getFirebaseDb()
+        if (!firestoreDb) return
+        const collRef = collection(firestoreDb, 'active_sessions')
+        unsub = onSnapshot(collRef, (snap) => {
+          const threshold = Date.now() - 65000 // Active within the last 65 seconds
+          const sessions = snap.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() } as any))
+            .filter((s) => s.lastSeen && s.lastSeen >= threshold)
+            .sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0))
+          setLiveActiveSessions(sessions)
+        })
+      } catch (err) {
+        console.warn('Presence listener notice:', err)
+      }
+    }
+
+    listenLivePresence()
+
+    // Interval to prune stale sessions in local state
+    const interval = setInterval(() => {
+      setLiveActiveSessions((prev) => {
+        const threshold = Date.now() - 65000
+        return prev.filter((s) => s.lastSeen && s.lastSeen >= threshold)
+      })
+    }, 10000)
+
+    return () => {
+      unsub()
+      clearInterval(interval)
+    }
+  }, [])
 
   // ── Delete User Modal state ──────────────────────────────────────────────
   const [deleteUserTarget, setDeleteUserTarget] = useState<{ uid: string; name: string; email: string } | null>(null)
@@ -1263,7 +1306,14 @@ export default function AdminPortalPage() {
         )}
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <StatCard
+            icon={<div className="relative flex items-center justify-center"><Activity className="size-5 text-emerald-500" /><span className="absolute -top-1 -right-1 flex h-2.5 w-2.5"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span></span></div>}
+            title="Live Online Now"
+            value={liveActiveSessions.length}
+            subtitle="Active right now"
+            highlight={liveActiveSessions.length > 0}
+          />
           <StatCard
             icon={<Users className="size-5 text-indigo-500" />}
             title="Total Accounts"
@@ -1301,11 +1351,13 @@ export default function AdminPortalPage() {
         <div className="flex border-b border-border gap-2 overflow-x-auto pb-1">
           {[
             { id: 'all', label: `✨ All Database Overview`, icon: FileSpreadsheet },
+            { id: 'live_users', label: `🟢 Live Online (${liveActiveSessions.length})`, icon: Activity },
             { id: 'invitations', label: `Active Invitations (${invitations.length})`, icon: Calendar },
             { id: 'wishes', label: `Created Wishes (${wishes.length})`, icon: Sparkles },
             { id: 'visiting_cards', label: `Visiting Cards (${visitingCards?.length || 0})`, icon: CreditCard },
             { id: 'rsvps', label: `Recorded RSVPs (${rsvps?.length || 0})`, icon: FileSpreadsheet },
             { id: 'users', label: `User Accounts (${allUsersList.length})`, icon: Users },
+            { id: 'push_notifications', label: `🔔 Push Notifications`, icon: Bell },
           ].map((tab) => {
             const IconComp = tab.icon
             return (
@@ -1455,6 +1507,107 @@ export default function AdminPortalPage() {
                   ))
                 )}
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* 0. LIVE ACTIVE ONLINE VISITORS SECTION */}
+        {(adminSection === 'all' || adminSection === 'live_users') && (
+          <div className="bg-card border border-emerald-500/30 rounded-3xl shadow-xl overflow-hidden space-y-4">
+            <div className="p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-emerald-500/5 via-transparent to-transparent">
+              <div>
+                <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+                  <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                  </span>
+                  Live Active Users Online Right Now ({liveActiveSessions.length})
+                </h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Real-time heartbeat presence connected directly to Firebase Firestore. Shows users currently browsing Cardzy.
+                </p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 flex items-center gap-1.5">
+                  <Activity className="size-3.5 animate-pulse" /> Live Pulse Active
+                </span>
+              </div>
+            </div>
+
+            <div className="p-6 pt-0">
+              {liveActiveSessions.length === 0 ? (
+                <div className="py-12 text-center text-muted-foreground space-y-2">
+                  <Activity className="size-8 mx-auto opacity-30 animate-pulse text-emerald-500" />
+                  <p className="text-sm font-semibold">No other active visitors browsing right now.</p>
+                  <p className="text-xs text-muted-foreground">When visitors open Cardzy in any tab or mobile browser, they appear here instantly.</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto -mx-6 px-6">
+                  <table className="w-full text-sm text-left">
+                    <thead className="text-xs text-muted-foreground uppercase bg-muted/30">
+                      <tr>
+                        <th className="px-4 py-3 rounded-l-xl">User / Visitor</th>
+                        <th className="px-4 py-3">Current Active Page</th>
+                        <th className="px-4 py-3">Device</th>
+                        <th className="px-4 py-3">Location / Timezone</th>
+                        <th className="px-4 py-3">Referrer</th>
+                        <th className="px-4 py-3 rounded-r-xl">Last Heartbeat</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/50">
+                      {liveActiveSessions.map((session) => {
+                        const secondsAgo = Math.max(0, Math.round((Date.now() - (session.lastSeen || Date.now())) / 1000))
+                        return (
+                          <tr key={session.sessionId || session.id} className="hover:bg-muted/20 transition-colors">
+                            <td className="px-4 py-3.5">
+                              <div className="flex items-center gap-2.5">
+                                <span className="relative flex h-2.5 w-2.5 shrink-0">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                                </span>
+                                <div>
+                                  <div className="font-bold text-foreground flex items-center gap-1.5">
+                                    {session.userName || 'Guest Visitor'}
+                                    {session.userId && (
+                                      <span className="text-[10px] bg-indigo-500/10 text-indigo-600 px-1.5 py-0.5 rounded font-bold">Member</span>
+                                    )}
+                                  </div>
+                                  <div className="text-xs text-muted-foreground">{session.userEmail || 'Guest'}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-4 py-3.5 font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                              <Link href={session.page || '/'} target="_blank" className="hover:underline flex items-center gap-1">
+                                {session.page || '/'}
+                                <ExternalLink className="size-3 opacity-60" />
+                              </Link>
+                            </td>
+                            <td className="px-4 py-3.5 text-xs">
+                              <span className={cn(
+                                "px-2 py-1 rounded-lg font-semibold inline-flex items-center gap-1",
+                                session.device === 'Mobile' ? "bg-amber-500/10 text-amber-600" : "bg-blue-500/10 text-blue-600"
+                              )}>
+                                {session.device === 'Mobile' ? <Smartphone className="size-3.5" /> : <Monitor className="size-3.5" />}
+                                {session.device || 'Desktop'}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3.5 text-xs text-muted-foreground">
+                              <div className="font-medium text-foreground">{session.timezone || 'Unknown'}</div>
+                              <div className="text-[10px]">Lang: {session.language || 'en'}</div>
+                            </td>
+                            <td className="px-4 py-3.5 text-xs text-muted-foreground truncate max-w-[120px]">
+                              {session.referrer === 'Direct' ? 'Direct URL' : session.referrer || 'Direct'}
+                            </td>
+                            <td className="px-4 py-3.5 text-xs font-bold text-emerald-600 whitespace-nowrap">
+                              {secondsAgo <= 5 ? 'Just now (live)' : `${secondsAgo}s ago`}
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -2405,6 +2558,12 @@ export default function AdminPortalPage() {
           </div>
         </div>
 
+
+        {/* 5. PUSH NOTIFICATIONS SECTION */}
+        {adminSection === 'push_notifications' && (
+          <PushNotificationsSection showToast={showToast} />
+        )}
+
         {/* ── Delete User Confirmation Modal ─────────────────────────────── */}
         {deleteUserTarget && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
@@ -2491,3 +2650,243 @@ function StatCard({
     </div>
   )
 }
+
+function PushNotificationsSection({ showToast }: { showToast: (msg: string, type: 'success' | 'error' | 'info') => void }) {
+  const [title, setTitle] = useState('')
+  const [body, setBody] = useState('')
+  const [url, setUrl] = useState('/')
+  const [isSending, setIsSending] = useState(false)
+  const [subscribersCount, setSubscribersCount] = useState(0)
+  const [notifications, setNotifications] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let unsubscribe = () => {}
+    
+    async function loadData() {
+      try {
+        const firestoreDb = getFirebaseDb()
+        if (!firestoreDb) return
+
+        // Get subscriber count
+        const subSnap = await getDocs(collection(firestoreDb, 'push_subscribers'))
+        setSubscribersCount(subSnap.size)
+
+        // Listen to notifications
+        const q = query(collection(firestoreDb, 'push_notifications'), orderBy('sentAt', 'desc'), limit(20))
+        unsubscribe = onSnapshot(q, (snap) => {
+          const notifs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+          setNotifications(notifs)
+          setLoading(false)
+        })
+      } catch (err) {
+        console.error("Error loading push data", err)
+        setLoading(false)
+      }
+    }
+    
+    loadData()
+    return () => unsubscribe()
+  }, [])
+
+  const handleSend = async () => {
+    if (!title.trim() || !body.trim()) {
+      showToast('Title and message are required', 'error')
+      return
+    }
+    if (!confirm(`Are you sure you want to send this notification to ${subscribersCount} subscriber(s)?`)) return
+
+    setIsSending(true)
+    try {
+      const res = await fetch('/api/push/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: title.trim(), body: body.trim(), url: url.trim() || '/' })
+      })
+      
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to send')
+      
+      if (data.warning) {
+        showToast(data.warning, 'info')
+      } else {
+        showToast(data.message || `Push notification dispatched to ${data.sentCount || 0} device(s)!`, 'success')
+      }
+      setTitle('')
+      setBody('')
+      setUrl('/')
+    } catch (err: any) {
+      console.error(err)
+      showToast(err.message || 'Error sending notification', 'error')
+    } finally {
+      setIsSending(false)
+    }
+  }
+
+  const latestNotif = notifications[0]
+
+  return (
+    <div className="space-y-6">
+      {/* FCM Server Key Configuration Notice */}
+      <div className="rounded-2xl border border-indigo-500/30 bg-indigo-500/10 p-4 text-xs text-indigo-200 flex items-start gap-3">
+        <Bell className="size-5 shrink-0 text-indigo-400 mt-0.5" />
+        <div className="space-y-1">
+          <p className="font-bold text-sm text-indigo-100">FCM Push Server Dispatch</p>
+          <p className="text-indigo-200/80 leading-relaxed">
+            Push subscriptions and delivery analytics are synced in real-time with Firestore. For real background delivery to user phones & desktops, ensure your <code className="bg-indigo-950/60 px-1.5 py-0.5 rounded text-indigo-300 font-mono text-[11px]">FIREBASE_FCM_SERVER_KEY</code> is added to your environment variables (from Firebase Console → Project Settings → Cloud Messaging → Cloud Messaging API (Legacy) → Server key).
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="p-5 rounded-3xl border bg-card border-border shadow-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-muted-foreground">Total Subscribers</span>
+            <div className="p-2 rounded-2xl bg-indigo-500/10 text-indigo-500"><Users className="size-5" /></div>
+          </div>
+          <div className="mt-3 text-2xl font-extrabold">{subscribersCount}</div>
+          <div className="mt-0.5 text-xs text-muted-foreground">Opted-in browsers</div>
+        </div>
+        
+        {latestNotif && (
+          <>
+            <div className="p-5 rounded-3xl border bg-card border-border shadow-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-muted-foreground">Latest Sent</span>
+                <div className="p-2 rounded-2xl bg-emerald-500/10 text-emerald-500"><Send className="size-5" /></div>
+              </div>
+              <div className="mt-3 text-2xl font-extrabold">{latestNotif.sentCount || 0}</div>
+              <div className="mt-0.5 text-xs text-muted-foreground">Dispatched devices</div>
+            </div>
+            
+            <div className="p-5 rounded-3xl border bg-card border-border shadow-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-muted-foreground">Opened / Clicked</span>
+                <div className="p-2 rounded-2xl bg-amber-500/10 text-amber-500"><MousePointerClick className="size-5" /></div>
+              </div>
+              <div className="mt-3 text-2xl font-extrabold">{latestNotif.clickedCount || 0}</div>
+              <div className="mt-0.5 text-xs text-muted-foreground">Opened from notification</div>
+            </div>
+
+            <div className="p-5 rounded-3xl border bg-card border-border shadow-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-muted-foreground">Missed / Unopened</span>
+                <div className="p-2 rounded-2xl bg-rose-500/10 text-rose-500"><XCircle className="size-5" /></div>
+              </div>
+              <div className="mt-3 text-2xl font-extrabold">{Math.max(0, (latestNotif.sentCount || 0) - (latestNotif.clickedCount || 0))}</div>
+              <div className="mt-0.5 text-xs text-muted-foreground">Not yet clicked</div>
+            </div>
+          </>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1 border border-border bg-card rounded-3xl p-6 shadow-sm space-y-4">
+          <h3 className="font-bold text-lg flex items-center gap-2">
+            <Bell className="size-5 text-indigo-500" />
+            Send New Push Notification
+          </h3>
+          
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground mb-1 block">Title / Heading</label>
+              <Input 
+                value={title} 
+                onChange={(e) => setTitle(e.target.value)} 
+                placeholder="e.g. 🕌 Ramadan Mubarak Special!" 
+                className="rounded-xl"
+              />
+            </div>
+            
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground mb-1 block">Message Body</label>
+              <textarea 
+                className="flex w-full rounded-xl border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px]"
+                value={body} 
+                onChange={(e) => setBody(e.target.value)} 
+                placeholder="Write message to display on user's browser / phone screen..."
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground mb-1 block">Destination Page URL</label>
+              <Input 
+                value={url} 
+                onChange={(e) => setUrl(e.target.value)} 
+                placeholder="/ or /calendar or /create-wish" 
+                className="rounded-xl"
+              />
+              <p className="text-[11px] text-muted-foreground mt-1">When user clicks notification, this tab/page will open.</p>
+            </div>
+
+            <Button 
+              onClick={handleSend} 
+              disabled={isSending || !title || !body} 
+              className="w-full rounded-xl font-bold bg-indigo-600 hover:bg-indigo-700 text-white mt-2"
+            >
+              {isSending ? <RefreshCw className="size-4 animate-spin mr-2" /> : <Send className="size-4 mr-2" />}
+              {isSending ? 'Sending to all devices...' : `Send to All (${subscribersCount})`}
+            </Button>
+          </div>
+        </div>
+
+        <div className="lg:col-span-2 border border-border bg-card rounded-3xl p-6 shadow-sm overflow-hidden flex flex-col">
+          <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+            <CheckCircle2 className="size-5 text-emerald-500" />
+            Push History & Open Analytics
+          </h3>
+          
+          <div className="overflow-x-auto flex-1 -mx-6 px-6">
+            <table className="w-full text-sm text-left">
+              <thead className="text-xs text-muted-foreground uppercase bg-muted/30 sticky top-0">
+                <tr>
+                  <th className="px-4 py-3 rounded-l-xl">Title & Body</th>
+                  <th className="px-4 py-3">Destination</th>
+                  <th className="px-4 py-3">Dispatched</th>
+                  <th className="px-4 py-3">Opened</th>
+                  <th className="px-4 py-3">Missed</th>
+                  <th className="px-4 py-3">Status</th>
+                  <th className="px-4 py-3 rounded-r-xl">Date & Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr><td colSpan={7} className="text-center py-8 text-muted-foreground">Loading notification history...</td></tr>
+                ) : notifications.length === 0 ? (
+                  <tr><td colSpan={7} className="text-center py-8 text-muted-foreground">No push notifications sent yet.</td></tr>
+                ) : (
+                  notifications.map((n) => (
+                    <tr key={n.id} className="border-b border-border/50 last:border-0 hover:bg-muted/20">
+                      <td className="px-4 py-3">
+                        <div className="font-bold text-foreground">{n.title}</div>
+                        <div className="text-xs text-muted-foreground line-clamp-1">{n.body}</div>
+                      </td>
+                      <td className="px-4 py-3 text-xs text-indigo-500 truncate max-w-[120px]">{n.url || '/'}</td>
+                      <td className="px-4 py-3 font-semibold text-foreground">{n.sentCount || 0}</td>
+                      <td className="px-4 py-3 font-bold text-emerald-600">{n.clickedCount || 0}</td>
+                      <td className="px-4 py-3 font-medium text-rose-500">{Math.max(0, (n.sentCount || 0) - (n.clickedCount || 0))}</td>
+                      <td className="px-4 py-3">
+                        <span className={cn(
+                          "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase whitespace-nowrap",
+                          (n.status === 'sent' || (n.deliveredCount && n.deliveredCount > 0)) ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20" :
+                          (n.status === 'pending_service_key' || n.status === 'missing_server_key') ? "bg-amber-500/10 text-amber-600 border border-amber-500/20" :
+                          "bg-rose-500/10 text-rose-600 border border-rose-500/20"
+                        )}>
+                          {(n.status === 'sent' || (n.deliveredCount && n.deliveredCount > 0)) ? 'Dispatched' : (n.status === 'pending_service_key' || n.status === 'missing_server_key') ? 'Key Missing' : 'Failed'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
+                        {n.sentAt ? new Date(n.sentAt).toLocaleString() : '—'}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
