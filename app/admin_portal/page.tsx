@@ -2659,6 +2659,8 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
   const [subscribersCount, setSubscribersCount] = useState(0)
   const [notifications, setNotifications] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedNotifForDevices, setSelectedNotifForDevices] = useState<any | null>(null)
+  const [subscribersList, setSubscribersList] = useState<any[]>([])
 
   useEffect(() => {
     let unsubscribe = () => {}
@@ -2668,9 +2670,10 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
         const firestoreDb = getFirebaseDb()
         if (!firestoreDb) return
 
-        // Get subscriber count
+        // Get subscriber count and list
         const subSnap = await getDocs(collection(firestoreDb, 'push_subscribers'))
         setSubscribersCount(subSnap.size)
+        setSubscribersList(subSnap.docs.map(d => ({ id: d.id, ...d.data() })))
 
         // Listen to notifications
         const q = query(collection(firestoreDb, 'push_notifications'), orderBy('sentAt', 'desc'), limit(20))
@@ -2727,17 +2730,6 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
 
   return (
     <div className="space-y-6">
-      {/* FCM Server Key Configuration Notice */}
-      <div className="rounded-2xl border border-indigo-500/30 bg-indigo-500/10 p-4 text-xs text-indigo-200 flex items-start gap-3">
-        <Bell className="size-5 shrink-0 text-indigo-400 mt-0.5" />
-        <div className="space-y-1">
-          <p className="font-bold text-sm text-indigo-100">FCM Push Server Dispatch</p>
-          <p className="text-indigo-200/80 leading-relaxed">
-            Push subscriptions and delivery analytics are synced in real-time with Firestore. For real background delivery to user phones & desktops, ensure your <code className="bg-indigo-950/60 px-1.5 py-0.5 rounded text-indigo-300 font-mono text-[11px]">FIREBASE_FCM_SERVER_KEY</code> is added to your environment variables (from Firebase Console → Project Settings → Cloud Messaging → Cloud Messaging API (Legacy) → Server key).
-          </p>
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-5 rounded-3xl border bg-card border-border shadow-sm">
           <div className="flex items-center justify-between">
@@ -2745,18 +2737,18 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
             <div className="p-2 rounded-2xl bg-indigo-500/10 text-indigo-500"><Users className="size-5" /></div>
           </div>
           <div className="mt-3 text-2xl font-extrabold">{subscribersCount}</div>
-          <div className="mt-0.5 text-xs text-muted-foreground">Opted-in browsers</div>
+          <div className="mt-0.5 text-xs text-muted-foreground">Opted-in browsers & phones</div>
         </div>
         
         {latestNotif && (
           <>
             <div className="p-5 rounded-3xl border bg-card border-border shadow-sm">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-muted-foreground">Latest Sent</span>
+                <span className="text-xs font-semibold text-muted-foreground">Latest Dispatched</span>
                 <div className="p-2 rounded-2xl bg-emerald-500/10 text-emerald-500"><Send className="size-5" /></div>
               </div>
               <div className="mt-3 text-2xl font-extrabold">{latestNotif.sentCount || 0}</div>
-              <div className="mt-0.5 text-xs text-muted-foreground">Dispatched devices</div>
+              <div className="mt-0.5 text-xs text-muted-foreground">Targeted devices</div>
             </div>
             
             <div className="p-5 rounded-3xl border bg-card border-border shadow-sm">
@@ -2831,10 +2823,13 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
         </div>
 
         <div className="lg:col-span-2 border border-border bg-card rounded-3xl p-6 shadow-sm overflow-hidden flex flex-col">
-          <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-            <CheckCircle2 className="size-5 text-emerald-500" />
-            Push History & Open Analytics
-          </h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-bold text-lg flex items-center gap-2">
+              <CheckCircle2 className="size-5 text-emerald-500" />
+              Push History & Device Breakdown
+            </h3>
+            <span className="text-xs text-muted-foreground font-medium">Click any row to view device audit</span>
+          </div>
           
           <div className="overflow-x-auto flex-1 -mx-6 px-6">
             <table className="w-full text-sm text-left">
@@ -2846,7 +2841,7 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
                   <th className="px-4 py-3">Opened</th>
                   <th className="px-4 py-3">Missed</th>
                   <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3 rounded-r-xl">Date & Time</th>
+                  <th className="px-4 py-3 rounded-r-xl">Date & Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -2856,7 +2851,11 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
                   <tr><td colSpan={7} className="text-center py-8 text-muted-foreground">No push notifications sent yet.</td></tr>
                 ) : (
                   notifications.map((n) => (
-                    <tr key={n.id} className="border-b border-border/50 last:border-0 hover:bg-muted/20">
+                    <tr 
+                      key={n.id} 
+                      onClick={() => setSelectedNotifForDevices(n)}
+                      className="border-b border-border/50 last:border-0 hover:bg-muted/30 transition-colors cursor-pointer"
+                    >
                       <td className="px-4 py-3">
                         <div className="font-bold text-foreground">{n.title}</div>
                         <div className="text-xs text-muted-foreground line-clamp-1">{n.body}</div>
@@ -2876,7 +2875,10 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
                         </span>
                       </td>
                       <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
-                        {n.sentAt ? new Date(n.sentAt).toLocaleString() : '—'}
+                        <div className="flex items-center gap-2">
+                          <span>{n.sentAt ? new Date(n.sentAt).toLocaleTimeString() : '—'}</span>
+                          <span className="text-[10px] bg-indigo-500/10 text-indigo-600 font-bold px-1.5 py-0.5 rounded">View Devices</span>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -2886,6 +2888,89 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
           </div>
         </div>
       </div>
+
+      {/* ── Device Delivery Audit Modal ─────────────────────────────── */}
+      {selectedNotifForDevices && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-2xl rounded-3xl border border-border bg-card shadow-2xl p-6 space-y-5 max-h-[85vh] flex flex-col">
+            <div className="flex items-start justify-between gap-3 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+                  <Smartphone className="size-5 text-indigo-500" />
+                  Targeted Devices Audit Report
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Notification: <span className="font-semibold text-foreground">{selectedNotifForDevices.title}</span> — Sent to {selectedNotifForDevices.sentCount || 0} device(s)
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedNotifForDevices(null)}
+                className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+              >
+                <XCircle className="size-5" />
+              </button>
+            </div>
+
+            <div className="overflow-y-auto flex-1 -mx-6 px-6 space-y-3">
+              {selectedNotifForDevices.devices && selectedNotifForDevices.devices.length > 0 ? (
+                selectedNotifForDevices.devices.map((dev: any, i: number) => (
+                  <div key={i} className="p-3.5 rounded-2xl border border-border bg-muted/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                    <div className="flex items-center gap-3">
+                      <div className={cn(
+                        "size-9 rounded-xl flex items-center justify-center shrink-0",
+                        dev.status === 'delivered' ? "bg-emerald-500/10 text-emerald-600" : "bg-rose-500/10 text-rose-600"
+                      )}>
+                        {dev.deviceType === 'Mobile' ? <Smartphone className="size-4" /> : <Monitor className="size-4" />}
+                      </div>
+                      <div>
+                        <div className="font-bold text-foreground flex items-center gap-2">
+                          {dev.deviceName || 'Web Browser Device'}
+                          <span className={cn(
+                            "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase",
+                            dev.status === 'delivered' ? "bg-emerald-500/10 text-emerald-600" : "bg-rose-500/10 text-rose-600"
+                          )}>
+                            {dev.status === 'delivered' ? 'Delivered ✅' : 'Failed ❌'}
+                          </span>
+                        </div>
+                        <div className="text-muted-foreground font-mono text-[11px] mt-0.5">Token: {dev.tokenPreview}</div>
+                      </div>
+                    </div>
+
+                    <div className="sm:text-right">
+                      <div className={cn(
+                        "font-medium",
+                        dev.status === 'delivered' ? "text-emerald-600" : "text-rose-500"
+                      )}>
+                        {dev.errorReason || (dev.status === 'delivered' ? 'Delivered' : 'Delivery Failed')}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="space-y-3">
+                  <div className="p-4 rounded-2xl border border-border bg-muted/20 text-xs text-muted-foreground">
+                    <p className="font-semibold text-foreground mb-1">Targeted Subscribers ({selectedNotifForDevices.sentCount || 0} tokens):</p>
+                    <p className="text-[11px] leading-relaxed">
+                      This notification was dispatched to {selectedNotifForDevices.deliveredCount || 0} active subscriber device(s). 
+                      Future notifications will record granular per-device metadata in real-time.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="pt-2 border-t border-border flex justify-end">
+              <Button
+                variant="outline"
+                onClick={() => setSelectedNotifForDevices(null)}
+                className="rounded-xl font-bold"
+              >
+                Close Audit
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
