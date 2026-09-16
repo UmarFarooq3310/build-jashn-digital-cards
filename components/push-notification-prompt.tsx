@@ -1,15 +1,26 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { subscribeToPushWithResult } from '@/lib/push-notifications';
-import { Bell, CheckCircle2, X, AlertCircle, RefreshCw } from 'lucide-react';
+import { getFirebaseApp } from '@/lib/firebase';
+import { Bell, CheckCircle2, X, AlertCircle, RefreshCw, ExternalLink } from 'lucide-react';
+
+interface IncomingPush {
+  title: string;
+  body: string;
+  url: string;
+  notificationId?: string;
+}
 
 export function PushNotificationPrompt() {
+  const router = useRouter();
   const [showPrompt, setShowPrompt] = useState(false);
   const [showBell, setShowBell] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [incomingPush, setIncomingPush] = useState<IncomingPush | null>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -47,7 +58,44 @@ export function PushNotificationPrompt() {
       setErrorMessage(null);
     };
     window.addEventListener('open_push_prompt', handleReopen);
-    return () => window.removeEventListener('open_push_prompt', handleReopen);
+
+    // 4. Foreground push message listener for live on-screen notifications on Mac & Mobile
+    let unsubMessage: (() => void) | undefined;
+    async function initForegroundPushListener() {
+      try {
+        const { getMessaging, onMessage } = await import('firebase/messaging');
+        const app = getFirebaseApp();
+        if (app) {
+          const messaging = getMessaging(app);
+          unsubMessage = onMessage(messaging, (payload) => {
+            const title = payload.notification?.title || payload.data?.title || 'Cardzy Alert 🔔';
+            const body = payload.notification?.body || payload.data?.body || '';
+            const url = payload.fcmOptions?.link || payload.data?.url || (payload.notification as any)?.click_action || '/';
+            const notificationId = payload.data?.notificationId;
+
+            setIncomingPush({ title, body, url, notificationId });
+
+            // Also trigger native desktop/mobile notification if page is not focused
+            if (Notification.permission === 'granted' && document.hidden) {
+              try {
+                new Notification(title, {
+                  body,
+                  icon: '/favicon-32x32.png',
+                  badge: '/favicon-32x32.png',
+                });
+              } catch (_) {}
+            }
+          });
+        }
+      } catch (_) {}
+    }
+
+    initForegroundPushListener();
+
+    return () => {
+      window.removeEventListener('open_push_prompt', handleReopen);
+      if (unsubMessage) unsubMessage();
+    };
   }, []);
 
   const handleEnable = async () => {
@@ -84,9 +132,65 @@ export function PushNotificationPrompt() {
     setShowBell(true);
   };
 
+  const handleIncomingPushClick = () => {
+    if (!incomingPush) return;
+    const targetUrl = incomingPush.url || '/';
+    if (incomingPush.notificationId) {
+      fetch('/api/push/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notificationId: incomingPush.notificationId }),
+      }).catch(() => {});
+    }
+    setIncomingPush(null);
+    if (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) {
+      window.location.href = targetUrl;
+    } else {
+      router.push(targetUrl);
+    }
+  };
+
   return (
     <>
-      {/* 1. Main Permission Prompt Card */}
+      {/* 1. Live Foreground Push Banner (Shown on Mac & Mobile when on the site) */}
+      {incomingPush && (
+        <div 
+          className="fixed top-5 left-1/2 -translate-x-1/2 z-[2147483647] w-[calc(100vw-24px)] max-w-lg animate-in slide-in-from-top-4 fade-in duration-300 pointer-events-auto"
+          role="alert"
+        >
+          <div className="bg-[#0b0f19]/95 backdrop-blur-2xl border-2 border-amber-500/80 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.85)] p-4 text-slate-100 flex items-start justify-between gap-3 ring-1 ring-white/20">
+            <div 
+              onClick={handleIncomingPushClick}
+              className="flex items-start gap-3 flex-1 cursor-pointer group"
+            >
+              <div className="size-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shrink-0 text-amber-400">
+                <Bell className="size-5 animate-bounce" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5 font-bold text-sm text-white group-hover:text-amber-400 transition-colors">
+                  <span>{incomingPush.title}</span>
+                  <ExternalLink className="size-3 opacity-60" />
+                </div>
+                <p className="text-xs text-zinc-300 mt-0.5 line-clamp-2 leading-relaxed">
+                  {incomingPush.body}
+                </p>
+                <span className="text-[10px] text-amber-400/90 font-semibold mt-1 inline-block">
+                  Tap to view page ({incomingPush.url || '/'}) →
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={() => setIncomingPush(null)}
+              className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors shrink-0 cursor-pointer"
+              aria-label="Dismiss alert"
+            >
+              <X className="size-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 2. Main Permission Prompt Card */}
       {showPrompt && (
         <div 
           className="fixed bottom-5 sm:bottom-6 left-1/2 -translate-x-1/2 z-[2147483645] w-[calc(100vw-24px)] max-w-md animate-in slide-in-from-bottom-5 fade-in duration-300 pointer-events-auto"
@@ -94,14 +198,13 @@ export function PushNotificationPrompt() {
           aria-label="Push Notifications"
         >
           <div className="bg-[#090b10]/95 backdrop-blur-2xl border border-amber-500/50 rounded-3xl shadow-[0_24px_70px_rgba(0,0,0,0.85)] p-4 sm:p-5 text-slate-100 flex flex-col gap-3 relative overflow-hidden ring-1 ring-white/10">
-            {/* Subtle decorative gold sheen */}
             <div className="absolute -top-12 -right-12 w-28 h-28 bg-amber-500/15 rounded-full blur-2xl pointer-events-none" />
 
             {success ? (
               <div className="flex items-center gap-3 py-1 text-emerald-400">
                 <CheckCircle2 className="size-5 shrink-0" />
                 <div>
-                  <div className="font-extrabold text-sm tracking-wide">Phone Registered Successfully! 🎉</div>
+                  <div className="font-extrabold text-sm tracking-wide">Phone/Browser Registered! 🎉</div>
                   <div className="text-[11px] text-zinc-300">You will now receive instant push alerts.</div>
                 </div>
               </div>
@@ -143,7 +246,7 @@ export function PushNotificationPrompt() {
                     <div>
                       <h4 className="font-extrabold text-sm sm:text-base text-white leading-tight">Stay Updated 🔔</h4>
                       <p className="text-xs text-zinc-300 mt-1 leading-relaxed">
-                        Get instant card views, RSVP responses & event updates on your phone screen.
+                        Get instant card views, RSVP responses & event updates on your screen.
                       </p>
                     </div>
                   </div>
@@ -179,7 +282,7 @@ export function PushNotificationPrompt() {
         </div>
       )}
 
-      {/* 2. Floating Bell Button when minimized on mobile/desktop */}
+      {/* 3. Floating Bell Button when minimized on mobile/desktop */}
       {showBell && !showPrompt && (
         <button
           onClick={() => {
