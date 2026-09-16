@@ -25,17 +25,24 @@ self.addEventListener('activate', function(event) {
 // Handle Background FCM message
 messaging.onBackgroundMessage(function(payload) {
   const notificationTitle = payload.notification?.title || payload.data?.title || 'Cardzy 🔔';
+  const notificationBody = payload.notification?.body || payload.data?.body || '';
   const notificationOptions = {
-    body: payload.notification?.body || payload.data?.body || '',
+    body: notificationBody,
     icon: '/favicon-32x32.png',
     badge: '/favicon-32x32.png',
+    vibrate: [200, 100, 200],
+    tag: 'cardzy-notif-' + (payload.data?.notificationId || Date.now()),
+    renotify: true,
+    requireInteraction: true,
     data: {
       url: payload.fcmOptions?.link || payload.data?.url || payload.notification?.click_action || '/',
-      notificationId: payload.data?.notificationId
+      notificationId: payload.data?.notificationId,
+      title: notificationTitle,
+      body: notificationBody,
     }
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  return self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 // Direct push listener to guarantee banner popup in all browser states (foreground & background)
@@ -44,23 +51,31 @@ self.addEventListener('push', function(event) {
   try {
     const payload = event.data.json();
     const title = payload.notification?.title || payload.data?.title || 'Cardzy Notification 🔔';
+    const body = payload.notification?.body || payload.data?.body || '';
     const options = {
-      body: payload.notification?.body || payload.data?.body || '',
+      body: body,
       icon: '/favicon-32x32.png',
       badge: '/favicon-32x32.png',
       vibrate: [200, 100, 200],
+      tag: 'cardzy-notif-' + (payload.data?.notificationId || Date.now()),
+      renotify: true,
+      requireInteraction: true,
       data: {
         url: payload.fcmOptions?.link || payload.data?.url || payload.notification?.click_action || '/',
-        notificationId: payload.data?.notificationId
+        notificationId: payload.data?.notificationId,
+        title: title,
+        body: body,
       }
     };
     event.waitUntil(self.registration.showNotification(title, options));
   } catch (_) {
-    // If payload not JSON, show plain text
     try {
       event.waitUntil(self.registration.showNotification('Cardzy 🔔', {
         body: event.data.text(),
-        icon: '/favicon-32x32.png'
+        icon: '/favicon-32x32.png',
+        badge: '/favicon-32x32.png',
+        vibrate: [200, 100, 200],
+        requireInteraction: true,
       }));
     } catch (e) {}
   }

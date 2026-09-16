@@ -97,11 +97,20 @@ export async function POST(req: Request) {
           body,
         },
         webpush: {
+          headers: {
+            Urgency: 'high',
+            TTL: '86400',
+          },
           notification: {
             title,
             body,
             icon: '/favicon-32x32.png',
             badge: '/favicon-32x32.png',
+            requireInteraction: true,
+            tag: `cardzy-alert-${Date.now()}`,
+            renotify: true,
+            vibrate: [200, 100, 200],
+            silent: false,
           },
           fcmOptions: {
             link: url || '/',

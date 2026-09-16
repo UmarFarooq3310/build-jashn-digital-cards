@@ -42,7 +42,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useJashn } from '@/lib/jashn/store'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
-import { collection, getDocs, query, orderBy, limit, onSnapshot } from 'firebase/firestore'
+import { collection, getDocs, query, orderBy, limit, onSnapshot, doc, deleteDoc } from 'firebase/firestore'
 import { cn } from '@/lib/utils'
 import type { JashnUser, Plan, Invitation, Wish, VisitingCard, RsvpGuest } from '@/lib/jashn/types'
 import { SiteHeader } from '@/components/site-header'
@@ -2736,6 +2736,37 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
     }
   }
 
+  const handleDeleteNotification = async (notifId: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation()
+    if (!confirm('Are you sure you want to delete this notification record from history?')) return
+    try {
+      const firestoreDb = getFirebaseDb()
+      if (!firestoreDb) return
+      await deleteDoc(doc(firestoreDb, 'push_notifications', notifId))
+      showToast('Notification deleted from history', 'success')
+      if (selectedNotifForDevices?.id === notifId) {
+        setSelectedNotifForDevices(null)
+      }
+    } catch (err: any) {
+      console.error(err)
+      showToast(err.message || 'Failed to delete notification', 'error')
+    }
+  }
+
+  const handleDeleteSubscriber = async (subId: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation()
+    if (!confirm('Are you sure you want to remove this device subscriber?')) return
+    try {
+      const firestoreDb = getFirebaseDb()
+      if (!firestoreDb) return
+      await deleteDoc(doc(firestoreDb, 'push_subscribers', subId))
+      showToast('Device removed from subscribers', 'success')
+    } catch (err: any) {
+      console.error(err)
+      showToast(err.message || 'Failed to remove device', 'error')
+    }
+  }
+
   const latestNotif = notifications[0]
 
   return (
@@ -2853,12 +2884,21 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
                   const devLabel = isIPhone ? 'iPhone 📱' : isAndroid ? 'Android 📱' : isMac ? 'Mac 💻' : isWindows ? 'Windows 💻' : 'Device 📱';
                   const browserLabel = /Chrome/i.test(ua) ? 'Chrome' : /Safari/i.test(ua) ? 'Safari' : /Firefox/i.test(ua) ? 'Firefox' : /Edg/i.test(ua) ? 'Edge' : 'Browser';
                   return (
-                    <div key={sub.id || idx} className="flex items-center justify-between p-2 rounded-xl bg-muted/40 text-xs border border-border/40">
+                    <div key={sub.id || idx} className="flex items-center justify-between p-2 rounded-xl bg-muted/40 text-xs border border-border/40 group hover:border-border transition-colors">
                       <div className="flex items-center gap-2">
                         <span className="font-semibold text-foreground">{devLabel}</span>
                         <span className="text-[10px] px-1.5 py-0.5 rounded bg-background text-muted-foreground border border-border">{browserLabel}</span>
                       </div>
-                      <span className="text-[10px] font-mono text-emerald-500 font-bold">Ready ✅</span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[10px] font-mono text-emerald-500 font-bold">Ready ✅</span>
+                        <button
+                          onClick={(e) => handleDeleteSubscriber(sub.id, e)}
+                          className="p-1 rounded-md text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                          title="Remove this subscriber device"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </button>
+                      </div>
                     </div>
                   );
                 })}
@@ -2899,7 +2939,7 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
                     <tr 
                       key={n.id} 
                       onClick={() => setSelectedNotifForDevices(n)}
-                      className="border-b border-border/50 last:border-0 hover:bg-muted/30 transition-colors cursor-pointer"
+                      className="border-b border-border/50 last:border-0 hover:bg-muted/30 transition-colors cursor-pointer group"
                     >
                       <td className="px-4 py-3">
                         <div className="font-bold text-foreground">{n.title}</div>
@@ -2923,6 +2963,13 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
                         <div className="flex items-center gap-2">
                           <span>{n.sentAt ? new Date(n.sentAt).toLocaleTimeString() : '—'}</span>
                           <span className="text-[10px] bg-indigo-500/10 text-indigo-600 font-bold px-1.5 py-0.5 rounded">View Devices</span>
+                          <button
+                            onClick={(e) => handleDeleteNotification(n.id, e)}
+                            className="p-1.5 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                            title="Delete notification"
+                          >
+                            <Trash2 className="size-3.5" />
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -3004,7 +3051,14 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
               )}
             </div>
 
-            <div className="pt-2 border-t border-border flex justify-end">
+            <div className="pt-2 border-t border-border flex items-center justify-between">
+              <button
+                onClick={(e) => handleDeleteNotification(selectedNotifForDevices.id, e)}
+                className="px-3.5 py-2 text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-500/10 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+              >
+                <Trash2 className="size-4" />
+                Delete Notification Record
+              </button>
               <Button
                 variant="outline"
                 onClick={() => setSelectedNotifForDevices(null)}
@@ -3019,4 +3073,5 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
     </div>
   )
 }
+
 
