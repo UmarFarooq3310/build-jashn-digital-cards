@@ -13,7 +13,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-// Immediate activation on mobile and desktop
 self.addEventListener('install', function(event) {
   self.skipWaiting();
 });
@@ -38,7 +37,7 @@ function normalizeTargetUrl(rawUrl, origin) {
   }
 }
 
-// Handle Background FCM message
+// Single unified background message handler
 messaging.onBackgroundMessage(function(payload) {
   const notificationTitle = payload.notification?.title || payload.data?.title || 'Cardzy 🔔';
   const notificationBody = payload.notification?.body || payload.data?.body || '';
@@ -50,8 +49,6 @@ messaging.onBackgroundMessage(function(payload) {
     icon: '/favicon-32x32.png',
     badge: '/favicon-32x32.png',
     vibrate: [200, 100, 200],
-    tag: 'cardzy-push-' + (notifId || Date.now()),
-    renotify: true,
     requireInteraction: true,
     data: {
       url: targetUrl,
@@ -62,45 +59,6 @@ messaging.onBackgroundMessage(function(payload) {
   };
 
   return self.registration.showNotification(notificationTitle, notificationOptions);
-});
-
-// Direct push listener to guarantee banner popup in all browser states (foreground & background)
-self.addEventListener('push', function(event) {
-  if (!event.data) return;
-  try {
-    const payload = event.data.json();
-    const title = payload.notification?.title || payload.data?.title || 'Cardzy Notification 🔔';
-    const body = payload.notification?.body || payload.data?.body || '';
-    const targetUrl = payload.fcmOptions?.link || payload.data?.url || payload.notification?.click_action || '/';
-    const notifId = payload.data?.notificationId;
-
-    const options = {
-      body: body,
-      icon: '/favicon-32x32.png',
-      badge: '/favicon-32x32.png',
-      vibrate: [200, 100, 200],
-      tag: 'cardzy-push-' + (notifId || Date.now()),
-      renotify: true,
-      requireInteraction: true,
-      data: {
-        url: targetUrl,
-        notificationId: notifId,
-        title: title,
-        body: body,
-      }
-    };
-    event.waitUntil(self.registration.showNotification(title, options));
-  } catch (_) {
-    try {
-      event.waitUntil(self.registration.showNotification('Cardzy 🔔', {
-        body: event.data.text(),
-        icon: '/favicon-32x32.png',
-        badge: '/favicon-32x32.png',
-        vibrate: [200, 100, 200],
-        requireInteraction: true,
-      }));
-    } catch (e) {}
-  }
 });
 
 self.addEventListener('notificationclick', function(event) {
@@ -126,7 +84,11 @@ self.addEventListener('notificationclick', function(event) {
         var client = clientList[i];
         if (client && 'focus' in client) {
           if ('navigate' in client) {
-            client.navigate(urlToOpen);
+            return client.navigate(urlToOpen).then(function(navigatedClient) {
+              return navigatedClient ? navigatedClient.focus() : client.focus();
+            }).catch(function() {
+              return client.focus();
+            });
           }
           return client.focus();
         }
