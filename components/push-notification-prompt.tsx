@@ -1,45 +1,50 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { subscribeToPush } from '@/lib/push-notifications';
-import { Bell, CheckCircle2, X, AlertCircle } from 'lucide-react';
+import { subscribeToPushWithResult } from '@/lib/push-notifications';
+import { Bell, CheckCircle2, X, AlertCircle, RefreshCw } from 'lucide-react';
 
 export function PushNotificationPrompt() {
   const [showPrompt, setShowPrompt] = useState(false);
   const [showBell, setShowBell] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [deniedNotice, setDeniedNotice] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
 
-    // 1. If already granted, immediately register & sync token in background
+    // 1. If already granted, attempt background registration
     if (Notification.permission === 'granted') {
-      subscribeToPush().catch((err) => {
-        console.warn('Auto push subscription notice:', err);
-      });
-      setShowPrompt(false);
-      setShowBell(false);
-      return;
+      subscribeToPushWithResult()
+        .then((res) => {
+          if (res.success) {
+            setShowPrompt(false);
+            setShowBell(false);
+          } else if (res.error) {
+            console.warn('Background auto push registration note:', res.error);
+          }
+        })
+        .catch(() => {});
     }
 
-    // 2. If denied, show floating bell so user can get unblock instructions if they want
+    // 2. If denied, show floating bell with unblock guidance
     if (Notification.permission === 'denied') {
       setShowPrompt(false);
       setShowBell(true);
       return;
     }
 
-    // 3. If default (not yet requested)
-    setShowPrompt(true);
-    setShowBell(false);
+    // 3. Show prompt by default if not granted
+    if (Notification.permission === 'default') {
+      setShowPrompt(true);
+      setShowBell(false);
+    }
 
-    // Also listen to custom event to reopen prompt if triggered from menu
     const handleReopen = () => {
       setShowPrompt(true);
-      setDeniedNotice(false);
+      setErrorMessage(null);
     };
     window.addEventListener('open_push_prompt', handleReopen);
     return () => window.removeEventListener('open_push_prompt', handleReopen);
@@ -47,34 +52,28 @@ export function PushNotificationPrompt() {
 
   const handleEnable = async () => {
     setLoading(true);
-    setDeniedNotice(false);
+    setErrorMessage(null);
     try {
       if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'denied') {
-        setDeniedNotice(true);
+        setErrorMessage('Notifications are blocked in your browser. Tap the 🔒 icon in the address bar to set Notifications to Allow.');
         setLoading(false);
         return;
       }
 
-      const token = await subscribeToPush();
-      if (token) {
+      const res = await subscribeToPushWithResult();
+      if (res.success && res.token) {
         setSuccess(true);
         setShowBell(false);
         setTimeout(() => {
           setShowPrompt(false);
           setSuccess(false);
-        }, 2200);
+        }, 2500);
       } else {
-        if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'denied') {
-          setDeniedNotice(true);
-        } else {
-          setShowPrompt(false);
-          setShowBell(true);
-        }
+        setErrorMessage(res.error || 'Failed to register push token. Tap Retry.');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setShowPrompt(false);
-      setShowBell(true);
+      setErrorMessage(err.message || 'Error subscribing to notifications');
     } finally {
       setLoading(false);
     }
@@ -101,25 +100,36 @@ export function PushNotificationPrompt() {
             {success ? (
               <div className="flex items-center gap-3 py-1 text-emerald-400">
                 <CheckCircle2 className="size-5 shrink-0" />
-                <span className="font-extrabold text-sm tracking-wide">Device registered for notifications! 🎉</span>
+                <div>
+                  <div className="font-extrabold text-sm tracking-wide">Phone Registered Successfully! 🎉</div>
+                  <div className="text-[11px] text-zinc-300">You will now receive instant push alerts.</div>
+                </div>
               </div>
-            ) : deniedNotice ? (
+            ) : errorMessage ? (
               <div className="space-y-3">
-                <div className="flex items-start gap-3 text-amber-400">
+                <div className="flex items-start gap-3 text-rose-400">
                   <AlertCircle className="size-5 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold text-sm text-white">Notifications are Blocked</h4>
-                    <p className="text-xs text-zinc-300 mt-1 leading-relaxed">
-                      To receive notifications on this phone, tap the <strong>🔒 lock / tune icon</strong> in your browser address bar above, go to <strong>Permissions → Notifications</strong>, and select <strong>Allow</strong>. Then refresh.
+                    <h4 className="font-bold text-sm text-white">Push Setup Notice</h4>
+                    <p className="text-xs text-zinc-300 mt-1 leading-relaxed whitespace-pre-line">
+                      {errorMessage}
                     </p>
                   </div>
                 </div>
-                <div className="flex justify-end">
+                <div className="flex items-center justify-end gap-2 pt-1 border-t border-white/10">
                   <button
-                    onClick={() => { setDeniedNotice(false); setShowPrompt(false); setShowBell(true); }}
-                    className="px-4 py-1.5 text-xs font-bold bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all"
+                    onClick={() => { setErrorMessage(null); setShowPrompt(false); setShowBell(true); }}
+                    className="px-3.5 py-1.5 text-xs font-bold text-zinc-300 hover:text-white rounded-xl"
                   >
-                    Got It
+                    Close
+                  </button>
+                  <button
+                    onClick={handleEnable}
+                    disabled={loading}
+                    className="px-4 py-1.5 text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl flex items-center gap-1.5"
+                  >
+                    {loading ? <RefreshCw className="size-3.5 animate-spin" /> : <Bell className="size-3.5" />}
+                    {loading ? 'Retrying...' : 'Retry'}
                   </button>
                 </div>
               </div>
@@ -157,8 +167,9 @@ export function PushNotificationPrompt() {
                   <button 
                     onClick={handleEnable}
                     disabled={loading}
-                    className="px-5 py-2 min-h-[42px] text-xs font-black bg-gradient-to-r from-amber-500 to-emerald-500 hover:opacity-95 text-slate-950 rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+                    className="px-5 py-2 min-h-[42px] text-xs font-black bg-gradient-to-r from-amber-500 to-emerald-500 hover:opacity-95 text-slate-950 rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-50 cursor-pointer flex items-center gap-2"
                   >
+                    {loading && <RefreshCw className="size-3.5 animate-spin" />}
                     {loading ? 'Enabling...' : 'Enable Notifications'}
                   </button>
                 </div>
@@ -171,7 +182,10 @@ export function PushNotificationPrompt() {
       {/* 2. Floating Bell Button when minimized on mobile/desktop */}
       {showBell && !showPrompt && (
         <button
-          onClick={() => setShowPrompt(true)}
+          onClick={() => {
+            setShowPrompt(true);
+            setErrorMessage(null);
+          }}
           className="fixed bottom-6 right-4 sm:right-6 z-[2147483640] size-11 rounded-full bg-gradient-to-r from-amber-500 to-emerald-500 text-slate-950 shadow-[0_8px_25px_rgba(245,158,11,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all cursor-pointer group"
           aria-label="Enable notifications"
           title="Enable notifications"

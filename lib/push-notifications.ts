@@ -21,11 +21,17 @@ async function sendDebugLog(step: string, details: any) {
   } catch (_) {}
 }
 
-export async function subscribeToPush(): Promise<string | null> {
+export interface SubscribeResult {
+  success: boolean
+  token?: string
+  error?: string
+}
+
+export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
   if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !('Notification' in window)) {
-    console.warn('Web Push Notifications are not supported in this browser environment.')
-    await sendDebugLog('unsupported_environment', { error: 'No ServiceWorker or Notification API' })
-    return null
+    const msg = 'Push notifications are not supported on this browser.'
+    await sendDebugLog('unsupported_environment', { error: msg })
+    return { success: false, error: msg }
   }
 
   try {
@@ -34,16 +40,20 @@ export async function subscribeToPush(): Promise<string | null> {
     await sendDebugLog('permission_response', { permission })
 
     if (permission !== 'granted') {
-      console.warn('Push notification permission was denied or dismissed:', permission)
-      return null
+      return { 
+        success: false, 
+        error: permission === 'denied' 
+          ? 'Permission was denied. Please allow notifications in your browser settings.' 
+          : 'Permission prompt was dismissed.' 
+      }
     }
 
     const { getMessaging, getToken } = await import('firebase/messaging')
     const app = getFirebaseApp()
     if (!app) {
-      console.warn('Firebase app is not initialized')
+      const msg = 'Firebase App initialization failed.'
       await sendDebugLog('firebase_app_missing', {})
-      return null
+      return { success: false, error: msg }
     }
 
     const messaging = getMessaging(app)
@@ -74,63 +84,71 @@ export async function subscribeToPush(): Promise<string | null> {
         token = await getToken(messaging, { vapidKey })
         await sendDebugLog('get_token_fallback_success', { tokenPreview: token ? token.substring(0, 15) + '...' : null })
       } catch (fallbackErr: any) {
-        await sendDebugLog('get_token_fallback_failed', { message: fallbackErr.message || String(fallbackErr) })
-        throw fallbackErr
+        const errMsg = fallbackErr.message || String(fallbackErr)
+        await sendDebugLog('get_token_fallback_failed', { message: errMsg })
+        return { success: false, error: `FCM Token Error: ${errMsg}` }
       }
     }
 
-    if (token) {
-      // 1. Save via Server-side API endpoint
-      try {
-        const res = await fetch('/api/push/subscribe', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+    if (!token) {
+      return { success: false, error: 'Could not obtain push registration token from browser.' }
+    }
+
+    // 1. Save via Server-side API endpoint
+    try {
+      const res = await fetch('/api/push/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token,
+          userAgent: navigator.userAgent,
+        }),
+      })
+      const apiRes = await res.json()
+      await sendDebugLog('server_api_subscribe_result', apiRes)
+    } catch (apiErr: any) {
+      await sendDebugLog('server_api_subscribe_error', { message: apiErr.message })
+    }
+
+    // 2. Also save to client Firestore directly
+    try {
+      const db = getFirebaseDb()
+      if (db) {
+        const subsRef = collection(db, 'push_subscribers')
+        const q = query(subsRef, where('token', '==', token))
+        const querySnapshot = await getDocs(q)
+
+        if (querySnapshot.empty) {
+          await addDoc(subsRef, {
             token,
+            createdAt: serverTimestamp(),
             userAgent: navigator.userAgent,
-          }),
-        })
-        const apiRes = await res.json()
-        await sendDebugLog('server_api_subscribe_result', apiRes)
-      } catch (apiErr: any) {
-        await sendDebugLog('server_api_subscribe_error', { message: apiErr.message })
-      }
-
-      // 2. Also save to client Firestore directly
-      try {
-        const db = getFirebaseDb()
-        if (db) {
-          const subsRef = collection(db, 'push_subscribers')
-          const q = query(subsRef, where('token', '==', token))
-          const querySnapshot = await getDocs(q)
-
-          if (querySnapshot.empty) {
-            await addDoc(subsRef, {
-              token,
-              createdAt: serverTimestamp(),
-              userAgent: navigator.userAgent,
-              lastActive: serverTimestamp(),
-            })
-          } else {
-            querySnapshot.forEach(async (docSnap) => {
-              await updateDoc(docSnap.ref, { lastActive: serverTimestamp() })
-            })
-          }
-          await sendDebugLog('client_firestore_saved', {})
+            lastActive: serverTimestamp(),
+          })
+        } else {
+          querySnapshot.forEach(async (docSnap) => {
+            await updateDoc(docSnap.ref, { lastActive: serverTimestamp() })
+          })
         }
-      } catch (dbErr: any) {
-        await sendDebugLog('client_firestore_error', { message: dbErr.message })
+        await sendDebugLog('client_firestore_saved', {})
       }
-
-      localStorage.setItem('cardzy_push_subscribed', 'true')
-      return token
+    } catch (dbErr: any) {
+      await sendDebugLog('client_firestore_error', { message: dbErr.message })
     }
-    return null
+
+    localStorage.setItem('cardzy_push_subscribed', 'true')
+    return { success: true, token }
   } catch (error: any) {
+    const errorMsg = error.message || String(error)
     console.error('Error subscribing to push notifications on this device:', error)
-    await sendDebugLog('fatal_subscribe_error', { message: error.message || String(error), stack: error.stack })
-    return null
+    await sendDebugLog('fatal_subscribe_error', { message: errorMsg, stack: error.stack })
+    return { success: false, error: errorMsg }
   }
+}
+
+export async function subscribeToPush(): Promise<string | null> {
+  const result = await subscribeToPushWithResult()
+  return result.token || null
 }
 
 export function isSubscribed(): boolean {
