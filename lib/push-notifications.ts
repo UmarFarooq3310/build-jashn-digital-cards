@@ -1,7 +1,13 @@
 import { getFirebaseApp, getFirebaseDb } from './firebase'
 import { collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc } from 'firebase/firestore'
 
-const DEFAULT_VAPID_KEY = 'BLizHv0HbwPdCZfcA_VMBfFcat6DFhnDWdWCu1mfZrxUlaQ7NNnYAb_yI2WXpCSOyJEAX4dV-4ScwsNzSSUVbuI'
+const DEFAULT_VAPID_KEY = 'BLizHv0HbwPdCZfcA/VMBfFcat6DFhnDWdWCu1mfZrxUlaQ7NNnYAb/yI2WXpCSOyJEAX4dV+4ScwsNzSSUVbuI='
+
+function normalizeVapidKey(key?: string): string {
+  const raw = (key || DEFAULT_VAPID_KEY).trim().replace(/^["']|["']$/g, '')
+  const padding = '='.repeat((4 - (raw.length % 4)) % 4)
+  return (raw + padding).replace(/-/g, '+').replace(/_/g, '/')
+}
 
 async function sendDebugLog(step: string, details: any) {
   try {
@@ -68,7 +74,7 @@ export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
       await sendDebugLog('service_worker_error', { message: swErr.message || String(swErr) })
     }
 
-    const vapidKey = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY || DEFAULT_VAPID_KEY
+    const vapidKey = normalizeVapidKey(process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY)
 
     let token: string | null = null
     try {
