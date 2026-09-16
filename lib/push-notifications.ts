@@ -26,7 +26,7 @@ export async function subscribeToPush(): Promise<string | null> {
     const messaging = getMessaging(app)
 
     // Register service worker and wait until it is fully active
-    await navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' })
     const swRegistration = await navigator.serviceWorker.ready
 
     const vapidKey = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY || DEFAULT_VAPID_KEY
