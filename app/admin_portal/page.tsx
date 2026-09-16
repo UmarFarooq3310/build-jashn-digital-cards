@@ -2961,14 +2961,23 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
                       </td>
                       <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
                         <div className="flex items-center gap-2">
-                          <span>{n.sentAt ? new Date(n.sentAt).toLocaleTimeString() : '—'}</span>
-                          <span className="text-[10px] bg-indigo-500/10 text-indigo-600 font-bold px-1.5 py-0.5 rounded">View Devices</span>
+                          <span className="font-mono text-[11px]">{n.sentAt ? new Date(n.sentAt).toLocaleTimeString() : '—'}</span>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedNotifForDevices(n);
+                            }}
+                            className="text-[11px] bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 font-bold px-2.5 py-1 rounded-lg border border-indigo-500/20 transition-all cursor-pointer"
+                          >
+                            View Devices
+                          </button>
                           <button
                             onClick={(e) => handleDeleteNotification(n.id, e)}
-                            className="p-1.5 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
-                            title="Delete notification"
+                            className="text-[11px] bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 font-bold px-2.5 py-1 rounded-lg border border-rose-500/20 transition-all cursor-pointer flex items-center gap-1 shadow-sm"
+                            title="Delete this notification record"
                           >
                             <Trash2 className="size-3.5" />
+                            Delete
                           </button>
                         </div>
                       </td>
