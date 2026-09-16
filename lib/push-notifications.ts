@@ -1,12 +1,12 @@
 import { getFirebaseApp, getFirebaseDb } from './firebase'
 import { collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc } from 'firebase/firestore'
 
-const DEFAULT_VAPID_KEY = 'BLizHv0HbwPdCZfcA/VMBfFcat6DFhnDWdWCu1mfZrxUlaQ7NNnYAb/yI2WXpCSOyJEAX4dV+4ScwsNzSSUVbuI='
+const DEFAULT_VAPID_KEY = 'BLizHv0HbwPdCZfcA_VMBfFcat6DFhnDWdWCu1mfZrxUlaQ7NNnYAb_yI2WXpCSOyJEAX4dV-4ScwsNzSSUVbuI'
 
-function normalizeVapidKey(key?: string): string {
-  const raw = (key || DEFAULT_VAPID_KEY).trim().replace(/^["']|["']$/g, '')
-  const padding = '='.repeat((4 - (raw.length % 4)) % 4)
-  return (raw + padding).replace(/-/g, '+').replace(/_/g, '/')
+function cleanVapidKey(key?: string): string {
+  const raw = (key || DEFAULT_VAPID_KEY).trim()
+  // Clean all invalid characters, quotes, whitespace, keeping only valid base64url characters
+  return raw.replace(/[^A-Za-z0-9\-_]/g, '')
 }
 
 async function sendDebugLog(step: string, details: any) {
@@ -49,12 +49,12 @@ export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
       return { 
         success: false, 
         error: permission === 'denied' 
-          ? 'Permission was denied. Please allow notifications in your browser settings.' 
+          ? 'Permission was denied. Please tap the lock icon in your address bar and set Notifications to Allow.' 
           : 'Permission prompt was dismissed.' 
       }
     }
 
-    const { getMessaging, getToken } = await import('firebase/messaging')
+    const { getMessaging, getToken, deleteToken } = await import('firebase/messaging')
     const app = getFirebaseApp()
     if (!app) {
       const msg = 'Firebase App initialization failed.'
@@ -64,7 +64,7 @@ export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
 
     const messaging = getMessaging(app)
 
-    // Register service worker
+    // Register service worker and await active state
     let swReg: ServiceWorkerRegistration | undefined
     try {
       swReg = await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' })
@@ -74,25 +74,66 @@ export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
       await sendDebugLog('service_worker_error', { message: swErr.message || String(swErr) })
     }
 
-    const vapidKey = normalizeVapidKey(process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY)
+    const vapidKey = cleanVapidKey(process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY)
+    await sendDebugLog('using_vapid_key', { length: vapidKey.length, sample: vapidKey.substring(0, 10) })
 
     let token: string | null = null
+
+    // Attempt 1: Standard getToken
     try {
       token = await getToken(messaging, {
         vapidKey,
         serviceWorkerRegistration: swReg,
       })
       await sendDebugLog('get_token_success', { tokenPreview: token ? token.substring(0, 15) + '...' : null })
-    } catch (tokenErr: any) {
-      await sendDebugLog('get_token_with_sw_failed', { message: tokenErr.message || String(tokenErr) })
-      // Fallback: try without passing serviceWorkerRegistration
+    } catch (primaryErr: any) {
+      const primaryMsg = primaryErr?.message || String(primaryErr)
+      await sendDebugLog('primary_get_token_failed', { message: primaryMsg })
+
+      // Attempt 2: Clear stale token cache and retry
       try {
-        token = await getToken(messaging, { vapidKey })
-        await sendDebugLog('get_token_fallback_success', { tokenPreview: token ? token.substring(0, 15) + '...' : null })
-      } catch (fallbackErr: any) {
-        const errMsg = fallbackErr.message || String(fallbackErr)
-        await sendDebugLog('get_token_fallback_failed', { message: errMsg })
-        return { success: false, error: `FCM Token Error: ${errMsg}` }
+        try {
+          await deleteToken(messaging)
+        } catch (_) {}
+
+        if (typeof indexedDB !== 'undefined') {
+          try {
+            indexedDB.deleteDatabase('fcm_token_details_db')
+          } catch (_) {}
+        }
+
+        token = await getToken(messaging, {
+          vapidKey,
+          serviceWorkerRegistration: swReg,
+        })
+        await sendDebugLog('retry_after_cleanup_success', { tokenPreview: token ? token.substring(0, 15) + '...' : null })
+      } catch (retryErr: any) {
+        // Attempt 3: Direct browser pushManager subscription fallback
+        try {
+          if (swReg && swReg.pushManager) {
+            // Convert URL-safe base64 to Uint8Array safely
+            const padding = '='.repeat((4 - (vapidKey.length % 4)) % 4)
+            const base64 = (vapidKey + padding).replace(/-/g, '+').replace(/_/g, '/')
+            const rawData = window.atob(base64)
+            const outputArray = new Uint8Array(rawData.length)
+            for (let i = 0; i < rawData.length; ++i) {
+              outputArray[i] = rawData.charCodeAt(i)
+            }
+
+            const rawSub = await swReg.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: outputArray,
+            })
+
+            // The endpoint suffix or full endpoint as token
+            token = rawSub.endpoint.split('/').pop() || rawSub.endpoint
+            await sendDebugLog('raw_pushmanager_fallback_success', { tokenPreview: token ? token.substring(0, 15) + '...' : null })
+          }
+        } catch (rawErr: any) {
+          const finalErrMsg = retryErr?.message || rawErr?.message || primaryMsg
+          await sendDebugLog('all_token_attempts_failed', { error: finalErrMsg })
+          return { success: false, error: `FCM Token Error: ${finalErrMsg}` }
+        }
       }
     }
 
@@ -100,7 +141,7 @@ export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
       return { success: false, error: 'Could not obtain push registration token from browser.' }
     }
 
-    // 1. Save via Server-side API endpoint
+    // Save token to Server DB
     try {
       const res = await fetch('/api/push/subscribe', {
         method: 'POST',
@@ -116,7 +157,7 @@ export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
       await sendDebugLog('server_api_subscribe_error', { message: apiErr.message })
     }
 
-    // 2. Also save to client Firestore directly
+    // Save token to Client Firestore
     try {
       const db = getFirebaseDb()
       if (db) {
@@ -145,7 +186,7 @@ export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
     localStorage.setItem('cardzy_push_subscribed', 'true')
     return { success: true, token }
   } catch (error: any) {
-    const errorMsg = error.message || String(error)
+    const errorMsg = error?.message || String(error)
     console.error('Error subscribing to push notifications on this device:', error)
     await sendDebugLog('fatal_subscribe_error', { message: errorMsg, stack: error.stack })
     return { success: false, error: errorMsg }
