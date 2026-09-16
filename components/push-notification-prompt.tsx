@@ -13,8 +13,16 @@ export function PushNotificationPrompt() {
     if (typeof window === 'undefined') return;
     if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
     
-    // If already granted, don't show prompt
+    // If already granted, immediately register/refresh device token in Firestore in background
     if (Notification.permission === 'granted') {
+      subscribeToPush().catch((err) => {
+        console.warn('Auto push subscription notice:', err);
+      });
+      return;
+    }
+
+    // If permission was explicitly denied, do not bother the user with the prompt
+    if (Notification.permission === 'denied') {
       return;
     }
 

@@ -2663,23 +2663,30 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
   const [subscribersList, setSubscribersList] = useState<any[]>([])
 
   useEffect(() => {
-    let unsubscribe = () => {}
+    let unsubscribeNotifs = () => {}
+    let unsubscribeSubs = () => {}
     
     async function loadData() {
       try {
         const firestoreDb = getFirebaseDb()
         if (!firestoreDb) return
 
-        // Get subscriber count and list
-        const subSnap = await getDocs(collection(firestoreDb, 'push_subscribers'))
-        setSubscribersCount(subSnap.size)
-        setSubscribersList(subSnap.docs.map(d => ({ id: d.id, ...d.data() })))
+        // Real-time listener for push subscribers
+        unsubscribeSubs = onSnapshot(collection(firestoreDb, 'push_subscribers'), (subSnap) => {
+          setSubscribersCount(subSnap.size)
+          setSubscribersList(subSnap.docs.map(d => ({ id: d.id, ...d.data() })))
+        }, (err) => {
+          console.error("Error listening to push_subscribers", err)
+        })
 
-        // Listen to notifications
+        // Real-time listener for notifications history
         const q = query(collection(firestoreDb, 'push_notifications'), orderBy('sentAt', 'desc'), limit(20))
-        unsubscribe = onSnapshot(q, (snap) => {
+        unsubscribeNotifs = onSnapshot(q, (snap) => {
           const notifs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
           setNotifications(notifs)
+          setLoading(false)
+        }, (err) => {
+          console.error("Error listening to push_notifications", err)
           setLoading(false)
         })
       } catch (err) {
@@ -2689,7 +2696,10 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
     }
     
     loadData()
-    return () => unsubscribe()
+    return () => {
+      unsubscribeNotifs()
+      unsubscribeSubs()
+    }
   }, [])
 
   const handleSend = async () => {
@@ -2819,6 +2829,41 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
               {isSending ? <RefreshCw className="size-4 animate-spin mr-2" /> : <Send className="size-4 mr-2" />}
               {isSending ? 'Sending to all devices...' : `Send to All (${subscribersCount})`}
             </Button>
+          </div>
+
+          {/* Subscribed Devices Quick List */}
+          <div className="pt-3 border-t border-border/60">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                <Smartphone className="size-3.5 text-indigo-500" />
+                Subscribed Devices ({subscribersList.length})
+              </span>
+              <span className="text-[10px] text-muted-foreground">Auto-synced</span>
+            </div>
+            {subscribersList.length === 0 ? (
+              <p className="text-xs text-muted-foreground italic py-1">No devices registered yet. Open the site on any phone/browser to auto-register.</p>
+            ) : (
+              <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+                {subscribersList.map((sub, idx) => {
+                  const ua = sub.userAgent || '';
+                  const isIPhone = /iPhone/i.test(ua);
+                  const isAndroid = /Android/i.test(ua);
+                  const isMac = /Macintosh|Mac OS X/i.test(ua);
+                  const isWindows = /Windows/i.test(ua);
+                  const devLabel = isIPhone ? 'iPhone 📱' : isAndroid ? 'Android 📱' : isMac ? 'Mac 💻' : isWindows ? 'Windows 💻' : 'Device 📱';
+                  const browserLabel = /Chrome/i.test(ua) ? 'Chrome' : /Safari/i.test(ua) ? 'Safari' : /Firefox/i.test(ua) ? 'Firefox' : /Edg/i.test(ua) ? 'Edge' : 'Browser';
+                  return (
+                    <div key={sub.id || idx} className="flex items-center justify-between p-2 rounded-xl bg-muted/40 text-xs border border-border/40">
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-foreground">{devLabel}</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-background text-muted-foreground border border-border">{browserLabel}</span>
+                      </div>
+                      <span className="text-[10px] font-mono text-emerald-500 font-bold">Ready ✅</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
