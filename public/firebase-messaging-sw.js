@@ -115,9 +115,10 @@ self.addEventListener('notificationclick', function(event) {
   var urlToOpen = normalizeTargetUrl(rawUrl, self.location.origin);
   var notificationId = event.notification.data?.notificationId;
 
+  var trackPromise = Promise.resolve();
   if (notificationId) {
     try {
-      fetch('/api/push/track', {
+      trackPromise = fetch('/api/push/track', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ notificationId: notificationId })
@@ -125,24 +126,24 @@ self.addEventListener('notificationclick', function(event) {
     } catch (e) {}
   }
 
-  event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
-      for (var i = 0; i < clientList.length; i++) {
-        var client = clientList[i];
-        if (client && 'focus' in client) {
-          if ('navigate' in client) {
-            return client.navigate(urlToOpen).then(function(navigatedClient) {
-              return navigatedClient ? navigatedClient.focus() : client.focus();
-            }).catch(function() {
-              return client.focus();
-            });
-          }
-          return client.focus();
+  var navigatePromise = clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
+    for (var i = 0; i < clientList.length; i++) {
+      var client = clientList[i];
+      if (client && 'focus' in client) {
+        if ('navigate' in client) {
+          return client.navigate(urlToOpen).then(function(navigatedClient) {
+            return navigatedClient ? navigatedClient.focus() : client.focus();
+          }).catch(function() {
+            return client.focus();
+          });
         }
+        return client.focus();
       }
-      if (clients.openWindow) {
-        return clients.openWindow(urlToOpen);
-      }
-    })
-  );
+    }
+    if (clients.openWindow) {
+      return clients.openWindow(urlToOpen);
+    }
+  });
+
+  event.waitUntil(Promise.all([trackPromise, navigatePromise]));
 });

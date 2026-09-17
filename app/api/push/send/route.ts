@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { serverDb } from '@/lib/firebase-server';
 import { getAdminMessaging } from '@/lib/firebase-admin';
-import { collection, getDocs, addDoc, doc, deleteDoc, query, where } from 'firebase/firestore';
+import { collection, getDocs, addDoc, doc, setDoc, deleteDoc, query, where } from 'firebase/firestore';
 
 function parseDeviceFromUserAgent(ua?: string): { deviceType: 'Mobile' | 'Desktop' | 'Tablet'; name: string } {
   if (!ua) return { deviceType: 'Desktop', name: 'Unknown Device' };
@@ -95,7 +95,12 @@ export async function POST(req: Request) {
 
     const deviceReports: DeviceReport[] = [];
 
-    // 2. Dispatch FCM HTTP v1 multicast with Data-only payload (prevents OS automatic double notifications)
+    // 2. Pre-generate Firestore Notification document reference for exact ID tracking
+    const notifsRef = collection(serverDb, 'push_notifications');
+    const notifDocRef = doc(notifsRef);
+    const notifId = notifDocRef.id;
+
+    // 3. Dispatch FCM HTTP v1 multicast with Data-only payload and exact notificationId
     try {
       const messaging = getAdminMessaging();
       const messagePayload = {
@@ -104,7 +109,7 @@ export async function POST(req: Request) {
           title,
           body,
           url: url || '/',
-          notificationId: notifBatchId,
+          notificationId: notifId,
         },
         webpush: {
           headers: {
@@ -118,7 +123,7 @@ export async function POST(req: Request) {
             title,
             body,
             url: url || '/',
-            notificationId: notifBatchId,
+            notificationId: notifId,
           },
         },
       };
@@ -147,7 +152,6 @@ export async function POST(req: Request) {
           let readableReason = errMsg;
           if (errCode === 'messaging/registration-token-not-registered') {
             readableReason = 'Token expired / Browser session closed or cleared';
-            // Auto delete dead token from Firestore
             deleteDoc(doc(serverDb, 'push_subscribers', sub.docId)).catch(() => {});
           } else if (errCode === 'messaging/invalid-registration-token') {
             readableReason = 'Invalid registration token';
@@ -167,7 +171,6 @@ export async function POST(req: Request) {
       errorMessage = adminErr?.message || String(adminErr);
       console.warn('Firebase Admin FCM dispatch notice:', errorMessage);
 
-      // Populate failure report if overall FCM call failed
       subsList.forEach((sub) => {
         deviceReports.push({
           tokenPreview: sub.token.substring(0, 10) + '...' + sub.token.slice(-6),
@@ -179,9 +182,8 @@ export async function POST(req: Request) {
       });
     }
 
-    // 3. Record notification history & device diagnostics in Firestore
-    const notifsRef = collection(serverDb, 'push_notifications');
-    const notifDoc = await addDoc(notifsRef, {
+    // 4. Record notification history in Firestore with exact matching ID
+    await setDoc(notifDocRef, {
       title,
       body,
       url: url || '/',
@@ -198,7 +200,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ 
       success: true, 
-      notificationId: notifDoc.id, 
+      notificationId: notifId, 
       sentCount: tokens.length,
       deliveredCount: delivered, 
       failedCount: failedTokens.length,
