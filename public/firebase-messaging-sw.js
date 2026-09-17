@@ -103,29 +103,12 @@ function displayNotification(payload) {
   return self.registration.showNotification(notificationTitle, notificationOptions);
 }
 
-// 1. Firebase background messaging hook
+// Single unified Firebase background messaging hook
 messaging.onBackgroundMessage(function(payload) {
   return displayNotification(payload || {});
 });
 
-// 2. Native Web Push event hook (guarantees Mac & Desktop Chrome/Safari/Edge wake-up)
-self.addEventListener('push', function(event) {
-  var payload = {};
-  if (event.data) {
-    try {
-      payload = event.data.json();
-    } catch (e) {
-      try {
-        payload = { notification: { title: 'Cardzy Alert 🔔', body: event.data.text() } };
-      } catch (e2) {
-        payload = {};
-      }
-    }
-  }
-  event.waitUntil(displayNotification(payload));
-});
-
-// 3. Notification click handler
+// Notification click handler
 self.addEventListener('notificationclick', function(event) {
   event.notification.close();
   var rawUrl = event.notification.data?.url || '/';

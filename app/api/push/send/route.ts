@@ -95,46 +95,31 @@ export async function POST(req: Request) {
 
     const deviceReports: DeviceReport[] = [];
 
-    // 2. Dispatch FCM HTTP v1 multicast
+    // 2. Dispatch FCM HTTP v1 multicast with Data-only payload (prevents OS automatic double notifications)
     try {
       const messaging = getAdminMessaging();
       const messagePayload = {
         tokens,
-        notification: {
+        data: {
           title,
           body,
+          url: url || '/',
+          notificationId: notifBatchId,
         },
         webpush: {
           headers: {
             Urgency: 'high',
             TTL: '86400',
           },
-          notification: {
-            title,
-            body,
-            icon: 'https://cardzy.online/android-chrome-192x192.png',
-            badge: 'https://cardzy.online/favicon-32x32.png',
-            requireInteraction: true,
-            tag: notifBatchId, // Single deterministic tag prevents duplicate cards
-            renotify: false,
-            vibrate: [200, 100, 200],
-            silent: false,
-          },
           fcmOptions: {
             link: url || '/',
           },
           data: {
-            url: url || '/',
             title,
             body,
+            url: url || '/',
             notificationId: notifBatchId,
           },
-        },
-        data: {
-          url: url || '/',
-          title,
-          body,
-          notificationId: notifBatchId,
         },
       };
 
