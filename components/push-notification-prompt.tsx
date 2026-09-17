@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { subscribeToPushWithResult } from '@/lib/push-notifications';
-import { getFirebaseApp } from '@/lib/firebase';
 import { Bell, CheckCircle2, X, AlertCircle, RefreshCw } from 'lucide-react';
 
 export function PushNotificationPrompt() {
@@ -56,53 +55,8 @@ export function PushNotificationPrompt() {
     };
     window.addEventListener('open_push_prompt', handleReopen);
 
-    // 4. Foreground push message listener to trigger native browser notification
-    let unsubMessage: (() => void) | undefined;
-    async function initForegroundPushListener() {
-      try {
-        const { getMessaging, onMessage } = await import('firebase/messaging');
-        const app = getFirebaseApp();
-        if (app) {
-          const messaging = getMessaging(app);
-          unsubMessage = onMessage(messaging, (payload) => {
-            const title = payload.notification?.title || payload.data?.title || 'Cardzy Alert 🔔';
-            const body = payload.notification?.body || payload.data?.body || '';
-            const url = payload.fcmOptions?.link || payload.data?.url || (payload.notification as any)?.click_action || '/';
-            const notificationId = payload.data?.notificationId;
-
-            // Trigger native browser notification
-            if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
-              if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-                navigator.serviceWorker.ready.then((reg) => {
-                  reg.showNotification(title, {
-                    body,
-                    icon: '/android-chrome-192x192.png',
-                    badge: '/favicon-32x32.png',
-                    requireInteraction: true,
-                    data: { url, notificationId, title, body },
-                  });
-                }).catch(() => {});
-              } else {
-                try {
-                  new Notification(title, {
-                    body,
-                    icon: '/android-chrome-192x192.png',
-                    badge: '/favicon-32x32.png',
-                    data: { url, notificationId },
-                  });
-                } catch (_) {}
-              }
-            }
-          });
-        }
-      } catch (_) {}
-    }
-
-    initForegroundPushListener();
-
     return () => {
       window.removeEventListener('open_push_prompt', handleReopen);
-      if (unsubMessage) unsubMessage();
     };
   }, []);
 
