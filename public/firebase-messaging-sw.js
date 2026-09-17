@@ -103,9 +103,26 @@ function displayNotification(payload) {
   return self.registration.showNotification(notificationTitle, notificationOptions);
 }
 
-// Single unified Firebase background messaging hook
+// 1. Firebase background messaging hook
 messaging.onBackgroundMessage(function(payload) {
   return displayNotification(payload || {});
+});
+
+// 2. Native Web Push background hook (guarantees Mac & Windows desktop background wake-up)
+self.addEventListener('push', function(event) {
+  var payload = {};
+  if (event.data) {
+    try {
+      payload = event.data.json();
+    } catch (e) {
+      try {
+        payload = { data: { body: event.data.text() } };
+      } catch (e2) {
+        payload = {};
+      }
+    }
+  }
+  event.waitUntil(displayNotification(payload));
 });
 
 // Notification click handler
