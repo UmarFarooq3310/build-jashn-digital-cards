@@ -31,53 +31,34 @@ export const DEFAULT_KEYWORDS = [
 
 
 /**
- * Builds the canonical URL for a given path and optional language.
- * - If a language query parameter is provided (e.g. 'ja', 'hi', 'ur'),
- *   it returns a self-referencing canonical URL including `?lang=${lang}`.
- * - If no language is provided or empty, it returns the base canonical URL.
+ * Builds the canonical URL for a given path.
+ * Always returns a clean, absolute canonical URL without query parameters.
  */
-export function getCanonicalUrl(path: string, lang?: string | null): string {
+export function getCanonicalUrl(path: string, _lang?: string | null): string {
   const cleanPath = path === '/' ? '' : path.startsWith('/') ? path : `/${path}`
-  const fullUrl = `${SITE_URL}${cleanPath}`
-  if (lang && typeof lang === 'string' && lang.trim().length > 0) {
-    const trimmedLang = lang.trim()
-    return `${fullUrl}?lang=${encodeURIComponent(trimmedLang)}`
-  }
-  return fullUrl
+  // Ensure any query parameters are stripped from canonical URL
+  const pathWithoutQuery = cleanPath.split('?')[0]
+  return `${SITE_URL}${pathWithoutQuery}`
 }
 
 /**
- * Generates all language alternate URLs (hreflang) for a given path.
- * - `x-default`: Points to default URL without query parameters
- * - `en`: Points to default English URL without query parameters
- * - Other languages: Points to `${fullUrl}?lang=${lang}`
+ * Generates language alternate URLs (hreflang) for a given path if needed.
  */
 export function getLanguageAlternates(path: string): Record<string, string> {
-  const cleanPath = path === '/' ? '' : path.startsWith('/') ? path : `/${path}`
-  const fullUrl = `${SITE_URL}${cleanPath}`
-
-  const languages: Record<string, string> = {
-    'x-default': fullUrl,
-    'en': fullUrl,
+  const canonicalUrl = getCanonicalUrl(path)
+  return {
+    'x-default': canonicalUrl,
+    'en': canonicalUrl,
   }
-
-  SUPPORTED_LANGS.forEach((lang) => {
-    if (lang !== 'en') {
-      languages[lang] = `${fullUrl}?lang=${lang}`
-    }
-  })
-
-  return languages
 }
 
 /**
- * Returns the `alternates` metadata object for Next.js metadata,
- * dynamically configuring the self-referencing canonical URL and all hreflang alternates.
+ * Returns the `alternates` metadata object for Next.js metadata.
+ * Ensures the canonical URL is strictly clean and unified across all query parameter variations.
  */
-export function getPageAlternates(path: string, lang?: string | null) {
+export function getPageAlternates(path: string, _lang?: string | null) {
   return {
-    canonical: getCanonicalUrl(path, lang),
-    languages: getLanguageAlternates(path),
+    canonical: getCanonicalUrl(path),
   }
 }
 

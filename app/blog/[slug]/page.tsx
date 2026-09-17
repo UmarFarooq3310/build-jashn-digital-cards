@@ -41,12 +41,12 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     authors: [{ name: post.author.name }],
     creator: post.author.name,
     publisher: SITE_PUBLISHER,
-    alternates: getPageAlternates(`/blog/${post.slug}`, resolvedSearchParams.lang),
+    alternates: getPageAlternates(`/blog/${post.slug}`),
     robots: PUBLIC_ROBOTS,
     openGraph: {
       title: post.title,
       description: post.metaDescription,
-      url: `https://cardzy.online/blog/${post.slug}${lang !== 'en' ? `?lang=${lang}` : ''}`,
+      url: `https://cardzy.online/blog/${post.slug}`,
       siteName: 'Cardzy Digital Cards',
       images: [{ url: post.featuredImage, width: 1200, height: 630 }],
       type: 'article',
@@ -99,7 +99,7 @@ export default async function BlogPostPage({ params, searchParams }: PageProps) 
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://cardzy.online/blog/${post.slug}${lang !== 'en' ? `?lang=${lang}` : ''}`,
+      '@id': `https://cardzy.online/blog/${post.slug}`,
     },
   }
 

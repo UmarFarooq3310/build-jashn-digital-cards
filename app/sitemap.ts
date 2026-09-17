@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 import { BLOG_POSTS } from '@/lib/blog/data'
-import { SITE_URL, getLanguageAlternates } from '@/lib/seo'
+import { SITE_URL } from '@/lib/seo'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Use fixed dates for static pages to prevent Google from distrusting lastmod
@@ -42,9 +42,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: route.lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
-    alternates: {
-      languages: getLanguageAlternates(route.path),
-    },
   }))
 
   const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
@@ -52,9 +49,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.updatedAt),
     changeFrequency: 'weekly',
     priority: 0.8,
-    alternates: {
-      languages: getLanguageAlternates(`/blog/${post.slug}`),
-    },
   }))
 
   return [...staticRoutes, ...blogRoutes]
