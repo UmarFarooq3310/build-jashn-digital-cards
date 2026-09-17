@@ -15,6 +15,28 @@ export function PushNotificationPrompt() {
     if (typeof window === 'undefined') return;
     if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
 
+    // Check if opened from push notification URL parameter
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const clickedNotifId = urlParams.get('_cnid');
+      if (clickedNotifId) {
+        const sessionKey = 'tracked_notif_' + clickedNotifId;
+        if (!sessionStorage.getItem(sessionKey)) {
+          sessionStorage.setItem(sessionKey, 'true');
+          fetch('/api/push/track', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ notificationId: clickedNotifId }),
+            keepalive: true,
+          }).catch(() => {});
+        }
+        urlParams.delete('_cnid');
+        const cleanSearch = urlParams.toString();
+        const cleanUrl = window.location.pathname + (cleanSearch ? '?' + cleanSearch : '') + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    } catch (_) {}
+
     // Refresh service worker to ensure latest version is active
     navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' })
       .then((reg) => {

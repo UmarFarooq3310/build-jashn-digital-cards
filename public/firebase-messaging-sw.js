@@ -21,20 +21,31 @@ self.addEventListener('activate', function(event) {
   event.waitUntil(self.clients.claim());
 });
 
-function normalizeTargetUrl(rawUrl, origin) {
-  if (!rawUrl || typeof rawUrl !== 'string') return origin + '/';
+function normalizeTargetUrl(rawUrl, origin, notifId) {
+  if (!rawUrl || typeof rawUrl !== 'string') rawUrl = '/';
   var clean = rawUrl.trim();
-  if (clean.startsWith('http://') || clean.startsWith('https://')) {
-    return clean;
+  var finalUrl = clean;
+  if (!clean.startsWith('http://') && !clean.startsWith('https://')) {
+    if (!clean.startsWith('/')) {
+      clean = '/' + clean;
+    }
+    try {
+      finalUrl = new URL(clean, origin).href;
+    } catch (e) {
+      finalUrl = origin + '/';
+    }
   }
-  if (!clean.startsWith('/')) {
-    clean = '/' + clean;
+
+  if (notifId) {
+    try {
+      var urlObj = new URL(finalUrl);
+      urlObj.searchParams.set('_cnid', notifId);
+      return urlObj.href;
+    } catch (e) {
+      return finalUrl;
+    }
   }
-  try {
-    return new URL(clean, origin).href;
-  } catch (e) {
-    return origin + '/';
-  }
+  return finalUrl;
 }
 
 // Deduplication memory cache (prevents duplicate notification triggers on Android & Desktop)
@@ -129,16 +140,18 @@ self.addEventListener('push', function(event) {
 self.addEventListener('notificationclick', function(event) {
   event.notification.close();
   var rawUrl = event.notification.data?.url || '/';
-  var urlToOpen = normalizeTargetUrl(rawUrl, self.location.origin);
   var notificationId = event.notification.data?.notificationId;
+  var origin = (self.location && self.location.origin) ? self.location.origin : 'https://cardzy.online';
+  var urlToOpen = normalizeTargetUrl(rawUrl, origin, notificationId);
 
   var trackPromise = Promise.resolve();
   if (notificationId) {
     try {
-      trackPromise = fetch('/api/push/track', {
+      trackPromise = fetch(origin + '/api/push/track', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ notificationId: notificationId })
+        body: JSON.stringify({ notificationId: notificationId }),
+        keepalive: true
       }).catch(function() {});
     } catch (e) {}
   }

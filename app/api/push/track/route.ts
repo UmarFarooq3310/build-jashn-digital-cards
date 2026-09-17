@@ -4,7 +4,20 @@ import { doc, updateDoc, increment } from 'firebase/firestore';
 
 export async function POST(req: Request) {
   try {
-    const { notificationId } = await req.json();
+    let notificationId = '';
+    const contentType = req.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      const body = await req.json();
+      notificationId = body.notificationId;
+    } else {
+      const text = await req.text();
+      try {
+        const parsed = JSON.parse(text);
+        notificationId = parsed.notificationId;
+      } catch {
+        notificationId = text.trim();
+      }
+    }
 
     if (!notificationId) {
       return NextResponse.json({ error: 'Missing notificationId' }, { status: 400 });
