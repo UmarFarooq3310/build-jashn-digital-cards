@@ -104,8 +104,8 @@ export async function POST(req: Request) {
           notification: {
             title,
             body,
-            icon: '/favicon-32x32.png',
-            badge: '/favicon-32x32.png',
+            icon: 'https://cardzy.online/android-chrome-192x192.png',
+            badge: 'https://cardzy.online/favicon-32x32.png',
             requireInteraction: true,
             tag: `cardzy-alert-${Date.now()}`,
             renotify: true,

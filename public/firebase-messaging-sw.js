@@ -37,19 +37,41 @@ function normalizeTargetUrl(rawUrl, origin) {
   }
 }
 
-// Single unified background message handler
-messaging.onBackgroundMessage(function(payload) {
-  const notificationTitle = payload.notification?.title || payload.data?.title || 'Cardzy 🔔';
-  const notificationBody = payload.notification?.body || payload.data?.body || '';
-  const targetUrl = payload.fcmOptions?.link || payload.data?.url || payload.notification?.click_action || '/';
-  const notifId = payload.data?.notificationId;
+// Unified function to show native notification safely across all desktop & mobile platforms
+function displayNotification(payload) {
+  var notificationTitle = 
+    payload.notification?.title || 
+    payload.data?.title || 
+    payload.title || 
+    'Cardzy Alert 🔔';
 
-  const notificationOptions = {
+  var notificationBody = 
+    payload.notification?.body || 
+    payload.data?.body || 
+    payload.body || 
+    'You have a new update from Cardzy.';
+
+  var targetUrl = 
+    payload.fcmOptions?.link || 
+    payload.data?.url || 
+    payload.data?.link || 
+    payload.notification?.click_action || 
+    payload.url || 
+    '/';
+
+  var notifId = payload.data?.notificationId || payload.notificationId || String(Date.now());
+  var origin = (self.location && self.location.origin) ? self.location.origin : 'https://cardzy.online';
+  var iconUrl = origin + '/android-chrome-192x192.png';
+  var badgeUrl = origin + '/favicon-32x32.png';
+
+  var notificationOptions = {
     body: notificationBody,
-    icon: '/favicon-32x32.png',
-    badge: '/favicon-32x32.png',
-    vibrate: [200, 100, 200],
+    icon: iconUrl,
+    badge: badgeUrl,
+    tag: 'cardzy-' + notifId, // Deduplicates simultaneous triggers across handlers
+    renotify: true,
     requireInteraction: true,
+    vibrate: [200, 100, 200],
     data: {
       url: targetUrl,
       notificationId: notifId,
@@ -59,27 +81,49 @@ messaging.onBackgroundMessage(function(payload) {
   };
 
   return self.registration.showNotification(notificationTitle, notificationOptions);
+}
+
+// 1. Firebase background messaging hook
+messaging.onBackgroundMessage(function(payload) {
+  return displayNotification(payload || {});
 });
 
+// 2. Native Web Push event hook (guarantees Mac & Desktop Chrome/Safari/Edge wake-up)
+self.addEventListener('push', function(event) {
+  var payload = {};
+  if (event.data) {
+    try {
+      payload = event.data.json();
+    } catch (e) {
+      try {
+        payload = { notification: { title: 'Cardzy Alert 🔔', body: event.data.text() } };
+      } catch (e2) {
+        payload = {};
+      }
+    }
+  }
+  event.waitUntil(displayNotification(payload));
+});
+
+// 3. Notification click handler
 self.addEventListener('notificationclick', function(event) {
   event.notification.close();
-  const rawUrl = event.notification.data?.url || '/';
-  const urlToOpen = normalizeTargetUrl(rawUrl, self.location.origin);
-  const notificationId = event.notification.data?.notificationId;
+  var rawUrl = event.notification.data?.url || '/';
+  var urlToOpen = normalizeTargetUrl(rawUrl, self.location.origin);
+  var notificationId = event.notification.data?.notificationId;
 
   if (notificationId) {
     try {
       fetch('/api/push/track', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ notificationId })
+        body: JSON.stringify({ notificationId: notificationId })
       }).catch(function() {});
     } catch (e) {}
   }
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
-      // 1. If matching tab is open, navigate and focus
       for (var i = 0; i < clientList.length; i++) {
         var client = clientList[i];
         if (client && 'focus' in client) {
@@ -93,7 +137,6 @@ self.addEventListener('notificationclick', function(event) {
           return client.focus();
         }
       }
-      // 2. Otherwise open new window
       if (clients.openWindow) {
         return clients.openWindow(urlToOpen);
       }

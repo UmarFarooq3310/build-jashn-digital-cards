@@ -2730,9 +2730,54 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
       setUrl('/')
     } catch (err: any) {
       console.error(err)
-      showToast(err.message || 'Error sending notification', 'error')
     } finally {
       setIsSending(false)
+    }
+  }
+
+  const handleTestLocalNotification = async () => {
+    if (typeof window === 'undefined' || !('Notification' in window)) {
+      showToast('Notifications are not supported in this browser.', 'error')
+      return
+    }
+
+    if (Notification.permission === 'denied') {
+      showToast('Notifications are BLOCKED in browser or macOS settings. Click the lock icon in address bar to Allow.', 'error')
+      return
+    }
+
+    if (Notification.permission !== 'granted') {
+      const perm = await Notification.requestPermission()
+      if (perm !== 'granted') {
+        showToast('Notification permission was not granted.', 'error')
+        return
+      }
+    }
+
+    if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+      navigator.serviceWorker.ready.then((reg) => {
+        reg.showNotification('Desktop Push Test 🔔', {
+          body: 'If you see this banner, your Mac / Desktop notifications are 100% working!',
+          icon: '/android-chrome-192x192.png',
+          badge: '/favicon-32x32.png',
+          requireInteraction: true,
+          data: { url: '/admin_portal' }
+        })
+        showToast('Test notification banner fired! Check your Mac screen (top-right).', 'success')
+      }).catch((e) => {
+        showToast('Service Worker error: ' + e.message, 'error')
+      })
+    } else {
+      try {
+        new Notification('Desktop Push Test 🔔', {
+          body: 'If you see this banner, your Mac / Desktop notifications are 100% working!',
+          icon: '/android-chrome-192x192.png',
+          badge: '/favicon-32x32.png',
+        })
+        showToast('Test notification banner fired! Check your Mac screen (top-right).', 'success')
+      } catch (e: any) {
+        showToast('Error firing notification: ' + e.message, 'error')
+      }
     }
   }
 
@@ -2852,14 +2897,25 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
               <p className="text-[11px] text-muted-foreground mt-1">When user clicks notification, this tab/page will open.</p>
             </div>
 
-            <Button 
-              onClick={handleSend} 
-              disabled={isSending || !title || !body} 
-              className="w-full rounded-xl font-bold bg-indigo-600 hover:bg-indigo-700 text-white mt-2"
-            >
-              {isSending ? <RefreshCw className="size-4 animate-spin mr-2" /> : <Send className="size-4 mr-2" />}
-              {isSending ? 'Sending to all devices...' : `Send to All (${subscribersCount})`}
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-2 mt-2">
+              <Button 
+                onClick={handleSend} 
+                disabled={isSending || !title || !body} 
+                className="flex-1 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-700 text-white"
+              >
+                {isSending ? <RefreshCw className="size-4 animate-spin mr-2" /> : <Send className="size-4 mr-2" />}
+                {isSending ? 'Sending to all...' : `Send to All (${subscribersCount})`}
+              </Button>
+              <Button 
+                type="button"
+                onClick={handleTestLocalNotification}
+                variant="outline"
+                className="rounded-xl font-bold border-indigo-500/30 text-indigo-600 hover:bg-indigo-500/10"
+                title="Test native notification banner immediately on this Mac / Desktop"
+              >
+                🔔 Test Mac Banner
+              </Button>
+            </div>
           </div>
 
           {/* Subscribed Devices Quick List */}
