@@ -1,20 +1,37 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { subscribeToPushWithResult } from '@/lib/push-notifications';
 import { getFirebaseApp } from '@/lib/firebase';
-import { Bell, CheckCircle2, X, AlertCircle, RefreshCw } from 'lucide-react';
+import { Bell, CheckCircle2, X, AlertCircle, RefreshCw, ExternalLink } from 'lucide-react';
+
+interface LiveAlert {
+  title: string;
+  body: string;
+  url: string;
+  notificationId?: string;
+}
 
 export function PushNotificationPrompt() {
+  const router = useRouter();
   const [showPrompt, setShowPrompt] = useState(false);
   const [showBell, setShowBell] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [liveAlert, setLiveAlert] = useState<LiveAlert | null>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
+
+    // Refresh service worker to ensure latest version is active
+    navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' })
+      .then((reg) => {
+        reg.update().catch(() => {});
+      })
+      .catch(() => {});
 
     // 1. If already granted, attempt background registration
     if (Notification.permission === 'granted') {
@@ -49,7 +66,7 @@ export function PushNotificationPrompt() {
     };
     window.addEventListener('open_push_prompt', handleReopen);
 
-    // 4. Foreground push message listener to trigger native browser notification
+    // 4. Foreground push message listener for live desktop/mobile notifications
     let unsubMessage: (() => void) | undefined;
     async function initForegroundPushListener() {
       try {
@@ -63,13 +80,16 @@ export function PushNotificationPrompt() {
             const url = payload.fcmOptions?.link || payload.data?.url || (payload.notification as any)?.click_action || '/';
             const notificationId = payload.data?.notificationId;
 
-            // Trigger native browser notification
+            // Show on-screen notification card
+            setLiveAlert({ title, body, url, notificationId });
+
+            // Also trigger native browser/OS banner
             if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
               if (navigator.serviceWorker && navigator.serviceWorker.ready) {
                 navigator.serviceWorker.ready.then((reg) => {
                   reg.showNotification(title, {
                     body,
-                    icon: '/favicon-32x32.png',
+                    icon: '/android-chrome-192x192.png',
                     badge: '/favicon-32x32.png',
                     requireInteraction: true,
                     data: { url, notificationId, title, body },
@@ -79,7 +99,7 @@ export function PushNotificationPrompt() {
                 try {
                   new Notification(title, {
                     body,
-                    icon: '/favicon-32x32.png',
+                    icon: '/android-chrome-192x192.png',
                     badge: '/favicon-32x32.png',
                     data: { url, notificationId },
                   });
@@ -133,9 +153,65 @@ export function PushNotificationPrompt() {
     setShowBell(true);
   };
 
+  const handleLiveAlertClick = () => {
+    if (!liveAlert) return;
+    const targetUrl = liveAlert.url || '/';
+    if (liveAlert.notificationId) {
+      fetch('/api/push/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notificationId: liveAlert.notificationId }),
+      }).catch(() => {});
+    }
+    setLiveAlert(null);
+    if (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) {
+      window.location.href = targetUrl;
+    } else {
+      router.push(targetUrl);
+    }
+  };
+
   return (
     <>
-      {/* 1. Main Permission Prompt Card */}
+      {/* 1. Live Foreground Push Alert Banner (Real-time feedback on Mac & Windows) */}
+      {liveAlert && (
+        <div 
+          className="fixed top-5 left-1/2 -translate-x-1/2 z-[2147483647] w-[calc(100vw-24px)] max-w-lg animate-in slide-in-from-top-4 fade-in duration-300 pointer-events-auto"
+          role="alert"
+        >
+          <div className="bg-[#0b0f19]/95 backdrop-blur-2xl border-2 border-indigo-500/80 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.85)] p-4 text-slate-100 flex items-start justify-between gap-3 ring-1 ring-white/20">
+            <div 
+              onClick={handleLiveAlertClick}
+              className="flex items-start gap-3 flex-1 cursor-pointer group"
+            >
+              <div className="size-10 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center shrink-0 text-indigo-400">
+                <Bell className="size-5 animate-bounce" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5 font-bold text-sm text-white group-hover:text-indigo-400 transition-colors">
+                  <span>{liveAlert.title}</span>
+                  <ExternalLink className="size-3 opacity-60" />
+                </div>
+                <p className="text-xs text-zinc-300 mt-0.5 line-clamp-2 leading-relaxed">
+                  {liveAlert.body}
+                </p>
+                <span className="text-[10px] text-indigo-400/90 font-semibold mt-1 inline-block">
+                  Open page ({liveAlert.url || '/'}) →
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={() => setLiveAlert(null)}
+              className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors shrink-0 cursor-pointer"
+              aria-label="Dismiss alert"
+            >
+              <X className="size-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 2. Main Permission Prompt Card */}
       {showPrompt && (
         <div 
           className="fixed bottom-5 sm:bottom-6 left-1/2 -translate-x-1/2 z-[2147483645] w-[calc(100vw-24px)] max-w-md animate-in slide-in-from-bottom-5 fade-in duration-300 pointer-events-auto"
