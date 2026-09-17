@@ -49,15 +49,22 @@ export async function POST(req: Request) {
     }
 
     const subsList: SubItem[] = [];
+    const seenTokens = new Set<string>();
+
     snapshot.forEach((d) => {
       const data = d.data();
-      if (data.token && typeof data.token === 'string') {
-        subsList.push({
-          docId: d.id,
-          token: data.token,
-          userAgent: data.userAgent,
-          deviceInfo: parseDeviceFromUserAgent(data.userAgent),
-        });
+      const rawToken = data.token;
+      if (rawToken && typeof rawToken === 'string' && rawToken.trim().length > 0) {
+        const cleanToken = rawToken.trim();
+        if (!seenTokens.has(cleanToken)) {
+          seenTokens.add(cleanToken);
+          subsList.push({
+            docId: d.id,
+            token: cleanToken,
+            userAgent: data.userAgent,
+            deviceInfo: parseDeviceFromUserAgent(data.userAgent),
+          });
+        }
       }
     });
 
@@ -76,6 +83,7 @@ export async function POST(req: Request) {
     const failedTokens: string[] = [];
     let isFCMDelivered = false;
     let errorMessage: string | null = null;
+    const notifBatchId = `cardzy_${Date.now()}`;
 
     interface DeviceReport {
       tokenPreview: string;
@@ -107,8 +115,8 @@ export async function POST(req: Request) {
             icon: 'https://cardzy.online/android-chrome-192x192.png',
             badge: 'https://cardzy.online/favicon-32x32.png',
             requireInteraction: true,
-            tag: `cardzy-alert-${Date.now()}`,
-            renotify: true,
+            tag: notifBatchId, // Single deterministic tag prevents duplicate cards
+            renotify: false,
             vibrate: [200, 100, 200],
             silent: false,
           },
@@ -119,12 +127,14 @@ export async function POST(req: Request) {
             url: url || '/',
             title,
             body,
+            notificationId: notifBatchId,
           },
         },
         data: {
           url: url || '/',
           title,
           body,
+          notificationId: notifBatchId,
         },
       };
 

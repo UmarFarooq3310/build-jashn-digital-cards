@@ -37,6 +37,9 @@ function normalizeTargetUrl(rawUrl, origin) {
   }
 }
 
+// Deduplication memory cache (prevents duplicate notification triggers on Android & Desktop)
+var recentNotifications = new Map();
+
 // Unified function to show native notification safely across all desktop & mobile platforms
 function displayNotification(payload) {
   var notificationTitle = 
@@ -49,7 +52,7 @@ function displayNotification(payload) {
     payload.notification?.body || 
     payload.data?.body || 
     payload.body || 
-    'You have a new update from Cardzy.';
+    '';
 
   var targetUrl = 
     payload.fcmOptions?.link || 
@@ -59,17 +62,34 @@ function displayNotification(payload) {
     payload.url || 
     '/';
 
-  var notifId = payload.data?.notificationId || payload.notificationId || String(Date.now());
+  var notifId = payload.data?.notificationId || payload.notificationId || (notificationTitle + '_' + notificationBody);
+
+  // Check deduplication cache: if seen within 5 seconds, ignore duplicate call
+  var now = Date.now();
+  var lastSeen = recentNotifications.get(notifId);
+  if (lastSeen && (now - lastSeen < 5000)) {
+    return Promise.resolve();
+  }
+  recentNotifications.set(notifId, now);
+
+  if (recentNotifications.size > 50) {
+    var cutoff = now - 60000;
+    recentNotifications.forEach(function(time, key) {
+      if (time < cutoff) recentNotifications.delete(key);
+    });
+  }
+
   var origin = (self.location && self.location.origin) ? self.location.origin : 'https://cardzy.online';
   var iconUrl = origin + '/android-chrome-192x192.png';
   var badgeUrl = origin + '/favicon-32x32.png';
+  var tag = 'cardzy-' + notifId.toString().replace(/[^a-zA-Z0-9]/g, '_');
 
   var notificationOptions = {
     body: notificationBody,
     icon: iconUrl,
     badge: badgeUrl,
-    tag: 'cardzy-' + notifId, // Deduplicates simultaneous triggers across handlers
-    renotify: true,
+    tag: tag, // Guaranteed identical tag collapses into 1 notification on Android & Desktop
+    renotify: false, // Prevents buzzing multiple times for the same notification
     requireInteraction: true,
     vibrate: [200, 100, 200],
     data: {
