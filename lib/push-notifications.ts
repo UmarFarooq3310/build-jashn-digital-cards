@@ -33,6 +33,16 @@ export interface SubscribeResult {
   error?: string
 }
 
+export function getOrCreateDeviceId(): string {
+  if (typeof window === 'undefined') return 'unknown_device';
+  let id = localStorage.getItem('cardzy_device_id');
+  if (!id) {
+    id = 'dev_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now().toString(36);
+    localStorage.setItem('cardzy_device_id', id);
+  }
+  return id;
+}
+
 export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
   if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !('Notification' in window)) {
     const msg = 'Push notifications are not supported on this browser.'
@@ -141,13 +151,16 @@ export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
       return { success: false, error: 'Could not obtain push registration token from browser.' }
     }
 
-    // Save token to Server DB
+    const deviceId = getOrCreateDeviceId()
+
+    // Save token to Server DB with single authoritative deduplication
     try {
       const res = await fetch('/api/push/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           token,
+          deviceId,
           userAgent: navigator.userAgent,
         }),
       })
@@ -155,32 +168,6 @@ export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
       await sendDebugLog('server_api_subscribe_result', apiRes)
     } catch (apiErr: any) {
       await sendDebugLog('server_api_subscribe_error', { message: apiErr.message })
-    }
-
-    // Save token to Client Firestore
-    try {
-      const db = getFirebaseDb()
-      if (db) {
-        const subsRef = collection(db, 'push_subscribers')
-        const q = query(subsRef, where('token', '==', token))
-        const querySnapshot = await getDocs(q)
-
-        if (querySnapshot.empty) {
-          await addDoc(subsRef, {
-            token,
-            createdAt: serverTimestamp(),
-            userAgent: navigator.userAgent,
-            lastActive: serverTimestamp(),
-          })
-        } else {
-          querySnapshot.forEach(async (docSnap) => {
-            await updateDoc(docSnap.ref, { lastActive: serverTimestamp() })
-          })
-        }
-        await sendDebugLog('client_firestore_saved', {})
-      }
-    } catch (dbErr: any) {
-      await sendDebugLog('client_firestore_error', { message: dbErr.message })
     }
 
     localStorage.setItem('cardzy_push_subscribed', 'true')

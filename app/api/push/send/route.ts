@@ -50,14 +50,21 @@ export async function POST(req: Request) {
 
     const subsList: SubItem[] = [];
     const seenTokens = new Set<string>();
+    const seenDeviceIds = new Set<string>();
 
     snapshot.forEach((d) => {
       const data = d.data();
       const rawToken = data.token;
+      const deviceId = data.deviceId || (rawToken ? 'dev_' + rawToken.slice(-12) : d.id);
+
       if (rawToken && typeof rawToken === 'string' && rawToken.trim().length > 0) {
         const cleanToken = rawToken.trim();
-        if (!seenTokens.has(cleanToken)) {
+        if (seenTokens.has(cleanToken) || seenDeviceIds.has(deviceId)) {
+          // Stale duplicate device entry — auto purge from Firestore
+          deleteDoc(doc(serverDb, 'push_subscribers', d.id)).catch(() => {});
+        } else {
           seenTokens.add(cleanToken);
+          seenDeviceIds.add(deviceId);
           subsList.push({
             docId: d.id,
             token: cleanToken,
