@@ -7,6 +7,7 @@ import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc, updateDoc, increment } from 'firebase/firestore'
 import { useJashn } from '@/lib/jashn/store'
 import type { VisitingCard } from '@/lib/jashn/types'
+import { shouldIncrementView, isSenderOrOwner } from '@/lib/jashn/view-tracker'
 import { VisitingCardView } from '@/components/jashn/visiting-card'
 import { ShareBar } from '@/components/jashn/share-bar'
 import { CardQrCode } from '@/components/jashn/qr-code'
@@ -14,6 +15,7 @@ import { CardzyLogo } from '@/components/ui/logo'
 import { Button } from '@/components/ui/button'
 import { Sparkles, Eye, Edit3, Trash2, ShieldCheck, Cpu, Share2, X, Loader2, ArrowLeft, ExternalLink } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
+import { CardShareModal } from '@/components/dashboard/card-share-modal'
 
 export default function VisitingCardPublicPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params)
@@ -21,23 +23,35 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const { visitingCards, getVisitingCard, incrementVisitingCardView, deleteVisitingCard, showToast } = useJashn()
+  const { user, visitingCards, getVisitingCard, incrementVisitingCardView, deleteVisitingCard, showToast } = useJashn()
   const { t } = useLang()
   const cardRef = useRef<HTMLDivElement>(null)
+  const viewIncrementedRef = useRef<string | null>(null)
 
   const [card, setCard] = useState<VisitingCard | null>(null)
   const [loading, setLoading] = useState(true)
   const [showShareModal, setShowShareModal] = useState(false)
 
-  // Check explicitly if the user opened the page in Sender Mode
-  const isSenderMode = searchParams.get('mode') === 'sender' || searchParams.get('preview') === 'true' || searchParams.get('role') === 'sender'
+  // Sender preview: ONLY true if explicitly requested via query params (?mode=sender, ?preview=true, ?role=sender)
+  // When copying clean link (/v/slug), both sender and receiver see the authentic receiver experience
+  const isSenderMode =
+    searchParams.get('mode') === 'sender' ||
+    searchParams.get('preview') === 'true' ||
+    searchParams.get('role') === 'sender'
 
   useEffect(() => {
     async function loadCard() {
       const storeCard = getVisitingCard(slug)
       if (storeCard) {
         setCard(storeCard)
-        incrementVisitingCardView(slug)
+        // Only increment view count if viewer is receiver (not sender/creator)
+        if (viewIncrementedRef.current !== slug) {
+          viewIncrementedRef.current = slug
+          if (shouldIncrementView(slug, 'vcard', storeCard.creatorId, searchParams, user?.uid)) {
+            incrementVisitingCardView(slug)
+            setCard((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+          }
+        }
         setLoading(false)
         return
       }
@@ -74,7 +88,14 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
           if (docSnap.exists()) {
             const fetchedCard = docSnap.data() as VisitingCard
             setCard(fetchedCard)
-            updateDoc(docRef, { viewCount: increment(1) }).catch(console.error)
+            // Only increment view count if viewer is receiver (not sender/creator)
+            if (viewIncrementedRef.current !== slug) {
+              viewIncrementedRef.current = slug
+              if (shouldIncrementView(slug, 'vcard', fetchedCard.creatorId, searchParams, user?.uid)) {
+                incrementVisitingCardView(slug)
+                setCard((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+              }
+            }
           }
         } catch (e) {
           console.error('Failed to load visiting card from Firestore:', e)
@@ -84,7 +105,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
     }
 
     loadCard()
-  }, [slug, getVisitingCard, incrementVisitingCardView])
+  }, [slug, getVisitingCard, incrementVisitingCardView, searchParams, user?.uid])
 
   function handleEdit() {
     router.push(`/create-visiting-card?edit=${slug}`)
@@ -206,7 +227,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
                 <ShieldCheck className="size-4 text-emerald-400" /> {t('verifiedVCard')}
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/90 px-4 py-1.5 text-xs font-extrabold text-slate-200 shadow-sm">
-                <Eye className="size-4 text-emerald-400" /> {card.viewCount ?? 1} {t('viewsLabel')}
+                <Eye className="size-4 text-emerald-400" /> {card.viewCount || 0} {t('viewsLabel')}
               </span>
             </div>
 
@@ -288,30 +309,23 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
           <span>{t('shareVCard')}</span>
         </button>
 
-        {/* Share Modal */}
+        {/* Universal Luxury Share Modal */}
         {showShareModal && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-            <div className="bg-[#0c0c0f] border border-[#D4AF37]/40 rounded-3xl p-6 max-w-sm w-full space-y-5 text-white relative shadow-2xl">
-              <button
-                onClick={() => setShowShareModal(false)}
-                className="absolute top-4 right-4 text-zinc-400 hover:text-white p-1"
-              >
-                <X className="size-5" />
-              </button>
-
-              <div className="text-center space-y-1">
-                <h3 className="font-extrabold text-lg text-[#D4AF37]">Share Visiting Card</h3>
-                <p className="text-xs text-zinc-400">Share link or download scannable QR vCard</p>
-              </div>
-
-              <ShareBar url={receiverUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-vcard-${card.slug}`} />
-
-              <div className="pt-3 border-t border-white/10 flex flex-col items-center space-y-2">
-                <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">vCard Profile QR Code</span>
-                <CardQrCode slug={slug} cardType="v" size={140} showDownloadBtn={true} />
-              </div>
-            </div>
-          </div>
+          <CardShareModal
+            card={{
+              title: card.fullName || 'Digital Visiting Card',
+              recipientOrCouple: card.fullName,
+              type: 'vcard',
+              slug: card.slug,
+              url: `/v/${card.slug}`,
+              viewsCount: card.viewCount || 0,
+              shares: card.shares,
+              occasion: card.company || card.title || 'Digital Business Profile',
+              senderName: card.fullName,
+              waMessage: waMsg,
+            }}
+            onClose={() => setShowShareModal(false)}
+          />
         )}
 
         <Link

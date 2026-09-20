@@ -4,7 +4,7 @@ import '@/app/invitation-themes-animations.css'
 import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, X, CheckCircle2 } from 'lucide-react'
 import { AUDIO_TRACKS } from '@/lib/jashn/audio'
 import { generateAIWish, type AITone } from '@/lib/jashn/ai-generator'
 import { SiteHeader } from '@/components/site-header'
@@ -36,6 +36,10 @@ const RELATIONS = [
   { id: 'Daughter', en: 'Daughter', ur: 'بیٹی' },
   { id: 'BestFriend', en: 'Best Friend', ur: 'بہترین دوست' },
 ]
+
+function cleanStepLabel(text: string) {
+  return text.replace(/^[\d\.\s\u0660-\u0669\u09E6-\u09EF\u0966-\u096F\u06D4\-]+/, '').trim()
+}
 
 function CreateWishContent() {
   const router = useRouter()
@@ -82,8 +86,9 @@ function CreateWishContent() {
 
   // Free creation for everyone - no login required to send cards
 
-  const [step, setStep] = useState<1 | 2>(() => {
-    if (editSlug || occasionParam || categoryParam) return 2
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(() => {
+    if (editSlug) return 4
+    if (occasionParam || categoryParam) return 2
     return 1
   })
   const [occasionId, setOccasionId] = useState<string>(() => {
@@ -245,31 +250,58 @@ function CreateWishContent() {
   function runValidation() {
     const errs: Record<string, string> = {}
 
-    if (step === 2) {
-      if (isGamingOccasion) {
-        if (!playerName.trim() && !recipientName.trim()) {
-          errs.playerName = t('playerNameRequired', 'Player / Squad Name is required')
-        }
-        if (killCount.trim() && !/\d+/.test(killCount.trim())) {
-          errs.killCount = t('killCountNumber', 'Score / Kill Count must contain a number (e.g. 15 or 15 Kills)')
-        }
-        if (rank.trim() && !/\d+/.test(rank.trim())) {
-          errs.rank = t('rankNumber', 'Rank must contain a number (e.g. 1 or #1)')
-        }
-      } else {
-        if (!recipientName.trim()) {
-          errs.recipientName = t('recipientNameRequired', 'Recipient Name is required')
-        }
-        if (!senderName.trim()) {
-          errs.senderName = t('senderNameRequired', 'Your Name (Sender) is required')
-        }
+    if (isGamingOccasion) {
+      if (!playerName.trim() && !recipientName.trim()) {
+        errs.playerName = t('playerNameRequired', 'Player / Squad Name is required')
       }
-      if (!message.trim()) {
-        errs.message = t('wishMessageRequired', 'Wish message is required')
+      if (killCount.trim() && !/\d+/.test(killCount.trim())) {
+        errs.killCount = t('killCountNumber', 'Score / Kill Count must contain a number (e.g. 15 or 15 Kills)')
       }
+      if (rank.trim() && !/\d+/.test(rank.trim())) {
+        errs.rank = t('rankNumber', 'Rank must contain a number (e.g. 1 or #1)')
+      }
+    } else {
+      if (!recipientName.trim()) {
+        errs.recipientName = t('recipientNameRequired', 'Recipient Name is required')
+      }
+      if (!senderName.trim()) {
+        errs.senderName = t('senderNameRequired', 'Your Name (Sender) is required')
+      }
+    }
+    if (!message.trim()) {
+      errs.message = t('wishMessageRequired', 'Wish message is required')
     }
 
     return errs
+  }
+
+  function handleGoToStep3() {
+    const errs = runValidation()
+    setErrors(errs)
+    const errKeys = Object.keys(errs)
+    if (errKeys.length > 0) {
+      const firstKey = errKeys[0]
+      showToast(errs[firstKey] || t('completeAllRequiredFields', 'Please complete all required fields.'), 'error')
+      if (typeof window !== 'undefined') {
+        const el = document.getElementById(`field-${firstKey}`) || document.querySelector(`[name="${firstKey}"]`)
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          ;(el as HTMLElement).focus()
+        }
+      }
+      return
+    }
+    setStep(3)
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 100, behavior: 'smooth' })
+    }
+  }
+
+  function handleGoToStep4() {
+    setStep(4)
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 100, behavior: 'smooth' })
+    }
   }
 
   function handleFieldChange(field: string, value: string, setter: (v: string) => void) {
@@ -286,13 +318,12 @@ function CreateWishContent() {
     setErrors(errs)
     const errKeys = Object.keys(errs)
     if (errKeys.length > 0) {
+      setStep(2)
+      setMobileTab('details')
       const firstKey = errKeys[0]
       const firstError = errs[firstKey] || t('completeAllRequiredFields', 'Please complete all required fields marked in red.')
       showToast(firstError, 'error')
       if (typeof window !== 'undefined') {
-        if (window.innerWidth < 1024) {
-          setMobileTab('details')
-        }
         setTimeout(() => {
           const el = document.getElementById(`field-${firstKey}`) || document.querySelector(`[name="${firstKey}"]`)
           if (el) {
@@ -370,67 +401,82 @@ function CreateWishContent() {
 
 
 
-        {/* Horizontal 2-Step Stepper */}
-        <div className="mt-6 flex items-center justify-center gap-3">
+        {/* 4-Part Progress Stepper */}
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
           {[
-            { s: 1, label: t('stepChooseOccasion') || 'Choose Occasion' },
-            { s: 2, label: t('stepPersonalizeShare') || 'Personalize & Share' },
-          ].map(({ s, label }, idx) => (
-            <div key={s} className="flex items-center gap-3">
-              <button
-                onClick={() => { setErrors({}); setStep(s as 1 | 2); }}
-                className={`flex items-center gap-2 text-xs sm:text-sm font-bold transition-all ${
-                  step === s
-                    ? 'text-[#7A1E2B]'
-                    : 'text-muted-foreground hover:text-foreground cursor-pointer'
-                }`}
-              >
-                <span className={`flex size-7 items-center justify-center rounded-full text-xs transition-all ${
-                  step === s
-                    ? 'bg-[#7A1E2B] text-white shadow-md ring-4 ring-[#7A1E2B]/20'
-                    : 'bg-muted/80 text-muted-foreground'
-                }`}>
+            { s: 1, label: t('stepWishPartOccasion') || t('stepPartOccasion') || '1. Occasion' },
+            { s: 2, label: t('stepWishPartDetails') || '2. Message & Details' },
+            { s: 3, label: t('stepWishPartMedia') || '3. Photo & Music' },
+            { s: 4, label: t('stepWishPartDesign') || t('stepPartDesign') || '4. Theme & Style' },
+          ].map(({ s, label }) => {
+            const isClickable = s === 1 || !!occasionId
+            return (
+              <div key={s} className="flex items-center gap-1.5 sm:gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (isClickable) {
+                      setErrors({})
+                      setStep(s as 1 | 2 | 3 | 4)
+                      setMobileTab('details')
+                    }
+                  }}
+                  disabled={!isClickable}
+                  className={`flex size-7 sm:size-8 items-center justify-center rounded-full text-xs font-bold transition-all ${
+                    step === s
+                      ? 'bg-[#7A1E2B] text-white shadow-md ring-4 ring-[#7A1E2B]/20'
+                      : isClickable
+                      ? 'bg-muted/80 text-muted-foreground hover:bg-[#7A1E2B]/10 hover:text-[#7A1E2B]'
+                      : 'bg-muted/40 text-muted-foreground/40 cursor-not-allowed'
+                  }`}
+                >
                   {s}
+                </button>
+                <span
+                  onClick={() => {
+                    if (isClickable) {
+                      setErrors({})
+                      setStep(s as 1 | 2 | 3 | 4)
+                      setMobileTab('details')
+                    }
+                  }}
+                  className={`hidden sm:inline text-xs font-bold transition-colors ${
+                    step === s
+                      ? 'text-[#7A1E2B] font-extrabold'
+                      : isClickable
+                      ? 'text-muted-foreground hover:text-foreground cursor-pointer'
+                      : 'text-muted-foreground/40 cursor-not-allowed'
+                  }`}
+                >
+                  {cleanStepLabel(label)}
                 </span>
-                <span>{label}</span>
-              </button>
-              {idx < 1 && <div className="h-px w-8 sm:w-12 bg-[#E5DFD3]" />}
-            </div>
-          ))}
+                {s < 4 && <div className="hidden sm:block h-px w-4 sm:w-6 bg-[#E5DFD3]" />}
+              </div>
+            )
+          })}
         </div>
       </div>
 
-      {/* 📱 Mobile Tabs (Only visible on Step 2 & Mobile < 1024px) */}
-      {step === 2 && (
+      {/* 📱 Mobile Form/Preview Toggle (Only visible on Step > 1 & Mobile < 1024px) */}
+      {step > 1 && (
         <div className="block lg:hidden mb-5">
-          <div className="grid grid-cols-3 gap-1 rounded-2xl bg-muted/60 p-1.5 border border-border/70 shadow-sm">
+          <div className="grid grid-cols-2 gap-1 rounded-2xl bg-muted/60 p-1.5 border border-border/70 shadow-sm">
             <button
+              type="button"
               onClick={() => setMobileTab('details')}
               className={cn(
                 'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all',
-                mobileTab === 'details'
+                mobileTab !== 'preview'
                   ? 'bg-background text-[#7B0D1E] shadow-md border border-border/50'
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
               <Edit3 className="size-3.5" />
-              <span>{t('tabDetails')}</span>
+              <span>{t('tabDetails') || 'Edit Form'}</span>
             </button>
 
             <button
-              onClick={() => setMobileTab('design')}
-              className={cn(
-                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all',
-                mobileTab === 'design'
-                  ? 'bg-background text-[#7B0D1E] shadow-md border border-border/50'
-                  : 'text-muted-foreground hover:text-foreground'
-              )}
-            >
-              <Palette className="size-3.5" />
-              <span>{t('tabDesign')}</span>
-            </button>
-
-            <button
+              type="button"
               onClick={() => setMobileTab('preview')}
               className={cn(
                 'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all relative',
@@ -440,7 +486,7 @@ function CreateWishContent() {
               )}
             >
               <Eye className="size-3.5" />
-              <span>{t('tabPreview')}</span>
+              <span>{t('tabPreview') || 'Live Preview'}</span>
               <span className="absolute -top-1 -right-1 size-2 rounded-full bg-emerald-500 animate-ping" />
             </button>
           </div>
@@ -451,19 +497,68 @@ function CreateWishContent() {
         {/* Main Column */}
         <div className="lg:col-span-7 space-y-6">
           <div className="rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-sm">
+            {/* ── PART 1: OCCASION SELECTION ── */}
             {step === 1 && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <h2 className="text-lg font-extrabold text-foreground flex items-center gap-2">
-                    <Grid className="size-5 text-[#7B0D1E]" /> {t('stepChooseOccasion')}
+                    <Grid className="size-5 text-[#7B0D1E]" /> {t('stepWishPartOccasion') || '1. Choose Celebration Occasion'}
                   </h2>
                   <span className="text-xs font-medium text-muted-foreground">{t('clickTileToPersonalize')}</span>
                 </div>
                 <OccasionPicker value={occasionId} onChange={handleOccasionSelect} />
+                <div className="flex justify-end pt-4 border-t border-border">
+                  <Button
+                    onClick={() => setStep(2)}
+                    className="bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-bold rounded-full px-6 h-11 flex items-center gap-2 shadow-md active:scale-95 transition-all"
+                  >
+                    <span>{t('btnNext') || 'Next'}</span>
+                    <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
+                  </Button>
+                </div>
               </div>
             )}
 
-            {step === 2 && (
+            {/* ── MOBILE PREVIEW (When on mobile and tab is preview) ── */}
+            {step > 1 && mobileTab === 'preview' && (
+              <div className="block lg:hidden space-y-4 pt-2">
+                <div className="rounded-3xl border border-border bg-gradient-to-b from-muted/20 to-card p-4 text-center shadow-md">
+                  <div className="flex items-center justify-between mb-3 px-1">
+                    <span className="text-xs font-extrabold uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5">
+                      ♡ {t('livePreview') || 'LIVE PREVIEW'}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-center overflow-hidden py-2">
+                    <div className="w-full">
+                      <CardAnimationPreview occasionId={occasionId} animationKey={occasionId} className="max-w-md mx-auto" roundedClass="rounded-[2.5rem]">
+                        <WishCard
+                          data={{
+                            occasionId,
+                            themeId,
+                            borderId,
+                            bgVariantId,
+                            message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : t('defaultWishDefaultMessage', 'Wishing you a day filled with happiness, laughter and immense blessings!')),
+                            senderName: senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : t('defaultWishSender', 'Tariq & Family')),
+                            recipientName: (isGamingOccasion && playerName) ? playerName : (recipientName || t('defaultWishRecipient', 'Ayesha')),
+                            relation: relation || t('defaultWishRelation', 'Friend'),
+                            language,
+                            playerName,
+                            killCount,
+                            rank,
+                            winningNumber,
+                            photoUrl,
+                          }}
+                        />
+                      </CardAnimationPreview>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── PART 2: MESSAGE & DETAILS ── */}
+            {step === 2 && (mobileTab !== 'preview' || typeof window === 'undefined') && (
               <div className="space-y-6">
                 {/* Header Selected Occasion Info */}
                 <div className="flex items-center justify-between border-b border-border pb-3">
@@ -485,8 +580,7 @@ function CreateWishContent() {
                   </Button>
                 </div>
 
-                {/* 📝 Details Tab Content */}
-                <div className={cn(mobileTab !== 'details' && 'hidden lg:block', 'space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
+                <div className={cn('space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
                   {isGamingOccasion ? (
                     <div className="space-y-4 rounded-2xl border border-amber-500/30 bg-slate-950/40 p-4 text-slate-100">
                       <h3 className="text-xs font-extrabold uppercase tracking-wider text-amber-400 flex items-center gap-1.5 border-b border-amber-500/20 pb-2">
@@ -595,7 +689,7 @@ function CreateWishContent() {
                     <>
                       {/* Relation Pills */}
                       <div className="space-y-3">
-                        <h3 className={cn("text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                        <h3 className={cn("text-xs font-extrabold uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
                           <UserCheck className="size-4" /> {t('whoIsCardForHeader') || '1. WHO IS THIS CARD FOR? (SELECT RELATION)'}
                         </h3>
                         <div className={cn("flex flex-wrap gap-2 pt-1", (lang === 'ur' || lang === 'ar') && "justify-end")}>
@@ -668,39 +762,20 @@ function CreateWishContent() {
                     </>
                   )}
 
-                  {/* Photo Upload Section */}
-                  <div className="space-y-2 pt-2 border-t border-border/60">
-                    <div className="flex items-center justify-between">
-                      <label className={cn("text-xs font-bold text-[#7A1E2B] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                        <Camera className="size-4" /> {t('customCardPhotoLabel') || 'Custom Card Photo (Optional)'}
-                      </label>
-                      {photoUrl && (
-                        <button type="button" onClick={() => setPhotoUrl('')} className="text-[11px] text-red-500 font-bold hover:underline">
-                          {t('removePhotoBtn') || 'Remove Photo'}
-                        </button>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <label className="flex items-center gap-2 rounded-2xl border border-input bg-background px-4 py-2.5 text-xs font-bold hover:bg-muted cursor-pointer transition-all shadow-xs">
-                        <Camera className="size-4 text-[#7A1E2B]" />
-                        <span>{photoUrl ? (t('changePhoto') || 'Change Photo') : (t('uploadPhoto') || 'Upload Photo')}</span>
-                        <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
-                      </label>
-                      {photoUrl && (
-                        <div className="relative size-12 rounded-full overflow-hidden border-2 border-[#D4AF37] shadow-md">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={photoUrl} alt="Custom Greeting Card Photo Upload Preview" className="size-full object-cover" />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
                   {/* Message & Pre-written templates */}
                   <div className="space-y-3 pt-3 border-t border-border/60">
                     <div className="flex items-center justify-between">
-                      <h3 className={cn("text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                      <h3 className={cn("text-xs font-extrabold uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
                         <Heart className="size-4" /> {t('cardMessageHeader') || '2. CARD MESSAGE'}
                       </h3>
+                      <button
+                        type="button"
+                        onClick={() => setShowAiModal(true)}
+                        className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-500 to-rose-500 px-3 py-1 text-[11px] font-bold text-white shadow-xs hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+                      >
+                        <Sparkles className="size-3" />
+                        <span>{t('generateWithAi') || '✨ AI Wish Generator'}</span>
+                      </button>
                     </div>
 
                     {templates.length > 0 && (
@@ -746,93 +821,182 @@ function CreateWishContent() {
                   </div>
                 </div>
 
-                {/* 🎨 Design Tab Content */}
-                <div className={cn(mobileTab !== 'design' && 'hidden lg:block', 'space-y-6 pt-4 border-t border-border')}>
-                  <h3 className={cn("text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                    <Palette className="size-4" /> {t('cardThemeArtworkHeader') || '3. CARD THEME & ARTWORK'}
-                  </h3>
-
-                  <div>
-                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                      {t('selectThemeStyleLabel') || 'SELECT THEME STYLE'}
-                    </label>
-                    <ThemePicker
-                      value={themeId}
-                      onChange={setThemeId}
-                      isPro={isPro}
-                      onLockedClick={() => router.push('/pricing')}
-                    />
-                  </div>
-
-                  <div>
-                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                      {t('selectBorderFrameLabel') || 'SELECT BORDER FRAME'}
-                    </label>
-                    <BorderPicker
-                      value={borderId}
-                      onChange={setBorderId}
-                      isPro={isPro}
-                      onLockedClick={() => router.push('/pricing')}
-                    />
-                  </div>
-
-                  <div>
-                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                      {t('selectCanvasTextureLabel') || 'SELECT CANVAS TEXTURE'}
-                    </label>
-                    <BackgroundPicker
-                      value={bgVariantId}
-                      onChange={setBgVariantId}
-                      variants={selectedOccasion?.bgVariants}
-                    />
-                  </div>
-                </div>
-
-                {/* 👁️ Preview Tab Content (Mobile) */}
-                <div className={cn(mobileTab !== 'preview' && 'hidden lg:hidden', 'space-y-4 pt-2')}>
-                  <div className="rounded-3xl border border-border bg-gradient-to-b from-muted/20 to-card p-4 text-center shadow-md">
-                    <div className="flex items-center justify-between mb-3 px-1">
-                      <span className="text-xs font-extrabold uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5">
-                        ♡ {t('livePreview') || 'LIVE PREVIEW'}
-                      </span>
-                    </div>
-
-                    <div className="flex justify-center overflow-hidden py-2">
-                      <div className="w-full">
-                        <CardAnimationPreview occasionId={occasionId} animationKey={occasionId} className="max-w-md mx-auto" roundedClass="rounded-[2.5rem]">
-                          <WishCard
-                            data={{
-                              occasionId,
-                              themeId,
-                              borderId,
-                              bgVariantId,
-                              message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : t('defaultWishDefaultMessage', 'Wishing you a day filled with happiness, laughter and immense blessings!')),
-                              senderName: senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : t('defaultWishSender', 'Tariq & Family')),
-                              recipientName: (isGamingOccasion && playerName) ? playerName : (recipientName || t('defaultWishRecipient', 'Ayesha')),
-                              relation: relation || t('defaultWishRelation', 'Friend'),
-                              language,
-                              playerName,
-                              killCount,
-                              rank,
-                              winningNumber,
-                              photoUrl,
-                            }}
-                          />
-                        </CardAnimationPreview>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bottom Navigation Buttons */}
-                <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-6 mt-6">
+                {/* Bottom Navigation Buttons for Part 2 */}
+                <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-5 mt-5">
                   <Button
                     variant="outline"
                     onClick={() => setStep(1)}
                     className="w-full sm:w-auto rounded-full h-11 px-6 border-[#E5DFD3] flex items-center justify-center gap-2"
                   >
-                    <ArrowLeft className={cn("size-4", (lang === 'ur' || lang === 'ar') && "rotate-180")} />
-                    <span>{t('viewOccasions', 'Change Occasion')}</span>
+                    <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
+                    <span>{t('btnBack') || 'Back'}</span>
+                  </Button>
+                  <Button
+                    onClick={handleGoToStep3}
+                    className="w-full sm:w-auto bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold h-11 px-7 rounded-full shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all"
+                  >
+                    <span>{t('btnNext') || 'Next'}</span>
+                    <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* ── PART 3: PHOTO & MUSIC ── */}
+            {step === 3 && (mobileTab !== 'preview' || typeof window === 'undefined') && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between border-b border-border pb-3">
+                  <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+                    <Camera className="size-5 text-[#7A1E2B]" />
+                    <span>{t('stepWishPartMedia') || '3. Photo & Music'}</span>
+                  </h2>
+                </div>
+
+                {/* Custom Photo Upload */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className={cn("text-xs font-bold text-[#7A1E2B] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                      <Camera className="size-4" /> {t('customCardPhotoLabel') || 'Custom Card Photo (Optional)'}
+                    </label>
+                    {photoUrl && (
+                      <button type="button" onClick={() => setPhotoUrl('')} className="text-[11px] text-red-500 font-bold hover:underline cursor-pointer">
+                        {t('removePhotoBtn') || 'Remove Photo'}
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <label className="flex items-center gap-2 rounded-2xl border border-input bg-background px-4 py-2.5 text-xs font-bold hover:bg-muted cursor-pointer transition-all shadow-xs">
+                      <Camera className="size-4 text-[#7A1E2B]" />
+                      <span>{photoUrl ? (t('changePhoto') || 'Change Photo') : (t('uploadPhoto') || 'Upload Photo')}</span>
+                      <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+                    </label>
+                    {photoUrl && (
+                      <div className="relative size-12 rounded-full overflow-hidden border-2 border-[#D4AF37] shadow-md">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={photoUrl} alt="Custom Greeting Card Photo Upload Preview" className="size-full object-cover" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Audio Track Selector */}
+                <div className="space-y-3 pt-3 border-t border-border/60">
+                  <label className={cn("text-xs font-bold text-[#7A1E2B] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                    <Music className="size-4" /> Background Music Track (Plays on Open)
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {AUDIO_TRACKS.map((trk) => {
+                      const isSelected = audioTrack === trk.id
+                      return (
+                        <button
+                          key={trk.id}
+                          type="button"
+                          onClick={() => setAudioTrack(trk.id)}
+                          className={cn(
+                            "flex items-center justify-between p-3 rounded-2xl border text-left transition-all cursor-pointer",
+                            isSelected
+                              ? "border-[#7A1E2B] bg-[#7A1E2B]/8 ring-2 ring-[#7A1E2B]/25 font-bold"
+                              : "border-border bg-card hover:border-[#7A1E2B]/30"
+                          )}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <div className={cn(
+                              "size-8 rounded-xl flex items-center justify-center shrink-0",
+                              isSelected ? "bg-[#7A1E2B] text-white" : "bg-muted text-muted-foreground"
+                            )}>
+                              <Music className="size-4" />
+                            </div>
+                            <div className="min-w-0">
+                              <span className="text-xs font-bold text-foreground block truncate">{trk.name}</span>
+                              <span className="text-[10px] text-muted-foreground capitalize">{trk.category}</span>
+                            </div>
+                          </div>
+                          {isSelected && (
+                            <span className="flex size-5 items-center justify-center rounded-full bg-[#7A1E2B] text-white">
+                              <CheckCircle2 className="size-3.5" />
+                            </span>
+                          )}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Bottom Navigation Buttons for Part 3 */}
+                <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-5 mt-5">
+                  <Button
+                    variant="outline"
+                    onClick={() => setStep(2)}
+                    className="w-full sm:w-auto rounded-full h-11 px-6 border-[#E5DFD3] flex items-center justify-center gap-2"
+                  >
+                    <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
+                    <span>{t('btnBack') || 'Back'}</span>
+                  </Button>
+                  <Button
+                    onClick={handleGoToStep4}
+                    className="w-full sm:w-auto bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold h-11 px-7 rounded-full shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all"
+                  >
+                    <span>{t('btnNext') || 'Next'}</span>
+                    <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* ── PART 4: THEME & STYLE ── */}
+            {step === 4 && (mobileTab !== 'preview' || typeof window === 'undefined') && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between border-b border-border pb-3">
+                  <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+                    <Palette className="size-5 text-[#7A1E2B]" />
+                    <span>{t('stepWishPartDesign') || '4. Theme & Style'}</span>
+                  </h2>
+                </div>
+
+                <div>
+                  <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                    {t('selectThemeStyleLabel') || 'SELECT THEME STYLE'}
+                  </label>
+                  <ThemePicker
+                    value={themeId}
+                    onChange={setThemeId}
+                    isPro={isPro}
+                    onLockedClick={() => router.push('/pricing')}
+                  />
+                </div>
+
+                <div>
+                  <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                    {t('selectBorderFrameLabel') || 'SELECT BORDER FRAME'}
+                  </label>
+                  <BorderPicker
+                    value={borderId}
+                    onChange={setBorderId}
+                    isPro={isPro}
+                    onLockedClick={() => router.push('/pricing')}
+                  />
+                </div>
+
+                <div>
+                  <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                    {t('selectCanvasTextureLabel') || 'SELECT CANVAS TEXTURE'}
+                  </label>
+                  <BackgroundPicker
+                    value={bgVariantId}
+                    onChange={setBgVariantId}
+                    variants={selectedOccasion?.bgVariants}
+                  />
+                </div>
+
+                {/* Bottom Navigation Buttons for Part 4 */}
+                <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-5 mt-5">
+                  <Button
+                    variant="outline"
+                    onClick={() => setStep(3)}
+                    className="w-full sm:w-auto rounded-full h-11 px-6 border-[#E5DFD3] flex items-center justify-center gap-2"
+                  >
+                    <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
+                    <span>{t('btnBack') || 'Back'}</span>
                   </Button>
                   <Button
                     onClick={handleFinish}
@@ -892,8 +1056,8 @@ function CreateWishContent() {
         </div>
       </div>
 
-      {/* 📱 Mobile Sticky Bottom Action Bar (Fixed at bottom on phone screens when step 2) */}
-      {step === 2 && (
+      {/* 📱 Mobile Sticky Bottom Action Bar (Fixed at bottom on phone screens when step > 1) */}
+      {step > 1 && (
         <div className="fixed bottom-0 left-0 right-0 z-50 block lg:hidden border-t border-border/80 bg-background/95 backdrop-blur-md p-3 shadow-2xl">
           <div className="mx-auto flex max-w-md items-center gap-2">
             {mobileTab !== 'preview' ? (
@@ -902,7 +1066,7 @@ function CreateWishContent() {
                 onClick={() => setMobileTab('preview')}
                 className="flex-1 rounded-2xl text-xs font-bold h-12 border-[#7B0D1E]/30 text-[#7B0D1E] bg-[#7B0D1E]/5"
               >
-                <Eye className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabPreview')}
+                <Eye className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabPreview') || 'Preview'}
               </Button>
             ) : (
               <Button
@@ -910,24 +1074,88 @@ function CreateWishContent() {
                 onClick={() => setMobileTab('details')}
                 className="flex-1 rounded-2xl text-xs font-bold h-12"
               >
-                <Edit3 className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabDetails')}
+                <Edit3 className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabDetails') || 'Edit Form'}
               </Button>
             )}
 
-            <Button
-              onClick={handleFinish}
-              disabled={isSubmitting}
-              className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+            {step === 2 ? (
+              <Button
+                onClick={handleGoToStep3}
+                className="flex-[1.5] bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
+              >
+                <span>{t('nextPhotoMusic') || 'Next: Media →'}</span>
+              </Button>
+            ) : step === 3 ? (
+              <Button
+                onClick={handleGoToStep4}
+                className="flex-[1.5] bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
+              >
+                <span>{t('nextThemeStyle') || 'Next: Theme →'}</span>
+              </Button>
+            ) : (
+              <Button
+                onClick={handleFinish}
+                disabled={isSubmitting}
+                className="flex-[1.5] bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Sparkles className="size-4 animate-spin" />
+                    <span>{t('generatingCard', 'Generating...')}</span>
+                  </>
+                ) : (
+                  editSlug ? t('saveChanges') : (t('createAndShareWishCardBtn') || 'Create Card 🚀')
+                )}
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* AI Wish Generator Modal */}
+      {showAiModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="relative w-full max-w-md rounded-3xl border border-border bg-card p-6 shadow-2xl space-y-4 text-left">
+            <button
+              type="button"
+              onClick={() => setShowAiModal(false)}
+              className="absolute top-4 right-4 rounded-full p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer"
             >
-              {isSubmitting ? (
-                <>
-                  <Sparkles className="size-4 animate-spin" />
-                  <span>{t('generatingCard', 'Generating...')}</span>
-                </>
-              ) : (
-                editSlug ? t('saveChanges') : t('createWishBtn')
-              )}
-            </Button>
+              <X className="size-4" />
+            </button>
+
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-[#7A1E2B]">
+                <Sparkles className="size-5" />
+                <h3 className="font-extrabold text-base text-foreground">
+                  {t('generateWithAi') || 'AI Wish Generator'}
+                </h3>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Choose a tone to automatically generate personalized wording for {selectedOccasion?.label || 'your occasion'}.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              {[
+                { tone: 'warm' as AITone, label: 'Warm & Heartfelt ❤️', desc: 'Emotional & touching' },
+                { tone: 'poetic' as AITone, label: 'Poetic & Elegant 🌸', desc: 'Graceful & deep' },
+                { tone: 'funny' as AITone, label: 'Playful & Fun 😄', desc: 'Humorous & lively' },
+                { tone: 'formal' as AITone, label: 'Formal & Respectful 🎩', desc: 'Polite & honored' },
+                { tone: 'religious' as AITone, label: 'Spiritual & Blessed 🌙', desc: 'Prayers & blessings' },
+                { tone: 'short' as AITone, label: 'Short & Sweet ✨', desc: 'Quick & punchy' },
+              ].map(({ tone, label, desc }) => (
+                <button
+                  key={tone}
+                  type="button"
+                  onClick={() => handleGenerateAIWish(tone)}
+                  className="flex flex-col items-start gap-1 p-3 rounded-2xl border border-border bg-background hover:border-[#7A1E2B]/50 hover:bg-muted/50 text-left transition-all active:scale-95 cursor-pointer shadow-2xs"
+                >
+                  <span className="text-xs font-bold text-foreground">{label}</span>
+                  <span className="text-[10px] text-muted-foreground">{desc}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}

@@ -662,12 +662,12 @@ export function ThreeDCardWrapper({
           </div>
         )}
 
-        {/* Floating Sound Toggle Button */}
+        {/* Floating Sound Toggle Button (Positioned cleanly above the card surface so it never overlaps the recipient name) */}
         {isOpen && !isSensitive && (
           <button
             type="button"
             onClick={handleToggleAudio}
-            className="absolute top-3 right-3 z-30 flex items-center gap-1.5 rounded-full bg-slate-950/80 px-3 py-1.5 text-xs font-bold text-amber-300 border border-amber-500/40 shadow-lg backdrop-blur-md hover:bg-slate-900 transition-all hover:scale-105"
+            className="absolute -top-10 sm:-top-11 right-2 sm:right-4 z-30 flex items-center gap-1.5 rounded-full bg-slate-950/85 px-3 py-1.5 text-xs font-bold text-amber-300 border border-amber-500/40 shadow-xl backdrop-blur-md hover:bg-slate-900 transition-all hover:scale-105 active:scale-95 cursor-pointer"
             title="Toggle Sound"
           >
             {isAudioActive ? <Volume2 className="size-4 text-emerald-400 animate-pulse" /> : <VolumeX className="size-4 text-slate-400" />}

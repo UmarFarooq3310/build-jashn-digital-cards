@@ -228,9 +228,9 @@ export function BorderPicker({
             onClick={() => (locked ? onLockedClick?.() : onChange(b.id))}
             aria-pressed={active}
             className={cn(
-              'group relative flex flex-col items-center text-center gap-2 rounded-2xl border p-3 transition-all duration-200',
+              'group relative flex flex-col items-center text-center gap-1.5 rounded-xl border p-2 sm:p-2.5 transition-all duration-200',
               active
-                ? 'border-[#7B0D1E] bg-[#7B0D1E]/8 ring-2 ring-[#7B0D1E]/30 shadow-sm dark:bg-[#7B0D1E]/15'
+                ? 'border-[#7B0D1E] bg-[#7B0D1E]/8 ring-2 ring-[#7B0D1E]/30 shadow-xs dark:bg-[#7B0D1E]/15'
                 : 'border-border bg-card hover:border-[#7B0D1E]/35 hover:bg-muted/50',
             )}
           >
@@ -238,27 +238,27 @@ export function BorderPicker({
             <span className="relative flex items-center justify-center">
               <BorderPreview type={b.preview} accent={active ? '#7B0D1E' : '#a07840'} />
               {locked && (
-                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500 text-white shadow-sm">
+                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500 text-white shadow-xs">
                   <Lock className="size-2" />
                 </span>
               )}
             </span>
 
             <div className="space-y-0.5 w-full">
-              <span className={cn("text-xs font-bold leading-tight text-foreground block truncate", isUrdu && "font-urdu text-sm")}>
+              <span className={cn("text-xs font-bold leading-tight text-foreground block truncate", isUrdu && "font-urdu text-xs")}>
                 {translatedName}
               </span>
-              <span className={cn("text-[10px] text-muted-foreground line-clamp-2 leading-tight", isUrdu && "font-urdu text-[11px]")}>
+              <span className={cn("text-[9.5px] text-muted-foreground line-clamp-1 leading-tight", isUrdu && "font-urdu text-[10px]")}>
                 {translatedDesc}
               </span>
             </div>
 
             {b.isPremium ? (
-              <span className={cn("text-[8px] font-extrabold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/15 border border-amber-500/30 px-1.5 py-0.5 rounded-md", isUrdu && "font-urdu")}>
+              <span className={cn("text-[7.5px] font-extrabold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/15 border border-amber-500/30 px-1 py-0.2 rounded-md", isUrdu && "font-urdu")}>
                 {t('badgePro') || 'PRO'}
               </span>
             ) : (
-              <span className={cn("text-[8px] font-medium uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5 rounded-md", isUrdu && "font-urdu")}>
+              <span className={cn("text-[7.5px] font-medium uppercase tracking-wider text-muted-foreground bg-muted px-1 py-0.2 rounded-md", isUrdu && "font-urdu")}>
                 {t('badgeFree') || 'FREE'}
               </span>
             )}

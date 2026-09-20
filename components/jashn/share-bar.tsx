@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, type RefObject } from 'react'
-import { Check, Copy, Download, MessageCircle } from 'lucide-react'
+import { Check, Copy, Download, MessageCircle, Smartphone } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useLang } from '@/lib/lang/context'
+import { recordCardShare } from '@/lib/jashn/magic-service'
 
 export function ShareBar({
   url,
@@ -25,21 +26,43 @@ export function ShareBar({
       ? `${window.location.origin}${url}`
       : url
 
+  const inferredType = (
+    url.includes('/i/') ? 'invite' : url.includes('/w/') ? 'wish' : url.includes('/v/') ? 'vcard' : 'magic'
+  ) as 'wish' | 'invite' | 'vcard' | 'magic'
+  const inferredSlug = url.split('/').pop()?.split('?')[0] || ''
+
   function copyLink() {
+    if (inferredSlug) {
+      recordCardShare(inferredType, inferredSlug, 'copy')
+    }
     navigator.clipboard?.writeText(fullUrl)
     setCopied(true)
     setTimeout(() => setCopied(false), 1800)
   }
 
   function shareWhatsApp() {
+    if (inferredSlug) {
+      recordCardShare(inferredType, inferredSlug, 'whatsapp')
+    }
     const text = encodeURIComponent(`${waMessage}\n${fullUrl}`)
     window.open(`https://wa.me/?text=${text}`, '_blank')
+  }
+
+  function shareSms() {
+    if (inferredSlug) {
+      recordCardShare(inferredType, inferredSlug, 'sms')
+    }
+    const text = encodeURIComponent(`${waMessage}\n${fullUrl}`)
+    window.open(`sms:?&body=${text}`, '_blank')
   }
 
   async function downloadPng() {
     if (!captureRef?.current) return
     setDownloading(true)
     try {
+      if (inferredSlug) {
+        recordCardShare(inferredType, inferredSlug, 'image')
+      }
       const { toPng } = await import('html-to-image')
       const naturalWidth = captureRef.current.offsetWidth
       const naturalHeight = captureRef.current.offsetHeight
@@ -82,6 +105,10 @@ export function ShareBar({
       <Button onClick={shareWhatsApp} className="bg-[#25D366] text-white hover:bg-[#1eb955] font-bold">
         <MessageCircle className="size-4" />
         WhatsApp
+      </Button>
+      <Button onClick={shareSms} className="bg-blue-600 text-white hover:bg-blue-500 font-bold">
+        <Smartphone className="size-4" />
+        SMS Text
       </Button>
       <Button onClick={copyLink} variant="secondary">
         {copied ? <Check className="size-4" /> : <Copy className="size-4" />}

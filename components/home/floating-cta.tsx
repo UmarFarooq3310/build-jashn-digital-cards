@@ -16,6 +16,14 @@ export function FloatingCTA() {
       {isOpen && (
         <div className="flex flex-col gap-2.5 items-end mb-1 animate-slideUp">
           <Link
+            href="/create-magic-link"
+            onClick={() => setIsOpen(false)}
+            className="flex min-h-[48px] items-center gap-2 bg-gradient-to-r from-rose-700 via-purple-700 to-amber-600 text-white px-5 py-3 rounded-full font-bold text-sm shadow-xl border border-white/20 active:scale-95 transition-transform"
+          >
+            <span>🪄</span>
+            <span>{t('navMagicLink', 'Magic Link 🪄')}</span>
+          </Link>
+          <Link
             href="/create-wish"
             onClick={() => setIsOpen(false)}
             className="flex min-h-[48px] items-center gap-2 bg-teal-600 text-white px-5 py-3 rounded-full font-bold text-sm shadow-xl border border-white/10 active:scale-95 transition-transform"

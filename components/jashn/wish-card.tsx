@@ -426,7 +426,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
         <div className="card-shimmer-sweep pointer-events-none parallax-mid" aria-hidden="true" />
 
-        <div className="relative z-10 mx-auto flex w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl flex-col items-center gap-3 sm:gap-5 px-3 py-3">
+        <div className="relative z-10 mx-auto flex w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl flex-col items-center gap-3 sm:gap-5 px-3 pt-5 pb-3 sm:py-5">
 
           {recipientLabel ? (
             <p

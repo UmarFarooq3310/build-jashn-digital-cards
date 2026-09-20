@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { EXTRA_T } from './extra-translations'
 import { VALIDATION_T } from './validation-translations'
+import { MAGIC_T } from './magic-translations'
 
 export const LANGUAGES = [
   { code: 'en', label: 'English' },
@@ -708,7 +709,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   }
 
   const t = (key: string, fallback?: string) => {
-    const entry = (VALIDATION_T as any)[key] || (T as any)[key] || (EXTRA_T as any)[key]
+    const entry = (MAGIC_T as any)[key] || (VALIDATION_T as any)[key] || (T as any)[key] || (EXTRA_T as any)[key]
     if (!entry) return fallback ?? key
     return entry[lang] ?? entry.en ?? fallback ?? key
   }

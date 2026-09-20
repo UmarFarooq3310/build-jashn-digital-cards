@@ -28,6 +28,10 @@ import { getInvitationWordingTemplates, type InvitationWordingTemplate } from '@
 import { useLang } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
 
+function cleanStepLabel(text: string) {
+  return text.replace(/^[\d\.\s\u0660-\u0669\u09E6-\u09EF\u0966-\u096F\u06D4\-]+/, '').trim()
+}
+
 function CreateInvitationContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -48,7 +52,7 @@ function CreateInvitationContent() {
   const brideParam = searchParams.get('bride')
   const dressCodeParam = searchParams.get('dressCode')
 
-  const [step, setStep] = useState<1 | 2>(() => {
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(() => {
     if (editSlug || typeParam || titleParam) return 2
     return 1
   })
@@ -56,7 +60,7 @@ function CreateInvitationContent() {
     if (typeParam) return typeParam
     return 'nikkah'
   })
-  const [mobileTab, setMobileTab] = useState<'details' | 'design' | 'preview'>('details')
+  const [mobileTab, setMobileTab] = useState<'form' | 'preview'>('form')
 
   const getTodayString = () => {
     const today = new Date()
@@ -224,51 +228,99 @@ function CreateInvitationContent() {
   function runValidation() {
     const errs: Record<string, string> = {}
 
-    if (step === 2) {
-      if (isCouple) {
-        if (!groom.trim()) {
-          errs.groom = t('groomRequired', 'Groom Name is required')
-        }
-        if (!bride.trim()) {
-          errs.bride = t('brideRequired', 'Bride Name is required')
-        }
-      } else {
-        if (!title.trim()) {
-          errs.title = t('eventTitleRequired', 'Event Title is required')
-        }
+    if (isCouple) {
+      if (!groom.trim()) {
+        errs.groom = t('groomRequired', 'Groom Name is required')
       }
-
-      if (!hostNames.trim()) {
-        errs.hostNames = t('hostNamesRequired', 'Host Name(s) is required')
+      if (!bride.trim()) {
+        errs.bride = t('brideRequired', 'Bride Name is required')
       }
-
-      if (!date.trim()) {
-        errs.date = t('eventDateRequired', 'Event Date is required')
+    } else {
+      if (!title.trim()) {
+        errs.title = t('eventTitleRequired', 'Event Title is required')
       }
+    }
 
-      if (!time.trim()) {
-        errs.time = t('eventTimeRequired', 'Event Time is required')
-      }
+    if (!hostNames.trim()) {
+      errs.hostNames = t('hostNamesRequired', 'Host Name(s) is required')
+    }
 
-      if (!venue.trim()) {
-        errs.venue = t('venueRequired', 'Venue is required')
-      }
+    if (!date.trim()) {
+      errs.date = t('eventDateRequired', 'Event Date is required')
+    }
 
-      if (!city.trim()) {
-        errs.city = t('cityRequired', 'City is required')
-      }
+    if (!time.trim()) {
+      errs.time = t('eventTimeRequired', 'Event Time is required')
+    }
 
-      if (!rsvpPhone.trim()) {
-        errs.rsvpPhone = t('rsvpPhoneRequired', 'WhatsApp RSVP Phone Number is required')
-      } else {
-        const cleanedPhone = rsvpPhone.trim().replace(/\s+/g, '')
-        if (!/^\+?\d{10,14}$/.test(cleanedPhone)) {
-          errs.rsvpPhone = t('invalidPhone', 'Please enter a valid phone number (e.g. +923001234567)')
-        }
+    if (!venue.trim()) {
+      errs.venue = t('venueRequired', 'Venue is required')
+    }
+
+    if (!city.trim()) {
+      errs.city = t('cityRequired', 'City is required')
+    }
+
+    if (!rsvpPhone.trim()) {
+      errs.rsvpPhone = t('rsvpPhoneRequired', 'WhatsApp RSVP Phone Number is required')
+    } else {
+      const cleanedPhone = rsvpPhone.trim().replace(/\s+/g, '')
+      if (!/^\+?\d{10,14}$/.test(cleanedPhone)) {
+        errs.rsvpPhone = t('invalidPhone', 'Please enter a valid phone number (e.g. +923001234567)')
       }
     }
 
     return errs
+  }
+
+  function goToStep3() {
+    const errs = runValidation()
+    setErrors(errs)
+    const errKeys = Object.keys(errs)
+    if (errKeys.length > 0) {
+      const firstKey = errKeys[0]
+      const firstError = errs[firstKey] || t('checkInputDetails', 'Please check your input details.')
+      showToast(firstError, 'error')
+      if (typeof window !== 'undefined') {
+        setTimeout(() => {
+          const el = document.getElementById(`field-${firstKey}`) || document.querySelector(`[name="${firstKey}"]`)
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            ;(el as HTMLElement).focus()
+          }
+        }, 120)
+      }
+      return
+    }
+    setStep(3)
+    setMobileTab('form')
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 120, behavior: 'smooth' })
+    }
+  }
+
+  function goToStep4() {
+    setStep(4)
+    setMobileTab('form')
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 120, behavior: 'smooth' })
+    }
+  }
+
+  function goToStep2() {
+    setStep(2)
+    setMobileTab('form')
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 120, behavior: 'smooth' })
+    }
+  }
+
+  function goToStep3Back() {
+    setStep(3)
+    setMobileTab('form')
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 120, behavior: 'smooth' })
+    }
   }
 
   function handleFieldChange(field: string, value: string, setter: (v: string) => void) {
@@ -300,13 +352,12 @@ function CreateInvitationContent() {
     setErrors(errs)
     const errKeys = Object.keys(errs)
     if (errKeys.length > 0) {
+      setStep(2)
+      setMobileTab('form')
       const firstKey = errKeys[0]
       const firstError = errs[firstKey] || t('checkInputDetails', 'Please check your input details.')
       showToast(firstError, 'error')
       if (typeof window !== 'undefined') {
-        if (window.innerWidth < 1024) {
-          setMobileTab('details')
-        }
         setTimeout(() => {
           const el = document.getElementById(`field-${firstKey}`) || document.querySelector(`[name="${firstKey}"]`)
           if (el) {
@@ -388,63 +439,86 @@ function CreateInvitationContent() {
 
 
 
-        {/* 2-Step Progress Stepper */}
-        <div className="mt-5 flex items-center justify-center gap-3">
+        {/* 4-Part Progress Stepper */}
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
           {[
-            { s: 1, label: t('stepChooseOccasion') || 'Choose Occasion' },
-            { s: 2, label: t('stepPersonalizeShare') || 'Personalize & Share' },
-          ].map(({ s, label }) => (
-            <div key={s} className="flex items-center gap-2">
-              <button
-                onClick={() => { setErrors({}); setStep(s as 1 | 2); }}
-                className={`flex size-8 items-center justify-center rounded-full text-xs font-bold transition-all ${
-                  step === s
-                    ? 'bg-[#7B0D1E] text-white ring-4 ring-[#7B0D1E]/20 shadow-md'
-                    : 'bg-[#7B0D1E]/15 text-[#7B0D1E] hover:bg-[#7B0D1E]/25 cursor-pointer'
-                }`}
-              >
-                {s}
-              </button>
-              <span className={`text-xs font-semibold ${step === s ? 'text-foreground font-bold' : 'text-muted-foreground'}`}>
-                {label}
-              </span>
-              {s < 2 && <span className="text-muted-foreground/40 ml-1">/</span>}
-            </div>
-          ))}
+            { s: 1, label: t('stepPartOccasion') || '1. Occasion' },
+            { s: 2, label: t('stepPartDetails') || '2. Event Details' },
+            { s: 3, label: t('stepPartWording') || '3. Wording & Photos' },
+            { s: 4, label: t('stepPartDesign') || '4. Theme & Design' },
+          ].map(({ s, label }) => {
+            const isClickable = s === 1 || !!typeId
+            return (
+              <div key={s} className="flex items-center gap-1.5 sm:gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (isClickable) {
+                      setErrors({})
+                      setStep(s as 1 | 2 | 3 | 4)
+                      setMobileTab('form')
+                    }
+                  }}
+                  disabled={!isClickable}
+                  className={`flex size-7 sm:size-8 items-center justify-center rounded-full text-xs font-bold transition-all ${
+                    step === s
+                      ? 'bg-[#7B0D1E] text-white ring-4 ring-[#7B0D1E]/20 shadow-md scale-105'
+                      : step > s
+                      ? 'bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer shadow-xs'
+                      : 'bg-[#7B0D1E]/15 text-[#7B0D1E] hover:bg-[#7B0D1E]/25 cursor-pointer'
+                  }`}
+                >
+                  {step > s ? '✓' : s}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (isClickable) {
+                      setErrors({})
+                      setStep(s as 1 | 2 | 3 | 4)
+                      setMobileTab('form')
+                    }
+                  }}
+                  disabled={!isClickable}
+                  className={`text-xs font-semibold transition-all ${
+                    step === s
+                      ? 'text-foreground font-bold underline decoration-[#7B0D1E] decoration-2 underline-offset-4'
+                      : 'text-muted-foreground hover:text-foreground cursor-pointer'
+                  }`}
+                >
+                  {cleanStepLabel(label)}
+                </button>
+                {s < 4 && <span className="text-muted-foreground/40 ml-1 hidden sm:inline">/</span>}
+              </div>
+            )
+          })}
         </div>
       </div>
 
-      {/* 📱 Mobile Tabs (Only visible on Step 2 & Mobile < 1024px) */}
-      {step === 2 && (
+      {/* 📱 Mobile Tabs (Only visible when step >= 2 & Mobile < 1024px) */}
+      {step >= 2 && (
         <div className="block lg:hidden mb-5">
-          <div className="grid grid-cols-3 gap-1 rounded-2xl bg-muted/60 p-1.5 border border-border/70 shadow-sm">
+          <div className="grid grid-cols-2 gap-1 rounded-2xl bg-muted/60 p-1.5 border border-border/70 shadow-sm">
             <button
-              onClick={() => setMobileTab('details')}
+              type="button"
+              onClick={() => setMobileTab('form')}
               className={cn(
                 'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all',
-                mobileTab === 'details'
+                mobileTab !== 'preview'
                   ? 'bg-background text-[#7B0D1E] shadow-md border border-border/50'
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
               <Edit3 className="size-3.5" />
-              <span>{t('tabDetails')}</span>
+              <span>
+                {step === 2 && (t('stepPartDetails') || '2. Details')}
+                {step === 3 && (t('stepPartWording') || '3. Wording & Photos')}
+                {step === 4 && (t('stepPartDesign') || '4. Design')}
+              </span>
             </button>
 
             <button
-              onClick={() => setMobileTab('design')}
-              className={cn(
-                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all',
-                mobileTab === 'design'
-                  ? 'bg-background text-[#7B0D1E] shadow-md border border-border/50'
-                  : 'text-muted-foreground hover:text-foreground'
-              )}
-            >
-              <Palette className="size-3.5" />
-              <span>{t('tabDesign')}</span>
-            </button>
-
-            <button
+              type="button"
               onClick={() => setMobileTab('preview')}
               className={cn(
                 'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all relative',
@@ -454,7 +528,7 @@ function CreateInvitationContent() {
               )}
             >
               <Eye className="size-3.5" />
-              <span>{t('tabPreview')}</span>
+              <span>{t('tabPreview', 'Preview')}</span>
               <span className="absolute -top-1 -right-1 size-2 rounded-full bg-emerald-500 animate-ping" />
             </button>
           </div>
@@ -481,9 +555,9 @@ function CreateInvitationContent() {
               </div>
             )}
 
-            {step === 2 && (
+            {step >= 2 && (
               <div className="space-y-6">
-                {/* Header Selected Event Info */}
+                {/* Header Selected Event Info (Shared across Parts 2, 3, 4) */}
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <div>
                     <span className="text-[10px] uppercase font-extrabold tracking-wider text-[#7B0D1E]">
@@ -503,359 +577,363 @@ function CreateInvitationContent() {
                   </Button>
                 </div>
 
-                {/* 📝 Details Tab Content (Mobile details or Desktop always) */}
-                <div className={cn(mobileTab !== 'details' && 'hidden lg:block', 'space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
-                  <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
-                    <Edit3 className="size-4" /> 1. {t('cardDetailsHeading')}
-                  </h3>
+                {/* 📝 Part 2: Event Details */}
+                {step === 2 && (
+                  <div className={cn(mobileTab === 'preview' && 'hidden lg:block', 'space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
+                    <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
+                      <Edit3 className="size-4" /> {t('stepPartDetails') || '2. Event Details'}
+                    </h3>
 
-                  {isCouple ? (
-                    <div className="space-y-4">
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div>
-                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                            {selectedType?.id === 'anniversary-party' ? (t('partner1Name') || 'Husband / Partner 1 Name') : (t('groomName') === 'groomName' ? 'Groom Name' : t('groomName'))} *
-                          </label>
-                          <input
-                            id="field-groom"
-                            type="text"
-                            required
-                            value={groom}
-                            onChange={(e) => handleFieldChange('groom', e.target.value, setGroom)}
-                            placeholder={selectedType?.id === 'anniversary-party' ? 'e.g. Tariq Mahmood' : t('placeholderGroom')}
-                            dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
-                            className={cn(
-                              "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                              errors.groom ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
-                              (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
+                    {isCouple ? (
+                      <div className="space-y-4">
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          <div>
+                            <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                              {selectedType?.id === 'anniversary-party' ? (t('partner1Name') || 'Husband / Partner 1 Name') : (t('groomName') === 'groomName' ? 'Groom Name' : t('groomName'))} *
+                            </label>
+                            <input
+                              id="field-groom"
+                              type="text"
+                              required
+                              value={groom}
+                              onChange={(e) => handleFieldChange('groom', e.target.value, setGroom)}
+                              placeholder={selectedType?.id === 'anniversary-party' ? 'e.g. Tariq Mahmood' : t('placeholderGroom')}
+                              dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
+                              className={cn(
+                                "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                                errors.groom ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
+                                (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
+                              )}
+                            />
+                            {errors.groom && (
+                              <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                                <AlertCircle className="size-3 shrink-0" /> {errors.groom}
+                              </p>
                             )}
-                          />
-                          {errors.groom && (
-                            <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                              <AlertCircle className="size-3 shrink-0" /> {errors.groom}
-                            </p>
-                          )}
+                          </div>
+                          <div>
+                            <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                              {selectedType?.id === 'anniversary-party' ? (t('partner2Name') || 'Wife / Partner 2 Name') : (t('brideName') === 'brideName' ? 'Bride Name' : t('brideName'))} *
+                            </label>
+                            <input
+                              id="field-bride"
+                              type="text"
+                              required
+                              value={bride}
+                              onChange={(e) => handleFieldChange('bride', e.target.value, setBride)}
+                              placeholder={selectedType?.id === 'anniversary-party' ? 'e.g. Khadija Begum' : t('placeholderBride')}
+                              dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
+                              className={cn(
+                                "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                                errors.bride ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
+                                (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
+                              )}
+                            />
+                            {errors.bride && (
+                              <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                                <AlertCircle className="size-3 shrink-0" /> {errors.bride}
+                              </p>
+                            )}
+                          </div>
                         </div>
+
                         <div>
                           <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                            {selectedType?.id === 'anniversary-party' ? (t('partner2Name') || 'Wife / Partner 2 Name') : (t('brideName') === 'brideName' ? 'Bride Name' : t('brideName'))} *
+                            {t('eventTitle')} ({t('optional') || 'Optional'})
                           </label>
                           <input
-                            id="field-bride"
+                            id="field-title-couple"
                             type="text"
-                            required
-                            value={bride}
-                            onChange={(e) => handleFieldChange('bride', e.target.value, setBride)}
-                            placeholder={selectedType?.id === 'anniversary-party' ? 'e.g. Khadija Begum' : t('placeholderBride')}
-                            dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
-                            className={cn(
-                              "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                              errors.bride ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
-                              (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
-                            )}
+                            value={title}
+                            onChange={(e) => handleFieldChange('title', e.target.value, setTitle)}
+                            placeholder={selectedType?.label || 'e.g. Milestone Wedding Anniversaries (Silver & Golden)'}
+                            dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                            className="w-full rounded-2xl border border-input p-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
                           />
-                          {errors.bride && (
-                            <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                              <AlertCircle className="size-3 shrink-0" /> {errors.bride}
-                            </p>
-                          )}
                         </div>
                       </div>
-
+                    ) : (
                       <div>
                         <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                          {t('eventTitle')} ({t('optional') || 'Optional'})
+                          {t('eventTitle')} *
                         </label>
                         <input
-                          id="field-title-couple"
+                          id="field-title"
                           type="text"
+                          required
                           value={title}
                           onChange={(e) => handleFieldChange('title', e.target.value, setTitle)}
-                          placeholder={selectedType?.label || 'e.g. Milestone Wedding Anniversaries (Silver & Golden)'}
+                          placeholder={`e.g. ${selectedType?.label || 'Annual Event'}`}
                           dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                          className="w-full rounded-2xl border border-input p-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
+                          className={cn(
+                            "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                            errors.title ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                          )}
+                        />
+                        {errors.title && (
+                          <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                            <AlertCircle className="size-3 shrink-0" /> {errors.title}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    <div>
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        {t('hostNamesLabel')} *
+                      </label>
+                      <input
+                        id="field-hostNames"
+                        type="text"
+                        required
+                        value={hostNames}
+                        onChange={(e) => handleFieldChange('hostNames', e.target.value, setHostNames)}
+                        placeholder={t('placeholderHost')}
+                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                        className={cn(
+                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                          errors.hostNames ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                        )}
+                      />
+                      {errors.hostNames && (
+                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                          <AlertCircle className="size-3 shrink-0" /> {errors.hostNames}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                          {t('eventDateLabel')} *
+                        </label>
+                        <input
+                          id="field-date"
+                          type="date"
+                          required
+                          value={date}
+                          onChange={(e) => handleFieldChange('date', e.target.value, setDate)}
+                          className={cn(
+                            "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                            errors.date ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                          )}
+                        />
+                        {errors.date && (
+                          <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                            <AlertCircle className="size-3 shrink-0" /> {errors.date}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                          {t('eventTimeLabel')} *
+                        </label>
+                        <input
+                          id="field-time"
+                          type="time"
+                          required
+                          value={time}
+                          onChange={(e) => handleFieldChange('time', e.target.value, setTime)}
+                          className={cn(
+                            "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                            errors.time ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                          )}
+                        />
+                        {errors.time && (
+                          <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                            <AlertCircle className="size-3 shrink-0" /> {errors.time}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                          {t('venueLabel')} *
+                        </label>
+                        <input
+                          id="field-venue"
+                          type="text"
+                          required
+                          value={venue}
+                          onChange={(e) => handleFieldChange('venue', e.target.value, setVenue)}
+                          placeholder={t('placeholderVenue')}
+                          dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                          className={cn(
+                            "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                            errors.venue ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                          )}
+                        />
+                        {errors.venue && (
+                          <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                            <AlertCircle className="size-3 shrink-0" /> {errors.venue}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                          {t('cityLabel')} *
+                        </label>
+                        <input
+                          id="field-city"
+                          type="text"
+                          required
+                          value={city}
+                          onChange={(e) => handleFieldChange('city', e.target.value, setCity)}
+                          placeholder={t('placeholderCity')}
+                          dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                          className={cn(
+                            "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                            errors.city ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                          )}
+                        />
+                        {errors.city && (
+                          <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                            <AlertCircle className="size-3 shrink-0" /> {errors.city}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        {t('rsvpPhoneLabel')} *
+                      </label>
+                      <input
+                        id="field-rsvpPhone"
+                        type="tel"
+                        required
+                        value={rsvpPhone}
+                        onChange={(e) => handleFieldChange('rsvpPhone', e.target.value, setRsvpPhone)}
+                        placeholder={t('placeholderRsvpPhone')}
+                        className={cn(
+                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                          errors.rsvpPhone ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
+                        )}
+                      />
+                      <p className="mt-1 text-[11px] text-muted-foreground">
+                        {t('rsvpPhoneHelp')}
+                      </p>
+                      {errors.rsvpPhone && (
+                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
+                          <AlertCircle className="size-3 shrink-0" /> {errors.rsvpPhone}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                          {t('mapsLinkLabel')}
+                        </label>
+                        <input
+                          type="text"
+                          value={mapsLink}
+                          onChange={(e) => setMapsLink(e.target.value)}
+                          placeholder="https://maps.google.com/..."
+                          className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                          {t('dressCodeLabel')}
+                        </label>
+                        <input
+                          type="text"
+                          value={dressCode}
+                          onChange={(e) => setDressCode(e.target.value)}
+                          placeholder={t('placeholderDressCode')}
+                          dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                          className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
                         />
                       </div>
                     </div>
-                  ) : (
-                    <div>
-                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                        {t('eventTitle')} *
-                      </label>
-                      <input
-                        id="field-title"
-                        type="text"
-                        required
-                        value={title}
-                        onChange={(e) => handleFieldChange('title', e.target.value, setTitle)}
-                        placeholder={`e.g. ${selectedType?.label || 'Annual Event'}`}
-                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                        className={cn(
-                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                          errors.title ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
-                        )}
-                      />
-                      {errors.title && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                          <AlertCircle className="size-3 shrink-0" /> {errors.title}
-                        </p>
-                      )}
-                    </div>
-                  )}
 
-                  <div>
-                    <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                      {t('hostNamesLabel')} *
-                    </label>
-                    <input
-                      id="field-hostNames"
-                      type="text"
-                      required
-                      value={hostNames}
-                      onChange={(e) => handleFieldChange('hostNames', e.target.value, setHostNames)}
-                      placeholder={t('placeholderHost')}
-                      dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                      className={cn(
-                        "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                        errors.hostNames ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
-                      )}
-                    />
-                    {errors.hostNames && (
-                      <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                        <AlertCircle className="size-3 shrink-0" /> {errors.hostNames}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                        {t('eventDateLabel')} *
-                      </label>
-                      <input
-                        id="field-date"
-                        type="date"
-                        required
-                        value={date}
-                        onChange={(e) => handleFieldChange('date', e.target.value, setDate)}
-                        className={cn(
-                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                          errors.date ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
-                        )}
-                      />
-                      {errors.date && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                          <AlertCircle className="size-3 shrink-0" /> {errors.date}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                        {t('eventTimeLabel')} *
-                      </label>
-                      <input
-                        id="field-time"
-                        type="time"
-                        required
-                        value={time}
-                        onChange={(e) => handleFieldChange('time', e.target.value, setTime)}
-                        className={cn(
-                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                          errors.time ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
-                        )}
-                      />
-                      {errors.time && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                          <AlertCircle className="size-3 shrink-0" /> {errors.time}
-                        </p>
-                      )}
+                    {/* Part 2 Navigation */}
+                    <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-6 mt-6">
+                      <Button
+                        variant="outline"
+                        onClick={() => setStep(1)}
+                        className="w-full sm:w-auto rounded-2xl h-11 flex items-center justify-center gap-2"
+                      >
+                        <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
+                        <span>{t('btnBack') || 'Back'}</span>
+                      </Button>
+                      <Button
+                        onClick={goToStep3}
+                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
+                      >
+                        <span>{t('btnNext') || 'Next'}</span>
+                        <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
+                      </Button>
                     </div>
                   </div>
+                )}
 
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                        {t('venueLabel')} *
-                      </label>
-                      <input
-                        id="field-venue"
-                        type="text"
-                        required
-                        value={venue}
-                        onChange={(e) => handleFieldChange('venue', e.target.value, setVenue)}
-                        placeholder={t('placeholderVenue')}
-                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                        className={cn(
-                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                          errors.venue ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
-                        )}
-                      />
-                      {errors.venue && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                          <AlertCircle className="size-3 shrink-0" /> {errors.venue}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                        {t('cityLabel')} *
-                      </label>
-                      <input
-                        id="field-city"
-                        type="text"
-                        required
-                        value={city}
-                        onChange={(e) => handleFieldChange('city', e.target.value, setCity)}
-                        placeholder={t('placeholderCity')}
-                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                        className={cn(
-                          "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                          errors.city ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
-                        )}
-                      />
-                      {errors.city && (
-                        <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                          <AlertCircle className="size-3 shrink-0" /> {errors.city}
-                        </p>
-                      )}
-                    </div>
-                  </div>
+                {/* 📝 Part 3: Wording & Photos */}
+                {step === 3 && (
+                  <div className={cn(mobileTab === 'preview' && 'hidden lg:block', 'space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
+                    <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
+                      <Sparkles className="size-4" /> {t('stepPartWording') || '3. Wording & Photos'}
+                    </h3>
 
-                  <div>
-                    <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                      {t('rsvpPhoneLabel')} *
-                    </label>
-                    <input
-                      id="field-rsvpPhone"
-                      type="tel"
-                      required
-                      value={rsvpPhone}
-                      onChange={(e) => handleFieldChange('rsvpPhone', e.target.value, setRsvpPhone)}
-                      placeholder={t('placeholderRsvpPhone')}
-                      className={cn(
-                        "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                        errors.rsvpPhone ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
-                      )}
-                    />
-                    <p className="mt-1 text-[11px] text-muted-foreground">
-                      {t('rsvpPhoneHelp')}
-                    </p>
-                    {errors.rsvpPhone && (
-                      <p className="mt-1 text-xs font-semibold text-red-500 flex items-center gap-1">
-                        <AlertCircle className="size-3 shrink-0" /> {errors.rsvpPhone}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                        {t('mapsLinkLabel')}
-                      </label>
-                      <input
-                        type="text"
-                        value={mapsLink}
-                        onChange={(e) => setMapsLink(e.target.value)}
-                        placeholder="https://maps.google.com/..."
-                        className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
-                      />
-                    </div>
-                    <div>
-                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                        {t('dressCodeLabel')}
-                      </label>
-                      <input
-                        type="text"
-                        value={dressCode}
-                        onChange={(e) => setDressCode(e.target.value)}
-                        placeholder={t('placeholderDressCode')}
-                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                        className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  {/* 📝 CHOOSE PRE-WRITTEN INVITATION TEMPLATE (Placed on top of Special Notes / Message) */}
-                  {wordingTemplates.length > 0 && (
-                    <div className="rounded-2xl border border-input bg-card p-4 space-y-2.5 shadow-xs">
-                      <label className={cn("text-xs font-bold text-[#7B0D1E] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                        <Sparkles className="size-4 text-amber-500" /> {t('selectWordingTemplateLabel') || t('choosePrewrittenTemplate') || 'CHOOSE PRE-WRITTEN INVITATION TEMPLATE:'}
-                      </label>
-                      <div className="flex flex-wrap gap-2">
-                        {wordingTemplates.map((tmpl, idx) => (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={() => applyWordingTemplate(tmpl)}
-                            className="flex items-center gap-1.5 rounded-xl border border-[#7B0D1E]/20 bg-[#7B0D1E]/5 px-3 py-1.5 text-xs font-bold text-[#7B0D1E] hover:bg-[#7B0D1E]/15 transition-all active:scale-95 shadow-xs"
-                          >
-                            📜 <span>{tmpl.name}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <div>
-                    <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                      {t('notesLabel')}
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={notes}
-                      onChange={(e) => setNotes(e.target.value)}
-                      placeholder={t('placeholderNotes')}
-                      dir={lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(notes) ? 'rtl' : 'ltr'}
-                      className={cn(
-                        "w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all leading-relaxed",
-                        (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(notes)) && "font-urdu text-base text-right"
-                      )}
-                    />
-                  </div>
-
-                  {/* Photo Upload Section */}
-                  <div className="rounded-2xl border border-input bg-card p-4 space-y-3">
-                    <label className={cn("text-xs font-bold text-[#7B0D1E] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                      <Camera className="size-4" /> {isCouple ? t('couplePhotosLabel') : t('eventPhotoLabel')}
-                    </label>
-
-                    <div className={cn("grid gap-3", isCouple ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1")}>
-                      {/* Photo 1 Upload Box */}
-                      <div className="flex flex-col items-center justify-center p-3 rounded-2xl border border-dashed border-input bg-background/50 space-y-2 text-center">
-                        <span className="text-[11px] font-semibold text-muted-foreground">
-                          {isCouple ? t('bridePhoto') : t('customCardPhoto')}
-                        </span>
-                        {photoUrl ? (
-                          <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm">
-                            <img src={photoUrl} alt="Bride or Primary Host Portrait Preview" className="size-full object-cover" />
-                            <button
-                              type="button"
-                              onClick={() => setPhotoUrl('')}
-                              className="absolute top-0.5 right-0.5 bg-red-600 text-white rounded-full p-0.5 hover:bg-red-700 transition-all"
-                            >
-                              <X className="size-3" />
-                            </button>
-                          </div>
-                        ) : null}
-                        <label className="flex items-center gap-2 rounded-xl border border-input bg-background px-3 py-1.5 text-xs font-bold hover:bg-muted cursor-pointer transition-all shadow-xs">
-                          <Camera className="size-3.5 text-[#7B0D1E]" />
-                          <span>{photoUrl ? t('changePhoto') : t('uploadPhoto')}</span>
-                          <input type="file" accept="image/*" onChange={handlePhotoUpload1} className="hidden" />
+                    {/* 📝 CHOOSE PRE-WRITTEN INVITATION TEMPLATE */}
+                    {wordingTemplates.length > 0 && (
+                      <div className="rounded-2xl border border-input bg-card p-4 space-y-2.5 shadow-xs">
+                        <label className={cn("text-xs font-bold text-[#7B0D1E] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                          <Sparkles className="size-4 text-amber-500" /> {t('selectWordingTemplateLabel') || t('choosePrewrittenTemplate') || 'CHOOSE PRE-WRITTEN INVITATION TEMPLATE:'}
                         </label>
+                        <div className="flex flex-wrap gap-2">
+                          {wordingTemplates.map((tmpl, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => applyWordingTemplate(tmpl)}
+                              className="flex items-center gap-1.5 rounded-xl border border-[#7B0D1E]/20 bg-[#7B0D1E]/5 px-3 py-1.5 text-xs font-bold text-[#7B0D1E] hover:bg-[#7B0D1E]/15 transition-all active:scale-95 shadow-xs"
+                            >
+                              📜 <span>{tmpl.name}</span>
+                            </button>
+                          ))}
+                        </div>
                       </div>
+                    )}
 
-                      {/* Photo 2 Upload Box (Only for couple invitations e.g. Groom Photo) */}
-                      {isCouple ? (
+                    <div>
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        {t('notesLabel')}
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        placeholder={t('placeholderNotes')}
+                        dir={lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(notes) ? 'rtl' : 'ltr'}
+                        className={cn(
+                          "w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all leading-relaxed",
+                          (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(notes)) && "font-urdu text-base text-right"
+                        )}
+                      />
+                    </div>
+
+                    {/* Photo Upload Section */}
+                    <div className="rounded-2xl border border-input bg-card p-4 space-y-3">
+                      <label className={cn("text-xs font-bold text-[#7B0D1E] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                        <Camera className="size-4" /> {isCouple ? t('couplePhotosLabel') : t('eventPhotoLabel')}
+                      </label>
+
+                      <div className={cn("grid gap-3", isCouple ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1")}>
+                        {/* Photo 1 Upload Box */}
                         <div className="flex flex-col items-center justify-center p-3 rounded-2xl border border-dashed border-input bg-background/50 space-y-2 text-center">
                           <span className="text-[11px] font-semibold text-muted-foreground">
-                            {t('groomPhoto')}
+                            {isCouple ? t('bridePhoto') : t('customCardPhoto')}
                           </span>
-                          {photoUrl2 ? (
+                          {photoUrl ? (
                             <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm">
-                              <img src={photoUrl2} alt="Groom or Secondary Host Portrait Preview" className="size-full object-cover" />
+                              <img src={photoUrl} alt="Bride or Primary Host Portrait Preview" className="size-full object-cover" />
                               <button
                                 type="button"
-                                onClick={() => setPhotoUrl2('')}
+                                onClick={() => setPhotoUrl('')}
                                 className="absolute top-0.5 right-0.5 bg-red-600 text-white rounded-full p-0.5 hover:bg-red-700 transition-all"
                               >
                                 <X className="size-3" />
@@ -864,121 +942,170 @@ function CreateInvitationContent() {
                           ) : null}
                           <label className="flex items-center gap-2 rounded-xl border border-input bg-background px-3 py-1.5 text-xs font-bold hover:bg-muted cursor-pointer transition-all shadow-xs">
                             <Camera className="size-3.5 text-[#7B0D1E]" />
-                            <span>{photoUrl2 ? t('changePhoto') : t('uploadPhoto')}</span>
-                            <input type="file" accept="image/*" onChange={handlePhotoUpload2} className="hidden" />
+                            <span>{photoUrl ? t('changePhoto') : t('uploadPhoto')}</span>
+                            <input type="file" accept="image/*" onChange={handlePhotoUpload1} className="hidden" />
                           </label>
                         </div>
-                      ) : null}
+
+                        {/* Photo 2 Upload Box (Only for couple invitations e.g. Groom Photo) */}
+                        {isCouple ? (
+                          <div className="flex flex-col items-center justify-center p-3 rounded-2xl border border-dashed border-input bg-background/50 space-y-2 text-center">
+                            <span className="text-[11px] font-semibold text-muted-foreground">
+                              {t('groomPhoto')}
+                            </span>
+                            {photoUrl2 ? (
+                              <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm">
+                                <img src={photoUrl2} alt="Groom or Secondary Host Portrait Preview" className="size-full object-cover" />
+                                <button
+                                  type="button"
+                                  onClick={() => setPhotoUrl2('')}
+                                  className="absolute top-0.5 right-0.5 bg-red-600 text-white rounded-full p-0.5 hover:bg-red-700 transition-all"
+                                >
+                                  <X className="size-3" />
+                                </button>
+                              </div>
+                            ) : null}
+                            <label className="flex items-center gap-2 rounded-xl border border-input bg-background px-3 py-1.5 text-xs font-bold hover:bg-muted cursor-pointer transition-all shadow-xs">
+                              <Camera className="size-3.5 text-[#7B0D1E]" />
+                              <span>{photoUrl2 ? t('changePhoto') : t('uploadPhoto')}</span>
+                              <input type="file" accept="image/*" onChange={handlePhotoUpload2} className="hidden" />
+                            </label>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    {/* Part 3 Navigation */}
+                    <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-6 mt-6">
+                      <Button
+                        variant="outline"
+                        onClick={goToStep2}
+                        className="w-full sm:w-auto rounded-2xl h-11 flex items-center justify-center gap-2"
+                      >
+                        <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
+                        <span>{t('btnBack') || 'Back'}</span>
+                      </Button>
+                      <Button
+                        onClick={goToStep4}
+                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
+                      >
+                        <span>{t('btnNext') || 'Next'}</span>
+                        <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
+                      </Button>
                     </div>
                   </div>
-                </div>
+                )}
 
-                {/* 🎨 Design Tab Content (Mobile design or Desktop always) */}
-                <div className={cn(mobileTab !== 'design' && 'hidden lg:block', 'space-y-6 pt-4 border-t border-border')}>
-                  <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
-                    <Palette className="size-4" /> 2. {t('cardStylingHeading')}
-                  </h3>
+                {/* 🎨 Part 4: Theme & Design */}
+                {step === 4 && (
+                  <div className={cn(mobileTab === 'preview' && 'hidden lg:block', 'space-y-6 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
+                    <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
+                      <Palette className="size-4" /> {t('stepPartDesign') || '4. Theme & Design'}
+                    </h3>
 
-                  <div>
-                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                      {t('selectTheme')}
-                    </label>
-                    <ThemePicker
-                      value={themeId}
-                      onChange={setThemeId}
-                      isPro={isPro}
-                      onLockedClick={() => router.push('/pricing')}
-                    />
+                    <div>
+                      <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        {t('selectTheme')}
+                      </label>
+                      <ThemePicker
+                        value={themeId}
+                        onChange={setThemeId}
+                        isPro={isPro}
+                        onLockedClick={() => router.push('/pricing')}
+                      />
+                    </div>
+
+                    <div>
+                      <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        {t('selectBorderFrame')}
+                      </label>
+                      <BorderPicker
+                        value={borderId}
+                        onChange={setBorderId}
+                        isPro={isPro}
+                        onLockedClick={() => router.push('/pricing')}
+                      />
+                    </div>
+
+                    <div>
+                      <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        {t('selectCardBackgroundStyle')}
+                      </label>
+                      <BackgroundPicker
+                        value={bgVariantId}
+                        onChange={setBgVariantId}
+                        variants={selectedType?.bgVariants}
+                      />
+                    </div>
+
+                    {/* Part 4 Navigation */}
+                    <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-6 mt-6">
+                      <Button
+                        variant="outline"
+                        onClick={goToStep3Back}
+                        className="w-full sm:w-auto rounded-2xl h-11 flex items-center justify-center gap-2"
+                      >
+                        <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
+                        <span>{t('btnBack') || 'Back'}</span>
+                      </Button>
+                      <Button
+                        onClick={handleFinish}
+                        disabled={isSubmitting}
+                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-60"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Sparkles className="size-4 animate-spin" />
+                            <span>{t('generatingCard', 'Generating Card...')}</span>
+                          </>
+                        ) : (
+                          editSlug ? t('saveInvitationBtn', 'Save Invitation') : t('createAndShareBtn', 'Create & Share Invitation 🚀')
+                        )}
+                      </Button>
+                    </div>
                   </div>
-
-                  <div>
-                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                      {t('selectBorderFrame')}
-                    </label>
-                    <BorderPicker
-                      value={borderId}
-                      onChange={setBorderId}
-                      isPro={isPro}
-                      onLockedClick={() => router.push('/pricing')}
-                    />
-                  </div>
-
-                  <div>
-                    <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                      {t('selectCardBackgroundStyle')}
-                    </label>
-                    <BackgroundPicker
-                      value={bgVariantId}
-                      onChange={setBgVariantId}
-                      variants={selectedType?.bgVariants}
-                    />
-                  </div>
-                </div>
+                )}
 
                 {/* 👁️ Preview Tab Content (Only displayed on Mobile when preview tab active) */}
-                <div className={cn(mobileTab !== 'preview' && 'hidden lg:hidden', 'space-y-4 pt-2')}>
-                  <div className="rounded-3xl border border-border bg-gradient-to-b from-muted/20 to-card p-4 text-center shadow-md">
-                    <div className="flex items-center justify-between mb-3 px-1">
-                      <span className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
-                        <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
-                      </span>
-                    </div>
+                {mobileTab === 'preview' && (
+                  <div className="block lg:hidden space-y-4 pt-2">
+                    <div className="rounded-3xl border border-border bg-gradient-to-b from-muted/20 to-card p-4 text-center shadow-md">
+                      <div className="flex items-center justify-between mb-3 px-1">
+                        <span className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
+                          <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
+                        </span>
+                      </div>
 
-                    <div className="flex justify-center overflow-hidden py-2">
-                      <div className="w-full">
-                        <CardAnimationPreview occasionId={typeId} animationKey={typeId} className="max-w-sm mx-auto" roundedClass="rounded-3xl">
-                          <InvitationCard
-                            data={{
-                              typeId,
-                              title: title || selectedType?.label || t('invitation', 'Invitation'),
-                              hostNames: hostNames || t('defaultHostNames', 'The Families of Hassan & Ayesha'),
-                              groom: groom || t('defaultGroom', 'Hassan'),
-                              bride: bride || t('defaultBride', 'Ayesha'),
-                              date: date || '2026-12-14',
-                              time: time || '07:00 PM',
-                              venue: venue || t('defaultVenue', 'Pearl Continental, Grand Ballroom'),
-                              city: city || t('defaultCity', 'Lahore'),
-                              dressCode: dressCode || t('defaultDressCode', 'Traditional Royal / Formal'),
-                              notes: notes || t('defaultNotes', 'Your gracious presence will double our joy and happiness.'),
-                              themeId,
-                              borderId,
-                              bgVariantId,
-                              photoUrl,
-                              photoUrl2,
-                            }}
-                            showCountdown={false}
-                          />
-                        </CardAnimationPreview>
+                      <div className="flex justify-center overflow-hidden py-2">
+                        <div className="w-full">
+                          <CardAnimationPreview occasionId={typeId} animationKey={typeId} className="max-w-sm mx-auto" roundedClass="rounded-3xl">
+                            <InvitationCard
+                              data={{
+                                typeId,
+                                title: title || selectedType?.label || t('invitation', 'Invitation'),
+                                hostNames: hostNames || t('defaultHostNames', 'The Families of Hassan & Ayesha'),
+                                groom: groom || t('defaultGroom', 'Hassan'),
+                                bride: bride || t('defaultBride', 'Ayesha'),
+                                date: date || '2026-12-14',
+                                time: time || '07:00 PM',
+                                venue: venue || t('defaultVenue', 'Pearl Continental, Grand Ballroom'),
+                                city: city || t('defaultCity', 'Lahore'),
+                                dressCode: dressCode || t('defaultDressCode', 'Traditional Royal / Formal'),
+                                notes: notes || t('defaultNotes', 'Your gracious presence will double our joy and happiness.'),
+                                themeId,
+                                borderId,
+                                bgVariantId,
+                                photoUrl,
+                                photoUrl2,
+                              }}
+                              showCountdown={false}
+                            />
+                          </CardAnimationPreview>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-
-                {/* Bottom Navigation Buttons */}
-                <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-6 mt-6">
-                  <Button
-                    variant="outline"
-                    onClick={() => setStep(1)}
-                    className="w-full sm:w-auto rounded-2xl h-11 flex items-center justify-center gap-2"
-                  >
-                    <ArrowLeft className={cn("size-4", (lang === 'ur' || lang === 'ar') && "rotate-180")} />
-                    <span>{t('changeEventType', 'Change Occasion')}</span>
-                  </Button>
-                  <Button
-                    onClick={handleFinish}
-                    disabled={isSubmitting}
-                    className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-60"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Sparkles className="size-4 animate-spin" />
-                        <span>{t('generatingCard', 'Generating Card...')}</span>
-                      </>
-                    ) : (
-                      editSlug ? t('saveInvitationBtn') : t('createAndShareBtn')
-                    )}
-                  </Button>
-                </div>
+                )}
               </div>
             )}
           </div>
@@ -1025,8 +1152,8 @@ function CreateInvitationContent() {
         </div>
       </div>
 
-      {/* 📱 Mobile Sticky Bottom Action Bar (Fixed at bottom on phone screens when step 2) */}
-      {step === 2 && (
+      {/* 📱 Mobile Sticky Bottom Action Bar (Fixed at bottom on phone screens when step >= 2) */}
+      {step >= 2 && (
         <div className="fixed bottom-0 left-0 right-0 z-50 block lg:hidden border-t border-border/80 bg-background/95 backdrop-blur-md p-3 shadow-2xl">
           <div className="mx-auto flex max-w-md items-center gap-2">
             {mobileTab !== 'preview' ? (
@@ -1035,32 +1162,52 @@ function CreateInvitationContent() {
                 onClick={() => setMobileTab('preview')}
                 className="flex-1 rounded-2xl text-xs font-bold h-12 border-[#7B0D1E]/30 text-[#7B0D1E] bg-[#7B0D1E]/5"
               >
-                <Eye className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabPreview')}
+                <Eye className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabPreview', 'Preview')}
               </Button>
             ) : (
               <Button
                 variant="outline"
-                onClick={() => setMobileTab('details')}
+                onClick={() => setMobileTab('form')}
                 className="flex-1 rounded-2xl text-xs font-bold h-12"
               >
-                <Edit3 className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabDetails')}
+                <Edit3 className="size-4 mr-1 text-[#7B0D1E]" /> {t('editCard', 'Edit Details')}
               </Button>
             )}
 
-            <Button
-              onClick={handleFinish}
-              disabled={isSubmitting}
-              className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
-            >
-              {isSubmitting ? (
-                <>
-                  <Sparkles className="size-4 animate-spin" />
-                  <span>{t('generatingCard', 'Generating...')}</span>
-                </>
-              ) : (
-                editSlug ? t('saveChanges') : t('createAndShareBtn')
-              )}
-            </Button>
+            {step === 2 && (
+              <Button
+                onClick={goToStep3}
+                className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
+              >
+                <span>{t('nextWordingPhotos') || 'Next: Wording →'}</span>
+              </Button>
+            )}
+
+            {step === 3 && (
+              <Button
+                onClick={goToStep4}
+                className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
+              >
+                <span>{t('nextThemeDesign') || 'Next: Design →'}</span>
+              </Button>
+            )}
+
+            {step === 4 && (
+              <Button
+                onClick={handleFinish}
+                disabled={isSubmitting}
+                className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Sparkles className="size-4 animate-spin" />
+                    <span>{t('generatingCard', 'Generating...')}</span>
+                  </>
+                ) : (
+                  editSlug ? t('saveChanges') : t('createAndShareBtn')
+                )}
+              </Button>
+            )}
           </div>
         </div>
       )}

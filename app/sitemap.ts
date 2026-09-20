@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/custom-order', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
     { path: '/create-wish', changeFrequency: 'weekly' as const, priority: 0.9, lastModified: monthlyUpdateDate },
     { path: '/create-invitation', changeFrequency: 'weekly' as const, priority: 0.9, lastModified: monthlyUpdateDate },
+    { path: '/create-magic-link', changeFrequency: 'weekly' as const, priority: 0.9, lastModified: frequentUpdateDate },
     { path: '/create-visiting-card', changeFrequency: 'weekly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
     { path: '/pricing', changeFrequency: 'weekly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
     { path: '/faq', changeFrequency: 'monthly' as const, priority: 0.8, lastModified: monthlyUpdateDate },

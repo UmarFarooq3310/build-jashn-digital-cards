@@ -119,6 +119,14 @@ export interface RsvpGuest {
   browser?: string
 }
 
+export interface CardShareStats {
+  whatsapp?: number
+  sms?: number
+  copy?: number
+  qr?: number
+  image?: number
+}
+
 export interface Wish {
   id: string
   slug: string
@@ -141,6 +149,7 @@ export interface Wish {
   photoUrl?: string
   audioTrack?: string
   viewCount: number
+  shares?: CardShareStats
   createdAt: number
   // Tracking & Origin metadata
   createdLocation?: string
@@ -179,6 +188,7 @@ export interface Invitation {
   audioTrack?: string
   rsvpCount: number
   viewCount?: number
+  shares?: CardShareStats
   createdAt: number
   // Tracking & Origin metadata
   createdLocation?: string
@@ -238,6 +248,7 @@ export interface VisitingCard {
     youtube?: string
   }
   viewCount: number
+  shares?: CardShareStats
   createdAt: number
   // Tracking & Origin metadata
   createdLocation?: string

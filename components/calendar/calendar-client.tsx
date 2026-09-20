@@ -17,6 +17,7 @@ import {
   Award,
   RefreshCw,
 } from 'lucide-react'
+import { Breadcrumbs } from '@/components/breadcrumbs'
 import {
   getEventsForRollingYear,
   CATEGORY_LABELS,
@@ -33,41 +34,61 @@ const CATEGORY_ICONS: Record<EventCategory, typeof Moon> = {
   milestones: Award,
 }
 
-function getCategoryName(cat: EventCategory, lang: string, t?: (k: string) => string): string {
-  if (t) {
-    const key = `cal_cat_${cat}`
-    const trans = t(key)
-    if (trans && trans !== key) return trans
-    const directTrans = t(cat)
-    if (directTrans && directTrans !== cat) return directTrans
+const LOCALE_MAP: Record<string, string> = {
+  en: 'en-US',
+  ur: 'ur-PK',
+  ar: 'ar-SA',
+  es: 'es-ES',
+  fr: 'fr-FR',
+  hi: 'hi-IN',
+  zh: 'zh-CN',
+  pt: 'pt-BR',
+  ru: 'ru-RU',
+  de: 'de-DE',
+  ja: 'ja-JP',
+  ko: 'ko-KR',
+  it: 'it-IT',
+  tr: 'tr-TR',
+  id: 'id-ID',
+  bn: 'bn-BD',
+  vi: 'vi-VN',
+  sw: 'sw-KE',
+}
+
+function formatLocalDate(date: Date, lang: string): string {
+  const locale = LOCALE_MAP[lang] || 'en-US'
+  return date.toLocaleDateString(locale, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
+function formatCountdownBadge(daysRemaining: number, t: (k: string) => string): string {
+  if (daysRemaining === 0) return t('calHappeningToday') || 'Today! 🎉'
+  if (daysRemaining === 1) return t('calTomorrow') || 'Tomorrow'
+  if (daysRemaining <= 30) {
+    const tmpl = t('calInDays') || 'In {days} days'
+    return tmpl.replace('{days}', String(daysRemaining))
   }
+  const months = Math.round(daysRemaining / 30)
+  if (months === 1) return t('calIn1Month') || 'In 1 month'
+  const tmpl = t('calInMonths') || 'In {months} months'
+  return tmpl.replace('{months}', String(months))
+}
+
+function getCategoryName(cat: EventCategory, lang: string, t: (k: string) => string): string {
+  const key = `cal_cat_${cat}`
+  const trans = t(key)
+  if (trans && trans !== key) return trans
   if (lang === 'ur') return CATEGORY_LABELS[cat].ur
-  if (lang === 'ar') {
-    const arMap: Record<EventCategory, string> = {
-      islamic: 'المناسبات الإسلامية والهجرية',
-      global_faiths: 'الأديان العالمية والمهرجانات',
-      family: 'العائلة والمحبة',
-      national: 'الأيام الوطنية والرسمية',
-      milestones: 'المحطات والمواسم',
-    }
-    return arMap[cat] || CATEGORY_LABELS[cat].en
-  }
-  if (lang === 'hi') {
-    const hiMap: Record<EventCategory, string> = {
-      islamic: 'इस्लामी व हिजरी',
-      global_faiths: 'वैश्विक धर्म व त्योहार',
-      family: 'परिवार और रिश्ते',
-      national: 'राष्ट्रीय व नागरिक',
-      milestones: 'मील के पत्थर व मौसम',
-    }
-    return hiMap[cat] || CATEGORY_LABELS[cat].en
-  }
   return CATEGORY_LABELS[cat].en
 }
 
 export function CelebrationCalendarClient() {
   const { t, lang } = useLang()
   const isRtl = lang === 'ur' || lang === 'ar'
+  const isUrdu = lang === 'ur'
 
   const [mounted, setMounted] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -117,12 +138,21 @@ export function CelebrationCalendarClient() {
     return getEventsForRollingYear(currentDate)
   }, [currentDate])
 
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: allEvents.length }
+    allEvents.forEach((ev) => {
+      counts[ev.category] = (counts[ev.category] || 0) + 1
+    })
+    return counts
+  }, [allEvents])
+
   // Extract distinct months for the month filter
   const availableMonths = useMemo(() => {
     const monthMap = new Map<string, string>()
+    const locale = LOCALE_MAP[lang] || 'en-US'
     allEvents.forEach((ev) => {
       const ym = ev.dateStr.slice(0, 7) // YYYY-MM
-      const label = ev.date.toLocaleDateString(lang === 'ur' ? 'ur-PK' : lang === 'ar' ? 'ar-SA' : 'en-US', {
+      const label = ev.date.toLocaleDateString(locale, {
         month: 'short',
         year: 'numeric',
       })
@@ -148,7 +178,7 @@ export function CelebrationCalendarClient() {
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim()
         const matchTitle = ev.title.toLowerCase().includes(q)
-        const matchUrdu = ev.urduTitle.toLowerCase().includes(q)
+        const matchUrdu = ev.urduTitle ? ev.urduTitle.toLowerCase().includes(q) : false
         const matchDesc = ev.description.toLowerCase().includes(q)
         const matchCategory = ev.category.toLowerCase().includes(q)
         const matchHijri = ev.hijriNote ? ev.hijriNote.toLowerCase().includes(q) : false
@@ -173,16 +203,47 @@ export function CelebrationCalendarClient() {
     }
   }
 
-  const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = { all: allEvents.length }
-    allEvents.forEach((ev) => {
-      counts[ev.category] = (counts[ev.category] || 0) + 1
-    })
-    return counts
-  }, [allEvents])
-
   return (
-    <div className={cn('space-y-10', isRtl && 'rtl')}>
+    <div className={cn('space-y-10', isRtl && 'rtl', isUrdu && 'font-urdu')}>
+      {/* ── Breadcrumbs ── */}
+      <Breadcrumbs items={[{ label: t('celebrationCalendar') || 'Celebration Calendar', href: '/calendar' }]} />
+
+      {/* ── Page Header ── */}
+      <header className="rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-xs mt-4 space-y-4">
+        <div className="inline-flex items-center gap-2 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 px-3.5 py-1 text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
+          <CalendarIcon className="size-3.5" />
+          <span>{t('calHeaderBadge') || '365-Day Rolling Celebration Guide'}</span>
+        </div>
+
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
+          {t('calHeaderTitle') || 'Worldwide Celebration & Islamic Calendar (2026–2027)'}
+        </h1>
+
+        <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl">
+          {t('calHeaderDesc') ||
+            'Track 80 major worldwide celebrations — from sacred Islamic lunar milestones (Hijri 1448–1449) and global multi-faith festivals to family relationship days and national holidays. This calendar dynamically begins from today and rolls forward 365 days, complete with copyable celebration greetings and 1-click 3D cards.'}
+        </p>
+
+        <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-semibold text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5 bg-muted px-3 py-1 rounded-full border border-border">
+            <Moon className="size-3.5 text-emerald-500" />
+            <span>{categoryCounts.islamic || 15} {t('calOccIslamic') || 'Islamic Occasions'}</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 bg-muted px-3 py-1 rounded-full border border-border">
+            <Globe className="size-3.5 text-purple-500" />
+            <span>{categoryCounts.global_faiths || 25} {t('calOccGlobal') || 'Global Faiths'}</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 bg-muted px-3 py-1 rounded-full border border-border">
+            <Heart className="size-3.5 text-rose-500" />
+            <span>{categoryCounts.family || 16} {t('calOccFamily') || 'Family & Love Days'}</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 bg-muted px-3 py-1 rounded-full border border-border">
+            <Sparkles className="size-3.5 text-amber-500" />
+            <span>{(categoryCounts.national || 0) + (categoryCounts.milestones || 0) || 24} {t('calOccMilestones') || 'Civic & Milestones'}</span>
+          </span>
+        </div>
+      </header>
+
       {/* ── Live Worldwide Holiday API Status Bar ── */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-emerald-500/25 bg-emerald-500/5 px-4 py-2.5 text-xs text-muted-foreground shadow-xs">
         <div className="flex items-center gap-2.5 flex-wrap">
@@ -204,7 +265,7 @@ export function CelebrationCalendarClient() {
           {syncStatus.lastSynced && (
             <>
               <span className="text-border">·</span>
-              <span className="opacity-80">Updated: {syncStatus.lastSynced}</span>
+              <span className="opacity-80">{t('calUpdated') || 'Updated'}: {syncStatus.lastSynced}</span>
             </>
           )}
         </div>
@@ -215,7 +276,7 @@ export function CelebrationCalendarClient() {
           className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full bg-muted hover:bg-muted/80 px-3 py-1 font-bold text-foreground transition-all border border-border"
         >
           <RefreshCw className={cn('size-3 text-[#D4AF37]', syncStatus.loading && 'animate-spin')} />
-          <span>{syncStatus.loading ? 'Syncing...' : (t('calSyncNow') || 'Sync Live Holidays')}</span>
+          <span>{syncStatus.loading ? (t('calSyncing') || 'Syncing...') : (t('calSyncNow') || 'Sync Live Holidays')}</span>
         </button>
       </div>
 
@@ -237,7 +298,7 @@ export function CelebrationCalendarClient() {
             </div>
           </div>
           <div className="text-xs text-muted-foreground bg-muted/60 px-3.5 py-1.5 rounded-full border border-border self-start sm:self-auto">
-            Today: <span className="font-bold text-foreground">{mounted ? currentDate.toLocaleDateString(lang === 'ur' ? 'ur-PK' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '...'}</span> · Daily Rolling
+            {t('calToday') || 'Today'}: <span className="font-bold text-foreground">{mounted ? formatLocalDate(currentDate, lang) : '...'}</span> · {t('calDailyRolling') || 'Daily Rolling'}
           </div>
         </div>
 
@@ -250,16 +311,16 @@ export function CelebrationCalendarClient() {
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#D4AF37]/15 text-[#D4AF37] border border-[#D4AF37]/30">
-                    {item.daysRemaining === 0 ? (t('calHappeningToday') || 'Today! 🎉') : item.badgeText}
+                    {formatCountdownBadge(item.daysRemaining, t)}
                   </span>
                   <span className="text-xs text-muted-foreground font-semibold">
-                    {item.formattedDate}
+                    {formatLocalDate(item.date, lang)}
                   </span>
                 </div>
 
                 <h3 className="text-base sm:text-lg font-bold text-foreground group-hover:text-[#D4AF37] transition-colors flex items-center gap-1.5">
                   <span className="text-xl">{item.emoji}</span>
-                  <span className="line-clamp-1">{t(`occ_${item.occasionId?.replace(/-/g, '_')}`) || (lang === 'ur' ? item.urduTitle : item.title)}</span>
+                  <span className="line-clamp-1">{t(`occ_${item.occasionId?.replace(/-/g, '_')}`) || (isUrdu ? item.urduTitle : item.title)}</span>
                 </h3>
 
                 {item.hijriNote && (
@@ -273,13 +334,9 @@ export function CelebrationCalendarClient() {
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-border/50 flex flex-col gap-2">
-                <span className="text-[11px] font-medium text-muted-foreground font-nastaliq text-right" dir="rtl">
-                  {item.urduTitle}
-                </span>
-
+              <div className="mt-4 pt-3 border-t border-border/50">
                 {/* Direct Action Buttons for Immediate Upcoming Occasion */}
-                <div className="flex items-center gap-2 pt-1">
+                <div className="flex items-center gap-2">
                   <Link
                     href={item.wishLink}
                     className="flex-1 text-center rounded-xl border border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 py-1.5 text-xs font-bold text-[#D4AF37] transition-colors"
@@ -291,7 +348,7 @@ export function CelebrationCalendarClient() {
                     href={item.invitationLink}
                     className="flex-1 text-center rounded-xl bg-[#D4AF37] hover:bg-[#c49f30] py-1.5 text-xs font-bold text-black transition-colors shadow-xs"
                   >
-                    {t('calCreateInvitation') || 'Invite'}
+                    {t('calInvite') || t('calCreateInvitation') || 'Invite'}
                   </Link>
                 </div>
               </div>
@@ -310,7 +367,7 @@ export function CelebrationCalendarClient() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={t('calSearchPlaceholder') || 'Search by event, festival, Urdu title, or tradition (e.g. Ramadan, Diwali, Eid, Mother, Pakistan)...'}
+              placeholder={t('calSearchPlaceholder') || "Search by event, festival, holiday, or tradition (e.g. Ramadan, Diwali, Eid, Mother's Day, New Year)..."}
               className="w-full rounded-xl border border-border bg-card pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-[#D4AF37] focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
             />
             {searchQuery && (
@@ -318,7 +375,7 @@ export function CelebrationCalendarClient() {
                 onClick={() => setSearchQuery('')}
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground"
               >
-                {t('clear') || 'Clear'}
+                {t('calClear') || t('clear') || 'Clear'}
               </button>
             )}
           </div>
@@ -428,6 +485,7 @@ export function CelebrationCalendarClient() {
             const meta = CATEGORY_LABELS[event.category]
             const isCopied = copiedId === event.id
             const catLabel = getCategoryName(event.category, lang, t)
+            const eventGreeting = isUrdu ? event.greetings.ur : event.greetings.en
 
             return (
               <article
@@ -453,7 +511,7 @@ export function CelebrationCalendarClient() {
                       }`}
                     >
                       <Clock className="size-3" />
-                      {event.daysRemaining === 0 ? (t('calHappeningToday') || 'Today! 🎉') : event.badgeText}
+                      {formatCountdownBadge(event.daysRemaining, t)}
                     </span>
                   </div>
 
@@ -461,7 +519,7 @@ export function CelebrationCalendarClient() {
                   <div className="mb-2">
                     <div className="flex items-center gap-2 text-xs text-muted-foreground font-semibold">
                       <CalendarIcon className="size-3.5 text-[#D4AF37]" />
-                      <span>{event.formattedDate}</span>
+                      <span>{formatLocalDate(event.date, lang)}</span>
                       {event.hijriNote && (
                         <>
                           <span>·</span>
@@ -474,12 +532,8 @@ export function CelebrationCalendarClient() {
 
                     <h3 className="text-lg sm:text-xl font-extrabold text-foreground group-hover:text-[#D4AF37] transition-colors mt-1 flex items-start gap-2">
                       <span className="text-2xl shrink-0">{event.emoji}</span>
-                      <span>{t(`occ_${event.occasionId?.replace(/-/g, '_')}`) || (lang === 'ur' ? event.urduTitle : event.title)}</span>
+                      <span>{t(`occ_${event.occasionId?.replace(/-/g, '_')}`) || (isUrdu ? event.urduTitle : event.title)}</span>
                     </h3>
-
-                    <p className="text-sm text-muted-foreground font-nastaliq text-right mt-1" dir="rtl">
-                      {event.urduTitle}
-                    </p>
                   </div>
 
                   {/* Description */}
@@ -492,9 +546,9 @@ export function CelebrationCalendarClient() {
                     <div className="flex items-center justify-between text-[11px] font-bold text-muted-foreground">
                       <span>{t('calSampleWish') || 'Sample Wish & Blessing:'}</span>
                       <button
-                        onClick={() => copyGreeting(event.id, `${event.greetings.en}\n\n${event.greetings.ur}`)}
+                        onClick={() => copyGreeting(event.id, eventGreeting)}
                         className="inline-flex items-center gap-1 text-[#D4AF37] hover:underline"
-                        title="Copy greeting to clipboard"
+                        title={t('calCopyWish') || 'Copy greeting to clipboard'}
                       >
                         {isCopied ? (
                           <>
@@ -510,12 +564,8 @@ export function CelebrationCalendarClient() {
                       </button>
                     </div>
 
-                    <p className="text-xs text-foreground/90 italic leading-snug">
-                      &ldquo;{event.greetings.en}&rdquo;
-                    </p>
-
-                    <p className="text-xs text-muted-foreground font-nastaliq leading-relaxed text-right pt-1" dir="rtl">
-                      {event.greetings.ur}
+                    <p className={cn("text-xs text-foreground/90 italic leading-snug", isUrdu && "font-urdu not-italic text-right")} dir={isUrdu ? 'rtl' : 'ltr'}>
+                      &ldquo;{eventGreeting}&rdquo;
                     </p>
                   </div>
                 </div>
@@ -523,7 +573,7 @@ export function CelebrationCalendarClient() {
                 {/* Card Action Footer: Both Exact 3D Card and Invitation Available */}
                 <div className="mt-6 pt-4 border-t border-border/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <span className="text-[11px] text-muted-foreground font-medium">
-                    {event.daysRemaining === 0 ? (t('calHappeningToday') || 'Happening Today! 🎉') : `${event.daysRemaining} ${t('daysRemaining') || 'days remaining'}`}
+                    {event.daysRemaining === 0 ? (t('calHappeningToday') || 'Today! 🎉') : `${event.daysRemaining} ${t('daysRemaining') || 'days remaining'}`}
                   </span>
 
                   <div className="flex items-center gap-2">
@@ -533,7 +583,7 @@ export function CelebrationCalendarClient() {
                       className="inline-flex items-center gap-1.5 rounded-full border border-[#D4AF37]/50 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 px-3.5 py-1.5 text-xs font-bold text-[#D4AF37] transition-all"
                     >
                       <span>{t('calSendCard') || 'Send 3D Card'}</span>
-                      <ArrowRight className="size-3" />
+                      <ArrowRight className={cn('size-3', isRtl && 'rotate-180')} />
                     </Link>
 
                     {/* Create Invitation (Opens exact invitation type + title) */}
@@ -542,7 +592,7 @@ export function CelebrationCalendarClient() {
                       className="inline-flex items-center gap-1.5 rounded-full bg-[#D4AF37] hover:bg-[#c49f30] px-4 py-1.5 text-xs font-bold text-black transition-all shadow-xs"
                     >
                       <span>{t('calCreateInvitation') || 'Create Invitation'}</span>
-                      <ArrowRight className="size-3" />
+                      <ArrowRight className={cn('size-3', isRtl && 'rotate-180')} />
                     </Link>
                   </div>
                 </div>

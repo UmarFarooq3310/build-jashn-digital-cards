@@ -37,6 +37,9 @@ import {
   Send,
   MousePointerClick,
   XCircle,
+  Share2,
+  Eye,
+  MessageCircle,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -45,6 +48,14 @@ import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { collection, getDocs, query, orderBy, limit, onSnapshot, doc, deleteDoc } from 'firebase/firestore'
 import { cn } from '@/lib/utils'
 import type { JashnUser, Plan, Invitation, Wish, VisitingCard, RsvpGuest } from '@/lib/jashn/types'
+import type { MagicLinkData } from '@/lib/jashn/magic-types'
+import {
+  listenAllGuestbookWishes,
+  deleteGuestbookWish,
+  deleteOldGuestbookWishes,
+  type GuestbookWish,
+} from '@/lib/jashn/guestbook-service'
+import { CardShareModal, type ShareModalCardData } from '@/components/dashboard/card-share-modal'
 import { SiteHeader } from '@/components/site-header'
 
 function formatDateStandard(timestamp?: number): string {
@@ -299,10 +310,61 @@ export default function AdminPortalPage() {
     showToast,
   } = useJashn()
 
-  const [adminSection, setAdminSection] = useState<'all' | 'invitations' | 'wishes' | 'visiting_cards' | 'rsvps' | 'users' | 'push_notifications' | 'live_users'>('all')
+  const [adminSection, setAdminSection] = useState<'all' | 'invitations' | 'wishes' | 'visiting_cards' | 'rsvps' | 'users' | 'push_notifications' | 'live_users' | 'magic_links' | 'guestbook'>('all')
   const [searchTerm, setSearchTerm] = useState('')
   // Which invitation's RSVPs to show — null means all
   const [rsvpFilterSlug, setRsvpFilterSlug] = useState<string | null>(null)
+
+  // ── Guestbook & Wishes Wall Real-Time State ──────────────────────────────
+  const [allGuestbookWishes, setAllGuestbookWishes] = useState<GuestbookWish[]>([])
+  const [guestbookSearch, setGuestbookSearch] = useState('')
+  const [isCleaningOldWishes, setIsCleaningOldWishes] = useState(false)
+  const [guestbookCleanupDays, setGuestbookCleanupDays] = useState(30)
+
+  useEffect(() => {
+    const unsub = listenAllGuestbookWishes((wishes) => {
+      setAllGuestbookWishes(wishes)
+    })
+    return () => unsub()
+  }, [])
+
+  async function handleDeleteSingleWish(wishId: string, cardSlug?: string) {
+    if (!confirm('Are you sure you want to delete this guestbook wish? This cannot be undone.')) return
+    try {
+      await deleteGuestbookWish(wishId, cardSlug)
+      setAllGuestbookWishes((prev) => prev.filter((w) => w.id !== wishId))
+      showToast('Guest wish deleted from Wishes Wall', 'info')
+    } catch (e) {
+      showToast('Failed to delete wish', 'error')
+    }
+  }
+
+  async function handleCleanOldWishes() {
+    if (!confirm(`Are you sure you want to permanently delete guest wishes older than ${guestbookCleanupDays} days?`)) return
+    setIsCleaningOldWishes(true)
+    try {
+      const deleted = await deleteOldGuestbookWishes(guestbookCleanupDays)
+      showToast(`Cleaned up ${deleted} guestbook entries older than ${guestbookCleanupDays} days`, 'info')
+      const cutoff = Date.now() - guestbookCleanupDays * 24 * 60 * 60 * 1000
+      setAllGuestbookWishes((prev) => prev.filter((w) => w.createdAt > cutoff))
+    } catch (e) {
+      showToast('Failed to clean old wishes', 'error')
+    } finally {
+      setIsCleaningOldWishes(false)
+    }
+  }
+
+  const filteredGuestbookWishes = useMemo(() => {
+    if (!guestbookSearch.trim()) return allGuestbookWishes
+    const q = guestbookSearch.toLowerCase()
+    return allGuestbookWishes.filter((w) =>
+      w.guestName?.toLowerCase().includes(q) ||
+      w.message?.toLowerCase().includes(q) ||
+      w.cardSlug?.toLowerCase().includes(q) ||
+      (w.city && w.city.toLowerCase().includes(q)) ||
+      (w.country && w.country.toLowerCase().includes(q))
+    )
+  }, [allGuestbookWishes, guestbookSearch])
 
   // ── Real-Time Active Users State (Live Presence) ─────────────────────────
   const [liveActiveSessions, setLiveActiveSessions] = useState<any[]>([])
@@ -485,6 +547,8 @@ export default function AdminPortalPage() {
   const [firestoreWishes, setFirestoreWishes] = useState<Wish[]>([])
   const [firestoreVisitingCards, setFirestoreVisitingCards] = useState<VisitingCard[]>([])
   const [firestoreRsvps, setFirestoreRsvps] = useState<RsvpGuest[]>([])
+  const [firestoreMagicLinks, setFirestoreMagicLinks] = useState<MagicLinkData[]>([])
+  const [shareModalCard, setShareModalCard] = useState<ShareModalCardData | null>(null)
   const [isFirestoreLoading, setIsFirestoreLoading] = useState(false)
   const [firestoreError, setFirestoreError] = useState<string | null>(null)
   const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null)
@@ -560,6 +624,18 @@ export default function AdminPortalPage() {
         setFirestoreRsvps(list)
       } catch (e: any) {
         console.error('Failed to fetch RSVPs from Firestore:', e)
+      }
+
+      // 6. Magic Links
+      try {
+        const snap = await getDocs(collection(activeDb, 'magic_links'))
+        const list: MagicLinkData[] = []
+        snap.forEach((docSnap) => {
+          if (docSnap.exists()) list.push({ id: docSnap.id, ...(docSnap.data() as MagicLinkData) })
+        })
+        setFirestoreMagicLinks(list)
+      } catch (e: any) {
+        console.error('Failed to fetch Magic Links from Firestore:', e)
       }
 
       setLastSyncedAt(Date.now())
@@ -642,6 +718,58 @@ export default function AdminPortalPage() {
     })
     return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
   }, [storeRsvps, firestoreRsvps])
+
+  // Merged Magic Links list (store / localStorage + Firestore)
+  const magicLinks = useMemo(() => {
+    const map = new Map<string, MagicLinkData>()
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('cardzy_local_magic_links')
+        if (raw) {
+          const parsed = JSON.parse(raw)
+          Object.values(parsed as Record<string, MagicLinkData>).forEach((m) => {
+            if (m.slug) map.set(m.slug, m)
+          })
+        }
+      } catch {}
+    }
+    firestoreMagicLinks.forEach((m) => {
+      if (m.slug) {
+        const existing = map.get(m.slug)
+        map.set(m.slug, existing ? { ...existing, ...m } : m)
+      }
+    })
+    return Array.from(map.values()).sort((a, b) => {
+      const timeA = typeof a.createdAt === 'number' ? a.createdAt : a.createdAt?.toMillis ? a.createdAt.toMillis() : 0
+      const timeB = typeof b.createdAt === 'number' ? b.createdAt : b.createdAt?.toMillis ? b.createdAt.toMillis() : 0
+      return timeB - timeA
+    })
+  }, [firestoreMagicLinks])
+
+  async function handleDeleteMagicLink(slug: string) {
+    if (!window.confirm(`Are you sure you want to delete Magic Link "${slug}"?`)) return
+    try {
+      const activeDb = getFirebaseDb() || db
+      if (activeDb) {
+        await deleteDoc(doc(activeDb, 'magic_links', slug))
+      }
+      if (typeof window !== 'undefined') {
+        try {
+          const raw = localStorage.getItem('cardzy_local_magic_links')
+          if (raw) {
+            const parsed = JSON.parse(raw)
+            delete parsed[slug]
+            localStorage.setItem('cardzy_local_magic_links', JSON.stringify(parsed))
+          }
+        } catch {}
+      }
+      setFirestoreMagicLinks((prev) => prev.filter((m) => m.slug !== slug))
+      showToast('Magic Link deleted', 'info')
+    } catch (err) {
+      console.error('Failed to delete magic link:', err)
+      alert('Could not delete magic link')
+    }
+  }
 
   // RSVPs filtered by the selected invitation slug (or all if none selected)
   const filteredRsvps = useMemo(() => {
@@ -786,6 +914,30 @@ export default function AdminPortalPage() {
       estRevenuePkr,
     }
   }, [allUsersList])
+
+  const totalAdminShares = useMemo(() => {
+    const all = [...invitations, ...wishes, ...visitingCards, ...magicLinks]
+    return all.reduce(
+      (acc, card: any) => {
+        const s = card.shares || {}
+        return {
+          whatsapp: acc.whatsapp + (s.whatsapp || 0),
+          sms: acc.sms + (s.sms || 0),
+          copy: acc.copy + (s.copy || 0),
+          qr: acc.qr + (s.qr || 0),
+          image: acc.image + (s.image || 0),
+          total:
+            acc.total +
+            (s.whatsapp || 0) +
+            (s.sms || 0) +
+            (s.copy || 0) +
+            (s.qr || 0) +
+            (s.image || 0),
+        }
+      },
+      { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, total: 0 }
+    )
+  }, [invitations, wishes, visitingCards, magicLinks])
 
   // Filtered Users
   const filteredUsers = useMemo(() => {
@@ -1283,7 +1435,7 @@ export default function AdminPortalPage() {
           </div>
         </div>
 
-        {!isFirebaseConfigured && (
+        {!isFirebaseConfigured ? (
           <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-xs text-amber-200 flex items-start gap-3">
             <AlertTriangle className="size-5 shrink-0 text-amber-400 mt-0.5" />
             <div className="space-y-1">
@@ -1292,6 +1444,28 @@ export default function AdminPortalPage() {
                 This deployment is missing the required Firebase environment variables (<code className="bg-amber-900/40 px-1.5 py-0.5 rounded text-amber-300 font-mono text-[11px]">NEXT_PUBLIC_FIREBASE_*</code>). Currently, you are viewing local browser data only. To see real-time submissions from all users across the published site, add these environment variables in your Vercel Project Settings and redeploy.
               </p>
             </div>
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 text-xs text-emerald-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 shadow-xs">
+            <div className="flex items-center gap-2.5">
+              <span className="relative flex h-2.5 w-2.5 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <div>
+                <span className="font-bold text-xs text-emerald-100">
+                  Firebase Cloud Database Connected: <code className="bg-emerald-950/60 px-1.5 py-0.5 rounded font-mono text-emerald-300 text-[11px]">jashn-app-e3888</code>
+                </span>
+                <span className="text-[11px] text-emerald-300/80 ml-2">
+                  (Real-time live synchronization active)
+                </span>
+              </div>
+            </div>
+            {lastSyncedAt && (
+              <span className="text-[10px] text-emerald-400 font-mono">
+                Synced at {new Date(lastSyncedAt).toLocaleTimeString()}
+              </span>
+            )}
           </div>
         )}
 
@@ -1347,11 +1521,62 @@ export default function AdminPortalPage() {
           />
         </div>
 
+        {/* ================= GLOBAL CARD SHARING CHANNELS ANALYTICS ================= */}
+        <div className="p-5 rounded-3xl border border-border bg-card shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div className="flex items-center gap-2">
+              <Share2 className="size-5 text-amber-500" />
+              <span className="text-base font-bold text-foreground">Global Card Sharing & Channel Engagement</span>
+              <span className="text-xs text-muted-foreground font-mono bg-muted px-2.5 py-0.5 rounded-full">
+                {totalAdminShares.total.toLocaleString()} total shares across all cards
+              </span>
+            </div>
+            <span className="text-xs text-muted-foreground">
+              Live engagement across SMS, WhatsApp, Clean URL Copy, Barcode / QR & Image PNG Exports
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60 flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+                <span className="text-base">📱</span> SMS Text
+              </span>
+              <span className="text-base font-black text-blue-500 font-mono">{totalAdminShares.sms.toLocaleString()}</span>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60 flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+                <span className="text-base">💬</span> WhatsApp
+              </span>
+              <span className="text-base font-black text-emerald-500 font-mono">{totalAdminShares.whatsapp.toLocaleString()}</span>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60 flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+                <span className="text-base">📋</span> Link Copied
+              </span>
+              <span className="text-base font-black text-foreground font-mono">{totalAdminShares.copy.toLocaleString()}</span>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60 flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+                <span className="text-base">🔲</span> Barcode / QR
+              </span>
+              <span className="text-base font-black text-amber-500 font-mono">{totalAdminShares.qr.toLocaleString()}</span>
+            </div>
+            <div className="col-span-2 sm:col-span-1 p-3.5 rounded-2xl bg-muted/40 border border-border/60 flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+                <span className="text-base">🖼️</span> Image PNG
+              </span>
+              <span className="text-base font-black text-purple-500 font-mono">{totalAdminShares.image.toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
+
         {/* Section Navigation Bar */}
         <div className="flex border-b border-border gap-2 overflow-x-auto pb-1">
           {[
             { id: 'all', label: `✨ All Database Overview`, icon: FileSpreadsheet },
             { id: 'live_users', label: `🟢 Live Online (${liveActiveSessions.length})`, icon: Activity },
+            { id: 'magic_links', label: `🪄 Magic Links (${magicLinks.length})`, icon: Sparkles },
+            { id: 'guestbook', label: `💬 Wishes Wall (${allGuestbookWishes.length})`, icon: MessageCircle },
             { id: 'invitations', label: `Active Invitations (${invitations.length})`, icon: Calendar },
             { id: 'wishes', label: `Created Wishes (${wishes.length})`, icon: Sparkles },
             { id: 'visiting_cards', label: `Visiting Cards (${visitingCards?.length || 0})`, icon: CreditCard },
@@ -1857,6 +2082,311 @@ export default function AdminPortalPage() {
           </div>
         )}
 
+        {/* MAGIC LINKS 🪄 SECTION */}
+        {(adminSection === 'all' || adminSection === 'magic_links') && (
+          <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden mb-8">
+            <div className="p-6 border-b border-border flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+                  <Sparkles className="size-5 text-amber-500" /> Interactive Magic Links 🪄 ({magicLinks.length})
+                </h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Full database of bespoke 3D animated celebration microsites (Balloons, Candles, Mughal farmaan, Lanterns).
+                </p>
+              </div>
+              <Link
+                href="/create-magic-link"
+                className="rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2 text-xs font-black shadow-md flex items-center gap-1.5"
+              >
+                <Sparkles className="size-3.5" /> Create Magic Link
+              </Link>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-muted/40 border-b border-border text-xs uppercase font-semibold text-muted-foreground">
+                  <tr>
+                    <th className="py-3.5 px-4">Celebrant / Recipient</th>
+                    <th className="py-3.5 px-4">Creator / Host</th>
+                    <th className="py-3.5 px-4">Occasion & Theme</th>
+                    <th className="py-3.5 px-4">Details / Secret Letter</th>
+                    <th className="py-3.5 px-4">Created When</th>
+                    <th className="py-3.5 px-4">Visits</th>
+                    <th className="py-3.5 px-4 text-right">Admin Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/60">
+                  {magicLinks.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="py-8 text-center text-muted-foreground text-xs">
+                        No Magic Links recorded yet. Create one to test interactive celebrations!
+                      </td>
+                    </tr>
+                  ) : (
+                    magicLinks.map((m) => (
+                      <tr key={m.slug} className="hover:bg-muted/20 transition-colors">
+                        <td className="py-4 px-4 font-bold text-foreground">
+                          <div className="text-base text-amber-400 font-black">{m.recipientName}</div>
+                          <div className="text-[11px] font-mono text-muted-foreground">slug: {m.slug}</div>
+                        </td>
+                        <td className="py-4 px-4 font-semibold text-foreground">
+                          {m.senderName || 'Anonymous Host'}
+                        </td>
+                        <td className="py-4 px-4">
+                          <span className="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-500 text-xs font-bold uppercase border border-amber-500/30">
+                            {m.occasion} · {m.type}
+                          </span>
+                          <div className="text-[10px] text-muted-foreground mt-1 capitalize font-mono">
+                            Theme: {m.theme || 'emerald-gold'}
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-xs text-muted-foreground max-w-xs leading-snug line-clamp-2">
+                          {m.wishContent?.secretLetter || m.inviteContent?.eventTitle || 'Interactive 3D celebration capsule'}
+                        </td>
+                        <td className="py-4 px-4 text-xs">
+                          <div className="flex items-center gap-1.5">
+                            <Clock className="size-3.5 text-amber-500 shrink-0" />
+                            <span className="font-bold text-foreground">
+                              {formatDateTime(typeof m.createdAt === 'number' ? m.createdAt : (m.createdAt as any)?.toMillis?.() || Date.now())}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-xs font-bold text-foreground">
+                          <div className="flex items-center gap-1.5 mb-1.5">
+                            <Eye className="size-3.5 text-amber-500" />
+                            <span className="px-2 py-0.5 rounded-md bg-muted font-mono font-bold text-foreground text-xs">
+                              {m.viewsCount || 0} visits
+                            </span>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-1 text-[10px] font-medium text-muted-foreground">
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="SMS">
+                              📱 {m.shares?.sms || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="WhatsApp">
+                              💬 {m.shares?.whatsapp || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                              📋 {m.shares?.copy || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR">
+                              🔲 {m.shares?.qr || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                              🖼️ {m.shares?.image || 0}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <Link
+                              href={`/m/${m.slug}?mode=sender`}
+                              target="_blank"
+                              className="p-1.5 rounded-lg bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 text-xs font-bold flex items-center gap-1"
+                              title="Host Screen Preview"
+                            >
+                              <ExternalLink className="size-3.5" /> Preview
+                            </Link>
+
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setShareModalCard({
+                                  title: `${m.occasion.toUpperCase()} Magic Link`,
+                                  recipientOrCouple: m.recipientName,
+                                  type: 'magic',
+                                  slug: m.slug,
+                                  url: `/m/${m.slug}`,
+                                  viewsCount: m.viewsCount,
+                                  shares: m.shares,
+                                  occasion: `${m.occasion.toUpperCase()} Magic Celebration`,
+                                  message: m.wishContent?.secretLetter || m.inviteContent?.eventTitle,
+                                  theme: m.theme,
+                                  senderName: m.senderName,
+                                  date: m.inviteContent?.eventDate,
+                                  time: m.inviteContent?.eventTime,
+                                  venue: m.inviteContent?.venueName,
+                                  waMessage: `✨ I created an interactive surprise for you on Cardzy! Tap to unwrap:`,
+                                })
+                              }
+                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                              title="Share, QR & Download Image"
+                            >
+                              <Sparkles className="size-3.5" /> Share & Image
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteMagicLink(m.slug)}
+                              className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                              title="Delete Magic Link"
+                            >
+                              <Trash2 className="size-3.5" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* EVENT CARD GUESTBOOK / WISHES WALL SECTION */}
+        {(adminSection === 'all' || adminSection === 'guestbook') && (
+          <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden mb-8">
+            <div className="p-6 border-b border-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+                    <MessageCircle className="size-5 text-purple-500" /> Guestbook & Wishes Wall ({allGuestbookWishes.length})
+                  </h2>
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                    🛡️ 100% AdSense Safe (No Links / UGC Filtered)
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Heartfelt wishes, prayers, and Duas left by guests and friends on digital celebration cards. Live synchronized.
+                </p>
+              </div>
+
+              {/* Action Toolbar: Search + Bulk Delete */}
+              <div className="flex flex-wrap items-center gap-2.5">
+                <div className="relative min-w-[200px]">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="Search guest, message, slug..."
+                    value={guestbookSearch}
+                    onChange={(e) => setGuestbookSearch(e.target.value)}
+                    className="pl-8 text-xs h-9 bg-muted/30 border-border rounded-xl"
+                  />
+                </div>
+
+                <div className="flex items-center gap-1.5 bg-muted/30 border border-border rounded-xl p-1">
+                  <select
+                    value={guestbookCleanupDays}
+                    onChange={(e) => setGuestbookCleanupDays(Number(e.target.value))}
+                    className="bg-transparent text-xs font-semibold text-foreground px-2 py-1 outline-none cursor-pointer"
+                    title="Select age threshold for cleanup"
+                  >
+                    <option value={7} className="bg-card text-foreground">Older than 7 days</option>
+                    <option value={15} className="bg-card text-foreground">Older than 15 days</option>
+                    <option value={30} className="bg-card text-foreground">Older than 30 days</option>
+                    <option value={60} className="bg-card text-foreground">Older than 60 days</option>
+                    <option value={90} className="bg-card text-foreground">Older than 90 days</option>
+                  </select>
+
+                  <Button
+                    onClick={handleCleanOldWishes}
+                    disabled={isCleaningOldWishes || allGuestbookWishes.length === 0}
+                    variant="outline"
+                    className="h-7 px-2.5 text-xs font-bold text-rose-600 hover:text-white hover:bg-rose-600 border-rose-500/30 rounded-lg transition-colors flex items-center gap-1"
+                    title="Bulk clean old wishes from database"
+                  >
+                    <Trash2 className={cn("size-3", isCleaningOldWishes && "animate-spin")} />
+                    <span>{isCleaningOldWishes ? 'Cleaning...' : 'Purge Old'}</span>
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-muted/40 border-b border-border text-xs uppercase font-semibold text-muted-foreground">
+                  <tr>
+                    <th className="py-3.5 px-4">Guest & Reaction</th>
+                    <th className="py-3.5 px-4">Target Card / Slug</th>
+                    <th className="py-3.5 px-4">Wish Message / Dua</th>
+                    <th className="py-3.5 px-4">Submitted When</th>
+                    <th className="py-3.5 px-4 text-right">Admin Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/60">
+                  {filteredGuestbookWishes.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-10 text-center text-muted-foreground text-xs">
+                        {guestbookSearch ? (
+                          <span>No wishes match your search query "{guestbookSearch}".</span>
+                        ) : (
+                          <div className="space-y-1">
+                            <p className="font-semibold text-foreground">No guestbook wishes recorded yet.</p>
+                            <p className="text-[11px]">When guests visit celebration cards and post wishes or Duas, they will stream here in real time.</p>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredGuestbookWishes.map((w) => (
+                      <tr key={w.id} className="hover:bg-muted/20 transition-colors">
+                        <td className="py-4 px-4 font-bold text-foreground">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl shrink-0 p-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20">
+                              {w.emoji || '💖'}
+                            </span>
+                            <div>
+                              <div className="text-sm font-black text-foreground">{w.guestName}</div>
+                              {(w.city || w.country) && (
+                                <div className="text-[11px] font-normal text-muted-foreground flex items-center gap-1">
+                                  <MapPin className="size-3 text-muted-foreground" />
+                                  <span>{[w.city, w.country].filter(Boolean).join(', ')}</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4">
+                          <div className="flex items-center gap-1.5">
+                            <span className="px-2 py-0.5 rounded-md bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs font-bold font-mono">
+                              {w.cardType || 'magic'}
+                            </span>
+                            <Link
+                              href={`/m/${w.cardSlug}`}
+                              target="_blank"
+                              className="text-xs font-mono font-bold text-amber-500 hover:underline flex items-center gap-1"
+                              title="Open card celebration"
+                            >
+                              <span>{w.cardSlug}</span>
+                              <ExternalLink className="size-3" />
+                            </Link>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-xs text-foreground max-w-md">
+                          <div className="p-2.5 rounded-xl bg-muted/40 border border-border/60 text-xs leading-relaxed font-medium italic">
+                            "{w.message}"
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-xs whitespace-nowrap">
+                          <div className="flex items-center gap-1.5">
+                            <Clock className="size-3.5 text-muted-foreground shrink-0" />
+                            <span className="font-bold text-foreground">
+                              {formatDateTime(w.createdAt)}
+                            </span>
+                          </div>
+                          <div className="text-[10px] text-muted-foreground mt-0.5 font-mono">
+                            {formatRelativeTime(w.createdAt)}
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-right">
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteSingleWish(w.id, w.cardSlug)}
+                            className="p-2 rounded-xl bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs"
+                            title="Delete this wish entry"
+                          >
+                            <Trash2 className="size-3.5" />
+                            <span>Delete</span>
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
         {/* 2. ACTIVE INVITATIONS SECTION */}
         {(adminSection === 'all' || adminSection === 'invitations') && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden">
@@ -1975,10 +2505,50 @@ export default function AdminPortalPage() {
                         </td>
                         <td className="py-4 px-4 text-xs">
                           <div className="font-bold text-emerald-600">{inv.rsvpCount} RSVPs</div>
-                          <div className="text-muted-foreground">{inv.viewCount || 1} views</div>
+                          <div className="text-muted-foreground font-semibold mb-1.5">{inv.viewCount || 0} views</div>
+                          <div className="flex flex-wrap items-center gap-1 text-[10px] font-medium text-muted-foreground">
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="SMS">
+                              📱 {inv.shares?.sms || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="WhatsApp">
+                              💬 {inv.shares?.whatsapp || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                              📋 {inv.shares?.copy || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR">
+                              🔲 {inv.shares?.qr || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                              🖼️ {inv.shares?.image || 0}
+                            </span>
+                          </div>
                         </td>
                         <td className="py-4 px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setShareModalCard({
+                                  title: inv.title || `${inv.groom} & ${inv.bride}`,
+                                  recipientOrCouple: (inv.groom && inv.bride) ? `${inv.groom} & ${inv.bride}` : (inv.title || 'Royal Guests'),
+                                  type: 'invite',
+                                  slug: inv.slug,
+                                  url: `/i/${inv.slug}`,
+                                  viewsCount: inv.viewCount,
+                                  shares: inv.shares,
+                                  occasion: inv.typeId || 'Royal Wedding Invitation',
+                                  date: inv.date,
+                                  time: inv.time,
+                                  venue: inv.venue || inv.city,
+                                  waMessage: `✨ You are cordially invited to celebrate with us! Tap to view our interactive digital invitation:`,
+                                })
+                              }
+                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                              title="Share, QR & Download Image"
+                            >
+                              <Sparkles className="size-3.5" /> Share
+                            </button>
                             <button
                               type="button"
                               onClick={() => {
@@ -2125,9 +2695,50 @@ export default function AdminPortalPage() {
                             </div>
                           </td>
                         <td className="py-4 px-4 text-xs text-muted-foreground max-w-xs leading-snug">{w.message}</td>
-                        <td className="py-4 px-4 text-xs font-bold text-foreground">{w.viewCount}</td>
+                        <td className="py-4 px-4 text-xs font-bold text-foreground">
+                          <div className="font-bold text-foreground mb-1.5">{w.viewCount || 0} views</div>
+                          <div className="flex flex-wrap items-center gap-1 text-[10px] font-medium text-muted-foreground">
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="SMS">
+                              📱 {w.shares?.sms || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="WhatsApp">
+                              💬 {w.shares?.whatsapp || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                              📋 {w.shares?.copy || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR">
+                              🔲 {w.shares?.qr || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                              🖼️ {w.shares?.image || 0}
+                            </span>
+                          </div>
+                        </td>
                         <td className="py-4 px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setShareModalCard({
+                                  title: `${w.occasionId} Wish Card`,
+                                  recipientOrCouple: w.recipientName || 'Dear Friend',
+                                  type: 'wish',
+                                  slug: w.slug,
+                                  url: `/w/${w.slug}`,
+                                  viewsCount: w.viewCount,
+                                  shares: w.shares,
+                                  occasion: w.occasionId,
+                                  message: w.message,
+                                  senderName: w.senderName,
+                                  waMessage: `✨ A special 3D digital wish card was created for you! Tap to open:`,
+                                })
+                              }
+                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                              title="Share, QR & Download Image"
+                            >
+                              <Sparkles className="size-3.5" /> Share
+                            </button>
                             <Link
                               href={`/w/${w.slug}`}
                               target="_blank"
@@ -2272,9 +2883,50 @@ export default function AdminPortalPage() {
                               )}
                             </div>
                           </td>
-                          <td className="py-4 px-4 text-xs font-bold text-foreground">{vc.viewCount || 0}</td>
+                          <td className="py-4 px-4 text-xs font-bold text-foreground">
+                            <div className="font-bold text-foreground mb-1.5">{vc.viewCount || 0} views</div>
+                            <div className="flex flex-wrap items-center gap-1 text-[10px] font-medium text-muted-foreground">
+                              <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="SMS">
+                                📱 {vc.shares?.sms || 0}
+                              </span>
+                              <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="WhatsApp">
+                                💬 {vc.shares?.whatsapp || 0}
+                              </span>
+                              <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                                📋 {vc.shares?.copy || 0}
+                              </span>
+                              <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR">
+                                🔲 {vc.shares?.qr || 0}
+                              </span>
+                              <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                                🖼️ {vc.shares?.image || 0}
+                              </span>
+                            </div>
+                          </td>
                         <td className="py-4 px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setShareModalCard({
+                                  title: `${vc.fullName}'s Digital vCard`,
+                                  recipientOrCouple: vc.fullName,
+                                  type: 'vcard',
+                                  slug: vc.slug,
+                                  url: `/v/${vc.slug}`,
+                                  viewsCount: vc.viewCount,
+                                  shares: vc.shares,
+                                  occasion: 'Executive Digital vCard',
+                                  subtitle: `${vc.title || 'Professional'} • ${vc.company || ''}`,
+                                  details: vc.phone || vc.email,
+                                  waMessage: `✨ Here is my executive digital business card. Tap to save contact:`,
+                                })
+                              }
+                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                              title="Share, QR & Download Image"
+                            >
+                              <Sparkles className="size-3.5" /> Share
+                            </button>
                             <Link
                               href={`/v/${vc.slug}`}
                               target="_blank"
@@ -3135,6 +3787,12 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
           </div>
         </div>
       )}
+
+      {/* Universal Share, QR & Image Export Modal */}
+      <CardShareModal
+        card={shareModalCard}
+        onClose={() => setShareModalCard(null)}
+      />
     </div>
   )
 }

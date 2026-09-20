@@ -17,6 +17,8 @@ import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { ShareBar } from '@/components/jashn/share-bar'
 import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
+import { CardShareModal } from '@/components/dashboard/card-share-modal'
+import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
@@ -26,12 +28,13 @@ import type { Invitation } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, onSnapshot } from 'firebase/firestore'
+import { shouldIncrementView, isSenderOrOwner } from '@/lib/jashn/view-tracker'
 
 function InvitationPublicContent({ slug }: { slug: string }) {
   const { lang, t } = useLang()
   const searchParams = useSearchParams()
   const router = useRouter()
-  const { invitations, incrementInvitationView, incrementRsvp, deleteInvitation, showToast } = useJashn()
+  const { user, invitations, incrementInvitationView, incrementRsvp, deleteInvitation, showToast } = useJashn()
   const cardRef = useRef<HTMLDivElement>(null)
   const viewIncrementedRef = useRef<string | null>(null)
 
@@ -41,9 +44,14 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   const [rsvped, setRsvped] = useState(false)
   const [rainActive, setRainActive] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
+  const [showGuestbookModal, setShowGuestbookModal] = useState(false)
 
-  // Check explicitly if the user opened the page in Sender Mode
-  const isSenderMode = searchParams.get('mode') === 'sender' || searchParams.get('preview') === 'true' || searchParams.get('role') === 'sender'
+  // Only enter Sender Screen if explicitly requested in URL (e.g. preview from dashboard/create page)
+  // When copying clean link, sender and receiver both get the complete, clean Receiver Screen
+  const isSenderMode =
+    searchParams.get('mode') === 'sender' ||
+    searchParams.get('preview') === 'true' ||
+    searchParams.get('role') === 'sender'
 
   useEffect(() => {
     setIsMounted(true)
@@ -66,8 +74,11 @@ function InvitationPublicContent({ slug }: { slug: string }) {
             
             if (viewIncrementedRef.current !== slug) {
               viewIncrementedRef.current = slug
-              incrementInvitationView(slug)
-              setActiveInvitation((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+              // Only increment view count if viewer is receiver (not sender/creator)
+              if (shouldIncrementView(slug, 'invite', data.creatorId, searchParams, user?.uid)) {
+                incrementInvitationView(slug)
+                setActiveInvitation((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+              }
             }
             setIsLoading(false)
           } else {
@@ -91,8 +102,11 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         setActiveInvitation(existing)
         if (viewIncrementedRef.current !== slug) {
           viewIncrementedRef.current = slug
-          incrementInvitationView(slug)
-          setActiveInvitation((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+          // Only increment view count if viewer is receiver (not sender/creator)
+          if (shouldIncrementView(slug, 'invite', existing.creatorId, searchParams, user?.uid)) {
+            incrementInvitationView(slug)
+            setActiveInvitation((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+          }
         }
         setIsLoading(false)
         return
@@ -256,7 +270,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                 <Heart className="size-4 text-pink-400 animate-pulse" /> {activeInvitation.rsvpCount + (rsvped ? 1 : 0)} Attending
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/90 px-4 py-1.5 text-xs font-extrabold text-slate-200 shadow-sm">
-                <Eye className="size-4 text-emerald-400" /> {activeInvitation.viewCount ?? 1} views
+                <Eye className="size-4 text-emerald-400" /> {activeInvitation.viewCount || 0} views
               </span>
             </div>
 
@@ -400,38 +414,45 @@ function InvitationPublicContent({ slug }: { slug: string }) {
 
       {/* Receiver Screen Footer Control */}
       <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pb-2 text-center">
-        <button
-          onClick={() => setShowShareModal((o) => !o)}
-          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-slate-900/70 hover:bg-slate-800 text-white font-extrabold py-2 px-5 text-xs shadow-lg transition-all"
-        >
-          <Share2 className="size-3.5 text-amber-400" />
-          <span>Share Invitation</span>
-        </button>
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <button
+            onClick={() => setShowGuestbookModal(true)}
+            className="inline-flex items-center justify-center gap-1.5 rounded-2xl border border-purple-400/30 bg-purple-950/70 hover:bg-purple-900 text-purple-200 hover:text-white font-extrabold py-2 px-4 text-xs shadow-lg transition-all cursor-pointer"
+          >
+            <MessageCircle className="size-3.5 text-purple-300" />
+            <span>💬 Wishes Wall & Dua</span>
+          </button>
+          <button
+            onClick={() => setShowShareModal((o) => !o)}
+            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-slate-900/70 hover:bg-slate-800 text-white font-extrabold py-2 px-4 text-xs shadow-lg transition-all cursor-pointer"
+          >
+            <Share2 className="size-3.5 text-amber-400" />
+            <span>Share Invitation</span>
+          </button>
+        </div>
 
-        {/* Share Modal */}
+        {/* Universal Luxury Share Modal */}
         {showShareModal && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-            <div className="bg-slate-900 border border-amber-500/30 rounded-3xl p-6 max-w-sm w-full space-y-5 text-white relative shadow-2xl">
-              <button
-                onClick={() => setShowShareModal(false)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
-              >
-                <X className="size-5" />
-              </button>
-
-              <div className="text-center space-y-1">
-                <h3 className="font-extrabold text-lg text-amber-300">Share Invitation</h3>
-                <p className="text-xs text-slate-400">Send link or scan QR code</p>
-              </div>
-
-              <ShareBar url={receiverUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-online-${activeInvitation.slug}`} />
-
-              <div className="pt-3 border-t border-white/10 flex flex-col items-center space-y-2">
-                <span className="text-xs font-bold text-amber-300 uppercase tracking-wider">Invitation QR Code</span>
-                <CardQrCode slug={slug} cardType="i" size={140} showDownloadBtn={true} />
-              </div>
-            </div>
-          </div>
+          <CardShareModal
+            card={{
+              title: activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`,
+              recipientOrCouple: activeInvitation.groom && activeInvitation.bride
+                ? `${activeInvitation.groom} & ${activeInvitation.bride}`
+                : activeInvitation.title || 'Royal Guests',
+              type: 'invite',
+              slug: activeInvitation.slug,
+              url: `/i/${activeInvitation.slug}`,
+              viewsCount: activeInvitation.viewCount || 0,
+              shares: activeInvitation.shares,
+              occasion: type?.label || 'Wedding Invitation',
+              date: activeInvitation.date,
+              time: activeInvitation.time,
+              venue: activeInvitation.venue || activeInvitation.city,
+              senderName: activeInvitation.hostNames,
+              waMessage: `✨ You are cordially invited! Tap to view our interactive digital invitation:`,
+            }}
+            onClose={() => setShowShareModal(false)}
+          />
         )}
 
         <Link
@@ -442,6 +463,44 @@ function InvitationPublicContent({ slug }: { slug: string }) {
           <span>Cardzy · Make Your Own</span>
         </Link>
       </footer>
+
+      {/* Floating Action Pill for Wishes Wall & Share - Visible to ALL visitors */}
+      <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2">
+        <button
+          onClick={() => setShowShareModal(true)}
+          className="group flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white text-xs font-bold shadow-xl border border-white/20 backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+          title="Share Link & QR"
+        >
+          <Share2 className="size-3.5 text-amber-400" />
+          <span className="hidden sm:inline">Share</span>
+        </button>
+
+        <button
+          onClick={() => setShowGuestbookModal(true)}
+          className="group flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 hover:from-purple-600 hover:to-indigo-600 text-white text-xs font-bold shadow-2xl shadow-purple-950/70 border border-purple-400/40 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
+          title="Open Wishes Wall & Dua (Leave a Blessing)"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-300"></span>
+          </span>
+          <MessageCircle className="size-3.5 text-purple-200 group-hover:scale-110 transition-transform" />
+          <span>💬 Wishes Wall</span>
+        </button>
+      </div>
+
+      {/* Event Card Guestbook / Wishes Wall Modal */}
+      <CardGuestbookModal
+        cardSlug={activeInvitation.slug}
+        cardType="invite"
+        recipientName={activeInvitation.groom && activeInvitation.bride ? `${activeInvitation.groom} & ${activeInvitation.bride}` : (activeInvitation.title || 'Host')}
+        isOpen={showGuestbookModal}
+        onClose={() => setShowGuestbookModal(false)}
+        onWishSubmitted={() => {
+          setRainActive(true)
+          setTimeout(() => setRainActive(false), 4000)
+        }}
+      />
     </div>
   )
 }

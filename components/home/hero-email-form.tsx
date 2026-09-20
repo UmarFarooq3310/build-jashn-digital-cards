@@ -27,7 +27,7 @@ export function HeroEmailForm() {
   }
 
   return (
-    <div className="mt-8">
+    <div className="mt-5 sm:mt-6">
       <p className="mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">
         {t('orSignUp')}
       </p>

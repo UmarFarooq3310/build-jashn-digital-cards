@@ -49,7 +49,7 @@ export function ThemePicker({
   }
 
   return (
-    <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
       {THEMES.map((theme) => {
         const isSelected = value === theme.id
         const isLocked = theme.isPremium && !isPro
@@ -72,16 +72,16 @@ export function ThemePicker({
             }}
             aria-pressed={isSelected}
             className={cn(
-              'group relative flex flex-col items-center gap-2 rounded-2xl border p-3 transition-all text-center',
+              'group relative flex flex-col items-center gap-1.5 rounded-xl border p-2 sm:p-2.5 transition-all text-center',
               isSelected
-                ? 'border-[#7B0D1E] bg-[#7B0D1E]/8 ring-2 ring-[#7B0D1E]/35 shadow-sm dark:bg-[#7B0D1E]/15'
+                ? 'border-[#7B0D1E] bg-[#7B0D1E]/8 ring-2 ring-[#7B0D1E]/35 shadow-xs dark:bg-[#7B0D1E]/15'
                 : 'border-border bg-card hover:border-[#7B0D1E]/40 hover:bg-muted/40'
             )}
           >
             {/* PRO / FREE badge positioned top right */}
             {theme.isPremium ? (
               <span className={cn(
-                "absolute top-2 right-2 rounded-md bg-amber-500/15 border border-amber-500/30 px-1.5 py-0.5 text-[8px] font-extrabold uppercase tracking-wider text-amber-600 dark:text-amber-400 leading-none",
+                "absolute top-1.5 right-1.5 rounded-md bg-amber-500/15 border border-amber-500/30 px-1 py-0.2 text-[7.5px] font-extrabold uppercase tracking-wider text-amber-600 dark:text-amber-400 leading-none",
                 isUrdu && "font-urdu"
               )}>
                 {t('badgePro') || 'PRO'}
@@ -91,17 +91,17 @@ export function ThemePicker({
             {/* Pure colour swatch */}
             <span
               className={cn(
-                "relative flex size-11 sm:size-12 items-center justify-center rounded-2xl shadow-inner transition-transform group-hover:scale-105 border",
+                "relative flex size-8 sm:size-9 items-center justify-center rounded-xl shadow-inner transition-transform group-hover:scale-105 border",
                 isLightSwatch ? "border-stone-300" : "border-black/15 dark:border-white/15"
               )}
               style={{ background: theme.previewColor }}
             >
               {isLocked ? (
-                <Lock className={cn("size-4 drop-shadow-md", isLightSwatch ? "text-stone-800" : "text-white")} />
+                <Lock className={cn("size-3.5 drop-shadow-md", isLightSwatch ? "text-stone-800" : "text-white")} />
               ) : isSelected ? (
                 <Check
                   className={cn(
-                    "size-5 stroke-[3] drop-shadow-sm",
+                    "size-4 stroke-[3] drop-shadow-sm",
                     isLightSwatch ? "text-stone-900" : "text-white"
                   )}
                 />
@@ -110,10 +110,10 @@ export function ThemePicker({
 
             {/* Typography labels below swatch */}
             <div className="flex flex-col items-center w-full min-w-0 space-y-0.5">
-              <span className={cn("text-xs font-bold leading-tight text-foreground truncate w-full", isUrdu && "font-urdu text-sm leading-normal")}>
+              <span className={cn("text-xs font-bold leading-tight text-foreground truncate w-full", isUrdu && "font-urdu text-xs leading-normal")}>
                 {translatedThemeName}
               </span>
-              <span className={cn("text-[10px] font-medium text-muted-foreground capitalize truncate w-full", isUrdu && "font-urdu text-[11px]")}>
+              <span className={cn("text-[9.5px] font-medium text-muted-foreground capitalize truncate w-full", isUrdu && "font-urdu text-[10px]")}>
                 {translatedMotif}
               </span>
             </div>

@@ -32,7 +32,7 @@ const WishCard = dynamic(
   { ssr: false }
 )
 
-type TabType = 'global' | 'wedding' | 'birthday' | 'visiting' | 'friendship' | 'festivals'
+type TabType = 'magic' | 'global' | 'wedding' | 'birthday' | 'visiting' | 'friendship' | 'festivals'
 
 function getGlobalCardTheme(id: string) {
   switch (id) {
@@ -163,7 +163,7 @@ function getFriendshipCardTheme(id: string) {
 
 export function CategoryTabs() {
   const { t, lang } = useLang()
-  const [activeTab, setActiveTab] = useState<TabType>('global')
+  const [activeTab, setActiveTab] = useState<TabType>('magic')
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(() => {
@@ -217,6 +217,12 @@ export function CategoryTabs() {
         <div className="flex flex-wrap justify-center items-center gap-2.5 sm:gap-3 mb-10">
           {(
             [
+              {
+                id: 'magic',
+                label: '🪄 3D Magic Links',
+                icon: Sparkles,
+                activeClass: 'bg-gradient-to-r from-rose-600 via-purple-600 to-amber-600 text-white shadow-lg shadow-rose-500/25 border-rose-400/30',
+              },
               {
                 id: 'global',
                 label: t('globalCelebrations') || 'World Holidays & Global Days',
@@ -277,6 +283,124 @@ export function CategoryTabs() {
 
         {/* Tab Contents */}
         <div className="min-h-[220px]">
+          {/* TAB: 3D MAGIC LINKS */}
+          {activeTab === 'magic' && (
+            <div className="space-y-6 animate-fadeIn">
+              <div className="max-w-2xl space-y-1">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-extrabold tracking-wider bg-gradient-to-r from-rose-500/15 via-purple-500/10 to-amber-500/15 text-rose-700 dark:text-rose-300 border border-rose-500/30 uppercase">
+                  <Sparkles className="size-3.5 text-rose-500 animate-pulse" />
+                  Next-Gen 3D Interactive Experiences
+                </span>
+                <p className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight pt-1">
+                  🪄 3D Magic Links: Candle Blowing &amp; Ring Box Unboxing
+                </p>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Send high-energy interactive links that recipients unbox right in their browser. Includes real-time candle flame blowing, 3D velvet jewelry ring box, synthesized music, and interactive Wishes Wall.
+                </p>
+              </div>
+
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {[
+                  {
+                    id: 'birthday',
+                    emoji: '🎂',
+                    title: 'Birthday Candle Blowing Magic Card',
+                    tagline: 'Blow candle flame on screen with real-time audio & confetti burst',
+                    badge: '🔥 Interactive Prop · Candle & Cake',
+                    bg: 'from-rose-500/10 via-pink-500/5 to-card border-rose-500/25 hover:border-rose-500/60 shadow-xs hover:shadow-rose-500/15',
+                    badgeColor: 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/20',
+                    btnColor: 'text-rose-600 dark:text-rose-400 group-hover:text-rose-700',
+                  },
+                  {
+                    id: 'wedding',
+                    emoji: '💍',
+                    title: 'Velvet Ring Box & Proposal Unboxing',
+                    tagline: 'Unboxes a 3D royal velvet jewelry ring box with shehnai music & RSVP',
+                    badge: '💎 3D Ring Box · Shehnai Audio',
+                    bg: 'from-amber-500/10 via-orange-500/5 to-card border-amber-500/25 hover:border-amber-500/60 shadow-xs hover:shadow-amber-500/15',
+                    badgeColor: 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/20',
+                    btnColor: 'text-amber-600 dark:text-amber-400 group-hover:text-amber-700',
+                  },
+                  {
+                    id: 'anniversary',
+                    emoji: '💌',
+                    title: 'Anniversary Love Letter & Wax Seal',
+                    tagline: 'Peel open a vintage royal wax seal with personalized love letter & slideshow',
+                    badge: '🌹 Wax Seal · Polaroid Gallery',
+                    bg: 'from-pink-500/10 via-purple-500/5 to-card border-pink-500/25 hover:border-pink-500/60 shadow-xs hover:shadow-pink-500/15',
+                    badgeColor: 'bg-pink-500/10 text-pink-700 dark:text-pink-300 border-pink-500/20',
+                    btnColor: 'text-pink-600 dark:text-pink-400 group-hover:text-pink-700',
+                  },
+                  {
+                    id: 'eid',
+                    emoji: '🌙',
+                    title: 'Ramadan & Eid Royal Lantern',
+                    tagline: 'Glows with Islamic calligraphy, crescent moon & ambient celebration nasheed',
+                    badge: '✨ Islamic Crescent · Wishes Wall',
+                    bg: 'from-emerald-500/10 via-teal-500/5 to-card border-emerald-500/25 hover:border-emerald-500/60 shadow-xs hover:shadow-emerald-500/15',
+                    badgeColor: 'bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border-emerald-500/20',
+                    btnColor: 'text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700',
+                  },
+                  {
+                    id: 'graduation',
+                    emoji: '🎓',
+                    title: 'Graduation Cap Toss & Confetti Cannon',
+                    tagline: 'Throws graduation mortarboard into the air with congratulatory fireworks',
+                    badge: '🎉 Mortarboard Toss · Fireworks',
+                    bg: 'from-indigo-500/10 via-blue-500/5 to-card border-indigo-500/25 hover:border-indigo-500/60 shadow-xs hover:shadow-indigo-500/15',
+                    badgeColor: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border-indigo-500/20',
+                    btnColor: 'text-indigo-600 dark:text-indigo-400 group-hover:text-indigo-700',
+                  },
+                  {
+                    id: 'party',
+                    emoji: '🎈',
+                    title: 'Festive Balloon Pop & Celebration Blast',
+                    tagline: 'Pop interactive helium balloons to reveal custom greeting & party music',
+                    badge: '🎊 Balloon Pop · Party Beat',
+                    bg: 'from-violet-500/10 via-fuchsia-500/5 to-card border-violet-500/25 hover:border-violet-500/60 shadow-xs hover:shadow-violet-500/15',
+                    badgeColor: 'bg-violet-500/10 text-violet-700 dark:text-violet-300 border-violet-500/20',
+                    btnColor: 'text-violet-600 dark:text-violet-400 group-hover:text-violet-700',
+                  },
+                ].map((scenario) => (
+                  <Link
+                    key={scenario.id}
+                    href={`/create-magic-link?occasion=${scenario.id}`}
+                    className={`group relative flex flex-col justify-between rounded-3xl border bg-gradient-to-br ${scenario.bg} p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl`}
+                  >
+                    <div className="space-y-3.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-extrabold border ${scenario.badgeColor}`}>
+                          {scenario.badge}
+                        </span>
+                        <span className="text-2xl transition-transform group-hover:scale-125 duration-300">
+                          {scenario.emoji}
+                        </span>
+                      </div>
+
+                      <h3 className="text-lg font-extrabold text-foreground group-hover:text-emerald-700 dark:group-hover:text-amber-400 transition-colors">
+                        {scenario.title}
+                      </h3>
+
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        {scenario.tagline}
+                      </p>
+                    </div>
+
+                    <div className="pt-5 mt-4 border-t border-border/50 flex items-center justify-between">
+                      <span className={`inline-flex items-center gap-1.5 text-xs font-bold ${scenario.btnColor} transition-colors`}>
+                        <span>Create 3D Magic Link</span>
+                        <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
+                      </span>
+                      <span className="text-[11px] font-semibold text-muted-foreground bg-secondary/70 px-2.5 py-1 rounded-full">
+                        Instant Delivery
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* TAB 0: GLOBAL CELEBRATIONS */}
           {activeTab === 'global' && (
             <div className="space-y-6 animate-fadeIn">

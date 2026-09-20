@@ -4,6 +4,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Invitation, JashnUser, Plan, Wish, RsvpGuest, VisitingCard } from './types'
 import { getClientTracking } from './tracking'
+import { markCardAsCreatedByMe } from './view-tracker'
 import { db, auth, isFirebaseConfigured, getFirebaseAuth, getFirebaseDb } from '../firebase'
 import {
   createUserWithEmailAndPassword,
@@ -121,6 +122,11 @@ interface JashnState {
   downloadAllGuestsCsv: (invitationSlug?: string) => void
   downloadAllGuestsPdf: (invitationSlug?: string) => void
   isUserPlanActive: (user?: JashnUser | null) => boolean
+  recordCardShare: (
+    cardType: 'wish' | 'invite' | 'vcard' | 'magic',
+    slug: string,
+    channel: 'whatsapp' | 'sms' | 'copy' | 'qr' | 'image'
+  ) => Promise<void>
 }
 
 export const useJashn = create<JashnState>()(
@@ -591,6 +597,7 @@ export const useJashn = create<JashnState>()(
           slug: slugify(),
           creatorId: get().user?.uid ?? 'guest',
           viewCount: 0,
+          shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 },
           createdAt: Date.now(),
           createdLocation: tracking.createdLocation,
           country: tracking.country,
@@ -612,6 +619,7 @@ export const useJashn = create<JashnState>()(
           }
         }
 
+        markCardAsCreatedByMe(wish.slug)
         set((s) => ({ wishes: [wish, ...s.wishes] }))
         return wish
       },
@@ -625,6 +633,7 @@ export const useJashn = create<JashnState>()(
           creatorId: get().user?.uid ?? 'guest',
           rsvpCount: 0,
           viewCount: 0,
+          shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 },
           createdAt: Date.now(),
           createdLocation: tracking.createdLocation,
           country: tracking.country,
@@ -646,6 +655,7 @@ export const useJashn = create<JashnState>()(
           }
         }
 
+        markCardAsCreatedByMe(inv.slug)
         set((s) => ({ invitations: [inv, ...s.invitations] }))
         return inv
       },
@@ -658,6 +668,7 @@ export const useJashn = create<JashnState>()(
           slug: slugify(),
           creatorId: get().user?.uid ?? 'guest',
           viewCount: 0,
+          shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 },
           createdAt: Date.now(),
           createdLocation: tracking.createdLocation,
           country: tracking.country,
@@ -679,6 +690,7 @@ export const useJashn = create<JashnState>()(
           }
         }
 
+        markCardAsCreatedByMe(vc.slug)
         set((s) => ({ visitingCards: [vc, ...s.visitingCards] }))
         return vc
       },
@@ -690,17 +702,59 @@ export const useJashn = create<JashnState>()(
       incrementWishView: (slug) => {
         set((s) => ({
           wishes: s.wishes.map((w) =>
-            w.slug === slug ? { ...w, viewCount: w.viewCount + 1 } : w,
+            w.slug === slug ? { ...w, viewCount: (w.viewCount || 0) + 1 } : w,
           ),
         }))
 
-        const activeDb = getFirebaseDb() || db
-        if (isFirebaseConfigured && activeDb) {
-          updateDoc(doc(activeDb, 'wishes', slug), {
-            viewCount: increment(1),
-          }).catch((err) => {
-            console.error('Failed to increment wish view in Firestore:', err)
+        // Sync to localStorage
+        try {
+          const raw = localStorage.getItem('jashn_store_v1')
+          if (raw) {
+            const parsed = JSON.parse(raw)
+            if (parsed?.state?.wishes) {
+              parsed.state.wishes = parsed.state.wishes.map((w: any) =>
+                w.slug === slug ? { ...w, viewCount: (w.viewCount || 0) + 1 } : w
+              )
+              localStorage.setItem('jashn_store_v1', JSON.stringify(parsed))
+            }
+          }
+        } catch {}
+
+        // Primary: Server API increment (guaranteed single Firebase Admin execution)
+        if (typeof window !== 'undefined') {
+          fetch('/api/card-activity', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cardType: 'wish', slug, action: 'view' }),
           })
+            .then((res) => {
+              if (!res.ok) {
+                // Fallback: Client Firestore only if server API was unreachable
+                const activeDb = getFirebaseDb() || db
+                if (isFirebaseConfigured && activeDb) {
+                  setDoc(
+                    doc(activeDb, 'wishes', slug),
+                    { viewCount: increment(1), lastViewedAt: Date.now() },
+                    { merge: true }
+                  ).catch((err) => {
+                    console.error('Failed to increment wish view in Firestore:', err)
+                  })
+                }
+              }
+            })
+            .catch(() => {
+              // Fallback: Client Firestore on network failure
+              const activeDb = getFirebaseDb() || db
+              if (isFirebaseConfigured && activeDb) {
+                setDoc(
+                  doc(activeDb, 'wishes', slug),
+                  { viewCount: increment(1), lastViewedAt: Date.now() },
+                  { merge: true }
+                ).catch((err) => {
+                  console.error('Failed to increment wish view in Firestore:', err)
+                })
+              }
+            })
         }
       },
 
@@ -711,13 +765,55 @@ export const useJashn = create<JashnState>()(
           ),
         }))
 
-        const activeDb = getFirebaseDb() || db
-        if (isFirebaseConfigured && activeDb) {
-          updateDoc(doc(activeDb, 'invitations', slug), {
-            viewCount: increment(1),
-          }).catch((err) => {
-            console.error('Failed to increment invitation view in Firestore:', err)
+        // Sync to localStorage
+        try {
+          const raw = localStorage.getItem('jashn_store_v1')
+          if (raw) {
+            const parsed = JSON.parse(raw)
+            if (parsed?.state?.invitations) {
+              parsed.state.invitations = parsed.state.invitations.map((i: any) =>
+                i.slug === slug ? { ...i, viewCount: (i.viewCount || 0) + 1 } : i
+              )
+              localStorage.setItem('jashn_store_v1', JSON.stringify(parsed))
+            }
+          }
+        } catch {}
+
+        // Primary: Server API increment (guaranteed single Firebase Admin execution)
+        if (typeof window !== 'undefined') {
+          fetch('/api/card-activity', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cardType: 'invite', slug, action: 'view' }),
           })
+            .then((res) => {
+              if (!res.ok) {
+                // Fallback: Client Firestore only if server API was unreachable
+                const activeDb = getFirebaseDb() || db
+                if (isFirebaseConfigured && activeDb) {
+                  setDoc(
+                    doc(activeDb, 'invitations', slug),
+                    { viewCount: increment(1), lastViewedAt: Date.now() },
+                    { merge: true }
+                  ).catch((err) => {
+                    console.error('Failed to increment invitation view in Firestore:', err)
+                  })
+                }
+              }
+            })
+            .catch(() => {
+              // Fallback: Client Firestore on network failure
+              const activeDb = getFirebaseDb() || db
+              if (isFirebaseConfigured && activeDb) {
+                setDoc(
+                  doc(activeDb, 'invitations', slug),
+                  { viewCount: increment(1), lastViewedAt: Date.now() },
+                  { merge: true }
+                ).catch((err) => {
+                  console.error('Failed to increment invitation view in Firestore:', err)
+                })
+              }
+            })
         }
       },
 
@@ -728,13 +824,55 @@ export const useJashn = create<JashnState>()(
           ),
         }))
 
-        const activeDb = getFirebaseDb() || db
-        if (isFirebaseConfigured && activeDb) {
-          updateDoc(doc(activeDb, 'visitingCards', slug), {
-            viewCount: increment(1),
-          }).catch((err) => {
-            console.error('Failed to increment visiting card view in Firestore:', err)
+        // Sync to localStorage
+        try {
+          const raw = localStorage.getItem('jashn_store_v1')
+          if (raw) {
+            const parsed = JSON.parse(raw)
+            if (parsed?.state?.visitingCards) {
+              parsed.state.visitingCards = parsed.state.visitingCards.map((v: any) =>
+                v.slug === slug ? { ...v, viewCount: (v.viewCount || 0) + 1 } : v
+              )
+              localStorage.setItem('jashn_store_v1', JSON.stringify(parsed))
+            }
+          }
+        } catch {}
+
+        // Primary: Server API increment (guaranteed single Firebase Admin execution)
+        if (typeof window !== 'undefined') {
+          fetch('/api/card-activity', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cardType: 'vcard', slug, action: 'view' }),
           })
+            .then((res) => {
+              if (!res.ok) {
+                // Fallback: Client Firestore only if server API was unreachable
+                const activeDb = getFirebaseDb() || db
+                if (isFirebaseConfigured && activeDb) {
+                  setDoc(
+                    doc(activeDb, 'visitingCards', slug),
+                    { viewCount: increment(1), lastViewedAt: Date.now() },
+                    { merge: true }
+                  ).catch((err) => {
+                    console.error('Failed to increment visiting card view in Firestore:', err)
+                  })
+                }
+              }
+            })
+            .catch(() => {
+              // Fallback: Client Firestore on network failure
+              const activeDb = getFirebaseDb() || db
+              if (isFirebaseConfigured && activeDb) {
+                setDoc(
+                  doc(activeDb, 'visitingCards', slug),
+                  { viewCount: increment(1), lastViewedAt: Date.now() },
+                  { merge: true }
+                ).catch((err) => {
+                  console.error('Failed to increment visiting card view in Firestore:', err)
+                })
+              }
+            })
         }
       },
 
@@ -753,6 +891,51 @@ export const useJashn = create<JashnState>()(
             console.error('Failed to increment invitation rsvp in Firestore:', err)
           })
         }
+      },
+
+      recordCardShare: async (cardType, slug, channel) => {
+        set((s) => {
+          if (cardType === 'wish') {
+            return {
+              wishes: s.wishes.map((w) => {
+                if (w.slug === slug) {
+                  const shares = { ...(w.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 }) }
+                  shares[channel] = (shares[channel] || 0) + 1
+                  return { ...w, shares }
+                }
+                return w
+              }),
+            }
+          }
+          if (cardType === 'invite') {
+            return {
+              invitations: s.invitations.map((i) => {
+                if (i.slug === slug) {
+                  const shares = { ...(i.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 }) }
+                  shares[channel] = (shares[channel] || 0) + 1
+                  return { ...i, shares }
+                }
+                return i
+              }),
+            }
+          }
+          if (cardType === 'vcard') {
+            return {
+              visitingCards: s.visitingCards.map((v) => {
+                if (v.slug === slug) {
+                  const shares = { ...(v.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 }) }
+                  shares[channel] = (shares[channel] || 0) + 1
+                  return { ...v, shares }
+                }
+                return v
+              }),
+            }
+          }
+          return {}
+        })
+
+        const { recordCardShare: recordExternalShare } = await import('./magic-service')
+        await recordExternalShare(cardType, slug, channel)
       },
 
       deleteWish: (slug) => {

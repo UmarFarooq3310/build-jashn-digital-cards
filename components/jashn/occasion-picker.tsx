@@ -45,13 +45,13 @@ function OccasionCard({
       type="button"
       onClick={onClick}
       className={cn(
-        'group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 transition-all duration-300 focus:outline-none p-3.5 text-left active:scale-98',
-        'w-full shadow-sm',
+        'group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 transition-all duration-300 focus:outline-none p-2.5 sm:p-3 text-left active:scale-98',
+        'w-full shadow-xs',
         active
-          ? 'border-emerald-500 ring-2 ring-emerald-500/40 shadow-xl shadow-emerald-500/20 scale-[1.03]'
-          : 'border-border/60 hover:border-emerald-500/50 hover:shadow-lg hover:-translate-y-1',
+          ? 'border-emerald-500 ring-2 ring-emerald-500/40 shadow-lg shadow-emerald-500/20 scale-[1.02]'
+          : 'border-border/60 hover:border-emerald-500/50 hover:shadow-md hover:-translate-y-0.5',
       )}
-      style={{ aspectRatio: '3/4', background: fallback }}
+      style={{ aspectRatio: '4/3', minHeight: '120px', background: fallback }}
       aria-pressed={active}
       aria-label={displayLabel}
     >
@@ -64,57 +64,57 @@ function OccasionCard({
           unoptimized
           priority={priority}
           sizes="(max-width: 640px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
         />
       )}
 
       {/* ── Rich Gradient Scrim Overlay ── */}
-      <span className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 pointer-events-none" />
+      <span className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/25 pointer-events-none" />
 
       {/* ── Active ring overlay ── */}
       {active && (
-        <span className="absolute inset-0 rounded-[22px] ring-2 ring-inset ring-emerald-400 pointer-events-none" />
+        <span className="absolute inset-0 rounded-[14px] ring-2 ring-inset ring-emerald-400 pointer-events-none" />
       )}
 
       {/* ── Top Header Bar (Category Pill + Active Badge) ── */}
       <div className="relative z-10 flex items-center justify-between w-full">
-        <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-black/50 text-white/90 border border-white/20 backdrop-blur-md">
+        <span className="px-2 py-0.5 rounded-full text-[8.5px] font-black uppercase tracking-wider bg-black/60 text-white/90 border border-white/20 backdrop-blur-md shadow-xs">
           {catText}
         </span>
         {active && (
-          <span className="flex size-6 items-center justify-center rounded-full bg-emerald-500 text-slate-950 font-bold shadow-md animate-scaleIn">
-            <CheckCircle2 className="size-4" />
+          <span className="flex size-5 items-center justify-center rounded-full bg-emerald-500 text-slate-950 font-bold shadow-md animate-scaleIn">
+            <CheckCircle2 className="size-3.5" />
           </span>
         )}
       </div>
 
-      {/* ── Central Emblem Icon Badge ── */}
-      <div className="relative z-10 flex justify-center my-auto">
+      {/* ── Bottom Content Row (Icon Emblem + Frosted Pill Title & Tagline) ── */}
+      <div className="relative z-10 flex items-center gap-1.5 sm:gap-2 w-full mt-auto">
         <div className={cn(
-          "flex size-12 items-center justify-center rounded-2xl border backdrop-blur-md shadow-lg transition-all duration-300 group-hover:scale-115 group-hover:rotate-6",
+          "flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-xl border backdrop-blur-md shadow-md transition-all duration-300 group-hover:scale-105",
           active
             ? "bg-emerald-500 text-slate-950 border-emerald-300 shadow-emerald-500/40"
-            : "bg-white/15 text-white border-white/30 group-hover:bg-white/25"
+            : "bg-black/60 text-white border-white/25 group-hover:bg-black/80"
         )}>
-          <JashnIcon name={icon} className="size-6" />
+          <JashnIcon name={icon} className="size-3.5 sm:size-4" />
         </div>
-      </div>
-
-      {/* ── Bottom Text Overlay (Title & Tagline) ── */}
-      <div className="relative z-10 flex flex-col items-start gap-0.5 pt-2 border-t border-white/15 w-full overflow-visible">
-        <span className={cn(
-          "text-white font-extrabold tracking-tight drop-shadow-md group-hover:text-emerald-300 transition-colors",
-          (lang === 'ur' || lang === 'ar') ? "font-urdu text-base font-bold py-1 leading-relaxed" : "text-xs leading-tight line-clamp-1"
-        )}>
-          {displayLabel}
-        </span>
-        <span className={cn(
-          "text-white/80 font-semibold",
-          (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs py-0.5 leading-relaxed" : "text-[10px] leading-snug line-clamp-1"
-        )}>
-          {displayTagline}
-        </span>
+        <div className="min-w-0 flex-1 rounded-xl bg-black/85 backdrop-blur-md px-2 py-1 sm:px-2.5 sm:py-1.5 border border-white/20 shadow-md">
+          <span className={cn(
+            "text-white font-extrabold tracking-tight block drop-shadow-xs group-hover:text-emerald-300 transition-colors whitespace-normal line-clamp-2 break-words",
+            (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm leading-snug" : "text-[11px] sm:text-xs leading-snug"
+          )}>
+            {displayLabel}
+          </span>
+          {displayTagline && (
+            <span className={cn(
+              "text-white/80 font-medium block truncate",
+              (lang === 'ur' || lang === 'ar') ? "font-urdu text-[10px] leading-tight" : "text-[9.5px] leading-none mt-0.5"
+            )}>
+              {displayTagline}
+            </span>
+          )}
+        </div>
       </div>
     </button>
   )

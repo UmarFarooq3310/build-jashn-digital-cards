@@ -4,7 +4,7 @@ import '@/app/invitation-themes-animations.css'
 import { useEffect, useRef, useState, use, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { Sparkles, Eye, Loader2, HeartHandshake, Edit3, Trash2, Share2, X, ExternalLink } from 'lucide-react'
+import { Sparkles, Eye, Loader2, HeartHandshake, Edit3, Trash2, Share2, X, ExternalLink, MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { WishCard } from '@/components/jashn/wish-card'
 import { ThreeDCardWrapper } from '@/components/jashn/three-d-card-wrapper'
@@ -12,6 +12,8 @@ import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { ShareBar } from '@/components/jashn/share-bar'
 import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
+import { CardShareModal } from '@/components/dashboard/card-share-modal'
+import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
 import { getOccasion } from '@/lib/jashn/occasions'
@@ -20,6 +22,7 @@ import type { Wish } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, onSnapshot } from 'firebase/firestore'
+import { shouldIncrementView, isSenderOrOwner } from '@/lib/jashn/view-tracker'
 
 function WishPublicContent({ slug }: { slug: string }) {
   const { lang, t } = useLang()
@@ -33,10 +36,15 @@ function WishPublicContent({ slug }: { slug: string }) {
   const [isLoading, setIsLoading] = useState(true)
   const [rainActive, setRainActive] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
+  const [showGuestbookModal, setShowGuestbookModal] = useState(false)
   const viewIncrementedRef = useRef<string | null>(null)
 
-  // Check explicitly if the user opened the page in Sender Mode
-  const isSenderMode = searchParams.get('mode') === 'sender' || searchParams.get('preview') === 'true' || searchParams.get('role') === 'sender'
+  // Only enter Sender Screen if explicitly requested in URL (e.g. preview from dashboard/create page)
+  // When copying clean link, sender and receiver both get the complete, clean Receiver Screen
+  const isSenderMode =
+    searchParams.get('mode') === 'sender' ||
+    searchParams.get('preview') === 'true' ||
+    searchParams.get('role') === 'sender'
 
   useEffect(() => {
     setIsMounted(true)
@@ -59,8 +67,11 @@ function WishPublicContent({ slug }: { slug: string }) {
             
             if (viewIncrementedRef.current !== slug) {
               viewIncrementedRef.current = slug
-              incrementWishView(slug)
-              setActiveWish((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+              // Only increment view count if viewer is receiver (not sender/creator)
+              if (shouldIncrementView(slug, 'wish', data.creatorId, searchParams, user?.uid)) {
+                incrementWishView(slug)
+                setActiveWish((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+              }
             }
             setIsLoading(false)
           } else {
@@ -84,8 +95,11 @@ function WishPublicContent({ slug }: { slug: string }) {
         setActiveWish(existing)
         if (viewIncrementedRef.current !== slug) {
           viewIncrementedRef.current = slug
-          incrementWishView(slug)
-          setActiveWish((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+          // Only increment view count if viewer is receiver (not sender/creator)
+          if (shouldIncrementView(slug, 'wish', existing.creatorId, searchParams, user?.uid)) {
+            incrementWishView(slug)
+            setActiveWish((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+          }
         }
         setIsLoading(false)
         return
@@ -232,7 +246,7 @@ function WishPublicContent({ slug }: { slug: string }) {
                 {isSensitive ? t('forwardMessage') : t('specialAnimatedCard')}
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/90 px-4 py-1.5 text-xs font-extrabold text-slate-200 shadow-sm">
-                <Eye className="size-4 text-emerald-400" /> {activeWish.viewCount ?? 1} views
+                <Eye className="size-4 text-emerald-400" /> {activeWish.viewCount || 0} views
               </span>
             </div>
 
@@ -347,31 +361,34 @@ function WishPublicContent({ slug }: { slug: string }) {
           </button>
         </div>
 
-        {/* Share Modal Overlay */}
+        {/* Universal Luxury Share Modal */}
         {showShareModal && (
-          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-            <div className="bg-slate-900 border border-emerald-500/30 rounded-3xl p-6 max-w-sm w-full space-y-5 text-white relative shadow-2xl">
-              <button
-                onClick={() => setShowShareModal(false)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white p-1"
-              >
-                <X className="size-5" />
-              </button>
-
-              <div className="text-center space-y-1">
-                <h3 className="font-extrabold text-lg text-emerald-300">Share Wish Card</h3>
-                <p className="text-xs text-slate-400">Send link or scan QR code</p>
-              </div>
-
-              <ShareBar url={receiverUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-online-${activeWish.slug}`} />
-
-              <div className="pt-3 border-t border-white/10 flex flex-col items-center space-y-2">
-                <span className="text-xs font-bold text-amber-300 uppercase tracking-wider">Shareable QR Code</span>
-                <CardQrCode slug={slug} cardType="w" size={140} showDownloadBtn={true} />
-              </div>
-            </div>
-          </div>
+          <CardShareModal
+            card={{
+              title: lang === 'ur' ? (occasion?.urdu || occasion?.label || 'مبارک ہو') : (t(`occ_${occasion?.id?.replace(/-/g, '_')}`) || occasion?.label || 'Greetings'),
+              recipientOrCouple: activeWish.recipientName,
+              type: 'wish',
+              slug: activeWish.slug,
+              url: `/w/${activeWish.slug}`,
+              viewsCount: activeWish.viewCount || 0,
+              shares: activeWish.shares,
+              occasion: occasion?.label || 'Wish Greeting',
+              senderName: activeWish.senderName,
+              waMessage: waMsg,
+            }}
+            onClose={() => setShowShareModal(false)}
+          />
         )}
+
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-2">
+          <button
+            onClick={() => setShowGuestbookModal(true)}
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-200 hover:text-white bg-purple-900/40 hover:bg-purple-800/60 border border-purple-500/40 px-3.5 py-1.5 rounded-full transition-all cursor-pointer shadow-sm"
+          >
+            <MessageCircle className="size-3.5 text-purple-300" />
+            <span>💬 Wishes Wall & Dua</span>
+          </button>
+        </div>
 
         <Link
           href="/create-wish"
@@ -381,6 +398,44 @@ function WishPublicContent({ slug }: { slug: string }) {
           <span>Cardzy · Make Your Own</span>
         </Link>
       </footer>
+
+      {/* Floating Action Pill for Wishes Wall & Share - Visible to ALL visitors */}
+      <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2">
+        <button
+          onClick={() => setShowShareModal(true)}
+          className="group flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white text-xs font-bold shadow-xl border border-white/20 backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+          title="Share Link & QR"
+        >
+          <Share2 className="size-3.5 text-amber-400" />
+          <span className="hidden sm:inline">Share</span>
+        </button>
+
+        <button
+          onClick={() => setShowGuestbookModal(true)}
+          className="group flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 hover:from-purple-600 hover:to-indigo-600 text-white text-xs font-bold shadow-2xl shadow-purple-950/70 border border-purple-400/40 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
+          title="Open Wishes Wall & Dua (Leave a Blessing)"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-300"></span>
+          </span>
+          <MessageCircle className="size-3.5 text-purple-200 group-hover:scale-110 transition-transform" />
+          <span>💬 Wishes Wall</span>
+        </button>
+      </div>
+
+      {/* Event Card Guestbook / Wishes Wall Modal */}
+      <CardGuestbookModal
+        cardSlug={activeWish.slug}
+        cardType="wish"
+        recipientName={activeWish.recipientName}
+        isOpen={showGuestbookModal}
+        onClose={() => setShowGuestbookModal(false)}
+        onWishSubmitted={() => {
+          setRainActive(true)
+          setTimeout(() => setRainActive(false), 4000)
+        }}
+      />
     </div>
   )
 }

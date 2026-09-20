@@ -14,12 +14,16 @@ export function SiteFooter() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const mode = new URLSearchParams(window.location.search).get('mode')
-      setIsSenderMode(mode === 'sender')
+      const params = new URLSearchParams(window.location.search)
+      setIsSenderMode(
+        params.get('mode') === 'sender' ||
+        params.get('preview') === 'true' ||
+        params.get('role') === 'sender'
+      )
     }
   }, [pathname])
 
-  const isCardRoute = pathname?.startsWith('/w/') || pathname?.startsWith('/i/') || pathname?.startsWith('/v/')
+  const isCardRoute = pathname?.startsWith('/w/') || pathname?.startsWith('/i/') || pathname?.startsWith('/v/') || pathname?.startsWith('/m/')
   if (isCardRoute && !isSenderMode) return null
 
   return (
@@ -79,6 +83,7 @@ export function SiteFooter() {
             <FooterCol
               title={t('footerCards')}
               links={[
+                { href: '/create-magic-link', label: '3D Magic Links 🪄' },
                 { href: '/create-wish', label: t('sendWish') },
                 { href: '/create-invitation', label: t('createInvitation') },
                 { href: '/create-visiting-card', label: t('createVCardFooter', 'Create vCard') },

@@ -89,13 +89,17 @@ function SiteHeaderInner() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const mode = new URLSearchParams(window.location.search).get('mode')
-      setIsSenderMode(mode === 'sender')
+      const params = new URLSearchParams(window.location.search)
+      setIsSenderMode(
+        params.get('mode') === 'sender' ||
+        params.get('preview') === 'true' ||
+        params.get('role') === 'sender'
+      )
     }
   }, [pathname])
 
-  // Hide Navbar on receiver card pages (/w/[slug], /i/[slug], /v/[slug]) unless mode=sender
-  const isCardRoute = pathname?.startsWith('/w/') || pathname?.startsWith('/i/') || pathname?.startsWith('/v/')
+  // Hide Navbar on receiver card pages (/w/[slug], /i/[slug], /v/[slug], /m/[slug]) unless mode=sender
+  const isCardRoute = pathname?.startsWith('/w/') || pathname?.startsWith('/i/') || pathname?.startsWith('/v/') || pathname?.startsWith('/m/')
   if (isCardRoute && !isSenderMode) return null
 
   const handleSignOut = async () => {
@@ -132,7 +136,6 @@ function SiteHeaderInner() {
 
         <nav className="hidden items-center gap-0.5 xl:gap-1 2xl:gap-1.5 lg:flex">
           {[
-            { href: '/', key: 'navHome', fallback: 'Home' },
             { href: '/create-wish', key: 'navWishes', fallback: 'Wishes' },
             { href: '/create-invitation', key: 'navInvitations', fallback: 'Invitations' },
             { href: '/create-visiting-card', key: 'navVCards', fallback: 'vCards' },
@@ -277,7 +280,6 @@ function SiteHeaderInner() {
         <div className="border-t border-border bg-background px-4 py-3 lg:hidden">
           <nav className="flex flex-col gap-1.5">
             {[
-              { href: '/', key: 'home', fallback: 'Home' },
               { href: '/create-wish', key: 'sendWish', fallback: '3D Wish Cards' },
               { href: '/create-invitation', key: 'createInvitation', fallback: 'Wedding Invitations' },
               { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Smart vCards' },

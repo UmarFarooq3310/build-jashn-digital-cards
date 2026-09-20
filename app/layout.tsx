@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic'
 import Script from 'next/script'
 import type { Metadata, Viewport } from 'next'
-import { Poppins, Noto_Nastaliq_Urdu } from 'next/font/google'
 import { ToastNotification } from '@/components/ui/toast-notification'
 import { LanguageProvider } from '@/lib/lang/context'
 import './globals.css'
@@ -33,6 +32,15 @@ const SiteHeader = dynamic(
 const SiteFooter = dynamic(
   () => import('@/components/site-footer').then((mod) => mod.SiteFooter)
 )
+
+import { Poppins, Noto_Nastaliq_Urdu, Playfair_Display } from 'next/font/google'
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '900'],
+  variable: '--font-playfair',
+  display: 'swap',
+})
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -228,7 +236,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]" suppressHydrationWarning>
+      <body className={`${poppins.variable} ${notoNastaliq.variable} ${playfair.variable} bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]`} suppressHydrationWarning>
         <Script
           id="google-adsense"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"

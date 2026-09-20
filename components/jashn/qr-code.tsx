@@ -4,16 +4,18 @@ import React, { useState, useEffect } from 'react'
 import { Download, Check, Sparkles, Link2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLang } from '@/lib/lang/context'
+import { recordCardShare } from '@/lib/jashn/magic-service'
 
 interface CardQrCodeProps {
   shareUrl?: string
   slug?: string
-  cardType?: 'v' | 'i' | 'w'
+  cardType?: 'v' | 'i' | 'w' | 'm'
   value?: string
   size?: number
   darkColor?: string
   lightColor?: string
   showDownloadBtn?: boolean
+  onDownload?: () => void
   className?: string
 }
 
@@ -31,6 +33,7 @@ export function CardQrCode({
   darkColor = '09090b',
   lightColor = 'ffffff',
   showDownloadBtn = true,
+  onDownload,
   className,
 }: CardQrCodeProps) {
   const { t } = useLang()
@@ -88,6 +91,12 @@ export function CardQrCode({
   const handleDownloadQr = async (e: React.MouseEvent) => {
     e.stopPropagation()
     try {
+      if (onDownload) {
+        onDownload()
+      } else if (slug) {
+        const shareType = cardType === 'v' ? 'vcard' : cardType === 'i' ? 'invite' : cardType === 'w' ? 'wish' : 'magic'
+        recordCardShare(shareType, slug, 'qr')
+      }
       const response = await fetch(qrImageUrl)
       const blob = await response.blob()
       const blobUrl = URL.createObjectURL(blob)

@@ -1,0 +1,333 @@
+import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+  updateDoc,
+  increment,
+  addDoc,
+  serverTimestamp,
+} from 'firebase/firestore'
+import type { MagicLinkData, MagicResponseData } from './magic-types'
+import { markCardAsCreatedByMe } from './view-tracker'
+
+const LOCAL_STORAGE_KEY = 'cardzy_local_magic_links'
+
+function getLocalLinks(): Record<string, MagicLinkData> {
+  if (typeof window === 'undefined') return {}
+  try {
+    const raw = localStorage.getItem(LOCAL_STORAGE_KEY)
+    return raw ? JSON.parse(raw) : {}
+  } catch {
+    return {}
+  }
+}
+
+function saveLocalLink(slug: string, data: MagicLinkData) {
+  if (typeof window === 'undefined') return
+  try {
+    const links = getLocalLinks()
+    links[slug] = data
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(links))
+  } catch (e) {
+    console.error('Failed to save to localStorage:', e)
+  }
+}
+
+export type CardShareChannel = 'whatsapp' | 'sms' | 'copy' | 'qr' | 'image'
+
+export function cleanForFirestore<T>(data: T): T {
+  if (data === null || data === undefined) return data
+  if (typeof data !== 'object') return data
+  if (Array.isArray(data)) {
+    return data.map((item) => cleanForFirestore(item)) as unknown as T
+  }
+  const result: Record<string, any> = {}
+  for (const [key, val] of Object.entries(data as Record<string, any>)) {
+    if (val !== undefined) {
+      result[key] = typeof val === 'object' && val !== null ? cleanForFirestore(val) : val
+    }
+  }
+  return result as T
+}
+
+export function generateShortSlug(name: string): string {
+  const clean = name.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 10) || 'magic'
+  const rand = Math.random().toString(36).substring(2, 7)
+  return `${clean}-${rand}`
+}
+
+/**
+ * Creates and stores a new Magic Link in Firestore (with localStorage fallback)
+ */
+export async function createMagicLink(data: Omit<MagicLinkData, 'slug' | 'createdAt'>): Promise<string> {
+  const slug = generateShortSlug(data.recipientName)
+  const payload: MagicLinkData = {
+    ...data,
+    slug,
+    viewsCount: 0,
+    shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 },
+    createdAt: Date.now(),
+  }
+
+  // Always save to localStorage as instant offline cache
+  saveLocalLink(slug, payload)
+  markCardAsCreatedByMe(slug)
+
+  const activeDb = getFirebaseDb() || db
+  if (isFirebaseConfigured && activeDb) {
+    try {
+      const docRef = doc(activeDb, 'magic_links', slug)
+      // Strip any undefined properties before writing to Firestore
+      const firestorePayload = cleanForFirestore({
+        ...payload,
+        createdAt: serverTimestamp(),
+      })
+      await setDoc(docRef, firestorePayload)
+    } catch (err) {
+      console.error('Firestore write error for magic link:', err)
+    }
+  }
+
+  return slug
+}
+
+/**
+ * Records a share event for any card type (magic, invite, wish, vcard) across all channels:
+ * whatsapp, sms, copy link, qr code scan/download, or flyer image export.
+ */
+export async function recordCardShare(
+  cardType: 'wish' | 'invite' | 'vcard' | 'magic',
+  slug: string,
+  channel: CardShareChannel
+): Promise<void> {
+  if (!slug) return
+
+  const collectionName =
+    cardType === 'invite'
+      ? 'invitations'
+      : cardType === 'wish'
+      ? 'wishes'
+      : cardType === 'vcard'
+      ? 'visitingCards'
+      : 'magic_links'
+
+  // Prevent rapid double-clicks (within 1.2 seconds)
+  if (typeof window !== 'undefined') {
+    const lockKey = `cardzy_share_lock_${cardType}_${slug}_${channel}`
+    const last = Number(sessionStorage.getItem(lockKey) || '0')
+    if (Date.now() - last < 1200) return
+    sessionStorage.setItem(lockKey, String(Date.now()))
+  }
+
+  // 1. Primary: Server API logging (single authoritative increment via Firebase Admin)
+  let serverOk = false
+  if (typeof window !== 'undefined') {
+    try {
+      const res = await fetch('/api/card-activity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cardType, slug, action: 'share', channel }),
+      })
+      if (res.ok) serverOk = true
+    } catch {}
+  }
+
+  // 2. Fallback: Only if server API was unreachable, update via client Firestore
+  if (!serverOk) {
+    const activeDb = getFirebaseDb() || db
+    if (isFirebaseConfigured && activeDb) {
+      const collectionName =
+        cardType === 'invite'
+          ? 'invitations'
+          : cardType === 'wish'
+          ? 'wishes'
+          : cardType === 'vcard'
+          ? 'visitingCards'
+          : 'magic_links'
+      try {
+        const docRef = doc(activeDb, collectionName, slug)
+        await setDoc(docRef, { shares: { [channel]: increment(1) } }, { merge: true })
+      } catch {}
+    }
+  }
+
+  // 3. Update localStorage cache
+  if (typeof window !== 'undefined') {
+    if (cardType === 'magic') {
+      try {
+        const links = getLocalLinks()
+        if (links[slug]) {
+          if (!links[slug].shares) {
+            links[slug].shares = { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 }
+          }
+          links[slug].shares[channel] = (links[slug].shares[channel] || 0) + 1
+          saveLocalLink(slug, links[slug])
+        }
+      } catch {}
+    }
+
+    // Update zustand store in localStorage
+    try {
+      const storeRaw = localStorage.getItem('jashn_store_v1')
+      if (storeRaw) {
+        const parsed = JSON.parse(storeRaw)
+        if (parsed?.state) {
+          const listName =
+            cardType === 'invite'
+              ? 'invitations'
+              : cardType === 'wish'
+              ? 'wishes'
+              : cardType === 'vcard'
+              ? 'visitingCards'
+              : null
+          if (listName && Array.isArray(parsed.state[listName])) {
+            parsed.state[listName] = parsed.state[listName].map((card: any) => {
+              if (card.slug === slug) {
+                const s = card.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 }
+                return {
+                  ...card,
+                  shares: {
+                    ...s,
+                    [channel]: (s[channel] || 0) + 1,
+                  },
+                }
+              }
+              return card
+            })
+            localStorage.setItem('jashn_store_v1', JSON.stringify(parsed))
+          }
+        }
+      }
+    } catch {}
+
+    try {
+      const storageKey = `cardzy_shares_${cardType}_${slug}`
+      const existing = JSON.parse(localStorage.getItem(storageKey) || '{}')
+      existing[channel] = (existing[channel] || 0) + 1
+      localStorage.setItem(storageKey, JSON.stringify(existing))
+    } catch {}
+  }
+}
+
+/**
+ * Fetches a Magic Link by its unique slug.
+ * View count will ONLY increment if shouldCountView is true (i.e. receiver view, not sender preview).
+ */
+export async function getMagicLink(slug: string, shouldCountView: boolean = false): Promise<MagicLinkData | null> {
+  const activeDb = getFirebaseDb() || db
+  if (isFirebaseConfigured && activeDb) {
+    try {
+      const docRef = doc(activeDb, 'magic_links', slug)
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        const docData = { id: docSnap.id, ...(docSnap.data() as MagicLinkData) }
+        // Only increment view count if viewing as receiver
+        if (shouldCountView) {
+          docData.viewsCount = (docData.viewsCount || 0) + 1
+          saveLocalLink(slug, docData)
+
+          // Primary: Server API increment (single authoritative execution)
+          let serverOk = false
+          if (typeof window !== 'undefined') {
+            try {
+              const res = await fetch('/api/card-activity', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cardType: 'magic', slug, action: 'view' }),
+              })
+              if (res.ok) serverOk = true
+            } catch {}
+          }
+
+          // Fallback: Client Firestore only if server API was unreachable
+          if (!serverOk) {
+            setDoc(
+              docRef,
+              { viewsCount: increment(1), lastViewedAt: Date.now() },
+              { merge: true }
+            ).catch(() => {})
+          }
+        }
+        return docData
+      }
+    } catch (err) {
+      console.warn('Firestore read error, checking local storage:', err)
+    }
+  }
+
+  // Fallback to localStorage
+  const local = getLocalLinks()
+  const found = local[slug]
+  if (found) {
+    if (shouldCountView) {
+      found.viewsCount = (found.viewsCount || 0) + 1
+      saveLocalLink(slug, found)
+    }
+    return found
+  }
+  return null
+}
+
+/**
+ * Submits a recipient reaction (e.g. "Sent Love Back") or RSVP to Firestore
+ */
+export async function submitMagicResponse(response: Omit<MagicResponseData, 'timestamp'>): Promise<boolean> {
+  const activeDb = getFirebaseDb() || db
+  if (isFirebaseConfigured && activeDb) {
+    try {
+      const colRef = collection(activeDb, 'magic_link_responses')
+      await addDoc(colRef, {
+        ...response,
+        timestamp: serverTimestamp(),
+      })
+      return true
+    } catch (err) {
+      console.warn('Firestore response submission error:', err)
+    }
+  }
+
+  return true
+}
+
+/**
+ * Fetches all Magic Links created by a specific user (for Dashboard / Admin view)
+ */
+export async function getUserMagicLinks(userId?: string): Promise<MagicLinkData[]> {
+  const links: MagicLinkData[] = []
+  const activeDb = getFirebaseDb() || db
+
+  if (isFirebaseConfigured && activeDb && userId) {
+    try {
+      const colRef = collection(activeDb, 'magic_links')
+      const q = query(colRef, where('senderId', '==', userId))
+      const querySnap = await getDocs(q)
+      querySnap.forEach((d) => {
+        links.push({ id: d.id, ...(d.data() as MagicLinkData) })
+      })
+    } catch (err) {
+      console.warn('Error querying user magic links from Firestore:', err)
+    }
+  }
+
+  // Also include locally stored links that belong to this user / device
+  const local = getLocalLinks()
+  Object.values(local).forEach((loc) => {
+    if (!links.some((l) => l.slug === loc.slug)) {
+      if (!userId || loc.senderId === userId || !loc.senderId) {
+        links.push(loc)
+      }
+    }
+  })
+
+  // Sort newest first
+  return links.sort((a, b) => {
+    const timeA = typeof a.createdAt === 'number' ? a.createdAt : a.createdAt?.toMillis ? a.createdAt.toMillis() : 0
+    const timeB = typeof b.createdAt === 'number' ? b.createdAt : b.createdAt?.toMillis ? b.createdAt.toMillis() : 0
+    return timeB - timeA
+  })
+}
