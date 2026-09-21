@@ -720,41 +720,25 @@ export const useJashn = create<JashnState>()(
           }
         } catch {}
 
-        // Primary: Server API increment (guaranteed single Firebase Admin execution)
+        // Direct Client Firestore Increment
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
+          setDoc(
+            doc(activeDb, 'wishes', slug),
+            { viewCount: increment(1), lastViewedAt: Date.now() },
+            { merge: true }
+          ).catch((err) => {
+            console.error('Failed to increment wish view in Firestore:', err)
+          })
+        }
+
+        // Server API Activity Logging
         if (typeof window !== 'undefined') {
           fetch('/api/card-activity', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ cardType: 'wish', slug, action: 'view' }),
-          })
-            .then((res) => {
-              if (!res.ok) {
-                // Fallback: Client Firestore only if server API was unreachable
-                const activeDb = getFirebaseDb() || db
-                if (isFirebaseConfigured && activeDb) {
-                  setDoc(
-                    doc(activeDb, 'wishes', slug),
-                    { viewCount: increment(1), lastViewedAt: Date.now() },
-                    { merge: true }
-                  ).catch((err) => {
-                    console.error('Failed to increment wish view in Firestore:', err)
-                  })
-                }
-              }
-            })
-            .catch(() => {
-              // Fallback: Client Firestore on network failure
-              const activeDb = getFirebaseDb() || db
-              if (isFirebaseConfigured && activeDb) {
-                setDoc(
-                  doc(activeDb, 'wishes', slug),
-                  { viewCount: increment(1), lastViewedAt: Date.now() },
-                  { merge: true }
-                ).catch((err) => {
-                  console.error('Failed to increment wish view in Firestore:', err)
-                })
-              }
-            })
+          }).catch(() => {})
         }
       },
 
@@ -779,41 +763,25 @@ export const useJashn = create<JashnState>()(
           }
         } catch {}
 
-        // Primary: Server API increment (guaranteed single Firebase Admin execution)
+        // Direct Client Firestore Increment
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
+          setDoc(
+            doc(activeDb, 'invitations', slug),
+            { viewCount: increment(1), lastViewedAt: Date.now() },
+            { merge: true }
+          ).catch((err) => {
+            console.error('Failed to increment invitation view in Firestore:', err)
+          })
+        }
+
+        // Server API Activity Logging
         if (typeof window !== 'undefined') {
           fetch('/api/card-activity', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ cardType: 'invite', slug, action: 'view' }),
-          })
-            .then((res) => {
-              if (!res.ok) {
-                // Fallback: Client Firestore only if server API was unreachable
-                const activeDb = getFirebaseDb() || db
-                if (isFirebaseConfigured && activeDb) {
-                  setDoc(
-                    doc(activeDb, 'invitations', slug),
-                    { viewCount: increment(1), lastViewedAt: Date.now() },
-                    { merge: true }
-                  ).catch((err) => {
-                    console.error('Failed to increment invitation view in Firestore:', err)
-                  })
-                }
-              }
-            })
-            .catch(() => {
-              // Fallback: Client Firestore on network failure
-              const activeDb = getFirebaseDb() || db
-              if (isFirebaseConfigured && activeDb) {
-                setDoc(
-                  doc(activeDb, 'invitations', slug),
-                  { viewCount: increment(1), lastViewedAt: Date.now() },
-                  { merge: true }
-                ).catch((err) => {
-                  console.error('Failed to increment invitation view in Firestore:', err)
-                })
-              }
-            })
+          }).catch(() => {})
         }
       },
 
@@ -838,41 +806,25 @@ export const useJashn = create<JashnState>()(
           }
         } catch {}
 
-        // Primary: Server API increment (guaranteed single Firebase Admin execution)
+        // Direct Client Firestore Increment
+        const activeDb = getFirebaseDb() || db
+        if (isFirebaseConfigured && activeDb) {
+          setDoc(
+            doc(activeDb, 'visitingCards', slug),
+            { viewCount: increment(1), lastViewedAt: Date.now() },
+            { merge: true }
+          ).catch((err) => {
+            console.error('Failed to increment visiting card view in Firestore:', err)
+          })
+        }
+
+        // Server API Activity Logging
         if (typeof window !== 'undefined') {
           fetch('/api/card-activity', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ cardType: 'vcard', slug, action: 'view' }),
-          })
-            .then((res) => {
-              if (!res.ok) {
-                // Fallback: Client Firestore only if server API was unreachable
-                const activeDb = getFirebaseDb() || db
-                if (isFirebaseConfigured && activeDb) {
-                  setDoc(
-                    doc(activeDb, 'visitingCards', slug),
-                    { viewCount: increment(1), lastViewedAt: Date.now() },
-                    { merge: true }
-                  ).catch((err) => {
-                    console.error('Failed to increment visiting card view in Firestore:', err)
-                  })
-                }
-              }
-            })
-            .catch(() => {
-              // Fallback: Client Firestore on network failure
-              const activeDb = getFirebaseDb() || db
-              if (isFirebaseConfigured && activeDb) {
-                setDoc(
-                  doc(activeDb, 'visitingCards', slug),
-                  { viewCount: increment(1), lastViewedAt: Date.now() },
-                  { merge: true }
-                ).catch((err) => {
-                  console.error('Failed to increment visiting card view in Firestore:', err)
-                })
-              }
-            })
+          }).catch(() => {})
         }
       },
 

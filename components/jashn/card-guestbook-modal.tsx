@@ -158,7 +158,7 @@ export function CardGuestbookModal({
         </div>
 
         {/* Scrollable Wishes Feed */}
-        <div className="flex-1 overflow-y-auto space-y-2.5 pr-1 my-2 no-scrollbar min-h-[160px] max-h-[260px]">
+        <div className="flex-1 overflow-y-auto space-y-2.5 pr-1.5 my-2 min-h-[140px] max-h-[320px] sm:max-h-[380px] scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
           {wishes.length === 0 ? (
             <div className="py-8 text-center space-y-2 bg-white/5 border border-white/10 rounded-2xl p-4">
               <span className="text-3xl animate-bounce block">✨</span>

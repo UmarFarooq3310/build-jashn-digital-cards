@@ -221,10 +221,23 @@ function MagicLinkInner({ slug }: { slug: string }) {
               setData(linkData)
               setLoading(false)
 
-              // ONLY genuine receiver increments view (never sender, owner, or preview)
+              // ONLY genuine receiver increments view (never sender or editor preview)
               if (!isSender && viewIncrementedRef.current !== slug) {
                 if (shouldIncrementView(slug, 'magic', linkData.senderId, searchParams, user?.uid)) {
                   viewIncrementedRef.current = slug
+                  setData((prev) => (prev ? { ...prev, viewsCount: (prev.viewsCount || 0) + 1 } : null))
+                  
+                  // Direct Client Firestore Increment
+                  if (activeDb) {
+                    setDoc(
+                      docRef,
+                      { viewsCount: increment(1), lastViewedAt: Date.now() },
+                      { merge: true }
+                    ).catch((err) => {
+                      console.warn('Failed to increment magic view in Firestore:', err)
+                    })
+                  }
+
                   try {
                     fetch('/api/card-activity', {
                       method: 'POST',

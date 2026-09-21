@@ -3267,6 +3267,12 @@ export default function AdminPortalPage() {
             </div>
           </div>
         )}
+        
+        {/* Universal Share, QR & Image Export Modal */}
+        <CardShareModal
+          card={shareModalCard}
+          onClose={() => setShareModalCard(null)}
+        />
     </div>
   )
 }
@@ -3787,12 +3793,6 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
           </div>
         </div>
       )}
-
-      {/* Universal Share, QR & Image Export Modal */}
-      <CardShareModal
-        card={shareModalCard}
-        onClose={() => setShareModalCard(null)}
-      />
     </div>
   )
 }

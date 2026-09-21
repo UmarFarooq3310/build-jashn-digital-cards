@@ -139,7 +139,8 @@ export async function postGuestbookWish(params: {
 
   // Save to local storage cache immediately
   const existingLocal = getLocalWishes(params.cardSlug)
-  saveLocalWishes(params.cardSlug, [wish, ...existingLocal])
+  const dedupedLocal = [wish, ...existingLocal.filter((w) => w.id !== id)]
+  saveLocalWishes(params.cardSlug, dedupedLocal)
 
   // Save to Firebase Firestore if configured
   const activeDb = getFirebaseDb() || db
@@ -148,7 +149,8 @@ export async function postGuestbookWish(params: {
       const docRef = doc(activeDb, 'guestbook_wishes', id)
       await setDoc(docRef, {
         ...wish,
-        createdAt: serverTimestamp(),
+        createdAt: Date.now(),
+        serverTime: serverTimestamp(),
       })
     } catch (err) {
       console.warn('Firestore guestbook write fallback to local storage:', err)
@@ -160,12 +162,13 @@ export async function postGuestbookWish(params: {
 
 /**
  * Subscribes to real-time wishes for a specific card slug
+ * Fetches all wishes for the card and merges local and remote entries
  */
 export function subscribeCardWishes(
   cardSlug: string,
   onUpdate: (wishes: GuestbookWish[]) => void
 ): () => void {
-  // Emit local cache immediately
+  // Emit local cache immediately so UI is instant
   const local = getLocalWishes(cardSlug)
   if (local.length > 0) {
     onUpdate(local)
@@ -179,11 +182,10 @@ export function subscribeCardWishes(
 
   try {
     const collRef = collection(activeDb, 'guestbook_wishes')
+    // Query by cardSlug only (avoid composite index requirement on cardSlug + createdAt)
     const q = query(
       collRef,
-      where('cardSlug', '==', cardSlug),
-      orderBy('createdAt', 'desc'),
-      limit(50)
+      where('cardSlug', '==', cardSlug)
     )
 
     const unsubscribe = onSnapshot(
@@ -191,6 +193,15 @@ export function subscribeCardWishes(
       (snapshot) => {
         const firestoreWishes: GuestbookWish[] = snapshot.docs.map((d) => {
           const data = d.data()
+          let parsedTime = Date.now()
+          if (typeof data.createdAt === 'number') {
+            parsedTime = data.createdAt
+          } else if (data.createdAt?.toMillis) {
+            parsedTime = data.createdAt.toMillis()
+          } else if (data.serverTime?.toMillis) {
+            parsedTime = data.serverTime.toMillis()
+          }
+
           return {
             id: d.id,
             cardSlug: data.cardSlug || cardSlug,
@@ -199,20 +210,30 @@ export function subscribeCardWishes(
             guestName: data.guestName || 'Anonymous Friend',
             message: data.message || '',
             emoji: data.emoji || '💖',
-            createdAt:
-              typeof data.createdAt === 'number'
-                ? data.createdAt
-                : data.createdAt?.toMillis?.() || Date.now(),
+            createdAt: parsedTime,
             city: data.city,
             country: data.country,
           }
         })
 
-        if (firestoreWishes.length > 0) {
-          saveLocalWishes(cardSlug, firestoreWishes)
-          onUpdate(firestoreWishes)
-        } else if (local.length > 0) {
-          onUpdate(local)
+        // Merge Firestore wishes and local storage wishes to ensure nothing is missed
+        const currentLocal = getLocalWishes(cardSlug)
+        const map = new Map<string, GuestbookWish>()
+        
+        firestoreWishes.forEach((w) => map.set(w.id, w))
+        currentLocal.forEach((w) => {
+          if (!map.has(w.id)) {
+            map.set(w.id, w)
+          }
+        })
+
+        const allWishes = Array.from(map.values()).sort(
+          (a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0)
+        )
+
+        if (allWishes.length > 0) {
+          saveLocalWishes(cardSlug, allWishes)
+          onUpdate(allWishes)
         } else {
           onUpdate([])
         }
@@ -245,13 +266,22 @@ export function listenAllGuestbookWishes(
 
   try {
     const collRef = collection(activeDb, 'guestbook_wishes')
-    const q = query(collRef, orderBy('createdAt', 'desc'), limit(300))
+    const q = query(collRef, limit(500))
 
     const unsubscribe = onSnapshot(
       q,
       (snapshot) => {
         const wishes: GuestbookWish[] = snapshot.docs.map((d) => {
           const data = d.data()
+          let parsedTime = Date.now()
+          if (typeof data.createdAt === 'number') {
+            parsedTime = data.createdAt
+          } else if (data.createdAt?.toMillis) {
+            parsedTime = data.createdAt.toMillis()
+          } else if (data.serverTime?.toMillis) {
+            parsedTime = data.serverTime.toMillis()
+          }
+
           return {
             id: d.id,
             cardSlug: data.cardSlug || 'unknown',
@@ -260,14 +290,13 @@ export function listenAllGuestbookWishes(
             guestName: data.guestName || 'Guest',
             message: data.message || '',
             emoji: data.emoji || '💖',
-            createdAt:
-              typeof data.createdAt === 'number'
-                ? data.createdAt
-                : data.createdAt?.toMillis?.() || Date.now(),
+            createdAt: parsedTime,
             city: data.city,
             country: data.country,
           }
         })
+
+        wishes.sort((a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0))
         onUpdate(wishes)
       },
       (err) => {

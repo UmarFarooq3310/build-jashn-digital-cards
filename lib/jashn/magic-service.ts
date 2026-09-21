@@ -231,26 +231,20 @@ export async function getMagicLink(slug: string, shouldCountView: boolean = fals
           docData.viewsCount = (docData.viewsCount || 0) + 1
           saveLocalLink(slug, docData)
 
-          // Primary: Server API increment (single authoritative execution)
-          let serverOk = false
-          if (typeof window !== 'undefined') {
-            try {
-              const res = await fetch('/api/card-activity', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ cardType: 'magic', slug, action: 'view' }),
-              })
-              if (res.ok) serverOk = true
-            } catch {}
-          }
+          // Direct Client Firestore Increment
+          setDoc(
+            docRef,
+            { viewsCount: increment(1), lastViewedAt: Date.now() },
+            { merge: true }
+          ).catch(() => {})
 
-          // Fallback: Client Firestore only if server API was unreachable
-          if (!serverOk) {
-            setDoc(
-              docRef,
-              { viewsCount: increment(1), lastViewedAt: Date.now() },
-              { merge: true }
-            ).catch(() => {})
+          // Server API activity logging in background
+          if (typeof window !== 'undefined') {
+            fetch('/api/card-activity', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ cardType: 'magic', slug, action: 'view' }),
+            }).catch(() => {})
           }
         }
         return docData

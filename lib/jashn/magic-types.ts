@@ -69,6 +69,7 @@ export interface MagicInviteContent {
   venueName: string
   venueAddress: string
   googleMapsUrl?: string
+  venueMapsUrl?: string
   dressCode?: string
   allowRsvp?: boolean
   coupleNames?: string
@@ -111,6 +112,13 @@ export interface MagicResponseData {
     accepted: boolean
     choiceText: string
     partnerName?: string
+  }
+  rsvp?: {
+    attending: boolean
+    guestsCount?: number
+    guestName?: string
+    dietaryNotes?: string
+    wishes?: string
   }
   rsvpDetails?: {
     guestName: string

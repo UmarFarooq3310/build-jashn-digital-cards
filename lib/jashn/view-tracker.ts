@@ -26,7 +26,7 @@ export function isSenderOrOwner(
 ): boolean {
   if (typeof window === 'undefined') return false
 
-  // 1. Explicit sender, preview, or host role in query parameters
+  // 1. Explicit sender, preview, or host role in query parameters (Sender Control Mode)
   if (searchParams) {
     const mode = searchParams.get('mode')
     const preview = searchParams.get('preview')
@@ -59,25 +59,6 @@ export function isSenderOrOwner(
     }
   } catch {}
 
-  // 3. Current authenticated user matches card creator
-  if (creatorId && currentUserId && creatorId === currentUserId) {
-    return true
-  }
-
-  // 4. LocalStorage owner flag: cards created on this device / browser
-  try {
-    if (slug) {
-      if (localStorage.getItem(`cardzy_owner_${slug}`) === '1') {
-        return true
-      }
-      const raw = localStorage.getItem('cardzy_my_cards') || '[]'
-      const list: string[] = JSON.parse(raw)
-      if (list.includes(slug)) {
-        return true
-      }
-    }
-  } catch {}
-
   return false
 }
 
@@ -95,12 +76,12 @@ export function shouldIncrementView(
     return false
   }
 
-  // 2. Debounce by 5 seconds per browser tab to avoid React StrictMode double-fire
+  // 2. Debounce by 3 seconds per browser tab to avoid React StrictMode double-fire
   try {
     const sessionKey = `cardzy_last_view_${cardType}_${slug}`
     const lastViewed = Number(sessionStorage.getItem(sessionKey) || '0')
     const now = Date.now()
-    if (now - lastViewed < 5000) {
+    if (now - lastViewed < 3000) {
       return false
     }
     sessionStorage.setItem(sessionKey, String(now))
