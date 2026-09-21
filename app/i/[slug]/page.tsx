@@ -229,6 +229,15 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                   <Sparkles className="size-5 text-amber-400 animate-pulse" /> You Created This Event Invitation!
                 </p>
                 <p className="text-xs text-slate-300 mt-1">{t('invitationOwnerControlDesc') || 'You can edit, share, or delete your invitation below.'}</p>
+                <div className="mt-3 inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-950/60 px-3 py-1.5">
+                  <span className="relative flex size-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full size-2 bg-emerald-400"></span>
+                  </span>
+                  <Eye className="size-3.5 text-emerald-400" />
+                  <span className="text-sm font-extrabold text-emerald-300">{activeInvitation.viewCount || 0}</span>
+                  <span className="text-xs text-emerald-400/80">total views</span>
+                </div>
               </div>
               <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
                 <Link

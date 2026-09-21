@@ -288,7 +288,7 @@ function inferOrigin(item: {
 
 export default function AdminPortalPage() {
   const [mounted, setMounted] = useState(false)
-  const [isAdminAuthorized, setIsAdminAuthorized] = useState(true)
+  const [isAdminAuthorized, setIsAdminAuthorized] = useState(false)
   const [adminEmailInput, setAdminEmailInput] = useState('')
   const [adminPasswordInput, setAdminPasswordInput] = useState('')
   const [adminError, setAdminError] = useState('')
@@ -471,13 +471,13 @@ export default function AdminPortalPage() {
   }, [])
 
   useEffect(() => {
-    const ALLOWED_EMAILS = ['admin@cardzy.online', 'cardzyonline@gmail.com', 'admin@jashn.online']
+    const ALLOWED_EMAILS = ['cardzyonline@gmail.com']
     if (currentUser?.email && ALLOWED_EMAILS.includes(currentUser.email.toLowerCase())) {
       setIsAdminAuthorized(true)
     }
   }, [currentUser])
 
-  // Auto-lock when the 30-minute session window expires
+  // Auto-lock when the 20-minute session window expires
   useEffect(() => {
     if (!isAdminAuthorized) return
     const checkExpiry = setInterval(() => {
@@ -507,10 +507,10 @@ export default function AdminPortalPage() {
 
     // ─── Admin Credentials ───────────────────────────────────────────────
     // Username (email): cardzyonline@gmail.com
-    // Password:         CardzyAdmin2026!
+    // Password:         Umar@3310
     // ────────────────────────────────────────────────────────────────────
-    const ALLOWED_EMAILS = ['admin@cardzy.online', 'cardzyonline@gmail.com', 'admin@jashn.online']
-    const ADMIN_PASSWORD = 'CardzyAdmin2026!'
+    const ALLOWED_EMAILS = ['cardzyonline@gmail.com']
+    const ADMIN_PASSWORD = 'Umar@3310'
 
     const emailOk = ALLOWED_EMAILS.includes(email)
     const passOk = pass === ADMIN_PASSWORD
@@ -518,12 +518,12 @@ export default function AdminPortalPage() {
     if (emailOk && passOk) {
       setIsAdminAuthorized(true)
       if (typeof window !== 'undefined') {
-        // Session valid for 30 minutes
-        const expiresAt = Date.now() + 30 * 60 * 1000
+        // Session valid for 20 minutes
+        const expiresAt = Date.now() + 20 * 60 * 1000
         sessionStorage.setItem('cardzy_admin_session', JSON.stringify({ authed: true, expiresAt }))
       }
       setAdminError('')
-      showToast('Admin Portal Unlocked — session valid for 30 min', 'success')
+      showToast('Admin Portal Unlocked — session valid for 20 min', 'success')
     } else {
       setAdminError('Access denied: Invalid admin email or password.')
     }

@@ -58,6 +58,7 @@ export default function CreateVisitingCardPage() {
   const [address, setAddress] = useState('')
   const [mapLink, setMapLink] = useState('')
   const [bio, setBio] = useState('')
+  const [avatarUrl, setAvatarUrl] = useState('')
 
   // Validation Error States
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -144,6 +145,7 @@ export default function CreateVisitingCardPage() {
     address: address.trim() || 'Suite 402, Blue Area, Islamabad',
     mapLink: mapLink.trim() || 'https://maps.google.com',
     bio: bio.trim() || t('defaultVisitingBio', 'Leading digital innovations & global business solutions.'),
+    avatarUrl: avatarUrl.trim(),
     themeId: selectedThemeId,
     language: lang,
   }
@@ -184,6 +186,7 @@ export default function CreateVisitingCardPage() {
         address: address.trim(),
         mapLink: mapLink.trim(),
         bio: bio.trim(),
+        avatarUrl: avatarUrl.trim(),
         themeId: selectedThemeId,
         language: lang,
       })
@@ -631,6 +634,17 @@ export default function CreateVisitingCardPage() {
                           onChange={(e) => setBio(e.target.value)}
                           placeholder={t('shortBioPlaceholder') || 'Write a brief intro about your services, clinic, or business...'}
                           rows={3}
+                          className="rounded-xl text-xs"
+                        />
+                      </div>
+
+                      <div className="space-y-1.5 pt-1">
+                        <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('avatarUrlLabel') || 'Profile Image URL (Optional)'}</label>
+                        <Input
+                          id="field-avatar"
+                          value={avatarUrl}
+                          onChange={(e) => setAvatarUrl(e.target.value)}
+                          placeholder={t('avatarUrlPlaceholder') || 'https://example.com/your-image.jpg'}
                           className="rounded-xl text-xs"
                         />
                       </div>

@@ -180,6 +180,15 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
                   <Sparkles className="size-5 text-[#D4AF37] animate-pulse" /> {t('youCreatedThisVcard')}
                 </p>
                 <p className="text-xs text-zinc-300 mt-1">{t('manageEditShareVcard')}</p>
+                <div className="mt-3 inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-950/60 px-3 py-1.5">
+                  <span className="relative flex size-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full size-2 bg-emerald-400"></span>
+                  </span>
+                  <Eye className="size-3.5 text-emerald-400" />
+                  <span className="text-sm font-extrabold text-emerald-300">{card.viewCount || 0}</span>
+                  <span className="text-xs text-emerald-400/80">{t('viewsLabel')}</span>
+                </div>
               </div>
               <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
                 <Link

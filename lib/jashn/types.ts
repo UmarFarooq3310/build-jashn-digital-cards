@@ -238,6 +238,7 @@ export interface VisitingCard {
   bio?: string
   avatarUrl?: string
   logoUrl?: string
+  coverImageUrl?: string
   themeId: string
   language: Language
   socialLinks?: {

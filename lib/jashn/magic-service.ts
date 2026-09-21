@@ -238,14 +238,7 @@ export async function getMagicLink(slug: string, shouldCountView: boolean = fals
             { merge: true }
           ).catch(() => {})
 
-          // Server API activity logging in background
-          if (typeof window !== 'undefined') {
-            fetch('/api/card-activity', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ cardType: 'magic', slug, action: 'view' }),
-            }).catch(() => {})
-          }
+          // Server API activity logging removed to prevent double-increment with Client SDK
         }
         return docData
       }

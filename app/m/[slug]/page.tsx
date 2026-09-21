@@ -30,7 +30,7 @@ import { CardQrCode } from '@/components/jashn/qr-code'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
-import { doc, onSnapshot } from 'firebase/firestore'
+import { doc, onSnapshot, setDoc, increment } from 'firebase/firestore'
 import { useLang } from '@/lib/lang/context'
 import { shouldIncrementView, isSenderOrOwner } from '@/lib/jashn/view-tracker'
 import { cn } from '@/lib/utils'
@@ -410,6 +410,15 @@ function MagicLinkInner({ slug }: { slug: string }) {
               <p className="text-xs text-slate-300 mt-1">
                 You can preview, share, or manage your celebration card below.
               </p>
+              <div className="mt-3 inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-950/60 px-3 py-1.5">
+                <span className="relative flex size-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full size-2 bg-emerald-400"></span>
+                </span>
+                <Eye className="size-3.5 text-emerald-400" />
+                <span className="text-sm font-extrabold text-emerald-300">{data.viewsCount || 0}</span>
+                <span className="text-xs text-emerald-400/80">total views</span>
+              </div>
             </div>
             <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
               <Link

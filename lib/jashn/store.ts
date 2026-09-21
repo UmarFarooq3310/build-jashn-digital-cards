@@ -732,14 +732,7 @@ export const useJashn = create<JashnState>()(
           })
         }
 
-        // Server API Activity Logging
-        if (typeof window !== 'undefined') {
-          fetch('/api/card-activity', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cardType: 'wish', slug, action: 'view' }),
-          }).catch(() => {})
-        }
+        // Server API activity logging removed to prevent double-increment with Client SDK
       },
 
       incrementInvitationView: (slug) => {
@@ -775,14 +768,7 @@ export const useJashn = create<JashnState>()(
           })
         }
 
-        // Server API Activity Logging
-        if (typeof window !== 'undefined') {
-          fetch('/api/card-activity', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cardType: 'invite', slug, action: 'view' }),
-          }).catch(() => {})
-        }
+        // Server API activity logging removed to prevent double-increment with Client SDK
       },
 
       incrementVisitingCardView: (slug) => {
@@ -818,14 +804,7 @@ export const useJashn = create<JashnState>()(
           })
         }
 
-        // Server API Activity Logging
-        if (typeof window !== 'undefined') {
-          fetch('/api/card-activity', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cardType: 'vcard', slug, action: 'view' }),
-          }).catch(() => {})
-        }
+        // Server API activity logging removed to prevent double-increment with Client SDK
       },
 
       incrementRsvp: (slug) => {

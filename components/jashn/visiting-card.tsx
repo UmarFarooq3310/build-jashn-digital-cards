@@ -273,11 +273,11 @@ END:VCARD`
               </div>
 
               {/* Profile Avatar & Primary Details */}
-              <div className={cn('flex items-center gap-4 pt-1', isRtl && 'flex-row-reverse')}>
+              <div className={cn('flex flex-col items-center gap-4 pt-1 text-center', isRtl && 'flex-col')}>
                 <div className={cn(
-                  "relative size-20 sm:size-24 shrink-0 rounded-2xl border-2 overflow-hidden flex items-center justify-center shadow-2xl font-black text-3xl uppercase",
+                  "relative size-28 sm:size-32 shrink-0 rounded-full border-4 overflow-hidden flex items-center justify-center shadow-[0_0_40px_rgba(212,175,55,0.4)] font-black text-4xl uppercase transition-transform hover:scale-105 duration-300",
                   isLight
-                    ? "bg-white border-slate-300 text-teal-800"
+                    ? "bg-white border-white text-teal-800"
                     : "bg-gradient-to-br from-[#D4AF37]/30 via-white/10 to-black/40 border-[#D4AF37] text-[#D4AF37]"
                 )}>
                   {data.avatarUrl ? (
@@ -294,10 +294,10 @@ END:VCARD`
                   )}
                 </div>
 
-                <div className={cn('space-y-1.5 flex-1 min-w-0', isRtl && 'space-y-2')}>
-                  <div className={cn('flex items-center gap-1.5 flex-wrap', isRtl && 'flex-row-reverse')}>
+                <div className={cn('space-y-1.5 flex-1 min-w-0 w-full', isRtl && 'space-y-2')}>
+                  <div className={cn('flex items-center justify-center gap-1.5 flex-wrap', isRtl && 'flex-row-reverse')}>
                     <h2 className={cn(
-                      'text-xl sm:text-2xl font-extrabold tracking-tight leading-snug break-words',
+                      'text-2xl sm:text-3xl font-extrabold tracking-tight leading-snug break-words drop-shadow-md',
                       isLight ? 'text-slate-900' : 'text-white',
                       isRtl && 'font-urdu'
                     )}>
@@ -307,7 +307,7 @@ END:VCARD`
                   </div>
 
                   <p className={cn(
-                    'text-xs sm:text-sm font-bold flex items-center gap-1.5 leading-snug break-words',
+                    'text-xs sm:text-sm font-bold flex justify-center items-center gap-1.5 leading-snug break-words',
                     isLight ? 'text-teal-800' : 'text-[#F5E6A8]',
                     isRtl && 'flex-row-reverse font-urdu'
                   )}>
@@ -317,7 +317,7 @@ END:VCARD`
 
                   {data.company && (
                     <p className={cn(
-                      'text-xs font-semibold flex items-center gap-1.5 leading-snug break-words',
+                      'text-xs font-semibold flex justify-center items-center gap-1.5 leading-snug break-words',
                       isLight ? 'text-slate-600' : 'text-zinc-300',
                       isRtl && 'flex-row-reverse font-urdu'
                     )}>
