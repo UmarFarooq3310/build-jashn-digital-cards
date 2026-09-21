@@ -215,7 +215,7 @@ export default function CreateVisitingCardPage() {
 
           {createdCard ? (
             /* Created Result View */
-            <div className="max-w-2xl mx-auto space-y-6 bg-card border border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl animate-fadeIn">
+            <div className="max-w-2xl mx-auto space-y-4 bg-card border border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl animate-fadeIn">
               <div className="text-center space-y-2">
                 <div className="size-14 rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-300 mx-auto flex items-center justify-center">
                   <Check className="size-8" />
@@ -319,7 +319,7 @@ export default function CreateVisitingCardPage() {
             /* Builder Form + Live Preview Grid */
             <div className="grid gap-8 lg:grid-cols-12 items-start">
               {/* Form Column */}
-              <form noValidate onSubmit={handleSubmit} className="lg:col-span-7 space-y-6">
+              <form noValidate onSubmit={handleSubmit} className="lg:col-span-7 space-y-4">
 
                 {/* 2-Step Progress Header */}
                 <div className="flex items-center justify-between gap-2 p-1.5 bg-muted/60 rounded-2xl border border-border/60 shadow-xs">
@@ -464,13 +464,13 @@ export default function CreateVisitingCardPage() {
 
                 {/* ── STEP 2: PERSONAL & CONTACT DETAILS ── */}
                 {step === 2 && (
-                  <div className="space-y-6 animate-in fade-in-50 duration-200">
+                  <div className="space-y-4 animate-in fade-in-50 duration-200">
                     <div className="bg-card border border-border rounded-3xl p-6 shadow-sm space-y-4">
                       <label className={cn("text-xs font-extrabold uppercase tracking-wider text-muted-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('contactDetailsSection') || 'Contact & Business Details'}
                       </label>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-1.5">
                           <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('fullNameLabel') || 'Full Name *'}</label>
                           <Input
@@ -510,7 +510,7 @@ export default function CreateVisitingCardPage() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                      <div className="grid grid-cols-2 gap-3 pt-1">
                         <div className="space-y-1.5">
                           <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('companyLabel') || 'Company / Clinic / Brand Name'}</label>
                           <Input
@@ -542,7 +542,7 @@ export default function CreateVisitingCardPage() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                      <div className="grid grid-cols-2 gap-3 pt-1">
                         <div className="space-y-1.5">
                           <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('whatsAppLabel') || 'WhatsApp Number'}</label>
                           <Input
@@ -583,7 +583,7 @@ export default function CreateVisitingCardPage() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                      <div className="grid grid-cols-2 gap-3 pt-1">
                         <div className="space-y-1.5">
                           <label className={cn("text-xs font-bold text-foreground block", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>{t('websiteLabel') || 'Website URL'}</label>
                           <Input

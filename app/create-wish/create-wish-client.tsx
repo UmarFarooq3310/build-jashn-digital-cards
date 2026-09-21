@@ -324,7 +324,6 @@ function CreateWishContent() {
     const errKeys = Object.keys(errs)
     if (errKeys.length > 0) {
       setStep(2)
-      setMobileTab('details')
       const firstKey = errKeys[0]
       const firstError = errs[firstKey] || t('completeAllRequiredFields', 'Please complete all required fields marked in red.')
       showToast(firstError, 'error')
@@ -423,7 +422,6 @@ function CreateWishContent() {
                     if (isClickable) {
                       setErrors({})
                       setStep(s as 1 | 2 | 3 | 4)
-                      setMobileTab('details')
                     }
                   }}
                   disabled={!isClickable}
@@ -442,7 +440,6 @@ function CreateWishContent() {
                     if (isClickable) {
                       setErrors({})
                       setStep(s as 1 | 2 | 3 | 4)
-                      setMobileTab('details')
                     }
                   }}
                   className={`hidden sm:inline text-xs font-bold transition-colors ${
@@ -463,44 +460,8 @@ function CreateWishContent() {
       </div>
 
       {/* 📱 Mobile Form/Preview Toggle (Only visible on Step > 1 & Mobile < 1024px) */}
-      {step > 1 && (
-        <div className="block lg:hidden mb-5">
-          <div className="grid grid-cols-2 gap-1 rounded-2xl bg-muted/60 p-1.5 border border-border/70 shadow-sm">
-            <button
-              type="button"
-              onClick={() => setMobileTab('details')}
-              className={cn(
-                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all',
-                mobileTab !== 'preview'
-                  ? 'bg-background text-[#7B0D1E] shadow-md border border-border/50'
-                  : 'text-muted-foreground hover:text-foreground'
-              )}
-            >
-              <Edit3 className="size-3.5" />
-              <span>{t('tabDetails') || 'Edit Form'}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMobileTab('preview')}
-              className={cn(
-                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all relative',
-                mobileTab === 'preview'
-                  ? 'bg-[#7B0D1E] text-white shadow-md'
-                  : 'text-[#7B0D1E] bg-[#7B0D1E]/10 hover:bg-[#7B0D1E]/20'
-              )}
-            >
-              <Eye className="size-3.5" />
-              <span>{t('tabPreview') || 'Live Preview'}</span>
-              <span className="absolute -top-1 -right-1 size-2 rounded-full bg-emerald-500 animate-ping" />
-            </button>
-          </div>
-        </div>
-      )}
-
       <div className="grid gap-8 lg:grid-cols-12">
-        {/* Main Column */}
-        <div className="lg:col-span-7 space-y-6">
+        <div className="lg:col-span-7 space-y-4">
           <div className="rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-sm">
             {/* ── PART 1: OCCASION SELECTION ── */}
             {step === 1 && (
@@ -528,7 +489,7 @@ function CreateWishContent() {
 
             {/* ── PART 2: MESSAGE & DETAILS ── */}
             {step === 2 && (
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {/* Header Selected Occasion Info */}
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <div>
@@ -813,7 +774,7 @@ function CreateWishContent() {
 
             {/* ── PART 3: PHOTO & MUSIC ── */}
             {step === 3 && (
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                     <Camera className="size-5 text-[#7A1E2B]" />
@@ -853,7 +814,7 @@ function CreateWishContent() {
                   <label className={cn("text-xs font-bold text-[#7A1E2B] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
                     <Music className="size-4" /> Background Music Track (Plays on Open)
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-2 gap-2.5">
                     {AUDIO_TRACKS.map((trk) => {
                       const isSelected = audioTrack === trk.id
                       return (
@@ -914,7 +875,7 @@ function CreateWishContent() {
 
             {/* ── PART 4: THEME & STYLE ── */}
             {step === 4 && (
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                     <Palette className="size-5 text-[#7A1E2B]" />

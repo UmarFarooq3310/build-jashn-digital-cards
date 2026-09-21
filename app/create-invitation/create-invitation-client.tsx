@@ -303,7 +303,6 @@ function CreateInvitationContent() {
       return
     }
     setStep(3)
-    setMobileTab('form')
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 120, behavior: 'smooth' })
     }
@@ -311,7 +310,6 @@ function CreateInvitationContent() {
 
   function goToStep4() {
     setStep(4)
-    setMobileTab('form')
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 120, behavior: 'smooth' })
     }
@@ -319,7 +317,6 @@ function CreateInvitationContent() {
 
   function goToStep2() {
     setStep(2)
-    setMobileTab('form')
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 120, behavior: 'smooth' })
     }
@@ -327,7 +324,6 @@ function CreateInvitationContent() {
 
   function goToStep3Back() {
     setStep(3)
-    setMobileTab('form')
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 120, behavior: 'smooth' })
     }
@@ -363,7 +359,6 @@ function CreateInvitationContent() {
     const errKeys = Object.keys(errs)
     if (errKeys.length > 0) {
       setStep(2)
-      setMobileTab('form')
       const firstKey = errKeys[0]
       const firstError = errs[firstKey] || t('checkInputDetails', 'Please check your input details.')
       showToast(firstError, 'error')
@@ -466,7 +461,6 @@ function CreateInvitationContent() {
                     if (isClickable) {
                       setErrors({})
                       setStep(s as 1 | 2 | 3 | 4)
-                      setMobileTab('form')
                     }
                   }}
                   disabled={!isClickable}
@@ -486,7 +480,6 @@ function CreateInvitationContent() {
                     if (isClickable) {
                       setErrors({})
                       setStep(s as 1 | 2 | 3 | 4)
-                      setMobileTab('form')
                     }
                   }}
                   disabled={!isClickable}
@@ -509,7 +502,7 @@ function CreateInvitationContent() {
 
       <div className="grid gap-8 lg:grid-cols-12">
         {/* Main Column */}
-        <div className="lg:col-span-7 space-y-6">
+        <div className="lg:col-span-7 space-y-4">
           <div className="rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-sm">
             {step === 1 && (
               <div className="space-y-4">
@@ -528,7 +521,7 @@ function CreateInvitationContent() {
             )}
 
             {step >= 2 && (
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {/* Header Selected Event Info (Shared across Parts 2, 3, 4) */}
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <div>
@@ -894,7 +887,7 @@ function CreateInvitationContent() {
                         <Camera className="size-4" /> {isCouple ? t('couplePhotosLabel') : t('eventPhotoLabel')}
                       </label>
 
-                      <div className={cn("grid gap-3", isCouple ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1")}>
+                      <div className={cn("grid gap-3", isCouple ? "grid-cols-2" : "grid-cols-1")}>
                         {/* Photo 1 Upload Box */}
                         <div className="flex flex-col items-center justify-center p-3 rounded-2xl border border-dashed border-input bg-background/50 space-y-2 text-center">
                           <span className="text-[11px] font-semibold text-muted-foreground">
@@ -970,7 +963,7 @@ function CreateInvitationContent() {
 
                 {/* 🎨 Part 4: Theme & Design */}
                 {step === 4 && (
-                  <div className={cn('space-y-6 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
+                  <div className={cn('space-y-4 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
                     <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
                       <Palette className="size-4" /> {t('stepPartDesign') || '4. Theme & Design'}
                     </h3>

@@ -791,7 +791,7 @@ export default function CreateMagicLinkClient() {
         </div>
       ) : step === 1 ? (
         /* STEP 1: OCCASION SELECTION GRID + CATEGORIES + LIVE DEMO */
-        <div className="space-y-6 animate-in fade-in duration-300">
+        <div className="space-y-4 animate-in fade-in duration-300">
           
           {/* Header */}
           <div className="text-center max-w-2xl mx-auto mb-4">
@@ -852,7 +852,7 @@ export default function CreateMagicLinkClient() {
           </div>
 
           {/* Occasions Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredOccasions.map((occ) => {
               const Icon = occ.icon
               const isSelected = selectedOccasion === occ.id
@@ -1013,7 +1013,7 @@ export default function CreateMagicLinkClient() {
         </div>
       ) : (
         /* STEP 2: PERSONALIZE & LIVE PREVIEW */
-        <div className={cn("space-y-6 animate-in fade-in duration-300 text-left", isUrdu && "text-right font-urdu")}>
+        <div className={cn("space-y-4 animate-in fade-in duration-300 text-left", isUrdu && "text-right font-urdu")}>
           {/* Top Bar: Change Occasion */}
           <div className="flex items-center justify-between gap-3 pb-2 border-b border-border/60">
             <button
@@ -1076,19 +1076,19 @@ export default function CreateMagicLinkClient() {
           <div className="grid gap-8 lg:grid-cols-12">
             
             {/* LEFT COLUMN: FORM & THEME PICKER */}
-            <div className={'lg:col-span-7 space-y-6'}>
+            <div className={'lg:col-span-7 space-y-4'}>
               <div className={cn(
                 "rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-sm text-left",
                 isUrdu && "text-right font-urdu"
               )}>
                 {/* Form Body */}
-                <form onSubmit={handleSubmit} noValidate className="space-y-6">
+                <form onSubmit={handleSubmit} noValidate className="space-y-4">
                   
                   {/* DETAILS TAB CONTENT (Section 1) */}
                   <div className={cn('space-y-4 text-left', isUrdu && 'text-right font-urdu', activeTab !== 'details' && 'hidden')}>
                     
                     {/* Sender & Recipient Names */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
                           {t('magicSenderLabel', 'Your Name (Sender)')} *
@@ -1142,7 +1142,7 @@ export default function CreateMagicLinkClient() {
 
                     {/* PROPOSAL SPECIFIC: How We Met & Special Date */}
                     {selectedOccasion === 'proposal' && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3.5 rounded-2xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50">
+                      <div className="grid grid-cols-2 gap-4 p-3.5 rounded-2xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50">
                         <div>
                           <label className="text-xs font-bold text-rose-950 dark:text-rose-200 uppercase tracking-wider block mb-1.5">
                             Our Special Date (Optional)
@@ -1434,7 +1434,7 @@ export default function CreateMagicLinkClient() {
                   </div>
 
                   {/* THEME PICKER TAB CONTENT (Section 2) */}
-                  <div className={cn('space-y-6 text-left', isUrdu && 'text-right font-urdu', activeTab !== 'design' && 'hidden')}>
+                  <div className={cn('space-y-4 text-left', isUrdu && 'text-right font-urdu', activeTab !== 'design' && 'hidden')}>
                     <div>
                       <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-2", isUrdu ? "text-right font-urdu" : "text-left")}>
                         {activeOccMeta.label} Bespoke Palettes (Choose One)
