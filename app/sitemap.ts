@@ -24,6 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/guide/eid-wording-ideas', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
     { path: '/guide/pakistani-wedding-invitations', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
     { path: '/guide/birthday-wishes-wording', changeFrequency: 'weekly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
+    { path: '/guide/magic-links-guide', changeFrequency: 'weekly' as const, priority: 0.8, lastModified: frequentUpdateDate },
     { path: '/eid-mubarak-cards', changeFrequency: 'weekly' as const, priority: 0.9, lastModified: monthlyUpdateDate },
     { path: '/about', changeFrequency: 'monthly' as const, priority: 0.8, lastModified: monthlyUpdateDate },
     { path: '/authors', changeFrequency: 'monthly' as const, priority: 0.8, lastModified: monthlyUpdateDate },

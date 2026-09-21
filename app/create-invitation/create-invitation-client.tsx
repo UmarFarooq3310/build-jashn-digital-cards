@@ -60,7 +60,7 @@ function CreateInvitationContent() {
     if (typeParam) return typeParam
     return 'nikkah'
   })
-  const [mobileTab, setMobileTab] = useState<'form' | 'preview'>('form')
+  
 
   const getTodayString = () => {
     const today = new Date()
@@ -223,6 +223,16 @@ function CreateInvitationContent() {
     setTypeId(id)
     setErrors({})
     setStep(2)
+
+    // Automatically set default templates for the newly selected occasion
+    const tPlates = getInvitationWordingTemplates(id, lang)
+    if (tPlates.length > 0) {
+      const tmpl = tPlates[0]
+      setTitle(tmpl.title)
+      setHostNames(tmpl.hostNames)
+      setNotes(tmpl.notes)
+      if (tmpl.dressCode) setDressCode(tmpl.dressCode)
+    }
   }
 
   function runValidation() {
@@ -496,44 +506,6 @@ function CreateInvitationContent() {
       </div>
 
       {/* 📱 Mobile Tabs (Only visible when step >= 2 & Mobile < 1024px) */}
-      {step >= 2 && (
-        <div className="block lg:hidden mb-5">
-          <div className="grid grid-cols-2 gap-1 rounded-2xl bg-muted/60 p-1.5 border border-border/70 shadow-sm">
-            <button
-              type="button"
-              onClick={() => setMobileTab('form')}
-              className={cn(
-                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all',
-                mobileTab !== 'preview'
-                  ? 'bg-background text-[#7B0D1E] shadow-md border border-border/50'
-                  : 'text-muted-foreground hover:text-foreground'
-              )}
-            >
-              <Edit3 className="size-3.5" />
-              <span>
-                {step === 2 && (t('stepPartDetails') || '2. Details')}
-                {step === 3 && (t('stepPartWording') || '3. Wording & Photos')}
-                {step === 4 && (t('stepPartDesign') || '4. Design')}
-              </span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMobileTab('preview')}
-              className={cn(
-                'flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all relative',
-                mobileTab === 'preview'
-                  ? 'bg-[#7B0D1E] text-white shadow-md'
-                  : 'text-[#7B0D1E] bg-[#7B0D1E]/10 hover:bg-[#7B0D1E]/20'
-              )}
-            >
-              <Eye className="size-3.5" />
-              <span>{t('tabPreview', 'Preview')}</span>
-              <span className="absolute -top-1 -right-1 size-2 rounded-full bg-emerald-500 animate-ping" />
-            </button>
-          </div>
-        </div>
-      )}
 
       <div className="grid gap-8 lg:grid-cols-12">
         {/* Main Column */}
@@ -579,7 +551,7 @@ function CreateInvitationContent() {
 
                 {/* 📝 Part 2: Event Details */}
                 {step === 2 && (
-                  <div className={cn(mobileTab === 'preview' && 'hidden lg:block', 'space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
+                  <div className={cn('space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
                     <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
                       <Edit3 className="size-4" /> {t('stepPartDetails') || '2. Event Details'}
                     </h3>
@@ -873,7 +845,7 @@ function CreateInvitationContent() {
 
                 {/* 📝 Part 3: Wording & Photos */}
                 {step === 3 && (
-                  <div className={cn(mobileTab === 'preview' && 'hidden lg:block', 'space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
+                  <div className={cn('space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
                     <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
                       <Sparkles className="size-4" /> {t('stepPartWording') || '3. Wording & Photos'}
                     </h3>
@@ -998,7 +970,7 @@ function CreateInvitationContent() {
 
                 {/* 🎨 Part 4: Theme & Design */}
                 {step === 4 && (
-                  <div className={cn(mobileTab === 'preview' && 'hidden lg:block', 'space-y-6 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
+                  <div className={cn('space-y-6 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
                     <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
                       <Palette className="size-4" /> {t('stepPartDesign') || '4. Theme & Design'}
                     </h3>
@@ -1066,53 +1038,13 @@ function CreateInvitationContent() {
                   </div>
                 )}
 
-                {/* 👁️ Preview Tab Content (Only displayed on Mobile when preview tab active) */}
-                {mobileTab === 'preview' && (
-                  <div className="block lg:hidden space-y-4 pt-2">
-                    <div className="rounded-3xl border border-border bg-gradient-to-b from-muted/20 to-card p-4 text-center shadow-md">
-                      <div className="flex items-center justify-between mb-3 px-1">
-                        <span className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
-                          <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
-                        </span>
-                      </div>
-
-                      <div className="flex justify-center overflow-hidden py-2">
-                        <div className="w-full">
-                          <CardAnimationPreview occasionId={typeId} animationKey={typeId} className="max-w-sm mx-auto" roundedClass="rounded-3xl">
-                            <InvitationCard
-                              data={{
-                                typeId,
-                                title: title || selectedType?.label || t('invitation', 'Invitation'),
-                                hostNames: hostNames || t('defaultHostNames', 'The Families of Hassan & Ayesha'),
-                                groom: groom || t('defaultGroom', 'Hassan'),
-                                bride: bride || t('defaultBride', 'Ayesha'),
-                                date: date || '2026-12-14',
-                                time: time || '07:00 PM',
-                                venue: venue || t('defaultVenue', 'Pearl Continental, Grand Ballroom'),
-                                city: city || t('defaultCity', 'Lahore'),
-                                dressCode: dressCode || t('defaultDressCode', 'Traditional Royal / Formal'),
-                                notes: notes || t('defaultNotes', 'Your gracious presence will double our joy and happiness.'),
-                                themeId,
-                                borderId,
-                                bgVariantId,
-                                photoUrl,
-                                photoUrl2,
-                              }}
-                              showCountdown={false}
-                            />
-                          </CardAnimationPreview>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             )}
           </div>
         </div>
 
-        {/* Desktop Right Column — Sticky Live Interactive Preview */}
-        <div className="hidden lg:block lg:col-span-5 space-y-4">
+        {/* Desktop & Mobile Right Column — Sticky Live Interactive Preview */}
+        <div className="lg:col-span-5 space-y-4">
           <div className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden" suppressHydrationWarning>
             <div className="mb-3 flex items-center justify-between px-1">
               <p className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
@@ -1152,65 +1084,6 @@ function CreateInvitationContent() {
         </div>
       </div>
 
-      {/* 📱 Mobile Sticky Bottom Action Bar (Fixed at bottom on phone screens when step >= 2) */}
-      {step >= 2 && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 block lg:hidden border-t border-border/80 bg-background/95 backdrop-blur-md p-3 shadow-2xl">
-          <div className="mx-auto flex max-w-md items-center gap-2">
-            {mobileTab !== 'preview' ? (
-              <Button
-                variant="outline"
-                onClick={() => setMobileTab('preview')}
-                className="flex-1 rounded-2xl text-xs font-bold h-12 border-[#7B0D1E]/30 text-[#7B0D1E] bg-[#7B0D1E]/5"
-              >
-                <Eye className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabPreview', 'Preview')}
-              </Button>
-            ) : (
-              <Button
-                variant="outline"
-                onClick={() => setMobileTab('form')}
-                className="flex-1 rounded-2xl text-xs font-bold h-12"
-              >
-                <Edit3 className="size-4 mr-1 text-[#7B0D1E]" /> {t('editCard', 'Edit Details')}
-              </Button>
-            )}
-
-            {step === 2 && (
-              <Button
-                onClick={goToStep3}
-                className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
-              >
-                <span>{t('nextWordingPhotos') || 'Next: Wording →'}</span>
-              </Button>
-            )}
-
-            {step === 3 && (
-              <Button
-                onClick={goToStep4}
-                className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
-              >
-                <span>{t('nextThemeDesign') || 'Next: Design →'}</span>
-              </Button>
-            )}
-
-            {step === 4 && (
-              <Button
-                onClick={handleFinish}
-                disabled={isSubmitting}
-                className="flex-[1.5] bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Sparkles className="size-4 animate-spin" />
-                    <span>{t('generatingCard', 'Generating...')}</span>
-                  </>
-                ) : (
-                  editSlug ? t('saveChanges') : t('createAndShareBtn')
-                )}
-              </Button>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Premium Guide Overview Card */}
       <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-6xl mx-auto">

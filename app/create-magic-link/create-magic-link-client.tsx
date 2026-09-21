@@ -1071,26 +1071,12 @@ export default function CreateMagicLinkClient() {
             </div>
 
             {/* Mobile Preview Toggle (Only visible on screens < lg) */}
-            <button
-              type="button"
-              onClick={() => setActiveTab(activeTab === 'preview' ? 'details' : 'preview')}
-              className={cn(
-                'lg:hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 relative',
-                activeTab === 'preview'
-                  ? 'bg-[#7A1E2B] text-white shadow-sm'
-                  : 'text-[#7A1E2B] bg-[#7A1E2B]/10 hover:bg-[#7A1E2B]/20'
-              )}
-            >
-              <Eye className="size-3.5" />
-              <span>{t('livePreviewTab', 'Live Preview')}</span>
-              <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-            </button>
           </div>
 
           <div className="grid gap-8 lg:grid-cols-12">
             
             {/* LEFT COLUMN: FORM & THEME PICKER */}
-            <div className={cn('lg:col-span-7 space-y-6', activeTab === 'preview' && 'hidden lg:block')}>
+            <div className={'lg:col-span-7 space-y-6'}>
               <div className={cn(
                 "rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-sm text-left",
                 isUrdu && "text-right font-urdu"
@@ -1553,32 +1539,8 @@ export default function CreateMagicLinkClient() {
             </div>
 
             {/* RIGHT COLUMN: STICKY LIVE INTERACTIVE CAPSULE PREVIEW */}
-            <div
-              className={cn(
-                'lg:col-span-5 space-y-4',
-                activeTab !== 'preview' && 'hidden lg:block'
-              )}
-            >
+            <div className="lg:col-span-5 space-y-4">
               <div className="sticky top-20">
-                {/* Mobile Back to Edit button */}
-                <div className="lg:hidden flex items-center justify-between mb-3 pb-2 border-b border-border/60">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('details')}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted border border-border text-xs font-bold text-foreground cursor-pointer"
-                  >
-                    <ArrowLeft className={cn("size-3.5", isUrdu && "rotate-180")} />
-                    <span>{t('btnBack') || 'Back to Form'}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('design')}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#7A1E2B]/10 text-[#7A1E2B] text-xs font-bold cursor-pointer"
-                  >
-                    <Palette className="size-3.5" />
-                    <span>{t('magicTabTheme', '2. Theme & Style')}</span>
-                  </button>
-                </div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                     <Eye className="size-3.5 text-[#7A1E2B]" />

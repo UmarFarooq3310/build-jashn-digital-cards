@@ -85,7 +85,6 @@ export default function AuthorsIndexPage() {
         {/* ── Hero ───────────────────────────────────────────────────── */}
         <section className="bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950 text-white py-12 md:py-16">
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-            <Breadcrumbs items={[{ label: 'Editorial Team & Authors', href: '/authors' }]} />
             <div className="mt-6 text-center max-w-2xl mx-auto space-y-3">
               <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1 text-xs font-bold text-emerald-300 uppercase tracking-wider">
                 <Users className="size-3.5 text-amber-400" /> Editorial Standards &amp; E-E-A-T

@@ -96,7 +96,6 @@ function CreateWishContent() {
     if (categoryParam) return resolveOccasionFromCategory(categoryParam)
     return 'birthday'
   })
-  const [mobileTab, setMobileTab] = useState<'details' | 'design' | 'preview'>('details')
   const [language, setLanguage] = useState<Language>('en')
   const [message, setMessage] = useState(() => {
     if (messageParam) return messageParam
@@ -233,6 +232,12 @@ function CreateWishContent() {
     setOccasionId(id)
     setErrors({})
     setStep(2)
+    
+    // Automatically set default template for the newly selected occasion
+    const tPlates = getTemplates(id)
+    if (tPlates.length > 0) {
+      setMessage(getLocalizedTemplateText(tPlates[0], lang))
+    }
   }
 
   function applyTemplate(index: number) {
@@ -519,46 +524,10 @@ function CreateWishContent() {
               </div>
             )}
 
-            {/* ── MOBILE PREVIEW (When on mobile and tab is preview) ── */}
-            {step > 1 && mobileTab === 'preview' && (
-              <div className="block lg:hidden space-y-4 pt-2">
-                <div className="rounded-3xl border border-border bg-gradient-to-b from-muted/20 to-card p-4 text-center shadow-md">
-                  <div className="flex items-center justify-between mb-3 px-1">
-                    <span className="text-xs font-extrabold uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5">
-                      ♡ {t('livePreview') || 'LIVE PREVIEW'}
-                    </span>
-                  </div>
 
-                  <div className="flex justify-center overflow-hidden py-2">
-                    <div className="w-full">
-                      <CardAnimationPreview occasionId={occasionId} animationKey={occasionId} className="max-w-md mx-auto" roundedClass="rounded-[2.5rem]">
-                        <WishCard
-                          data={{
-                            occasionId,
-                            themeId,
-                            borderId,
-                            bgVariantId,
-                            message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : t('defaultWishDefaultMessage', 'Wishing you a day filled with happiness, laughter and immense blessings!')),
-                            senderName: senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : t('defaultWishSender', 'Tariq & Family')),
-                            recipientName: (isGamingOccasion && playerName) ? playerName : (recipientName || t('defaultWishRecipient', 'Ayesha')),
-                            relation: relation || t('defaultWishRelation', 'Friend'),
-                            language,
-                            playerName,
-                            killCount,
-                            rank,
-                            winningNumber,
-                            photoUrl,
-                          }}
-                        />
-                      </CardAnimationPreview>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
 
             {/* ── PART 2: MESSAGE & DETAILS ── */}
-            {step === 2 && (mobileTab !== 'preview' || typeof window === 'undefined') && (
+            {step === 2 && (
               <div className="space-y-6">
                 {/* Header Selected Occasion Info */}
                 <div className="flex items-center justify-between border-b border-border pb-3">
@@ -843,7 +812,7 @@ function CreateWishContent() {
             )}
 
             {/* ── PART 3: PHOTO & MUSIC ── */}
-            {step === 3 && (mobileTab !== 'preview' || typeof window === 'undefined') && (
+            {step === 3 && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
@@ -944,7 +913,7 @@ function CreateWishContent() {
             )}
 
             {/* ── PART 4: THEME & STYLE ── */}
-            {step === 4 && (mobileTab !== 'preview' || typeof window === 'undefined') && (
+            {step === 4 && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
@@ -1018,8 +987,8 @@ function CreateWishContent() {
           </div>
         </div>
 
-        {/* Desktop Right Column — Sticky Live Animated Card Preview */}
-        <div className="hidden lg:block lg:col-span-5 space-y-4">
+        {/* Desktop & Mobile Right Column — Sticky Live Animated Card Preview */}
+        <div className="lg:col-span-5 space-y-4">
           <div className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden" suppressHydrationWarning>
             <div className="mb-3 flex items-center justify-between px-1">
               <p className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
@@ -1056,61 +1025,7 @@ function CreateWishContent() {
         </div>
       </div>
 
-      {/* 📱 Mobile Sticky Bottom Action Bar (Fixed at bottom on phone screens when step > 1) */}
-      {step > 1 && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 block lg:hidden border-t border-border/80 bg-background/95 backdrop-blur-md p-3 shadow-2xl">
-          <div className="mx-auto flex max-w-md items-center gap-2">
-            {mobileTab !== 'preview' ? (
-              <Button
-                variant="outline"
-                onClick={() => setMobileTab('preview')}
-                className="flex-1 rounded-2xl text-xs font-bold h-12 border-[#7B0D1E]/30 text-[#7B0D1E] bg-[#7B0D1E]/5"
-              >
-                <Eye className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabPreview') || 'Preview'}
-              </Button>
-            ) : (
-              <Button
-                variant="outline"
-                onClick={() => setMobileTab('details')}
-                className="flex-1 rounded-2xl text-xs font-bold h-12"
-              >
-                <Edit3 className="size-4 mr-1 text-[#7B0D1E]" /> {t('tabDetails') || 'Edit Form'}
-              </Button>
-            )}
 
-            {step === 2 ? (
-              <Button
-                onClick={handleGoToStep3}
-                className="flex-[1.5] bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
-              >
-                <span>{t('nextPhotoMusic') || 'Next: Media →'}</span>
-              </Button>
-            ) : step === 3 ? (
-              <Button
-                onClick={handleGoToStep4}
-                className="flex-[1.5] bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
-              >
-                <span>{t('nextThemeStyle') || 'Next: Theme →'}</span>
-              </Button>
-            ) : (
-              <Button
-                onClick={handleFinish}
-                disabled={isSubmitting}
-                className="flex-[1.5] bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold text-xs h-12 rounded-2xl shadow-lg active:scale-95 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Sparkles className="size-4 animate-spin" />
-                    <span>{t('generatingCard', 'Generating...')}</span>
-                  </>
-                ) : (
-                  editSlug ? t('saveChanges') : (t('createAndShareWishCardBtn') || 'Create Card 🚀')
-                )}
-              </Button>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* AI Wish Generator Modal */}
       {showAiModal && (

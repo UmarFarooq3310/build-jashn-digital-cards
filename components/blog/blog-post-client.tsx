@@ -480,18 +480,6 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
 
   return (
     <div className={`min-h-screen bg-[#07080c] text-white pb-24 selection:bg-[#D4AF37] selection:text-slate-950 ${isRtl ? 'font-urdu' : ''}`}>
-      {/* Breadcrumb Navigation */}
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-4">
-        <Breadcrumbs
-          isDark
-          items={[
-            { label: tUI('blogBreadcrumb'), href: '/blog' },
-            { label: post.category, href: '/blog' },
-            { label: post.seoTitle || post.title },
-          ]}
-        />
-      </div>
-
       {/* Post Header Banner */}
       <div className="relative py-8 md:py-12 border-b border-[#D4AF37]/20 bg-[radial-gradient(50%_50%_at_50%_20%,rgba(212,175,55,0.15),transparent_70%)]">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-5">

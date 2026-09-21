@@ -459,13 +459,6 @@ export function BlogIndexClient() {
 
   return (
     <div className={`min-h-screen bg-[#07080c] text-white pb-20 selection:bg-[#D4AF37] selection:text-slate-950 ${isUrdu ? 'font-urdu' : ''}`}>
-      {/* Top Breadcrumbs */}
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-4">
-        <Breadcrumbs
-          isDark
-          items={[{ label: tUI('blogBreadcrumb'), href: '/blog' }]}
-        />
-      </div>
 
       {/* Top Hero Section */}
       <section className="relative py-12 md:py-20 overflow-hidden border-b border-[#D4AF37]/15 bg-[radial-gradient(60%_60%_at_50%_30%,rgba(212,175,55,0.14),transparent_70%)]">

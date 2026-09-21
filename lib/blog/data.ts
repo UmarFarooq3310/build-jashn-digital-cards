@@ -34,6 +34,199 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "top-10-creative-ways-to-use-magic-links-for-digital-cards",
+    "title": "Top 10 Creative Ways to Use Magic Links for Your Digital Cards",
+    "subtitle": "From secret VIP invites to personalized birthday surprises, discover unique ways to leverage real-time tracking for your digital cards.",
+    "seoTitle": "Creative Uses for Magic Links | Cardzy Digital Cards",
+    "metaDescription": "Explore 10 creative ways to use Cardzy's new Magic Links feature. Track RSVPs, send VIP invites, and manage corporate digital cards like a pro.",
+    "category": "Event Planning",
+    "author": {
+      "name": "Kainat",
+      "role": "Tech & Digital Product Strategist",
+      "avatar": "/authors/kainat.svg"
+    },
+    "publishedAt": "2026-09-21",
+    "updatedAt": "2026-09-21",
+    "readTime": "5 min read",
+    "wordCount": 850,
+    "featuredImage": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=750&q=65&fm=webp",
+    "tags": ["Magic Links", "Event Planning", "Digital Cards", "Tips"],
+    "content": {
+      "intro": "When you share a digital card, the experience usually ends the moment you hit 'send'. But with Cardzy's new Magic Links feature, that's just the beginning. Magic Links allow you to generate a unique, trackable URL for every single person on your list. Beyond simply knowing who read your message, Magic Links open up a whole new world of creative communication for Pakistani weddings, corporate networking, and holiday celebrations.",
+      "sections": [
+        {
+          "id": "vip-wedding-invites",
+          "title": "1. Exclusive VIP Wedding & Nikkah Invitations",
+          "body": "For your closest family members and VIP guests, a generic WhatsApp broadcast feels impersonal. Instead, generate a Magic Link specifically named after them (e.g., `?to=Uncle-Tariq`). Not only do they get a card that feels exclusively prepared for them, but you also get a real-time notification on your dashboard the moment Uncle Tariq opens his Nikkah invitation.",
+          "highlight": "Personalized links drastically increase the feeling of exclusivity, making your high-priority guests feel truly valued."
+        },
+        {
+          "id": "surprise-birthday-parties",
+          "title": "2. The Perfect Surprise Party Coordination",
+          "body": "Planning a surprise birthday or anniversary party is stressful, mainly because you never know if everyone in the WhatsApp group actually read the secret instructions. By sending Magic Links to the conspirators, you can track exactly who has seen the date, time, and dress code. If someone hasn't opened it within 24 hours, you know exactly who to call to ensure they don't accidentally ruin the surprise.",
+          "bulletPoints": [
+            "Track who has seen the secret venue details.",
+            "Follow up only with those who missed the link.",
+            "Keep the surprise safe from accidental leaks."
+          ]
+        },
+        {
+          "id": "corporate-vcard-tracking",
+          "title": "3. Knowing When a Client Reviews Your Digital Visiting Card",
+          "body": "In the business world, timing is everything. After a successful pitch, you often send your digital Visiting Card to a prospective client. By sending them a Magic Link, you'll be notified the exact moment they open your profile to review your portfolio or save your contact details. This allows you to time your follow-up email perfectly—reaching out right when you are at the top of their mind."
+        },
+        {
+          "id": "eid-wishes-family",
+          "title": "4. Sending Heartfelt Eid Wishes to Overseas Family",
+          "body": "When family is spread across the globe in different time zones, sending Eid Mubarak wishes can be tricky. You might send a beautiful animated Eid card while they are asleep. Magic Links let you see precisely when they wake up and view your wish, allowing you to instantly follow up with a warm video call right at the perfect moment."
+        },
+        {
+          "id": "event-rsvps",
+          "title": "5. Managing Walima Catering & RSVPs",
+          "body": "Catering for a Walima or Baraat is one of the most expensive parts of a Pakistani wedding. Knowing your exact guest count is critical. If you use Magic Links, you can see which guests have viewed the invitation but haven't RSVP'd yet. Instead of blindly calling everyone on your 500-person list, you can specifically target the 40 people who read the invite but forgot to reply.",
+          "highlight": "Magic Links turn the chaos of wedding guest management into a precise, data-driven operation."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Can I use Magic Links for corporate events?",
+          "answer": "Absolutely. Magic Links are incredibly popular for corporate seminars, product launches, and digital visiting cards where tracking engagement is crucial for sales pipelines."
+        }
+      ],
+      "conclusion": "The possibilities with Magic Links are endless. Whether you are ensuring your grandparents saw your wedding card, or tracking a high-profile business lead, real-time read receipts give you the control and peace of mind you deserve. Start creating your trackable digital cards on Cardzy today!"
+    }
+  },
+  {
+    "slug": "how-read-receipts-are-changing-digital-invitations",
+    "title": "How Read Receipts are Revolutionizing Digital Invitations",
+    "subtitle": "Why the uncertainty of paper invites is a thing of the past. Read receipts bring data and peace of mind to event planning.",
+    "seoTitle": "Read Receipts for Invitations | Why View Tracking Matters",
+    "metaDescription": "Learn why read receipts and view tracking are becoming essential tools for modern event planning and digital invitations.",
+    "category": "Event Planning",
+    "author": {
+      "name": "Umar Farooq",
+      "role": "Product Lead at Cardzy",
+      "avatar": "/authors/umar-farooq.svg"
+    },
+    "publishedAt": "2026-09-21",
+    "updatedAt": "2026-09-21",
+    "readTime": "6 min read",
+    "wordCount": 950,
+    "featuredImage": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=750&q=65&fm=webp",
+    "tags": ["Event Planning", "Technology", "Magic Links"],
+    "content": {
+      "intro": "For decades, sending a wedding or party invitation meant dropping an expensive piece of paper into a mailbox and crossing your fingers. Even with the rise of basic digital cards sent over WhatsApp, event planners still faced the same anxiety: *'Did they see it? Did they read the dress code? Do they know the venue changed?'* Today, Cardzy's introduction of digital read receipts via **Magic Links** is completely revolutionizing how Pakistanis plan their Nikkahs, Mehndi nights, and corporate events.",
+      "sections": [
+        {
+          "id": "the-end-of-guessing",
+          "title": "1. The End of the Guessing Game",
+          "body": "Before read receipts, the days leading up to a large event were filled with awkward follow-up calls. 'Hello Khala, did you receive the wedding card?' With Cardzy's Magic Links, the guessing game is over. Your Admin Dashboard displays a real-time, timestamped log of every single guest who has opened your invitation.",
+          "highlight": "You no longer have to wonder if your message got lost in a busy WhatsApp chat. You have definitive proof of delivery and engagement."
+        },
+        {
+          "id": "saving-thousands-on-catering",
+          "title": "2. How View Tracking Saves Thousands on Catering",
+          "body": "In South Asian weddings, food is a massive expense. Overestimating your guest list for a Walima can cost hundreds of thousands of rupees in wasted food, while underestimating leads to an embarrassing shortage. Magic Links provide the data you need to be precise.",
+          "bulletPoints": [
+            "Identify guests who haven't even opened the invitation and re-send it.",
+            "Cross-reference 'Viewed' status with 'RSVP' status to pinpoint exactly who needs a reminder.",
+            "Make final catering decisions based on hard data, not estimates."
+          ]
+        },
+        {
+          "id": "instant-updates",
+          "title": "3. Communicating Last-Minute Venue Changes",
+          "body": "Imagine your outdoor Baraat venue gets rained out, and you have to switch to an indoor marquee 24 hours before the event. If you update your Cardzy digital invitation with the new venue, how do you ensure everyone knows? By checking your Magic Link dashboard, you can see exactly who has opened the card *since* you made the update, allowing you to only call the people who are still unaware of the change."
+        },
+        {
+          "id": "business-networking",
+          "title": "4. The Professional Edge for Digital Visiting Cards",
+          "body": "Read receipts aren't just for weddings. For entrepreneurs and executives using Cardzy to generate Digital Visiting Cards, Magic Links act as a vital sales tool. When you share your profile with an investor or a new client, receiving a notification the moment they review your card allows you to gauge their interest level and time your follow-up pitch flawlessly.",
+          "highlight": "In business, timing is the difference between a closed deal and a missed opportunity."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Are Magic Links difficult to set up?",
+          "answer": "Not at all! After designing your card, you simply type a guest's name into the Share panel, and the unique Magic Link is instantly generated for you to copy and paste."
+        },
+        {
+          "question": "Can I use this for Eid or Ramadan wishes?",
+          "answer": "Yes. While extremely popular for weddings, Magic Links work on all Cardzy formats, including Wish cards and Visiting cards."
+        }
+      ],
+      "conclusion": "The anxiety of the unknown is a thing of the past. By embracing data-driven event planning with Cardzy's Magic Links, you can focus on what truly matters: enjoying your celebration. Create your next Nikkah invite or Birthday Wish today and experience the peace of mind that comes with real-time read receipts."
+    }
+  },
+  {
+    "slug": "magic-links-real-time-view-tracking-digital-cards",
+    "title": "Introducing Magic Links: Get Real-Time 'Read Receipts' for Your Digital Invitations & Wishes",
+    "subtitle": "Stop guessing if your guests received your wedding invitation. Magic Links give you individual tracked URLs that notify you the exact moment they open your digital card.",
+    "seoTitle": "Track Digital Invitations with Magic Links | Cardzy Read Receipts",
+    "metaDescription": "Learn how to use Cardzy's new Magic Links feature. Generate unique links for each guest to track views and RSVPs in real-time. Never guess if they saw it again!",
+    "category": "Event Planning",
+    "author": {
+      "name": "Umar Farooq",
+      "role": "Product Lead at Cardzy",
+      "avatar": "/authors/umar-farooq.svg"
+    },
+    "publishedAt": "2026-09-21",
+    "updatedAt": "2026-09-21",
+    "readTime": "4 min read",
+    "wordCount": 750,
+    "featuredImage": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=750&q=65&fm=webp",
+    "tags": [
+      "Magic Links",
+      "Event Planning",
+      "RSVP Management",
+      "Digital Invitations"
+    ],
+    "content": {
+      "intro": "When you mail a paper invitation, you send it out into the void and hope it arrives. Even with modern digital cards sent over WhatsApp, blue ticks only tell you they opened the chat—not if they actually looked at your carefully designed Nikkah invitation or heartfelt Eid wish. Enter **Magic Links** by Cardzy, a groundbreaking new way to share digital cards with built-in, individual read receipts.",
+      "sections": [
+        {
+          "id": "what-is-magic-link",
+          "title": "1. What Exactly is a Magic Link?",
+          "body": "A Magic Link is a personalized, trackable URL generated for a specific recipient. Instead of sending a generic link to everyone on your guest list, you generate a unique Magic Link for 'Uncle Tariq' and another for 'Aisha'. When Uncle Tariq clicks his specific link, the Cardzy system instantly logs his visit.",
+          "highlight": "Because each link is unique to the recipient, our system can track exactly who opens the card and when, giving you a detailed timeline of engagement on your admin dashboard."
+        },
+        {
+          "id": "how-it-works",
+          "title": "2. How Does It Work?",
+          "body": "It’s incredibly simple. After designing your wedding invitation, birthday wish, or digital visiting card, click the 'Share' button. You'll see a new option called **Create Magic Link**. Simply type the name of your guest (e.g., 'Ali Raza'), and Cardzy will instantly generate a unique URL just for him. Copy that URL and paste it into his WhatsApp chat.",
+          "bulletPoints": [
+            "No logins required for your guests.",
+            "Works perfectly on WhatsApp, SMS, Messenger, and Email.",
+            "Can be generated for hundreds of guests from your dashboard.",
+            "The recipient's name is cleanly formatted in the URL, making it feel highly personalized."
+          ]
+        },
+        {
+          "id": "the-benefits",
+          "title": "3. The Benefits of View Tracking for Weddings & Events",
+          "body": "Knowing who has seen your invitation is crucial for Pakistani event planning. If a VIP guest hasn't opened the link for your Mehndi after 3 days, you know you need to follow up with a phone call. If everyone has viewed it, you can accurately estimate your RSVP turnout and finalize the catering numbers with the banquet hall, eliminating the stress of wondering if your messages were lost in the noise.",
+          "highlight": "Magic Links remove the anxiety of event planning by providing total visibility into your digital delivery success rate."
+        },
+        {
+          "id": "visiting-cards",
+          "title": "4. Magic Links for Digital Visiting Cards",
+          "body": "Professionals are using Magic Links to completely change how they network. When you hand out a paper business card, you have no idea if it ends up in the trash. When you send a Magic Link to your digital visiting card after a meeting, you will receive a notification the moment the client reviews your details. This allows you to follow up precisely when they are thinking about your services."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Does the guest know they are being tracked?",
+          "answer": "The link URL will often contain their name (e.g. `?to=Ali`), which makes it feel like a premium, personalized experience. While the view timestamp is recorded on your dashboard, the experience for the guest is simply viewing a beautiful card without any intrusive tracking banners."
+        },
+        {
+          "question": "Is this feature free?",
+          "answer": "Yes! Magic Links are currently available to all Cardzy users to help make event planning stress-free."
+        }
+      ],
+      "conclusion": "Event planning is stressful enough without playing guessing games with your guest list. By utilizing Magic Links for your next Mehndi, Birthday, or corporate event, you gain peace of mind and complete control over your invitations. Try creating a Magic Link from your dashboard today and experience the magic of real-time read receipts."
+    }
+  },
+  {
     "slug": "complete-guide-to-pakistani-wedding-invitation-wording-urdu-english",
     "title": "The Complete Guide to Pakistani & Islamic Wedding Invitation Wording (Urdu & English Examples)",
     "subtitle": "Comprehensive wording examples for Nikkah, Mehndi, Barat, and Walima cards with authentic Bismillah calligraphy, inspiring quotes by celebrated authors, host etiquette, and RSVP notes.",
