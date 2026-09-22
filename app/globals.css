@@ -1586,13 +1586,13 @@ font {
 
 .magic-card {
   position: relative;
-  width: min(94vw, 420px);
-  max-width: 420px;
-  min-height: min(480px, calc(100dvh - 20px));
-  max-height: calc(100dvh - 16px);
+  width: 100vw;
+  max-width: 100vw;
+  min-height: 100dvh;
+  max-height: 100dvh;
   margin: auto;
   padding: 16px 14px 12px;
-  border-radius: 26px;
+  border-radius: 0;
   background: var(--card-bg, rgba(20, 4, 10, 0.86));
   border: 1px solid var(--acc, #f5c451);
   box-shadow: 0 0 60px color-mix(in srgb, var(--glow, var(--rose, #ff5c8a)) 28%, transparent);
@@ -1618,6 +1618,7 @@ font {
     min-height: min(510px, calc(100dvh - 32px));
     max-height: min(640px, calc(100dvh - 24px));
     padding: 20px 22px 16px;
+    border-radius: 26px;
   }
 }
 
