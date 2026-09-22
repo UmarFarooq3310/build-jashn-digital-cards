@@ -660,7 +660,7 @@ export default function CreateMagicLinkClient() {
   })
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-20">
+    <div className="mx-auto w-full pb-20">
       
       {/* Studio Header & Switcher */}
       <div className="mb-8 text-center">
@@ -706,7 +706,7 @@ export default function CreateMagicLinkClient() {
           </p>
 
           {/* Clean URL Box */}
-          <div className="my-5 p-3 rounded-2xl bg-black/70 border border-amber-400/40 flex items-center justify-between gap-2 shadow-inner">
+          <div className="my-5 p-3 rounded-2xl bg-black/70 border border-amber-400/40 flex items-center justify-between gap-2 min-w-0 shadow-inner">
             <span className="text-xs font-mono text-amber-200 truncate flex-1 text-left px-2">
               {shareUrl}
             </span>
@@ -741,7 +741,7 @@ export default function CreateMagicLinkClient() {
             href={`${shareUrl}?mode=sender`}
             target="_blank"
             rel="noreferrer"
-            className="w-full py-3.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 font-black rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:opacity-95"
+            className="w-full min-w-0 py-3.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 font-black rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:opacity-95"
           >
             <span>Open & Preview Magic Link (Sender View)</span>
             <ExternalLink className="size-4" />
@@ -839,7 +839,7 @@ export default function CreateMagicLinkClient() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search occasions..."
-                className="w-full pl-9 pr-4 py-1.5 rounded-xl bg-background border border-border text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#7A1E2B]/30"
+                className="w-full min-w-0 pl-9 pr-4 py-1.5 rounded-xl bg-background border border-border text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#7A1E2B]/30"
               />
               {searchQuery && (
                 <button
@@ -894,7 +894,7 @@ export default function CreateMagicLinkClient() {
 
                   <div>
                     {/* Badge & Active Check */}
-                    <div className="flex items-center justify-between gap-2 mb-2.5">
+                    <div className="flex items-center justify-between gap-2 min-w-0 mb-2.5">
                       <span
                         className={cn(
                           'text-[9.5px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border flex items-center gap-1',
@@ -941,7 +941,7 @@ export default function CreateMagicLinkClient() {
                   </div>
 
                   {/* Actions Row: Select button + Live Demo button */}
-                  <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between gap-2">
+                  <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between gap-2 min-w-0">
                     <button
                       type="button"
                       onClick={(e) => {
@@ -1042,7 +1042,7 @@ export default function CreateMagicLinkClient() {
           </div>
           
           {/* 2-Section Tabs (Desktop + Mobile) */}
-          <div className="flex items-center justify-between gap-2 p-1.5 rounded-2xl bg-muted/70 border border-border/70 shadow-xs">
+          <div className="flex items-center justify-between gap-2 min-w-0 p-1.5 rounded-2xl bg-muted/70 border border-border/70 shadow-xs">
             <div className="flex items-center gap-1.5 sm:gap-2 flex-1">
               <button
                 type="button"
@@ -1159,7 +1159,7 @@ export default function CreateMagicLinkClient() {
                             placeholder="e.g. October 14, 2021"
                             value={specialDate}
                             onChange={(e) => setSpecialDate(e.target.value)}
-                            className="w-full px-3.5 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-rose-400"
+                            className="w-full min-w-0 px-3.5 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-rose-400"
                           />
                         </div>
 
@@ -1172,7 +1172,7 @@ export default function CreateMagicLinkClient() {
                             placeholder="e.g. On a rainy afternoon at the library cafe..."
                             value={howWeMet}
                             onChange={(e) => setHowWeMet(e.target.value)}
-                            className="w-full px-3.5 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-rose-400"
+                            className="w-full min-w-0 px-3.5 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-rose-400"
                           />
                         </div>
 
@@ -1187,7 +1187,7 @@ export default function CreateMagicLinkClient() {
                               placeholder="e.g. +92 300 1234567"
                               value={whatsappNumber}
                               onChange={(e) => setWhatsappNumber(e.target.value)}
-                              className="w-full pl-9 pr-3 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-rose-400"
+                              className="w-full min-w-0 pl-9 pr-3 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-rose-400"
                             />
                           </div>
                           <p className="text-[10px] text-muted-foreground mt-1">
@@ -1446,7 +1446,7 @@ export default function CreateMagicLinkClient() {
                       <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-2", isUrdu ? "text-right font-urdu" : "text-left")}>
                         {activeOccMeta.label} Bespoke Palettes (Choose One)
                       </label>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                         {availablePalettes.map((th) => {
                           const isSelected = selectedTheme === th.id
                           return (
@@ -1485,7 +1485,7 @@ export default function CreateMagicLinkClient() {
                     {/* Error Summary Banner for Section 2 */}
                     {Object.keys(errors).length > 0 && (
                       <div className={cn(
-                        "rounded-2xl border border-red-300 bg-red-50 dark:bg-red-950/40 dark:border-red-900/60 p-3.5 text-xs font-semibold text-red-700 dark:text-red-300 flex items-center justify-between gap-2.5 shadow-xs animate-in fade-in slide-in-from-top-1 duration-200",
+                        "rounded-2xl border border-red-300 bg-red-50 dark:bg-red-950/40 dark:border-red-900/60 p-3.5 text-xs font-semibold text-red-700 dark:text-red-300 flex items-center justify-between gap-2 min-w-0.5 shadow-xs animate-in fade-in slide-in-from-top-1 duration-200",
                         isUrdu && "flex-row-reverse text-right font-urdu"
                       )}>
                         <div className={cn("flex items-center gap-2.5", isUrdu && "flex-row-reverse")}>
