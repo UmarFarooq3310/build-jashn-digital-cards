@@ -1,5 +1,4 @@
 'use client'
-import { magicAudio } from "@/lib/jashn/magic-audio";
 
 import React, { useState, useEffect, useRef, use, Suspense } from 'react'
 import Link from 'next/link'
@@ -243,7 +242,11 @@ function MagicLinkInner({ slug }: { slug: string }) {
 
   useEffect(() => {
     return () => {
-      magicAudio.stopMelody()
+      import('@/lib/jashn/magic-audio').then((mod) => {
+        if (mod && mod.magicAudio) {
+          mod.magicAudio.stopMelody()
+        }
+      }).catch(() => {})
     }
   }, [])
 
@@ -512,67 +515,9 @@ function MagicLinkInner({ slug }: { slug: string }) {
           </div>
 
           {/* 3D Magic Card Display */}
-          <main 
-            className="w-full max-w-[420px] z-10 flex flex-col items-center justify-center my-4 mx-auto animate-float-slow"
-            style={{ perspective: '2000px' }}
-          >
-            <div
-              ref={cardRef}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              onTouchMove={handleMouseMove}
-              onTouchEnd={handleMouseLeave}
-              className="relative w-full transition-transform duration-300 ease-out preserve-3d group"
-              style={{
-                transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-                transformStyle: 'preserve-3d'
-              }}
-            >
-              {/* Premium Floating Drop Shadow */}
-              <div className="absolute -inset-6 bg-black/60 blur-3xl rounded-[3rem] -z-10 group-hover:bg-black/70 transition-colors duration-500" />
-
-              {/* The Physical Premium Card Frame */}
-              <div 
-                className="w-full bg-black/30 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden relative shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)] border border-white/10"
-                style={{ transform: 'translateZ(40px)' }}
-              >
-                {/* Dynamic Holographic Glare */}
-                <div 
-                  className="absolute inset-0 z-50 pointer-events-none transition-opacity duration-300 mix-blend-overlay"
-                  style={{
-                    background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 60%)`,
-                    opacity: tilt.x === 0 && tilt.y === 0 ? 0 : 1,
-                  }}
-                />
-
-                {/* Elaborate Golden/Premium Border Art */}
-                <div className="absolute inset-3 border-[1.5px] border-amber-300/30 rounded-[2rem] pointer-events-none z-10 shadow-[0_0_15px_rgba(251,191,36,0.1)]" />
-                <div className="absolute inset-4 border-[0.5px] border-amber-300/15 rounded-[1.75rem] pointer-events-none z-10" />
-                
-                {/* Top & Bottom Ornaments */}
-                <div className="absolute top-5 left-1/2 -translate-x-1/2 text-amber-300/60 text-lg pointer-events-none z-10 flex items-center gap-2">
-                  <span className="text-[10px]">✧</span> ✦ <span className="text-[10px]">✧</span>
-                </div>
-                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-amber-300/60 text-lg pointer-events-none z-10 flex items-center gap-2">
-                  <span className="text-[10px]">✧</span> ✦ <span className="text-[10px]">✧</span>
-                </div>
-
-                {/* Elegant Corner Filigree Vectors (CSS approximated) */}
-                <div className="absolute top-3 left-3 size-8 border-t-[1.5px] border-l-[1.5px] border-amber-300/50 rounded-tl-[1.5rem] pointer-events-none z-10" />
-                <div className="absolute top-3 right-3 size-8 border-t-[1.5px] border-r-[1.5px] border-amber-300/50 rounded-tr-[1.5rem] pointer-events-none z-10" />
-                <div className="absolute bottom-3 left-3 size-8 border-b-[1.5px] border-l-[1.5px] border-amber-300/50 rounded-bl-[1.5rem] pointer-events-none z-10" />
-                <div className="absolute bottom-3 right-3 size-8 border-b-[1.5px] border-r-[1.5px] border-amber-300/50 rounded-br-[1.5rem] pointer-events-none z-10" />
-
-                {/* Internal Frosted Vignette Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-black/40 pointer-events-none" />
-                
-                {/* Content Area */}
-                <div className="relative z-20 px-6 py-14 w-full min-h-[500px] flex flex-col items-center text-center">
-                  {renderScenario()}
-                </div>
-              </div>
-            </div>
-          </main>
+          <div className="my-4 flex justify-center w-full">
+            {renderScenario()}
+          </div>
 
           {/* Wishes Wall Action Button */}
 
@@ -753,67 +698,9 @@ function MagicLinkInner({ slug }: { slug: string }) {
 
       {/* Bespoke Occasion Experience Container (Always Centered & Zero Scroll) */}
       {/* Bespoke Occasion Experience Container (Interactive 3D Holographic Card) */}
-          <main 
-            className="w-full max-w-[420px] z-10 flex flex-col items-center justify-center my-4 mx-auto animate-float-slow"
-            style={{ perspective: '2000px' }}
-          >
-            <div
-              ref={cardRef}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              onTouchMove={handleMouseMove}
-              onTouchEnd={handleMouseLeave}
-              className="relative w-full transition-transform duration-300 ease-out preserve-3d group"
-              style={{
-                transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-                transformStyle: 'preserve-3d'
-              }}
-            >
-              {/* Premium Floating Drop Shadow */}
-              <div className="absolute -inset-6 bg-black/60 blur-3xl rounded-[3rem] -z-10 group-hover:bg-black/70 transition-colors duration-500" />
-
-              {/* The Physical Premium Card Frame */}
-              <div 
-                className="w-full bg-black/30 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden relative shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)] border border-white/10"
-                style={{ transform: 'translateZ(40px)' }}
-              >
-                {/* Dynamic Holographic Glare */}
-                <div 
-                  className="absolute inset-0 z-50 pointer-events-none transition-opacity duration-300 mix-blend-overlay"
-                  style={{
-                    background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 60%)`,
-                    opacity: tilt.x === 0 && tilt.y === 0 ? 0 : 1,
-                  }}
-                />
-
-                {/* Elaborate Golden/Premium Border Art */}
-                <div className="absolute inset-3 border-[1.5px] border-amber-300/30 rounded-[2rem] pointer-events-none z-10 shadow-[0_0_15px_rgba(251,191,36,0.1)]" />
-                <div className="absolute inset-4 border-[0.5px] border-amber-300/15 rounded-[1.75rem] pointer-events-none z-10" />
-                
-                {/* Top & Bottom Ornaments */}
-                <div className="absolute top-5 left-1/2 -translate-x-1/2 text-amber-300/60 text-lg pointer-events-none z-10 flex items-center gap-2">
-                  <span className="text-[10px]">✧</span> ✦ <span className="text-[10px]">✧</span>
-                </div>
-                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-amber-300/60 text-lg pointer-events-none z-10 flex items-center gap-2">
-                  <span className="text-[10px]">✧</span> ✦ <span className="text-[10px]">✧</span>
-                </div>
-
-                {/* Elegant Corner Filigree Vectors (CSS approximated) */}
-                <div className="absolute top-3 left-3 size-8 border-t-[1.5px] border-l-[1.5px] border-amber-300/50 rounded-tl-[1.5rem] pointer-events-none z-10" />
-                <div className="absolute top-3 right-3 size-8 border-t-[1.5px] border-r-[1.5px] border-amber-300/50 rounded-tr-[1.5rem] pointer-events-none z-10" />
-                <div className="absolute bottom-3 left-3 size-8 border-b-[1.5px] border-l-[1.5px] border-amber-300/50 rounded-bl-[1.5rem] pointer-events-none z-10" />
-                <div className="absolute bottom-3 right-3 size-8 border-b-[1.5px] border-r-[1.5px] border-amber-300/50 rounded-br-[1.5rem] pointer-events-none z-10" />
-
-                {/* Internal Frosted Vignette Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-black/40 pointer-events-none" />
-                
-                {/* Content Area */}
-                <div className="relative z-20 px-6 py-14 w-full min-h-[500px] flex flex-col items-center text-center">
-                  {renderScenario()}
-                </div>
-              </div>
-            </div>
-          </main>
+          <main className="w-full max-w-2xl z-10 flex flex-col items-center justify-center my-auto animate-float-slow">
+        {renderScenario()}
+      </main>
 
       {/* Luxury Floating Glass Capsule: Share & Wishes Wall - VISIBLE TO BOTH SENDER & RECEIVER */}
       <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-40 flex items-center gap-1.5">

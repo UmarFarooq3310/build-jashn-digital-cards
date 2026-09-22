@@ -720,7 +720,7 @@ export default function CreateMagicLinkClient() {
           </div>
 
           {/* 1-Click WhatsApp & SMS Buttons */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
             <button
               onClick={handleWhatsApp}
               className="py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all"
@@ -854,7 +854,7 @@ export default function CreateMagicLinkClient() {
           </div>
 
           {/* Occasions Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredOccasions.map((occ) => {
               const Icon = occ.icon
               const isSelected = selectedOccasion === occ.id
@@ -1095,7 +1095,7 @@ export default function CreateMagicLinkClient() {
                   <div className={cn('space-y-4 text-left', isUrdu && 'text-right font-urdu', activeTab !== 'details' && 'hidden')}>
                     
                     {/* Sender & Recipient Names */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
                           {t('magicSenderLabel', 'Your Name (Sender)')} *
@@ -1149,7 +1149,7 @@ export default function CreateMagicLinkClient() {
 
                     {/* PROPOSAL SPECIFIC: How We Met & Special Date */}
                     {selectedOccasion === 'proposal' && (
-                      <div className="grid grid-cols-2 gap-4 p-3.5 rounded-2xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3.5 rounded-2xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50">
                         <div>
                           <label className="text-xs font-bold text-rose-950 dark:text-rose-200 uppercase tracking-wider block mb-1.5">
                             Our Special Date (Optional)
@@ -1277,7 +1277,7 @@ export default function CreateMagicLinkClient() {
 
                     {/* Birthday Specific: Age & Candles */}
                     {linkType === 'wish' && selectedOccasion === 'birthday' && (
-                      <div className="grid grid-cols-2 gap-4 pt-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                         <div>
                           <label className={cn("text-xs font-semibold text-muted-foreground block mb-1", isUrdu ? "text-right font-urdu" : "text-left")}>
                             Age (For milestone stats)
@@ -1327,7 +1327,7 @@ export default function CreateMagicLinkClient() {
                           />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
                             <label className={cn("text-xs font-semibold text-muted-foreground block mb-1", isUrdu ? "text-right font-urdu" : "text-left")}>
                               Event Date *
