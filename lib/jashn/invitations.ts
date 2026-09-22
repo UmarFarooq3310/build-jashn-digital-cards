@@ -4,7 +4,7 @@ const RAW_INVITATION_TYPES: any[] = [
   // WEDDING & CELEBRATIONS
   { id: 'wedding-gala', label: 'Wedding Gala & Reception', category: 'Wedding', icon: 'Crown', couple: true, bgImage: '/invitations/barat.jpg', bgGradient: 'linear-gradient(160deg,#8e0f24,#4a0510)' },
   { id: 'mehndi',     label: 'Mehndi Night',            category: 'Wedding',      icon: 'Flower2',       couple: true, bgImage: '/invitations/mehndi.jpg',          bgGradient: 'linear-gradient(160deg,#2e7d32,#f9a825)' },
-  { id: 'dholki',     label: 'Dholki',           category: 'Wedding',      icon: 'Music',         couple: true, bgImage: '/invitations/dholki.jpg',          bgGradient: 'linear-gradient(160deg,#880e4f,#f9a825)' },
+  { id: 'dholki',     label: 'Dholki',           category: 'Wedding',      icon: 'Music',         couple: true, bgImage: '/invitations/dholki.jpg',          bgGradient: 'linear-gradient(160deg,#be185d,#ca8a04)' },
   { id: 'nikkah',     label: 'Nikkah Ceremony',             category: 'Wedding',      icon: 'Gem',           couple: true, bgImage: '/invitations/nikkah.jpg',          bgGradient: 'linear-gradient(160deg,#1c1000,#3a1e05,#120800)' },
   { id: 'barat',      label: 'Barat Day',            category: 'Wedding',      icon: 'Crown',         couple: true, bgImage: '/invitations/barat.jpg',           bgGradient: 'linear-gradient(160deg,#8e0f24,#4a0510)' },
   { id: 'walima',     label: 'Walima',            category: 'Wedding',      icon: 'Utensils',      couple: true, bgImage: '/invitations/walima.jpg',          bgGradient: 'linear-gradient(160deg,#1b1528,#352245,#120c1e)' },
@@ -88,6 +88,10 @@ export const INVITATION_TYPES: InvitationType[] = RAW_INVITATION_TYPES.map(type 
       { id: 'wedding-emerald-gold', name: 'Emerald & Gold', bgGradient: 'linear-gradient(160deg,#0a2e16,#1e3d2f,#d97706)' },
       { id: 'wedding-royal-plum', name: 'Royal Plum & Gold', bgGradient: 'linear-gradient(160deg,#2e0854,#4a148c,#d97706)' },
       { id: 'wedding-champagne-pink', name: 'Rose & Champagne', bgGradient: 'linear-gradient(160deg,#50051e,#880e4f,#fbcfe8)' }
+      , { id: 'wedding-mehndi-mustard', name: 'Mehndi Mustard', bgGradient: 'linear-gradient(160deg,#b45309,#ca8a04,#854d0e)' }
+      , { id: 'wedding-mehndi-magenta', name: 'Mehndi Magenta', bgGradient: 'linear-gradient(160deg,#be185d,#831843)' }
+
+
     )
   } else if (cat === 'Religious') {
     bgVariants.push(
