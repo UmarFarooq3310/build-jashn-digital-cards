@@ -1,0 +1,18 @@
+export function cleanForFirestore<T>(data: T): T {
+  if (data === null || data === undefined) return data
+  if (typeof data !== 'object') return data
+  // Preserve Firestore FieldValue and Timestamp instances
+  if (data.constructor?.name === 'ServerTimestampFieldValueImpl' || data.constructor?.name === 'Timestamp' || ('_methodName' in data)) {
+    return data
+  }
+  if (Array.isArray(data)) {
+    return data.map((item) => cleanForFirestore(item)) as unknown as T
+  }
+  const result: Record<string, any> = {}
+  for (const [key, val] of Object.entries(data as Record<string, any>)) {
+    if (val !== undefined) {
+      result[key] = typeof val === 'object' && val !== null ? cleanForFirestore(val) : val
+    }
+  }
+  return result as T
+}

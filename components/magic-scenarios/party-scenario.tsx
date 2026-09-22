@@ -1,4 +1,5 @@
 'use client'
+import { TypewriterLetter } from "@/components/magic-scenarios/typewriter-letter";
 
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -103,6 +104,7 @@ export function PartyScenario({
       unlockScene(1)
       unlockScene(2)
       unlockScene(3)
+      setTimeout(() => goToScene(1), 3000)
     }, 700)
   }
 
@@ -356,18 +358,14 @@ export function PartyScenario({
               You Are on the VIP Guestlist!
             </h2>
 
-            <div className="magic-letter text-xs text-purple-100 max-h-52 overflow-y-auto">
-              {data.wishContent?.secretLetter ||
-                `Get ready for an unforgettable evening of high octane energy, electric music, signature mocktails, and memories that will last a lifetime. Cannot celebrate without you!`}
-              {data.wishContent?.urduGreeting && (
-                <div className="mt-2.5 text-right font-nastaliq text-sm text-amber-200">
-                  {data.wishContent.urduGreeting}
-                </div>
-              )}
-              <div className="mt-3 text-right font-serif italic text-amber-300">
-                — Can&apos;t wait to see you, {data.senderName}
-              </div>
-            </div>
+            <TypewriterLetter
+              className="magic-letter text-xs text-purple-100 max-h-52 overflow-y-auto"
+              englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `Get ready for an unforgettable evening of high octane energy, electric music, signature mocktails, and memories that will last a lifetime. Cannot celebrate without you!`}
+              urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
+              signatureText={`— Can&apos;t wait to see you, ${data.senderName}`}
+              urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
+              signatureClassName="mt-3 text-right font-serif italic text-amber-300"
+            />
 
             <div className="flex items-center justify-between gap-2 mt-3">
               <button

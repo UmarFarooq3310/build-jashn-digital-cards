@@ -298,18 +298,9 @@ function InvitationPublicContent({ slug }: { slug: string }) {
               </ThreeDCardWrapper>
             </div>
 
-            {/* RSVP & Location Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button
-                onClick={handleRsvp}
-                size="lg"
-                className="w-full sm:w-auto bg-[#25D366] text-white hover:bg-[#1eb955] font-bold text-base px-8 rounded-xl shadow-lg"
-              >
-                {rsvped ? <CheckCircle2 className="mr-2 size-5" /> : <MessageCircle className="mr-2 size-5" />}
-                {rsvped ? 'RSVP Confirmed!' : 'Confirm RSVP via WhatsApp'}
-              </Button>
-
-              {activeInvitation.mapsLink && (
+            {/* Location Button */}
+            {activeInvitation.mapsLink && (
+              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a
                   href={activeInvitation.mapsLink}
                   target="_blank"
@@ -318,8 +309,8 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                 >
                   <MapPin className="size-4 text-primary" /> Get Location on Google Maps
                 </a>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Share & QR Code Panel */}
             <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col items-center gap-6 text-left">
@@ -349,6 +340,67 @@ function InvitationPublicContent({ slug }: { slug: string }) {
               </Link>
             </div>
           </div>
+
+          {/* Floating Action Pill for SENDER */}
+          <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2">
+            <button
+              onClick={() => setShowShareModal(true)}
+              className="group flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white text-xs font-bold shadow-xl border border-white/20 backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+              title="Share Link & QR"
+            >
+              <Share2 className="size-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Share</span>
+            </button>
+
+            <button
+              onClick={() => setShowGuestbookModal(true)}
+              className="group flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 hover:from-purple-600 hover:to-indigo-600 text-white text-xs font-bold shadow-2xl shadow-purple-950/70 border border-purple-400/40 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
+              title="Open Wishes Wall & Dua (Leave a Blessing)"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-300"></span>
+              </span>
+              <MessageCircle className="size-3.5 text-purple-200 group-hover:scale-110 transition-transform" />
+              <span>💬 Wishes Wall</span>
+            </button>
+          </div>
+
+          {/* Universal Share & Image Modal */}
+          {showShareModal && (
+            <CardShareModal
+              card={{
+                title: activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`,
+                recipientOrCouple: activeInvitation.groom ? `${activeInvitation.groom} & ${activeInvitation.bride}` : activeInvitation.title,
+                type: 'invite',
+                slug: slug,
+                url: receiverUrl,
+                viewsCount: activeInvitation.viewCount,
+                shares: activeInvitation.shares,
+                occasion: type?.label || 'Wedding Invitation',
+                date: activeInvitation.date,
+                time: activeInvitation.time,
+                venue: activeInvitation.venue || activeInvitation.city,
+                senderName: activeInvitation.hostNames,
+                waMessage: `✨ You are cordially invited! Tap to view our interactive digital invitation:`,
+              }}
+              onClose={() => setShowShareModal(false)}
+            />
+          )}
+
+          {/* Event Card Guestbook / Wishes Wall Modal */}
+          <CardGuestbookModal
+            cardSlug={slug}
+            cardType="invite"
+            recipientName={activeInvitation.groom ? `${activeInvitation.groom} & ${activeInvitation.bride}` : activeInvitation.title}
+            isOpen={showGuestbookModal}
+            onClose={() => setShowGuestbookModal(false)}
+            onWishSubmitted={() => {
+              setRainActive(true)
+              setTimeout(() => setRainActive(false), 4000)
+            }}
+          />
+
         </div>
     )
   }
@@ -424,13 +476,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
       {/* Receiver Screen Footer Control */}
       <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pb-2 text-center">
         <div className="flex flex-wrap items-center justify-center gap-2">
-          <button
-            onClick={() => setShowGuestbookModal(true)}
-            className="inline-flex items-center justify-center gap-1.5 rounded-2xl border border-purple-400/30 bg-purple-950/70 hover:bg-purple-900 text-purple-200 hover:text-white font-extrabold py-2 px-4 text-xs shadow-lg transition-all cursor-pointer"
-          >
-            <MessageCircle className="size-3.5 text-purple-300" />
-            <span>💬 Wishes Wall & Dua</span>
-          </button>
+
           <button
             onClick={() => setShowShareModal((o) => !o)}
             className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-slate-900/70 hover:bg-slate-800 text-white font-extrabold py-2 px-4 text-xs shadow-lg transition-all cursor-pointer"

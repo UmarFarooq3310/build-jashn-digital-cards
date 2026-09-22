@@ -39,6 +39,8 @@ import {
   X,
   Compass,
   Phone,
+  PartyPopper,
+  HeartHandshake,
 } from 'lucide-react'
 import { createMagicLink, recordCardShare } from '@/lib/jashn/magic-service'
 import type { MagicLinkType, MagicOccasion, MagicThemeId } from '@/lib/jashn/magic-types'
@@ -875,8 +877,11 @@ export default function CreateMagicLinkClient() {
               return (
                 <div
                   key={occ.id}
+                  onClick={() => handleSelectOccasion(occ.id)}
+                  role="button"
+                  tabIndex={0}
                   className={cn(
-                    'relative rounded-2xl p-4 border-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group shadow-xs hover:-translate-y-0.5',
+                    'relative rounded-2xl p-4 border-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group shadow-xs hover:-translate-y-0.5 cursor-pointer text-left',
                     accent.border,
                     accent.glow,
                     isSelected
@@ -939,8 +944,11 @@ export default function CreateMagicLinkClient() {
                   <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between gap-2">
                     <button
                       type="button"
-                      onClick={() => setPreviewDemoOccasion(occ)}
-                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-foreground bg-muted/60 hover:bg-muted px-2.5 py-1.5 rounded-lg border border-border/60 transition-colors cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setPreviewDemoOccasion(occ)
+                      }}
+                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-foreground bg-muted/60 hover:bg-muted px-2.5 py-1.5 rounded-lg border border-border/60 transition-colors cursor-pointer relative z-10"
                     >
                       <Play className="size-3 text-amber-500 fill-amber-500" />
                       <span>Live Demo</span>
@@ -948,8 +956,7 @@ export default function CreateMagicLinkClient() {
 
                     <button
                       type="button"
-                      onClick={() => handleSelectOccasion(occ.id)}
-                      className="inline-flex items-center gap-1 text-xs font-extrabold text-white bg-gradient-to-r from-[#7A1E2B] to-rose-700 hover:opacity-95 px-3 py-1.5 rounded-xl shadow-xs transition-transform group-hover:scale-105 active:scale-95 cursor-pointer"
+                      className="inline-flex items-center gap-1 text-xs font-extrabold text-white bg-gradient-to-r from-[#7A1E2B] to-rose-700 hover:opacity-95 px-3 py-1.5 rounded-xl shadow-xs transition-transform group-hover:scale-105 active:scale-95 cursor-pointer relative z-10"
                     >
                       <span>Customize</span>
                       <ArrowRight className="size-3.5" />

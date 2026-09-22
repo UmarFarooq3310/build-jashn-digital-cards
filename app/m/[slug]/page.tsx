@@ -194,6 +194,44 @@ function MagicLinkInner({ slug }: { slug: string }) {
   const [showShareModal, setShowShareModal] = useState(false)
   const [showGuestbookModal, setShowGuestbookModal] = useState(false)
   const viewIncrementedRef = useRef<string | null>(null)
+  // --- Holographic 3D Tilt Effect ---
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [tilt, setTilt] = useState({ x: 0, y: 0, glareX: 50, glareY: 50 })
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    
+    // For touch events, grab the first touch point
+    let clientX, clientY;
+    if ('touches' in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = (e as React.MouseEvent).clientX;
+      clientY = (e as React.MouseEvent).clientY;
+    }
+
+    const x = clientX - rect.left
+    const y = clientY - rect.top
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+
+    // Max rotation in degrees
+    const maxTilt = 12
+    const rotateX = ((y - centerY) / centerY) * -maxTilt
+    const rotateY = ((x - centerX) / centerX) * maxTilt
+
+    // Glare position (percentage)
+    const glareX = (x / rect.width) * 100
+    const glareY = (y / rect.height) * 100
+
+    setTilt({ x: rotateX, y: rotateY, glareX, glareY })
+  }
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0, glareX: 50, glareY: 50 })
+  }
 
   // Sender preview: ONLY true if explicitly requested via query params (?mode=sender, ?preview=true, ?role=sender)
   // When copying clean link (/m/slug), both sender and receiver see the authentic receiver experience
@@ -201,6 +239,12 @@ function MagicLinkInner({ slug }: { slug: string }) {
     searchParams.get('mode') === 'sender' ||
     searchParams.get('preview') === 'true' ||
     searchParams.get('role') === 'sender'
+
+  useEffect(() => {
+    return () => {
+      magicAudio.stopMelody()
+    }
+  }, [])
 
   useEffect(() => {
     if (!slug) return
@@ -400,6 +444,21 @@ function MagicLinkInner({ slug }: { slug: string }) {
       <div className="py-8 px-4">
         <div className="mx-auto max-w-2xl md:max-w-4xl text-center">
           <ConfettiRain active={confettiActive} />
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-float-slow { animation: float 6s ease-in-out infinite; }
+        .animate-float-fast { animation: float 3s ease-in-out infinite; }
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+          50% { box-shadow: 0 0 40px rgba(255,255,255,0.3); }
+        }
+        .animate-pulse-glow { animation: pulse-glow 3s infinite; }
+      `}</style>
+      {/* Twinkling Stars Background Overlay */}
+      <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
           {/* Creator Control Panel */}
           <div className="mb-6 rounded-2xl border border-emerald-500/30 bg-slate-900 text-white p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-xl">
@@ -452,20 +511,70 @@ function MagicLinkInner({ slug }: { slug: string }) {
           </div>
 
           {/* 3D Magic Card Display */}
-          <div className="my-4 flex justify-center w-full">
-            {renderScenario()}
-          </div>
+          <main 
+            className="w-full max-w-[420px] z-10 flex flex-col items-center justify-center my-4 mx-auto animate-float-slow"
+            style={{ perspective: '2000px' }}
+          >
+            <div
+              ref={cardRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              onTouchMove={handleMouseMove}
+              onTouchEnd={handleMouseLeave}
+              className="relative w-full transition-transform duration-300 ease-out preserve-3d group"
+              style={{
+                transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+                transformStyle: 'preserve-3d'
+              }}
+            >
+              {/* Premium Floating Drop Shadow */}
+              <div className="absolute -inset-6 bg-black/60 blur-3xl rounded-[3rem] -z-10 group-hover:bg-black/70 transition-colors duration-500" />
+
+              {/* The Physical Premium Card Frame */}
+              <div 
+                className="w-full bg-black/30 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden relative shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)] border border-white/10"
+                style={{ transform: 'translateZ(40px)' }}
+              >
+                {/* Dynamic Holographic Glare */}
+                <div 
+                  className="absolute inset-0 z-50 pointer-events-none transition-opacity duration-300 mix-blend-overlay"
+                  style={{
+                    background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 60%)`,
+                    opacity: tilt.x === 0 && tilt.y === 0 ? 0 : 1,
+                  }}
+                />
+
+                {/* Elaborate Golden/Premium Border Art */}
+                <div className="absolute inset-3 border-[1.5px] border-amber-300/30 rounded-[2rem] pointer-events-none z-10 shadow-[0_0_15px_rgba(251,191,36,0.1)]" />
+                <div className="absolute inset-4 border-[0.5px] border-amber-300/15 rounded-[1.75rem] pointer-events-none z-10" />
+                
+                {/* Top & Bottom Ornaments */}
+                <div className="absolute top-5 left-1/2 -translate-x-1/2 text-amber-300/60 text-lg pointer-events-none z-10 flex items-center gap-2">
+                  <span className="text-[10px]">✧</span> ✦ <span className="text-[10px]">✧</span>
+                </div>
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-amber-300/60 text-lg pointer-events-none z-10 flex items-center gap-2">
+                  <span className="text-[10px]">✧</span> ✦ <span className="text-[10px]">✧</span>
+                </div>
+
+                {/* Elegant Corner Filigree Vectors (CSS approximated) */}
+                <div className="absolute top-3 left-3 size-8 border-t-[1.5px] border-l-[1.5px] border-amber-300/50 rounded-tl-[1.5rem] pointer-events-none z-10" />
+                <div className="absolute top-3 right-3 size-8 border-t-[1.5px] border-r-[1.5px] border-amber-300/50 rounded-tr-[1.5rem] pointer-events-none z-10" />
+                <div className="absolute bottom-3 left-3 size-8 border-b-[1.5px] border-l-[1.5px] border-amber-300/50 rounded-bl-[1.5rem] pointer-events-none z-10" />
+                <div className="absolute bottom-3 right-3 size-8 border-b-[1.5px] border-r-[1.5px] border-amber-300/50 rounded-br-[1.5rem] pointer-events-none z-10" />
+
+                {/* Internal Frosted Vignette Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-black/40 pointer-events-none" />
+                
+                {/* Content Area */}
+                <div className="relative z-20 px-6 py-14 w-full min-h-[500px] flex flex-col items-center text-center">
+                  {renderScenario()}
+                </div>
+              </div>
+            </div>
+          </main>
 
           {/* Wishes Wall Action Button */}
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button
-              onClick={() => setShowGuestbookModal(true)}
-              size="lg"
-              className="w-full sm:w-auto bg-purple-700 hover:bg-purple-600 text-white font-bold text-base px-8 rounded-xl shadow-lg"
-            >
-              <MessageCircle className="mr-2 size-5" /> Open Wishes Wall &amp; Guestbook
-            </Button>
-          </div>
+
 
           {/* Share & QR Code Panel */}
           <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col items-center gap-6 text-left">
@@ -498,6 +607,26 @@ function MagicLinkInner({ slug }: { slug: string }) {
               Create Magic Link <Sparkles className="size-4" />
             </Link>
           </div>
+        </div>
+
+        {/* Floating Action Pill for SENDER */}
+        <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-40 flex items-center gap-1.5">
+          <button
+            onClick={() => setShowShareModal(true)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-900/80 hover:bg-slate-800 text-amber-300 hover:text-amber-200 text-xs font-bold shadow-xl shadow-black/50 border border-amber-400/30 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
+            title="Share Celebration"
+          >
+            <Share2 className="size-3.5 text-amber-400" />
+            <span className="hidden sm:inline">Share</span>
+          </button>
+          <button
+            onClick={() => setShowGuestbookModal(true)}
+            className="group flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 hover:from-purple-600 hover:to-indigo-600 text-white text-xs font-bold shadow-2xl shadow-purple-950/70 border border-purple-400/40 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
+            title="Wishes Wall"
+          >
+            <MessageCircle className="size-3.5 text-purple-200" />
+            <span>💬 Wishes Wall</span>
+          </button>
         </div>
 
         {/* Universal Share & Image Modal */}
@@ -548,6 +677,21 @@ function MagicLinkInner({ slug }: { slug: string }) {
       className={`h-screen max-h-screen sm:h-dvh sm:max-h-dvh w-full overflow-hidden bg-gradient-to-b ${themeStyle.bg} text-white flex flex-col items-center justify-between p-1 sm:p-3 relative font-sans select-none`}
     >
       <ConfettiRain active={confettiActive} />
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-float-slow { animation: float 6s ease-in-out infinite; }
+        .animate-float-fast { animation: float 3s ease-in-out infinite; }
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+          50% { box-shadow: 0 0 40px rgba(255,255,255,0.3); }
+        }
+        .animate-pulse-glow { animation: pulse-glow 3s infinite; }
+      `}</style>
+      {/* Twinkling Stars Background Overlay */}
+      <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
       {/* Ambient Glowing Orbs */}
       <div
@@ -595,13 +739,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
             <Sparkles className="size-3 text-amber-200 animate-pulse" />
             <span>Cardzy · Make Your Own</span>
           </Link>
-          <button
-            onClick={() => setShowGuestbookModal(true)}
-            className="size-7 rounded-full bg-purple-500/25 hover:bg-purple-500/40 border border-purple-400/40 flex items-center justify-center text-purple-200 transition-all cursor-pointer shadow-md"
-            title="Wishes Wall & Prayers"
-          >
-            <MessageCircle className="size-3.5" />
-          </button>
+
           <button
             onClick={() => setShowShareModal(true)}
             className="size-7 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-amber-300 transition-all cursor-pointer shadow-md"
@@ -613,11 +751,70 @@ function MagicLinkInner({ slug }: { slug: string }) {
       </header>
 
       {/* Bespoke Occasion Experience Container (Always Centered & Zero Scroll) */}
-      <main className="w-full max-w-2xl z-10 flex flex-col items-center justify-center my-auto">
-        {renderScenario()}
-      </main>
+      {/* Bespoke Occasion Experience Container (Interactive 3D Holographic Card) */}
+          <main 
+            className="w-full max-w-[420px] z-10 flex flex-col items-center justify-center my-4 mx-auto animate-float-slow"
+            style={{ perspective: '2000px' }}
+          >
+            <div
+              ref={cardRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              onTouchMove={handleMouseMove}
+              onTouchEnd={handleMouseLeave}
+              className="relative w-full transition-transform duration-300 ease-out preserve-3d group"
+              style={{
+                transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+                transformStyle: 'preserve-3d'
+              }}
+            >
+              {/* Premium Floating Drop Shadow */}
+              <div className="absolute -inset-6 bg-black/60 blur-3xl rounded-[3rem] -z-10 group-hover:bg-black/70 transition-colors duration-500" />
 
-      {/* Luxury Floating Glass Capsule: Share & Wishes Wall */}
+              {/* The Physical Premium Card Frame */}
+              <div 
+                className="w-full bg-black/30 backdrop-blur-3xl rounded-[2.5rem] overflow-hidden relative shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)] border border-white/10"
+                style={{ transform: 'translateZ(40px)' }}
+              >
+                {/* Dynamic Holographic Glare */}
+                <div 
+                  className="absolute inset-0 z-50 pointer-events-none transition-opacity duration-300 mix-blend-overlay"
+                  style={{
+                    background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 60%)`,
+                    opacity: tilt.x === 0 && tilt.y === 0 ? 0 : 1,
+                  }}
+                />
+
+                {/* Elaborate Golden/Premium Border Art */}
+                <div className="absolute inset-3 border-[1.5px] border-amber-300/30 rounded-[2rem] pointer-events-none z-10 shadow-[0_0_15px_rgba(251,191,36,0.1)]" />
+                <div className="absolute inset-4 border-[0.5px] border-amber-300/15 rounded-[1.75rem] pointer-events-none z-10" />
+                
+                {/* Top & Bottom Ornaments */}
+                <div className="absolute top-5 left-1/2 -translate-x-1/2 text-amber-300/60 text-lg pointer-events-none z-10 flex items-center gap-2">
+                  <span className="text-[10px]">✧</span> ✦ <span className="text-[10px]">✧</span>
+                </div>
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-amber-300/60 text-lg pointer-events-none z-10 flex items-center gap-2">
+                  <span className="text-[10px]">✧</span> ✦ <span className="text-[10px]">✧</span>
+                </div>
+
+                {/* Elegant Corner Filigree Vectors (CSS approximated) */}
+                <div className="absolute top-3 left-3 size-8 border-t-[1.5px] border-l-[1.5px] border-amber-300/50 rounded-tl-[1.5rem] pointer-events-none z-10" />
+                <div className="absolute top-3 right-3 size-8 border-t-[1.5px] border-r-[1.5px] border-amber-300/50 rounded-tr-[1.5rem] pointer-events-none z-10" />
+                <div className="absolute bottom-3 left-3 size-8 border-b-[1.5px] border-l-[1.5px] border-amber-300/50 rounded-bl-[1.5rem] pointer-events-none z-10" />
+                <div className="absolute bottom-3 right-3 size-8 border-b-[1.5px] border-r-[1.5px] border-amber-300/50 rounded-br-[1.5rem] pointer-events-none z-10" />
+
+                {/* Internal Frosted Vignette Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-black/40 pointer-events-none" />
+                
+                {/* Content Area */}
+                <div className="relative z-20 px-6 py-14 w-full min-h-[500px] flex flex-col items-center text-center">
+                  {renderScenario()}
+                </div>
+              </div>
+            </div>
+          </main>
+
+      {/* Luxury Floating Glass Capsule: Share & Wishes Wall - VISIBLE TO BOTH SENDER & RECEIVER */}
       <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-40 flex items-center gap-1.5">
         <button
           onClick={() => setShowShareModal(true)}

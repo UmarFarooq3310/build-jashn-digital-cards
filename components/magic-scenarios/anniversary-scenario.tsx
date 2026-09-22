@@ -1,4 +1,5 @@
 'use client'
+import { TypewriterLetter } from "@/components/magic-scenarios/typewriter-letter";
 
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -110,6 +111,7 @@ export function AnniversaryScenario({
     unlockScene(1)
     setTimeout(() => {
       magicAudio.playFanfare()
+      setTimeout(() => goToScene(1), 3000)
     }, 500)
   }
 
@@ -125,6 +127,7 @@ export function AnniversaryScenario({
     if (next.length === memories.length) {
       magicAudio.playSparkle()
       triggerConfetti()
+      setTimeout(() => goToScene(2), 3000)
     }
   }
 
@@ -138,6 +141,7 @@ export function AnniversaryScenario({
     setTimeout(() => {
       magicAudio.playChime()
       unlockScene(3)
+      setTimeout(() => goToScene(3), 3000)
     }, 600)
   }
 
@@ -393,18 +397,14 @@ export function AnniversaryScenario({
                 </div>
               </div>
             ) : (
-              <div className="magic-letter text-xs text-rose-100 max-h-52 overflow-y-auto">
-                {data.wishContent?.secretLetter ||
-                  'Happy Anniversary to my favorite person in the whole universe! Thank you for walking beside me through every high, every quiet evening, and every storm. Here is to our forever!'}
-                {data.wishContent?.urduGreeting && (
-                  <div className="mt-2.5 text-right font-nastaliq text-sm text-amber-200">
-                    {data.wishContent.urduGreeting}
-                  </div>
-                )}
-                <div className="mt-3 text-right font-serif italic text-amber-300">
-                  — Forever yours, {data.senderName}
-                </div>
-              </div>
+              <TypewriterLetter
+              className="magic-letter text-xs text-rose-100 max-h-52 overflow-y-auto"
+              englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || 'Happy Anniversary to my favorite person in the whole universe! Thank you for walking beside me through every high, every quiet evening, and every storm. Here is to our forever!'}
+              urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
+              signatureText={`— Forever yours, ${data.senderName}`}
+              urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
+              signatureClassName="mt-3 text-right font-serif italic text-amber-300"
+            />
             )}
 
             {waxBroken ? (

@@ -43,6 +43,7 @@ export type CardShareChannel = 'whatsapp' | 'sms' | 'copy' | 'qr' | 'image'
 export function cleanForFirestore<T>(data: T): T {
   if (data === null || data === undefined) return data
   if (typeof data !== 'object') return data
+  if ((data as any).constructor?.name === 'ServerTimestampFieldValueImpl' || (data as any).constructor?.name === 'Timestamp' || ('_methodName' in (data as any))) return data
   if (Array.isArray(data)) {
     return data.map((item) => cleanForFirestore(item)) as unknown as T
   }
@@ -55,10 +56,14 @@ export function cleanForFirestore<T>(data: T): T {
   return result as T
 }
 
-export function generateShortSlug(name: string): string {
-  const clean = name.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 10) || 'magic'
-  const rand = Math.random().toString(36).substring(2, 7)
-  return `${clean}-${rand}`
+export function generateShortSlug(_name?: string): string {
+  // Generate an 8-character random string for the magic link slug to keep it fully anonymous
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+  let rand = ''
+  for (let i = 0; i < 8; i++) {
+    rand += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return rand
 }
 
 /**

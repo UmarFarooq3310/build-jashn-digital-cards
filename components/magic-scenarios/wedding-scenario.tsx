@@ -1,4 +1,5 @@
 'use client'
+import { TypewriterLetter } from "@/components/magic-scenarios/typewriter-letter";
 
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -107,6 +108,7 @@ export function WeddingScenario({
       unlockScene(1)
       unlockScene(2)
       unlockScene(3)
+      setTimeout(() => goToScene(1), 3000)
     }, 700)
   }
 
@@ -384,24 +386,14 @@ export function WeddingScenario({
               In the Name of Allah
             </h2>
 
-            <div className="magic-letter text-xs text-amber-100 max-h-52 overflow-y-auto">
-              <p className="text-[11px] text-amber-300/90 font-serif italic text-center mb-2">
-                &ldquo;And among His signs is that He created for you mates from among yourselves, that you may find tranquility in them...&rdquo; (30:21)
-              </p>
-
-              {data.wishContent?.secretLetter ||
-                `We joyfully request the pleasure of your presence and warm prayers as our beloved ${couple} tie the eternal knot of marriage.`}
-
-              {data.wishContent?.urduGreeting && (
-                <div className="mt-2.5 text-right font-nastaliq text-sm text-amber-200">
-                  {data.wishContent.urduGreeting}
-                </div>
-              )}
-
-              <div className="mt-3 text-right font-serif italic text-amber-300">
-                — Cordially, {data.senderName} & Family
-              </div>
-            </div>
+            <TypewriterLetter
+              className="magic-letter text-xs text-amber-100 max-h-52 overflow-y-auto"
+              englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `We joyfully request the pleasure of your presence and warm prayers as our beloved ${couple} embark on this beautiful sacred journey of marriage.`}
+              urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
+              signatureText={`— Cordially, ${data.senderName}`}
+              urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
+              signatureClassName="mt-3 text-right font-serif italic text-amber-300"
+            />
 
             <div className="flex items-center justify-between gap-2 mt-3">
               <button

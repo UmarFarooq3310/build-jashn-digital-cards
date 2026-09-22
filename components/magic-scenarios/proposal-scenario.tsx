@@ -1,4 +1,5 @@
 'use client'
+import { TypewriterLetter } from "@/components/magic-scenarios/typewriter-letter";
 
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
@@ -163,21 +164,28 @@ export function ProposalScenario({
       magicAudio.playChime()
       triggerConfetti()
     }, 500)
+
+    // Auto-advance to memories scene
+    setTimeout(() => {
+      goToScene(1)
+    }, 3000)
   }
 
   // 2. Handle Revealing a Memory Card
   const handleRevealMemory = (id: number, quote: string) => {
-    magicAudio.playChime()
-    if (!revealedMemories.includes(id)) {
-      const next = [...revealedMemories, id]
-      setRevealedMemories(next)
-      spawnBurst(['💖', '✨'], 4)
-      if (next.length >= 1) {
-        unlockScene(2)
-      }
-      if (next.length === memories.length) {
-        magicAudio.playSparkle()
-      }
+    if (revealedMemories.includes(id)) return
+    magicAudio.playPop()
+    const next = [...revealedMemories, id]
+    setRevealedMemories(next)
+    spawnBurst(['💗', '✨'], 5)
+
+    if (next.length >= memories.length) {
+      magicAudio.playFanfare()
+      unlockScene(2)
+      // Auto-advance to letter scene
+      setTimeout(() => {
+        goToScene(2)
+      }, 2500)
     }
   }
 
@@ -195,12 +203,8 @@ export function ProposalScenario({
     e.preventDefault()
     magicAudio.playWhoosh()
 
-    if (noIndex >= ESCALATING_NO_TEXTS.length - 1) {
-      handleSayYes()
-      return
-    }
-
-    setNoIndex((prev) => prev + 1)
+    setNoIndex((prev) => (prev + 1) % ESCALATING_NO_TEXTS.length)
+    
     setNoPos({
       left: Math.round(10 + Math.random() * 50),
       top: Math.round(45 + Math.random() * 40),
@@ -355,19 +359,8 @@ export function ProposalScenario({
               </div>
             </div>
 
-            {!boxOpen ? (
+            {!boxOpen && (
               <div className="text-xs text-[#f5c451] animate-pulse my-2">✨ tap to open ✨</div>
-            ) : (
-              <div className="flex justify-end mt-2">
-                <button
-                  type="button"
-                  onClick={() => goToScene(1)}
-                  className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl bg-[#f5c451] hover:bg-yellow-400 text-[#2a0613] font-black text-xs uppercase tracking-wider shadow-lg transition-transform active:scale-95 cursor-pointer"
-                >
-                  <span>Continue</span>
-                  <ArrowRight className="size-3.5" />
-                </button>
-              </div>
             )}
           </div>
         )}

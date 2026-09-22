@@ -1,4 +1,5 @@
 'use client'
+import { TypewriterLetter } from "@/components/magic-scenarios/typewriter-letter";
 
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -107,6 +108,7 @@ export function NewbornScenario({
     unlockScene(1)
     setTimeout(() => {
       magicAudio.playFanfare()
+      setTimeout(() => goToScene(1), 3000)
     }, 500)
   }
 
@@ -122,6 +124,7 @@ export function NewbornScenario({
     if (next.length === milestones.length) {
       magicAudio.playSparkle()
       triggerConfetti()
+      setTimeout(() => goToScene(2), 3000)
     }
   }
 
@@ -352,18 +355,14 @@ export function NewbornScenario({
               Dear {data.recipientName} & Parents,
             </h2>
 
-            <div className="magic-letter text-xs text-emerald-100 max-h-52 overflow-y-auto">
-              {data.wishContent?.secretLetter ||
-                `A heartfelt welcome to your precious little bundle of joy! May their tiny hands bring enormous joy, their sweet laughter fill your home with light, and may they always walk under Allah's loving protection and grace.`}
-              {data.wishContent?.urduGreeting && (
-                <div className="mt-2.5 text-right font-nastaliq text-sm text-amber-200">
-                  {data.wishContent.urduGreeting}
-                </div>
-              )}
-              <div className="mt-3 text-right font-serif italic text-amber-300">
-                — With warmest Duas, {data.senderName}
-              </div>
-            </div>
+            <TypewriterLetter
+              className="magic-letter text-xs text-emerald-100 max-h-52 overflow-y-auto"
+              englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `A heartfelt welcome to your precious little bundle of joy! May their tiny hands bring enormous joy, their sweet laughter fill your home with light, and may they always walk under Allah's loving protection and grace.`}
+              urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
+              signatureText={`— With warmest Duas, ${data.senderName}`}
+              urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
+              signatureClassName="mt-3 text-right font-serif italic text-amber-300"
+            />
 
             <div className="flex items-center justify-between gap-2 mt-3">
               <button

@@ -1,4 +1,5 @@
 'use client'
+import { TypewriterLetter } from "@/components/magic-scenarios/typewriter-letter";
 
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -106,13 +107,14 @@ export function ApologyScenario({
     setTimeout(() => {
       magicAudio.playFanfare()
       unlockScene(1)
+      setTimeout(() => goToScene(1), 3000)
     }, 600)
   }
 
   // Handle Reveal Amend
   const handleRevealAmend = (id: number) => {
     if (revealedAmends.includes(id)) return
-    magicAudio.playChime()
+    magicAudio.playPop()
     const next = [...revealedAmends, id]
     setRevealedAmends(next)
     spawnBurst(['🕊️', '✨'], 5)
@@ -123,6 +125,7 @@ export function ApologyScenario({
     if (next.length === amends.length) {
       magicAudio.playSparkle()
       triggerConfetti()
+      setTimeout(() => goToScene(2), 3000)
     }
   }
 
@@ -361,18 +364,14 @@ export function ApologyScenario({
               Dear {data.recipientName},
             </h2>
 
-            <div className="magic-letter text-xs text-rose-100 max-h-52 overflow-y-auto">
-              {data.wishContent?.secretLetter ||
-                `I am writing this with complete humility and sincerity. What happened was my fault, and seeing distance between us weighs heavily on my heart. You have been a source of light and warmth in my life, and I never want to jeopardize that. I am truly, deeply sorry.`}
-              {data.wishContent?.urduGreeting && (
-                <div className="mt-2.5 text-right font-nastaliq text-sm text-amber-200">
-                  {data.wishContent.urduGreeting}
-                </div>
-              )}
-              <div className="mt-3 text-right font-serif italic text-amber-300">
-                — Sincerely yours, {data.senderName}
-              </div>
-            </div>
+            <TypewriterLetter
+              className="magic-letter text-xs text-rose-100 max-h-52 overflow-y-auto"
+              englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `I am writing this with complete humility and sincerity. What happened was my fault, and seeing distance between us weighs heavily on my heart. You have been a source of light and warmth in my life, and I never want to jeopardize that. I am truly, deeply sorry.`}
+              urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
+              signatureText={`— Sincerely yours, ${data.senderName}`}
+              urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
+              signatureClassName="mt-3 text-right font-serif italic text-amber-300"
+            />
 
             <div className="flex items-center justify-between gap-2 mt-3">
               <button

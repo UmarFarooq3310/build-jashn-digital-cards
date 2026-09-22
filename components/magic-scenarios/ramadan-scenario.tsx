@@ -1,4 +1,5 @@
 'use client'
+import { TypewriterLetter } from "@/components/magic-scenarios/typewriter-letter";
 
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -108,6 +109,7 @@ export function RamadanScenario({
     setTimeout(() => {
       magicAudio.playFanfare()
       unlockScene(1)
+      setTimeout(() => goToScene(1), 3000)
     }, 600)
   }
 
@@ -125,6 +127,7 @@ export function RamadanScenario({
       triggerConfetti()
       unlockScene(2)
       unlockScene(3)
+      setTimeout(() => goToScene(2), 3000)
     }
   }
 
@@ -364,18 +367,14 @@ export function RamadanScenario({
               Dear {data.recipientName},
             </h2>
 
-            <div className="magic-letter text-xs text-cyan-100 max-h-52 overflow-y-auto">
-              {data.wishContent?.secretLetter ||
-                `Ramadan Mubarak to you and your loved ones! May this holy month of fasting, reflection, and Quran bring divine peace, purification, and limitless barakah into your household. May every Suhoor and Iftar be full of gratitude.`}
-              {data.wishContent?.urduGreeting && (
-                <div className="mt-2.5 text-right font-nastaliq text-sm text-amber-200">
-                  {data.wishContent.urduGreeting}
-                </div>
-              )}
-              <div className="mt-3 text-right font-serif italic text-amber-300">
-                — In prayers, {data.senderName}
-              </div>
-            </div>
+            <TypewriterLetter
+              className="magic-letter text-xs text-cyan-100 max-h-52 overflow-y-auto"
+              englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `Ramadan Mubarak to you and your loved ones! May this holy month of fasting, reflection, and Quran bring divine peace, purification, and limitless barakah into your household. May every Suhoor and Iftar be full of gratitude.`}
+              urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
+              signatureText={`— In prayers, ${data.senderName}`}
+              urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
+              signatureClassName="mt-3 text-right font-serif italic text-amber-300"
+            />
 
             <div className="flex items-center justify-between gap-2 mt-3">
               <button

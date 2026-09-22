@@ -1,4 +1,5 @@
 'use client'
+import { TypewriterLetter } from "@/components/magic-scenarios/typewriter-letter";
 
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -112,6 +113,7 @@ export function GraduationScenario({
     unlockScene(1)
     setTimeout(() => {
       magicAudio.playChime()
+      setTimeout(() => goToScene(1), 3000)
     }, 600)
   }
 
@@ -127,6 +129,7 @@ export function GraduationScenario({
     if (next.length === milestones.length) {
       magicAudio.playSparkle()
       triggerConfetti()
+      setTimeout(() => goToScene(2), 3000)
     }
   }
 
@@ -140,6 +143,7 @@ export function GraduationScenario({
     setTimeout(() => {
       magicAudio.playChime()
       unlockScene(3)
+      setTimeout(() => goToScene(3), 3000)
     }, 600)
   }
 
@@ -388,21 +392,14 @@ export function GraduationScenario({
                 </div>
               </div>
             ) : (
-              <div className="magic-letter text-xs text-sky-100 max-h-52 overflow-y-auto">
-                <p className="text-[11px] text-amber-300 font-serif font-bold text-center uppercase tracking-widest mb-1">
-                  — Degree of Academic Distinction —
-                </p>
-                {data.wishContent?.secretLetter ||
-                  `Proudly presented to ${data.recipientName} in recognition of extraordinary commitment, brilliance, and perseverance. Go conquer the world!`}
-                {data.wishContent?.urduGreeting && (
-                  <div className="mt-2.5 text-right font-nastaliq text-sm text-amber-200">
-                    {data.wishContent.urduGreeting}
-                  </div>
-                )}
-                <div className="mt-3 text-right font-serif italic text-amber-300">
-                  — Proudly witnessed by, {data.senderName}
-                </div>
-              </div>
+              <TypewriterLetter
+              className="magic-letter text-xs text-sky-100 max-h-52 overflow-y-auto"
+              englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `Proudly presented to ${data.recipientName} for outstanding dedication, countless late-night study sessions, and achieving this magnificent milestone. The future is entirely yours!`}
+              urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
+              signatureText={`— Proudly witnessed by, ${data.senderName}`}
+              urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
+              signatureClassName="mt-3 text-right font-serif italic text-amber-300"
+            />
             )}
 
             {diplomaUnrolled ? (

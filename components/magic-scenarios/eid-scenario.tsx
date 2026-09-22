@@ -1,4 +1,5 @@
 'use client'
+import { TypewriterLetter } from "@/components/magic-scenarios/typewriter-letter";
 
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -112,6 +113,7 @@ export function EidScenario({
     setTimeout(() => {
       magicAudio.playFanfare()
     }, 500)
+    setTimeout(() => goToScene(1), 3000)
   }
 
   // Handle Light Lantern
@@ -127,6 +129,7 @@ export function EidScenario({
     if (next.length === duas.length) {
       magicAudio.playFanfare()
       triggerConfetti()
+      setTimeout(() => goToScene(2), 3000)
     }
   }
 
@@ -140,6 +143,7 @@ export function EidScenario({
     setTimeout(() => {
       magicAudio.playChime()
       unlockScene(3)
+      setTimeout(() => goToScene(3), 3000)
     }, 600)
   }
 
@@ -443,18 +447,14 @@ export function EidScenario({
               Dear {data.recipientName},
             </h2>
 
-            <div className="magic-letter text-xs text-emerald-100 max-h-48 overflow-y-auto">
-              {data.wishContent?.secretLetter ||
-                'Eid Mubarak! May Allah shower your life with limitless peace, joyful family laughter, vibrant health, and divine barakah. May all your prayers be answered!'}
-              {data.wishContent?.urduGreeting && (
-                <div className="mt-2.5 text-right font-nastaliq text-sm text-amber-200">
-                  {data.wishContent.urduGreeting}
-                </div>
-              )}
-              <div className="mt-3 text-right font-serif italic text-amber-300">
-                — Duas and love, {data.senderName}
-              </div>
-            </div>
+            <TypewriterLetter
+              className="magic-letter text-xs text-emerald-100 max-h-48 overflow-y-auto"
+              englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || 'Eid Mubarak! May Allah shower your life with limitless peace, joyful family laughter, vibrant health, and divine barakah. May all your prayers be answered!'}
+              urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
+              signatureText={`— Duas and love, ${data.senderName}`}
+              urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
+              signatureClassName="mt-3 text-right font-serif italic text-amber-300"
+            />
 
             {/* Reaction Emojis */}
             <div className="mt-3">

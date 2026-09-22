@@ -1,0 +1,13 @@
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-float-slow { animation: float 6s ease-in-out infinite; }
+        .animate-float-fast { animation: float 3s ease-in-out infinite; }
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+          50% { box-shadow: 0 0 40px rgba(255,255,255,0.3); }
+        }
+        .animate-pulse-glow { animation: pulse-glow 3s infinite; }
+      `}</style>

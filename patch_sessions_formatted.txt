@@ -1,0 +1,12 @@
+    async function handleDeleteSession(sessionId: string) {
+      if (!confirm('Are you sure you want to delete this session?')) return
+      const activeDb = getFirebaseDb()
+      if (!activeDb) return
+      try {
+        await deleteDoc(doc(activeDb, 'active_sessions', sessionId))
+        setAllSessions(prev => prev.filter(s => s.id !== sessionId))
+      } catch (err) {
+        console.error('Failed to delete session', err)
+        alert('Could not delete session.')
+      }
+    }

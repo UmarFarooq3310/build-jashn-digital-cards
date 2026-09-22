@@ -1,0 +1,38 @@
+  // --- Holographic 3D Tilt Effect ---
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [tilt, setTilt] = useState({ x: 0, y: 0, glareX: 50, glareY: 50 })
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    
+    // For touch events, grab the first touch point
+    let clientX, clientY;
+    if ('touches' in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = (e as React.MouseEvent).clientX;
+      clientY = (e as React.MouseEvent).clientY;
+    }
+
+    const x = clientX - rect.left
+    const y = clientY - rect.top
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+
+    // Max rotation in degrees
+    const maxTilt = 12
+    const rotateX = ((y - centerY) / centerY) * -maxTilt
+    const rotateY = ((x - centerX) / centerX) * maxTilt
+
+    // Glare position (percentage)
+    const glareX = (x / rect.width) * 100
+    const glareY = (y / rect.height) * 100
+
+    setTilt({ x: rotateX, y: rotateY, glareX, glareY })
+  }
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0, glareX: 50, glareY: 50 })
+  }

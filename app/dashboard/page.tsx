@@ -433,8 +433,8 @@ export default function DashboardPage() {
                               title: inv.title || `${inv.groom} & ${inv.bride}`,
                               recipientOrCouple: (inv.groom && inv.bride) ? `${inv.groom} & ${inv.bride}` : (inv.title || 'Royal Guests'),
                               type: 'invite',
-                              slug: inv.slug,
-                              url: `/i/${inv.slug}`,
+                              slug: (inv.slug || inv.id || ""),
+                              url: `/i/${(inv.slug || inv.id)}`,
                               viewsCount: inv.viewCount,
                               shares: inv.shares,
                               occasion: type?.label || 'Royal Wedding Invitation',
@@ -448,7 +448,7 @@ export default function DashboardPage() {
                         >
                           <Share2 className="size-3.5" /> Share, QR & Image
                         </button>
-                        <Link href={`/i/${inv.slug}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
+                        <Link href={`/i/${(inv.slug || inv.id)}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
                           Preview <ExternalLink className="size-3" />
                         </Link>
                       </div>
@@ -519,8 +519,8 @@ export default function DashboardPage() {
                               title: `${occ?.label ?? 'Wish'} Card`,
                               recipientOrCouple: w.recipientName || 'Dear Friend',
                               type: 'wish',
-                              slug: w.slug,
-                              url: `/w/${w.slug}`,
+                              slug: (w.slug || w.id || ""),
+                              url: `/w/${(w.slug || w.id)}`,
                               viewsCount: w.viewCount,
                               shares: w.shares,
                               occasion: occ?.label || 'Celebration Wish',
@@ -533,7 +533,7 @@ export default function DashboardPage() {
                         >
                           <Share2 className="size-3.5" /> Share, QR & Image
                         </button>
-                        <Link href={`/w/${w.slug}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
+                        <Link href={`/w/${(w.slug || w.id)}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
                           Preview <ExternalLink className="size-3" />
                         </Link>
                       </div>
@@ -603,8 +603,8 @@ export default function DashboardPage() {
                             title: `${vc.fullName}'s Digital vCard`,
                             recipientOrCouple: vc.fullName,
                             type: 'vcard',
-                            slug: vc.slug,
-                            url: `/v/${vc.slug}`,
+                            slug: (vc.slug || vc.id || ""),
+                            url: `/v/${(vc.slug || vc.id)}`,
                             viewsCount: vc.viewCount,
                             shares: vc.shares,
                             occasion: 'Executive Digital vCard',
@@ -617,7 +617,7 @@ export default function DashboardPage() {
                       >
                         <Share2 className="size-3.5" /> Share, QR & Image
                       </button>
-                      <Link href={`/v/${vc.slug}`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
+                      <Link href={`/v/${(vc.slug || vc.id)}`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
                         Preview <ExternalLink className="size-3" />
                       </Link>
                     </div>
@@ -651,7 +651,7 @@ export default function DashboardPage() {
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {magicLinks.map((m) => (
                   <div
-                    key={m.slug}
+                    key={(m.slug || m.id)}
                     className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/5 via-card to-card p-5 shadow-sm flex flex-col justify-between hover:border-amber-500/60 hover:shadow-md transition-all"
                   >
                     <div>
@@ -699,8 +699,8 @@ export default function DashboardPage() {
                             title: `${m.occasion.toUpperCase()} Magic Link`,
                             recipientOrCouple: m.recipientName,
                             type: 'magic',
-                            slug: m.slug,
-                            url: `/m/${m.slug}`,
+                            slug: (m.slug || m.id || ""),
+                            url: `/m/${(m.slug || m.id)}`,
                             viewsCount: m.viewsCount,
                             shares: m.shares,
                             occasion: `${m.occasion.toUpperCase()} Magic Celebration`,
@@ -718,7 +718,7 @@ export default function DashboardPage() {
                         <Share2 className="size-3.5" /> Share, QR & Image
                       </button>
                       <Link
-                        href={`/m/${m.slug}?mode=sender`}
+                        href={`/m/${(m.slug || m.id)}?mode=sender`}
                         target="_blank"
                         className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground"
                       >

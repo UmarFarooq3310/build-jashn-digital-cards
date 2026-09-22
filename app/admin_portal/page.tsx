@@ -367,6 +367,8 @@ export default function AdminPortalPage() {
   }, [allGuestbookWishes, guestbookSearch])
 
   // ── Real-Time Active Users State (Live Presence) ─────────────────────────
+  const [allSessions, setAllSessions] = useState<any[]>([])
+  const [selectedSessions, setSelectedSessions] = useState<string[]>([])
   const [liveActiveSessions, setLiveActiveSessions] = useState<any[]>([])
 
   useEffect(() => {
@@ -378,11 +380,14 @@ export default function AdminPortalPage() {
         const collRef = collection(firestoreDb, 'active_sessions')
         unsub = onSnapshot(collRef, (snap) => {
           const threshold = Date.now() - 65000 // Active within the last 65 seconds
-          const sessions = snap.docs
+          const allDocs = snap.docs
             .map((doc) => ({ id: doc.id, ...doc.data() } as any))
-            .filter((s) => s.lastSeen && s.lastSeen >= threshold)
             .sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0))
-          setLiveActiveSessions(sessions)
+          
+          setAllSessions(allDocs)
+          
+          const active = allDocs.filter((s) => s.lastSeen && s.lastSeen >= threshold)
+          setLiveActiveSessions(active)
         })
       } catch (err) {
         console.warn('Presence listener notice:', err)
@@ -420,7 +425,7 @@ export default function AdminPortalPage() {
   function handleDeleteWishCard(slug: string) {
     if (confirm(`Are you sure you want to delete wish card "${slug}"? This action cannot be undone.`)) {
       deleteWish(slug)
-      setFirestoreWishes((prev) => prev.filter((w) => w.slug !== slug && w.id !== slug))
+      setFirestoreWishes((prev) => prev.filter((w) => (w.slug || w.id) !== slug && w.id !== slug))
       showToast('Wish card deleted by Admin', 'info')
     }
   }
@@ -428,7 +433,7 @@ export default function AdminPortalPage() {
   function handleDeleteVisitingCard(slug: string, fullName?: string) {
     if (confirm(`Are you sure you want to delete visiting card "${fullName || slug}"? This action cannot be undone.`)) {
       deleteVisitingCard(slug)
-      setFirestoreVisitingCards((prev) => prev.filter((vc) => vc.slug !== slug && vc.id !== slug))
+      setFirestoreVisitingCards((prev) => prev.filter((vc) => (vc.slug || vc.id) !== slug && vc.id !== slug))
       showToast('Visiting card deleted by Admin', 'info')
     }
   }
@@ -651,97 +656,31 @@ export default function AdminPortalPage() {
     loadFirestoreAll()
   }, [loadFirestoreAll])
 
-  // Merged Invitations list (store + Firestore)
+  // Invitations list (Firestore only for admin consistency)
   const invitations = useMemo(() => {
-    const map = new Map<string, Invitation>()
-    storeInvitations.forEach((i) => {
-      const key = i.slug || i.id
-      if (key) map.set(key, i)
-    })
-    firestoreInvitations.forEach((i) => {
-      const key = i.slug || i.id
-      if (key) {
-        const existing = map.get(key)
-        map.set(key, existing ? { ...existing, ...i } : i)
-      }
-    })
-    return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
-  }, [storeInvitations, firestoreInvitations])
+    return [...firestoreInvitations].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+  }, [firestoreInvitations])
 
-  // Merged Wishes list (store + Firestore)
+  // Wishes list (Firestore only)
   const wishes = useMemo(() => {
-    const map = new Map<string, Wish>()
-    storeWishes.forEach((w) => {
-      const key = w.slug || w.id
-      if (key) map.set(key, w)
-    })
-    firestoreWishes.forEach((w) => {
-      const key = w.slug || w.id
-      if (key) {
-        const existing = map.get(key)
-        map.set(key, existing ? { ...existing, ...w } : w)
-      }
-    })
-    return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
-  }, [storeWishes, firestoreWishes])
+    return [...firestoreWishes].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+  }, [firestoreWishes])
 
-  // Merged Visiting Cards list (store + Firestore)
+  // Visiting Cards list (Firestore only)
   const visitingCards = useMemo(() => {
-    const map = new Map<string, VisitingCard>()
-    const localVcList = storeVisitingCards || []
-    localVcList.forEach((vc: VisitingCard) => {
-      const key = vc.slug || vc.id
-      if (key) map.set(key, vc)
-    })
-    firestoreVisitingCards.forEach((vc: VisitingCard) => {
-      const key = vc.slug || vc.id
-      if (key) {
-        const existing = map.get(key)
-        map.set(key, existing ? { ...existing, ...vc } : vc)
-      }
-    })
-    return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
-  }, [storeVisitingCards, firestoreVisitingCards])
+    return [...firestoreVisitingCards].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+  }, [firestoreVisitingCards])
 
-  // Merged RSVPs list (store + Firestore)
+  // RSVPs list (Firestore only)
   const rsvps = useMemo(() => {
-    const map = new Map<string, RsvpGuest>()
-    const localRsvpList = storeRsvps || []
-    localRsvpList.forEach((r: RsvpGuest) => {
-      if (r.id) map.set(r.id, r)
-    })
-    firestoreRsvps.forEach((r: RsvpGuest) => {
-      if (r.id) {
-        const existing = map.get(r.id)
-        map.set(r.id, existing ? { ...existing, ...r } : r)
-      }
-    })
-    return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
-  }, [storeRsvps, firestoreRsvps])
+    return [...firestoreRsvps].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+  }, [firestoreRsvps])
 
-  // Merged Magic Links list (store / localStorage + Firestore)
+  // Magic Links list (Firestore only)
   const magicLinks = useMemo(() => {
-    const map = new Map<string, MagicLinkData>()
-    if (typeof window !== 'undefined') {
-      try {
-        const raw = localStorage.getItem('cardzy_local_magic_links')
-        if (raw) {
-          const parsed = JSON.parse(raw)
-          Object.values(parsed as Record<string, MagicLinkData>).forEach((m) => {
-            if (m.slug) map.set(m.slug, m)
-          })
-        }
-      } catch {}
-    }
-    firestoreMagicLinks.forEach((m) => {
-      if (m.slug) {
-        const existing = map.get(m.slug)
-        map.set(m.slug, existing ? { ...existing, ...m } : m)
-      }
-    })
-    return Array.from(map.values()).sort((a, b) => {
-      const timeA = typeof a.createdAt === 'number' ? a.createdAt : a.createdAt?.toMillis ? a.createdAt.toMillis() : 0
-      const timeB = typeof b.createdAt === 'number' ? b.createdAt : b.createdAt?.toMillis ? b.createdAt.toMillis() : 0
+    return [...firestoreMagicLinks].sort((a, b) => {
+      const timeA = typeof a.createdAt === 'number' ? a.createdAt : a.createdAt?.toMillis ? a.createdAt.toMillis() : (a.createdAt as any)?.seconds ? (a.createdAt as any).seconds * 1000 : 0
+      const timeB = typeof b.createdAt === 'number' ? b.createdAt : b.createdAt?.toMillis ? b.createdAt.toMillis() : (b.createdAt as any)?.seconds ? (b.createdAt as any).seconds * 1000 : 0
       return timeB - timeA
     })
   }, [firestoreMagicLinks])
@@ -763,7 +702,7 @@ export default function AdminPortalPage() {
           }
         } catch {}
       }
-      setFirestoreMagicLinks((prev) => prev.filter((m) => m.slug !== slug))
+      setFirestoreMagicLinks((prev) => prev.filter((m) => (m.slug || m.id) !== slug))
       showToast('Magic Link deleted', 'info')
     } catch (err) {
       console.error('Failed to delete magic link:', err)
@@ -783,17 +722,11 @@ export default function AdminPortalPage() {
     return invitations.find((i) => i.slug === rsvpFilterSlug) ?? null
   }, [invitations, rsvpFilterSlug])
 
-  // Merge registered list, firestore list, current user, and card creators
+  // Merge firestore list and card creators
   const allUsersList = useMemo(() => {
     const map = new Map<string, JashnUser>()
     
-    // 1. Registered users in store
-    registeredUsers.forEach((u) => {
-      const key = u.uid || u.email
-      if (key) map.set(key, u)
-    })
-
-    // 2. Firestore users (rich merge)
+    // 1. Firestore users
     firestoreUsers.forEach((u) => {
       const key = u.uid || u.email
       if (key) {
@@ -801,15 +734,6 @@ export default function AdminPortalPage() {
         map.set(key, existing ? { ...existing, ...u } : u)
       }
     })
-
-    // 3. Current user
-    if (currentUser) {
-      const key = currentUser.uid || currentUser.email
-      if (key) {
-        const existing = map.get(key)
-        map.set(key, existing ? { ...existing, ...currentUser } : currentUser)
-      }
-    }
 
     // 4. Creators from Invitations
     invitations.forEach((inv) => {
@@ -879,7 +803,7 @@ export default function AdminPortalPage() {
     })
 
     return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
-  }, [registeredUsers, firestoreUsers, currentUser, invitations, wishes, visitingCards])
+  }, [firestoreUsers, invitations, wishes, visitingCards])
 
   // Stats calculation
   const stats = useMemo(() => {
@@ -1021,7 +945,7 @@ export default function AdminPortalPage() {
   // ── Recent Real-Time Activity Feed ───────────────────────────────────────
   const recentActivities = useMemo(() => {
     interface ActivityItem {
-      type: 'user' | 'invitation' | 'wish' | 'visiting_card'
+      type: 'user' | 'invitation' | 'wish' | 'visiting_card' | 'magic_link'
       typeLabel: string
       title: string
       subtitle: string
@@ -1061,7 +985,7 @@ export default function AdminPortalPage() {
             phone: inv.rsvpPhone,
             venue: inv.venue,
           }),
-          link: `/i/${inv.slug}`,
+          link: `/i/${(inv.slug || inv.id)}`,
         })
       }
     })
@@ -1080,7 +1004,7 @@ export default function AdminPortalPage() {
             city: w.city,
             createdLocation: w.createdLocation,
           }),
-          link: `/w/${w.slug}`,
+          link: `/w/${(w.slug || w.id)}`,
         })
       }
     })
@@ -1100,13 +1024,28 @@ export default function AdminPortalPage() {
             createdLocation: vc.createdLocation,
             phone: vc.phone,
           }),
-          link: `/v/${vc.slug}`,
+          link: `/v/${(vc.slug || vc.id)}`,
+        })
+      }
+    })
+
+    magicLinks.forEach((m) => {
+      const createdAt = typeof m.createdAt === 'number' ? m.createdAt : m.createdAt?.toMillis ? m.createdAt.toMillis() : (m.createdAt as any)?.seconds ? (m.createdAt as any).seconds * 1000 : 0
+      if (createdAt) {
+        items.push({
+          type: 'magic_link',
+          typeLabel: 'Magic Link',
+          title: `${m.senderName || 'Sender'} → ${m.recipientName || 'Recipient'}`,
+          subtitle: `Type: ${m.type || 'magic'} • Occasion: ${m.occasion || 'event'}`,
+          time: createdAt,
+          origin: inferOrigin({}),
+          link: `/m/${(m.slug || m.id)}`,
         })
       }
     })
 
     return items.sort((a, b) => (b.time || 0) - (a.time || 0))
-  }, [allUsersList, invitations, wishes, visitingCards])
+  }, [allUsersList, invitations, wishes, visitingCards, magicLinks])
 
   // 🔒 Render Admin Login Lock Gate if not authorized
   if (!mounted) return null
@@ -1662,7 +1601,7 @@ export default function AdminPortalPage() {
                 </span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Chronological timeline of latest user registrations, event invitations, greeting wishes, and visiting cards.
+                Chronological timeline of latest user registrations, event invitations, greeting wishes, magic links, and visiting cards.
               </p>
 
               <div className="divide-y divide-border/60">
@@ -1671,7 +1610,7 @@ export default function AdminPortalPage() {
                     No activity recorded yet.
                   </div>
                 ) : (
-                  recentActivities.slice(0, 5).map((act, i) => (
+                  recentActivities.slice(0, 15).map((act, i) => (
                     <div key={i} className="py-3 first:pt-1 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                       <div className="flex items-start gap-3 min-w-0">
                         <div className={cn(
@@ -1679,11 +1618,13 @@ export default function AdminPortalPage() {
                           act.type === 'user' ? 'bg-indigo-500/10 text-indigo-600' :
                           act.type === 'invitation' ? 'bg-emerald-500/10 text-emerald-600' :
                           act.type === 'wish' ? 'bg-amber-500/10 text-amber-600' :
+                          act.type === 'magic_link' ? 'bg-pink-500/10 text-pink-600' :
                           'bg-purple-500/10 text-purple-600'
                         )}>
                           {act.type === 'user' ? <Users className="size-4" /> :
                            act.type === 'invitation' ? <Calendar className="size-4" /> :
                            act.type === 'wish' ? <Sparkles className="size-4" /> :
+                           act.type === 'magic_link' ? <MousePointerClick className="size-4" /> :
                            <CreditCard className="size-4" />}
                         </div>
                         <div className="min-w-0">
@@ -1694,6 +1635,7 @@ export default function AdminPortalPage() {
                               act.type === 'user' ? 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-400' :
                               act.type === 'invitation' ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400' :
                               act.type === 'wish' ? 'bg-amber-500/15 text-amber-800 dark:text-amber-400' :
+                              act.type === 'magic_link' ? 'bg-pink-500/15 text-pink-700 dark:text-pink-400' :
                               'bg-purple-500/15 text-purple-700 dark:text-purple-400'
                             )}>
                               {act.typeLabel}
@@ -1746,7 +1688,7 @@ export default function AdminPortalPage() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                   </span>
-                  Live Active Users Online Right Now ({liveActiveSessions.length})
+                  All Sessions (Active & Offline) ({liveActiveSessions.length})
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   Real-time heartbeat presence connected directly to Firebase Firestore. Shows users currently browsing Cardzy.
@@ -1760,36 +1702,87 @@ export default function AdminPortalPage() {
             </div>
 
             <div className="p-6 pt-0">
-              {liveActiveSessions.length === 0 ? (
+              {allSessions.length === 0 ? (
                 <div className="py-12 text-center text-muted-foreground space-y-2">
                   <Activity className="size-8 mx-auto opacity-30 animate-pulse text-emerald-500" />
                   <p className="text-sm font-semibold">No other active visitors browsing right now.</p>
                   <p className="text-xs text-muted-foreground">When visitors open Cardzy in any tab or mobile browser, they appear here instantly.</p>
                 </div>
               ) : (
-                <div className="overflow-x-auto -mx-6 px-6">
+                <div className="overflow-x-auto -mx-6 px-6 relative">
+                  {selectedSessions.length > 0 && (
+                    <div className="absolute top-0 left-6 right-6 bg-rose-500/10 border border-rose-500/20 rounded-t-xl p-2 flex items-center justify-between z-10">
+                      <span className="text-xs font-bold text-rose-600 px-2">{selectedSessions.length} selected</span>
+                      <button
+                        onClick={async () => {
+                          if (!confirm(`Delete ${selectedSessions.length} sessions?`)) return
+                          const firestoreDb = getFirebaseDb()
+                          if (firestoreDb) {
+                            try {
+                              const { deleteDoc, doc } = await import('firebase/firestore')
+                              await Promise.all(selectedSessions.map(id => deleteDoc(doc(firestoreDb, 'active_sessions', id))))
+                              setAllSessions(prev => prev.filter(s => !selectedSessions.includes(s.id)))
+                              setSelectedSessions([])
+                            } catch(e) {}
+                          }
+                        }}
+                        className="px-3 py-1 bg-rose-600 text-white text-xs font-bold rounded-lg hover:bg-rose-700 transition-colors flex items-center gap-2"
+                      >
+                        <Trash2 className="size-3.5" /> Delete Selected
+                      </button>
+                    </div>
+                  )}
                   <table className="w-full text-sm text-left">
                     <thead className="text-xs text-muted-foreground uppercase bg-muted/30">
                       <tr>
-                        <th className="px-4 py-3 rounded-l-xl">User / Visitor</th>
+                        <th className="px-4 py-3 rounded-l-xl w-[40px]">
+                          <input 
+                            type="checkbox" 
+                            className="rounded border-border accent-emerald-500"
+                            checked={allSessions.length > 0 && selectedSessions.length === allSessions.length}
+                            onChange={(e) => {
+                              if (e.target.checked) setSelectedSessions(allSessions.map(s => s.id))
+                              else setSelectedSessions([])
+                            }}
+                          />
+                        </th>
+                        <th className="px-4 py-3">User / Visitor</th>
                         <th className="px-4 py-3">Current Active Page</th>
                         <th className="px-4 py-3">Device</th>
                         <th className="px-4 py-3">Location / Timezone</th>
                         <th className="px-4 py-3">Referrer</th>
-                        <th className="px-4 py-3 rounded-r-xl">Last Heartbeat</th>
+                        <th className="px-4 py-3">Last Heartbeat</th>
+                        <th className="px-4 py-3 rounded-r-xl text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border/50">
-                      {liveActiveSessions.map((session) => {
+                      {allSessions.map((session) => {
                         const secondsAgo = Math.max(0, Math.round((Date.now() - (session.lastSeen || Date.now())) / 1000))
+                        const isActive = secondsAgo <= 65
+                        
                         return (
-                          <tr key={session.sessionId || session.id} className="hover:bg-muted/20 transition-colors">
+                          <tr key={session.sessionId || session.id} className={cn("hover:bg-muted/20 transition-colors", !isActive && "opacity-60", selectedSessions.includes(session.id) && "bg-rose-500/5 hover:bg-rose-500/10")}>
+                            <td className="px-4 py-3.5">
+                              <input 
+                                type="checkbox" 
+                                className="rounded border-border accent-emerald-500"
+                                checked={selectedSessions.includes(session.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) setSelectedSessions(prev => [...prev, session.id])
+                                  else setSelectedSessions(prev => prev.filter(id => id !== session.id))
+                                }}
+                              />
+                            </td>
                             <td className="px-4 py-3.5">
                               <div className="flex items-center gap-2.5">
-                                <span className="relative flex h-2.5 w-2.5 shrink-0">
-                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                                </span>
+                                {isActive ? (
+                                  <span className="relative flex h-2.5 w-2.5 shrink-0">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                                  </span>
+                                ) : (
+                                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-muted-foreground shrink-0"></span>
+                                )}
                                 <div>
                                   <div className="font-bold text-foreground flex items-center gap-1.5">
                                     {session.userName || 'Guest Visitor'}
@@ -1823,8 +1816,27 @@ export default function AdminPortalPage() {
                             <td className="px-4 py-3.5 text-xs text-muted-foreground truncate max-w-[120px]">
                               {session.referrer === 'Direct' ? 'Direct URL' : session.referrer || 'Direct'}
                             </td>
-                            <td className="px-4 py-3.5 text-xs font-bold text-emerald-600 whitespace-nowrap">
-                              {secondsAgo <= 5 ? 'Just now (live)' : `${secondsAgo}s ago`}
+                            <td className={cn("px-4 py-3.5 text-xs font-bold whitespace-nowrap", isActive ? "text-emerald-600" : "text-muted-foreground")}>
+                              {isActive ? (secondsAgo <= 5 ? 'Just now (live)' : `${secondsAgo}s ago`) : 'Offline'}
+                            </td>
+                            <td className="px-4 py-3.5 text-right">
+                              <button
+                                onClick={async () => {
+                                  if (!confirm('Delete this session record?')) return
+                                  const firestoreDb = getFirebaseDb()
+                                  if (firestoreDb) {
+                                    try {
+                                      const { deleteDoc, doc } = await import('firebase/firestore')
+                                      await deleteDoc(doc(firestoreDb, 'active_sessions', session.id))
+                                      setAllSessions(prev => prev.filter(s => s.id !== session.id))
+                                    } catch(e) {}
+                                  }
+                                }}
+                                className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 transition-colors inline-flex"
+                                title="Delete Session"
+                              >
+                                <Trash2 className="size-4" />
+                              </button>
                             </td>
                           </tr>
                         )
@@ -2123,11 +2135,11 @@ export default function AdminPortalPage() {
                       </td>
                     </tr>
                   ) : (
-                    magicLinks.map((m) => (
-                      <tr key={m.slug} className="hover:bg-muted/20 transition-colors">
+                    magicLinks.map((m, idx) => (
+                      <tr key={(m.slug || m.id) || m.id || `ml-${idx}`} className="hover:bg-muted/20 transition-colors">
                         <td className="py-4 px-4 font-bold text-foreground">
                           <div className="text-base text-amber-400 font-black">{m.recipientName}</div>
-                          <div className="text-[11px] font-mono text-muted-foreground">slug: {m.slug}</div>
+                          <div className="text-[11px] font-mono text-muted-foreground">slug: {(m.slug || m.id) || m.id}</div>
                         </td>
                         <td className="py-4 px-4 font-semibold text-foreground">
                           {m.senderName || 'Anonymous Host'}
@@ -2147,7 +2159,7 @@ export default function AdminPortalPage() {
                           <div className="flex items-center gap-1.5">
                             <Clock className="size-3.5 text-amber-500 shrink-0" />
                             <span className="font-bold text-foreground">
-                              {formatDateTime(typeof m.createdAt === 'number' ? m.createdAt : (m.createdAt as any)?.toMillis?.() || Date.now())}
+                              {formatDateTime(typeof m.createdAt === 'number' ? m.createdAt : (m.createdAt as any)?.toMillis?.() || (m.createdAt as any)?.seconds * 1000 || Date.now())}
                             </span>
                           </div>
                         </td>
@@ -2179,7 +2191,7 @@ export default function AdminPortalPage() {
                         <td className="py-4 px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
                             <Link
-                              href={`/m/${m.slug}?mode=sender`}
+                              href={`/m/${(m.slug || m.id)}?mode=sender`}
                               target="_blank"
                               className="p-1.5 rounded-lg bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 text-xs font-bold flex items-center gap-1"
                               title="Host Screen Preview"
@@ -2194,8 +2206,8 @@ export default function AdminPortalPage() {
                                   title: `${m.occasion.toUpperCase()} Magic Link`,
                                   recipientOrCouple: m.recipientName,
                                   type: 'magic',
-                                  slug: m.slug,
-                                  url: `/m/${m.slug}`,
+                                  slug: (m.slug || m.id || ""),
+                                  url: `/m/${(m.slug || m.id)}`,
                                   viewsCount: m.viewsCount,
                                   shares: m.shares,
                                   occasion: `${m.occasion.toUpperCase()} Magic Celebration`,
@@ -2216,7 +2228,7 @@ export default function AdminPortalPage() {
 
                             <button
                               type="button"
-                              onClick={() => handleDeleteMagicLink(m.slug)}
+                              onClick={() => handleDeleteMagicLink((m.slug || m.id || ""))}
                               className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
                               title="Delete Magic Link"
                             >
@@ -2317,8 +2329,8 @@ export default function AdminPortalPage() {
                       </td>
                     </tr>
                   ) : (
-                    filteredGuestbookWishes.map((w) => (
-                      <tr key={w.id} className="hover:bg-muted/20 transition-colors">
+                    filteredGuestbookWishes.map((w, idx) => (
+                      <tr key={w.id || `gbw-${idx}`} className="hover:bg-muted/20 transition-colors">
                         <td className="py-4 px-4 font-bold text-foreground">
                           <div className="flex items-center gap-2">
                             <span className="text-xl shrink-0 p-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20">
@@ -2424,7 +2436,7 @@ export default function AdminPortalPage() {
                       <td colSpan={8} className="py-8 text-center text-muted-foreground">No active invitations found.</td>
                     </tr>
                   ) : (
-                    invitations.map((inv) => {
+                    invitations.map((inv, idx) => {
                       const invOrigin = inferOrigin({
                         country: inv.country,
                         countryCode: inv.countryCode,
@@ -2438,13 +2450,13 @@ export default function AdminPortalPage() {
                       })
 
                       return (
-                        <tr key={inv.id} className="hover:bg-muted/20 transition-colors">
+                        <tr key={(inv.slug || inv.id) || inv.id || `inv-${idx}`} className="hover:bg-muted/20 transition-colors">
                           <td className="py-4 px-4">
                             <div className="font-bold text-foreground">{inv.title || 'Event Invitation'}</div>
                             {(inv.groom || inv.bride) && (
                               <div className="text-xs font-medium text-emerald-700">{inv.groom || ''} & {inv.bride || ''}</div>
                             )}
-                            <div className="text-[10px] text-muted-foreground font-mono">Slug: {inv.slug}</div>
+                            <div className="text-[10px] text-muted-foreground font-mono">Slug: {(inv.slug || inv.id)}</div>
                           </td>
                           <td className="py-4 px-4">
                             <div className="font-semibold text-xs text-foreground">{inv.hostNames || 'Host'}</div>
@@ -2533,8 +2545,8 @@ export default function AdminPortalPage() {
                                   title: inv.title || `${inv.groom} & ${inv.bride}`,
                                   recipientOrCouple: (inv.groom && inv.bride) ? `${inv.groom} & ${inv.bride}` : (inv.title || 'Royal Guests'),
                                   type: 'invite',
-                                  slug: inv.slug,
-                                  url: `/i/${inv.slug}`,
+                                  slug: (inv.slug || inv.id || ""),
+                                  url: `/i/${(inv.slug || inv.id)}`,
                                   viewsCount: inv.viewCount,
                                   shares: inv.shares,
                                   occasion: inv.typeId || 'Royal Wedding Invitation',
@@ -2552,7 +2564,7 @@ export default function AdminPortalPage() {
                             <button
                               type="button"
                               onClick={() => {
-                                setRsvpFilterSlug(inv.slug)
+                                setRsvpFilterSlug((inv.slug || inv.id))
                                 setAdminSection('rsvps')
                                 // Scroll to top so the RSVP section is visible
                                 window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -2563,7 +2575,7 @@ export default function AdminPortalPage() {
                               <Users className="size-3.5" /> RSVPs ({inv.rsvpCount})
                             </button>
                             <Link
-                              href={`/i/${inv.slug}`}
+                              href={`/i/${(inv.slug || inv.id)}`}
                               target="_blank"
                               className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 text-xs font-bold flex items-center gap-1"
                               title="View Live Card"
@@ -2571,7 +2583,7 @@ export default function AdminPortalPage() {
                               <ExternalLink className="size-3.5" /> View
                             </Link>
                             <Link
-                              href={`/create-invitation?edit=${inv.slug}`}
+                              href={`/create-invitation?edit=${(inv.slug || inv.id)}`}
                               rel="nofollow"
                               className="p-1.5 rounded-lg bg-amber-500/10 text-amber-700 hover:bg-amber-500/20 text-xs font-bold flex items-center gap-1"
                               title="Edit Invitation"
@@ -2580,7 +2592,7 @@ export default function AdminPortalPage() {
                             </Link>
                             <button
                               type="button"
-                              onClick={() => handleDeleteInv(inv.slug)}
+                              onClick={() => handleDeleteInv((inv.slug || inv.id))}
                               className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1"
                               title="Delete Invitation"
                             >
@@ -2634,7 +2646,7 @@ export default function AdminPortalPage() {
                       <td colSpan={7} className="py-8 text-center text-muted-foreground">No wishes recorded.</td>
                     </tr>
                   ) : (
-                    wishes.map((w) => {
+                    wishes.map((w, idx) => {
                       const wishOrigin = inferOrigin({
                         country: w.country,
                         countryCode: w.countryCode,
@@ -2646,7 +2658,7 @@ export default function AdminPortalPage() {
                       })
 
                       return (
-                        <tr key={w.id} className="hover:bg-muted/20 transition-colors">
+                        <tr key={(w.slug || w.id) || w.id || `wish-${idx}`} className="hover:bg-muted/20 transition-colors">
                           <td className="py-4 px-4 font-bold text-foreground">{w.senderName || 'Well Wisher'}</td>
                           <td className="py-4 px-4">
                             <div className="font-semibold text-foreground">{w.recipientName || 'Friend'}</div>
@@ -2724,8 +2736,8 @@ export default function AdminPortalPage() {
                                   title: `${w.occasionId} Wish Card`,
                                   recipientOrCouple: w.recipientName || 'Dear Friend',
                                   type: 'wish',
-                                  slug: w.slug,
-                                  url: `/w/${w.slug}`,
+                                  slug: (w.slug || w.id || ""),
+                                  url: `/w/${(w.slug || w.id)}`,
                                   viewsCount: w.viewCount,
                                   shares: w.shares,
                                   occasion: w.occasionId,
@@ -2740,7 +2752,7 @@ export default function AdminPortalPage() {
                               <Sparkles className="size-3.5" /> Share
                             </button>
                             <Link
-                              href={`/w/${w.slug}`}
+                              href={`/w/${(w.slug || w.id)}`}
                               target="_blank"
                               className="p-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 text-xs font-bold flex items-center gap-1"
                               title="View Live Greeting"
@@ -2748,7 +2760,7 @@ export default function AdminPortalPage() {
                               <ExternalLink className="size-3.5" /> View
                             </Link>
                             <Link
-                              href={`/create-wish?edit=${w.slug}`}
+                              href={`/create-wish?edit=${(w.slug || w.id)}`}
                               rel="nofollow"
                               className="p-1.5 rounded-lg bg-amber-500/10 text-amber-700 hover:bg-amber-500/20 text-xs font-bold flex items-center gap-1"
                               title="Edit Wish"
@@ -2757,7 +2769,7 @@ export default function AdminPortalPage() {
                             </Link>
                             <button
                               type="button"
-                              onClick={() => handleDeleteWishCard(w.slug)}
+                              onClick={() => handleDeleteWishCard((w.slug || w.id))}
                               className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1"
                               title="Delete Wish"
                             >
@@ -2816,7 +2828,7 @@ export default function AdminPortalPage() {
                       </td>
                     </tr>
                   ) : (
-                    visitingCards.map((vc) => {
+                    visitingCards.map((vc, idx) => {
                       const vcOrigin = inferOrigin({
                         country: vc.country,
                         countryCode: vc.countryCode,
@@ -2830,7 +2842,7 @@ export default function AdminPortalPage() {
                       })
 
                       return (
-                        <tr key={vc.id} className="hover:bg-muted/20 transition-colors">
+                        <tr key={(vc.slug || vc.id) || vc.id || `vc-${idx}`} className="hover:bg-muted/20 transition-colors">
                           <td className="py-4 px-4">
                             <div className="font-bold text-foreground text-sm">{vc.fullName}</div>
                             <div className="text-xs text-muted-foreground font-medium">{vc.title}</div>
@@ -2912,8 +2924,8 @@ export default function AdminPortalPage() {
                                   title: `${vc.fullName}'s Digital vCard`,
                                   recipientOrCouple: vc.fullName,
                                   type: 'vcard',
-                                  slug: vc.slug,
-                                  url: `/v/${vc.slug}`,
+                                  slug: (vc.slug || vc.id || ""),
+                                  url: `/v/${(vc.slug || vc.id)}`,
                                   viewsCount: vc.viewCount,
                                   shares: vc.shares,
                                   occasion: 'Executive Digital vCard',
@@ -2928,7 +2940,7 @@ export default function AdminPortalPage() {
                               <Sparkles className="size-3.5" /> Share
                             </button>
                             <Link
-                              href={`/v/${vc.slug}`}
+                              href={`/v/${(vc.slug || vc.id)}`}
                               target="_blank"
                               className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 text-xs font-bold flex items-center gap-1"
                               title="View Live Card"
@@ -2937,7 +2949,7 @@ export default function AdminPortalPage() {
                             </Link>
                             <button
                               type="button"
-                              onClick={() => handleDeleteVisitingCard(vc.slug, vc.fullName)}
+                              onClick={() => handleDeleteVisitingCard((vc.slug || vc.id), vc.fullName)}
                               className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1"
                               title="Delete Card"
                             >
@@ -3007,25 +3019,25 @@ export default function AdminPortalPage() {
 
                 {/* One chip per invitation that has RSVPs */}
                 {invitations
-                  .filter((inv) => (inv.rsvpCount || 0) > 0 || rsvps.some((r) => r.invitationSlug === inv.slug))
+                  .filter((inv) => (inv.rsvpCount || 0) > 0 || rsvps.some((r) => r.invitationSlug === (inv.slug || inv.id)))
                   .sort((a, b) => (b.rsvpCount || 0) - (a.rsvpCount || 0))
                   .map((inv) => {
-                    const count = rsvps.filter((r) => r.invitationSlug === inv.slug).length
-                    const isActive = rsvpFilterSlug === inv.slug
+                    const count = rsvps.filter((r) => r.invitationSlug === (inv.slug || inv.id)).length
+                    const isActive = rsvpFilterSlug === (inv.slug || inv.id)
                     return (
                       <button
-                        key={inv.slug}
-                        onClick={() => setRsvpFilterSlug(inv.slug)}
+                        key={(inv.slug || inv.id)}
+                        onClick={() => setRsvpFilterSlug((inv.slug || inv.id))}
                         className={cn(
                           'flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all border max-w-[200px]',
                           isActive
                             ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
                             : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
                         )}
-                        title={inv.slug}
+                        title={(inv.slug || inv.id)}
                       >
                         <Calendar className="size-3.5 shrink-0" />
-                        <span className="truncate">{inv.title || inv.slug}</span>
+                        <span className="truncate">{inv.title || (inv.slug || inv.id)}</span>
                         <span className={cn(
                           'shrink-0 px-1.5 py-0.5 rounded-full text-[10px] font-extrabold',
                           isActive ? 'bg-white/20 text-white' : 'bg-indigo-500/15 text-indigo-700'

@@ -1,4 +1,5 @@
 'use client'
+import { TypewriterLetter } from "@/components/magic-scenarios/typewriter-letter";
 
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
@@ -132,6 +133,10 @@ export function BirthdayScenario({
       setCakeCut(true)
       magicAudio.playFanfare()
       triggerConfetti()
+      // Auto-advance
+      setTimeout(() => {
+        goToScene(2)
+      }, 3000)
     }
   }
 
@@ -145,6 +150,10 @@ export function BirthdayScenario({
     setTimeout(() => {
       magicAudio.playChime()
       unlockScene(3)
+      // Auto-advance
+      setTimeout(() => {
+        goToScene(3)
+      }, 3000)
     }, 600)
   }
 
@@ -483,18 +492,14 @@ export function BirthdayScenario({
               Dear {data.recipientName},
             </h2>
 
-            <div className="magic-letter text-xs text-slate-100 max-h-48 overflow-y-auto">
-              {data.wishContent?.secretLetter ||
-                'May this upcoming year bring you boundless happiness, soaring career milestones, vibrant health, and unforgettable journeys with the ones you love most! Keep shining bright!'}
-              {data.wishContent?.urduGreeting && (
-                <div className="mt-2.5 text-right font-nastaliq text-sm text-amber-200">
-                  {data.wishContent.urduGreeting}
-                </div>
-              )}
-              <div className="mt-3 text-right font-serif italic text-amber-300">
-                — With love, {data.senderName}
-              </div>
-            </div>
+            <TypewriterLetter
+              className="magic-letter text-xs text-slate-100 max-h-48 overflow-y-auto"
+              englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || 'May this upcoming year bring you boundless happiness, soaring career milestones, vibrant health, and unforgettable journeys with the ones you love most! Keep shining bright!'}
+              urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
+              signatureText={`— With love, ${data.senderName}`}
+              urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
+              signatureClassName="mt-3 text-right font-serif italic text-amber-300"
+            />
 
             {/* Reaction Emojis */}
             <div className="mt-3">

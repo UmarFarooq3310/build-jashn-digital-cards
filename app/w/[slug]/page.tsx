@@ -306,6 +306,65 @@ function WishPublicContent({ slug }: { slug: string }) {
               </Link>
             </div>
           </div>
+
+          {/* Floating Action Pill for SENDER */}
+          <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2">
+            <button
+              onClick={() => setShowShareModal(true)}
+              className="group flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white text-xs font-bold shadow-xl border border-white/20 backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+              title="Share Link & QR"
+            >
+              <Share2 className="size-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Share</span>
+            </button>
+
+            <button
+              onClick={() => setShowGuestbookModal(true)}
+              className="group flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 hover:from-purple-600 hover:to-indigo-600 text-white text-xs font-bold shadow-2xl shadow-purple-950/70 border border-purple-400/40 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
+              title="Open Wishes Wall & Dua (Leave a Blessing)"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-300"></span>
+              </span>
+              <MessageCircle className="size-3.5 text-purple-200 group-hover:scale-110 transition-transform" />
+              <span>💬 Wishes Wall</span>
+            </button>
+          </div>
+
+          {/* Universal Share Modal */}
+          {showShareModal && (
+            <CardShareModal
+              card={{
+                title: `Wish for ${activeWish.recipientName}`,
+                recipientOrCouple: activeWish.recipientName,
+                type: 'wish',
+                slug: slug,
+                url: receiverUrl,
+                viewsCount: activeWish.viewCount,
+                shares: activeWish.shares,
+                occasion: occasion?.label || 'Greeting Card',
+                senderName: activeWish.senderName,
+                message: activeWish.message,
+                waMessage: `✨ I sent you a special wish on Cardzy! Tap to open:`,
+              }}
+              onClose={() => setShowShareModal(false)}
+            />
+          )}
+
+          {/* Event Card Guestbook / Wishes Wall Modal */}
+          <CardGuestbookModal
+            cardSlug={slug}
+            cardType="wish"
+            recipientName={activeWish.recipientName}
+            isOpen={showGuestbookModal}
+            onClose={() => setShowGuestbookModal(false)}
+            onWishSubmitted={() => {
+              setRainActive(true)
+              setTimeout(() => setRainActive(false), 4000)
+            }}
+          />
+
       </div>
     )
   }
@@ -389,15 +448,7 @@ function WishPublicContent({ slug }: { slug: string }) {
           />
         )}
 
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-2">
-          <button
-            onClick={() => setShowGuestbookModal(true)}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-200 hover:text-white bg-purple-900/40 hover:bg-purple-800/60 border border-purple-500/40 px-3.5 py-1.5 rounded-full transition-all cursor-pointer shadow-sm"
-          >
-            <MessageCircle className="size-3.5 text-purple-300" />
-            <span>💬 Wishes Wall & Dua</span>
-          </button>
-        </div>
+
 
         <Link
           href="/create-wish"
