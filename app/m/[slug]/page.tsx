@@ -1,4 +1,5 @@
 'use client'
+import { magicAudio } from "@/lib/jashn/magic-audio";
 
 import React, { useState, useEffect, useRef, use, Suspense } from 'react'
 import Link from 'next/link'
