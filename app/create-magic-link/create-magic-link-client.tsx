@@ -660,7 +660,7 @@ export default function CreateMagicLinkClient() {
   })
 
   return (
-    <div className="mx-auto w-full pb-20">
+    <div className="mx-auto w-full max-w-full pb-20 min-w-0">
       
       {/* Studio Header & Switcher */}
       <div className="mb-8 text-center">
@@ -1080,10 +1080,10 @@ export default function CreateMagicLinkClient() {
             {/* Mobile Preview Toggle (Only visible on screens < lg) */}
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-12">
+          <div className="grid grid-cols-1 gap-8 min-w-0 lg:grid-cols-12 ">
             
             {/* LEFT COLUMN: FORM & THEME PICKER */}
-            <div className={'lg:col-span-7 space-y-4'}>
+            <div className={'lg:col-span-7 space-y-4 min-w-0'}>
               <div className={cn(
                 "rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-sm text-left",
                 isUrdu && "text-right font-urdu"
@@ -1180,7 +1180,7 @@ export default function CreateMagicLinkClient() {
                           <label className="text-xs font-bold text-rose-950 dark:text-rose-200 uppercase tracking-wider block mb-1">
                             Your WhatsApp Number for Instant Alert (Optional)
                           </label>
-                          <div className="relative">
+                          <div className="relative overflow-hidden">
                             <Phone className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-rose-500" />
                             <input
                               type="tel"
@@ -1213,7 +1213,7 @@ export default function CreateMagicLinkClient() {
                           Reset Template
                         </button>
                       </div>
-                      <textarea
+                      <textarea 
                         rows={3}
                         value={secretLetter}
                         onChange={(e) => setSecretLetter(e.target.value)}

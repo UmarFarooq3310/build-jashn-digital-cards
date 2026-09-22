@@ -21,7 +21,7 @@ export function CreateMagicLinkWrapper() {
   const isUrdu = lang === 'ur' || lang === 'ar'
 
   return (
-    <div className="py-4 md:py-6 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full overflow-x-hidden">
+    <div className="py-4 md:py-6 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full min-w-0 overflow-x-hidden">
       {/* Dynamic heading with i18n translations & crawlable semantics */}
       <div className="text-center mb-6">
         <h1
