@@ -38,7 +38,7 @@ function saveLocalLink(slug: string, data: MagicLinkData) {
   }
 }
 
-export type CardShareChannel = 'whatsapp' | 'sms' | 'copy' | 'qr' | 'image'
+export type CardShareChannel = 'whatsapp' | 'sms' | 'copy' | 'qr' | 'image' | 'video'
 
 export function cleanForFirestore<T>(data: T): T {
   if (data === null || data === undefined) return data
@@ -168,7 +168,7 @@ export async function recordCardShare(
         const links = getLocalLinks()
         if (links[slug]) {
           if (!links[slug].shares) {
-            links[slug].shares = { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 }
+            links[slug].shares = { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0 }
           }
           links[slug].shares[channel] = (links[slug].shares[channel] || 0) + 1
           saveLocalLink(slug, links[slug])
@@ -193,7 +193,7 @@ export async function recordCardShare(
           if (listName && Array.isArray(parsed.state[listName])) {
             parsed.state[listName] = parsed.state[listName].map((card: any) => {
               if (card.slug === slug) {
-                const s = card.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 }
+                const s = card.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0 }
                 return {
                   ...card,
                   shares: {
@@ -323,3 +323,30 @@ export async function getUserMagicLinks(userId?: string): Promise<MagicLinkData[
     return timeB - timeA
   })
 }
+
+/**
+ * Updates an existing Magic Link in Firestore (and localStorage cache)
+ */
+export async function updateMagicLink(slug: string, data: Partial<MagicLinkData>): Promise<void> {
+  // Update local storage
+  const local = getLocalLinks()
+  if (local[slug]) {
+    local[slug] = { ...local[slug], ...data }
+    saveLocalLink(slug, local[slug])
+  }
+
+  const activeDb = getFirebaseDb() || db
+  if (isFirebaseConfigured && activeDb) {
+    try {
+      const docRef = doc(activeDb, 'magic_links', slug)
+      const firestorePayload = cleanForFirestore({
+        ...data,
+        updatedAt: serverTimestamp(),
+      })
+      await setDoc(docRef, firestorePayload, { merge: true })
+    } catch (err) {
+      console.error('Firestore update error for magic link:', err)
+    }
+  }
+}
+

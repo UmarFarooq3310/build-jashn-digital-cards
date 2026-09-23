@@ -48,6 +48,17 @@ const LANGUAGE_LABELS: Record<string, { label: string; dir: 'ltr' | 'rtl'; fontC
   tr: { label: 'Türkçe', dir: 'ltr' },
 }
 
+export function getInitials(name?: string): string {
+  if (!name || !name.trim() || name === '---') return '---'
+  const clean = name.replace(/[^\p{L}\p{N}\s]/gu, '').trim()
+  const words = clean.split(/\s+/).filter(Boolean)
+  if (words.length === 0) return '---'
+  if (words.length === 1) {
+    return words[0].slice(0, 2).toUpperCase()
+  }
+  return (words[0][0] + words[1][0]).toUpperCase()
+}
+
 export const VisitingCardView = forwardRef<HTMLDivElement, VisitingCardProps>(function VisitingCardView(
   { data, showShareBtn = true, showQrCode = true },
   ref
@@ -65,6 +76,8 @@ export const VisitingCardView = forwardRef<HTMLDivElement, VisitingCardProps>(fu
   const cardLang = data.language || lang || 'en'
   const langConfig = LANGUAGE_LABELS[cardLang] || { label: 'English', dir: 'ltr' }
   const isRtl = langConfig.dir === 'rtl' || cardLang === 'ur' || cardLang === 'ar'
+
+  const isPublicCard = !!data.slug
 
   // Translate category & title if matching known keys
   const catKey = data.category === 'business' ? 'catCorporate'
@@ -85,7 +98,7 @@ export const VisitingCardView = forwardRef<HTMLDivElement, VisitingCardProps>(fu
     : data.title === 'Makeup Artist' ? 'roleMakeupArtist'
     : data.title === 'Chef' ? 'roleChef'
     : ''
-  const translatedTitle = roleKey ? t(roleKey) : (data.title || 'Professional Title / Designation')
+  const translatedTitle = roleKey ? t(roleKey) : (data.title || '---')
 
   // Generate VCard (.vcf file content)
   const downloadVCard = () => {
@@ -273,37 +286,38 @@ END:VCARD`
               </div>
 
               {/* Profile Avatar & Primary Details */}
-              <div className={cn('flex flex-col items-center gap-4 pt-1 text-center', isRtl && 'flex-col')}>
+              <div className={cn('flex flex-col items-center gap-3 pt-0 text-center', isRtl && 'flex-col')}>
                 <div className={cn(
-                  "relative size-28 sm:size-32 shrink-0 rounded-full border-4 overflow-hidden flex items-center justify-center shadow-[0_0_40px_rgba(212,175,55,0.4)] font-black text-4xl uppercase transition-transform hover:scale-105 duration-300",
+                  "relative size-20 sm:size-24 shrink-0 rounded-full border-3 overflow-hidden flex items-center justify-center shadow-[0_0_30px_rgba(212,175,55,0.35)] font-black text-3xl uppercase transition-transform hover:scale-105 duration-300",
                   isLight
-                    ? "bg-white border-white text-teal-800"
+                    ? "bg-white border-slate-300 text-teal-800 shadow-md"
                     : "bg-gradient-to-br from-[#D4AF37]/30 via-white/10 to-black/40 border-[#D4AF37] text-[#D4AF37]"
                 )}>
                   {data.avatarUrl ? (
                     <img
                       src={data.avatarUrl}
                       alt={data.fullName ? data.fullName.slice(0, 90) : 'User Avatar'}
-                      width={200}
-                      height={200}
+                      crossOrigin="anonymous"
+                      width={160}
+                      height={160}
                       loading="lazy"
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <span>{(data.fullName || 'C')[0]}</span>
+                    <span>{getInitials(data.fullName)}</span>
                   )}
                 </div>
 
-                <div className={cn('space-y-1.5 flex-1 min-w-0 w-full', isRtl && 'space-y-2')}>
+                <div className={cn('space-y-1 flex-1 min-w-0 w-full', isRtl && 'space-y-1.5')}>
                   <div className={cn('flex items-center justify-center gap-1.5 flex-wrap', isRtl && 'flex-row-reverse')}>
                     <h2 className={cn(
-                      'text-2xl sm:text-3xl font-extrabold tracking-tight leading-snug break-words drop-shadow-md',
+                      'text-xl sm:text-2xl font-black tracking-tight leading-snug break-words drop-shadow-sm',
                       isLight ? 'text-slate-900' : 'text-white',
                       isRtl && 'font-urdu'
                     )}>
-                      {data.fullName || 'Your Full Name'}
+                      {data.fullName || '---'}
                     </h2>
-                    <ShieldCheck className={cn("size-5 shrink-0", isLight ? "text-teal-600" : "text-[#D4AF37]")} />
+                    <ShieldCheck className={cn("size-4.5 shrink-0", isLight ? "text-teal-600" : "text-[#D4AF37]")} />
                   </div>
 
                   <p className={cn(
@@ -315,172 +329,231 @@ END:VCARD`
                     <span>{translatedTitle}</span>
                   </p>
 
-                  {data.company && (
+                  {(data.company || !isPublicCard) && (
                     <p className={cn(
                       'text-xs font-semibold flex justify-center items-center gap-1.5 leading-snug break-words',
                       isLight ? 'text-slate-600' : 'text-zinc-300',
                       isRtl && 'flex-row-reverse font-urdu'
                     )}>
                       <Building2 className="size-3.5 shrink-0 text-zinc-400" />
-                      <span>{data.company}</span>
+                      <span>{data.company || '---'}</span>
                     </p>
                   )}
                 </div>
               </div>
 
-              <div className={cn("h-px my-2", isLight ? "bg-gradient-to-r from-transparent via-slate-300 to-transparent" : "bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent")} />
+              <div className={cn("h-px my-1", isLight ? "bg-gradient-to-r from-transparent via-slate-300 to-transparent" : "bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent")} />
 
-              {/* Direct Contact Information Box */}
+              {/* Full Contact Information List (Visible Text Data for Image Sharing & Tappable Actions) */}
               <div className={cn(
-                "backdrop-blur-xl rounded-2xl p-4 border space-y-2 text-xs",
-                isLight ? "bg-white/80 border-slate-200/80 shadow-xs text-slate-800" : "bg-slate-950/60 border-white/10 text-white"
+                "backdrop-blur-xl rounded-2xl p-3 sm:p-3.5 border space-y-2 text-xs",
+                isLight ? "bg-white/85 border-slate-200 shadow-xs text-slate-800" : "bg-slate-950/70 border-white/10 text-white"
               )}>
-                {data.phone && (
-                  <a
-                    href={`tel:${cleanPhone}`}
+                {/* Phone / Call */}
+                {(data.phone || !isPublicCard) && (
+                  <div
                     className={cn(
-                      'flex items-center gap-3 font-bold transition-colors',
-                      isLight ? 'text-slate-800 hover:text-teal-700' : 'text-white hover:text-[#D4AF37]',
+                      'group flex items-center justify-between gap-2.5 p-1.5 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5',
                       isRtl && 'flex-row-reverse'
                     )}
                   >
-                    <div className="size-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/40">
-                      <Phone className="size-4" />
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="size-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/40">
+                        <Phone className="size-3.5" />
+                      </div>
+                      <div className="min-w-0 text-left">
+                        <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                          {t('phoneLabel') || 'Phone'}
+                        </span>
+                        <span className={cn(
+                          "truncate text-xs font-mono font-bold block pt-0.5",
+                          isLight ? "text-slate-900 group-hover:text-emerald-700" : "text-white group-hover:text-emerald-300"
+                        )}>
+                          {data.phone || '---'}
+                        </span>
+                      </div>
                     </div>
-                    <span className="truncate text-xs font-mono dir-ltr">{data.phone}</span>
-                  </a>
+                    {data.phone ? (
+                      <a
+                        href={`tel:${cleanPhone}`}
+                        title={t('callNow') || 'Call'}
+                        className={cn(
+                          "text-[10px] font-bold px-2 py-0.5 rounded-md border shrink-0 hidden sm:inline-block",
+                          isLight ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-emerald-950/60 text-emerald-300 border-emerald-500/30"
+                        )}
+                      >
+                        {t('callNow') || 'Call'}
+                      </a>
+                    ) : (
+                      <span className={cn(
+                        "text-[10px] font-bold px-2 py-0.5 rounded-md border shrink-0 hidden sm:inline-block opacity-40",
+                        isLight ? "bg-slate-100 text-slate-500 border-slate-200" : "bg-slate-900 text-slate-400 border-slate-800"
+                      )}>
+                        {t('phoneLabel') || 'Phone'}
+                      </span>
+                    )}
+                  </div>
                 )}
 
-                {data.email && (
-                  <a
-                    href={`mailto:${data.email}`}
+                {/* WhatsApp Direct (if different or quick link) */}
+                {(data.whatsapp || data.phone || !isPublicCard) && (
+                  <div
                     className={cn(
-                      'flex items-center gap-3 font-bold transition-colors',
-                      isLight ? 'text-slate-800 hover:text-sky-600' : 'text-white hover:text-sky-300',
+                      'group flex items-center justify-between gap-2.5 p-1.5 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5',
                       isRtl && 'flex-row-reverse'
                     )}
                   >
-                    <div className="size-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/40">
-                      <Mail className="size-4" />
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="size-7 rounded-lg bg-[#25D366]/20 text-[#25D366] flex items-center justify-center shrink-0 border border-[#25D366]/40">
+                        <MessageSquare className="size-3.5" />
+                      </div>
+                      <div className="min-w-0 text-left">
+                        <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                          WhatsApp
+                        </span>
+                        <span className={cn(
+                          "truncate text-xs font-mono font-bold block pt-0.5",
+                          isLight ? "text-slate-900 group-hover:text-[#25D366]" : "text-white group-hover:text-[#25D366]"
+                        )}>
+                          {data.whatsapp || data.phone || '---'}
+                        </span>
+                      </div>
                     </div>
-                    <span className="truncate text-xs dir-ltr">{data.email}</span>
-                  </a>
-                )}
-
-                {data.website && (
-                  <a
-                    href={data.website.startsWith('http') ? data.website : `https://${data.website}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={cn(
-                      'flex items-center gap-3 font-bold transition-colors',
-                      isLight ? 'text-slate-800 hover:text-teal-700' : 'text-white hover:text-[#D4AF37]',
-                      isRtl && 'flex-row-reverse'
+                    {(data.whatsapp || data.phone) ? (
+                      <a
+                        href={`https://wa.me/${whatsappNumber}?text=${whatsappGreeting}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={t('whatsAppChat') || 'WhatsApp'}
+                        className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#25D366]/15 text-[#25D366] border border-[#25D366]/30 shrink-0 hidden sm:inline-block"
+                      >
+                        {t('whatsAppChat') || 'Chat'}
+                      </a>
+                    ) : (
+                      <span className={cn(
+                        "text-[10px] font-bold px-2 py-0.5 rounded-md border shrink-0 hidden sm:inline-block opacity-40",
+                        isLight ? "bg-slate-100 text-slate-500 border-slate-200" : "bg-slate-900 text-slate-400 border-slate-800"
+                      )}>
+                        Chat
+                      </span>
                     )}
-                  >
-                    <div className="size-8 rounded-xl bg-[#D4AF37]/20 text-[#D4AF37] flex items-center justify-center shrink-0 border border-[#D4AF37]/40">
-                      <Globe className="size-4" />
-                    </div>
-                    <span className="truncate text-xs dir-ltr">{data.website}</span>
-                  </a>
+                  </div>
                 )}
 
-                {data.address && (
-                  <div className={cn('flex items-start gap-3 pt-1', isRtl && 'flex-row-reverse')}>
-                    <div className="size-8 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 border border-rose-500/40 mt-0.5">
-                      <MapPin className="size-4" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <span className={cn("font-medium leading-relaxed block text-xs", isLight ? "text-slate-700" : "text-zinc-200")}>{data.address}</span>
-                      {data.mapLink && (
-                        <a
-                          href={data.mapLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={cn(
-                            "inline-flex items-center gap-1.5 text-[11px] font-extrabold hover:underline mt-1",
-                            isLight ? "text-teal-700" : "text-[#D4AF37]"
-                          )}
-                        >
-                          <span>{t('officeLocationPin') || 'Open Office Location in Maps'}</span>
-                          <ExternalLink className="size-3" />
-                        </a>
+                {/* Email Address */}
+                {(data.email || !isPublicCard) && (
+                  data.email ? (
+                    <a
+                      href={`mailto:${data.email}?subject=Business%20Inquiry`}
+                      className={cn(
+                        'group flex items-center gap-2.5 p-1.5 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5 w-full',
+                        isRtl && 'flex-row-reverse'
                       )}
+                    >
+                      <div className="size-7 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/40">
+                        <Mail className="size-3.5" />
+                      </div>
+                      <div className="min-w-0 flex-1 text-left">
+                        <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                          {t('emailLabel') || 'Email'}
+                        </span>
+                        <span className={cn(
+                          "text-xs font-bold block pt-0.5 break-all",
+                          isLight ? "text-slate-900 group-hover:text-sky-600" : "text-white group-hover:text-sky-300"
+                        )}>
+                          {data.email}
+                        </span>
+                      </div>
+                    </a>
+                  ) : (
+                    <div
+                      className={cn(
+                        'group flex items-center gap-2.5 p-1.5 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5 w-full',
+                        isRtl && 'flex-row-reverse'
+                      )}
+                    >
+                      <div className="size-7 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/40 opacity-40">
+                        <Mail className="size-3.5" />
+                      </div>
+                      <div className="min-w-0 flex-1 text-left opacity-40">
+                        <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                          {t('emailLabel') || 'Email'}
+                        </span>
+                        <span className="text-xs font-bold block pt-0.5 text-slate-500">
+                          ---
+                        </span>
+                      </div>
+                    </div>
+                  )
+                )}
+
+                {/* Website */}
+                {(data.website || !isPublicCard) && (
+                  <div
+                    className={cn(
+                      'group flex items-center justify-between gap-2.5 p-1.5 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5',
+                      isRtl && 'flex-row-reverse'
+                    )}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="size-7 rounded-lg bg-[#D4AF37]/20 text-[#D4AF37] flex items-center justify-center shrink-0 border border-[#D4AF37]/40">
+                        <Globe className="size-3.5" />
+                      </div>
+                      <div className="min-w-0 text-left">
+                        <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                          {t('websiteLabel') || 'Website'}
+                        </span>
+                        <span className={cn(
+                          "truncate text-xs font-bold block pt-0.5",
+                          isLight ? "text-slate-900 group-hover:text-teal-700" : "text-white group-hover:text-[#D4AF37]"
+                        )}>
+                          {data.website ? data.website.replace(/^https?:\/\//, '') : '---'}
+                        </span>
+                      </div>
+                    </div>
+                    {data.website && (
+                      <a
+                        href={data.website.startsWith('http') ? data.website : `https://${data.website}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Website"
+                      >
+                        <ExternalLink className="size-3.5 text-zinc-400 shrink-0 mr-1 hover:text-white" />
+                      </a>
+                    )}
+                  </div>
+                )}
+
+                {/* Single Full Address String */}
+                {(data.address || !isPublicCard) && (
+                  <div className={cn('flex items-start gap-2.5 p-1.5 rounded-xl', isRtl && 'flex-row-reverse')}>
+                    <div className="size-7 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 border border-rose-500/40 mt-0.5">
+                      <MapPin className="size-3.5" />
+                    </div>
+                    <div className="flex-1 min-w-0 text-left">
+                      <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                        {t('businessAddress') || 'Address / Location'}
+                      </span>
+                      <span className={cn(
+                        "font-medium leading-relaxed block text-xs pt-0.5 break-words",
+                        isLight ? "text-slate-800" : "text-zinc-200"
+                      )}>
+                        {data.address || '---'}
+                      </span>
                     </div>
                   </div>
                 )}
               </div>
 
               {/* Professional Bio */}
-              {data.bio && (
+              {(data.bio || !isPublicCard) && (
                 <div className={cn(
-                  "p-3.5 rounded-2xl backdrop-blur-md border text-xs leading-relaxed font-medium",
-                  isLight ? "bg-white/70 border-slate-200 text-slate-700" : "bg-slate-950/40 border-white/10 text-zinc-300"
+                  "p-3 rounded-2xl backdrop-blur-md border text-xs leading-relaxed font-medium italic text-center",
+                  isLight ? "bg-white/70 border-slate-200 text-slate-700" : "bg-slate-950/50 border-white/10 text-zinc-300"
                 )}>
-                  {data.bio}
+                  &ldquo;{data.bio || '---'}&rdquo;
                 </div>
               )}
-
-              {/* Quick Action Contact Grid (ICONS ONLY) */}
-              <div className="flex items-center justify-center gap-3 pt-2">
-                {data.phone && (
-                  <a
-                    href={`tel:${data.phone}`}
-                    title={isRtl ? 'کال کریں' : (t('callNow') || 'Call')}
-                    aria-label={t('callNow') || 'Call'}
-                    className={cn(
-                      "flex-1 flex items-center justify-center p-3 rounded-2xl transition-all backdrop-blur-md border active:scale-95 shadow-sm",
-                      isLight ? "bg-white/90 hover:bg-white text-slate-800 border-slate-300/80" : "bg-white/10 hover:bg-white/20 text-white border-white/15"
-                    )}
-                  >
-                    <Phone className="size-5 text-emerald-500" />
-                  </a>
-                )}
-
-                {(data.whatsapp || data.phone) && (
-                  <a
-                    href={`https://wa.me/${whatsappNumber}?text=${whatsappGreeting}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={isRtl ? 'واٹس ایپ' : (t('whatsAppChat') || 'WhatsApp')}
-                    aria-label={t('whatsAppChat') || 'WhatsApp'}
-                    className="flex-1 flex items-center justify-center p-3 rounded-2xl bg-[#25D366] hover:bg-[#1EBE5A] transition-all text-slate-950 active:scale-95 shadow-md"
-                  >
-                    <MessageSquare className="size-5" />
-                  </a>
-                )}
-
-                {data.email && (
-                  <a
-                    href={`mailto:${data.email}?subject=Business%20Inquiry`}
-                    title={isRtl ? 'ای میل' : (t('sendEmail') || 'Email')}
-                    aria-label={t('sendEmail') || 'Email'}
-                    className={cn(
-                      "flex-1 flex items-center justify-center p-3 rounded-2xl transition-all backdrop-blur-md border active:scale-95 shadow-sm",
-                      isLight ? "bg-white/90 hover:bg-white text-slate-800 border-slate-300/80" : "bg-white/10 hover:bg-white/20 text-white border-white/15"
-                    )}
-                  >
-                    <Mail className="size-5 text-sky-500" />
-                  </a>
-                )}
-
-                {data.website && (
-                  <a
-                    href={data.website.startsWith('http') ? data.website : `https://${data.website}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={isRtl ? 'ویب سائٹ' : 'Website'}
-                    aria-label="Website"
-                    className={cn(
-                      "flex-1 flex items-center justify-center p-3 rounded-2xl transition-all backdrop-blur-md border active:scale-95 shadow-sm",
-                      isLight ? "bg-white/90 hover:bg-white text-slate-800 border-slate-300/80" : "bg-white/10 hover:bg-white/20 text-white border-white/15"
-                    )}
-                  >
-                    <Globe className={cn("size-5", isLight ? "text-teal-600" : "text-[#D4AF37]")} />
-                  </a>
-                )}
-              </div>
-
             </div>
           ) : (
             /* Back Side View (QR & Profile Detail) */

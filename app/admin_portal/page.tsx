@@ -1817,7 +1817,16 @@ export default function AdminPortalPage() {
                               {session.referrer === 'Direct' ? 'Direct URL' : session.referrer || 'Direct'}
                             </td>
                             <td className={cn("px-4 py-3.5 text-xs font-bold whitespace-nowrap", isActive ? "text-emerald-600" : "text-muted-foreground")}>
-                              {isActive ? (secondsAgo <= 5 ? 'Just now (live)' : `${secondsAgo}s ago`) : 'Offline'}
+                              {isActive ? (secondsAgo <= 5 ? 'Just now (live)' : `${secondsAgo}s ago`) : (
+                                <div className="flex flex-col gap-0.5">
+                                  <span>Offline</span>
+                                  {session.lastSeen && (
+                                    <span className="text-[10px] font-normal opacity-70">
+                                      {new Date(session.lastSeen).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
                             </td>
                             <td className="px-4 py-3.5 text-right">
                               <button

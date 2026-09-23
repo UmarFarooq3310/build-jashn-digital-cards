@@ -27,6 +27,8 @@ import { INVITATION_TYPES, getInvitationType } from '@/lib/jashn/invitations'
 import { getInvitationWordingTemplates, type InvitationWordingTemplate } from '@/lib/jashn/invitation-templates'
 import { useLang } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
+import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
+import { doc, getDoc } from 'firebase/firestore'
 
 function cleanStepLabel(text: string) {
   return text.replace(/^[\d\.\s\u0660-\u0669\u09E6-\u09EF\u0966-\u096F\u06D4\-]+/, '').trim()
@@ -122,62 +124,206 @@ function CreateInvitationContent() {
 
   // Free creation for everyone - no login required to send invitations
 
-  useEffect(() => {
-    if (editSlug) {
-      const existing = invitations.find((i) => i.slug === editSlug)
-      if (existing) {
-        setTypeId(existing.typeId)
-        setTitle(existing.title || '')
-        setHostNames(existing.hostNames || '')
-        setGroom(existing.groom || '')
-        setBride(existing.bride || '')
-        setDate(existing.date || getTodayString())
-        setTime(existing.time || getCurrentTimeString())
-        setVenue(existing.venue || '')
-        setCity(existing.city || '')
-        setMapsLink(existing.mapsLink || '')
-        setDressCode(existing.dressCode || '')
-        setNotes(existing.notes || '')
-        setRsvpPhone(existing.rsvpPhone || '')
-        setThemeId(existing.themeId || 'mehndi-red')
-        setBorderId(existing.borderId || 'mehndi')
-        setBgVariantId(existing.bgVariantId || 'default')
-        setPhotoUrl(existing.photoUrl || '')
-        setPhotoUrl2(existing.photoUrl2 || '')
-        setStep(2)
-      }
-    } else {
-      const typeP = searchParams.get('type')
-      const titleP = searchParams.get('title')
-      const notesP = searchParams.get('notes')
-      const dateP = searchParams.get('date')
-      const timeP = searchParams.get('time')
-      const venueP = searchParams.get('venue')
-      const cityP = searchParams.get('city')
-      const hostP = searchParams.get('hostNames') || searchParams.get('host')
-      const groomP = searchParams.get('groom')
-      const brideP = searchParams.get('bride')
-      const dressCodeP = searchParams.get('dressCode')
+  const draftKey = editSlug ? `cardzy_draft_invite_edit_${editSlug}` : 'cardzy_draft_invitation'
+  const [isInitialLoaded, setIsInitialLoaded] = useState(false)
 
-      if (typeP) {
-        setTypeId(typeP)
-        setStep(2)
+  // 1. Initial Load: Restore draft or fetch edit record
+  useEffect(() => {
+    let isCancelled = false
+    async function initData() {
+      if (editSlug) {
+        let loadedData: any = null
+        try {
+          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          if (draftJson) loadedData = JSON.parse(draftJson)
+        } catch {}
+
+        if (!loadedData) {
+          const existing = invitations.find((i) => i.slug === editSlug)
+          if (existing) {
+            loadedData = existing
+          } else {
+            const activeDb = getFirebaseDb() || db
+            if (isFirebaseConfigured && activeDb) {
+              try {
+                const snap = await getDoc(doc(activeDb, 'invitations', editSlug))
+                if (snap.exists()) {
+                  loadedData = snap.data()
+                }
+              } catch (err) {
+                console.error('Error loading invitation for edit:', err)
+              }
+            }
+          }
+        }
+
+        if (loadedData && !isCancelled) {
+          if (loadedData.typeId) setTypeId(loadedData.typeId)
+          if (loadedData.title !== undefined) setTitle(loadedData.title)
+          if (loadedData.hostNames !== undefined) setHostNames(loadedData.hostNames)
+          if (loadedData.groom !== undefined) setGroom(loadedData.groom)
+          if (loadedData.bride !== undefined) setBride(loadedData.bride)
+          if (loadedData.date) setDate(loadedData.date)
+          if (loadedData.time) setTime(loadedData.time)
+          if (loadedData.venue !== undefined) setVenue(loadedData.venue)
+          if (loadedData.city !== undefined) setCity(loadedData.city)
+          if (loadedData.mapsLink !== undefined) setMapsLink(loadedData.mapsLink)
+          if (loadedData.dressCode !== undefined) setDressCode(loadedData.dressCode)
+          if (loadedData.notes !== undefined) setNotes(loadedData.notes)
+          if (loadedData.rsvpPhone !== undefined) setRsvpPhone(loadedData.rsvpPhone)
+          if (loadedData.themeId) setThemeId(loadedData.themeId)
+          if (loadedData.borderId) setBorderId(loadedData.borderId)
+          if (loadedData.bgVariantId) setBgVariantId(loadedData.bgVariantId)
+          if (loadedData.photoUrl) setPhotoUrl(loadedData.photoUrl)
+          if (loadedData.photoUrl2) setPhotoUrl2(loadedData.photoUrl2)
+          if (loadedData.step) setStep(loadedData.step as any)
+          else setStep(2)
+        }
+      } else {
+        let hasDraft = false
+        try {
+          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          if (draftJson) {
+            const d = JSON.parse(draftJson)
+            if (d && typeof d === 'object') {
+              hasDraft = true
+              if (d.typeId) setTypeId(d.typeId)
+              if (d.title !== undefined) setTitle(d.title)
+              if (d.hostNames !== undefined) setHostNames(d.hostNames)
+              if (d.groom !== undefined) setGroom(d.groom)
+              if (d.bride !== undefined) setBride(d.bride)
+              if (d.date) setDate(d.date)
+              if (d.time) setTime(d.time)
+              if (d.venue !== undefined) setVenue(d.venue)
+              if (d.city !== undefined) setCity(d.city)
+              if (d.mapsLink !== undefined) setMapsLink(d.mapsLink)
+              if (d.dressCode !== undefined) setDressCode(d.dressCode)
+              if (d.notes !== undefined) setNotes(d.notes)
+              if (d.rsvpPhone !== undefined) setRsvpPhone(d.rsvpPhone)
+              if (d.themeId) setThemeId(d.themeId)
+              if (d.borderId) setBorderId(d.borderId)
+              if (d.bgVariantId) setBgVariantId(d.bgVariantId)
+              if (d.photoUrl) setPhotoUrl(d.photoUrl)
+              if (d.photoUrl2) setPhotoUrl2(d.photoUrl2)
+              if (d.step) setStep(d.step as any)
+            }
+          }
+        } catch {}
+
+        if (!hasDraft) {
+          const typeP = searchParams.get('type')
+          const titleP = searchParams.get('title')
+          const notesP = searchParams.get('notes')
+          const dateP = searchParams.get('date')
+          const timeP = searchParams.get('time')
+          const venueP = searchParams.get('venue')
+          const cityP = searchParams.get('city')
+          const hostP = searchParams.get('hostNames') || searchParams.get('host')
+          const groomP = searchParams.get('groom')
+          const brideP = searchParams.get('bride')
+          const dressCodeP = searchParams.get('dressCode')
+
+          if (typeP) {
+            setTypeId(typeP)
+            setStep(2)
+          }
+          if (titleP) {
+            setTitle(titleP)
+            setStep(2)
+          }
+          if (notesP) setNotes(notesP)
+          if (dateP) setDate(dateP)
+          if (timeP) setTime(timeP)
+          if (venueP) setVenue(venueP)
+          if (cityP) setCity(cityP)
+          if (hostP) setHostNames(hostP)
+          if (groomP) setGroom(groomP)
+          if (brideP) setBride(brideP)
+          if (dressCodeP) setDressCode(dressCodeP)
+        }
       }
-      if (titleP) {
-        setTitle(titleP)
-        setStep(2)
-      }
-      if (notesP) setNotes(notesP)
-      if (dateP) setDate(dateP)
-      if (timeP) setTime(timeP)
-      if (venueP) setVenue(venueP)
-      if (cityP) setCity(cityP)
-      if (hostP) setHostNames(hostP)
-      if (groomP) setGroom(groomP)
-      if (brideP) setBride(brideP)
-      if (dressCodeP) setDressCode(dressCodeP)
+      if (!isCancelled) setIsInitialLoaded(true)
     }
-  }, [searchParams, editSlug, invitations])
+
+    initData()
+    return () => {
+      isCancelled = true
+    }
+  }, [editSlug, draftKey])
+
+  // 2. Auto-save draft on every change (local only)
+  useEffect(() => {
+    if (!isInitialLoaded || typeof window === 'undefined') return
+    const draftData = {
+      step,
+      typeId,
+      title,
+      hostNames,
+      groom,
+      bride,
+      date,
+      time,
+      venue,
+      city,
+      mapsLink,
+      dressCode,
+      notes,
+      rsvpPhone,
+      themeId,
+      borderId,
+      bgVariantId,
+      photoUrl,
+      photoUrl2,
+    }
+    try {
+      sessionStorage.setItem(draftKey, JSON.stringify(draftData))
+      localStorage.setItem(draftKey, JSON.stringify(draftData))
+    } catch {}
+  }, [
+    isInitialLoaded,
+    draftKey,
+    step,
+    typeId,
+    title,
+    hostNames,
+    groom,
+    bride,
+    date,
+    time,
+    venue,
+    city,
+    mapsLink,
+    dressCode,
+    notes,
+    rsvpPhone,
+    themeId,
+    borderId,
+    bgVariantId,
+    photoUrl,
+    photoUrl2,
+  ])
+
+  // 3. Browser Back / PopState support
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const handlePopState = (e: PopStateEvent) => {
+      if (e.state && typeof e.state.cardzyStep === 'number') {
+        setStep(e.state.cardzyStep as 1 | 2 | 3 | 4)
+      } else {
+        setStep((prev) => (prev > 1 ? ((prev - 1) as 1 | 2 | 3 | 4) : 1))
+      }
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  const changeStep = (nextStep: 1 | 2 | 3 | 4) => {
+    setStep(nextStep)
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ cardzyStep: nextStep }, '', window.location.href)
+      window.scrollTo({ top: 120, behavior: 'smooth' })
+    }
+  }
 
   function handlePhotoUpload1(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -222,7 +368,7 @@ function CreateInvitationContent() {
   function handleTypeSelect(id: string) {
     setTypeId(id)
     setErrors({})
-    setStep(2)
+    changeStep(2)
 
     // Automatically set default templates for the newly selected occasion
     const tPlates = getInvitationWordingTemplates(id, lang)
@@ -302,31 +448,19 @@ function CreateInvitationContent() {
       }
       return
     }
-    setStep(3)
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 120, behavior: 'smooth' })
-    }
+    changeStep(3)
   }
 
   function goToStep4() {
-    setStep(4)
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 120, behavior: 'smooth' })
-    }
+    changeStep(4)
   }
 
   function goToStep2() {
-    setStep(2)
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 120, behavior: 'smooth' })
-    }
+    changeStep(2)
   }
 
   function goToStep3Back() {
-    setStep(3)
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 120, behavior: 'smooth' })
-    }
+    changeStep(3)
   }
 
   function handleFieldChange(field: string, value: string, setter: (v: string) => void) {
@@ -358,7 +492,7 @@ function CreateInvitationContent() {
     setErrors(errs)
     const errKeys = Object.keys(errs)
     if (errKeys.length > 0) {
-      setStep(2)
+      changeStep(2)
       const firstKey = errKeys[0]
       const firstError = errs[firstKey] || t('checkInputDetails', 'Please check your input details.')
       showToast(firstError, 'error')
@@ -430,15 +564,27 @@ function CreateInvitationContent() {
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-20">
       <div className="mb-6 text-center">
         {/* Card Studio Mode Switcher */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-5">
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#7B0D1E] px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-md">
-            🎉 {t('weddingInvitationTitle') || 'Wedding & Event Invitation'}
-          </div>
+        <div className="inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs mb-5">
           <Link
             href="/create-wish"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2 text-xs sm:text-sm font-bold text-muted-foreground transition-all hover:border-[#7B0D1E]/40 hover:text-foreground shadow-sm"
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            💌 {t('sendAnimatedWishCard') || 'Wish / Greeting Card'}
+            💌 {t('sendAnimatedWishCard') || 'Wish Cards'}
+          </Link>
+          <div className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-xs bg-[#7B0D1E]">
+            🎉 {t('weddingInvitationTitle') || 'Invitations'}
+          </div>
+          <Link
+            href="/create-magic-link"
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+          >
+            🪄 {t('magicLinksNav') || 'Magic Links'}
+          </Link>
+          <Link
+            href="/create-visiting-card"
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+          >
+            📇 {t('smartDigitalBusinessCardsTitle') || 'Visiting Cards'}
           </Link>
         </div>
 
@@ -460,38 +606,38 @@ function CreateInvitationContent() {
                   onClick={() => {
                     if (isClickable) {
                       setErrors({})
-                      setStep(s as 1 | 2 | 3 | 4)
+                      changeStep(s as 1 | 2 | 3 | 4)
                     }
                   }}
                   disabled={!isClickable}
                   className={`flex size-7 sm:size-8 items-center justify-center rounded-full text-xs font-bold transition-all ${
                     step === s
-                      ? 'bg-[#7B0D1E] text-white ring-4 ring-[#7B0D1E]/20 shadow-md scale-105'
-                      : step > s
-                      ? 'bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer shadow-xs'
-                      : 'bg-[#7B0D1E]/15 text-[#7B0D1E] hover:bg-[#7B0D1E]/25 cursor-pointer'
+                      ? 'bg-[#7B0D1E] text-white shadow-md ring-4 ring-[#7B0D1E]/20'
+                      : isClickable
+                      ? 'bg-muted text-muted-foreground hover:bg-[#7B0D1E]/10 hover:text-[#7B0D1E] cursor-pointer'
+                      : 'bg-muted/40 text-muted-foreground/40 cursor-not-allowed'
                   }`}
                 >
-                  {step > s ? '✓' : s}
+                  {s}
                 </button>
-                <button
-                  type="button"
+                <span
                   onClick={() => {
                     if (isClickable) {
                       setErrors({})
-                      setStep(s as 1 | 2 | 3 | 4)
+                      changeStep(s as 1 | 2 | 3 | 4)
                     }
                   }}
-                  disabled={!isClickable}
-                  className={`text-xs font-semibold transition-all ${
+                  className={`hidden sm:inline text-xs transition-colors ${
                     step === s
-                      ? 'text-foreground font-bold underline decoration-[#7B0D1E] decoration-2 underline-offset-4'
-                      : 'text-muted-foreground hover:text-foreground cursor-pointer'
+                      ? 'text-[#7B0D1E] font-extrabold'
+                      : isClickable
+                      ? 'text-muted-foreground hover:text-foreground font-semibold cursor-pointer'
+                      : 'text-muted-foreground/40 font-semibold cursor-not-allowed'
                   }`}
                 >
                   {cleanStepLabel(label)}
-                </button>
-                {s < 4 && <span className="text-muted-foreground/40 ml-1 hidden sm:inline">/</span>}
+                </span>
+                {s < 4 && <div className="hidden sm:block h-px w-4 sm:w-6 bg-border" />}
               </div>
             )
           })}
@@ -517,35 +663,45 @@ function CreateInvitationContent() {
                   value={typeId}
                   onChange={handleTypeSelect}
                 />
+
+                <div className="flex justify-end pt-4 border-t border-border">
+                  <Button
+                    onClick={() => changeStep(2)}
+                    className="bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold rounded-2xl px-6 h-11 flex items-center gap-2 shadow-lg shadow-[#7B0D1E]/20 active:scale-95 transition-all"
+                  >
+                    <span>{t('btnNext') || 'Next'}</span>
+                    <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
+                  </Button>
+                </div>
               </div>
             )}
 
             {step >= 2 && (
               <div className="space-y-4">
                 {/* Header Selected Event Info (Shared across Parts 2, 3, 4) */}
-                <div className="flex items-center justify-between border-b border-border pb-3">
+                <div className="flex items-center justify-between border-b border-border pb-2.5 mb-2">
                   <div>
-                    <span className="text-[10px] uppercase font-extrabold tracking-wider text-[#7B0D1E]">
+                    <span className="text-[9.5px] uppercase font-extrabold tracking-wider text-[#7B0D1E] block">
                       {t('selectedOccasion')}
                     </span>
-                    <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+                    <h2 className="text-sm sm:text-base font-bold text-foreground flex items-center gap-1.5 leading-tight">
                       {t(`type_${selectedType?.id.replace(/-/g, '_')}`) || selectedType?.label}
                     </h2>
                   </div>
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setStep(1)}
-                    className="text-xs h-8 px-3 rounded-xl flex items-center gap-1.5"
+                    onClick={() => changeStep(1)}
+                    className="text-[11px] h-7 px-2.5 rounded-lg flex items-center gap-1 border-border bg-card hover:bg-muted text-foreground font-semibold"
                   >
-                    <Grid className="size-3.5 text-[#7B0D1E]" /> {t('viewOccasions')}
+                    <Grid className="size-3 text-[#7B0D1E]" /> {t('viewOccasions')}
                   </Button>
                 </div>
 
                 {/* 📝 Part 2: Event Details */}
                 {step === 2 && (
                   <div className={cn('space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
-                    <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
                       <Edit3 className="size-4" /> {t('stepPartDetails') || '2. Event Details'}
                     </h3>
 
@@ -553,7 +709,7 @@ function CreateInvitationContent() {
                       <div className="space-y-4">
                         <div className="grid gap-4 sm:grid-cols-2">
                           <div>
-                            <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                               {selectedType?.id === 'anniversary-party' ? (t('partner1Name') || 'Husband / Partner 1 Name') : (t('groomName') === 'groomName' ? 'Groom Name' : t('groomName'))} *
                             </label>
                             <input
@@ -577,7 +733,7 @@ function CreateInvitationContent() {
                             )}
                           </div>
                           <div>
-                            <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                               {selectedType?.id === 'anniversary-party' ? (t('partner2Name') || 'Wife / Partner 2 Name') : (t('brideName') === 'brideName' ? 'Bride Name' : t('brideName'))} *
                             </label>
                             <input
@@ -603,7 +759,7 @@ function CreateInvitationContent() {
                         </div>
 
                         <div>
-                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                             {t('eventTitle')} ({t('optional') || 'Optional'})
                           </label>
                           <input
@@ -619,7 +775,7 @@ function CreateInvitationContent() {
                       </div>
                     ) : (
                       <div>
-                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                           {t('eventTitle')} *
                         </label>
                         <input
@@ -644,7 +800,7 @@ function CreateInvitationContent() {
                     )}
 
                     <div>
-                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('hostNamesLabel')} *
                       </label>
                       <input
@@ -669,7 +825,7 @@ function CreateInvitationContent() {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                           {t('eventDateLabel')} *
                         </label>
                         <input
@@ -690,7 +846,7 @@ function CreateInvitationContent() {
                         )}
                       </div>
                       <div>
-                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                           {t('eventTimeLabel')} *
                         </label>
                         <input
@@ -714,7 +870,7 @@ function CreateInvitationContent() {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                           {t('venueLabel')} *
                         </label>
                         <input
@@ -737,7 +893,7 @@ function CreateInvitationContent() {
                         )}
                       </div>
                       <div>
-                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                           {t('cityLabel')} *
                         </label>
                         <input
@@ -762,7 +918,7 @@ function CreateInvitationContent() {
                     </div>
 
                     <div>
-                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('rsvpPhoneLabel')} *
                       </label>
                       <input
@@ -789,7 +945,7 @@ function CreateInvitationContent() {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                           {t('mapsLinkLabel')}
                         </label>
                         <input
@@ -801,7 +957,7 @@ function CreateInvitationContent() {
                         />
                       </div>
                       <div>
-                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                           {t('dressCodeLabel')}
                         </label>
                         <input
@@ -819,15 +975,15 @@ function CreateInvitationContent() {
                     <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between border-t border-border pt-6 mt-6">
                       <Button
                         variant="outline"
-                        onClick={() => setStep(1)}
-                        className="w-full sm:w-auto rounded-2xl h-11 flex items-center justify-center gap-2"
+                        onClick={() => changeStep(1)}
+                        className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground font-bold flex items-center justify-center gap-2"
                       >
                         <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                         <span>{t('btnBack') || 'Back'}</span>
                       </Button>
                       <Button
                         onClick={goToStep3}
-                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
+                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all"
                       >
                         <span>{t('btnNext') || 'Next'}</span>
                         <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -839,14 +995,14 @@ function CreateInvitationContent() {
                 {/* 📝 Part 3: Wording & Photos */}
                 {step === 3 && (
                   <div className={cn('space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
-                    <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
                       <Sparkles className="size-4" /> {t('stepPartWording') || '3. Wording & Photos'}
                     </h3>
 
                     {/* 📝 CHOOSE PRE-WRITTEN INVITATION TEMPLATE */}
                     {wordingTemplates.length > 0 && (
                       <div className="rounded-2xl border border-input bg-card p-4 space-y-2.5 shadow-xs">
-                        <label className={cn("text-xs font-bold text-[#7B0D1E] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                        <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
                           <Sparkles className="size-4 text-amber-500" /> {t('selectWordingTemplateLabel') || t('choosePrewrittenTemplate') || 'CHOOSE PRE-WRITTEN INVITATION TEMPLATE:'}
                         </label>
                         <div className="flex flex-wrap gap-2">
@@ -865,7 +1021,7 @@ function CreateInvitationContent() {
                     )}
 
                     <div>
-                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('notesLabel')}
                       </label>
                       <textarea
@@ -883,8 +1039,8 @@ function CreateInvitationContent() {
 
                     {/* Photo Upload Section */}
                     <div className="rounded-2xl border border-input bg-card p-4 space-y-3">
-                      <label className={cn("text-xs font-bold text-[#7B0D1E] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                        <Camera className="size-4" /> {isCouple ? t('couplePhotosLabel') : t('eventPhotoLabel')}
+                      <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                        <Camera className="size-4 text-[#7B0D1E]" /> {isCouple ? t('couplePhotosLabel') : t('eventPhotoLabel')}
                       </label>
 
                       <div className={cn("grid gap-3", isCouple ? "grid-cols-2" : "grid-cols-1")}>
@@ -945,14 +1101,14 @@ function CreateInvitationContent() {
                       <Button
                         variant="outline"
                         onClick={goToStep2}
-                        className="w-full sm:w-auto rounded-2xl h-11 flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground font-bold flex items-center justify-center gap-2"
                       >
                         <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                         <span>{t('btnBack') || 'Back'}</span>
                       </Button>
                       <Button
                         onClick={goToStep4}
-                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all"
+                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all"
                       >
                         <span>{t('btnNext') || 'Next'}</span>
                         <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -963,13 +1119,13 @@ function CreateInvitationContent() {
 
                 {/* 🎨 Part 4: Theme & Design */}
                 {step === 4 && (
-                  <div className={cn('space-y-4 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
-                    <h3 className="text-xs font-extrabold text-foreground uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
-                      <Palette className="size-4" /> {t('stepPartDesign') || '4. Theme & Design'}
+                  <div className={cn('space-y-3.5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1">
+                      <Palette className="size-3.5" /> {t('stepPartDesign') || '4. Theme & Design'}
                     </h3>
 
-                    <div>
-                      <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                    <div className="space-y-1.5">
+                      <label className={cn("block text-[11px] font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('selectTheme')}
                       </label>
                       <ThemePicker
@@ -980,8 +1136,8 @@ function CreateInvitationContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                    <div className="space-y-1.5">
+                      <label className={cn("block text-[11px] font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('selectBorderFrame')}
                       </label>
                       <BorderPicker
@@ -992,8 +1148,8 @@ function CreateInvitationContent() {
                       />
                     </div>
 
-                    <div>
-                      <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                    <div className="space-y-1.5">
+                      <label className={cn("block text-[11px] font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                         {t('selectCardBackgroundStyle')}
                       </label>
                       <BackgroundPicker
@@ -1008,7 +1164,7 @@ function CreateInvitationContent() {
                       <Button
                         variant="outline"
                         onClick={goToStep3Back}
-                        className="w-full sm:w-auto rounded-2xl h-11 flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground font-bold flex items-center justify-center gap-2"
                       >
                         <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                         <span>{t('btnBack') || 'Back'}</span>
@@ -1016,7 +1172,7 @@ function CreateInvitationContent() {
                       <Button
                         onClick={handleFinish}
                         disabled={isSubmitting}
-                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#7B0D1E]/90 text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-60"
+                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-60"
                       >
                         {isSubmitting ? (
                           <>
@@ -1024,7 +1180,7 @@ function CreateInvitationContent() {
                             <span>{t('generatingCard', 'Generating Card...')}</span>
                           </>
                         ) : (
-                          editSlug ? t('saveInvitationBtn', 'Save Invitation') : t('createAndShareBtn', 'Create & Share Invitation 🚀')
+                          editSlug ? (t('btnSave') || 'Save') : (t('btnFinish') || 'Finish 🚀')
                         )}
                       </Button>
                     </div>
@@ -1053,16 +1209,16 @@ function CreateInvitationContent() {
                 <InvitationCard
                   data={{
                     typeId,
-                    title: title || selectedType?.label || t('invitation', 'Invitation'),
-                    hostNames: hostNames || t('defaultHostNames', 'The Families of Hassan & Ayesha'),
-                    groom: groom || t('defaultGroom', 'Hassan'),
-                    bride: bride || t('defaultBride', 'Ayesha'),
-                    date: date || '2026-12-14',
-                    time: time || '07:00 PM',
-                    venue: venue || t('defaultVenue', 'Pearl Continental, Grand Ballroom'),
-                    city: city || t('defaultCity', 'Lahore'),
-                    dressCode: dressCode || t('defaultDressCode', 'Traditional Royal / Formal'),
-                    notes: notes || t('defaultNotes', 'Your gracious presence will double our joy and happiness.'),
+                    title: step === 1 ? (title || selectedType?.label || t('invitation', 'Invitation')) : (title || selectedType?.label || ''),
+                    hostNames: step === 1 ? (hostNames || t('defaultHostNames', 'The Families of Hassan & Ayesha')) : (hostNames || ''),
+                    groom: step === 1 ? (groom || t('defaultGroom', 'Hassan')) : (groom || ''),
+                    bride: step === 1 ? (bride || t('defaultBride', 'Ayesha')) : (bride || ''),
+                    date: step === 1 ? (date || '2026-12-14') : (date || ''),
+                    time: step === 1 ? (time || '07:00 PM') : (time || ''),
+                    venue: step === 1 ? (venue || t('defaultVenue', 'Pearl Continental, Grand Ballroom')) : (venue || ''),
+                    city: step === 1 ? (city || t('defaultCity', 'Lahore')) : (city || ''),
+                    dressCode: step === 1 ? (dressCode || t('defaultDressCode', 'Traditional Royal / Formal')) : (dressCode || ''),
+                    notes: step === 1 ? (notes || t('defaultNotes', 'Your gracious presence will double our joy and happiness.')) : (notes || ''),
                     themeId,
                     borderId,
                     bgVariantId,

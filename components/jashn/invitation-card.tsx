@@ -370,13 +370,14 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
   className?: string
 }>(function InvitationCard({ data, watermark = true, showCountdown = true, className }, ref) {
   const { lang, t } = useLang()
+  const isPublicCard = !!data.slug
   const resolvedTypeId = !data.typeId || (data.typeId === 'iftaar' && (data.groom || data.bride)) ? 'nikkah' : data.typeId
   const type = getInvitationType(resolvedTypeId)
   const theme = getTheme(data.themeId)
   const typeTheme = getInvitationTypeTheme(resolvedTypeId)
   const isIslamic = type?.category === 'Religious' || resolvedTypeId === 'nikkah' || resolvedTypeId === 'roza-kushai' || resolvedTypeId === 'hajj-dinner' || resolvedTypeId === 'eid-party' || resolvedTypeId === 'milad' || resolvedTypeId === 'iftaar'
   const isGaming = resolvedTypeId === 'game-night'
-  const isCouple = type?.couple && (data.groom || data.bride)
+  const isCouple = type?.couple
   const categoryPatternClass = getCategoryPatternClass(type?.category)
   const patternClass = type?.patternOverlay || categoryPatternClass
 
@@ -656,14 +657,14 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                 <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
                   {data.photoUrl ? (
                     <div className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] overflow-hidden shadow-lg bg-black/40">
-                      <img src={data.photoUrl} alt={data.bride || "Photo 1"} className="size-full object-cover" />
+                      <img src={data.photoUrl} alt={data.bride || "Photo 1"} crossOrigin="anonymous" className="size-full object-cover" />
                     </div>
                   ) : (
                     <RelationAvatar relation="bride" size={60} />
                   )}
                 </div>
-                {data.bride && (
-                  <p className="text-[11px] sm:text-xs opacity-80 font-bold tracking-wide">{data.bride}</p>
+                {(data.bride || !isPublicCard) && (
+                  <p className="text-[11px] sm:text-xs opacity-80 font-bold tracking-wide">{data.bride || '---'}</p>
                 )}
               </div>
 
@@ -682,14 +683,14 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                 <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
                   {data.photoUrl2 ? (
                     <div className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] overflow-hidden shadow-lg bg-black/40">
-                      <img src={data.photoUrl2} alt={data.groom || "Photo 2"} className="size-full object-cover" />
+                      <img src={data.photoUrl2} alt={data.groom || "Photo 2"} crossOrigin="anonymous" className="size-full object-cover" />
                     </div>
                   ) : (
                     <RelationAvatar relation="groom" size={60} />
                   )}
                 </div>
-                {data.groom && (
-                  <p className="text-[11px] sm:text-xs opacity-80 font-bold tracking-wide">{data.groom}</p>
+                {(data.groom || !isPublicCard) && (
+                  <p className="text-[11px] sm:text-xs opacity-80 font-bold tracking-wide">{data.groom || '---'}</p>
                 )}
               </div>
             </div>
@@ -697,7 +698,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
             /* ── Custom Event Photo (Single / Non-couple) ── */
             <div className="flex items-center justify-center my-2 inv-parallax-near">
               <div className="size-20 sm:size-24 rounded-2xl border-2 border-[#D4AF37] overflow-hidden shadow-xl bg-black/40">
-                <img src={data.photoUrl || data.photoUrl2} alt="Event Photo" className="size-full object-cover" />
+                <img src={data.photoUrl || data.photoUrl2} alt="Event Photo" crossOrigin="anonymous" className="size-full object-cover" />
               </div>
             </div>
           ) : (
@@ -719,7 +720,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
           {/* Couple headline or event title */}
           {isCouple ? (
             <div className="ic-stagger inv-parallax-near text-center w-full px-2">
-              {/* Optional custom event subtitle/title if present (e.g. Milestone Wedding Anniversaries (Silver & Golden)) */}
+              {/* Optional custom event subtitle/title if present */}
               {data.title && data.title !== type?.label && (
                 <div className="mb-2 max-w-full">
                   <span
@@ -743,7 +744,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                 )}
               >
                 <span className="inline-block whitespace-nowrap max-w-full text-center">
-                  {data.groom || t('groom', 'Groom')}
+                  {data.groom || '---'}
                 </span>
                 <span
                   className="inline-flex items-center justify-center font-serif italic text-base sm:text-xl md:text-2xl px-2 sm:px-3 opacity-80 shrink-0 select-none"
@@ -753,16 +754,16 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                   {t('andWord', '&')}
                 </span>
                 <span className="inline-block whitespace-nowrap max-w-full text-center">
-                  {data.bride || t('bride', 'Bride')}
+                  {data.bride || '---'}
                 </span>
               </div>
 
-              {data.hostNames && (
+              {(data.hostNames || !isPublicCard) && (
                 <p className={cn(
                   "mt-2 opacity-80 tracking-wide text-balance px-2",
                   (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm leading-loose" : "text-xs sm:text-sm leading-relaxed"
                 )}>
-                  {data.hostNames} {t('joyfullyInvite')}
+                  {data.hostNames || '---'} {t('joyfullyInvite')}
                 </p>
               )}
             </div>
@@ -772,13 +773,13 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                 "shimmer-text gold-foil-emboss font-extrabold tracking-normal leading-snug text-balance px-2",
                 (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose" : "text-xl sm:text-2xl md:text-3xl lg:text-4xl"
               )}>
-                {data.title || data.hostNames || (t(`type_${type?.id.replace(/-/g, '_')}`) || type?.label)}
+                {data.title || data.hostNames || (!isPublicCard ? '---' : (t(`type_${type?.id.replace(/-/g, '_')}`) || type?.label))}
               </h2>
-              {data.hostNames && data.title && (
+              {(data.hostNames || !isPublicCard) && (
                 <p className={cn(
                   "mt-2 opacity-80 tracking-wide text-balance px-2",
                   (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm leading-loose" : "text-xs sm:text-sm leading-relaxed"
-                )}>{t('hostedBy')} {data.hostNames}</p>
+                )}>{t('hostedBy')} {data.hostNames || '---'}</p>
               )}
             </div>
           )}
@@ -788,7 +789,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
           {/* ── Event details as elegant centered flowing text (printed card style) ── */}
           <div className="ic-stagger inv-parallax-near flex flex-col items-center gap-2.5 sm:gap-3 w-full text-center px-3">
             {/* Date in gold cartouche frame */}
-            {data.date && (
+            {(data.date || !isPublicCard) && (
               <div className="gold-cartouche">
                 <span
                   className={cn(
@@ -797,13 +798,13 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                   )}
                   style={{ color: 'var(--c-accent)' }}
                 >
-                  {formatDate(data.date, lang)}
+                  {data.date ? formatDate(data.date, lang) : '---'}
                 </span>
               </div>
             )}
 
             {/* Time */}
-            {data.time && (
+            {(data.time || !isPublicCard) && (
               <p
                 className={cn(
                   "font-semibold tracking-wide opacity-90",
@@ -811,40 +812,36 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                 )}
                 style={{ color: 'var(--c-ink)' }}
               >
-                {formatTime12h(data.time, lang)}
+                {data.time ? formatTime12h(data.time, lang) : '---'}
               </p>
             )}
 
             {/* Venue & City */}
-            {(data.venue || data.city) && (
+            {(data.venue || data.city || !isPublicCard) && (
               <div className="flex flex-col items-center gap-0.5">
-                {data.venue && (
-                  <p
-                    className={cn(
-                      "font-bold tracking-wide",
-                      (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm sm:text-base" : "text-sm sm:text-base"
-                    )}
-                    style={{ color: 'var(--c-ink)' }}
-                  >
-                    {data.venue}
-                  </p>
-                )}
-                {data.city && (
-                  <p
-                    className={cn(
-                      "opacity-80 tracking-wider",
-                      (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm" : "text-xs sm:text-sm uppercase"
-                    )}
-                    style={{ color: 'var(--c-ink)' }}
-                  >
-                    {data.city}
-                  </p>
-                )}
+                <p
+                  className={cn(
+                    "font-bold tracking-wide",
+                    (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm sm:text-base" : "text-sm sm:text-base"
+                  )}
+                  style={{ color: 'var(--c-ink)' }}
+                >
+                  {data.venue || '---'}
+                </p>
+                <p
+                  className={cn(
+                    "opacity-80 tracking-wider",
+                    (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm" : "text-xs sm:text-sm uppercase"
+                  )}
+                  style={{ color: 'var(--c-ink)' }}
+                >
+                  {data.city || '---'}
+                </p>
               </div>
             )}
 
             {/* Dress Code */}
-            {data.dressCode && (
+            {(data.dressCode || !isPublicCard) && (
               <p
                 className={cn(
                   "italic opacity-80 tracking-wide",
@@ -852,7 +849,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                 )}
                 style={{ color: 'var(--c-accent)' }}
               >
-                {data.dressCode}
+                {data.dressCode || '---'}
               </p>
             )}
           </div>
@@ -865,7 +862,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
           )}
 
           {/* Personal notes / message — elegant calligraphy style */}
-          {data.notes && (
+          {(data.notes || !isPublicCard) && (
             <div className="ic-stagger flex flex-col items-center w-full px-4 sm:px-6">
               <OrnamentDivider />
               <p
@@ -875,7 +872,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
                 )}
                 style={{ fontStyle: (lang === 'ur' || lang === 'ar') ? 'normal' : 'italic', color: 'var(--c-accent)' }}
               >
-                &ldquo;{data.notes}&rdquo;
+                &ldquo;{data.notes || '---'}&rdquo;
               </p>
             </div>
           )}

@@ -55,7 +55,7 @@ export function BackgroundPicker({
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+    <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4 md:grid-cols-5">
       {variants.map((v) => {
         const active = value === v.id || (!value && v.id === 'default')
         const key = getVariantTranslationKey(v.id)
@@ -74,29 +74,29 @@ export function BackgroundPicker({
             onClick={() => onChange(v.id)}
             aria-pressed={active}
             className={cn(
-              'group relative flex flex-col items-center gap-2 rounded-2xl border p-2.5 transition-all text-center w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7B0D1E]',
+              'group relative flex flex-col items-center gap-1 rounded-xl border p-1.5 sm:p-2 transition-all text-center w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7B0D1E]',
               active
-                ? 'border-[#7B0D1E] ring-2 ring-[#7B0D1E]/30 shadow-sm bg-[#7B0D1E]/6 dark:bg-[#7B0D1E]/15'
+                ? 'border-[#7B0D1E] ring-2 ring-[#7B0D1E]/30 shadow-xs bg-[#7B0D1E]/8 dark:bg-[#7B0D1E]/15'
                 : 'border-border hover:border-[#7B0D1E]/40 bg-card hover:bg-muted/40',
             )}
           >
             {/* Pure colour swatch without obscuring scrim */}
             <span
-              className="relative flex h-12 sm:h-14 w-full items-center justify-center overflow-hidden rounded-xl border border-black/15 dark:border-white/15 shadow-inner transition-transform group-hover:scale-[1.02]"
+              className="relative flex h-6 sm:h-7 w-full items-center justify-center overflow-hidden rounded-lg border border-black/15 dark:border-white/15 shadow-inner transition-transform group-hover:scale-[1.02]"
               style={swatchStyle}
             >
               {active && (
-                <span className="flex size-6 items-center justify-center rounded-full bg-white/95 text-[#7B0D1E] shadow-md border border-black/10">
-                  <Check className="size-3.5 stroke-[3]" />
+                <span className="flex size-4 items-center justify-center rounded-full bg-white/95 text-[#7B0D1E] shadow-sm border border-black/10">
+                  <Check className="size-2.5 stroke-[3]" />
                 </span>
               )}
             </span>
 
             {/* Variant name printed clearly underneath swatch */}
-            <div className="w-full px-0.5 pt-0.5 text-center min-w-0">
+            <div className="w-full px-0.5 text-center min-w-0">
               <span className={cn(
-                "block truncate text-xs font-bold leading-tight text-foreground transition-colors group-hover:text-[#7B0D1E]",
-                isUrdu && "font-urdu text-sm leading-normal"
+                "block truncate text-[10px] sm:text-[10.5px] font-bold leading-tight text-foreground transition-colors group-hover:text-[#7B0D1E]",
+                isUrdu && "font-urdu text-[11px] leading-normal"
               )}>
                 {translatedName}
               </span>

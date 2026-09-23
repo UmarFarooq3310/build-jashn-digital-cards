@@ -159,6 +159,28 @@ function SiteHeaderInner() {
               {t(item.key as any, item.fallback)}
             </Link>
           ))}
+
+          {/* Magic Link — special glowing badge */}
+          <Link
+            href="/create-magic-link"
+            onClick={handleNavClick}
+            className="relative inline-flex items-center gap-1 xl:gap-1.5 rounded-lg xl:rounded-xl px-1.5 xl:px-2.5 py-1 xl:py-1.5 text-xs xl:text-sm font-bold whitespace-nowrap transition-all"
+            style={
+              pathname === '/create-magic-link'
+                ? {
+                    background: 'linear-gradient(135deg, #7A1E2B, #be185d)',
+                    color: 'white',
+                    boxShadow: '0 0 12px rgba(190,24,93,0.45)',
+                  }
+                : {
+                    background: 'linear-gradient(135deg, rgba(122,30,43,0.08), rgba(180,83,9,0.06))',
+                    color: '#7A1E2B',
+                    border: '1px solid rgba(122,30,43,0.18)',
+                  }
+            }
+          >
+            <span>{t('magicLinksNav' as any, 'Magic Link')}</span>
+          </Link>
         </nav>
 
         <div className="hidden items-center gap-1.5 xl:gap-2 lg:flex shrink-0">
@@ -299,6 +321,20 @@ function SiteHeaderInner() {
                 {t(item.key as any) || item.fallback}
               </Link>
             ))}
+
+            {/* Magic Link — special highlighted row */}
+            <Link
+              href="/create-magic-link"
+              onClick={() => setOpen(false)}
+              className="rounded-xl px-3 py-3 min-h-[48px] flex items-center gap-2.5 font-bold"
+              style={{
+                background: 'linear-gradient(135deg, rgba(122,30,43,0.08), rgba(180,83,9,0.06))',
+                border: '1px solid rgba(122,30,43,0.18)',
+                color: '#7A1E2B',
+              }}
+            >
+              <span className="flex-1">{t('magicLinksNav' as any, 'Magic Link')}</span>
+            </Link>
 
             {/* Mobile language picker */}
             <div className="mt-2 pt-2 border-t border-border notranslate" translate="no">

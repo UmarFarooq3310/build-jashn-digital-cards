@@ -267,6 +267,7 @@ function WishPublicContent({ slug }: { slug: string }) {
                 occasionIdOrCategory={activeWish.occasionId}
                 isIslamic={isIslamic}
                 isSensitive={isSensitive}
+                audioTrack={activeWish.audioTrack}
                 autoOpen={false}
                 onOpened={() => {
                   if (!isSensitive) {
@@ -406,6 +407,7 @@ function WishPublicContent({ slug }: { slug: string }) {
             occasionIdOrCategory={activeWish.occasionId}
             isIslamic={isIslamic}
             isSensitive={isSensitive}
+            audioTrack={activeWish.audioTrack}
             onOpened={() => {
               if (!isSensitive) {
                 setRainActive(true)

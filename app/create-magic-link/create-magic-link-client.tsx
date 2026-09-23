@@ -42,7 +42,7 @@ import {
   PartyPopper,
   HeartHandshake,
 } from 'lucide-react'
-import { createMagicLink, recordCardShare } from '@/lib/jashn/magic-service'
+import { createMagicLink, updateMagicLink, getMagicLink, recordCardShare } from '@/lib/jashn/magic-service'
 import type { MagicLinkType, MagicOccasion, MagicThemeId } from '@/lib/jashn/magic-types'
 import { useJashn } from '@/lib/jashn/store'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
@@ -468,6 +468,199 @@ export default function CreateMagicLinkClient() {
   const [showShareModal, setShowShareModal] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
+  const editSlug = searchParams.get('edit')
+  const draftKey = editSlug ? `cardzy_draft_magic_edit_${editSlug}` : 'cardzy_draft_magic'
+  const [isInitialLoaded, setIsInitialLoaded] = useState(false)
+
+  // 1. Initial Load: Restore draft or fetch edit record
+  useEffect(() => {
+    let isCancelled = false
+    async function initData() {
+      if (editSlug) {
+        let loadedData: any = null
+        try {
+          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          if (draftJson) loadedData = JSON.parse(draftJson)
+        } catch {}
+
+        if (!loadedData) {
+          try {
+            const remote = await getMagicLink(editSlug)
+            if (remote) loadedData = remote
+          } catch (err) {
+            console.error('Error fetching magic link for edit:', err)
+          }
+        }
+
+        if (loadedData && !isCancelled) {
+          if (loadedData.occasion) setSelectedOccasion(loadedData.occasion)
+          if (loadedData.theme) setSelectedTheme(loadedData.theme)
+          if (loadedData.type) setLinkType(loadedData.type)
+          if (loadedData.senderName !== undefined) setSenderName(loadedData.senderName)
+          if (loadedData.recipientName !== undefined) setRecipientName(loadedData.recipientName)
+          if (loadedData.recipientAge !== undefined) setRecipientAge(loadedData.recipientAge)
+          
+          if (loadedData.wishContent) {
+            const wc = loadedData.wishContent
+            if (wc.candlesCount !== undefined) setCandleCount(wc.candlesCount)
+            if (wc.urduGreeting !== undefined) setCustomVerse(wc.urduGreeting)
+            if (wc.secretLetter !== undefined) setSecretLetter(wc.secretLetter)
+            if (wc.howWeMet !== undefined) setHowWeMet(wc.howWeMet)
+            if (wc.specialDate !== undefined) setSpecialDate(wc.specialDate)
+            if (wc.whatsappNumber !== undefined) setWhatsappNumber(wc.whatsappNumber)
+            if (wc.photoUrl !== undefined) setPhotoUrl(wc.photoUrl)
+            if (wc.balloons && Array.isArray(wc.balloons)) {
+              setQuotes(wc.balloons.map((b: any) => b.quote || ''))
+            }
+          }
+
+          if (loadedData.inviteContent) {
+            const ic = loadedData.inviteContent
+            if (ic.eventTitle !== undefined) setEventTitle(ic.eventTitle)
+            if (ic.eventDate !== undefined) setEventDate(ic.eventDate)
+            if (ic.eventTime !== undefined) setEventTime(ic.eventTime)
+            if (ic.venueName !== undefined) setVenueName(ic.venueName)
+            if (ic.venueAddress !== undefined) setVenueAddress(ic.venueAddress)
+            if (ic.googleMapsUrl !== undefined) setGoogleMapsUrl(ic.googleMapsUrl)
+            if (ic.coupleNames !== undefined) setCoupleNames(ic.coupleNames)
+          }
+
+          if (loadedData.step) setStep(loadedData.step as 1 | 2)
+          else setStep(2)
+          if (loadedData.activeTab) setActiveTab(loadedData.activeTab as 'details' | 'design' | 'preview')
+        }
+      } else {
+        try {
+          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          if (draftJson) {
+            const d = JSON.parse(draftJson)
+            if (d && typeof d === 'object' && !isCancelled) {
+              if (d.selectedOccasion) setSelectedOccasion(d.selectedOccasion)
+              if (d.selectedTheme) setSelectedTheme(d.selectedTheme)
+              if (d.linkType) setLinkType(d.linkType)
+              if (d.senderName !== undefined) setSenderName(d.senderName)
+              if (d.recipientName !== undefined) setRecipientName(d.recipientName)
+              if (d.recipientAge !== undefined) setRecipientAge(d.recipientAge)
+              if (d.candleCount !== undefined) setCandleCount(d.candleCount)
+              if (d.quotes) setQuotes(d.quotes)
+              if (d.secretLetter !== undefined) setSecretLetter(d.secretLetter)
+              if (d.customVerse !== undefined) setCustomVerse(d.customVerse)
+              if (d.howWeMet !== undefined) setHowWeMet(d.howWeMet)
+              if (d.specialDate !== undefined) setSpecialDate(d.specialDate)
+              if (d.whatsappNumber !== undefined) setWhatsappNumber(d.whatsappNumber)
+              if (d.photoUrl !== undefined) setPhotoUrl(d.photoUrl)
+              if (d.eventTitle !== undefined) setEventTitle(d.eventTitle)
+              if (d.eventDate !== undefined) setEventDate(d.eventDate)
+              if (d.eventTime !== undefined) setEventTime(d.eventTime)
+              if (d.venueName !== undefined) setVenueName(d.venueName)
+              if (d.venueAddress !== undefined) setVenueAddress(d.venueAddress)
+              if (d.googleMapsUrl !== undefined) setGoogleMapsUrl(d.googleMapsUrl)
+              if (d.coupleNames !== undefined) setCoupleNames(d.coupleNames)
+              if (d.step) setStep(d.step as 1 | 2)
+              if (d.activeTab) setActiveTab(d.activeTab as 'details' | 'design' | 'preview')
+            }
+          }
+        } catch {}
+      }
+      if (!isCancelled) setIsInitialLoaded(true)
+    }
+
+    initData()
+    return () => {
+      isCancelled = true
+    }
+  }, [editSlug, draftKey])
+
+  // 2. Auto-save draft on every change (local only)
+  useEffect(() => {
+    if (!isInitialLoaded || typeof window === 'undefined') return
+    const draftData = {
+      step,
+      activeTab,
+      selectedOccasion,
+      selectedTheme,
+      linkType,
+      senderName,
+      recipientName,
+      recipientAge,
+      candleCount,
+      quotes,
+      secretLetter,
+      customVerse,
+      howWeMet,
+      specialDate,
+      whatsappNumber,
+      photoUrl,
+      eventTitle,
+      eventDate,
+      eventTime,
+      venueName,
+      venueAddress,
+      googleMapsUrl,
+      coupleNames,
+    }
+    try {
+      sessionStorage.setItem(draftKey, JSON.stringify(draftData))
+      localStorage.setItem(draftKey, JSON.stringify(draftData))
+    } catch {}
+  }, [
+    isInitialLoaded,
+    draftKey,
+    step,
+    activeTab,
+    selectedOccasion,
+    selectedTheme,
+    linkType,
+    senderName,
+    recipientName,
+    recipientAge,
+    candleCount,
+    quotes,
+    secretLetter,
+    customVerse,
+    howWeMet,
+    specialDate,
+    whatsappNumber,
+    photoUrl,
+    eventTitle,
+    eventDate,
+    eventTime,
+    venueName,
+    venueAddress,
+    googleMapsUrl,
+    coupleNames,
+  ])
+
+  // 3. Browser Back / PopState support
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const handlePopState = (e: PopStateEvent) => {
+      if (e.state && typeof e.state.cardzyStep === 'number') {
+        setStep(e.state.cardzyStep as 1 | 2)
+        if (e.state.cardzyTab) {
+          setActiveTab(e.state.cardzyTab)
+        }
+      } else {
+        setStep(1)
+      }
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  const changeStep = (nextStep: 1 | 2, nextTab?: 'details' | 'design' | 'preview') => {
+    setStep(nextStep)
+    if (nextTab) setActiveTab(nextTab)
+    if (typeof window !== 'undefined') {
+      window.history.pushState(
+        { cardzyStep: nextStep, cardzyTab: nextTab || activeTab },
+        '',
+        window.location.href
+      )
+      window.scrollTo({ top: 120, behavior: 'smooth' })
+    }
+  }
+
   // When occasion changes, synchronize defaults
   const handleSelectOccasion = (occ: MagicOccasion) => {
     setSelectedOccasion(occ)
@@ -480,7 +673,7 @@ export default function CreateMagicLinkClient() {
     setCustomVerse(isUrdu ? meta.urduVerse : meta.defaultVerse)
     setActiveTab('details')
     setErrors({})
-    setStep(2)
+    changeStep(2, 'details')
   }
 
   const handleQuoteChange = (idx: number, text: string) => {
@@ -531,10 +724,7 @@ export default function CreateMagicLinkClient() {
       }
       return
     }
-    setActiveTab('design')
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 120, behavior: 'smooth' })
-    }
+    changeStep(2, 'design')
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -542,7 +732,7 @@ export default function CreateMagicLinkClient() {
     const errs = validateForm()
     const errKeys = Object.keys(errs)
     if (errKeys.length > 0) {
-      setActiveTab('details')
+      changeStep(2, 'details')
       const firstKey = errKeys[0]
       const firstError = errs[firstKey] || t('completeAllRequiredFields', 'Please complete all required fields marked in red.')
       showToast(firstError, 'error')
@@ -560,7 +750,7 @@ export default function CreateMagicLinkClient() {
 
     setLoading(true)
     try {
-      const slug = await createMagicLink({
+      const payload = {
         type: linkType,
         occasion: selectedOccasion,
         theme: selectedTheme,
@@ -607,13 +797,20 @@ export default function CreateMagicLinkClient() {
                 allowRsvp: true,
               }
             : undefined,
-      })
+      }
 
-      showToast(t('magicLinkCreatedSuccess', 'Magic link created successfully! ✨'), 'success')
-      router.push(`/m/${slug}?mode=sender`)
+      if (editSlug) {
+        await updateMagicLink(editSlug, payload)
+        showToast(t('magicLinkUpdatedSuccess', 'Magic link updated successfully! ✨'), 'success')
+        router.push(`/m/${editSlug}?mode=sender`)
+      } else {
+        const slug = await createMagicLink(payload)
+        showToast(t('magicLinkCreatedSuccess', 'Magic link created successfully! ✨'), 'success')
+        router.push(`/m/${slug}?mode=sender`)
+      }
     } catch (err) {
-      console.error('Error creating magic link:', err)
-      showToast(t('magicLinkCreateError', 'Could not create magic link. Please check your network connection.'), 'error')
+      console.error('Error creating/updating magic link:', err)
+      showToast(t('magicLinkCreateError', 'Could not save magic link. Please check your network connection.'), 'error')
     } finally {
       setLoading(false)
     }
@@ -662,110 +859,164 @@ export default function CreateMagicLinkClient() {
   return (
     <div className="mx-auto w-full max-w-full pb-20 min-w-0">
       
-      {/* Studio Header & Switcher */}
+      {/* Universal Studio Mode Switcher */}
       <div className="mb-8 text-center">
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
-          <Link
-            href="/create-invitation"
-            className="inline-flex items-center gap-2 rounded-full border border-[#E5DFD3] bg-white px-5 py-2.5 text-xs sm:text-sm font-semibold text-[#5A4530] transition-all hover:border-[#7A1E2B]/40 hover:text-foreground shadow-sm"
-          >
-            🎉 {t('weddingInvitationTitle', 'Wedding & Event Invitation')}
-          </Link>
+        <div className="inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs">
           <Link
             href="/create-wish"
-            className="inline-flex items-center gap-2 rounded-full border border-[#E5DFD3] bg-white px-5 py-2.5 text-xs sm:text-sm font-semibold text-[#5A4530] transition-all hover:border-[#7A1E2B]/40 hover:text-foreground shadow-sm"
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            📧 {t('sendAnimatedWishCard', 'Send an Animated Wish Card')}
+            💌 {t('sendAnimatedWishCard', 'Wish Cards')}
           </Link>
-          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#7A1E2B] via-rose-700 to-amber-700 px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md ring-2 ring-amber-400/30">
-            🪄 {t('magicLinksNav', 'Interactive Magic Links')}
-            <span className="text-[10px] uppercase font-extrabold bg-amber-400 text-slate-950 px-1.5 py-0.2 rounded-full">
-              NEW
-            </span>
+          <Link
+            href="/create-invitation"
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+          >
+            🎉 {t('weddingInvitationTitle', 'Invitations')}
+          </Link>
+          <div
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-xs bg-[#7B0D1E]"
+          >
+            <span>🪄</span>
+            <span>{t('magicLinksNav', 'Magic Links')}</span>
           </div>
+          <Link
+            href="/create-visiting-card"
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+          >
+            📇 {t('smartDigitalBusinessCardsTitle', 'Visiting Cards')}
+          </Link>
         </div>
       </div>
 
       {/* SUCCESS SCREEN */}
       {createdSlug ? (
-        <div className="max-w-xl mx-auto p-6 sm:p-8 bg-gradient-to-b from-rose-950/80 via-black/85 to-amber-950/80 border-2 border-amber-400/60 rounded-3xl backdrop-blur-2xl text-center shadow-[0_0_60px_rgba(245,158,11,0.25)] text-white animate-in zoom-in-95 duration-300">
-          <div className="size-20 rounded-full bg-amber-400/20 border-2 border-amber-400 flex items-center justify-center mx-auto mb-4 text-4xl animate-bounce shadow-lg">
-            🪄
+        <div
+          className="max-w-xl mx-auto rounded-3xl text-center text-white overflow-hidden animate-in zoom-in-95 duration-500 relative bg-slate-950 border border-amber-500/40 shadow-2xl"
+        >
+          {/* Celebration confetti burst (CSS only) */}
+          <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl">
+            {['💫','✨','🌟','⭐','🎊','🎉','💛','🔮','🌸','💖'].map((em, i) => (
+              <span
+                key={i}
+                className="absolute text-lg select-none"
+                style={{
+                  top: `${(i * 13 + 5) % 90}%`,
+                  left: `${(i * 17 + 3) % 95}%`,
+                  animation: `ml-confetti-drift ${2.5 + i * 0.4}s ease-in-out infinite ${i * 0.35}s`,
+                  opacity: 0.6,
+                  fontSize: `${0.8 + (i % 3) * 0.4}rem`,
+                }}
+              >
+                {em}
+              </span>
+            ))}
           </div>
 
-          <span className="text-[11px] font-black uppercase tracking-widest text-amber-300 bg-black/60 px-3 py-1 rounded-full border border-amber-400/40">
-            Link Generated Successfully!
-          </span>
+          {/* Top shimmer bar */}
+          <div
+            aria-hidden="true"
+            className="h-1 w-full bg-gradient-to-r from-transparent via-[#7B0D1E] via-amber-400 to-transparent"
+          />
 
-          <h2 className="text-2xl sm:text-3xl font-serif font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-rose-200 to-white mt-3">
-            {activeOccMeta.label} Ready
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-md mx-auto">
-            Send this interactive magic link to <span className="text-amber-300 font-bold">{recipientName}</span>.
-            They will tap to unwrap the 3D surprise, read your letter, and reply in real time!
-          </p>
+          <div className="relative p-6 sm:p-8 z-10">
+            {/* Magic wand icon */}
+            <div
+              className="size-24 rounded-full flex items-center justify-center mx-auto mb-5 text-5xl bg-amber-500/20 border-2 border-amber-400/60 shadow-[0_0_40px_rgba(245,158,11,0.3)] animate-pulse"
+            >
+              🪄
+            </div>
 
-          {/* Clean URL Box */}
-          <div className="my-5 p-3 rounded-2xl bg-black/70 border border-amber-400/40 flex items-center justify-between gap-2 min-w-0 shadow-inner">
-            <span className="text-xs font-mono text-amber-200 truncate flex-1 text-left px-2">
-              {shareUrl}
+            <span
+              className="inline-block text-[11px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 bg-amber-500/15 border border-amber-400/40 text-amber-300"
+            >
+              ✨ Link Generated Successfully!
             </span>
-            <button
-              onClick={handleCopy}
-              className="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center gap-1.5 transition-all shrink-0 cursor-pointer shadow-md"
-            >
-              {copied ? <Check className="size-3.5 text-emerald-950" /> : <Copy className="size-3.5" />}
-              <span>{copied ? 'Copied!' : 'Copy'}</span>
-            </button>
-          </div>
 
-          {/* 1-Click WhatsApp & SMS Buttons */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-            <button
-              onClick={handleWhatsApp}
-              className="py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all"
+            <h2
+              className="text-2xl sm:text-3xl font-serif font-black mt-2 mb-2 bg-gradient-to-r from-amber-200 via-white to-amber-100 bg-clip-text text-transparent"
             >
-              <MessageCircle className="size-4" />
-              <span>WhatsApp</span>
-            </button>
-            <button
-              onClick={handleSms}
-              className="py-3 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all"
-            >
-              <Smartphone className="size-4" />
-              <span>Send SMS</span>
-            </button>
-          </div>
+              {activeOccMeta.label} Ready
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 mb-5 max-w-md mx-auto leading-relaxed">
+              Send this interactive magic link to{' '}
+              <span className="font-bold text-amber-300">
+                {recipientName}
+              </span>
+              . They will tap to unwrap the 3D surprise, read your letter, and reply in real time!
+            </p>
 
-          <a
-            href={`${shareUrl}?mode=sender`}
-            target="_blank"
-            rel="noreferrer"
-            className="w-full min-w-0 py-3.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 font-black rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:opacity-95"
-          >
-            <span>Open & Preview Magic Link (Sender View)</span>
-            <ExternalLink className="size-4" />
-          </a>
-
-          <div className="flex items-center justify-center gap-4 mt-6">
-            <Link
-              href="/dashboard"
-              className="text-xs font-bold text-amber-300 hover:text-amber-200 flex items-center gap-1.5"
+            {/* Premium URL Box */}
+            <div
+              className="mb-5 rounded-2xl flex items-center gap-3 overflow-hidden bg-black/60 border border-amber-400/30"
             >
-              <LayoutDashboard className="size-3.5" />
-              <span>Go to Host Dashboard</span>
-            </Link>
-            <span className="text-zinc-600">•</span>
-            <button
-              onClick={() => {
-                setCreatedSlug(null)
-                setRecipientName('')
-                setStep(1)
+              <div className="flex-1 px-4 py-3 text-left overflow-hidden">
+                <span className="text-[10px] text-amber-400/70 uppercase tracking-widest font-bold block mb-0.5">Your Magic Link</span>
+                <span className="text-xs font-mono text-amber-200 truncate block">{shareUrl}</span>
+              </div>
+              <button
+                onClick={handleCopy}
+                className="shrink-0 mx-2 my-2 px-4 py-2 rounded-xl font-black text-xs flex items-center gap-1.5 transition-all cursor-pointer bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 hover:brightness-105 shadow-sm"
+              >
+                {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+                <span>{copied ? 'Copied!' : 'Copy'}</span>
+              </button>
+            </div>
+
+            {/* Share Buttons */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <button
+                onClick={handleWhatsApp}
+                className="py-3.5 rounded-xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all hover:opacity-90 cursor-pointer bg-emerald-600 hover:bg-emerald-500 text-white shadow-md"
+              >
+                <MessageCircle className="size-4" />
+                <span>WhatsApp</span>
+              </button>
+              <button
+                onClick={handleSms}
+                className="py-3.5 rounded-xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all hover:opacity-90 cursor-pointer bg-sky-600 hover:bg-sky-500 text-white shadow-md"
+              >
+                <Smartphone className="size-4" />
+                <span>Send SMS</span>
+              </button>
+            </div>
+
+            <a
+              href={`${shareUrl}?mode=sender`}
+              target="_blank"
+              rel="noreferrer"
+              className="w-full py-4 rounded-xl font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all hover:opacity-95"
+              style={{
+                background: 'linear-gradient(135deg, #fbbf24, #f59e0b, #d97706)',
+                color: '#0a0a0a',
+                boxShadow: '0 6px 24px rgba(245,158,11,0.4)',
               }}
-              className="text-xs text-slate-300 hover:text-amber-300 underline underline-offset-4 cursor-pointer"
             >
-              Create another Magic Link
-            </button>
+              <span>Open & Preview Magic Link</span>
+              <ExternalLink className="size-4" />
+            </a>
+
+            <div className="flex items-center justify-center gap-4 mt-5 pt-4 border-t border-white/10">
+              <Link
+                href="/dashboard"
+                className="text-xs font-bold flex items-center gap-1.5 transition-colors hover:opacity-80"
+                style={{ color: '#fbbf24' }}
+              >
+                <LayoutDashboard className="size-3.5" />
+                <span>Host Dashboard</span>
+              </Link>
+              <span className="text-zinc-600">•</span>
+              <button
+                onClick={() => {
+                  setCreatedSlug(null)
+                  setRecipientName('')
+                  changeStep(1)
+                }}
+                className="text-xs text-slate-400 hover:text-amber-300 underline underline-offset-4 cursor-pointer transition-colors"
+              >
+                Create another link
+              </button>
+            </div>
           </div>
 
           <CardShareModal
@@ -790,40 +1041,55 @@ export default function CreateMagicLinkClient() {
             }
             onClose={() => setShowShareModal(false)}
           />
+
+          {/* Bottom shimmer bar */}
+          <div
+            aria-hidden="true"
+            className="h-1 w-full"
+            style={{
+              background: 'linear-gradient(90deg, transparent, #a855f7, #fbbf24, #f43f5e, transparent)',
+              animation: 'ml-shimmer-bar 2.5s linear infinite reverse',
+            }}
+          />
         </div>
       ) : step === 1 ? (
         /* STEP 1: OCCASION SELECTION GRID + CATEGORIES + LIVE DEMO */
-        <div className="space-y-4 animate-in fade-in duration-300">
+        <div className="space-y-6 animate-in fade-in duration-300">
           
-          {/* Header */}
-          <div className="text-center max-w-2xl mx-auto mb-4">
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#7A1E2B] font-serif">
-              {t('chooseCelebrationOccasion', '1. Choose Celebration Occasion')}
+          {/* Step 1 Header */}
+          <div className="text-center max-w-2xl mx-auto mb-2">
+            <div className="inline-flex items-center gap-2 mb-3">
+              <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[#7B0D1E] dark:text-rose-400">
+                Step 1 of 2 — Pick Your Occasion
+              </span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold font-serif mb-2 text-foreground">
+              {t('chooseCelebrationOccasion', '✨ Choose Your Celebration')}
             </h2>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-1.5">
-              Each occasion features its own 3D interactive props, bespoke form fields, 6 custom palettes, and animated scenes.
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Each occasion has its own 3D interactive props, 6 exclusive palettes, and animated scene.
             </p>
           </div>
 
           {/* Category Tabs & Search Bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pb-2">
-            <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto p-1 bg-muted/60 rounded-2xl border border-border/60">
+            <div className="flex items-center gap-1 overflow-x-auto w-full sm:w-auto p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs">
               {[
-                { id: 'all', label: 'All Occasions' },
-                { id: 'love', label: '❤️ Love & Romance' },
-                { id: 'birthday', label: '🎂 Birthdays & Parties' },
-                { id: 'islamic', label: '🌙 Islamic & Blessings' },
-                { id: 'milestones', label: '🎓 Life Milestones' },
+                { id: 'all', label: '✨ All' },
+                { id: 'love', label: '❤️ Love' },
+                { id: 'birthday', label: '🎂 Birthday' },
+                { id: 'islamic', label: '🌙 Islamic' },
+                { id: 'milestones', label: '🎓 Milestones' },
               ].map((cat) => (
                 <button
                   key={cat.id}
                   type="button"
                   onClick={() => setActiveCategory(cat.id as any)}
                   className={cn(
-                    'px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer',
+                    "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer",
                     activeCategory === cat.id
-                      ? 'bg-[#7A1E2B] text-white shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
+                      ? "bg-[#7B0D1E] text-white shadow-xs"
+                      : "text-muted-foreground hover:text-foreground hover:bg-card/60"
                   )}
                 >
                   {cat.label}
@@ -839,7 +1105,7 @@ export default function CreateMagicLinkClient() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search occasions..."
-                className="w-full min-w-0 pl-9 pr-4 py-1.5 rounded-xl bg-background border border-border text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#7A1E2B]/30"
+                className="w-full min-w-0 pl-9 pr-8 py-2 rounded-xl text-xs bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E]/20 transition-all shadow-xs"
               />
               {searchQuery && (
                 <button
@@ -854,25 +1120,22 @@ export default function CreateMagicLinkClient() {
           </div>
 
           {/* Occasions Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {filteredOccasions.map((occ) => {
-              const Icon = occ.icon
               const isSelected = selectedOccasion === occ.id
-              const isProposal = occ.id === 'proposal'
-
-              const THEME_ACCENTS: Record<string, { border: string; glow: string; iconBg: string; text: string }> = {
-                proposal: { border: 'hover:border-rose-400', glow: 'hover:shadow-rose-500/20', iconBg: 'bg-gradient-to-tr from-rose-600 to-pink-500 text-white', text: 'text-rose-600 dark:text-rose-400' },
-                birthday: { border: 'hover:border-amber-400', glow: 'hover:shadow-amber-500/20', iconBg: 'bg-gradient-to-tr from-amber-500 to-yellow-400 text-slate-950', text: 'text-amber-600 dark:text-amber-400' },
-                wedding: { border: 'hover:border-yellow-400', glow: 'hover:shadow-yellow-500/20', iconBg: 'bg-gradient-to-tr from-yellow-600 via-amber-500 to-yellow-300 text-slate-950', text: 'text-yellow-600 dark:text-yellow-400' },
-                eid: { border: 'hover:border-emerald-400', glow: 'hover:shadow-emerald-500/20', iconBg: 'bg-gradient-to-tr from-emerald-600 to-teal-500 text-white', text: 'text-emerald-600 dark:text-emerald-400' },
-                anniversary: { border: 'hover:border-rose-400', glow: 'hover:shadow-rose-500/20', iconBg: 'bg-gradient-to-tr from-rose-700 to-red-500 text-white', text: 'text-rose-600 dark:text-rose-400' },
-                graduation: { border: 'hover:border-sky-400', glow: 'hover:shadow-sky-500/20', iconBg: 'bg-gradient-to-tr from-sky-600 to-indigo-600 text-white', text: 'text-sky-600 dark:text-sky-400' },
-                party: { border: 'hover:border-purple-400', glow: 'hover:shadow-purple-500/20', iconBg: 'bg-gradient-to-tr from-purple-600 to-pink-600 text-white', text: 'text-purple-600 dark:text-purple-400' },
-                newborn: { border: 'hover:border-teal-400', glow: 'hover:shadow-teal-500/20', iconBg: 'bg-gradient-to-tr from-teal-500 to-emerald-400 text-white', text: 'text-teal-600 dark:text-teal-400' },
-                ramadan: { border: 'hover:border-amber-400', glow: 'hover:shadow-amber-500/20', iconBg: 'bg-gradient-to-tr from-emerald-700 to-amber-500 text-white', text: 'text-amber-600 dark:text-amber-400' },
-                apology: { border: 'hover:border-rose-400', glow: 'hover:shadow-rose-500/20', iconBg: 'bg-gradient-to-tr from-rose-500 to-red-400 text-white', text: 'text-rose-600 dark:text-rose-400' },
+              const EMOJIS: Record<string, string> = {
+                proposal: '💍',
+                birthday: '🎂',
+                wedding: '👑',
+                eid: '🌙',
+                anniversary: '🥂',
+                graduation: '🎓',
+                party: '🎉',
+                newborn: '🍼',
+                ramadan: '🕌',
+                apology: '💖',
               }
-              const accent = THEME_ACCENTS[occ.id] || THEME_ACCENTS.proposal
+              const emoji = EMOJIS[occ.id] || '✨'
 
               return (
                 <div
@@ -880,86 +1143,83 @@ export default function CreateMagicLinkClient() {
                   onClick={() => handleSelectOccasion(occ.id)}
                   role="button"
                   tabIndex={0}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSelectOccasion(occ.id)}
                   className={cn(
-                    'relative rounded-2xl p-4 border-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group shadow-xs hover:-translate-y-0.5 cursor-pointer text-left',
-                    accent.border,
-                    accent.glow,
+                    "relative rounded-2xl flex flex-col justify-between overflow-hidden group cursor-pointer transition-all duration-200 border p-5 shadow-xs hover:shadow-md hover:-translate-y-1",
                     isSelected
-                      ? 'border-[#7A1E2B] bg-gradient-to-b from-rose-50/70 to-amber-50/70 dark:from-rose-950/20 dark:to-amber-950/20 shadow-md scale-[1.01]'
-                      : 'border-border/70 bg-card hover:shadow-md'
+                      ? "bg-card border-[#7B0D1E] ring-2 ring-[#7B0D1E]/25"
+                      : "bg-card border-border hover:border-[#7B0D1E]/40"
                   )}
                 >
-                  {/* Subtle decorative radial glow */}
-                  <div className="absolute -top-10 -right-10 size-28 bg-gradient-to-br from-amber-400/10 via-rose-500/10 to-transparent rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
+                  {/* Subtle top accent bar */}
+                  <div
+                    aria-hidden="true"
+                    className={cn(
+                      "absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl transition-opacity",
+                      isSelected ? "bg-[#7B0D1E] opacity-100" : "bg-muted opacity-0 group-hover:opacity-100 group-hover:bg-[#7B0D1E]/60"
+                    )}
+                  />
 
                   <div>
-                    {/* Badge & Active Check */}
-                    <div className="flex items-center justify-between gap-2 min-w-0 mb-2.5">
-                      <span
-                        className={cn(
-                          'text-[9.5px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border flex items-center gap-1',
-                          isProposal
-                            ? 'bg-rose-500 text-white border-rose-400 shadow-xs'
-                            : 'bg-muted text-muted-foreground border-border'
+                    {/* Emoji + Status Badges */}
+                    <div className="flex items-start justify-between gap-2 mb-3.5">
+                      <div className="size-12 rounded-2xl bg-muted/60 border border-border/80 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition-transform">
+                        {emoji}
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        {occ.trending && (
+                          <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30">
+                            🔥 Trending
+                          </span>
                         )}
-                      >
-                        {occ.badge}
+                        {isSelected && (
+                          <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-[#7B0D1E] dark:text-rose-400 border border-primary/20">
+                            ✓ Selected
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Title & Tag */}
+                    <h3 className={cn('text-base font-extrabold text-foreground leading-tight mb-1 font-serif', isUrdu && 'font-nastaliq')}>
+                      {occ.label}
+                    </h3>
+
+                    {/* Urdu label */}
+                    {isUrdu && (
+                      <span className="text-xs font-nastaliq block mb-1 text-muted-foreground">{occ.urdu}</span>
+                    )}
+
+                    {/* Type tag */}
+                    <div className="mb-2.5">
+                      <span className="inline-block text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-muted text-muted-foreground border border-border/60">
+                        {occ.defaultType === 'wish' ? '🎁 3D Wish Capsule' : '📮 RSVP Invitation'}
                       </span>
-                      {occ.trending && (
-                        <span className="text-[9px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-300">
-                          🔥 Trending
-                        </span>
-                      )}
                     </div>
 
-                    {/* Icon & Title */}
-                    <div className="flex items-center gap-3 mb-2">
-                      <div
-                        className={cn(
-                          'size-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-105 shadow-sm',
-                          accent.iconBg
-                        )}
-                      >
-                        <Icon className="size-5" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <h3 className={cn(
-                          "text-sm sm:text-base font-bold text-foreground group-hover:text-[#7A1E2B] dark:group-hover:text-amber-300 transition-colors truncate",
-                          isUrdu && "font-nastaliq text-base"
-                        )}>
-                          {occ.label}
-                        </h3>
-                        <span className="text-[10.5px] font-medium text-muted-foreground block truncate">
-                          {occ.defaultType === 'wish' ? 'Interactive 3D Wish Capsule' : 'Event RSVP Digital Invitation'}
-                        </span>
-                      </div>
-                    </div>
-
-                    <p className="text-[11.5px] text-muted-foreground line-clamp-2 leading-relaxed">
+                    {/* Description */}
+                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed mb-4">
                       {occ.desc}
                     </p>
                   </div>
 
-                  {/* Actions Row: Select button + Live Demo button */}
-                  <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between gap-2 min-w-0">
+                  {/* Footer Action Buttons */}
+                  <div className="pt-3.5 flex items-center justify-between gap-2 border-t border-border/60">
                     <button
                       type="button"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setPreviewDemoOccasion(occ)
-                      }}
-                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-foreground bg-muted/60 hover:bg-muted px-2.5 py-1.5 rounded-lg border border-border/60 transition-colors cursor-pointer relative z-10"
+                      onClick={(e) => { e.stopPropagation(); setPreviewDemoOccasion(occ) }}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-muted hover:bg-muted/80 text-foreground border border-border/80 transition-all cursor-pointer"
                     >
-                      <Play className="size-3 text-amber-500 fill-amber-500" />
-                      <span>Live Demo</span>
+                      <Play className="size-3 text-[#7B0D1E] fill-[#7B0D1E]" />
+                      <span>Demo</span>
                     </button>
 
                     <button
                       type="button"
-                      className="inline-flex items-center gap-1 text-xs font-extrabold text-white bg-gradient-to-r from-[#7A1E2B] to-rose-700 hover:opacity-95 px-3 py-1.5 rounded-xl shadow-xs transition-transform group-hover:scale-105 active:scale-95 cursor-pointer relative z-10"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-xl text-white bg-[#7B0D1E] hover:bg-[#631823] transition-all group-hover:shadow-sm cursor-pointer"
                     >
-                      <span>Customize</span>
-                      <ArrowRight className="size-3.5" />
+                      <span>Choose</span>
+                      <ArrowRight className="size-3" />
                     </button>
                   </div>
                 </div>
@@ -969,49 +1229,56 @@ export default function CreateMagicLinkClient() {
 
           {/* Quick Occasion Live Demo Modal */}
           {previewDemoOccasion && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-              <div className="max-w-md w-full rounded-3xl bg-slate-950 border border-amber-400/50 p-6 text-white shadow-2xl relative overflow-hidden text-center space-y-4">
-                <button
-                  onClick={() => setPreviewDemoOccasion(null)}
-                  className="absolute top-4 right-4 size-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-300 hover:text-white cursor-pointer"
-                >
-                  <X className="size-4" />
-                </button>
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+              <div
+                className="max-w-md w-full rounded-3xl bg-card border border-border text-foreground shadow-2xl relative overflow-hidden text-center"
+              >
+                {/* Top accent bar */}
+                <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#7B0D1E] to-transparent" />
 
-                <div className="size-16 rounded-full bg-amber-400/20 border border-amber-400 flex items-center justify-center mx-auto text-3xl">
-                  {previewDemoOccasion.id === 'proposal' ? '💍' : previewDemoOccasion.id === 'birthday' ? '🎂' : '✨'}
-                </div>
-
-                <h3 className="text-xl font-serif font-black text-amber-300">
-                  {previewDemoOccasion.label}
-                </h3>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  {previewDemoOccasion.desc}
-                </p>
-
-                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 text-xs italic text-rose-200">
-                  &ldquo;{previewDemoOccasion.defaultLetter}&rdquo;
-                </div>
-
-                <div className="flex gap-2 pt-2">
+                <div className="p-6 sm:p-7 space-y-4">
                   <button
-                    type="button"
                     onClick={() => setPreviewDemoOccasion(null)}
-                    className="flex-1 py-2.5 rounded-xl border border-white/20 text-xs font-bold text-slate-300 hover:text-white"
+                    className="absolute top-4 right-4 size-8 rounded-full flex items-center justify-center cursor-pointer transition-colors bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground"
                   >
-                    Close
+                    <X className="size-4" />
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const occ = previewDemoOccasion.id
-                      setPreviewDemoOccasion(null)
-                      handleSelectOccasion(occ)
-                    }}
-                    className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 text-xs font-black"
-                  >
-                    Start Customizing 🪄
-                  </button>
+
+                  <div className="size-18 rounded-2xl flex items-center justify-center mx-auto text-4xl bg-muted/70 border border-border shadow-xs">
+                    {previewDemoOccasion.id === 'proposal' ? '💍' : previewDemoOccasion.id === 'birthday' ? '🎂' : previewDemoOccasion.id === 'wedding' ? '👑' : previewDemoOccasion.id === 'eid' ? '🌙' : '✨'}
+                  </div>
+
+                  <h3 className="text-xl font-serif font-black text-foreground">
+                    {previewDemoOccasion.label}
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {previewDemoOccasion.desc}
+                  </p>
+
+                  <div className="p-4 rounded-2xl text-xs italic text-left leading-relaxed bg-muted/50 border border-border text-foreground">
+                    &ldquo;{previewDemoOccasion.defaultLetter}&rdquo;
+                  </div>
+
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewDemoOccasion(null)}
+                      className="flex-1 py-2.5 rounded-xl text-xs font-bold transition-colors cursor-pointer bg-muted hover:bg-muted/80 text-foreground border border-border"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const occ = previewDemoOccasion.id
+                        setPreviewDemoOccasion(null)
+                        handleSelectOccasion(occ)
+                      }}
+                      className="flex-1 py-2.5 rounded-xl text-xs font-bold cursor-pointer transition-opacity bg-[#7B0D1E] hover:bg-[#631823] text-white shadow-xs"
+                    >
+                      Start Customizing 🪄
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1020,41 +1287,47 @@ export default function CreateMagicLinkClient() {
         </div>
       ) : (
         /* STEP 2: PERSONALIZE & LIVE PREVIEW */
-        <div className={cn("space-y-4 animate-in fade-in duration-300 text-left", isUrdu && "text-right font-urdu")}>
-          {/* Top Bar: Change Occasion */}
-          <div className="flex items-center justify-between gap-3 pb-2 border-b border-border/60">
-            <button
-              type="button"
-              onClick={() => {
-                setErrors({})
-                setStep(1)
-              }}
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#7A1E2B] hover:text-[#52131c] transition-all cursor-pointer bg-muted/70 hover:bg-muted px-3.5 py-1.5 rounded-full border border-border/80 shadow-xs"
-            >
-              <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
-              <span>{t('btnBack') || 'Back to Occasions'}</span>
-            </button>
-
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5 bg-muted/50 px-3 py-1 rounded-full border border-border/60">
-              <span>{activeOccMeta.id === 'proposal' ? '💍' : activeOccMeta.id === 'birthday' ? '🎂' : '✨'}</span>
-              <span>{activeOccMeta.label}</span>
-            </span>
-          </div>
+        <div className={cn("space-y-5 animate-in fade-in duration-300 text-left", isUrdu && "text-right font-urdu")}>
           
-          {/* 2-Section Tabs (Desktop + Mobile) */}
-          <div className="flex items-center justify-between gap-2 min-w-0 p-1.5 rounded-2xl bg-muted/70 border border-border/70 shadow-xs">
-            <div className="flex items-center gap-1.5 sm:gap-2 flex-1">
+            {/* Step 2 Top Bar */}
+            <div className="flex items-center justify-between gap-3 pb-4 border-b border-border/60">
               <button
                 type="button"
-                onClick={() => setActiveTab('details')}
+                onClick={() => {
+                  setErrors({})
+                  changeStep(1)
+                }}
+                className="inline-flex items-center gap-1.5 text-xs font-bold cursor-pointer px-3.5 py-2 rounded-xl transition-all bg-card border border-border text-foreground hover:bg-muted shadow-xs"
+              >
+                <ArrowLeft className={cn("size-3.5", isUrdu && "rotate-180")} />
+                <span>{t('btnBack') || 'Back'}</span>
+              </button>
+
+              {/* Occasion badge */}
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-[#7B0D1E] dark:text-rose-400">
+                  Step 2 of 2
+                </span>
+                <span className="hidden sm:flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-muted border border-border text-muted-foreground">
+                  <span>{activeOccMeta.id === 'proposal' ? '💍' : activeOccMeta.id === 'birthday' ? '🎂' : '✨'}</span>
+                  <span>{activeOccMeta.label}</span>
+                </span>
+              </div>
+            </div>
+            
+            {/* Tab Switcher */}
+            <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs">
+              <button
+                type="button"
+                onClick={() => changeStep(2, 'details')}
                 className={cn(
-                  'flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer',
+                  "flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer",
                   activeTab === 'details'
-                    ? 'bg-background text-[#7A1E2B] shadow-sm border border-border/60'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
+                    ? "bg-[#7B0D1E] text-white shadow-xs font-bold"
+                    : "text-muted-foreground hover:text-foreground hover:bg-card/50"
                 )}
               >
-                <Edit3 className="size-3.5 sm:size-4 shrink-0 text-[#7A1E2B]" />
+                <Edit3 className="size-3.5 sm:size-4 shrink-0" />
                 <span className="truncate">
                   {linkType === 'invite'
                     ? t('magicTabDetails', '1. Event Details')
@@ -1064,755 +1337,788 @@ export default function CreateMagicLinkClient() {
 
               <button
                 type="button"
-                onClick={() => setActiveTab('design')}
+                onClick={() => changeStep(2, 'design')}
                 className={cn(
-                  'flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer',
+                  "flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer",
                   activeTab === 'design'
-                    ? 'bg-background text-[#7A1E2B] shadow-sm border border-border/60'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
+                    ? "bg-[#7B0D1E] text-white shadow-xs font-bold"
+                    : "text-muted-foreground hover:text-foreground hover:bg-card/50"
                 )}
               >
-                <Palette className="size-3.5 sm:size-4 shrink-0 text-[#7A1E2B]" />
+                <Palette className="size-3.5 sm:size-4 shrink-0" />
                 <span className="truncate">{t('magicTabTheme', '2. Theme & Style')}</span>
               </button>
             </div>
 
-            {/* Mobile Preview Toggle (Only visible on screens < lg) */}
-          </div>
-
-          <div className="grid grid-cols-1 gap-8 min-w-0 lg:grid-cols-12 ">
-            
-            {/* LEFT COLUMN: FORM & THEME PICKER */}
-            <div className={'lg:col-span-7 space-y-4 min-w-0'}>
-              <div className={cn(
-                "rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-sm text-left",
-                isUrdu && "text-right font-urdu"
-              )}>
-                {/* Form Body */}
-                <form onSubmit={handleSubmit} noValidate className="space-y-4">
-                  
-                  {/* DETAILS TAB CONTENT (Section 1) */}
-                  <div className={cn('space-y-4 text-left', isUrdu && 'text-right font-urdu', activeTab !== 'details' && 'hidden')}>
+            <div className="grid grid-cols-1 gap-8 min-w-0 lg:grid-cols-12 ">
+              
+              {/* LEFT COLUMN: FORM & THEME PICKER */}
+              <div className={'lg:col-span-7 space-y-4 min-w-0'}>
+                <div
+                  className={cn("rounded-3xl p-5 sm:p-7 text-left bg-card border border-border shadow-xs", isUrdu && "text-right font-urdu")}
+                >
+                  {/* Form Body */}
+                  <form onSubmit={handleSubmit} noValidate className="space-y-4">
                     
-                    {/* Sender & Recipient Names */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
-                          {t('magicSenderLabel', 'Your Name (Sender)')} *
-                        </label>
-                        <input
-                          id="field-senderName"
-                          type="text"
-                          placeholder={isUrdu ? "مثال: طارق محمود" : "e.g. Farooq / Zaid"}
-                          value={senderName}
-                          onChange={(e) => handleFieldChange('senderName', e.target.value, setSenderName)}
-                          className={cn(
-                            'w-full px-4 py-2.5 bg-background border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all',
-                            isUrdu ? 'text-right' : 'text-left',
-                            errors.senderName ? 'border-red-500 ring-2 ring-red-500/20 focus:ring-2 focus:ring-red-500' : 'border-border focus:ring-2 focus:ring-[#7A1E2B]/30'
-                          )}
-                          dir={isUrdu ? 'rtl' : 'ltr'}
-                        />
-                        {errors.senderName && (
-                          <p className={cn("mt-1.5 text-xs font-semibold text-red-500 flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1 duration-200", isUrdu && "flex-row-reverse text-right font-urdu")}>
-                            <AlertCircle className="size-3.5 shrink-0" />
-                            <span>{errors.senderName}</span>
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
-                          {selectedOccasion === 'proposal' ? 'Partner / Beloved Name *' : t('magicRecipientLabel', 'Recipient Name *')}
-                        </label>
-                        <input
-                          id="field-recipientName"
-                          type="text"
-                          placeholder={isUrdu ? "مثال: عائشہ" : "e.g. Sara / Ayesha"}
-                          value={recipientName}
-                          onChange={(e) => handleFieldChange('recipientName', e.target.value, setRecipientName)}
-                          className={cn(
-                            'w-full px-4 py-2.5 bg-background border rounded-xl text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all',
-                            isUrdu ? 'text-right' : 'text-left',
-                            errors.recipientName ? 'border-red-500 ring-2 ring-red-500/20 focus:ring-2 focus:ring-red-500' : 'border-border focus:ring-2 focus:ring-[#7A1E2B]/30'
-                          )}
-                          dir={isUrdu ? 'rtl' : 'ltr'}
-                        />
-                        {errors.recipientName && (
-                          <p className={cn("mt-1.5 text-xs font-semibold text-red-500 flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1 duration-200", isUrdu && "flex-row-reverse text-right font-urdu")}>
-                            <AlertCircle className="size-3.5 shrink-0" />
-                            <span>{errors.recipientName}</span>
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* PROPOSAL SPECIFIC: How We Met & Special Date */}
-                    {selectedOccasion === 'proposal' && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3.5 rounded-2xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50">
+                    {/* DETAILS TAB CONTENT (Section 1) */}
+                    <div className={cn('space-y-4 text-left', isUrdu && 'text-right font-urdu', activeTab !== 'details' && 'hidden')}>
+                      
+                      {/* Sender & Recipient Names */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="text-xs font-bold text-rose-950 dark:text-rose-200 uppercase tracking-wider block mb-1.5">
-                            Our Special Date (Optional)
+                          <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                            {t('magicSenderLabel', 'Your Name (Sender)')} *
                           </label>
                           <input
+                            id="field-senderName"
                             type="text"
-                            placeholder="e.g. October 14, 2021"
-                            value={specialDate}
-                            onChange={(e) => setSpecialDate(e.target.value)}
-                            className="w-full min-w-0 px-3.5 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-rose-400"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="text-xs font-bold text-rose-950 dark:text-rose-200 uppercase tracking-wider block mb-1.5">
-                            How We Met (Optional)
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="e.g. On a rainy afternoon at the library cafe..."
-                            value={howWeMet}
-                            onChange={(e) => setHowWeMet(e.target.value)}
-                            className="w-full min-w-0 px-3.5 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-rose-400"
-                          />
-                        </div>
-
-                        <div className="sm:col-span-2 pt-1">
-                          <label className="text-xs font-bold text-rose-950 dark:text-rose-200 uppercase tracking-wider block mb-1">
-                            Your WhatsApp Number for Instant Alert (Optional)
-                          </label>
-                          <div className="relative overflow-hidden">
-                            <Phone className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-rose-500" />
-                            <input
-                              type="tel"
-                              placeholder="e.g. +92 300 1234567"
-                              value={whatsappNumber}
-                              onChange={(e) => setWhatsappNumber(e.target.value)}
-                              className="w-full min-w-0 pl-9 pr-3 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-rose-400"
-                            />
-                          </div>
-                          <p className="text-[10px] text-muted-foreground mt-1">
-                            When your partner taps &ldquo;YES! 💍&rdquo;, they will be prompted to send an instant celebration message to this number.
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Secret Letter / Proposal Confession */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider", isUrdu ? "text-right font-urdu" : "text-left")}>
-                          {selectedOccasion === 'proposal'
-                            ? '💍 Proposal Letter / Heartfelt Confession'
-                            : '💌 Heartfelt Secret Letter / Dua'}
-                        </label>
-                        <button
-                          type="button"
-                          onClick={() => setSecretLetter(activeOccMeta.defaultLetter)}
-                          className="text-[11px] font-semibold text-[#7A1E2B] hover:underline cursor-pointer"
-                        >
-                          Reset Template
-                        </button>
-                      </div>
-                      <textarea 
-                        rows={3}
-                        value={secretLetter}
-                        onChange={(e) => setSecretLetter(e.target.value)}
-                        placeholder="Write your heartfelt thoughts..."
-                        className={cn(
-                          "w-full px-4 py-2.5 bg-background border border-border rounded-xl text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-[#7A1E2B]/30 leading-relaxed",
-                          isUrdu ? "text-right font-urdu" : "text-left"
-                        )}
-                        dir={isUrdu ? 'rtl' : 'ltr'}
-                      />
-                    </div>
-
-                    {/* Dedication Verse / Tagline */}
-                    <div>
-                      <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
-                        {t('specialDedication', 'Special Dedication / Tagline')}
-                      </label>
-                      <input
-                        type="text"
-                        value={customVerse}
-                        onChange={(e) => setCustomVerse(e.target.value)}
-                        placeholder={t('dedicationPlaceholder', 'e.g. You are my dream come true ✨')}
-                        className={cn(
-                          'w-full px-4 py-2.5 bg-background border border-border rounded-xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#7A1E2B]/30',
-                          isUrdu ? 'font-nastaliq text-right' : 'text-left'
-                        )}
-                        dir={isUrdu ? 'rtl' : 'ltr'}
-                      />
-                    </div>
-
-                    {/* 4 Interactive Notes / Balloons / Confessions */}
-                    {linkType === 'wish' && (
-                      <div className="space-y-2 pt-2 border-t border-border/60">
-                        <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block", isUrdu ? "text-right font-urdu" : "text-left")}>
-                          {selectedOccasion === 'proposal'
-                            ? '💖 4 Reasons Why I Love You (Tap to Reveal)'
-                            : '🎈 4 Interactive Click-to-Reveal Notes'}
-                        </label>
-                        <p className={cn("text-[11px] text-muted-foreground", isUrdu ? "text-right font-urdu" : "text-left")}>
-                          The recipient taps each floating card in their capsule to read these memories:
-                        </p>
-                        <div className="space-y-2">
-                          {quotes.map((q, idx) => (
-                            <div key={idx} className="flex items-center gap-2">
-                              <span className="text-xs font-bold text-[#7A1E2B] w-5">{idx + 1}.</span>
-                              <input
-                                type="text"
-                                value={q}
-                                onChange={(e) => handleQuoteChange(idx, e.target.value)}
-                                className={cn(
-                                  "flex-1 px-3.5 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-[#7A1E2B]/30",
-                                  isUrdu ? "text-right font-urdu" : "text-left"
-                                )}
-                                dir={isUrdu ? 'rtl' : 'ltr'}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Birthday Specific: Age & Candles */}
-                    {linkType === 'wish' && selectedOccasion === 'birthday' && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                        <div>
-                          <label className={cn("text-xs font-semibold text-muted-foreground block mb-1", isUrdu ? "text-right font-urdu" : "text-left")}>
-                            Age (For milestone stats)
-                          </label>
-                          <input
-                            type="number"
-                            min={1}
-                            max={120}
-                            value={recipientAge}
-                            onChange={(e) => setRecipientAge(Number(e.target.value))}
-                            className={cn("w-full px-3.5 py-2.5 bg-background border border-border rounded-xl text-sm text-foreground focus:outline-none", isUrdu ? "text-right" : "text-left")}
-                            dir={isUrdu ? 'rtl' : 'ltr'}
-                          />
-                        </div>
-                        <div>
-                          <label className={cn("text-xs font-semibold text-muted-foreground block mb-1", isUrdu ? "text-right font-urdu" : "text-left")}>
-                            Cake Candles Count
-                          </label>
-                          <select
-                            value={candleCount}
-                            onChange={(e) => setCandleCount(Number(e.target.value))}
-                            className={cn("w-full px-3.5 py-2.5 bg-background border border-border rounded-xl text-sm text-foreground focus:outline-none", isUrdu ? "text-right" : "text-left")}
-                            dir={isUrdu ? 'rtl' : 'ltr'}
-                          >
-                            <option value={1}>1 Candle (Minimal)</option>
-                            <option value={3}>3 Candles (Traditional)</option>
-                            <option value={5}>5 Candles (Grand Feast)</option>
-                          </select>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* INVITE SPECIFIC FIELDS */}
-                    {linkType === 'invite' && (
-                      <div className="space-y-4 pt-3 border-t border-border/60">
-                        <div>
-                          <label className={cn("text-xs font-bold text-foreground block mb-1 uppercase tracking-wider", isUrdu ? "text-right font-urdu" : "text-left")}>
-                            Event Title
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="e.g. Walima Reception / Wedding Gala"
-                            value={eventTitle}
-                            onChange={(e) => setEventTitle(e.target.value)}
-                            className={cn("w-full px-4 py-2.5 bg-background border border-border rounded-xl text-sm text-foreground focus:outline-none", isUrdu ? "text-right" : "text-left")}
-                            dir={isUrdu ? 'rtl' : 'ltr'}
-                          />
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div>
-                            <label className={cn("text-xs font-semibold text-muted-foreground block mb-1", isUrdu ? "text-right font-urdu" : "text-left")}>
-                              Event Date *
-                            </label>
-                            <input
-                              id="field-eventDate"
-                              type="date"
-                              value={eventDate}
-                              onChange={(e) => handleFieldChange('eventDate', e.target.value, setEventDate)}
-                              className={cn(
-                                "w-full px-4 py-2.5 bg-background border rounded-xl text-sm text-foreground focus:outline-none transition-all",
-                                isUrdu ? "text-right" : "text-left",
-                                errors.eventDate ? "border-red-500 ring-2 ring-red-500/20 focus:ring-2 focus:ring-red-500" : "border-border focus:ring-2 focus:ring-[#7A1E2B]/30"
-                              )}
-                              dir={isUrdu ? 'rtl' : 'ltr'}
-                            />
-                            {errors.eventDate && (
-                              <p className={cn("mt-1.5 text-xs font-semibold text-red-500 flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1 duration-200", isUrdu && "flex-row-reverse text-right font-urdu")}>
-                                <AlertCircle className="size-3.5 shrink-0" />
-                                <span>{errors.eventDate}</span>
-                              </p>
+                            placeholder={isUrdu ? "مثال: طارق محمود" : "e.g. Farooq / Zaid"}
+                            value={senderName}
+                            onChange={(e) => handleFieldChange('senderName', e.target.value, setSenderName)}
+                            className={cn(
+                              'w-full px-4 py-3 bg-background border rounded-2xl text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all shadow-xs',
+                              isUrdu ? 'text-right' : 'text-left',
+                              errors.senderName ? 'border-red-500 ring-2 ring-red-500/20 focus:ring-2 focus:ring-red-500' : 'border-input focus:ring-2 focus:ring-[#7B0D1E]'
                             )}
-                          </div>
+                            dir={isUrdu ? 'rtl' : 'ltr'}
+                          />
+                          {errors.senderName && (
+                            <p className={cn("mt-1.5 text-xs font-semibold text-red-500 flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1 duration-200", isUrdu && "flex-row-reverse text-right font-urdu")}>
+                              <AlertCircle className="size-3.5 shrink-0" />
+                              <span>{errors.senderName}</span>
+                            </p>
+                          )}
+                        </div>
+
+                        <div>
+                          <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                            {selectedOccasion === 'proposal' ? 'Partner / Beloved Name *' : t('magicRecipientLabel', 'Recipient Name *')}
+                          </label>
+                          <input
+                            id="field-recipientName"
+                            type="text"
+                            placeholder={isUrdu ? "مثال: عائشہ" : "e.g. Sara / Ayesha"}
+                            value={recipientName}
+                            onChange={(e) => handleFieldChange('recipientName', e.target.value, setRecipientName)}
+                            className={cn(
+                              'w-full px-4 py-3 bg-background border rounded-2xl text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all shadow-xs',
+                              isUrdu ? 'text-right' : 'text-left',
+                              errors.recipientName ? 'border-red-500 ring-2 ring-red-500/20 focus:ring-2 focus:ring-red-500' : 'border-input focus:ring-2 focus:ring-[#7B0D1E]'
+                            )}
+                            dir={isUrdu ? 'rtl' : 'ltr'}
+                          />
+                          {errors.recipientName && (
+                            <p className={cn("mt-1.5 text-xs font-semibold text-red-500 flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1 duration-200", isUrdu && "flex-row-reverse text-right font-urdu")}>
+                              <AlertCircle className="size-3.5 shrink-0" />
+                              <span>{errors.recipientName}</span>
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* PROPOSAL SPECIFIC: How We Met & Special Date */}
+                      {selectedOccasion === 'proposal' && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50">
                           <div>
-                            <label className={cn("text-xs font-semibold text-muted-foreground block mb-1", isUrdu ? "text-right font-urdu" : "text-left")}>
-                              Event Time
+                            <label className="text-xs font-bold text-rose-950 dark:text-rose-200 uppercase tracking-wider block mb-1.5">
+                              Our Special Date (Optional)
                             </label>
                             <input
                               type="text"
-                              placeholder="e.g. 7:30 PM"
-                              value={eventTime}
-                              onChange={(e) => setEventTime(e.target.value)}
-                              className={cn("w-full px-4 py-2.5 bg-background border border-border rounded-xl text-sm text-foreground focus:outline-none", isUrdu ? "text-right" : "text-left")}
+                              placeholder="e.g. October 14, 2021"
+                              value={specialDate}
+                              onChange={(e) => setSpecialDate(e.target.value)}
+                              className="w-full min-w-0 px-4 py-2.5 bg-background border border-input rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="text-xs font-bold text-rose-950 dark:text-rose-200 uppercase tracking-wider block mb-1.5">
+                              How We Met (Optional)
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="e.g. On a rainy afternoon at the library cafe..."
+                              value={howWeMet}
+                              onChange={(e) => setHowWeMet(e.target.value)}
+                              className="w-full min-w-0 px-4 py-2.5 bg-background border border-input rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs"
+                            />
+                          </div>
+
+                          <div className="sm:col-span-2 pt-1">
+                            <label className="text-xs font-bold text-rose-950 dark:text-rose-200 uppercase tracking-wider block mb-1">
+                              Your WhatsApp Number for Instant Alert (Optional)
+                            </label>
+                            <div className="relative overflow-hidden">
+                              <Phone className="size-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-rose-500" />
+                              <input
+                                type="tel"
+                                placeholder="e.g. +92 300 1234567"
+                                value={whatsappNumber}
+                                onChange={(e) => setWhatsappNumber(e.target.value)}
+                                className="w-full min-w-0 pl-10 pr-3 py-2.5 bg-background border border-input rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs"
+                                dir="ltr"
+                              />
+                            </div>
+                            <p className="text-[10px] text-muted-foreground mt-1">
+                              When your partner taps &ldquo;YES! 💍&rdquo;, they will be prompted to send an instant celebration message to this number.
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Secret Letter / Proposal Confession */}
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider", isUrdu ? "text-right font-urdu" : "text-left")}>
+                            {selectedOccasion === 'proposal'
+                              ? '💍 Proposal Letter / Heartfelt Confession'
+                              : '💌 Heartfelt Secret Letter / Dua'}
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => setSecretLetter(activeOccMeta.defaultLetter)}
+                            className="text-[11px] font-semibold text-[#7B0D1E] hover:underline cursor-pointer"
+                          >
+                            Reset Template
+                          </button>
+                        </div>
+                        <textarea 
+                          rows={3}
+                          value={secretLetter}
+                          onChange={(e) => setSecretLetter(e.target.value)}
+                          placeholder="Write your heartfelt thoughts..."
+                          className={cn(
+                            "w-full px-4 py-3 bg-background border border-input rounded-2xl text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] leading-relaxed shadow-xs",
+                            isUrdu ? "text-right font-urdu" : "text-left"
+                          )}
+                          dir={isUrdu ? 'rtl' : 'ltr'}
+                        />
+                      </div>
+
+                      {/* Dedication Verse / Tagline */}
+                      <div>
+                        <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                          {t('specialDedication', 'Special Dedication / Tagline')}
+                        </label>
+                        <input
+                          type="text"
+                          value={customVerse}
+                          onChange={(e) => setCustomVerse(e.target.value)}
+                          placeholder={t('dedicationPlaceholder', 'e.g. You are my dream come true ✨')}
+                          className={cn(
+                            'w-full px-4 py-3 bg-background border border-input rounded-2xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs',
+                            isUrdu ? 'font-nastaliq text-right' : 'text-left'
+                          )}
+                          dir={isUrdu ? 'rtl' : 'ltr'}
+                        />
+                      </div>
+
+                      {/* 4 Interactive Notes / Balloons / Confessions */}
+                      {linkType === 'wish' && (
+                        <div className="space-y-2 pt-2 border-t border-border/60">
+                          <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block", isUrdu ? "text-right font-urdu" : "text-left")}>
+                            {selectedOccasion === 'proposal'
+                              ? '💖 4 Reasons Why I Love You (Tap to Reveal)'
+                              : '🎈 4 Interactive Click-to-Reveal Notes'}
+                          </label>
+                          <p className={cn("text-[11px] text-muted-foreground", isUrdu ? "text-right font-urdu" : "text-left")}>
+                            The recipient taps each floating card in their capsule to read these memories:
+                          </p>
+                          <div className="space-y-2">
+                            {quotes.map((q, idx) => (
+                              <div key={idx} className="flex items-center gap-2">
+                                <span className="text-xs font-bold text-[#7B0D1E] w-5">{idx + 1}.</span>
+                                <input
+                                  type="text"
+                                  value={q}
+                                  onChange={(e) => handleQuoteChange(idx, e.target.value)}
+                                  className={cn(
+                                    "flex-1 px-4 py-2.5 bg-background border border-input rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs",
+                                    isUrdu ? "text-right font-urdu" : "text-left"
+                                  )}
+                                  dir={isUrdu ? 'rtl' : 'ltr'}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Birthday Specific: Age & Candles */}
+                      {linkType === 'wish' && selectedOccasion === 'birthday' && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                          <div>
+                            <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                              Age (For milestone stats)
+                            </label>
+                            <input
+                              type="number"
+                              min={1}
+                              max={120}
+                              value={recipientAge}
+                              onChange={(e) => setRecipientAge(Number(e.target.value))}
+                              className={cn("w-full px-4 py-3 bg-background border border-input rounded-2xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs", isUrdu ? "text-right" : "text-left")}
+                              dir={isUrdu ? 'rtl' : 'ltr'}
+                            />
+                          </div>
+                          <div>
+                            <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                              Cake Candles Count
+                            </label>
+                            <select
+                              value={candleCount}
+                              onChange={(e) => setCandleCount(Number(e.target.value))}
+                              className={cn("w-full px-4 py-3 bg-background border border-input rounded-2xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs", isUrdu ? "text-right" : "text-left")}
+                              dir={isUrdu ? 'rtl' : 'ltr'}
+                            >
+                              <option value={1}>1 Candle (Minimal)</option>
+                              <option value={3}>3 Candles (Traditional)</option>
+                              <option value={5}>5 Candles (Grand Feast)</option>
+                            </select>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* INVITE SPECIFIC FIELDS */}
+                      {linkType === 'invite' && (
+                        <div className="space-y-4 pt-3 border-t border-border/60">
+                          <div>
+                            <label className={cn("text-xs font-bold text-foreground block mb-1.5 uppercase tracking-wider", isUrdu ? "text-right font-urdu" : "text-left")}>
+                              Event Title *
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="e.g. Walima Reception / Wedding Gala"
+                              value={eventTitle}
+                              onChange={(e) => setEventTitle(e.target.value)}
+                              className={cn("w-full px-4 py-3 bg-background border border-input rounded-2xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs", isUrdu ? "text-right" : "text-left")}
+                              dir={isUrdu ? 'rtl' : 'ltr'}
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                                Event Date *
+                              </label>
+                              <input
+                                id="field-eventDate"
+                                type="date"
+                                value={eventDate}
+                                onChange={(e) => handleFieldChange('eventDate', e.target.value, setEventDate)}
+                                className={cn(
+                                  "w-full px-4 py-3 bg-background border rounded-2xl text-sm text-foreground focus:outline-none transition-all shadow-xs",
+                                  isUrdu ? "text-right" : "text-left",
+                                  errors.eventDate ? "border-red-500 ring-2 ring-red-500/20 focus:ring-2 focus:ring-red-500" : "border-input focus:ring-2 focus:ring-[#7B0D1E]"
+                                )}
+                                dir={isUrdu ? 'rtl' : 'ltr'}
+                              />
+                              {errors.eventDate && (
+                                <p className={cn("mt-1.5 text-xs font-semibold text-red-500 flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1 duration-200", isUrdu && "flex-row-reverse text-right font-urdu")}>
+                                  <AlertCircle className="size-3.5 shrink-0" />
+                                  <span>{errors.eventDate}</span>
+                                </p>
+                              )}
+                            </div>
+                            <div>
+                              <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                                Event Time
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="e.g. 7:30 PM"
+                                value={eventTime}
+                                onChange={(e) => setEventTime(e.target.value)}
+                                className={cn("w-full px-4 py-3 bg-background border border-input rounded-2xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs", isUrdu ? "text-right" : "text-left")}
+                                dir={isUrdu ? 'rtl' : 'ltr'}
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                              Venue Name
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="e.g. The Grand Marquee / Pearl Continental"
+                              value={venueName}
+                              onChange={(e) => setVenueName(e.target.value)}
+                              className={cn("w-full px-4 py-3 bg-background border border-input rounded-2xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs", isUrdu ? "text-right" : "text-left")}
+                              dir={isUrdu ? 'rtl' : 'ltr'}
+                            />
+                          </div>
+
+                          {/* Single Clean Full Address String Input */}
+                          <div>
+                            <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                              Venue Full Address (Street, City, District / Hall)
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="e.g. Grand Ballroom, 4th Floor, Blue Area, Islamabad"
+                              value={venueAddress}
+                              onChange={(e) => setVenueAddress(e.target.value)}
+                              className={cn("w-full px-4 py-3 bg-background border border-input rounded-2xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs", isUrdu ? "text-right font-urdu" : "text-left")}
                               dir={isUrdu ? 'rtl' : 'ltr'}
                             />
                           </div>
                         </div>
+                      )}
 
-                        <div>
-                          <label className={cn("text-xs font-semibold text-muted-foreground block mb-1", isUrdu ? "text-right font-urdu" : "text-left")}>
-                            Venue Name
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="e.g. The Grand Marquee / Pearl Continental"
-                            value={venueName}
-                            onChange={(e) => setVenueName(e.target.value)}
-                            className={cn("w-full px-4 py-2.5 bg-background border border-border rounded-xl text-sm text-foreground focus:outline-none", isUrdu ? "text-right font-urdu" : "text-left")}
-                            dir={isUrdu ? 'rtl' : 'ltr'}
-                          />
-                        </div>
-
-                        <div>
-                          <label className={cn("text-xs font-semibold text-muted-foreground block mb-1", isUrdu ? "text-right font-urdu" : "text-left")}>
-                            Venue Address & Google Maps Link
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="Address / Landmark"
-                            value={venueAddress}
-                            onChange={(e) => setVenueAddress(e.target.value)}
-                            className={cn("w-full px-4 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none mb-2", isUrdu ? "text-right font-urdu" : "text-left")}
-                            dir={isUrdu ? 'rtl' : 'ltr'}
-                          />
-                          <input
-                            type="url"
-                            placeholder="https://maps.google.com/?q=..."
-                            value={googleMapsUrl}
-                            onChange={(e) => setGoogleMapsUrl(e.target.value)}
-                            className={cn("w-full px-4 py-2 bg-background border border-border rounded-xl text-xs text-foreground focus:outline-none", isUrdu ? "text-right" : "text-left")}
-                            dir="ltr"
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Error Summary Banner (Section 1) */}
-                    {Object.keys(errors).length > 0 && (
-                      <div className={cn(
-                        "rounded-2xl border border-red-300 bg-red-50 dark:bg-red-950/40 dark:border-red-900/60 p-3.5 text-xs font-semibold text-red-700 dark:text-red-300 flex items-center gap-2.5 shadow-xs animate-in fade-in slide-in-from-top-1 duration-200",
-                        isUrdu && "flex-row-reverse text-right font-urdu"
-                      )}>
-                        <AlertCircle className="size-4.5 shrink-0 text-red-600 dark:text-red-400" />
-                        <span>{t('completeAllRequiredFields', 'Please complete all required fields marked in red.')}</span>
-                      </div>
-                    )}
-
-                    {/* Section 1 Navigation Buttons */}
-                    <div className="pt-4 border-t border-border/60 flex items-center justify-between gap-3">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setErrors({})
-                          setStep(1)
-                        }}
-                        className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-background hover:bg-muted text-xs sm:text-sm font-bold text-muted-foreground hover:text-foreground transition-all cursor-pointer"
-                      >
-                        <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
-                        <span>{t('btnBack') || 'Back to Occasions'}</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={handleNextToTheme}
-                        className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#7A1E2B] via-rose-700 to-amber-700 hover:opacity-95 text-white text-xs sm:text-sm font-extrabold shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer"
-                      >
-                        <span>{t('btnNext') || 'Next: Theme & Style'}</span>
-                        <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* THEME PICKER TAB CONTENT (Section 2) */}
-                  <div className={cn('space-y-4 text-left', isUrdu && 'text-right font-urdu', activeTab !== 'design' && 'hidden')}>
-                    <div>
-                      <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-2", isUrdu ? "text-right font-urdu" : "text-left")}>
-                        {activeOccMeta.label} Bespoke Palettes (Choose One)
-                      </label>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                        {availablePalettes.map((th) => {
-                          const isSelected = selectedTheme === th.id
-                          return (
-                            <button
-                              key={th.id}
-                              type="button"
-                              onClick={() => setSelectedTheme(th.id)}
-                              className={cn(
-                                'p-3 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-2',
-                                isUrdu ? 'text-right' : 'text-left',
-                                isSelected
-                                  ? 'bg-primary/5 border-[#7A1E2B] shadow-md ring-2 ring-[#7A1E2B]/20 scale-[1.02]'
-                                  : 'bg-card border-border hover:border-[#7A1E2B]/40'
-                              )}
-                            >
-                              <div className="flex items-center justify-between">
-                                <div
-                                  className="size-5 rounded-full border border-white/40 shadow-sm"
-                                  style={{ backgroundColor: th.accent }}
-                                />
-                                {isSelected && (
-                                  <span className="text-[10px] font-black text-[#7A1E2B]">
-                                    ACTIVE
-                                  </span>
-                                )}
-                              </div>
-                              <span className="text-xs font-bold text-foreground line-clamp-1">
-                                {th.name}
-                              </span>
-                            </button>
-                          )
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Error Summary Banner for Section 2 */}
-                    {Object.keys(errors).length > 0 && (
-                      <div className={cn(
-                        "rounded-2xl border border-red-300 bg-red-50 dark:bg-red-950/40 dark:border-red-900/60 p-3.5 text-xs font-semibold text-red-700 dark:text-red-300 flex items-center justify-between gap-2 min-w-0.5 shadow-xs animate-in fade-in slide-in-from-top-1 duration-200",
-                        isUrdu && "flex-row-reverse text-right font-urdu"
-                      )}>
-                        <div className={cn("flex items-center gap-2.5", isUrdu && "flex-row-reverse")}>
+                      {/* Error Summary Banner (Section 1) */}
+                      {Object.keys(errors).length > 0 && (
+                        <div className={cn(
+                          "rounded-2xl border border-red-300 bg-red-50 dark:bg-red-950/40 dark:border-red-900/60 p-3.5 text-xs font-semibold text-red-700 dark:text-red-300 flex items-center gap-2.5 shadow-xs animate-in fade-in slide-in-from-top-1 duration-200",
+                          isUrdu && "flex-row-reverse text-right font-urdu"
+                        )}>
                           <AlertCircle className="size-4.5 shrink-0 text-red-600 dark:text-red-400" />
                           <span>{t('completeAllRequiredFields', 'Please complete all required fields marked in red.')}</span>
                         </div>
+                      )}
+
+                      {/* Section 1 Navigation Buttons */}
+                      <div className="pt-4 border-t border-border/60 flex items-center justify-between gap-3">
                         <button
                           type="button"
                           onClick={() => {
-                            setActiveTab('details')
-                            const firstKey = Object.keys(errors)[0]
-                            if (typeof window !== 'undefined' && firstKey) {
-                              setTimeout(() => {
-                                const el = document.getElementById(`field-${firstKey}`) || document.querySelector(`[name="${firstKey}"]`)
-                                if (el) {
-                                  el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-                                  ;(el as HTMLElement).focus()
-                                }
-                              }, 100)
-                            }
+                            setErrors({})
+                            changeStep(1)
                           }}
-                          className="text-xs font-bold underline underline-offset-2 text-red-700 dark:text-red-300 hover:text-red-800 cursor-pointer shrink-0"
+                          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer bg-card border border-border text-foreground hover:bg-muted shadow-xs"
                         >
-                          {t('btnBack') || 'Go to Details'}
+                          <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
+                          <span>{t('btnBack') || 'Back'}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handleNextToTheme}
+                          className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-2xl text-white text-xs sm:text-sm font-extrabold transition-all cursor-pointer bg-[#7B0D1E] hover:bg-[#630A18] shadow-xs active:scale-[0.98]"
+                        >
+                          <span>{t('btnNext') || 'Next'}</span>
+                          <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
                         </button>
                       </div>
-                    )}
-
-                    {/* Section 2 Navigation Buttons */}
-                    <div className="pt-4 border-t border-border/60 flex items-center justify-between gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setActiveTab('details')}
-                        className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-background hover:bg-muted text-xs sm:text-sm font-bold text-muted-foreground hover:text-foreground transition-all cursor-pointer"
-                      >
-                        <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
-                        <span>{t('btnBack') || 'Back'}</span>
-                      </button>
-
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#7A1E2B] via-rose-700 to-amber-600 hover:from-[#601320] hover:to-amber-500 text-white font-extrabold rounded-xl text-xs sm:text-sm uppercase tracking-wider shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer disabled:opacity-50"
-                      >
-                        {loading ? (
-                          <span>Creating Your Magic Link...</span>
-                        ) : (
-                          <>
-                            <Sparkles className="size-4 text-amber-300" />
-                            <span>{t('generateMagicLinkBtn', 'Generate Royal Magic Link ✨')}</span>
-                          </>
-                        )}
-                      </button>
                     </div>
-                  </div>
-                </form>
-              </div>
-            </div>
 
-            {/* RIGHT COLUMN: STICKY LIVE INTERACTIVE CAPSULE PREVIEW */}
-            <div className="lg:col-span-5 space-y-4">
-              <div className="sticky top-20">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                    <Eye className="size-3.5 text-[#7A1E2B]" />
-                    <span>{t('livePreviewCapsule', 'Live Capsule Preview')}</span>
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-                    <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Live Sync
-                  </span>
+                    {/* THEME PICKER TAB CONTENT (Section 2) */}
+                    <div className={cn('space-y-4 text-left', isUrdu && 'text-right font-urdu', activeTab !== 'design' && 'hidden')}>
+                      <div>
+                        <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-2", isUrdu ? "text-right font-urdu" : "text-left")}>
+                          {activeOccMeta.label} Bespoke Palettes (Choose One)
+                        </label>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                          {availablePalettes.map((th) => {
+                            const isSelected = selectedTheme === th.id
+                            return (
+                              <button
+                                key={th.id}
+                                type="button"
+                                onClick={() => setSelectedTheme(th.id)}
+                                className={cn(
+                                  'p-3 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-2 shadow-xs',
+                                  isUrdu ? 'text-right' : 'text-left',
+                                  isSelected
+                                    ? 'bg-[#7B0D1E]/10 border-[#7B0D1E] ring-2 ring-[#7B0D1E]/20 scale-[1.02]'
+                                    : 'bg-card border-border hover:border-[#7B0D1E]/40'
+                                )}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div
+                                    className="size-5 rounded-full border border-white/40 shadow-sm"
+                                    style={{ backgroundColor: th.accent }}
+                                  />
+                                  {isSelected && (
+                                    <span className="text-[10px] font-black text-[#7B0D1E]">
+                                      ACTIVE
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="text-xs font-bold text-foreground line-clamp-1">
+                                  {th.name}
+                                </span>
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Error Summary Banner for Section 2 */}
+                      {Object.keys(errors).length > 0 && (
+                        <div className={cn(
+                          "rounded-2xl border border-red-300 bg-red-50 dark:bg-red-950/40 dark:border-red-900/60 p-3.5 text-xs font-semibold text-red-700 dark:text-red-300 flex items-center justify-between gap-2 min-w-0.5 shadow-xs animate-in fade-in slide-in-from-top-1 duration-200",
+                          isUrdu && "flex-row-reverse text-right font-urdu"
+                        )}>
+                          <div className={cn("flex items-center gap-2.5", isUrdu && "flex-row-reverse")}>
+                            <AlertCircle className="size-4.5 shrink-0 text-red-600 dark:text-red-400" />
+                            <span>{t('completeAllRequiredFields', 'Please complete all required fields marked in red.')}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              changeStep(2, 'details')
+                              const firstKey = Object.keys(errors)[0]
+                              if (typeof window !== 'undefined' && firstKey) {
+                                setTimeout(() => {
+                                  const el = document.getElementById(`field-${firstKey}`) || document.querySelector(`[name="${firstKey}"]`)
+                                  if (el) {
+                                    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                                    ;(el as HTMLElement).focus()
+                                  }
+                                }, 100)
+                              }
+                            }}
+                            className="text-xs font-bold underline underline-offset-2 text-red-700 dark:text-red-300 hover:text-red-800 cursor-pointer shrink-0"
+                          >
+                            {t('btnBack') || 'Go to Details'}
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Section 2 Navigation Buttons */}
+                      <div className="pt-4 border-t border-border/60 flex items-center justify-between gap-3">
+                        <button
+                          type="button"
+                          onClick={() => changeStep(2, 'details')}
+                          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold cursor-pointer transition-all bg-card border border-border text-foreground hover:bg-muted shadow-xs"
+                        >
+                          <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
+                          <span>{t('btnBack') || 'Back'}</span>
+                        </button>
+
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="inline-flex items-center justify-center gap-2 px-6 py-3 text-white font-extrabold rounded-2xl text-xs sm:text-sm uppercase tracking-wider transition-all cursor-pointer disabled:opacity-50 bg-[#7B0D1E] hover:bg-[#630A18] shadow-md active:scale-[0.98]"
+                        >
+                          {loading ? (
+                            <span className="flex items-center gap-2">
+                              <span className="size-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                              <span>{t('saving') || 'Finishing...'}</span>
+                            </span>
+                          ) : (
+                            <>
+                              <Sparkles className="size-4 text-amber-300 fill-amber-300/40" />
+                              <span>{t('btnFinish', 'Finish ✨')}</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
+              </div>
 
-                {/* Preview Frame */}
-                <div className="rounded-3xl border-2 border-[#7A1E2B]/40 bg-slate-950 p-4 sm:p-5 shadow-2xl text-white relative overflow-hidden">
-                  
-                  {/* Background Radial Glow */}
-                  <div className="absolute -top-10 -left-10 size-48 bg-rose-500/20 rounded-full blur-3xl pointer-events-none" />
-                  <div className="absolute -bottom-10 -right-10 size-48 bg-amber-500/20 rounded-full blur-3xl pointer-events-none" />
+              {/* RIGHT COLUMN: STICKY LIVE INTERACTIVE CAPSULE PREVIEW */}
+              <div className="lg:col-span-5 space-y-4">
+                <div className="sticky top-20">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 text-muted-foreground">
+                      <Eye className="size-3.5 text-[#7B0D1E]" />
+                      <span>{t('livePreviewCapsule', 'Live Preview')}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-700 dark:text-emerald-400">
+                      <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      Live Sync
+                    </span>
+                  </div>
 
-                  {/* Ornate Gold Filigree Corners */}
-                  <div className="absolute top-2 left-2 size-5 border-t-2 border-l-2 border-amber-400/80 rounded-tl-lg pointer-events-none" />
-                  <div className="absolute top-2 right-2 size-5 border-t-2 border-r-2 border-amber-400/80 rounded-tr-lg pointer-events-none" />
-                  <div className="absolute bottom-2 left-2 size-5 border-b-2 border-l-2 border-amber-400/80 rounded-bl-lg pointer-events-none" />
-                  <div className="absolute bottom-2 right-2 size-5 border-b-2 border-r-2 border-amber-400/80 rounded-br-lg pointer-events-none" />
+                  {/* Premium Preview Frame */}
+                  <div
+                    className="rounded-3xl p-4 sm:p-5 text-white relative overflow-hidden bg-slate-950 border border-border shadow-xl"
+                  >
+                    {/* Ambient glow orbs */}
+                    <div
+                      aria-hidden="true"
+                      className="absolute -top-12 -left-12 w-40 h-40 rounded-full opacity-20 blur-3xl pointer-events-none bg-rose-600"
+                    />
+                    <div
+                      aria-hidden="true"
+                      className="absolute -bottom-12 -right-12 w-40 h-40 rounded-full opacity-20 blur-3xl pointer-events-none bg-amber-600"
+                    />
 
-                  {/* Capsule Top Pill */}
-                  <div className="text-center mb-3">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/10 border border-white/20 text-amber-300 text-[10px] font-bold uppercase tracking-widest">
-                      <Sparkles className="size-3 text-amber-300" />
-                      <span>{activeOccMeta.label}</span>
+                    {/* Gold corner ornaments */}
+                    <div className="absolute top-2 left-2 size-4 border-t-2 border-l-2 rounded-tl-lg pointer-events-none border-amber-400/60" />
+                    <div className="absolute top-2 right-2 size-4 border-t-2 border-r-2 rounded-tr-lg pointer-events-none border-amber-400/60" />
+                    <div className="absolute bottom-2 left-2 size-4 border-b-2 border-l-2 rounded-bl-lg pointer-events-none border-amber-400/60" />
+                    <div className="absolute bottom-2 right-2 size-4 border-b-2 border-r-2 rounded-br-lg pointer-events-none border-amber-400/60" />
+
+                    {/* Capsule Top Pill */}
+                    <div className="text-center mb-3">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/10 border border-white/20 text-amber-300 text-[10px] font-bold uppercase tracking-widest">
+                        <Sparkles className="size-3 text-amber-300" />
+                        <span>{activeOccMeta.label}</span>
+                      </div>
+
+                      <h4 className="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-rose-200 to-white mt-1.5">
+                        {linkType === 'invite' ? (eventTitle || '---') : `For ${recipientName.trim() || '---'}`}
+                      </h4>
+                      <span className="text-[10px] text-rose-200/80 font-medium block">
+                        {linkType === 'invite' ? `Hosted by ${senderName.trim() || '---'}` : `From ${senderName.trim() || '---'}`}
+                      </span>
+
+                      {(specialDate || howWeMet) && (
+                        <div className="flex flex-wrap items-center justify-center gap-1.5 mt-1.5">
+                          {specialDate && (
+                            <span className="text-[9px] text-amber-200/90 bg-amber-950/40 border border-amber-400/30 px-2 py-0.2 rounded-full">
+                              📅 {specialDate}
+                            </span>
+                          )}
+                          {howWeMet && (
+                            <span className="text-[9px] text-rose-200/90 bg-rose-950/40 border border-rose-400/30 px-2 py-0.2 rounded-full truncate max-w-[180px]">
+                              🧭 {howWeMet}
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
 
-                    <h4 className="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-rose-200 to-white mt-1.5">
-                      For {recipientName.trim() || 'My Beloved'}
-                    </h4>
-                    <span className="text-[10px] text-rose-200/80 font-medium block">
-                      From {senderName.trim() || 'Your Name'}
-                    </span>
+                    {/* Full Invitation Details Block if in Invite Mode */}
+                    {linkType === 'invite' && (
+                      <div className="rounded-2xl bg-black/60 border border-white/15 p-3.5 my-3 shadow-inner space-y-2 text-left">
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-2">
+                            <span className="text-[10px] text-amber-300 font-bold block uppercase tracking-wider">📅 Date</span>
+                            <span className="text-white font-semibold truncate block">{eventDate || '---'}</span>
+                          </div>
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-2">
+                            <span className="text-[10px] text-amber-300 font-bold block uppercase tracking-wider">⏰ Time</span>
+                            <span className="text-white font-semibold truncate block">{eventTime || '---'}</span>
+                          </div>
+                        </div>
 
-                    {(specialDate || howWeMet) && (
-                      <div className="flex flex-wrap items-center justify-center gap-1.5 mt-1.5">
-                        {specialDate && (
-                          <span className="text-[9px] text-amber-200/90 bg-amber-950/40 border border-amber-400/30 px-2 py-0.2 rounded-full">
-                            📅 {specialDate}
+                        <div className="bg-white/5 border border-white/10 rounded-xl p-2 text-xs space-y-0.5">
+                          <p className="font-bold text-amber-200">🏛️ {venueName || '---'}</p>
+                          <p className="text-[11px] text-slate-300">📍 {venueAddress || '---'}</p>
+                        </div>
+
+                        <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-xs italic text-slate-200 leading-relaxed">
+                          &ldquo;{secretLetter || '---'}&rdquo;
+                        </div>
+
+                        <div className="flex items-center justify-center gap-2 pt-1">
+                          <span className="text-[10px] font-bold bg-emerald-600 text-white px-3 py-1 rounded-full shadow-sm">
+                            💌 1-Click WhatsApp RSVP
                           </span>
-                        )}
-                        {howWeMet && (
-                          <span className="text-[9px] text-rose-200/90 bg-rose-950/40 border border-rose-400/30 px-2 py-0.2 rounded-full truncate max-w-[180px]">
-                            🧭 {howWeMet}
-                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Simulated Wish Capsule Center Experience */}
+                    {linkType === 'wish' && (
+                      <div className="rounded-2xl bg-black/60 border border-white/15 p-4 text-center my-3 shadow-inner">
+                        {selectedOccasion === 'proposal' ? (
+                          <div className="flex flex-col items-center py-2 space-y-2">
+                            <div className="size-16 rounded-2xl bg-gradient-to-tr from-[#3a0418] to-[#5c0b29] border border-rose-400/50 flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(244,63,94,0.4)] animate-bounce">
+                              💍
+                            </div>
+                            <span className="text-xs font-serif font-black text-amber-300">
+                              {recipientName.trim() || 'Beloved'}, Will You Marry Me?
+                            </span>
+                            <p className="text-[10px] text-rose-100 italic line-clamp-3 px-2 leading-relaxed">
+                              &ldquo;{secretLetter}&rdquo;
+                            </p>
+                            
+                            <span className="text-[9px] text-rose-200/80 bg-rose-950/60 border border-rose-400/30 px-2 py-0.5 rounded-full">
+                              💌 {quotes.length} Love Memories & Reasons
+                            </span>
+
+                            <div className="flex items-center gap-1.5 pt-1">
+                              <span className="text-[9px] font-bold bg-rose-500 text-white px-2.5 py-0.5 rounded-full shadow-sm animate-heartbeat">
+                                YES! 💍
+                              </span>
+                              <span className="text-[9px] font-bold bg-white/15 text-slate-300 px-2 py-0.5 rounded-full">
+                                No 🏃‍♂️
+                              </span>
+                            </div>
+                          </div>
+                        ) : selectedOccasion === 'birthday' ? (
+                          <div className="flex flex-col items-center py-2 space-y-1.5">
+                            <div className="text-3xl animate-bounce">🎂</div>
+                            <span className="text-xs font-bold text-amber-300">
+                              Happy Birthday {recipientName || 'Friend'}!
+                            </span>
+                            <p className="text-[10px] text-slate-300 line-clamp-3 px-2 leading-relaxed">
+                              &ldquo;{secretLetter}&rdquo;
+                            </p>
+                            <span className="text-[9px] bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full">
+                              Blow {candleCount} Candles & Pop Balloons
+                            </span>
+                          </div>
+                        ) : selectedOccasion === 'eid' ? (
+                          <div className="flex flex-col items-center py-2 space-y-1.5">
+                            <div className="text-3xl animate-pulse">🌙</div>
+                            <span className="text-xs font-serif font-bold text-amber-300">
+                              Eid Mubarak {recipientName || 'Friend'}!
+                            </span>
+                            <p className="text-[10px] text-emerald-100 line-clamp-3 px-2 leading-relaxed">
+                              &ldquo;{secretLetter}&rdquo;
+                            </p>
+                            <div className="flex items-center gap-1.5 pt-1">
+                              <span className="text-[9px] bg-emerald-500/30 text-emerald-200 border border-emerald-400/40 px-2 py-0.5 rounded-full">
+                                Light Lanterns 🏮
+                              </span>
+                              <span className="text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full">
+                                Open Eidi 🎁
+                              </span>
+                            </div>
+                          </div>
+                        ) : selectedOccasion === 'anniversary' ? (
+                          <div className="flex flex-col items-center py-2 space-y-1.5">
+                            <div className="text-3xl animate-bounce">🍾</div>
+                            <span className="text-xs font-serif font-bold text-amber-300">
+                              Happy Anniversary {recipientName || 'My Love'}!
+                            </span>
+                            <p className="text-[10px] text-rose-100 italic line-clamp-3 px-2 leading-relaxed">
+                              &ldquo;{secretLetter}&rdquo;
+                            </p>
+                            <div className="flex items-center gap-1.5 pt-1">
+                              <span className="text-[9px] bg-rose-500/30 text-rose-200 border border-rose-400/40 px-2 py-0.5 rounded-full">
+                                Pop Champagne 🥂
+                              </span>
+                              <span className="text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full">
+                                Wax Seal Letter 💌
+                              </span>
+                            </div>
+                          </div>
+                        ) : selectedOccasion === 'graduation' ? (
+                          <div className="flex flex-col items-center py-2 space-y-1.5">
+                            <div className="text-3xl animate-bounce">🎓</div>
+                            <span className="text-xs font-serif font-bold text-amber-300">
+                              Congratulations {recipientName || 'Graduate'}!
+                            </span>
+                            <p className="text-[10px] text-sky-100 line-clamp-3 px-2 leading-relaxed">
+                              &ldquo;{secretLetter}&rdquo;
+                            </p>
+                            <div className="flex items-center gap-1.5 pt-1">
+                              <span className="text-[9px] bg-sky-500/30 text-sky-200 border border-sky-400/40 px-2 py-0.5 rounded-full">
+                                Cap Toss 🚀
+                              </span>
+                              <span className="text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full">
+                                Unroll Diploma 📜
+                              </span>
+                            </div>
+                          </div>
+                        ) : selectedOccasion === 'party' ? (
+                          <div className="flex flex-col items-center py-2 space-y-1.5">
+                            <div className="text-3xl animate-spin">🪩</div>
+                            <span className="text-xs font-bold text-amber-300">
+                              Party Bash for {recipientName || 'VIP Guest'}!
+                            </span>
+                            <p className="text-[10px] text-purple-100 line-clamp-3 px-2 leading-relaxed">
+                              &ldquo;{secretLetter}&rdquo;
+                            </p>
+                            <span className="text-[9px] bg-purple-500/30 text-purple-200 border border-purple-400/40 px-2 py-0.5 rounded-full">
+                              Spin Disco & 1-Click RSVP 🎉
+                            </span>
+                          </div>
+                        ) : selectedOccasion === 'newborn' ? (
+                          <div className="flex flex-col items-center py-2 space-y-1.5">
+                            <div className="text-3xl animate-bounce">🍼</div>
+                            <span className="text-xs font-serif font-bold text-amber-300">
+                              Welcome Baby Miracle!
+                            </span>
+                            <p className="text-[10px] text-emerald-100 line-clamp-3 px-2 leading-relaxed">
+                              &ldquo;{secretLetter}&rdquo;
+                            </p>
+                            <span className="text-[9px] bg-pink-500/30 text-pink-200 border border-pink-400/40 px-2 py-0.5 rounded-full">
+                              Rock Golden Cradle & Lullaby 🌸
+                            </span>
+                          </div>
+                        ) : selectedOccasion === 'ramadan' ? (
+                          <div className="flex flex-col items-center py-2 space-y-1.5">
+                            <div className="text-3xl animate-pulse">🌙</div>
+                            <span className="text-xs font-serif font-bold text-amber-300">
+                              Ramadan Kareem {recipientName || 'Family'}!
+                            </span>
+                            <p className="text-[10px] text-cyan-100 line-clamp-3 px-2 leading-relaxed">
+                              &ldquo;{secretLetter}&rdquo;
+                            </p>
+                            <span className="text-[9px] bg-cyan-500/30 text-cyan-200 border border-cyan-400/40 px-2 py-0.5 rounded-full">
+                              Hilal Sighting & Sacred Fanous 🏮
+                            </span>
+                          </div>
+                        ) : selectedOccasion === 'apology' ? (
+                          <div className="flex flex-col items-center py-2 space-y-1.5">
+                            <div className="text-3xl animate-pulse">💖</div>
+                            <span className="text-xs font-serif font-bold text-amber-300">
+                              From the Heart for {recipientName || 'Beloved'}
+                            </span>
+                            <p className="text-[10px] text-rose-100 line-clamp-3 px-2 leading-relaxed">
+                              &ldquo;{secretLetter}&rdquo;
+                            </p>
+                            <span className="text-[9px] bg-rose-500/30 text-rose-200 border border-rose-400/40 px-2 py-0.5 rounded-full">
+                              Kintsugi Heart Healing 🕊️
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center py-2 space-y-1.5">
+                            <div className="text-3xl animate-bounce">✨</div>
+                            <span className="text-xs font-bold text-amber-300">
+                              {activeOccMeta.label}
+                            </span>
+                            <p className="text-[10px] text-slate-300 line-clamp-3 px-2 leading-relaxed">
+                              &ldquo;{secretLetter}&rdquo;
+                            </p>
+                          </div>
                         )}
                       </div>
                     )}
-                  </div>
 
-                  {/* Simulated Center Experience */}
-                  <div className="rounded-2xl bg-black/60 border border-white/15 p-4 text-center my-3 shadow-inner">
-                    {selectedOccasion === 'proposal' ? (
-                      <div className="flex flex-col items-center py-2 space-y-2">
-                        {/* 3D Ring Box Graphic */}
-                        <div className="size-16 rounded-2xl bg-gradient-to-tr from-[#3a0418] to-[#5c0b29] border border-rose-400/50 flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(244,63,94,0.4)] animate-bounce">
-                          💍
-                        </div>
-                        <span className="text-xs font-serif font-black text-amber-300">
-                          {recipientName.trim() || 'Beloved'}, Will You Marry Me?
+                    {/* Dedication Verse Banner */}
+                    {customVerse && (
+                      <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-center my-2">
+                        <span className={cn(
+                          "text-xs text-amber-300 font-medium block",
+                          /[\u0600-\u06FF]/.test(customVerse) ? "font-nastaliq text-sm" : "font-serif italic"
+                        )}>
+                          {customVerse}
                         </span>
-                        <p className="text-[10px] text-rose-100 italic line-clamp-2 px-2">
-                          &ldquo;{secretLetter}&rdquo;
-                        </p>
-                        
-                        {/* 4 Memories Badge */}
-                        <span className="text-[9px] text-rose-200/80 bg-rose-950/60 border border-rose-400/30 px-2 py-0.5 rounded-full">
-                          💌 {quotes.length} Love Memories & Reasons
-                        </span>
-
-                        {/* Interactive YES & Dodging NO simulator */}
-                        <div className="flex items-center gap-1.5 pt-1">
-                          <span className="text-[9px] font-bold bg-rose-500 text-white px-2.5 py-0.5 rounded-full shadow-sm animate-heartbeat">
-                            YES! 💍
-                          </span>
-                          <span className="text-[9px] font-bold bg-white/15 text-slate-300 px-2 py-0.5 rounded-full">
-                            No 🏃‍♂️
-                          </span>
-                        </div>
-                      </div>
-                    ) : selectedOccasion === 'birthday' ? (
-                      <div className="flex flex-col items-center py-2 space-y-1.5">
-                        <div className="text-3xl animate-bounce">🎂</div>
-                        <span className="text-xs font-bold text-amber-300">
-                          Happy Birthday {recipientName || 'Friend'}!
-                        </span>
-                        <p className="text-[10px] text-slate-300 line-clamp-2">
-                          &ldquo;{secretLetter}&rdquo;
-                        </p>
-                        <span className="text-[9px] bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full">
-                          Blow {candleCount} Candles & Pop Balloons
-                        </span>
-                      </div>
-                    ) : selectedOccasion === 'wedding' ? (
-                      <div className="flex flex-col items-center py-2 space-y-1.5">
-                        <div className="text-3xl animate-pulse">👑</div>
-                        <span className="text-xs font-serif font-bold text-amber-300">
-                          Royal Nikkah of {eventTitle || 'Newlyweds'}
-                        </span>
-                        <p className="text-[10px] text-amber-100 italic line-clamp-2">
-                          &ldquo;{secretLetter}&rdquo;
-                        </p>
-                        <div className="flex items-center gap-1.5 pt-1">
-                          <span className="text-[9px] bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full">
-                            Palace Gates 🏛️
-                          </span>
-                          <span className="text-[9px] bg-white/10 text-amber-200 px-2 py-0.5 rounded-full">
-                            WhatsApp RSVP 💌
-                          </span>
-                        </div>
-                      </div>
-                    ) : selectedOccasion === 'eid' ? (
-                      <div className="flex flex-col items-center py-2 space-y-1.5">
-                        <div className="text-3xl animate-pulse">🌙</div>
-                        <span className="text-xs font-serif font-bold text-amber-300">
-                          Eid Mubarak {recipientName || 'Friend'}!
-                        </span>
-                        <p className="text-[10px] text-emerald-100 line-clamp-2">
-                          &ldquo;{secretLetter}&rdquo;
-                        </p>
-                        <div className="flex items-center gap-1.5 pt-1">
-                          <span className="text-[9px] bg-emerald-500/30 text-emerald-200 border border-emerald-400/40 px-2 py-0.5 rounded-full">
-                            Light Lanterns 🏮
-                          </span>
-                          <span className="text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full">
-                            Open Eidi 🎁
-                          </span>
-                        </div>
-                      </div>
-                    ) : selectedOccasion === 'anniversary' ? (
-                      <div className="flex flex-col items-center py-2 space-y-1.5">
-                        <div className="text-3xl animate-bounce">🍾</div>
-                        <span className="text-xs font-serif font-bold text-amber-300">
-                          Happy Anniversary {recipientName || 'My Love'}!
-                        </span>
-                        <p className="text-[10px] text-rose-100 italic line-clamp-2">
-                          &ldquo;{secretLetter}&rdquo;
-                        </p>
-                        <div className="flex items-center gap-1.5 pt-1">
-                          <span className="text-[9px] bg-rose-500/30 text-rose-200 border border-rose-400/40 px-2 py-0.5 rounded-full">
-                            Pop Champagne 🥂
-                          </span>
-                          <span className="text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full">
-                            Wax Seal Letter 💌
-                          </span>
-                        </div>
-                      </div>
-                    ) : selectedOccasion === 'graduation' ? (
-                      <div className="flex flex-col items-center py-2 space-y-1.5">
-                        <div className="text-3xl animate-bounce">🎓</div>
-                        <span className="text-xs font-serif font-bold text-amber-300">
-                          Congratulations {recipientName || 'Graduate'}!
-                        </span>
-                        <p className="text-[10px] text-sky-100 line-clamp-2">
-                          &ldquo;{secretLetter}&rdquo;
-                        </p>
-                        <div className="flex items-center gap-1.5 pt-1">
-                          <span className="text-[9px] bg-sky-500/30 text-sky-200 border border-sky-400/40 px-2 py-0.5 rounded-full">
-                            Cap Toss 🚀
-                          </span>
-                          <span className="text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full">
-                            Unroll Diploma 📜
-                          </span>
-                        </div>
-                      </div>
-                    ) : selectedOccasion === 'party' ? (
-                      <div className="flex flex-col items-center py-2 space-y-1.5">
-                        <div className="text-3xl animate-spin">🪩</div>
-                        <span className="text-xs font-bold text-amber-300">
-                          Party Bash for {recipientName || 'VIP Guest'}!
-                        </span>
-                        <p className="text-[10px] text-purple-100 line-clamp-2">
-                          &ldquo;{secretLetter}&rdquo;
-                        </p>
-                        <span className="text-[9px] bg-purple-500/30 text-purple-200 border border-purple-400/40 px-2 py-0.5 rounded-full">
-                          Spin Disco & 1-Click RSVP 🎉
-                        </span>
-                      </div>
-                    ) : selectedOccasion === 'newborn' ? (
-                      <div className="flex flex-col items-center py-2 space-y-1.5">
-                        <div className="text-3xl animate-bounce">🍼</div>
-                        <span className="text-xs font-serif font-bold text-amber-300">
-                          Welcome Baby Miracle!
-                        </span>
-                        <p className="text-[10px] text-emerald-100 line-clamp-2">
-                          &ldquo;{secretLetter}&rdquo;
-                        </p>
-                        <span className="text-[9px] bg-pink-500/30 text-pink-200 border border-pink-400/40 px-2 py-0.5 rounded-full">
-                          Rock Golden Cradle & Lullaby 🌸
-                        </span>
-                      </div>
-                    ) : selectedOccasion === 'ramadan' ? (
-                      <div className="flex flex-col items-center py-2 space-y-1.5">
-                        <div className="text-3xl animate-pulse">🌙</div>
-                        <span className="text-xs font-serif font-bold text-amber-300">
-                          Ramadan Kareem {recipientName || 'Family'}!
-                        </span>
-                        <p className="text-[10px] text-cyan-100 line-clamp-2">
-                          &ldquo;{secretLetter}&rdquo;
-                        </p>
-                        <span className="text-[9px] bg-cyan-500/30 text-cyan-200 border border-cyan-400/40 px-2 py-0.5 rounded-full">
-                          Hilal Sighting & Sacred Fanous 🏮
-                        </span>
-                      </div>
-                    ) : selectedOccasion === 'apology' ? (
-                      <div className="flex flex-col items-center py-2 space-y-1.5">
-                        <div className="text-3xl animate-pulse">💖</div>
-                        <span className="text-xs font-serif font-bold text-amber-300">
-                          From the Heart for {recipientName || 'Beloved'}
-                        </span>
-                        <p className="text-[10px] text-rose-100 line-clamp-2">
-                          &ldquo;{secretLetter}&rdquo;
-                        </p>
-                        <span className="text-[9px] bg-rose-500/30 text-rose-200 border border-rose-400/40 px-2 py-0.5 rounded-full">
-                          Kintsugi Heart Healing 🕊️
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center py-2 space-y-1.5">
-                        <div className="text-3xl animate-bounce">✨</div>
-                        <span className="text-xs font-bold text-amber-300">
-                          {activeOccMeta.label}
-                        </span>
-                        <p className="text-[10px] text-slate-300 line-clamp-2">
-                          &ldquo;{secretLetter}&rdquo;
-                        </p>
                       </div>
                     )}
-                  </div>
 
-                  {/* Dedication Verse Banner */}
-                  {customVerse && (
-                    <div className="p-2 rounded-xl bg-white/5 border border-white/10 text-center">
-                      <span className={cn(
-                        "text-xs text-amber-300 font-medium",
-                        /[\u0600-\u06FF]/.test(customVerse) ? "font-nastaliq" : "font-serif italic"
-                      )}>
-                        {customVerse}
+                    {/* Micro Footer Notice */}
+                    <div className="text-center pt-3 mt-3 border-t border-white/10">
+                      <span className="text-[10px] text-slate-400 block">
+                        Recipients unwrap in 3D, read memories & reply in real time.
                       </span>
                     </div>
-                  )}
+                  </div>
 
-                  {/* Micro Footer Notice */}
-                  <div className="text-center pt-3 mt-3 border-t border-white/10">
-                    <span className="text-[10px] text-slate-400 block">
-                      Recipients unwrap in 3D, read memories & reply in real time.
-                    </span>
+                  <div className="mt-3 text-center">
+                    <p className="text-[11px] text-muted-foreground">
+                      ✨ No login required · Free forever · 1-click WhatsApp share
+                    </p>
                   </div>
                 </div>
-
-                <div className="mt-3 text-center">
-                  <p className="text-[11px] text-muted-foreground">
-                    ✨ No login required · Free forever · 1-click WhatsApp share
-                  </p>
-                </div>
               </div>
-            </div>
 
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {/* Keyframe animations */}
+        <style>{`
+          @keyframes ml-confetti-drift {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.4; }
+            33% { transform: translateY(-12px) rotate(15deg) scale(1.1); opacity: 0.8; }
+            66% { transform: translateY(6px) rotate(-8deg) scale(0.9); opacity: 0.5; }
+          }
+          @keyframes ml-wand-pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(245,158,11,0.2), 0 0 60px rgba(244,63,94,0.1); }
+            50% { box-shadow: 0 0 50px rgba(245,158,11,0.4), 0 0 100px rgba(244,63,94,0.2); }
+          }
+          @keyframes ml-shimmer-bar {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+          }
+          @keyframes ml-badge-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); }
+            50% { box-shadow: 0 0 16px 4px rgba(245,158,11,0.3); }
+          }
+        `}</style>
 
     </div>
   )

@@ -110,9 +110,10 @@ export function inferClientFallback(): ClientTrackingInfo {
 
   const country = tzMatch ? tzMatch.country : 'Unknown Country'
   const countryCode = tzMatch ? tzMatch.code : ''
-  const city = tzMatch ? tzMatch.city : tz.split('/').pop()?.replace(/_/g, ' ') || ''
+  // Never guess city from timezone as it causes everyone in Pakistan to be "Karachi"
+  const city = ''
 
-  const parts = [city, country].filter(Boolean)
+  const parts = [country].filter(Boolean)
   const createdLocation = parts.length > 0 ? parts.join(', ') : 'Web Client'
 
   return {
@@ -147,18 +148,46 @@ export async function getClientTracking(): Promise<ClientTrackingInfo> {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 1500)
 
-    const res = await fetch('/api/geo', {
-      signal: controller.signal,
-      cache: 'no-store',
-    })
+    let data: any = {}
+    
+    // First try to get precise city from a free client-side IP API
+    try {
+      // Use geojs.io instead of ipapi.co because adblockers block ipapi.co
+      const externalRes = await fetch('https://get.geojs.io/v1/ip/geo.json', { signal: controller.signal })
+      if (externalRes.ok) {
+        const externalData = await externalRes.json()
+        if (externalData.city) {
+          data.city = externalData.city
+          data.region = externalData.region
+          data.countryCode = externalData.country_code
+          data.country = externalData.country
+          data.ip = externalData.ip
+        }
+      }
+    } catch (e) {
+      // Ignore if adblocker blocks it
+    }
+
+    // Fallback to our internal Vercel headers API if ipapi failed or got blocked
+    if (!data.city) {
+      const res = await fetch('/api/geo', {
+        signal: controller.signal,
+        cache: 'no-store',
+      })
+      if (res.ok) {
+        const internalData = await res.json()
+        data = { ...internalData }
+      }
+    }
+    
     clearTimeout(timeoutId)
 
-    if (res.ok) {
-      const data = await res.json()
-      const { device, browser, os } = parseDeviceAndBrowser(data.userAgent)
+    if (data && Object.keys(data).length > 0) {
+      const { device, browser, os } = parseDeviceAndBrowser(data.userAgent || typeof navigator !== 'undefined' ? navigator.userAgent : '')
 
       const country = data.country || fallback.country || ''
       const countryCode = data.countryCode || fallback.countryCode || ''
+      // If we STILL don't have a city, only use the timezone fallback as a last resort
       const city = data.city || fallback.city || ''
       const region = data.region || ''
       const ip = data.ip || ''

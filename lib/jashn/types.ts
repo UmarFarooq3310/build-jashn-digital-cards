@@ -125,6 +125,7 @@ export interface CardShareStats {
   copy?: number
   qr?: number
   image?: number
+  video?: number
 }
 
 export interface Wish {

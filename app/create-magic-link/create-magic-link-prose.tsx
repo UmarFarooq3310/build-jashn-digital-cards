@@ -87,7 +87,7 @@ export function CreateMagicLinkProse() {
                 key={idx}
                 className="p-4 rounded-2xl bg-card border border-border/70 shadow-sm space-y-1.5"
               >
-                <h3 className="text-sm font-bold text-[#7A1E2B]">{s.title}</h3>
+                <h3 className="text-sm font-bold text-[#7B0D1E]">{s.title}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
               </li>
             ))}

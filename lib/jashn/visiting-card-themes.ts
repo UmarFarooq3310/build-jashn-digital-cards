@@ -65,8 +65,27 @@ export const VISITING_CARD_THEMES: VisitingCardTheme[] = [
     cardBg: '#ffffff',
     isPremium: false,
   },
+  {
+    id: 'obsidian-gold',
+    name: 'Obsidian Noir & 24K Gold',
+    bgGradient: 'linear-gradient(135deg, #09090b 0%, #171717 60%, #eab308 100%)',
+    textColor: '#ffffff',
+    accentColor: '#fbbf24',
+    cardBg: '#09090b',
+    isPremium: true,
+  },
+  {
+    id: 'royal-amethyst',
+    name: 'Royal Amethyst & Champagne',
+    bgGradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #c084fc 100%)',
+    textColor: '#ffffff',
+    accentColor: '#e9d5ff',
+    cardBg: '#1e1b4b',
+    isPremium: false,
+  },
 ]
 
 export function getVisitingCardTheme(themeId?: string): VisitingCardTheme {
   return VISITING_CARD_THEMES.find((t) => t.id === themeId) || VISITING_CARD_THEMES[0]
 }
+

@@ -153,127 +153,146 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
   // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Creator Control Panel) ──
   if (isSenderMode) {
     return (
-      <div className="py-10 px-4 flex flex-col items-center">
-          <div className="w-full max-w-lg space-y-6">
-            <div className="flex items-center justify-between">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-400 hover:text-[#D4AF37] transition-colors"
-              >
-                <ArrowLeft className="size-4" />
-                <span>{t('backToHome') || 'Back to Cardzy'}</span>
-              </Link>
-
-              <Link
-                href="/create-visiting-card"
-                className="inline-flex items-center gap-1.5 text-xs font-extrabold text-[#D4AF37] hover:underline"
-              >
-                <Sparkles className="size-3.5" />
-                <span>{t('createYours') || 'Create Yours'}</span>
-              </Link>
-            </div>
-
-            {/* Creator Control Panel */}
-            <div className="rounded-2xl border border-[#D4AF37]/40 bg-slate-900 text-white p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-xl">
-              <div>
-                <p className="text-base font-extrabold text-white flex items-center gap-2">
-                  <Sparkles className="size-5 text-[#D4AF37] animate-pulse" /> {t('youCreatedThisVcard')}
-                </p>
-                <p className="text-xs text-zinc-300 mt-1">{t('manageEditShareVcard')}</p>
-                <div className="mt-3 inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-950/60 px-3 py-1.5">
-                  <span className="relative flex size-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full size-2 bg-emerald-400"></span>
-                  </span>
-                  <Eye className="size-3.5 text-emerald-400" />
-                  <span className="text-sm font-extrabold text-emerald-300">{card.viewCount || 0}</span>
-                  <span className="text-xs text-emerald-400/80">{t('viewsLabel')}</span>
-                </div>
-              </div>
-              <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
-                <Link
-                  href={receiverUrl}
-                  target="_blank"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-md transition-all border border-emerald-400/30"
-                >
-                  <ExternalLink className="size-3.5 text-white" /> {t('viewReceiverScreen')}
-                </Link>
-                <Button
-                  onClick={handleEdit}
-                  variant="outline"
-                  size="sm"
-                  className="text-xs flex items-center gap-1.5 border-amber-300/40 bg-[#D4AF37] hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl shadow-md transition-all px-4 py-2"
-                >
-                  <Edit3 className="size-3.5 text-slate-950" />
-                  <span>{t('editCard')}</span>
-                </Button>
-                <Button
-                  onClick={handleDelete}
-                  variant="destructive"
-                  size="sm"
-                  className="text-xs flex items-center gap-1.5 font-extrabold rounded-xl bg-red-600 hover:bg-red-500 text-white shadow-md transition-all px-4 py-2 border border-red-400/30"
-                >
-                  <Trash2 className="size-3.5" /> {t('deleteCard')}
-                </Button>
-              </div>
-            </div>
-
-            {/* Badges */}
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D4AF37]/50 bg-amber-950/80 px-4 py-1.5 text-xs font-extrabold text-[#D4AF37] shadow-sm">
-                <Cpu className="size-4 text-[#D4AF37]" /> {
-                  card.category === 'business' ? t('catCorporate')
-                  : card.category === 'creative' ? t('catTech')
-                  : card.category === 'medical' ? t('catMedical')
-                  : card.category === 'legal' ? t('catLegal')
-                  : card.category === 'real-estate' ? t('catRealEstate')
-                  : card.category === 'beauty' ? t('catFashion')
-                  : card.category === 'services' ? t('catServices')
-                  : (card.category || 'Executive Profile')
-                }
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-900/80 px-4 py-1.5 text-xs font-extrabold text-emerald-300 shadow-sm">
-                <ShieldCheck className="size-4 text-emerald-400" /> {t('verifiedVCard')}
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/90 px-4 py-1.5 text-xs font-extrabold text-slate-200 shadow-sm">
-                <Eye className="size-4 text-emerald-400" /> {card.viewCount || 0} {t('viewsLabel')}
-              </span>
-            </div>
-
-            {/* Main Visiting Card Surface */}
-            <div className="py-2">
-              <VisitingCardView ref={cardRef} data={card} showShareBtn={false} showQrCode={false} />
-            </div>
-
-            {/* Share & Download Section */}
-            <div className="mt-8 rounded-3xl border border-[#D4AF37]/30 bg-[#0a0a0c] p-6 shadow-2xl flex flex-col items-center gap-6 backdrop-blur-xl">
-              <div className="w-full text-center sm:text-left">
-                <h3 className="mb-4 text-xs font-extrabold uppercase tracking-wider text-[#D4AF37]">
-                  {t('shareReceiverLink')}
-                </h3>
-                <ShareBar url={receiverUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-vcard-${card.slug}`} />
-              </div>
-
-              <div className="w-full pt-4 border-t border-white/10 flex flex-col items-center text-center space-y-2">
-                <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
-                  {t('receiverQrCode')}
+      <div className="py-8 px-4">
+        <div className="mx-auto max-w-2xl md:max-w-4xl text-center">
+          {/* Creator Control Panel */}
+          <div className="mb-6 rounded-2xl border border-emerald-500/30 bg-slate-900 text-white p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-xl">
+            <div>
+              <p className="text-base font-extrabold text-white flex items-center gap-2">
+                <Sparkles className="size-5 text-amber-400 animate-pulse" /> {t('youCreatedThisVcard') || 'You Created This Visiting Card!'}
+              </p>
+              <p className="text-xs text-slate-300 mt-1">{t('manageEditShareVcard') || 'You can edit, share, or delete your card below.'}</p>
+              <div className="mt-3 inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-950/60 px-3 py-1.5">
+                <span className="relative flex size-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full size-2 bg-emerald-400"></span>
                 </span>
-                <CardQrCode slug={slug} cardType="v" size={170} showDownloadBtn={true} />
+                <Eye className="size-3.5 text-emerald-400" />
+                <span className="text-sm font-extrabold text-emerald-300">{card.viewCount || 0}</span>
+                <span className="text-xs text-emerald-400/80">{t('viewsLabel') || 'total views'}</span>
               </div>
             </div>
-
-            {/* CTA Banner */}
-            <div className="mt-8 rounded-3xl p-6 text-center border border-[#D4AF37]/30 bg-[#0a0a0c] shadow-lg space-y-2">
-              <p className="text-lg font-extrabold text-white">{t('createAnotherBusinessCard')}</p>
+            <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
               <Link
-                href="/create-visiting-card"
-                className="mt-3 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#FFF8DC] to-[#E5C35A] px-6 py-2.5 text-xs font-black text-slate-950 shadow-lg hover:brightness-110 transition-all"
+                href={receiverUrl}
+                target="_blank"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-md transition-all border border-emerald-400/30"
               >
-                {t('buildYourVcard')} <Sparkles className="size-4" />
+                <ExternalLink className="size-3.5 text-white" /> {t('viewReceiverScreen') || 'View Receiver Screen'}
               </Link>
+              <Button
+                onClick={handleEdit}
+                variant="outline"
+                size="sm"
+                className="text-xs flex items-center gap-1.5 border-amber-300/40 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl shadow-md transition-all px-4 py-2"
+              >
+                <Edit3 className="size-3.5 text-slate-950" />
+                <span>{t('editCard') || 'Edit Card'}</span>
+              </Button>
+              <Button
+                onClick={handleDelete}
+                variant="destructive"
+                size="sm"
+                className="text-xs flex items-center gap-1.5 font-extrabold rounded-xl bg-red-600 hover:bg-red-500 text-white shadow-md transition-all px-4 py-2 border border-red-400/30"
+              >
+                <Trash2 className="size-3.5" /> {t('deleteCard') || 'Delete Card'}
+              </Button>
             </div>
           </div>
+
+          {/* Badges & Views Info */}
+          <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-950/80 px-4 py-1.5 text-xs font-extrabold text-amber-300 shadow-sm">
+              <Cpu className="size-4 text-amber-400" /> {
+                card.category === 'business' ? (t('catCorporate') || 'Corporate & Executive')
+                : card.category === 'creative' ? (t('catTech') || 'Tech & Creative')
+                : card.category === 'medical' ? (t('catMedical') || 'Medical & Healthcare')
+                : card.category === 'legal' ? (t('catLegal') || 'Legal & Financial')
+                : card.category === 'real-estate' ? (t('catRealEstate') || 'Real Estate & Property')
+                : card.category === 'beauty' ? (t('catFashion') || 'Beauty & Fashion')
+                : card.category === 'services' ? (t('catServices') || 'Professional Services')
+                : (card.category || 'Executive Profile')
+              }
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-900/80 px-4 py-1.5 text-xs font-extrabold text-emerald-300 shadow-sm">
+              <ShieldCheck className="size-4 text-emerald-400" /> {t('verifiedVCard') || 'Verified Smart vCard'}
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/90 px-4 py-1.5 text-xs font-extrabold text-slate-200 shadow-sm">
+              <Eye className="size-4 text-emerald-400" /> {card.viewCount || 0} {t('viewsLabel') || 'views'}
+            </span>
+          </div>
+
+          {/* Main Visiting Card Surface */}
+          <div className="my-6 py-4 flex justify-center">
+            <div className="w-full max-w-md">
+              <VisitingCardView ref={cardRef} data={card} showShareBtn={false} showQrCode={false} />
+            </div>
+          </div>
+
+          {/* Share & QR Code Panel */}
+          <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col items-center gap-6 text-left">
+            <div className="w-full text-center sm:text-left">
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                {t('shareReceiverLink') || 'Share Receiver Link With Contacts'}
+              </h3>
+              <ShareBar url={receiverUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-vcard-${card.slug}`} />
+            </div>
+
+            <div className="w-full pt-4 border-t border-border flex flex-col items-center text-center space-y-2">
+              <span className="text-xs font-bold text-primary uppercase tracking-wider">
+                {t('receiverQrCode') || 'Receiver Shareable QR Code'}
+              </span>
+              <CardQrCode slug={slug} cardType="v" size={160} showDownloadBtn={true} />
+            </div>
+          </div>
+
+          {/* CTA Banner */}
+          <div className="mt-8 rounded-2xl p-6 text-center border border-border bg-card shadow-sm">
+            <p className="text-base font-bold mb-1 text-foreground">{t('createAnotherBusinessCard') || 'Create Another Digital Business Card'}</p>
+            <Link
+              href="/create-visiting-card"
+              className="mt-3 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"
+            >
+              {t('buildYourVcard') || 'Create Visiting Card'} <Sparkles className="size-4" />
+            </Link>
+          </div>
         </div>
+
+        {/* Floating Action Pill for SENDER */}
+        <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2">
+          <button
+            onClick={() => setShowShareModal(true)}
+            className="group flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white text-xs font-bold shadow-xl border border-white/20 backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+            title="Share Link & QR"
+          >
+            <Share2 className="size-3.5 text-amber-400" />
+            <span className="hidden sm:inline">Share</span>
+          </button>
+        </div>
+
+        {/* Universal Luxury Share Modal */}
+        {showShareModal && (
+          <CardShareModal
+            card={{
+              title: card.fullName || 'Digital Visiting Card',
+              recipientOrCouple: card.fullName,
+              type: 'vcard',
+              slug: card.slug,
+              url: `/v/${card.slug}`,
+              viewsCount: card.viewCount || 0,
+              shares: card.shares,
+              occasion: card.company || card.title || 'Digital Business Profile',
+              senderName: card.fullName,
+              waMessage: waMsg,
+              phone: card.phone,
+              email: card.email,
+              website: card.website,
+              address: card.address,
+            }}
+            onClose={() => setShowShareModal(false)}
+          />
+        )}
+      </div>
     )
   }
 
@@ -332,6 +351,10 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
               occasion: card.company || card.title || 'Digital Business Profile',
               senderName: card.fullName,
               waMessage: waMsg,
+              phone: card.phone,
+              email: card.email,
+              website: card.website,
+              address: card.address,
             }}
             onClose={() => setShowShareModal(false)}
           />

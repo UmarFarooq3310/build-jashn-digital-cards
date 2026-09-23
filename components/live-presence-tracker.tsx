@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { useJashn } from '@/lib/jashn/store'
+import { getClientTracking } from '@/lib/jashn/tracking'
 
 function getSessionId(): string {
   if (typeof window === 'undefined') return ''
@@ -33,6 +34,8 @@ export function LivePresenceTracker() {
 
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown'
+        const tracking = await getClientTracking()
+        const exactLocation = tracking.city ? `${tracking.city}, ${tracking.countryCode}` : tracking.country || timezone
         const language = navigator.language || 'en'
 
         await setDoc(
@@ -43,7 +46,7 @@ export function LivePresenceTracker() {
             page: window.location.pathname,
             title: document.title || 'Cardzy',
             device: isMobile ? 'Mobile' : 'Desktop',
-            timezone,
+            timezone: exactLocation,
             language,
             userId: user?.uid || null,
             userEmail: user?.email || 'Guest Visitor',

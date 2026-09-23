@@ -440,6 +440,26 @@ export const VALIDATION_T: Record<string, Record<string, string>> = {
     vi: "Cô dâu",
     sw: "Bibi Harusi"
   },
+  relationRequired: {
+    en: "Please select a relation",
+    ur: "براہ کرم رشتہ منتخب کریں",
+    es: "Por favor seleccione una relación",
+    fr: "Veuillez sélectionner une relation",
+    ar: "يرجى تحديد صلة القرابة",
+    hi: "कृपया एक संबंध चुनें",
+    zh: "请选择与收卡人的关系",
+    pt: "Por favor selecione uma relação",
+    ru: "Пожалуйста, выберите степень родства",
+    de: "Bitte wählen Sie eine Beziehung aus",
+    ja: "関係を選択してください",
+    ko: "관계를 선택해 주세요",
+    it: "Seleziona una relazione",
+    tr: "Lütfen bir ilişki seçin",
+    id: "Silakan pilih hubungan",
+    bn: "অনুগ্রহ করে একটি সম্পর্ক নির্বাচন করুন",
+    vi: "Vui lòng chọn mối quan hệ",
+    sw: "Tafadhali chagua uhusiano"
+  },
   recipientNameRequired: {
     en: "Recipient Name is required",
     ur: "وصول کنندہ کا نام لازمی ہے",

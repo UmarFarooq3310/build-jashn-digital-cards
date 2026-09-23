@@ -40,6 +40,21 @@ export const EXTRA_T: Record<string, Record<LangCode, string>> = {
   navLogIn: {
     en: "Log In", ur: "لاگ ان", ar: "دخول", es: "Acceder", fr: "Connexion", hi: "लॉग इन", zh: "登录", pt: "Entrar", ru: "Вход", de: "Anmelden", ja: "ログイン", ko: "로그인", it: "Accedi", tr: "Giriş", id: "Masuk", bn: "লগ ইন", vi: "Đăng Nhập", sw: "Ingia"
   },
+  btnBack: {
+    en: "Back", ur: "واپس", ar: "رجوع", es: "Atrás", fr: "Retour", hi: "पीछे", zh: "返回", pt: "Voltar", ru: "Назад", de: "Zurück", ja: "戻る", ko: "뒤로", it: "Indietro", tr: "Geri", id: "Kembali", bn: "পেছনে", vi: "Quay lại", sw: "Rudi"
+  },
+  btnNext: {
+    en: "Next", ur: "اگلا", ar: "التالي", es: "Siguiente", fr: "Suivant", hi: "आगे", zh: "下一步", pt: "Avançar", ru: "Далее", de: "Weiter", ja: "次へ", ko: "다음", it: "Avanti", tr: "İleri", id: "Lanjut", bn: "পরবর্তী", vi: "Tiếp theo", sw: "Mbele"
+  },
+  btnFinish: {
+    en: "Finish 🚀", ur: "مکمل کریں 🚀", ar: "إنهاء 🚀", es: "Finalizar 🚀", fr: "Terminer 🚀", hi: "पूर्ण करें 🚀", zh: "完成 🚀", pt: "Concluir 🚀", ru: "Завершить 🚀", de: "Fertigstellen 🚀", ja: "完了 🚀", ko: "완료 🚀", it: "Completa 🚀", tr: "Tamamla 🚀", id: "Selesai 🚀", bn: "সম্পন্ন করুন 🚀", vi: "Hoàn tất 🚀", sw: "Maliza 🚀"
+  },
+  btnSave: {
+    en: "Save", ur: "محفوظ کریں", ar: "حفظ", es: "Guardar", fr: "Enregistrer", hi: "सहेजें", zh: "保存", pt: "Salvar", ru: "Сохранить", de: "Speichern", ja: "保存", ko: "저장", it: "Salva", tr: "Kaydet", id: "Simpan", bn: "সংরক্ষণ করুন", vi: "Lưu", sw: "Hifadhi"
+  },
+  btnUpdate: {
+    en: "Update", ur: "اپ ڈیٹ کریں", ar: "تحديث", es: "Actualizar", fr: "Mettre à jour", hi: "अपडेट करें", zh: "更新", pt: "Atualizar", ru: "Обновить", de: "Aktualisieren", ja: "更新", ko: "업데이트", it: "Aggiorna", tr: "Güncelle", id: "Perbarui", bn: "আপডেট করুন", vi: "Cập nhật", sw: "Sasisha"
+  },
   borderNameCyberHud: {
     en: "Cyber Gaming HUD", ur: "سائبر گیمنگ فریم", ar: "إطار الألعاب السيبراني", es: "Marco Cyber Gaming", fr: "Cadre Cyber Gaming", hi: "साइबर गेमिंग फ्रेम", zh: "赛博电竞 HUD 边框", pt: "Borda Cyber Gaming", ru: "Рамка Cyber Gaming", de: "Cyber Gaming Rahmen", ja: "サイバーゲーミングHUD", ko: "사이버 게이밍 HUD", it: "Bordo Cyber Gaming", tr: "Siber Oyuncu Çerçevesi", id: "Bingkai Cyber Gaming", bn: "সাইবার গেমিং ফ্রেম", vi: "Khung Cyber Gaming", sw: "Fremu ya Cyber Gaming"
   },
@@ -1913,7 +1928,27 @@ export const EXTRA_T: Record<string, Record<LangCode, string>> = {
     en: 'Diagonal cross-hatch edge border', ur: 'ترچھی کراس ہیچ سائیڈ border', ar: 'حدود متقاطعة مائلة أنيقة', es: 'Borde diagonal entramado', fr: 'Bordure à hachures croisées diagonales', hi: 'तिरछा क्रॉस-हैच एज बॉर्डर', zh: '斜角编织与几何对称收边', pt: 'Borda diagonal cruzada', ru: 'Диагональная перекрестная граница', de: 'Diagonaler Kreuzgitterrand', ja: '斜めのクロスハッチエッジボーダー', ko: '대각선 크로스 해치 에지 테두리', it: 'Bordo diagonale a tratteggio incrociato', tr: 'Çapraz taramalı kenar kenarlığı', id: 'Garis tepi silang diagonal', bn: 'ترچھی کراس ہیچ سائیڈ border', vi: 'Viền Nét Gạch Chéo Sang Trọng', sw: 'Mipaka ya Kusuka',
   },
   whoIsCardForHeader: {
-    en: '1. WHO IS THIS CARD FOR? (SELECT RELATION)', ur: '1. یہ کارڈ کس کے لیے ہے؟ (رشتہ منتخب کریں)', ar: '1. لمن هذه البطاقة؟ (اختر العلاقة)', es: '1. ¿PARA KIÉN ES ESTA TARJETA? (SELECCIONAR RELACIÓN)', fr: '1. À QUI EST DESTINÉE CETTE CARTE ? (SÉLECTIONNER LA RELATION)', hi: '1. यह कार्ड किसके लिए है? (संबंध चुनें)', zh: '1. 这张贺卡送给谁？(请选择关系)', pt: '1. PARA QUEM É ESTE CARTÃO? (SELECIONAR RELAÇÃO)', ru: '1. ДЛЯ КОГО ЭТА ОТКРЫТКА? (ВЫБЕРИТЕ СВЯЗЬ)', de: '1. FÜR WEN IST DIESE KARTE? (BEZIEHUNG AUSWÄHLEN)', ja: '1. どなたへのカードですか？（関係を選択）', ko: '1. 누구를 위한 카드가요? (관계 선택)', it: '1. PER CHI È QUESTO BIGLIETTO? (SELEZIONA RELAZIONE)', tr: '1. BU KART KİMİN İÇİN? (İLİŞKİ SEÇİN)', id: '1. KARTU INI UNTUK SIAPA? (PILIH HUBUNGAN)', bn: '1. یہ کارڈ کس کے لیے ہے؟ (رشتہ منتخب کریں)', vi: '1. THIỆP NÀY DÀNH CHO AI? (CHỌN MỐI QUAN HỆ)', sw: '1. KADI HII NI KWA AJILI YA NANI? (CHAGUA UHUSIANO)',
+    en: '1. WHO IS THIS CARD FOR? (SELECT RELATION)', ur: '1. یہ کارڈ کس کے لیے ہے؟ (رشتہ منتخب کریں)', ar: '1. لمن هذه البطاقة؟ (اختر العلاقة)', es: '1. ¿PARA QUIÉN ES ESTA TARJETA? (SELECCIONAR RELACIÓN)', fr: '1. À QUI EST DESTINÉE CETTE CARTE ? (SÉLECTIONNER LA RELATION)', hi: '1. यह कार्ड किसके लिए है? (संबंध चुनें)', zh: '1. 这张贺卡送给谁？(请选择关系)', pt: '1. PARA QUEM É ESTE CARTÃO? (SELECIONAR RELAÇÃO)', ru: '1. ДЛЯ КОГО ЭТА ОТКРЫТКА? (ВЫБЕРИТЕ СВЯЗЬ)', de: '1. FÜR WEN IST DIESE KARTE? (BEZIEHUNG AUSWÄHLEN)', ja: '1. どなたへのカードですか？（関係を選択）', ko: '1. 누구를 위한 카드가요? (관계 선택)', it: '1. PER CHI È QUESTO BIGLIETTO? (SELEZIONA RELAZIONE)', tr: '1. BU KART KİMİN İÇİN? (İLİŞKİ SEÇİN)', id: '1. KARTU INI UNTUK SIAPA? (PILIH HUBUNGAN)', bn: '১. এই কার্ডটি কার জন্য? (সম্পর্ক নির্বাচন করুন)', vi: '1. THIỆP NÀY DÀNH CHO AI? (CHỌN MỐI QUAN HỆ)', sw: '1. KADI HII NI KWA AJILI YA NANI? (CHAGUA UHUSIANO)',
+  },
+  relationRequired: {
+    en: 'Please select a relation',
+    ur: 'براہ کرم رشتہ منتخب کریں',
+    es: 'Por favor seleccione una relación',
+    fr: 'Veuillez sélectionner une relation',
+    ar: 'يرجى تحديد صلة القرابة',
+    hi: 'कृपया एक संबंध चुनें',
+    zh: '请选择与收卡人的关系',
+    pt: 'Por favor selecione uma relação',
+    ru: 'Пожалуйста, выберите степень родства',
+    de: 'Bitte wählen Sie eine Beziehung aus',
+    ja: '関係を選択してください',
+    ko: '관계를 선택해 주세요',
+    it: 'Seleziona una relazione',
+    tr: 'Lütfen bir ilişki seçin',
+    id: 'Silakan pilih hubungan',
+    bn: 'অনুগ্রহ করে একটি সম্পর্ক নির্বাচন করুন',
+    vi: 'Vui lòng chọn mối quan hệ',
+    sw: 'Tafadhali chagua uhusiano'
   },
   recipientNameLabel: {
     en: 'Recipient Name *', ur: 'وصول کنندہ کا نام *', ar: 'اسم المستلم *', es: 'Nombre del destinatario *', fr: 'Nom du destinataire *', hi: 'प्राप्तकर्ता का नाम *', zh: '收卡人姓名 *', pt: 'Nome do destinatário *', ru: 'Имя получателя *', de: 'Empfängername *', ja: '受取人の名前 *', ko: '수신자 이름 *', it: 'Nome destinatario *', tr: 'Alıcının Adı *', id: 'Nama Penerima *', bn: 'وصول کنندہ کا نام *', vi: 'Tên Người Nhận *', sw: 'Jina la Mpokeaji *',
@@ -1926,6 +1961,66 @@ export const EXTRA_T: Record<string, Record<LangCode, string>> = {
   },
   removePhotoBtn: {
     en: 'Remove Photo', ur: 'تصویر ہٹائیں', ar: 'إزالة الصورة', es: 'Eliminar foto', fr: 'Supprimer la photo', hi: 'फोटो हटाएं', zh: '删除已选照片', pt: 'Remover foto', ru: 'Удалить фото', de: 'Foto entfernen', ja: '写真を削除', ko: '사진 삭제', it: 'Rimuovi foto', tr: 'Fotoğrafı Kaldır', id: 'Hapus Foto', bn: 'تصویر ہٹائیں', vi: 'Xóa Ảnh', sw: 'Odoa Picha',
+  },
+  backgroundMusicTrackLabel: {
+    en: 'Background Music Track (Plays on Open)',
+    ur: 'بیک گراؤنڈ میوزک ٹریک (کھولنے پر چلتا ہے)',
+    ar: 'الموسيقى الخلفية (تعمل عند الفتح)',
+    es: 'Pista de Música de Fondo (Se reproduce al abrir)',
+    fr: "Piste Musicale d'Ambiance (Se joue à l'ouverture)",
+    hi: 'बैकग्राउंड म्यूजिक ट्रैक (खोलने पर बजता है)',
+    zh: '背景音乐 (打开贺卡时自动播放)',
+    pt: 'Trilha Sonora de Fundo (Toca ao abrir)',
+    ru: 'Фоновый музыкальный трек (воспроизводится при открытии)',
+    de: 'Hintergrundmusik-Titel (Wird beim Öffnen abgespielt)',
+    ja: 'BGMトラック（開封時に再生）',
+    ko: '배경 음악 트랙 (열 때 자동 재생)',
+    it: "Brano Musicale di Sottofondo (Si avvia all'apertura)",
+    tr: 'Arka Plan Müziği (Açıldığında Çalar)',
+    id: 'Trek Musik Latar (Diputar saat dibuka)',
+    bn: 'ব্যাকগ্রাউন্ড মিউজিক ট্র্যাক (খোলার সাথে বাজবে)',
+    vi: 'Nhạc Nền (Tự động phát khi mở thiệp)',
+    sw: 'Wimbo wa Muziki wa Nyuma (Hucheza Unapofungua)',
+  },
+  previewSound: {
+    en: 'Play Sound 🔊',
+    ur: 'آواز سنیں 🔊',
+    ar: 'تشغيل الصوت 🔊',
+    es: 'Reproducir Sonido 🔊',
+    fr: 'Jouer le Son 🔊',
+    hi: 'ध्वनि सुनें 🔊',
+    zh: '试听音效 🔊',
+    pt: 'Tocar Som 🔊',
+    ru: 'Слушать звук 🔊',
+    de: 'Ton abspielen 🔊',
+    ja: '音声を試聴 🔊',
+    ko: '사운드 듣기 🔊',
+    it: 'Ascolta Audio 🔊',
+    tr: 'Sesi Çal 🔊',
+    id: 'Putar Suara 🔊',
+    bn: 'শব্দ শুনুন 🔊',
+    vi: 'Nghe Thử Âm Thanh 🔊',
+    sw: 'Sikiliza Sauti 🔊',
+  },
+  stopPreview: {
+    en: 'Stop Sound ⏹️',
+    ur: 'آواز بند کریں ⏹️',
+    ar: 'إيقاف الصوت ⏹️',
+    es: 'Detener Sonido ⏹️',
+    fr: 'Arrêter le Son ⏹️',
+    hi: 'ध्वनि रोकें ⏹️',
+    zh: '停止播放 ⏹️',
+    pt: 'Parar Som ⏹️',
+    ru: 'Остановить звук ⏹️',
+    de: 'Ton stoppen ⏹️',
+    ja: '音声を停止 ⏹️',
+    ko: '사운드 정지 ⏹️',
+    it: 'Ferma Audio ⏹️',
+    tr: 'Sesi Durdur ⏹️',
+    id: 'Hentikan Suara ⏹️',
+    bn: 'শব্দ বন্ধ করুন ⏹️',
+    vi: 'Dừng Âm Thanh ⏹️',
+    sw: 'Simamisha Sauti ⏹️',
   },
   cardMessageHeader: {
     en: '2. CARD MESSAGE', ur: '2. کارڈ کا پیغام', ar: '2. رسالة البطاقة', es: '2. MENSAJE DE LA TARJETA', fr: '2. MESSAGE DE LA CARTE', hi: '2. कार्ड का संदेश', zh: '2. 寄语与温馨祝福 MESSAGE', pt: '2. MENSAGEM DO CARTÃO', ru: '2. СООБЩЕНИЕ ОТКРЫТКИ', de: '2. KARTENNACHRICHT', ja: '2. メッセージ', ko: '2. 카드 메시지', it: '2. MESSAGGIO DEL BIGLIETTO', tr: '2. KART MESAJI', id: '2. PESAN KARTU', bn: '2. کارڈ کا پیغام', vi: '2. LỜI CHÚC TRÊN THIỆP', sw: '2. UJUMBE WA KADI',

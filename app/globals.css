@@ -1631,7 +1631,6 @@ font {
     padding: 22px 26px 18px;
   }
 }
-
 @media (min-width: 1024px) {
   .magic-card {
     width: min(90vw, 560px);

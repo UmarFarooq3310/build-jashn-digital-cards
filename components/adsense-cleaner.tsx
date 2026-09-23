@@ -42,6 +42,14 @@ export function AdSenseCleaner() {
     window.addEventListener('error', handleError, true)
     window.addEventListener('unhandledrejection', handleRejection, true)
 
+        const origConsoleError = console.error
+    console.error = function (...args) {
+      if (args[0] && typeof args[0] === 'string' && isAdError(args[0])) {
+        return
+      }
+      origConsoleError.apply(this, args)
+    }
+
     const origOnError = window.onerror
     window.onerror = function (message, source, lineno, colno, error) {
       if (isAdError(message, source) || (error && isAdError(error.message, source))) {

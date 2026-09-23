@@ -4,8 +4,9 @@ import '@/app/invitation-themes-animations.css'
 import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, X, CheckCircle2 } from 'lucide-react'
+import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, VolumeX, X, CheckCircle2, Gamepad2, Flame, Hash, Shield, Crown, Swords, Zap } from 'lucide-react'
 import { AUDIO_TRACKS } from '@/lib/jashn/audio'
+import { celebrationAudio } from '@/lib/jashn/audio-synth'
 import { generateAIWish, type AITone } from '@/lib/jashn/ai-generator'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
@@ -21,8 +22,10 @@ import { PreviewCardFit } from '@/components/jashn/preview-card-fit'
 import { useJashn } from '@/lib/jashn/store'
 import { getOccasion, getTemplates, getLocalizedTemplateText } from '@/lib/jashn/occasions'
 import type { Language } from '@/lib/jashn/types'
-import { cn } from '@/lib/utils'
+import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
+import { doc, getDoc } from 'firebase/firestore'
 import { useLang } from '@/lib/lang/context'
+import { cn } from '@/lib/utils'
 
 const RELATIONS = [
   { id: 'Brother', en: 'Brother', ur: 'بھائی' },
@@ -114,7 +117,7 @@ function CreateWishContent() {
   })
   const [relation, setRelation] = useState(() => {
     if (relationParam) return relationParam
-    return 'Friend'
+    return ''
   })
 
   // Gaming Winner Extra Fields
@@ -126,7 +129,15 @@ function CreateWishContent() {
   // Custom Photo, Audio & AI Generator State
   const [photoUrl, setPhotoUrl] = useState('')
   const [audioTrack, setAudioTrack] = useState('birthday-festive')
+  const [playingTrackId, setPlayingTrackId] = useState<string | null>(null)
   const [showAiModal, setShowAiModal] = useState(false)
+
+  // Cleanup audio playback on unmount
+  useEffect(() => {
+    return () => {
+      celebrationAudio.stop()
+    }
+  }, [])
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -173,70 +184,200 @@ function CreateWishContent() {
     showToast('AI Wish Generated! ✨', 'info')
   }
 
-  useEffect(() => {
-    if (editSlug) {
-      const existing = wishes.find((w) => w.slug === editSlug)
-      if (existing) {
-        setOccasionId(existing.occasionId)
-        setThemeId(existing.themeId)
-        setBorderId(existing.borderId || 'mehndi')
-        setBgVariantId(existing.bgVariantId || 'default')
-        setMessage(existing.message)
-        setSenderName(existing.senderName)
-        setRecipientName(existing.recipientName)
-        if (existing.relation) setRelation(existing.relation)
-        setLanguage(existing.language)
-        if (existing.playerName) setPlayerName(existing.playerName)
-        if (existing.killCount) setKillCount(existing.killCount)
-        if (existing.rank) setRank(existing.rank)
-        if (existing.winningNumber) setWinningNumber(existing.winningNumber)
-        if (existing.photoUrl) setPhotoUrl(existing.photoUrl)
-        if (existing.audioTrack) setAudioTrack(existing.audioTrack)
-        setStep(2)
-      }
-    } else {
-      const occParam = searchParams.get('occasion')
-      const catParam = searchParams.get('category')
-      const msgParam = searchParams.get('message')
-      const recParam = searchParams.get('recipient')
-      const sndParam = searchParams.get('sender')
-      const relParam = searchParams.get('relation')
+  const draftKey = editSlug ? `cardzy_draft_wish_edit_${editSlug}` : 'cardzy_draft_wish'
+  const [isInitialLoaded, setIsInitialLoaded] = useState(false)
 
-      const resolved = occParam || resolveOccasionFromCategory(catParam)
-      if (occParam || catParam) {
-        setOccasionId(resolved)
-        if (msgParam) {
-          setMessage(msgParam)
-        } else {
-          const tPlates = getTemplates(resolved)
-          if (tPlates.length > 0 && !message) {
-            setMessage(getLocalizedTemplateText(tPlates[0], lang))
+  // 1. Initial Load: Restore draft or fetch edit record
+  useEffect(() => {
+    let isCancelled = false
+    async function initData() {
+      if (editSlug) {
+        let loadedData: any = null
+        try {
+          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          if (draftJson) loadedData = JSON.parse(draftJson)
+        } catch {}
+
+        if (!loadedData) {
+          const existing = wishes.find((w) => w.slug === editSlug)
+          if (existing) {
+            loadedData = existing
+          } else {
+            const activeDb = getFirebaseDb() || db
+            if (isFirebaseConfigured && activeDb) {
+              try {
+                const snap = await getDoc(doc(activeDb, 'wishes', editSlug))
+                if (snap.exists()) {
+                  loadedData = snap.data()
+                }
+              } catch (err) {
+                console.error('Error loading wish for edit:', err)
+              }
+            }
           }
         }
-        if (recParam) setRecipientName(recParam)
-        if (sndParam) setSenderName(sndParam)
-        if (relParam) setRelation(relParam)
-        setStep(2)
+
+        if (loadedData && !isCancelled) {
+          if (loadedData.occasionId) setOccasionId(loadedData.occasionId)
+          if (loadedData.themeId) setThemeId(loadedData.themeId)
+          if (loadedData.borderId) setBorderId(loadedData.borderId)
+          if (loadedData.bgVariantId) setBgVariantId(loadedData.bgVariantId)
+          if (loadedData.message !== undefined) setMessage(loadedData.message)
+          if (loadedData.senderName !== undefined) setSenderName(loadedData.senderName)
+          if (loadedData.recipientName !== undefined) setRecipientName(loadedData.recipientName)
+          if (loadedData.relation) setRelation(loadedData.relation)
+          if (loadedData.language) setLanguage(loadedData.language)
+          if (loadedData.playerName) setPlayerName(loadedData.playerName)
+          if (loadedData.killCount) setKillCount(loadedData.killCount)
+          if (loadedData.rank) setRank(loadedData.rank)
+          if (loadedData.winningNumber) setWinningNumber(loadedData.winningNumber)
+          if (loadedData.photoUrl) setPhotoUrl(loadedData.photoUrl)
+          if (loadedData.audioTrack) setAudioTrack(loadedData.audioTrack)
+          if (loadedData.step) setStep(loadedData.step as any)
+          else setStep(2)
+        }
+      } else {
+        let hasDraft = false
+        try {
+          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          if (draftJson) {
+            const d = JSON.parse(draftJson)
+            if (d && typeof d === 'object') {
+              hasDraft = true
+              if (d.occasionId) setOccasionId(d.occasionId)
+              if (d.themeId) setThemeId(d.themeId)
+              if (d.borderId) setBorderId(d.borderId)
+              if (d.bgVariantId) setBgVariantId(d.bgVariantId)
+              if (d.message !== undefined) setMessage(d.message)
+              if (d.senderName !== undefined) setSenderName(d.senderName)
+              if (d.recipientName !== undefined) setRecipientName(d.recipientName)
+              if (d.relation) setRelation(d.relation)
+              if (d.language) setLanguage(d.language)
+              if (d.playerName) setPlayerName(d.playerName)
+              if (d.killCount) setKillCount(d.killCount)
+              if (d.rank) setRank(d.rank)
+              if (d.winningNumber) setWinningNumber(d.winningNumber)
+              if (d.photoUrl) setPhotoUrl(d.photoUrl)
+              if (d.audioTrack) setAudioTrack(d.audioTrack)
+              if (d.step) setStep(d.step as any)
+            }
+          }
+        } catch {}
+
+        if (!hasDraft) {
+          const occParam = searchParams.get('occasion')
+          const catParam = searchParams.get('category')
+          const msgParam = searchParams.get('message')
+          const recParam = searchParams.get('recipient')
+          const sndParam = searchParams.get('sender')
+          const relParam = searchParams.get('relation')
+
+          const resolved = occParam || resolveOccasionFromCategory(catParam)
+          if (occParam || catParam) {
+            setOccasionId(resolved)
+            if (msgParam) {
+              setMessage(msgParam)
+            } else {
+              const tPlates = getTemplates(resolved)
+              if (tPlates.length > 0) {
+                setMessage(getLocalizedTemplateText(tPlates[0], lang))
+              }
+            }
+            if (recParam) setRecipientName(recParam)
+            if (sndParam) setSenderName(sndParam)
+            if (relParam) setRelation(relParam)
+            setStep(2)
+          }
+        }
+      }
+      if (!isCancelled) setIsInitialLoaded(true)
+    }
+
+    initData()
+    return () => {
+      isCancelled = true
+    }
+  }, [editSlug, draftKey])
+
+  // 2. Auto-save draft on changes (LOCAL ONLY - zero writes to Firebase)
+  useEffect(() => {
+    if (!isInitialLoaded || typeof window === 'undefined') return
+    const draftData = {
+      step,
+      occasionId,
+      themeId,
+      borderId,
+      bgVariantId,
+      message,
+      senderName,
+      recipientName,
+      relation,
+      language,
+      playerName,
+      killCount,
+      rank,
+      winningNumber,
+      photoUrl,
+      audioTrack,
+    }
+    try {
+      sessionStorage.setItem(draftKey, JSON.stringify(draftData))
+      localStorage.setItem(draftKey, JSON.stringify(draftData))
+    } catch {}
+  }, [
+    isInitialLoaded,
+    draftKey,
+    step,
+    occasionId,
+    themeId,
+    borderId,
+    bgVariantId,
+    message,
+    senderName,
+    recipientName,
+    relation,
+    language,
+    playerName,
+    killCount,
+    rank,
+    winningNumber,
+    photoUrl,
+    audioTrack,
+  ])
+
+  // 3. Browser Back / PopState support
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const handlePopState = (e: PopStateEvent) => {
+      if (e.state && typeof e.state.cardzyStep === 'number') {
+        setStep(e.state.cardzyStep as 1 | 2 | 3 | 4)
+      } else {
+        setStep((prev) => (prev > 1 ? ((prev - 1) as 1 | 2 | 3 | 4) : 1))
       }
     }
-  }, [searchParams, editSlug, wishes, lang, message])
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
 
-  useEffect(() => {
-    const defaultTemplate = templates[0]
-    if (defaultTemplate && !message && !editSlug) {
-      setMessage(getLocalizedTemplateText(defaultTemplate, lang))
+  const changeStep = (nextStep: 1 | 2 | 3 | 4) => {
+    setStep(nextStep)
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ cardzyStep: nextStep }, '', window.location.href)
+      window.scrollTo({ top: 100, behavior: 'smooth' })
     }
-  }, [occasionId, lang, templates, message, editSlug])
+  }
 
   function handleOccasionSelect(id: string) {
     setOccasionId(id)
     setErrors({})
-    setStep(2)
+    changeStep(2)
     
-    // Automatically set default template for the newly selected occasion
-    const tPlates = getTemplates(id)
-    if (tPlates.length > 0) {
-      setMessage(getLocalizedTemplateText(tPlates[0], lang))
+    // Automatically set default template for the newly selected occasion if message is empty
+    if (!message) {
+      const tPlates = getTemplates(id)
+      if (tPlates.length > 0) {
+        setMessage(getLocalizedTemplateText(tPlates[0], lang))
+      }
     }
   }
 
@@ -266,6 +407,9 @@ function CreateWishContent() {
         errs.rank = t('rankNumber', 'Rank must contain a number (e.g. 1 or #1)')
       }
     } else {
+      if (!relation.trim()) {
+        errs.relation = t('relationRequired', 'Please select a relation')
+      }
       if (!recipientName.trim()) {
         errs.recipientName = t('recipientNameRequired', 'Recipient Name is required')
       }
@@ -391,19 +535,29 @@ function CreateWishContent() {
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-20">
       <div className="mb-8 text-center">
         {/* Card Studio Mode Switcher */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+        <div className="inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs mb-6">
+          <div className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-xs bg-[#7B0D1E]">
+            💌 {t('sendAnimatedWishCard') || 'Wish Cards'}
+          </div>
           <Link
             href="/create-invitation"
-            className="inline-flex items-center gap-2 rounded-full border border-[#E5DFD3] bg-white px-5 py-2.5 text-xs sm:text-sm font-semibold text-[#5A4530] transition-all hover:border-[#7A1E2B]/40 hover:text-foreground shadow-sm"
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            🎉 {t('weddingInvitationTitle') || 'Wedding & Event Invitation'}
+            🎉 {t('weddingInvitationTitle') || 'Invitations'}
           </Link>
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#7A1E2B] px-5 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md">
-            📧 {t('sendAnimatedWishCard') || 'Send an Animated Wish Card'}
-          </div>
+          <Link
+            href="/create-magic-link"
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+          >
+            🪄 {t('magicLinksNav') || 'Magic Links'}
+          </Link>
+          <Link
+            href="/create-visiting-card"
+            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+          >
+            📇 {t('smartDigitalBusinessCardsTitle') || 'Visiting Cards'}
+          </Link>
         </div>
-
-
 
         {/* 4-Part Progress Stepper */}
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
@@ -427,9 +581,9 @@ function CreateWishContent() {
                   disabled={!isClickable}
                   className={`flex size-7 sm:size-8 items-center justify-center rounded-full text-xs font-bold transition-all ${
                     step === s
-                      ? 'bg-[#7A1E2B] text-white shadow-md ring-4 ring-[#7A1E2B]/20'
+                      ? 'bg-[#7B0D1E] text-white shadow-md ring-4 ring-[#7B0D1E]/20'
                       : isClickable
-                      ? 'bg-muted/80 text-muted-foreground hover:bg-[#7A1E2B]/10 hover:text-[#7A1E2B]'
+                      ? 'bg-muted text-muted-foreground hover:bg-[#7B0D1E]/10 hover:text-[#7B0D1E] cursor-pointer'
                       : 'bg-muted/40 text-muted-foreground/40 cursor-not-allowed'
                   }`}
                 >
@@ -442,24 +596,23 @@ function CreateWishContent() {
                       setStep(s as 1 | 2 | 3 | 4)
                     }
                   }}
-                  className={`hidden sm:inline text-xs font-bold transition-colors ${
+                  className={`hidden sm:inline text-xs transition-colors ${
                     step === s
-                      ? 'text-[#7A1E2B] font-extrabold'
+                      ? 'text-[#7B0D1E] font-extrabold'
                       : isClickable
-                      ? 'text-muted-foreground hover:text-foreground cursor-pointer'
-                      : 'text-muted-foreground/40 cursor-not-allowed'
+                      ? 'text-muted-foreground hover:text-foreground font-semibold cursor-pointer'
+                      : 'text-muted-foreground/40 font-semibold cursor-not-allowed'
                   }`}
                 >
                   {cleanStepLabel(label)}
                 </span>
-                {s < 4 && <div className="hidden sm:block h-px w-4 sm:w-6 bg-[#E5DFD3]" />}
+                {s < 4 && <div className="hidden sm:block h-px w-4 sm:w-6 bg-border" />}
               </div>
             )
           })}
         </div>
       </div>
 
-      {/* 📱 Mobile Form/Preview Toggle (Only visible on Step > 1 & Mobile < 1024px) */}
       <div className="grid gap-8 lg:grid-cols-12">
         <div className="lg:col-span-7 space-y-4">
           <div className="rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-sm">
@@ -476,7 +629,7 @@ function CreateWishContent() {
                 <div className="flex justify-end pt-4 border-t border-border">
                   <Button
                     onClick={() => setStep(2)}
-                    className="bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-bold rounded-full px-6 h-11 flex items-center gap-2 shadow-md active:scale-95 transition-all"
+                    className="bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold rounded-2xl px-6 h-11 flex items-center gap-2 shadow-lg shadow-[#7B0D1E]/20 active:scale-95 transition-all"
                   >
                     <span>{t('btnNext') || 'Next'}</span>
                     <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -491,12 +644,12 @@ function CreateWishContent() {
             {step === 2 && (
               <div className="space-y-4">
                 {/* Header Selected Occasion Info */}
-                <div className="flex items-center justify-between border-b border-border pb-3">
+                <div className="flex items-center justify-between border-b border-border pb-2.5 mb-2">
                   <div>
-                    <span className="text-[10px] uppercase font-extrabold tracking-wider text-[#7B0D1E]">
+                    <span className="text-[9.5px] uppercase font-extrabold tracking-wider text-[#7B0D1E] block">
                       {t('selectedOccasion')}
                     </span>
-                    <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+                    <h2 className="text-sm sm:text-base font-bold text-foreground flex items-center gap-1.5 leading-tight">
                       {t(`occ_${selectedOccasion?.id.replace(/-/g, '_')}`) || selectedOccasion?.label}
                     </h2>
                   </div>
@@ -504,33 +657,44 @@ function CreateWishContent() {
                     variant="outline"
                     size="sm"
                     onClick={() => setStep(1)}
-                    className="text-xs h-8 px-3 rounded-xl flex items-center gap-1.5"
+                    className="text-[11px] h-7 px-2.5 rounded-lg flex items-center gap-1 border-border bg-card hover:bg-muted text-foreground font-semibold"
                   >
-                    <Grid className="size-3.5 text-[#7B0D1E]" /> {t('viewOccasions')}
+                    <Grid className="size-3 text-[#7B0D1E]" /> {t('viewOccasions')}
                   </Button>
                 </div>
 
                 <div className={cn('space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
                   {isGamingOccasion ? (
-                    <div className="space-y-4 rounded-2xl border border-amber-500/30 bg-slate-950/40 p-4 text-slate-100">
-                      <h3 className="text-xs font-extrabold uppercase tracking-wider text-amber-400 flex items-center gap-1.5 border-b border-amber-500/20 pb-2">
-                        <Trophy className="size-4 text-amber-400" /> {t('gamingWinnerPersonalization')}
-                      </h3>
+                    <div className="space-y-4 rounded-2xl border border-amber-500/40 bg-gradient-to-b from-slate-950 via-slate-900 to-black p-4 sm:p-5 text-slate-100 shadow-2xl relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-amber-400" />
+                      <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-amber-400" />
+                      
+                      <div className="flex items-center justify-between border-b border-amber-500/20 pb-2.5">
+                        <h3 className="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                          <Trophy className="size-4 text-amber-400" />
+                          <span>🎮 ESPORTS VICTORY & SCORECARD</span>
+                        </h3>
+                        <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 bg-slate-900 border border-amber-500/30 px-2 py-0.5 rounded-full">
+                          HUD CONFIG
+                        </span>
+                      </div>
 
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div>
-                          <label className={cn("mb-1.5 block text-xs font-bold text-slate-200", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                            Player / Squad Name *
+                      <div className="grid gap-4 sm:grid-cols-2 pt-1">
+                        {/* Player / Squad Tag */}
+                        <div className="sm:col-span-2">
+                          <label className={cn("mb-1.5 flex items-center gap-1.5 text-xs font-bold text-amber-300 uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            <Gamepad2 className="size-3.5 text-amber-400" />
+                            <span>Gamer Tag / Squad Name *</span>
                           </label>
                           <input
                             id="field-playerName"
                             type="text"
                             value={playerName}
                             onChange={(e) => handleFieldChange('playerName', e.target.value, setPlayerName)}
-                            placeholder="e.g. ProGamer99 / Team Alpha"
+                            placeholder="e.g. ShadowSniper99 / Team Alpha"
                             className={cn(
-                              "w-full rounded-2xl border p-3 text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 transition-all",
-                              errors.playerName ? "border-red-500 focus:ring-red-500" : "border-slate-700 focus:ring-amber-400"
+                              "w-full rounded-2xl border p-3 text-sm bg-slate-950 text-white font-medium focus:outline-none focus:ring-2 transition-all",
+                              errors.playerName ? "border-red-500 focus:ring-red-500" : "border-slate-700 focus:border-amber-400 focus:ring-amber-400/30"
                             )}
                           />
                           {errors.playerName && (
@@ -540,21 +704,47 @@ function CreateWishContent() {
                           )}
                         </div>
 
+                        {/* Kills / Combat Score */}
                         <div>
-                          <label className={cn("mb-1.5 block text-xs font-bold text-slate-200", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                            Score / Kill Count <span className="text-slate-400 font-normal">(optional, numbers)</span>
+                          <label className={cn("mb-1.5 flex items-center gap-1.5 text-xs font-bold text-emerald-300 uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            <Flame className="size-3.5 text-emerald-400" />
+                            <span>Combat Kills / Score</span>
                           </label>
                           <input
                             id="field-killCount"
                             type="text"
                             value={killCount}
                             onChange={(e) => handleFieldChange('killCount', e.target.value, setKillCount)}
-                            placeholder="e.g. 18 or 18 Kills"
+                            placeholder="e.g. 18 Kills or 2450 Pts"
                             className={cn(
-                              "w-full rounded-2xl border p-3 text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 transition-all",
-                              errors.killCount ? "border-red-500 focus:ring-red-500" : "border-slate-700 focus:ring-amber-400"
+                              "w-full rounded-2xl border p-3 text-sm bg-slate-950 text-white font-medium focus:outline-none focus:ring-2 transition-all",
+                              errors.killCount ? "border-red-500 focus:ring-red-500" : "border-slate-700 focus:border-emerald-400 focus:ring-emerald-400/30"
                             )}
                           />
+                          {/* Quick Preset Chips for Kills */}
+                          <div className="flex flex-wrap gap-1.5 mt-2">
+                            {[
+                              { label: '5 Kills', value: '5' },
+                              { label: '12 Kills', value: '12' },
+                              { label: '24 Kills', value: '24' },
+                              { label: '35 Kills', value: '35' },
+                              { label: '50+ Godlike', value: '50+' },
+                            ].map((preset) => (
+                              <button
+                                key={preset.value}
+                                type="button"
+                                onClick={() => handleFieldChange('killCount', preset.value, setKillCount)}
+                                className={cn(
+                                  "text-[10px] font-bold px-2.5 py-1 rounded-lg border transition-all cursor-pointer",
+                                  killCount === preset.value
+                                    ? "bg-emerald-500/20 border-emerald-400 text-emerald-300"
+                                    : "bg-slate-900 border-slate-800 text-slate-400 hover:text-emerald-300 hover:border-emerald-500/40"
+                                )}
+                              >
+                                🔥 {preset.label}
+                              </button>
+                            ))}
+                          </div>
                           {errors.killCount && (
                             <p className="mt-1 text-xs font-semibold text-red-400 flex items-center gap-1">
                               <AlertCircle className="size-3 shrink-0" /> {errors.killCount}
@@ -562,21 +752,47 @@ function CreateWishContent() {
                           )}
                         </div>
 
+                        {/* Tournament Rank */}
                         <div>
-                          <label className={cn("mb-1.5 block text-xs font-bold text-slate-200", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                            Rank <span className="text-slate-400 font-normal">(e.g. 1, #1)</span>
+                          <label className={cn("mb-1.5 flex items-center gap-1.5 text-xs font-bold text-amber-300 uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            <Crown className="size-3.5 text-amber-400" />
+                            <span>Tournament Rank</span>
                           </label>
                           <input
                             id="field-rank"
                             type="text"
                             value={rank}
                             onChange={(e) => handleFieldChange('rank', e.target.value, setRank)}
-                            placeholder="e.g. 1 or #1"
+                            placeholder="e.g. 1, #1, #2, MVP"
                             className={cn(
-                              "w-full rounded-2xl border p-3 text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 transition-all",
-                              errors.rank ? "border-red-500 focus:ring-red-500" : "border-slate-700 focus:ring-amber-400"
+                              "w-full rounded-2xl border p-3 text-sm bg-slate-950 text-white font-medium focus:outline-none focus:ring-2 transition-all",
+                              errors.rank ? "border-red-500 focus:ring-red-500" : "border-slate-700 focus:border-amber-400 focus:ring-amber-400/30"
                             )}
                           />
+                          {/* Quick Preset Chips for Rank */}
+                          <div className="flex flex-wrap gap-1.5 mt-2">
+                            {[
+                              { label: '#1 Champion', value: '#1' },
+                              { label: '#2 Runner-Up', value: '#2' },
+                              { label: '#3 Squad', value: '#3' },
+                              { label: 'Chicken Dinner', value: 'Winner #1' },
+                              { label: 'MVP Leader', value: 'MVP' },
+                            ].map((preset) => (
+                              <button
+                                key={preset.value}
+                                type="button"
+                                onClick={() => handleFieldChange('rank', preset.value, setRank)}
+                                className={cn(
+                                  "text-[10px] font-bold px-2.5 py-1 rounded-lg border transition-all cursor-pointer",
+                                  rank === preset.value
+                                    ? "bg-amber-500/20 border-amber-400 text-amber-300"
+                                    : "bg-slate-900 border-slate-800 text-slate-400 hover:text-amber-300 hover:border-amber-500/40"
+                                )}
+                              >
+                                👑 {preset.label}
+                              </button>
+                            ))}
+                          </div>
                           {errors.rank && (
                             <p className="mt-1 text-xs font-semibold text-red-400 flex items-center gap-1">
                               <AlertCircle className="size-3 shrink-0" /> {errors.rank}
@@ -584,33 +800,37 @@ function CreateWishContent() {
                           )}
                         </div>
 
+                        {/* Winning Number for Lottery / Bingo */}
                         {isNumberDrawOrBingo && (
-                          <div>
-                            <label className={cn("mb-1.5 block text-xs font-bold text-slate-200", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                              Winning Number <span className="text-slate-400 font-normal">(for Number/Bingo)</span>
+                          <div className="sm:col-span-2">
+                            <label className={cn("mb-1.5 flex items-center gap-1.5 text-xs font-bold text-purple-300 uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                              <Hash className="size-3.5 text-purple-400" />
+                              <span>Lucky Winning Number</span>
                             </label>
                             <input
                               id="field-winningNumber"
                               type="text"
                               value={winningNumber}
                               onChange={(e) => setWinningNumber(e.target.value)}
-                              placeholder="e.g. #77 / B-12"
-                              className="w-full rounded-2xl border border-slate-700 p-3 text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                              placeholder="e.g. #777 / B-12"
+                              className="w-full rounded-2xl border border-slate-700 p-3 text-sm bg-slate-950 text-white focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
                             />
                           </div>
                         )}
 
-                        <div className={isNumberDrawOrBingo ? "sm:col-span-2" : ""}>
-                          <label className={cn("mb-1.5 block text-xs font-bold text-slate-200", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                            Sender Name / Clan <span className="text-slate-400 font-normal">(optional)</span>
+                        {/* Sender / Squad Deployer */}
+                        <div className="sm:col-span-2">
+                          <label className={cn("mb-1.5 flex items-center gap-1.5 text-xs font-bold text-sky-300 uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            <Shield className="size-3.5 text-sky-400" />
+                            <span>Deployed By Squad / Clan Name <span className="text-slate-500 font-normal lowercase">(optional)</span></span>
                           </label>
                           <input
                             id="field-gamingSenderName"
                             type="text"
                             value={senderName}
                             onChange={(e) => setSenderName(e.target.value)}
-                            placeholder="e.g. Victory Squad / Cardzy"
-                            className="w-full rounded-2xl border border-slate-700 p-3 text-sm bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                            placeholder="e.g. Victory Squad / Clan Alpha"
+                            className="w-full rounded-2xl border border-slate-700 p-3 text-sm bg-slate-950 text-white focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all"
                           />
                         </div>
                       </div>
@@ -618,31 +838,51 @@ function CreateWishContent() {
                   ) : (
                     <>
                       {/* Relation Pills */}
-                      <div className="space-y-3">
-                        <h3 className={cn("text-xs font-extrabold uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5 border-b border-[#7A1E2B]/10 pb-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                          <UserCheck className="size-4" /> {t('whoIsCardForHeader') || '1. WHO IS THIS CARD FOR? (SELECT RELATION)'}
+                      <div id="field-relation" className={cn("space-y-3 rounded-2xl p-2.5 transition-all", errors.relation && "border border-red-500/60 bg-red-50/50 dark:bg-red-950/20")}>
+                        <h3 className={cn("text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                          <UserCheck className="size-4 shrink-0" />
+                          <span>{t('whoIsCardForHeader') || '1. WHO IS THIS CARD FOR? (SELECT RELATION)'}</span>
+                          <span className="text-red-500 font-bold ml-0.5">*</span>
                         </h3>
                         <div className={cn("flex flex-wrap gap-2 pt-1", (lang === 'ur' || lang === 'ar') && "justify-end")}>
                           {RELATIONS.map((r) => (
                             <button
                               key={r.id}
                               type="button"
-                              onClick={() => setRelation(relation === r.en ? '' : r.en)}
+                              onClick={() => {
+                                const nextVal = relation === r.en ? '' : r.en
+                                setRelation(nextVal)
+                                if (nextVal) {
+                                  setErrors((prev) => {
+                                    const copy = { ...prev }
+                                    delete copy.relation
+                                    return copy
+                                  })
+                                }
+                              }}
                               className={`rounded-full border px-4 py-1.5 text-xs font-bold transition-all ${
                                 relation === r.en
-                                  ? 'border-[#7A1E2B] bg-[#7A1E2B] text-white shadow-md ring-2 ring-[#7A1E2B]/25'
-                                  : 'border-[#E5DFD3] bg-white text-[#5A4530] hover:bg-muted/60'
+                                  ? 'border-[#7B0D1E] bg-[#7B0D1E] text-white shadow-xs ring-2 ring-[#7B0D1E]/25'
+                                  : errors.relation
+                                    ? 'border-red-300 bg-card text-foreground hover:bg-muted'
+                                    : 'border-border bg-card text-foreground hover:bg-muted'
                               }`}
                             >
                               {t(('rel' + r.id) as any) || r.en}
                             </button>
                           ))}
                         </div>
+                        {errors.relation && (
+                          <p className={cn("mt-1.5 flex items-center gap-1 text-xs font-semibold text-red-500", (lang === 'ur' || lang === 'ar') ? "justify-end font-urdu" : "text-left")}>
+                            <AlertCircle className="size-3.5 shrink-0" />
+                            <span>{errors.relation}</span>
+                          </p>
+                        )}
                       </div>
 
                       <div className="grid gap-4 sm:grid-cols-2">
                         <div>
-                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                             {t('recipientNameLabel') || 'Recipient Name *'}
                           </label>
                           <input
@@ -654,7 +894,7 @@ function CreateWishContent() {
                             dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
                             className={cn(
                               "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                              errors.recipientName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]",
+                              errors.recipientName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
                               (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
                             )}
                           />
@@ -666,7 +906,7 @@ function CreateWishContent() {
                         </div>
 
                         <div>
-                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                             {t('senderNameLabel') || 'Your Name (Sender) *'}
                           </label>
                           <input
@@ -678,7 +918,7 @@ function CreateWishContent() {
                             dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
                             className={cn(
                               "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
-                              errors.senderName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]",
+                              errors.senderName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
                               (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
                             )}
                           />
@@ -695,8 +935,18 @@ function CreateWishContent() {
                   {/* Message & Pre-written templates */}
                   <div className="space-y-3 pt-3 border-t border-border/60">
                     <div className="flex items-center justify-between">
-                      <h3 className={cn("text-xs font-extrabold uppercase tracking-wider text-[#7A1E2B] flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                        <Heart className="size-4" /> {t('cardMessageHeader') || '2. CARD MESSAGE'}
+                      <h3 className={cn("text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                        {isGamingOccasion ? (
+                          <>
+                            <Swords className="size-4 text-amber-500" />
+                            <span className="text-amber-500 dark:text-amber-400">2. VICTORY MISSION DEBRIEF / MESSAGE</span>
+                          </>
+                        ) : (
+                          <>
+                            <Heart className="size-4" />
+                            <span>{t('cardMessageHeader') || '2. CARD MESSAGE'}</span>
+                          </>
+                        )}
                       </h3>
                       <button
                         type="button"
@@ -710,7 +960,7 @@ function CreateWishContent() {
 
                     {templates.length > 0 && (
                       <div>
-                        <label className={cn("mb-2 block text-[11px] font-bold text-muted-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        <label className={cn("mb-2 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                           {t('choosePrewrittenWishTemplate') || 'CHOOSE PRE-WRITTEN WISH TEMPLATE'}
                         </label>
                         <div className="flex flex-wrap gap-2">
@@ -719,7 +969,7 @@ function CreateWishContent() {
                               key={idx}
                               type="button"
                               onClick={() => applyTemplate(idx)}
-                              className="flex items-center gap-1.5 rounded-xl border border-[#7A1E2B]/20 bg-[#7A1E2B]/5 px-3 py-1.5 text-xs font-bold text-[#7A1E2B] hover:bg-[#7A1E2B]/15 transition-all"
+                              className="flex items-center gap-1.5 rounded-xl border border-[#7B0D1E]/20 bg-[#7B0D1E]/5 px-3 py-1.5 text-xs font-bold text-[#7B0D1E] hover:bg-[#7B0D1E]/15 transition-all"
                             >
                               🎁 {t('templatePrefix') || 'Template'} {idx + 1}
                             </button>
@@ -739,7 +989,7 @@ function CreateWishContent() {
                         className={cn(
                           "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all leading-relaxed",
                           (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(message)) && "font-urdu text-base",
-                          errors.message ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7A1E2B]"
+                          errors.message ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
                         )}
                       />
                       {errors.message && (
@@ -756,14 +1006,14 @@ function CreateWishContent() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(1)}
-                    className="w-full sm:w-auto rounded-full h-11 px-6 border-[#E5DFD3] flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2"
                   >
                     <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                     <span>{t('btnBack') || 'Back'}</span>
                   </Button>
                   <Button
                     onClick={handleGoToStep3}
-                    className="w-full sm:w-auto bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold h-11 px-7 rounded-full shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all"
+                    className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-7 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all"
                   >
                     <span>{t('btnNext') || 'Next'}</span>
                     <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -777,7 +1027,7 @@ function CreateWishContent() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-                    <Camera className="size-5 text-[#7A1E2B]" />
+                    <Camera className="size-5 text-[#7B0D1E]" />
                     <span>{t('stepWishPartMedia') || '3. Photo & Music'}</span>
                   </h2>
                 </div>
@@ -785,8 +1035,8 @@ function CreateWishContent() {
                 {/* Custom Photo Upload */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <label className={cn("text-xs font-bold text-[#7A1E2B] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                      <Camera className="size-4" /> {t('customCardPhotoLabel') || 'Custom Card Photo (Optional)'}
+                    <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                      <Camera className="size-4 text-[#7B0D1E]" /> {t('customCardPhotoLabel') || 'Custom Card Photo (Optional)'}
                     </label>
                     {photoUrl && (
                       <button type="button" onClick={() => setPhotoUrl('')} className="text-[11px] text-red-500 font-bold hover:underline cursor-pointer">
@@ -796,7 +1046,7 @@ function CreateWishContent() {
                   </div>
                   <div className="flex items-center gap-4">
                     <label className="flex items-center gap-2 rounded-2xl border border-input bg-background px-4 py-2.5 text-xs font-bold hover:bg-muted cursor-pointer transition-all shadow-xs">
-                      <Camera className="size-4 text-[#7A1E2B]" />
+                      <Camera className="size-4 text-[#7B0D1E]" />
                       <span>{photoUrl ? (t('changePhoto') || 'Change Photo') : (t('uploadPhoto') || 'Upload Photo')}</span>
                       <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
                     </label>
@@ -811,38 +1061,77 @@ function CreateWishContent() {
 
                 {/* Audio Track Selector */}
                 <div className="space-y-3 pt-3 border-t border-border/60">
-                  <label className={cn("text-xs font-bold text-[#7A1E2B] uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                    <Music className="size-4" /> Background Music Track (Plays on Open)
-                  </label>
-                  <div className="grid grid-cols-2 gap-2.5">
+                  <div className={cn("flex items-center justify-between", (lang === 'ur' || lang === 'ar') && "flex-row-reverse")}>
+                    <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                      <Music className="size-4 text-[#7B0D1E]" /> {t('backgroundMusicTrackLabel') || 'Background Music Track (Plays on Open)'}
+                    </label>
+                    {audioTrack !== 'none' && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (playingTrackId) {
+                            celebrationAudio.stop()
+                            setPlayingTrackId(null)
+                          } else {
+                            celebrationAudio.playTrack(audioTrack)
+                            setPlayingTrackId(audioTrack)
+                          }
+                        }}
+                        className="text-[11px] font-semibold text-[#7B0D1E] hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        <Volume2 className="size-3.5" />
+                        {playingTrackId ? (t('stopPreview') || 'Stop Sound ⏹️') : (t('previewSound') || 'Play Sound 🔊')}
+                      </button>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {AUDIO_TRACKS.map((trk) => {
                       const isSelected = audioTrack === trk.id
+                      const isCurrentlyPlaying = playingTrackId === trk.id
                       return (
                         <button
                           key={trk.id}
                           type="button"
-                          onClick={() => setAudioTrack(trk.id)}
+                          onClick={() => {
+                            setAudioTrack(trk.id)
+                            if (trk.id === 'none') {
+                              celebrationAudio.stop()
+                              setPlayingTrackId(null)
+                            } else {
+                              celebrationAudio.playTrack(trk.id)
+                              setPlayingTrackId(trk.id)
+                            }
+                          }}
                           className={cn(
-                            "flex items-center justify-between p-3 rounded-2xl border text-left transition-all cursor-pointer",
+                            "flex items-center justify-between p-3 rounded-2xl border text-left transition-all cursor-pointer shadow-xs group",
                             isSelected
-                              ? "border-[#7A1E2B] bg-[#7A1E2B]/8 ring-2 ring-[#7A1E2B]/25 font-bold"
-                              : "border-border bg-card hover:border-[#7A1E2B]/30"
+                              ? "border-[#7B0D1E] bg-[#7B0D1E]/8 ring-2 ring-[#7B0D1E]/25 font-bold"
+                              : "border-border bg-card hover:border-[#7B0D1E]/30"
                           )}
                         >
                           <div className="flex items-center gap-2.5 min-w-0">
                             <div className={cn(
-                              "size-8 rounded-xl flex items-center justify-center shrink-0",
-                              isSelected ? "bg-[#7A1E2B] text-white" : "bg-muted text-muted-foreground"
+                              "size-8 rounded-xl flex items-center justify-center shrink-0 transition-all",
+                              isSelected ? "bg-[#7B0D1E] text-white" : "bg-muted text-muted-foreground group-hover:bg-[#7B0D1E]/10 group-hover:text-[#7B0D1E]",
+                              isCurrentlyPlaying && "animate-pulse ring-2 ring-amber-400"
                             )}>
-                              <Music className="size-4" />
+                              {trk.id === 'none' ? (
+                                <VolumeX className="size-4" />
+                              ) : isCurrentlyPlaying ? (
+                                <Volume2 className="size-4 text-white animate-bounce" />
+                              ) : (
+                                <Music className="size-4" />
+                              )}
                             </div>
                             <div className="min-w-0">
                               <span className="text-xs font-bold text-foreground block truncate">{trk.name}</span>
-                              <span className="text-[10px] text-muted-foreground capitalize">{trk.category}</span>
+                              <span className="text-[10px] text-muted-foreground capitalize">
+                                {isCurrentlyPlaying ? '🎵 Playing sample...' : trk.category}
+                              </span>
                             </div>
                           </div>
                           {isSelected && (
-                            <span className="flex size-5 items-center justify-center rounded-full bg-[#7A1E2B] text-white">
+                            <span className="flex size-5 items-center justify-center rounded-full bg-[#7B0D1E] text-white">
                               <CheckCircle2 className="size-3.5" />
                             </span>
                           )}
@@ -857,14 +1146,14 @@ function CreateWishContent() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(2)}
-                    className="w-full sm:w-auto rounded-full h-11 px-6 border-[#E5DFD3] flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2"
                   >
                     <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                     <span>{t('btnBack') || 'Back'}</span>
                   </Button>
                   <Button
                     onClick={handleGoToStep4}
-                    className="w-full sm:w-auto bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold h-11 px-7 rounded-full shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all"
+                    className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-7 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all"
                   >
                     <span>{t('btnNext') || 'Next'}</span>
                     <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -875,16 +1164,16 @@ function CreateWishContent() {
 
             {/* ── PART 4: THEME & STYLE ── */}
             {step === 4 && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between border-b border-border pb-3">
-                  <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-                    <Palette className="size-5 text-[#7A1E2B]" />
+              <div className="space-y-3.5 text-left">
+                <div className="flex items-center justify-between border-b border-[#7B0D1E]/10 pb-1">
+                  <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
+                    <Palette className="size-3.5 text-[#7B0D1E]" />
                     <span>{t('stepWishPartDesign') || '4. Theme & Style'}</span>
                   </h2>
                 </div>
 
-                <div>
-                  <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                <div className="space-y-1.5">
+                  <label className={cn("block text-[11px] font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                     {t('selectThemeStyleLabel') || 'SELECT THEME STYLE'}
                   </label>
                   <ThemePicker
@@ -895,8 +1184,8 @@ function CreateWishContent() {
                   />
                 </div>
 
-                <div>
-                  <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                <div className="space-y-1.5">
+                  <label className={cn("block text-[11px] font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                     {t('selectBorderFrameLabel') || 'SELECT BORDER FRAME'}
                   </label>
                   <BorderPicker
@@ -907,8 +1196,8 @@ function CreateWishContent() {
                   />
                 </div>
 
-                <div>
-                  <label className={cn("mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                <div className="space-y-1.5">
+                  <label className={cn("block text-[11px] font-bold uppercase tracking-wider text-muted-foreground", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
                     {t('selectCanvasTextureLabel') || 'SELECT CANVAS TEXTURE'}
                   </label>
                   <BackgroundPicker
@@ -923,7 +1212,7 @@ function CreateWishContent() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(3)}
-                    className="w-full sm:w-auto rounded-full h-11 px-6 border-[#E5DFD3] flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2"
                   >
                     <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                     <span>{t('btnBack') || 'Back'}</span>
@@ -931,7 +1220,7 @@ function CreateWishContent() {
                   <Button
                     onClick={handleFinish}
                     disabled={isSubmitting}
-                    className="w-full sm:w-auto bg-[#7A1E2B] hover:bg-[#7A1E2B]/90 text-white font-extrabold h-11 px-8 rounded-full shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-60"
+                    className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-60"
                   >
                     {isSubmitting ? (
                       <>
@@ -939,7 +1228,7 @@ function CreateWishContent() {
                         <span>{t('generatingCard', 'Generating Wish Card...')}</span>
                       </>
                     ) : (
-                      t('createAndShareWishCardBtn') || 'Create & Share Wish Card 🚀'
+                      editSlug ? (t('btnSave') || 'Save') : (t('btnFinish') || 'Finish 🚀')
                     )}
                   </Button>
                 </div>
@@ -968,10 +1257,16 @@ function CreateWishContent() {
                     themeId,
                     borderId,
                     bgVariantId,
-                    message: message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : t('defaultWishDefaultMessage', 'Wishing you a day filled with happiness, laughter and immense blessings!')),
-                    senderName: senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : t('defaultWishSender', 'Tariq & Family')),
-                    recipientName: (isGamingOccasion && playerName) ? playerName : (recipientName || t('defaultWishRecipient', 'Ayesha')),
-                    relation: relation || t('defaultWishRelation', 'Friend'),
+                    message: step === 1
+                      ? (message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : t('defaultWishDefaultMessage', 'Wishing you a day filled with happiness, laughter and immense blessings!')))
+                      : (message || ''),
+                    senderName: step === 1
+                      ? (senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : t('defaultWishSender', 'Tariq & Family')))
+                      : (senderName || user?.name || ''),
+                    recipientName: (isGamingOccasion && playerName)
+                      ? playerName
+                      : (step === 1 ? (recipientName || t('defaultWishRecipient', 'Ayesha')) : (recipientName || '')),
+                    relation: step === 1 ? (relation || t('defaultWishRelation', 'Friend')) : (relation || ''),
                     language,
                     playerName,
                     killCount,
@@ -1001,7 +1296,7 @@ function CreateWishContent() {
             </button>
 
             <div className="space-y-1">
-              <div className="flex items-center gap-2 text-[#7A1E2B]">
+              <div className="flex items-center gap-2 text-[#7B0D1E]">
                 <Sparkles className="size-5" />
                 <h3 className="font-extrabold text-base text-foreground">
                   {t('generateWithAi') || 'AI Wish Generator'}
@@ -1025,7 +1320,7 @@ function CreateWishContent() {
                   key={tone}
                   type="button"
                   onClick={() => handleGenerateAIWish(tone)}
-                  className="flex flex-col items-start gap-1 p-3 rounded-2xl border border-border bg-background hover:border-[#7A1E2B]/50 hover:bg-muted/50 text-left transition-all active:scale-95 cursor-pointer shadow-2xs"
+                  className="flex flex-col items-start gap-1 p-3 rounded-2xl border border-border bg-background hover:border-[#7B0D1E]/50 hover:bg-muted/50 text-left transition-all active:scale-95 cursor-pointer shadow-2xs"
                 >
                   <span className="text-xs font-bold text-foreground">{label}</span>
                   <span className="text-[10px] text-muted-foreground">{desc}</span>

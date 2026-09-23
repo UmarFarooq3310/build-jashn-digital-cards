@@ -21,10 +21,14 @@ import {
   Loader2,
   CheckCircle2,
   BarChart3,
+  Phone,
+  Mail,
+  Globe,
 } from 'lucide-react'
 import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
 import { recordCardShare } from '@/lib/jashn/magic-service'
+import { getInitials } from '@/components/jashn/visiting-card'
 
 export interface ShareModalCardData {
   title: string
@@ -50,6 +54,12 @@ export interface ShareModalCardData {
   subtitle?: string
   details?: string
   theme?: string
+  phone?: string
+  email?: string
+  website?: string
+  address?: string
+  avatarUrl?: string
+  photoUrl?: string
 }
 
 interface CardShareModalProps {
@@ -420,7 +430,18 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
                 </div>
 
                 {/* Card Main Title & Recipient */}
-                <div className="relative z-10 text-center my-4 space-y-1">
+                <div className="relative z-10 text-center my-3 space-y-1">
+                  {card.type === 'vcard' && (
+                    <div className="flex justify-center mb-2">
+                      <div className="size-16 rounded-full border-2 border-amber-400 overflow-hidden bg-black/50 flex items-center justify-center font-black text-xl text-amber-300 shadow-md">
+                        {card.avatarUrl || card.photoUrl ? (
+                          <img src={card.avatarUrl || card.photoUrl} alt="Avatar Profile" className="size-full object-cover" />
+                        ) : (
+                          <span>{getInitials(card.recipientOrCouple || card.senderName)}</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
                   <span className="text-[10px] uppercase font-bold tracking-widest text-zinc-300 block">
                     {card.type === 'invite' ? 'Cordially Invites You' : card.type === 'vcard' ? 'Executive Profile' : 'Special Celebration'}
                   </span>
@@ -442,6 +463,30 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
                     <div className="flex items-center gap-2 text-zinc-300 text-[11px]">
                       <MapPin className="size-3.5 text-emerald-400 shrink-0" />
                       <span className="truncate">{card.venue}</span>
+                    </div>
+                  )}
+                  {card.phone && (
+                    <div className="flex items-center gap-2 text-emerald-300 font-semibold text-[11px]">
+                      <Phone className="size-3.5 text-emerald-400 shrink-0" />
+                      <span>{card.phone}</span>
+                    </div>
+                  )}
+                  {card.email && (
+                    <div className="flex items-center gap-2 text-sky-300 font-semibold text-[11px]">
+                      <Mail className="size-3.5 text-sky-400 shrink-0" />
+                      <span className="truncate">{card.email}</span>
+                    </div>
+                  )}
+                  {card.website && (
+                    <div className="flex items-center gap-2 text-amber-300 font-semibold text-[11px]">
+                      <Globe className="size-3.5 text-amber-400 shrink-0" />
+                      <span className="truncate">{card.website}</span>
+                    </div>
+                  )}
+                  {card.address && (
+                    <div className="flex items-center gap-2 text-zinc-300 text-[11px]">
+                      <MapPin className="size-3.5 text-rose-400 shrink-0" />
+                      <span className="truncate">{card.address}</span>
                     </div>
                   )}
                   {card.subtitle && (

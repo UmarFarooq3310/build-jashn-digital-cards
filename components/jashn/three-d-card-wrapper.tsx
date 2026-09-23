@@ -16,6 +16,7 @@ interface ThreeDCardWrapperProps {
   isIslamic?: boolean
   isSensitive?: boolean
   autoOpen?: boolean
+  audioTrack?: string
   onOpened?: () => void
 }
 
@@ -27,6 +28,7 @@ export function ThreeDCardWrapper({
   isIslamic = false,
   isSensitive = false,
   autoOpen = true,
+  audioTrack,
   onOpened,
 }: ThreeDCardWrapperProps) {
   const { t, lang } = useLang()
@@ -50,8 +52,16 @@ export function ThreeDCardWrapper({
         setTilt({ rx: 0, ry: 0, px: 50, py: 50 })
 
         if (!isSensitive) {
-          celebrationAudio.playMelody(occasionIdOrCategory)
-          setIsAudioActive(true)
+          if (audioTrack && audioTrack !== 'none') {
+            celebrationAudio.playTrack(audioTrack)
+            setIsAudioActive(true)
+          } else if (audioTrack === 'none') {
+            celebrationAudio.stop()
+            setIsAudioActive(false)
+          } else {
+            celebrationAudio.playMelody(occasionIdOrCategory)
+            setIsAudioActive(true)
+          }
         }
 
         if (onOpened) {
@@ -278,7 +288,8 @@ export function ThreeDCardWrapper({
 
   const handleToggleAudio = (e: React.MouseEvent) => {
     e.stopPropagation()
-    const active = celebrationAudio.toggle(occasionIdOrCategory)
+    const targetTrack = audioTrack && audioTrack !== 'none' ? audioTrack : occasionIdOrCategory
+    const active = celebrationAudio.toggle(targetTrack)
     setIsAudioActive(active)
   }
 
@@ -294,8 +305,16 @@ export function ThreeDCardWrapper({
     setTilt({ rx: 0, ry: 0, px: 50, py: 50 }) // Reset tilt immediately on open
 
     if (!isSensitive) {
-      celebrationAudio.playMelody(occasionIdOrCategory)
-      setIsAudioActive(true)
+      if (audioTrack && audioTrack !== 'none') {
+        celebrationAudio.playTrack(audioTrack)
+        setIsAudioActive(true)
+      } else if (audioTrack === 'none') {
+        celebrationAudio.stop()
+        setIsAudioActive(false)
+      } else {
+        celebrationAudio.playMelody(occasionIdOrCategory)
+        setIsAudioActive(true)
+      }
     }
 
     if (onOpened) {
