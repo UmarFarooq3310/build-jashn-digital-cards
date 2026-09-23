@@ -46,6 +46,9 @@ import { PartyScenario } from '@/components/magic-scenarios/party-scenario'
 import { NewbornScenario } from '@/components/magic-scenarios/newborn-scenario'
 import { RamadanScenario } from '@/components/magic-scenarios/ramadan-scenario'
 import { ApologyScenario } from '@/components/magic-scenarios/apology-scenario'
+import { FriendshipScenario } from '@/components/magic-scenarios/friendship-scenario'
+import { ThankYouScenario } from '@/components/magic-scenarios/thankyou-scenario'
+import { GetWellScenario } from '@/components/magic-scenarios/getwell-scenario'
 
 class MagicAudio {
   private ctx: AudioContext | null = null
@@ -437,6 +440,14 @@ function MagicLinkInner({ slug }: { slug: string }) {
         return <RamadanScenario {...commonProps} />
       case 'apology':
         return <ApologyScenario {...commonProps} />
+      case 'friendship':
+        return <FriendshipScenario {...commonProps} />
+      case 'thankyou':
+        return <ThankYouScenario {...commonProps} />
+      case 'getwell':
+        return <GetWellScenario {...commonProps} />
+      case 'newyear':
+        return <PartyScenario {...commonProps} />
       default:
         return <BirthdayScenario {...commonProps} />
     }

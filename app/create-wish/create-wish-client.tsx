@@ -25,7 +25,7 @@ import type { Language } from '@/lib/jashn/types'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { useLang } from '@/lib/lang/context'
-import { cn } from '@/lib/utils'
+import { cn, isPageReload } from '@/lib/utils'
 
 const RELATIONS = [
   { id: 'Brother', en: 'Brother', ur: 'بھائی' },
@@ -187,14 +187,61 @@ function CreateWishContent() {
   const draftKey = editSlug ? `cardzy_draft_wish_edit_${editSlug}` : 'cardzy_draft_wish'
   const [isInitialLoaded, setIsInitialLoaded] = useState(false)
 
+  // Listen to beforeunload to detect page refresh/reload reliably
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      try {
+        sessionStorage.setItem('__cardzy_reloading__', '1')
+        if (!editSlug) {
+          sessionStorage.removeItem(draftKey)
+          sessionStorage.removeItem('cardzy_draft_wish')
+        }
+      } catch {}
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [draftKey, editSlug])
+
   // 1. Initial Load: Restore draft or fetch edit record
   useEffect(() => {
     let isCancelled = false
     async function initData() {
+      const isReload = isPageReload() || (typeof window !== 'undefined' && sessionStorage.getItem('__cardzy_reloading__') === '1')
+      // Clean up legacy entries and reload flag
+      try {
+        sessionStorage.removeItem('__cardzy_reloading__')
+        localStorage.removeItem(draftKey)
+        localStorage.removeItem('cardzy_draft_wish')
+      } catch {}
+
+      // If user refreshed the creation page (and not editing an existing card), clear draft and reset all fields
+      if (!editSlug && isReload) {
+        try {
+          sessionStorage.removeItem(draftKey)
+          sessionStorage.removeItem('cardzy_draft_wish')
+        } catch {}
+        if (!isCancelled) {
+          setSenderName('')
+          setRecipientName('')
+          setMessage('')
+          setRelation('')
+          setPlayerName('')
+          setKillCount('')
+          setRank('')
+          setWinningNumber('')
+          setPhotoUrl('')
+          setStep(1)
+          setIsInitialLoaded(true)
+        }
+        return
+      }
+
       if (editSlug) {
         let loadedData: any = null
         try {
-          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
           if (draftJson) loadedData = JSON.parse(draftJson)
         } catch {}
 
@@ -239,7 +286,7 @@ function CreateWishContent() {
       } else {
         let hasDraft = false
         try {
-          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
           if (draftJson) {
             const d = JSON.parse(draftJson)
             if (d && typeof d === 'object') {
@@ -299,7 +346,7 @@ function CreateWishContent() {
     }
   }, [editSlug, draftKey])
 
-  // 2. Auto-save draft on changes (LOCAL ONLY - zero writes to Firebase)
+  // 2. Auto-save draft on changes (SESSION ONLY for active back/forward flow)
   useEffect(() => {
     if (!isInitialLoaded || typeof window === 'undefined') return
     const draftData = {
@@ -322,7 +369,6 @@ function CreateWishContent() {
     }
     try {
       sessionStorage.setItem(draftKey, JSON.stringify(draftData))
-      localStorage.setItem(draftKey, JSON.stringify(draftData))
     } catch {}
   }, [
     isInitialLoaded,
@@ -516,10 +562,18 @@ function CreateWishContent() {
 
       if (editSlug) {
         await updateWish(editSlug, payload)
+        try {
+          sessionStorage.removeItem(draftKey)
+          localStorage.removeItem(draftKey)
+        } catch {}
         showToast(t('wishUpdatedSuccess', 'Wish card updated successfully! 🎉'), 'success')
         router.push(`/w/${editSlug}?mode=sender`)
       } else {
         const wish = await createWish(payload)
+        try {
+          sessionStorage.removeItem(draftKey)
+          localStorage.removeItem(draftKey)
+        } catch {}
         showToast(t('wishCreatedSuccess', 'Wish card created successfully! 🚀'), 'success')
         router.push(`/w/${wish.slug}?mode=sender`)
       }
@@ -537,25 +591,25 @@ function CreateWishContent() {
         {/* Card Studio Mode Switcher */}
         <div className="inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs mb-6">
           <div className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-xs bg-[#7B0D1E]">
-            💌 {t('sendAnimatedWishCard') || 'Wish Cards'}
+            💌 {t('studioTabWish', 'Wish Cards')}
           </div>
           <Link
             href="/create-invitation"
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            🎉 {t('weddingInvitationTitle') || 'Invitations'}
+            🎉 {t('studioTabInvite', 'Invitations')}
           </Link>
           <Link
             href="/create-magic-link"
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            🪄 {t('magicLinksNav') || 'Magic Links'}
+            🪄 {t('studioTabMagic', 'Magic Links')}
           </Link>
           <Link
             href="/create-visiting-card"
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            📇 {t('smartDigitalBusinessCardsTitle') || 'Visiting Cards'}
+            📇 {t('studioTabVCard', 'Visiting Cards')}
           </Link>
         </div>
 
@@ -629,7 +683,7 @@ function CreateWishContent() {
                 <div className="flex justify-end pt-4 border-t border-border">
                   <Button
                     onClick={() => setStep(2)}
-                    className="bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold rounded-2xl px-6 h-11 flex items-center gap-2 shadow-lg shadow-[#7B0D1E]/20 active:scale-95 transition-all"
+                    className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm bg-[#7B0D1E] hover:bg-[#630A18] text-white shadow-lg shadow-[#7B0D1E]/20 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>{t('btnNext') || 'Next'}</span>
                     <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -1006,14 +1060,14 @@ function CreateWishContent() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(1)}
-                    className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                     <span>{t('btnBack') || 'Back'}</span>
                   </Button>
                   <Button
                     onClick={handleGoToStep3}
-                    className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-7 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all"
+                    className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm bg-[#7B0D1E] hover:bg-[#630A18] text-white shadow-lg shadow-[#7B0D1E]/20 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>{t('btnNext') || 'Next'}</span>
                     <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -1146,14 +1200,14 @@ function CreateWishContent() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(2)}
-                    className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                     <span>{t('btnBack') || 'Back'}</span>
                   </Button>
                   <Button
                     onClick={handleGoToStep4}
-                    className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-7 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all"
+                    className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm bg-[#7B0D1E] hover:bg-[#630A18] text-white shadow-lg shadow-[#7B0D1E]/20 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>{t('btnNext') || 'Next'}</span>
                     <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -1212,7 +1266,7 @@ function CreateWishContent() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(3)}
-                    className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                     <span>{t('btnBack') || 'Back'}</span>
@@ -1220,7 +1274,7 @@ function CreateWishContent() {
                   <Button
                     onClick={handleFinish}
                     disabled={isSubmitting}
-                    className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-60"
+                    className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm bg-[#7B0D1E] hover:bg-[#630A18] text-white shadow-xl shadow-[#7B0D1E]/20 active:scale-98 transition-all disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>
@@ -1228,7 +1282,10 @@ function CreateWishContent() {
                         <span>{t('generatingCard', 'Generating Wish Card...')}</span>
                       </>
                     ) : (
-                      editSlug ? (t('btnSave') || 'Save') : (t('btnFinish') || 'Finish 🚀')
+                      <>
+                        <span>{editSlug ? (t('btnUpdate') || 'Update') : (t('btnFinish') || 'Finish 🚀')}</span>
+                        <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
+                      </>
                     )}
                   </Button>
                 </div>

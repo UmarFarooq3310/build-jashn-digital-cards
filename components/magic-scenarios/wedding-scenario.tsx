@@ -120,6 +120,19 @@ export function WeddingScenario({
     onSendLove()
   }
 
+  const rawPhone = (data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || '')?.replace(/[^0-9]/g, '')
+  const returnUrl = typeof window !== 'undefined' ? `${window.location.origin}/m/${slug}` : ''
+  const rsvpStatus = attending ? `Confirming Attendance (${guestsCount} guest${guestsCount > 1 ? 's' : ''})` : 'Unable to attend with warm regards'
+  const getWhatsAppUrl = () => {
+    const msg = encodeURIComponent(
+      `Wedding RSVP for ${couple}: ${data.recipientName} has responded: ${rsvpStatus} 💍🌸\n\nView invitation: ${returnUrl}`
+    )
+    return rawPhone
+      ? `https://wa.me/${rawPhone}?text=${msg}`
+      : `https://api.whatsapp.com/send?text=${msg}`
+  }
+  const whatsAppHref = getWhatsAppUrl()
+
   // Handle Submit RSVP
   const handleSubmitRsvp = async () => {
     magicAudio.playFanfare()
@@ -141,16 +154,13 @@ export function WeddingScenario({
     } catch {
       // offline fallback
     }
-  }
 
-  const rawPhone = data.wishContent?.whatsappNumber?.replace(/[^0-9]/g, '') || ''
-  const rsvpStatus = attending ? `Confirming Attendance (${guestsCount} guest${guestsCount > 1 ? 's' : ''})` : 'Unable to attend with warm regards'
-  const whatsAppMessage = encodeURIComponent(
-    `Wedding RSVP for ${couple}: ${data.recipientName} has responded: ${rsvpStatus} 💍🌸`
-  )
-  const whatsAppHref = rawPhone
-    ? `https://wa.me/${rawPhone}?text=${whatsAppMessage}`
-    : `https://api.whatsapp.com/send?text=${whatsAppMessage}`
+    // Open WhatsApp so user can return view and send RSVP
+    const waUrl = getWhatsAppUrl()
+    if (typeof window !== 'undefined') {
+      window.open(waUrl, '_blank')
+    }
+  }
 
   return (
     <div className="w-full flex flex-col items-center justify-center select-none animate-in fade-in duration-300">

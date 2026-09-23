@@ -14,6 +14,7 @@ export type MagicOccasion =
   | 'friendship'
   | 'thankyou'
   | 'getwell'
+  | 'newyear'
 
 export type MagicThemeId =
   | 'emerald-gold'
@@ -74,6 +75,7 @@ export interface MagicInviteContent {
   allowRsvp?: boolean
   coupleNames?: string
   hostsNames?: string
+  whatsappNumber?: string
 }
 
 export interface CardShareStats {

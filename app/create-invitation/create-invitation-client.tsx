@@ -26,7 +26,7 @@ import { useJashn } from '@/lib/jashn/store'
 import { INVITATION_TYPES, getInvitationType } from '@/lib/jashn/invitations'
 import { getInvitationWordingTemplates, type InvitationWordingTemplate } from '@/lib/jashn/invitation-templates'
 import { useLang } from '@/lib/lang/context'
-import { cn } from '@/lib/utils'
+import { cn, isPageReload } from '@/lib/utils'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 
@@ -127,14 +127,66 @@ function CreateInvitationContent() {
   const draftKey = editSlug ? `cardzy_draft_invite_edit_${editSlug}` : 'cardzy_draft_invitation'
   const [isInitialLoaded, setIsInitialLoaded] = useState(false)
 
+  // Listen to beforeunload to detect page refresh/reload reliably
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      try {
+        sessionStorage.setItem('__cardzy_reloading__', '1')
+        if (!editSlug) {
+          sessionStorage.removeItem(draftKey)
+          sessionStorage.removeItem('cardzy_draft_invitation')
+        }
+      } catch {}
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [draftKey, editSlug])
+
   // 1. Initial Load: Restore draft or fetch edit record
   useEffect(() => {
     let isCancelled = false
     async function initData() {
+      const isReload = isPageReload() || (typeof window !== 'undefined' && sessionStorage.getItem('__cardzy_reloading__') === '1')
+      // Clean up legacy entries and reload flag
+      try {
+        sessionStorage.removeItem('__cardzy_reloading__')
+        localStorage.removeItem(draftKey)
+        localStorage.removeItem('cardzy_draft_invitation')
+      } catch {}
+
+      // If user refreshed the creation page (and not editing an existing card), clear draft and reset all fields
+      if (!editSlug && isReload) {
+        try {
+          sessionStorage.removeItem(draftKey)
+          sessionStorage.removeItem('cardzy_draft_invitation')
+        } catch {}
+        if (!isCancelled) {
+          setTitle('')
+          setHostNames('')
+          setGroom('')
+          setBride('')
+          setDate('')
+          setTime('')
+          setVenue('')
+          setCity('')
+          setMapsLink('')
+          setDressCode('')
+          setNotes('')
+          setRsvpPhone('')
+          setPhotoUrl('')
+          setPhotoUrl2('')
+          setStep(1)
+          setIsInitialLoaded(true)
+        }
+        return
+      }
+
       if (editSlug) {
         let loadedData: any = null
         try {
-          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
           if (draftJson) loadedData = JSON.parse(draftJson)
         } catch {}
 
@@ -182,7 +234,7 @@ function CreateInvitationContent() {
       } else {
         let hasDraft = false
         try {
-          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
           if (draftJson) {
             const d = JSON.parse(draftJson)
             if (d && typeof d === 'object') {
@@ -251,7 +303,7 @@ function CreateInvitationContent() {
     }
   }, [editSlug, draftKey])
 
-  // 2. Auto-save draft on every change (local only)
+  // 2. Auto-save draft on every change (SESSION ONLY for active back/forward flow)
   useEffect(() => {
     if (!isInitialLoaded || typeof window === 'undefined') return
     const draftData = {
@@ -277,7 +329,6 @@ function CreateInvitationContent() {
     }
     try {
       sessionStorage.setItem(draftKey, JSON.stringify(draftData))
-      localStorage.setItem(draftKey, JSON.stringify(draftData))
     } catch {}
   }, [
     isInitialLoaded,
@@ -545,10 +596,18 @@ function CreateInvitationContent() {
 
       if (editSlug) {
         await updateInvitation(editSlug, payload)
+        try {
+          sessionStorage.removeItem(draftKey)
+          localStorage.removeItem(draftKey)
+        } catch {}
         showToast(t('invitationUpdatedSuccess', 'Invitation updated successfully! 🎉'), 'success')
         router.push(`/i/${editSlug}?mode=sender`)
       } else {
         const inv = await createInvitation(payload)
+        try {
+          sessionStorage.removeItem(draftKey)
+          localStorage.removeItem(draftKey)
+        } catch {}
         showToast(t('invitationCreatedSuccess', 'Invitation created successfully! 🚀'), 'success')
         router.push(`/i/${inv.slug}?mode=sender`)
       }
@@ -569,22 +628,22 @@ function CreateInvitationContent() {
             href="/create-wish"
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            💌 {t('sendAnimatedWishCard') || 'Wish Cards'}
+            💌 {t('studioTabWish', 'Wish Cards')}
           </Link>
           <div className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-xs bg-[#7B0D1E]">
-            🎉 {t('weddingInvitationTitle') || 'Invitations'}
+            🎉 {t('studioTabInvite', 'Invitations')}
           </div>
           <Link
             href="/create-magic-link"
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            🪄 {t('magicLinksNav') || 'Magic Links'}
+            🪄 {t('studioTabMagic', 'Magic Links')}
           </Link>
           <Link
             href="/create-visiting-card"
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            📇 {t('smartDigitalBusinessCardsTitle') || 'Visiting Cards'}
+            📇 {t('studioTabVCard', 'Visiting Cards')}
           </Link>
         </div>
 
@@ -667,7 +726,7 @@ function CreateInvitationContent() {
                 <div className="flex justify-end pt-4 border-t border-border">
                   <Button
                     onClick={() => changeStep(2)}
-                    className="bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold rounded-2xl px-6 h-11 flex items-center gap-2 shadow-lg shadow-[#7B0D1E]/20 active:scale-95 transition-all"
+                    className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm bg-[#7B0D1E] hover:bg-[#630A18] text-white shadow-lg shadow-[#7B0D1E]/20 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>{t('btnNext') || 'Next'}</span>
                     <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -976,14 +1035,14 @@ function CreateInvitationContent() {
                       <Button
                         variant="outline"
                         onClick={() => changeStep(1)}
-                        className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground font-bold flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                         <span>{t('btnBack') || 'Back'}</span>
                       </Button>
                       <Button
                         onClick={goToStep3}
-                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all"
+                        className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm bg-[#7B0D1E] hover:bg-[#630A18] text-white shadow-lg shadow-[#7B0D1E]/20 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <span>{t('btnNext') || 'Next'}</span>
                         <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -1101,14 +1160,14 @@ function CreateInvitationContent() {
                       <Button
                         variant="outline"
                         onClick={goToStep2}
-                        className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground font-bold flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                         <span>{t('btnBack') || 'Back'}</span>
                       </Button>
                       <Button
                         onClick={goToStep4}
-                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all"
+                        className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm bg-[#7B0D1E] hover:bg-[#630A18] text-white shadow-lg shadow-[#7B0D1E]/20 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <span>{t('btnNext') || 'Next'}</span>
                         <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -1164,7 +1223,7 @@ function CreateInvitationContent() {
                       <Button
                         variant="outline"
                         onClick={goToStep3Back}
-                        className="w-full sm:w-auto rounded-2xl h-11 px-6 border-border bg-card hover:bg-muted text-foreground font-bold flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm border-border bg-card hover:bg-muted text-foreground flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                         <span>{t('btnBack') || 'Back'}</span>
@@ -1172,7 +1231,7 @@ function CreateInvitationContent() {
                       <Button
                         onClick={handleFinish}
                         disabled={isSubmitting}
-                        className="w-full sm:w-auto bg-[#7B0D1E] hover:bg-[#630A18] text-white font-extrabold h-11 px-8 rounded-2xl shadow-lg shadow-[#7B0D1E]/20 flex items-center justify-center gap-2 active:scale-95 transition-all disabled:opacity-60"
+                        className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm bg-[#7B0D1E] hover:bg-[#630A18] text-white shadow-xl shadow-[#7B0D1E]/20 active:scale-98 transition-all disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer"
                       >
                         {isSubmitting ? (
                           <>
@@ -1180,7 +1239,10 @@ function CreateInvitationContent() {
                             <span>{t('generatingCard', 'Generating Card...')}</span>
                           </>
                         ) : (
-                          editSlug ? (t('btnSave') || 'Save') : (t('btnFinish') || 'Finish 🚀')
+                          <>
+                            <span>{editSlug ? (t('btnUpdate') || 'Update') : (t('btnFinish') || 'Finish 🚀')}</span>
+                            <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
+                          </>
                         )}
                       </Button>
                     </div>

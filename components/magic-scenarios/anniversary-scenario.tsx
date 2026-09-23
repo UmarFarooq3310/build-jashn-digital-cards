@@ -145,6 +145,18 @@ export function AnniversaryScenario({
     }, 600)
   }
 
+  const rawPhone = (data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || '')?.replace(/[^0-9]/g, '')
+  const returnUrl = typeof window !== 'undefined' ? `${window.location.origin}/m/${slug}` : ''
+  const getWhatsAppUrl = (emoji: string) => {
+    const msg = encodeURIComponent(
+      `Happy Anniversary! ✨ ${data.recipientName} loved your Anniversary Magic card on Cardzy: Reacted with ${emoji} 🥂❤️\n\nView card: ${returnUrl}`
+    )
+    return rawPhone
+      ? `https://wa.me/${rawPhone}?text=${msg}`
+      : `https://api.whatsapp.com/send?text=${msg}`
+  }
+  const whatsAppHref = getWhatsAppUrl(selectedReaction)
+
   // Handle Reaction
   const handleReaction = async (emoji: string) => {
     setSelectedReaction(emoji)
@@ -162,15 +174,13 @@ export function AnniversaryScenario({
     } catch {
       // offline fallback
     }
-  }
 
-  const rawPhone = data.wishContent?.whatsappNumber?.replace(/[^0-9]/g, '') || ''
-  const whatsAppMessage = encodeURIComponent(
-    `Happy Anniversary! ✨ ${data.recipientName} loved your Anniversary Magic card from Cardzy: Reacted with ${selectedReaction} 🥂❤️`
-  )
-  const whatsAppHref = rawPhone
-    ? `https://wa.me/${rawPhone}?text=${whatsAppMessage}`
-    : `https://api.whatsapp.com/send?text=${whatsAppMessage}`
+    // Open WhatsApp so user can return view and send reply
+    const waUrl = getWhatsAppUrl(emoji)
+    if (typeof window !== 'undefined') {
+      window.open(waUrl, '_blank')
+    }
+  }
 
   return (
     <div className="w-full flex flex-col items-center justify-center select-none animate-in fade-in duration-300">

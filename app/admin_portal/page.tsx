@@ -1810,7 +1810,15 @@ export default function AdminPortalPage() {
                               </span>
                             </td>
                             <td className="px-4 py-3.5 text-xs text-muted-foreground">
-                              <div className="font-medium text-foreground">{session.timezone || 'Unknown'}</div>
+                              <div className="font-medium text-foreground">
+                                {session.location && session.location !== 'Asia/Karachi' && session.location !== 'Unknown'
+                                  ? session.location
+                                  : session.city
+                                  ? `${session.city}, ${session.country || 'Pakistan'}`
+                                  : session.country && session.country !== 'Unknown'
+                                  ? `${session.country} 🇵🇰`
+                                  : 'Pakistan 🇵🇰'}
+                              </div>
                               <div className="text-[10px]">Lang: {session.language || 'en'}</div>
                             </td>
                             <td className="px-4 py-3.5 text-xs text-muted-foreground truncate max-w-[120px]">

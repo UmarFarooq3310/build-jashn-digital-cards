@@ -30,8 +30,8 @@ export async function GET(request: Request) {
     headers.get('x-country-code') ||
     ''
 
-  const countryCode = rawCountry ? rawCountry.toUpperCase() : ''
-  const country = countryCode ? getCountryName(countryCode) : ''
+  let countryCode = rawCountry ? rawCountry.toUpperCase() : ''
+  let country = countryCode ? getCountryName(countryCode) : ''
 
   const rawCity =
     headers.get('x-vercel-ip-city') ||
@@ -46,7 +46,7 @@ export async function GET(request: Request) {
     }
   }
 
-  const region =
+  let region =
     headers.get('x-vercel-ip-country-region') ||
     headers.get('x-region') ||
     ''
@@ -54,6 +54,25 @@ export async function GET(request: Request) {
   const forwardedFor = headers.get('x-forwarded-for')
   const realIp = headers.get('x-real-ip')
   const ip = parseClientIp(forwardedFor, realIp)
+
+  // If city is not provided by edge headers and we have a valid public client IP, look it up
+  if (!city && ip && ip !== '127.0.0.1') {
+    try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 1800)
+      const ipRes = await fetch(`https://ipwho.is/${ip}`, { signal: controller.signal })
+      clearTimeout(timeoutId)
+      if (ipRes.ok) {
+        const ipData = await ipRes.json()
+        if (ipData.success !== false) {
+          if (ipData.city) city = ipData.city
+          if (!region && ipData.region) region = ipData.region
+          if (!country && ipData.country) country = ipData.country
+          if (!countryCode && ipData.country_code) countryCode = ipData.country_code
+        }
+      }
+    } catch {}
+  }
 
   const userAgent = headers.get('user-agent') || ''
 

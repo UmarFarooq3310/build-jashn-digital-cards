@@ -33,9 +33,8 @@ export function LivePresenceTracker() {
         const { doc, setDoc } = await import('firebase/firestore')
 
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown'
         const tracking = await getClientTracking()
-        const exactLocation = tracking.city ? `${tracking.city}, ${tracking.countryCode}` : tracking.country || timezone
+        const exactLocation = tracking.createdLocation || (tracking.city ? `${tracking.city}, ${tracking.country || 'Pakistan'}` : tracking.country || 'Pakistan')
         const language = navigator.language || 'en'
 
         await setDoc(
@@ -46,7 +45,13 @@ export function LivePresenceTracker() {
             page: window.location.pathname,
             title: document.title || 'Cardzy',
             device: isMobile ? 'Mobile' : 'Desktop',
+            location: exactLocation,
             timezone: exactLocation,
+            city: tracking.city || '',
+            region: tracking.region || '',
+            country: tracking.country || 'Pakistan',
+            countryCode: tracking.countryCode || 'PK',
+            ip: tracking.ip || '',
             language,
             userId: user?.uid || null,
             userEmail: user?.email || 'Guest Visitor',

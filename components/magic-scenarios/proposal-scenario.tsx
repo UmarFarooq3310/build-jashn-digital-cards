@@ -212,6 +212,18 @@ export function ProposalScenario({
   }
 
   // 5. Handle Saying YES!
+  const rawPhone = (data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || '')?.replace(/[^0-9]/g, '')
+  const returnUrl = typeof window !== 'undefined' ? `${window.location.origin}/m/${slug}` : ''
+  const getWhatsAppUrl = (emoji: string = '💍') => {
+    const msg = encodeURIComponent(
+      `${data.recipientName} reacted ${emoji} to your Proposal on Cardzy: Said YES! 💍💖🥂\n\nView celebration: ${returnUrl}`
+    )
+    return rawPhone
+      ? `https://wa.me/${rawPhone}?text=${msg}`
+      : `https://api.whatsapp.com/send?text=${msg}`
+  }
+  const whatsAppHref = getWhatsAppUrl(selectedReaction)
+
   const handleSayYes = async () => {
     setHasSaidYes(true)
     magicAudio.playFanfare()
@@ -236,22 +248,33 @@ export function ProposalScenario({
     } catch {
       // offline fallback
     }
+
+    // Open WhatsApp so user can return view and send reply
+    const waUrl = getWhatsAppUrl('💍💖')
+    if (typeof window !== 'undefined') {
+      window.open(waUrl, '_blank')
+    }
   }
 
-  const handleReaction = (emoji: string) => {
+  const handleReaction = async (emoji: string) => {
     setSelectedReaction(emoji)
     spawnBurst([emoji], 12)
     magicAudio.playPop()
-  }
 
-  // WhatsApp link configuration
-  const rawPhone = data.wishContent?.whatsappNumber?.replace(/[^0-9]/g, '') || ''
-  const whatsAppMessage = encodeURIComponent(
-    `${data.recipientName} reacted ${selectedReaction} to your Proposal on Cardzy: She/He said YES! 💍💖🥂`
-  )
-  const whatsAppHref = rawPhone
-    ? `https://wa.me/${rawPhone}?text=${whatsAppMessage}`
-    : `https://api.whatsapp.com/send?text=${whatsAppMessage}`
+    try {
+      await submitMagicResponse({
+        linkId: slug,
+        recipientName: data.recipientName,
+        type: 'reaction',
+        reaction: `${emoji} Proposal Reaction`,
+      })
+    } catch {}
+
+    const waUrl = getWhatsAppUrl(emoji)
+    if (typeof window !== 'undefined') {
+      window.open(waUrl, '_blank')
+    }
+  }
 
   return (
     <div className="w-full flex flex-col items-center justify-center select-none animate-in fade-in duration-300">

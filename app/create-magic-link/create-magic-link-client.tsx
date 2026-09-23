@@ -47,7 +47,7 @@ import type { MagicLinkType, MagicOccasion, MagicThemeId } from '@/lib/jashn/mag
 import { useJashn } from '@/lib/jashn/store'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { useLang } from '@/lib/lang/context'
-import { cn } from '@/lib/utils'
+import { cn, isPageReload } from '@/lib/utils'
 
 export interface OccasionMeta {
   id: MagicOccasion
@@ -281,6 +281,93 @@ export const OCCASIONS: OccasionMeta[] = [
       'Hoping we can start fresh with warmth, laughter, and trust. ✨',
     ],
   },
+  {
+    id: 'friendship',
+    label: 'Best Friends & Friendship',
+    urdu: 'دوستی و تعلقات',
+    badge: '👯‍♀️ Best Friends Forever',
+    category: 'love',
+    trending: true,
+    icon: HeartHandshake,
+    defaultType: 'wish',
+    desc: 'Interactive Fortune Jar, 4 friendship gems, golden wax seal letter, and high-five replies',
+    theme: 'romantic-rose',
+    defaultLetter:
+      'Thank you for being the kind of friend who makes the world feel lighter, brighter, and full of joy. Having you in my life is one of my greatest blessings!',
+    defaultVerse: 'True friendship is a rare treasure and a lifelong blessing 💖',
+    urduVerse: 'سچی دوستی قدرت کا سب سے خوبصورت اور نایاب تحفہ ہے 💖',
+    defaultQuotes: [
+      'No matter how much time passes, we always pick up right where we left off! ✨',
+      'Our inside jokes and late night laughter sessions are forever legendary! 🌙',
+      'Thank you for believing in me even when I doubted myself. You are family chosen by heart! 🤝',
+      'Life is 100x more fun, kinder, and unforgettable with you by my side! 👯‍♀️',
+    ],
+  },
+  {
+    id: 'thankyou',
+    label: 'Heartfelt Gratitude',
+    urdu: 'شکریہ و اظہارِ تشکر',
+    badge: '🙏 24K Tribute & Praise',
+    category: 'milestones',
+    trending: true,
+    icon: Award,
+    defaultType: 'wish',
+    desc: '24K Golden tribute box, appreciation spark gems, and heartfelt thank you letter',
+    theme: 'mughal-gold',
+    defaultLetter:
+      'I want to express my deepest appreciation for your kindness, support, and guidance. Your generosity has touched my heart more than words can say.',
+    defaultVerse: 'With sincere gratitude from the bottom of my heart 🙏',
+    urduVerse: 'آپ کے خلوص، رہنمائی اور تعاون کے لیے دل کی گہرائیوں سے شکریہ 🙏',
+    defaultQuotes: [
+      'Your generosity and warmth have made a massive difference in my journey. 🌟',
+      'I am deeply grateful for your continuous encouragement and steady guidance. ✨',
+      'Few people touch lives with the kindness, humility, and grace that you bring. 💛',
+      'Thank you from the bottom of my heart for everything you have done! 🙏',
+    ],
+  },
+  {
+    id: 'getwell',
+    label: 'Get Well & Healing Prayers',
+    urdu: 'صحت یابی کی دعا',
+    badge: '🌸 Healing Sunshine & Care',
+    category: 'milestones',
+    icon: Heart,
+    defaultType: 'wish',
+    desc: 'Blooming sunlight garden, warm comfort petals, and heartfelt recovery prayers',
+    theme: 'emerald-gold',
+    defaultLetter:
+      'Sending you endless warmth, comfort, and sincere prayers for your swift and complete recovery. Take all the time you need to heal and regain your radiant strength!',
+    defaultVerse: 'Praying for your speedy recovery, perfect health, and peace 🌸',
+    urduVerse: 'اللّٰہ پاک آپ کو مکمل شفا، صحتِ کاملہ اور لمبی زندگی عطا فرمائے 🤲',
+    defaultQuotes: [
+      'Praying for your swift, gentle, and complete return to full strength and joy! 🌸',
+      'Take all the peaceful time you need to rest, recharge, and heal comfortably. ☀️',
+      'Sending immense positive energy, warmth, and heartfelt prayers your way. 🤲',
+      'Cannot wait to see you back on your feet smiling and shining brighter than ever! 💛',
+    ],
+  },
+  {
+    id: 'newyear',
+    label: 'New Year & Fresh Start',
+    urdu: 'نیا سال مبارک',
+    badge: '🎆 Fireworks & Countdown',
+    category: 'birthday',
+    trending: true,
+    icon: Sparkles,
+    defaultType: 'wish',
+    desc: 'Midnight fireworks spectacle, resolution sparklers, and golden New Year blessings',
+    theme: 'midnight-stars',
+    defaultLetter:
+      'Wishing you 365 days of boundless joy, spectacular breakthroughs, radiant health, and unstoppable success in this magnificent New Year!',
+    defaultVerse: 'May this New Year bring immense happiness, success, and prosperity 🎆',
+    urduVerse: 'نیا سال مبارک! اللّٰہ پاک یہ سال آپ کے لیے خوشیوں اور کامیابیوں کا سال بنائے ✨',
+    defaultQuotes: [
+      'May this new chapter unlock the greatest dreams and blessings in your life! 🚀',
+      'Here is to 365 new opportunities to shine, love, and conquer new heights! ✨',
+      'Wishing you radiant health, infinite peace, and prosperous beginnings! 🥂',
+      'Let go of the past and step boldly into your most triumphant year yet! 🌟',
+    ],
+  },
 ]
 
 // Occasion-specific 6-Palette Systems
@@ -401,6 +488,38 @@ export const OCCASION_PALETTES: Record<string, { id: MagicThemeId; name: string;
     { id: 'mughal-gold', name: 'Kintsugi Gold & Ceramic', gradient: 'from-[#1a1304] via-[#2a1d06] to-[#0d0901]', accent: '#f5c451', previewBorder: 'border-yellow-400' },
     { id: 'emerald-gold', name: 'Olive Branch & Warm Amber', gradient: 'from-[#022017] via-[#043324] to-[#01140e]', accent: '#34d399', previewBorder: 'border-emerald-400' },
   ],
+  friendship: [
+    { id: 'romantic-rose', name: 'Sweet Berry Bestie Blush', gradient: 'from-[#3a0418] via-[#5c0b29] to-[#1e010c]', accent: '#fb7185', previewBorder: 'border-rose-400' },
+    { id: 'proposal-amethyst', name: 'Twilight Lavender Glow', gradient: 'from-[#1f0933] via-[#120421] to-[#08010f]', accent: '#c084fc', previewBorder: 'border-purple-400' },
+    { id: 'midnight-stars', name: 'Celestial Starlight', gradient: 'from-[#0b0817] via-[#1a1236] to-[#04020a]', accent: '#c084fc', previewBorder: 'border-purple-400' },
+    { id: 'royal-sapphire', name: 'Ocean Breeze & Sapphire', gradient: 'from-[#07132a] via-[#0d214a] to-[#030914]', accent: '#38bdf8', previewBorder: 'border-sky-400' },
+    { id: 'proposal-champagne', name: 'Champagne Cheers & Gold', gradient: 'from-[#2b2108] via-[#1a1403] to-[#0b0801]', accent: '#fbbf24', previewBorder: 'border-yellow-400' },
+    { id: 'emerald-gold', name: 'Sage Evergreen Friendship', gradient: 'from-[#022017] via-[#043324] to-[#01140e]', accent: '#34d399', previewBorder: 'border-emerald-400' },
+  ],
+  thankyou: [
+    { id: 'mughal-gold', name: '24K Royal Tribute Gold', gradient: 'from-[#1a1304] via-[#2d1f05] to-[#0d0901]', accent: '#f5c451', previewBorder: 'border-amber-400' },
+    { id: 'proposal-champagne', name: 'Warm Champagne Gratitude', gradient: 'from-[#2b2108] via-[#1a1403] to-[#0b0801]', accent: '#fbbf24', previewBorder: 'border-yellow-400' },
+    { id: 'emerald-gold', name: 'Emerald Honor & Gold', gradient: 'from-[#022017] via-[#043324] to-[#01140e]', accent: '#10b981', previewBorder: 'border-emerald-400' },
+    { id: 'royal-sapphire', name: 'Prestige Sapphire & Silver', gradient: 'from-[#07132a] via-[#0d214a] to-[#030914]', accent: '#38bdf8', previewBorder: 'border-sky-400' },
+    { id: 'ruby-velvet', name: 'Velvet Ruby Appreciation', gradient: 'from-[#330410] via-[#52071a] to-[#1a0107]', accent: '#f43f5e', previewBorder: 'border-rose-500' },
+    { id: 'proposal-noir', name: 'Classic Obsidian Distinction', gradient: 'from-[#141414] via-[#0a0a0a] to-[#000000]', accent: '#f8fafc', previewBorder: 'border-slate-300' },
+  ],
+  getwell: [
+    { id: 'emerald-gold', name: 'Healing Meadow & Sunlight', gradient: 'from-[#022017] via-[#043324] to-[#01140e]', accent: '#34d399', previewBorder: 'border-emerald-400' },
+    { id: 'proposal-rose', name: 'Gentle Blossom & Comfort', gradient: 'from-[#2a0818] via-[#1a040f] to-[#0d0107]', accent: '#f472b6', previewBorder: 'border-pink-400' },
+    { id: 'royal-sapphire', name: 'Serene Azure Sky', gradient: 'from-[#07132a] via-[#0d214a] to-[#030914]', accent: '#38bdf8', previewBorder: 'border-sky-400' },
+    { id: 'mughal-gold', name: 'Warm Sunburst & Honey', gradient: 'from-[#1a1304] via-[#2a1d06] to-[#0d0901]', accent: '#f5c451', previewBorder: 'border-yellow-400' },
+    { id: 'proposal-amethyst', name: 'Calming Lavender Peace', gradient: 'from-[#1f0933] via-[#120421] to-[#08010f]', accent: '#c084fc', previewBorder: 'border-purple-400' },
+    { id: 'romantic-rose', name: 'Soft Rose Petal Glow', gradient: 'from-[#3a0418] via-[#5c0b29] to-[#1e010c]', accent: '#fb7185', previewBorder: 'border-rose-400' },
+  ],
+  newyear: [
+    { id: 'midnight-stars', name: 'Midnight Fireworks & Confetti', gradient: 'from-[#0b0817] via-[#1a1236] to-[#04020a]', accent: '#c084fc', previewBorder: 'border-purple-400' },
+    { id: 'mughal-gold', name: '24K Champagne Countdown', gradient: 'from-[#1a1304] via-[#2a1d06] to-[#0d0901]', accent: '#f5c451', previewBorder: 'border-amber-400' },
+    { id: 'royal-sapphire', name: 'Electric Sapphire Gala', gradient: 'from-[#07132a] via-[#0d214a] to-[#030914]', accent: '#38bdf8', previewBorder: 'border-sky-400' },
+    { id: 'ruby-velvet', name: 'Ruby Glamour Celebration', gradient: 'from-[#330410] via-[#52071a] to-[#1a0107]', accent: '#f43f5e', previewBorder: 'border-rose-500' },
+    { id: 'proposal-noir', name: 'VIP Obsidian Platinum', gradient: 'from-[#141414] via-[#0a0a0a] to-[#000000]', accent: '#f8fafc', previewBorder: 'border-slate-300' },
+    { id: 'proposal-amethyst', name: 'Neon Ultraviolet Flash', gradient: 'from-[#1f0933] via-[#120421] to-[#08010f]', accent: '#e879f9', previewBorder: 'border-pink-400' },
+  ],
 }
 
 export function getPalettesForOccasion(occ: string) {
@@ -472,14 +591,70 @@ export default function CreateMagicLinkClient() {
   const draftKey = editSlug ? `cardzy_draft_magic_edit_${editSlug}` : 'cardzy_draft_magic'
   const [isInitialLoaded, setIsInitialLoaded] = useState(false)
 
+  // Listen to beforeunload to detect page refresh/reload reliably
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      try {
+        sessionStorage.setItem('__cardzy_reloading__', '1')
+        if (!editSlug) {
+          sessionStorage.removeItem(draftKey)
+          sessionStorage.removeItem('cardzy_draft_magic')
+        }
+      } catch {}
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [draftKey, editSlug])
+
   // 1. Initial Load: Restore draft or fetch edit record
   useEffect(() => {
     let isCancelled = false
     async function initData() {
+      const isReload = isPageReload() || (typeof window !== 'undefined' && sessionStorage.getItem('__cardzy_reloading__') === '1')
+      // Clean up legacy entries and reload flag
+      try {
+        sessionStorage.removeItem('__cardzy_reloading__')
+        localStorage.removeItem(draftKey)
+        localStorage.removeItem('cardzy_draft_magic')
+      } catch {}
+
+      // If user refreshed the creation page (and not editing an existing card), clear draft and reset all fields
+      if (!editSlug && isReload) {
+        try {
+          sessionStorage.removeItem(draftKey)
+          sessionStorage.removeItem('cardzy_draft_magic')
+        } catch {}
+        if (!isCancelled) {
+          setSenderName('')
+          setRecipientName('')
+          setRecipientAge(24)
+          setCandleCount(3)
+          setQuotes(activeOccMeta.defaultQuotes)
+          setSecretLetter(activeOccMeta.defaultLetter)
+          setCustomVerse(isUrdu ? activeOccMeta.urduVerse : activeOccMeta.defaultVerse)
+          setHowWeMet('')
+          setSpecialDate('')
+          setWhatsappNumber('')
+          setPhotoUrl('')
+          setEventTitle('')
+          setEventDate('')
+          setEventTime('7:30 PM')
+          setVenueName('')
+          setVenueAddress('')
+          setGoogleMapsUrl('')
+          setCoupleNames('')
+          setStep(1)
+          setIsInitialLoaded(true)
+        }
+        return
+      }
+
       if (editSlug) {
         let loadedData: any = null
         try {
-          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
           if (draftJson) loadedData = JSON.parse(draftJson)
         } catch {}
 
@@ -531,7 +706,7 @@ export default function CreateMagicLinkClient() {
         }
       } else {
         try {
-          const draftJson = typeof window !== 'undefined' ? (sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey)) : null
+          const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
           if (draftJson) {
             const d = JSON.parse(draftJson)
             if (d && typeof d === 'object' && !isCancelled) {
@@ -571,7 +746,7 @@ export default function CreateMagicLinkClient() {
     }
   }, [editSlug, draftKey])
 
-  // 2. Auto-save draft on every change (local only)
+  // 2. Auto-save draft on every change (SESSION ONLY for active back/forward flow)
   useEffect(() => {
     if (!isInitialLoaded || typeof window === 'undefined') return
     const draftData = {
@@ -601,7 +776,6 @@ export default function CreateMagicLinkClient() {
     }
     try {
       sessionStorage.setItem(draftKey, JSON.stringify(draftData))
-      localStorage.setItem(draftKey, JSON.stringify(draftData))
     } catch {}
   }, [
     isInitialLoaded,
@@ -701,6 +875,14 @@ export default function CreateMagicLinkClient() {
     if (!recipientName.trim()) {
       errs.recipientName = t('recipientNameRequired', 'Recipient / Partner Name is required')
     }
+    if (!whatsappNumber.trim()) {
+      errs.whatsappNumber = t('whatsappNumberRequired', 'WhatsApp number is required so you can receive instant replies')
+    } else {
+      const cleanPhone = whatsappNumber.replace(/[^0-9]/g, '')
+      if (cleanPhone.length < 7) {
+        errs.whatsappNumber = t('whatsappNumberInvalid', 'Please enter a valid WhatsApp phone number with country code')
+      }
+    }
     if (linkType === 'invite' && !eventDate) {
       errs.eventDate = t('eventDateRequired', 'Event Date is required')
     }
@@ -794,6 +976,7 @@ export default function CreateMagicLinkClient() {
                 venueAddress: venueAddress.trim(),
                 googleMapsUrl: googleMapsUrl.trim(),
                 coupleNames: coupleNames.trim() || undefined,
+                whatsappNumber: whatsappNumber.trim() || undefined,
                 allowRsvp: true,
               }
             : undefined,
@@ -801,10 +984,18 @@ export default function CreateMagicLinkClient() {
 
       if (editSlug) {
         await updateMagicLink(editSlug, payload)
+        try {
+          sessionStorage.removeItem(draftKey)
+          localStorage.removeItem(draftKey)
+        } catch {}
         showToast(t('magicLinkUpdatedSuccess', 'Magic link updated successfully! ✨'), 'success')
         router.push(`/m/${editSlug}?mode=sender`)
       } else {
         const slug = await createMagicLink(payload)
+        try {
+          sessionStorage.removeItem(draftKey)
+          localStorage.removeItem(draftKey)
+        } catch {}
         showToast(t('magicLinkCreatedSuccess', 'Magic link created successfully! ✨'), 'success')
         router.push(`/m/${slug}?mode=sender`)
       }
@@ -866,25 +1057,25 @@ export default function CreateMagicLinkClient() {
             href="/create-wish"
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            💌 {t('sendAnimatedWishCard', 'Wish Cards')}
+            💌 {t('studioTabWish', 'Wish Cards')}
           </Link>
           <Link
             href="/create-invitation"
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            🎉 {t('weddingInvitationTitle', 'Invitations')}
+            🎉 {t('studioTabInvite', 'Invitations')}
           </Link>
           <div
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-xs bg-[#7B0D1E]"
           >
             <span>🪄</span>
-            <span>{t('magicLinksNav', 'Magic Links')}</span>
+            <span>{t('studioTabMagic', 'Magic Links')}</span>
           </div>
           <Link
             href="/create-visiting-card"
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
           >
-            📇 {t('smartDigitalBusinessCardsTitle', 'Visiting Cards')}
+            📇 {t('studioTabVCard', 'Visiting Cards')}
           </Link>
         </div>
       </div>
@@ -1075,11 +1266,11 @@ export default function CreateMagicLinkClient() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pb-2">
             <div className="flex items-center gap-1 overflow-x-auto w-full sm:w-auto p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs">
               {[
-                { id: 'all', label: '✨ All' },
-                { id: 'love', label: '❤️ Love' },
-                { id: 'birthday', label: '🎂 Birthday' },
-                { id: 'islamic', label: '🌙 Islamic' },
-                { id: 'milestones', label: '🎓 Milestones' },
+                { id: 'all', label: t('catAll', 'All') },
+                { id: 'love', label: t('catLove', 'Love & Romance') },
+                { id: 'birthday', label: t('catBirthday', 'Birthday & Party') },
+                { id: 'islamic', label: t('catIslamic', 'Islamic & Spiritual') },
+                { id: 'milestones', label: t('catMilestones', 'Milestones & Care') },
               ].map((cat) => (
                 <button
                   key={cat.id}
@@ -1104,7 +1295,7 @@ export default function CreateMagicLinkClient() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search occasions..."
+                placeholder={t('searchOccasions', 'Search occasions...')}
                 className="w-full min-w-0 pl-9 pr-8 py-2 rounded-xl text-xs bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E]/20 transition-all shadow-xs"
               />
               {searchQuery && (
@@ -1120,7 +1311,7 @@ export default function CreateMagicLinkClient() {
           </div>
 
           {/* Occasions Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {filteredOccasions.map((occ) => {
               const isSelected = selectedOccasion === occ.id
               const EMOJIS: Record<string, string> = {
@@ -1134,8 +1325,30 @@ export default function CreateMagicLinkClient() {
                 newborn: '🍼',
                 ramadan: '🕌',
                 apology: '💖',
+                friendship: '👯‍♀️',
+                thankyou: '🙏',
+                getwell: '🌸',
+                newyear: '🎆',
               }
               const emoji = EMOJIS[occ.id] || '✨'
+
+              const GRADIENTS: Record<string, string> = {
+                proposal: 'from-[#3b0312] via-[#24010a] to-[#0d0004]',
+                birthday: 'from-[#032017] via-[#064e3b] to-[#02130e]',
+                wedding: 'from-[#1c1404] via-[#2d1f05] to-[#120d02]',
+                eid: 'from-[#022017] via-[#043324] to-[#01140e]',
+                anniversary: 'from-[#330410] via-[#52071a] to-[#1a0107]',
+                graduation: 'from-[#07132a] via-[#0d214a] to-[#030914]',
+                party: 'from-[#0b0817] via-[#1a1236] to-[#04020a]',
+                newborn: 'from-[#022017] via-[#083829] to-[#01140e]',
+                ramadan: 'from-[#0b172a] via-[#032017] to-[#01140e]',
+                apology: 'from-[#3a0418] via-[#2a0818] to-[#14020a]',
+                friendship: 'from-[#2a0818] via-[#3a0428] to-[#120110]',
+                thankyou: 'from-[#2b2108] via-[#1a1403] to-[#0b0801]',
+                getwell: 'from-[#022017] via-[#073627] to-[#01170f]',
+                newyear: 'from-[#08081a] via-[#161233] to-[#03030d]',
+              }
+              const bgGradient = GRADIENTS[occ.id] || 'from-slate-900 via-slate-800 to-black'
 
               return (
                 <div
@@ -1145,82 +1358,110 @@ export default function CreateMagicLinkClient() {
                   tabIndex={0}
                   onKeyDown={(e) => e.key === 'Enter' && handleSelectOccasion(occ.id)}
                   className={cn(
-                    "relative rounded-2xl flex flex-col justify-between overflow-hidden group cursor-pointer transition-all duration-200 border p-5 shadow-xs hover:shadow-md hover:-translate-y-1",
+                    "relative rounded-3xl flex flex-col justify-between overflow-hidden group cursor-pointer transition-all duration-300 border shadow-md hover:shadow-xl hover:-translate-y-1.5",
                     isSelected
-                      ? "bg-card border-[#7B0D1E] ring-2 ring-[#7B0D1E]/25"
-                      : "bg-card border-border hover:border-[#7B0D1E]/40"
+                      ? "bg-card border-[#7B0D1E] ring-2 ring-[#7B0D1E]/30"
+                      : "bg-card border-border/90 hover:border-[#7B0D1E]/50"
                   )}
                 >
-                  {/* Subtle top accent bar */}
+                  {/* Top Ambient Glow Line */}
                   <div
                     aria-hidden="true"
                     className={cn(
-                      "absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl transition-opacity",
-                      isSelected ? "bg-[#7B0D1E] opacity-100" : "bg-muted opacity-0 group-hover:opacity-100 group-hover:bg-[#7B0D1E]/60"
+                      "absolute top-0 left-0 right-0 h-1 z-20 transition-opacity duration-300",
+                      isSelected
+                        ? "bg-gradient-to-r from-amber-400 via-[#7B0D1E] to-amber-400 opacity-100"
+                        : "bg-gradient-to-r from-transparent via-[#7B0D1E]/60 to-transparent opacity-0 group-hover:opacity-100"
                     )}
                   />
 
-                  <div>
-                    {/* Emoji + Status Badges */}
-                    <div className="flex items-start justify-between gap-2 mb-3.5">
-                      <div className="size-12 rounded-2xl bg-muted/60 border border-border/80 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition-transform">
+                  {/* 1. VISUAL MINI STAGE / HERO PREVIEW */}
+                  <div
+                    className={cn(
+                      "relative h-36 w-full overflow-hidden p-3.5 flex flex-col justify-between bg-gradient-to-br transition-all duration-500",
+                      bgGradient
+                    )}
+                  >
+                    {/* Background Ambient Stars/Sparkles */}
+                    <div className="absolute inset-0 pointer-events-none opacity-30 group-hover:opacity-60 transition-opacity">
+                      <div className="absolute top-3 left-4 text-xs text-amber-200/80 animate-pulse">✨</div>
+                      <div className="absolute top-8 right-6 text-sm text-yellow-300/60 animate-ping">🌟</div>
+                      <div className="absolute bottom-4 left-8 text-xs text-rose-300/70">💫</div>
+                      <div className="absolute bottom-3 right-10 text-xs text-purple-300/80">⭐</div>
+                    </div>
+
+                    {/* Stage Header Badges */}
+                    <div className="relative z-10 flex items-center justify-between gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/50 backdrop-blur-md text-white/90 border border-white/20 shadow-xs">
+                        {occ.category === 'love'
+                          ? t('catLove', 'Love & Romance')
+                          : occ.category === 'birthday'
+                          ? t('catBirthday', 'Birthday & Party')
+                          : occ.category === 'islamic'
+                          ? t('catIslamic', 'Islamic & Spiritual')
+                          : t('catMilestones', 'Milestones & Care')}
+                      </span>
+
+                      <div className="flex items-center gap-1.5">
+                        {isSelected && (
+                          <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 shadow-xs">
+                            ✓
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Centered 3D Emoji Medallion */}
+                    <div className="relative z-10 flex items-center justify-center my-auto">
+                      <div className="size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/25 flex items-center justify-center text-3xl shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                         {emoji}
                       </div>
-                      <div className="flex flex-col items-end gap-1">
-                        {occ.trending && (
-                          <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30">
-                            🔥 Trending
-                          </span>
-                        )}
-                        {isSelected && (
-                          <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-[#7B0D1E] dark:text-rose-400 border border-primary/20">
-                            ✓ Selected
-                          </span>
-                        )}
-                      </div>
                     </div>
-
-                    {/* Title & Tag */}
-                    <h3 className={cn('text-base font-extrabold text-foreground leading-tight mb-1 font-serif', isUrdu && 'font-nastaliq')}>
-                      {occ.label}
-                    </h3>
-
-                    {/* Urdu label */}
-                    {isUrdu && (
-                      <span className="text-xs font-nastaliq block mb-1 text-muted-foreground">{occ.urdu}</span>
-                    )}
-
-                    {/* Type tag */}
-                    <div className="mb-2.5">
-                      <span className="inline-block text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-muted text-muted-foreground border border-border/60">
-                        {occ.defaultType === 'wish' ? '🎁 3D Wish Capsule' : '📮 RSVP Invitation'}
-                      </span>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed mb-4">
-                      {occ.desc}
-                    </p>
                   </div>
 
-                  {/* Footer Action Buttons */}
-                  <div className="pt-3.5 flex items-center justify-between gap-2 border-t border-border/60">
-                    <button
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); setPreviewDemoOccasion(occ) }}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-muted hover:bg-muted/80 text-foreground border border-border/80 transition-all cursor-pointer"
-                    >
-                      <Play className="size-3 text-[#7B0D1E] fill-[#7B0D1E]" />
-                      <span>Demo</span>
-                    </button>
+                  {/* 2. CARD CONTENT AREA */}
+                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
+                    <div>
+                      {/* Title */}
+                      <div className="mb-1">
+                        <h3 className={cn('text-base sm:text-lg font-bold text-foreground leading-tight font-serif', isUrdu && 'font-nastaliq')}>
+                          {isUrdu && occ.urdu ? occ.urdu : occ.label}
+                        </h3>
+                      </div>
 
-                    <button
-                      type="button"
-                      className="inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-xl text-white bg-[#7B0D1E] hover:bg-[#631823] transition-all group-hover:shadow-sm cursor-pointer"
-                    >
-                      <span>Choose</span>
-                      <ArrowRight className="size-3" />
-                    </button>
+                      {/* Description */}
+                      <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                        {occ.desc}
+                      </p>
+                    </div>
+
+                    {/* 3. FOOTER ACTIONS */}
+                    <div className="pt-3 flex items-center justify-between gap-2 border-t border-border/70">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setPreviewDemoOccasion(occ)
+                        }}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground border border-border transition-all cursor-pointer hover:scale-102"
+                      >
+                        <Play className="size-3 text-[#7B0D1E] fill-[#7B0D1E]" />
+                        <span>{t('btnDemo', 'Demo')}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        className={cn(
+                          "inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-xl text-white transition-all cursor-pointer",
+                          isSelected
+                            ? "bg-[#7B0D1E] ring-2 ring-[#7B0D1E]/40 shadow-sm"
+                            : "bg-[#7B0D1E] hover:bg-[#630A18] group-hover:shadow-md group-hover:scale-102"
+                        )}
+                      >
+                        <span>{t('btnChoose', 'Choose')}</span>
+                        <ArrowRight className="size-3" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               )
@@ -1229,12 +1470,12 @@ export default function CreateMagicLinkClient() {
 
           {/* Quick Occasion Live Demo Modal */}
           {previewDemoOccasion && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
               <div
-                className="max-w-md w-full rounded-3xl bg-card border border-border text-foreground shadow-2xl relative overflow-hidden text-center"
+                className="max-w-md w-full rounded-3xl bg-card border border-border text-foreground shadow-2xl relative overflow-hidden text-center animate-in zoom-in-95 duration-200"
               >
                 {/* Top accent bar */}
-                <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#7B0D1E] to-transparent" />
+                <div className="h-1.5 w-full bg-gradient-to-r from-amber-400 via-[#7B0D1E] to-amber-400" />
 
                 <div className="p-6 sm:p-7 space-y-4">
                   <button
@@ -1244,12 +1485,40 @@ export default function CreateMagicLinkClient() {
                     <X className="size-4" />
                   </button>
 
-                  <div className="size-18 rounded-2xl flex items-center justify-center mx-auto text-4xl bg-muted/70 border border-border shadow-xs">
-                    {previewDemoOccasion.id === 'proposal' ? '💍' : previewDemoOccasion.id === 'birthday' ? '🎂' : previewDemoOccasion.id === 'wedding' ? '👑' : previewDemoOccasion.id === 'eid' ? '🌙' : '✨'}
+                  <div className="size-20 rounded-2xl flex items-center justify-center mx-auto text-4xl bg-muted/70 border border-border shadow-md">
+                    {previewDemoOccasion.id === 'proposal'
+                      ? '💍'
+                      : previewDemoOccasion.id === 'birthday'
+                      ? '🎂'
+                      : previewDemoOccasion.id === 'wedding'
+                      ? '👑'
+                      : previewDemoOccasion.id === 'eid'
+                      ? '🌙'
+                      : previewDemoOccasion.id === 'anniversary'
+                      ? '🥂'
+                      : previewDemoOccasion.id === 'graduation'
+                      ? '🎓'
+                      : previewDemoOccasion.id === 'party'
+                      ? '🎉'
+                      : previewDemoOccasion.id === 'newborn'
+                      ? '🍼'
+                      : previewDemoOccasion.id === 'ramadan'
+                      ? '🕌'
+                      : previewDemoOccasion.id === 'apology'
+                      ? '💖'
+                      : previewDemoOccasion.id === 'friendship'
+                      ? '👯‍♀️'
+                      : previewDemoOccasion.id === 'thankyou'
+                      ? '🙏'
+                      : previewDemoOccasion.id === 'getwell'
+                      ? '🌸'
+                      : previewDemoOccasion.id === 'newyear'
+                      ? '🎆'
+                      : '✨'}
                   </div>
 
                   <h3 className="text-xl font-serif font-black text-foreground">
-                    {previewDemoOccasion.label}
+                    {isUrdu && previewDemoOccasion.urdu ? previewDemoOccasion.urdu : previewDemoOccasion.label}
                   </h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     {previewDemoOccasion.desc}
@@ -1263,9 +1532,9 @@ export default function CreateMagicLinkClient() {
                     <button
                       type="button"
                       onClick={() => setPreviewDemoOccasion(null)}
-                      className="flex-1 py-2.5 rounded-xl text-xs font-bold transition-colors cursor-pointer bg-muted hover:bg-muted/80 text-foreground border border-border"
+                      className="flex-1 py-3 rounded-xl text-xs font-bold transition-colors cursor-pointer bg-muted hover:bg-muted/80 text-foreground border border-border"
                     >
-                      Close
+                      {t('btnClose', 'Close')}
                     </button>
                     <button
                       type="button"
@@ -1274,9 +1543,9 @@ export default function CreateMagicLinkClient() {
                         setPreviewDemoOccasion(null)
                         handleSelectOccasion(occ)
                       }}
-                      className="flex-1 py-2.5 rounded-xl text-xs font-bold cursor-pointer transition-opacity bg-[#7B0D1E] hover:bg-[#631823] text-white shadow-xs"
+                      className="flex-1 py-3 rounded-xl text-xs font-bold cursor-pointer transition-all bg-[#7B0D1E] hover:bg-[#630A18] text-white shadow-md flex items-center justify-center gap-1.5"
                     >
-                      Start Customizing 🪄
+                      <span>{t('btnChoose', 'Choose')} 🪄</span>
                     </button>
                   </div>
                 </div>
@@ -1309,7 +1578,37 @@ export default function CreateMagicLinkClient() {
                   Step 2 of 2
                 </span>
                 <span className="hidden sm:flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-muted border border-border text-muted-foreground">
-                  <span>{activeOccMeta.id === 'proposal' ? '💍' : activeOccMeta.id === 'birthday' ? '🎂' : '✨'}</span>
+                  <span>
+                    {activeOccMeta.id === 'proposal'
+                      ? '💍'
+                      : activeOccMeta.id === 'birthday'
+                      ? '🎂'
+                      : activeOccMeta.id === 'wedding'
+                      ? '👑'
+                      : activeOccMeta.id === 'eid'
+                      ? '🌙'
+                      : activeOccMeta.id === 'anniversary'
+                      ? '🥂'
+                      : activeOccMeta.id === 'graduation'
+                      ? '🎓'
+                      : activeOccMeta.id === 'party'
+                      ? '🎉'
+                      : activeOccMeta.id === 'newborn'
+                      ? '🍼'
+                      : activeOccMeta.id === 'ramadan'
+                      ? '🕌'
+                      : activeOccMeta.id === 'apology'
+                      ? '💖'
+                      : activeOccMeta.id === 'friendship'
+                      ? '👯‍♀️'
+                      : activeOccMeta.id === 'thankyou'
+                      ? '🙏'
+                      : activeOccMeta.id === 'getwell'
+                      ? '🌸'
+                      : activeOccMeta.id === 'newyear'
+                      ? '🎆'
+                      : '✨'}
+                  </span>
                   <span>{activeOccMeta.label}</span>
                 </span>
               </div>
@@ -1416,6 +1715,40 @@ export default function CreateMagicLinkClient() {
                         </div>
                       </div>
 
+                      {/* WhatsApp Number for Instant Alert & Direct Reply */}
+                      <div>
+                        <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                          {t('magicWhatsAppLabel', 'Your WhatsApp Number for Instant Replies')} *
+                        </label>
+                        <div className="relative overflow-hidden">
+                          <Phone className="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />
+                          <input
+                            id="field-whatsappNumber"
+                            type="tel"
+                            placeholder={isUrdu ? "مثال: 923001234567+" : "e.g. +92 300 1234567 or +1 (555) 000-0000"}
+                            value={whatsappNumber}
+                            onChange={(e) => handleFieldChange('whatsappNumber', e.target.value, setWhatsappNumber)}
+                            className={cn(
+                              'w-full min-w-0 pl-10 pr-4 py-3 bg-background border rounded-2xl text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none transition-all shadow-xs',
+                              errors.whatsappNumber
+                                ? 'border-red-500 ring-2 ring-red-500/20 focus:ring-2 focus:ring-red-500'
+                                : 'border-input focus:ring-2 focus:ring-[#7B0D1E]'
+                            )}
+                            dir="ltr"
+                          />
+                        </div>
+                        {errors.whatsappNumber ? (
+                          <p className={cn("mt-1.5 text-xs font-semibold text-red-500 flex items-center gap-1.5 animate-in fade-in slide-in-from-top-1 duration-200", isUrdu && "flex-row-reverse text-right font-urdu")}>
+                            <AlertCircle className="size-3.5 shrink-0" />
+                            <span>{errors.whatsappNumber}</span>
+                          </p>
+                        ) : (
+                          <p className="text-[11px] text-muted-foreground mt-1">
+                            {t('magicWhatsAppHelp', 'When your recipient reacts, responds, or confirms RSVP, they will be prompted to send their reply directly to this WhatsApp number.')}
+                          </p>
+                        )}
+                      </div>
+
                       {/* PROPOSAL SPECIFIC: How We Met & Special Date */}
                       {selectedOccasion === 'proposal' && (
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50">
@@ -1443,26 +1776,6 @@ export default function CreateMagicLinkClient() {
                               onChange={(e) => setHowWeMet(e.target.value)}
                               className="w-full min-w-0 px-4 py-2.5 bg-background border border-input rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs"
                             />
-                          </div>
-
-                          <div className="sm:col-span-2 pt-1">
-                            <label className="text-xs font-bold text-rose-950 dark:text-rose-200 uppercase tracking-wider block mb-1">
-                              Your WhatsApp Number for Instant Alert (Optional)
-                            </label>
-                            <div className="relative overflow-hidden">
-                              <Phone className="size-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-rose-500" />
-                              <input
-                                type="tel"
-                                placeholder="e.g. +92 300 1234567"
-                                value={whatsappNumber}
-                                onChange={(e) => setWhatsappNumber(e.target.value)}
-                                className="w-full min-w-0 pl-10 pr-3 py-2.5 bg-background border border-input rounded-xl text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] shadow-xs"
-                                dir="ltr"
-                              />
-                            </div>
-                            <p className="text-[10px] text-muted-foreground mt-1">
-                              When your partner taps &ldquo;YES! 💍&rdquo;, they will be prompted to send an instant celebration message to this number.
-                            </p>
                           </div>
                         </div>
                       )}
@@ -1679,14 +1992,14 @@ export default function CreateMagicLinkClient() {
                       )}
 
                       {/* Section 1 Navigation Buttons */}
-                      <div className="pt-4 border-t border-border/60 flex items-center justify-between gap-3">
+                      <div className="pt-4 border-t border-border/60 flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
                         <button
                           type="button"
                           onClick={() => {
                             setErrors({})
                             changeStep(1)
                           }}
-                          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer bg-card border border-border text-foreground hover:bg-muted shadow-xs"
+                          className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm transition-all cursor-pointer bg-card border border-border text-foreground hover:bg-muted shadow-xs flex items-center justify-center gap-2"
                         >
                           <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                           <span>{t('btnBack') || 'Back'}</span>
@@ -1695,7 +2008,7 @@ export default function CreateMagicLinkClient() {
                         <button
                           type="button"
                           onClick={handleNextToTheme}
-                          className="inline-flex items-center gap-1.5 px-6 py-2.5 rounded-2xl text-white text-xs sm:text-sm font-extrabold transition-all cursor-pointer bg-[#7B0D1E] hover:bg-[#630A18] shadow-xs active:scale-[0.98]"
+                          className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm text-white transition-all cursor-pointer bg-[#7B0D1E] hover:bg-[#630A18] shadow-lg shadow-[#7B0D1E]/20 active:scale-98 flex items-center justify-center gap-2"
                         >
                           <span>{t('btnNext') || 'Next'}</span>
                           <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
@@ -1709,7 +2022,7 @@ export default function CreateMagicLinkClient() {
                         <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-2", isUrdu ? "text-right font-urdu" : "text-left")}>
                           {activeOccMeta.label} Bespoke Palettes (Choose One)
                         </label>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                           {availablePalettes.map((th) => {
                             const isSelected = selectedTheme === th.id
                             return (
@@ -1718,27 +2031,36 @@ export default function CreateMagicLinkClient() {
                                 type="button"
                                 onClick={() => setSelectedTheme(th.id)}
                                 className={cn(
-                                  'p-3 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-2 shadow-xs',
+                                  'group p-3 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-2.5 shadow-xs overflow-hidden text-left relative',
                                   isUrdu ? 'text-right' : 'text-left',
                                   isSelected
-                                    ? 'bg-[#7B0D1E]/10 border-[#7B0D1E] ring-2 ring-[#7B0D1E]/20 scale-[1.02]'
-                                    : 'bg-card border-border hover:border-[#7B0D1E]/40'
+                                    ? 'bg-[#7B0D1E]/10 border-[#7B0D1E] ring-2 ring-[#7B0D1E]/25 shadow-md scale-[1.02]'
+                                    : 'bg-card border-border hover:border-[#7B0D1E]/40 hover:shadow-xs'
                                 )}
                               >
-                                <div className="flex items-center justify-between">
+                                {/* Palette Color Gradient Strip */}
+                                <div
+                                  className={cn(
+                                    'h-10 w-full rounded-xl bg-gradient-to-r relative overflow-hidden flex items-center justify-between px-3 border border-white/15',
+                                    th.gradient
+                                  )}
+                                >
                                   <div
-                                    className="size-5 rounded-full border border-white/40 shadow-sm"
+                                    className="size-4 rounded-full border-2 border-white shadow-sm"
                                     style={{ backgroundColor: th.accent }}
                                   />
                                   {isSelected && (
-                                    <span className="text-[10px] font-black text-[#7B0D1E]">
-                                      ACTIVE
+                                    <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md text-amber-300 border border-amber-400/40">
+                                      ✓ Active
                                     </span>
                                   )}
                                 </div>
-                                <span className="text-xs font-bold text-foreground line-clamp-1">
-                                  {th.name}
-                                </span>
+
+                                <div className="flex items-center justify-between gap-1">
+                                  <span className="text-xs font-bold text-foreground line-clamp-1">
+                                    {th.name}
+                                  </span>
+                                </div>
                               </button>
                             )
                           })}
@@ -1778,11 +2100,11 @@ export default function CreateMagicLinkClient() {
                       )}
 
                       {/* Section 2 Navigation Buttons */}
-                      <div className="pt-4 border-t border-border/60 flex items-center justify-between gap-3">
+                      <div className="pt-4 border-t border-border/60 flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
                         <button
                           type="button"
                           onClick={() => changeStep(2, 'details')}
-                          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold cursor-pointer transition-all bg-card border border-border text-foreground hover:bg-muted shadow-xs"
+                          className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm cursor-pointer transition-all bg-card border border-border text-foreground hover:bg-muted shadow-xs flex items-center justify-center gap-2"
                         >
                           <ArrowLeft className={cn("size-4", isUrdu && "rotate-180")} />
                           <span>{t('btnBack') || 'Back'}</span>
@@ -1791,7 +2113,7 @@ export default function CreateMagicLinkClient() {
                         <button
                           type="submit"
                           disabled={loading}
-                          className="inline-flex items-center justify-center gap-2 px-6 py-3 text-white font-extrabold rounded-2xl text-xs sm:text-sm uppercase tracking-wider transition-all cursor-pointer disabled:opacity-50 bg-[#7B0D1E] hover:bg-[#630A18] shadow-md active:scale-[0.98]"
+                          className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm text-white transition-all cursor-pointer disabled:opacity-50 bg-[#7B0D1E] hover:bg-[#630A18] shadow-xl shadow-[#7B0D1E]/20 active:scale-98 flex items-center justify-center gap-2"
                         >
                           {loading ? (
                             <span className="flex items-center gap-2">
@@ -1801,7 +2123,8 @@ export default function CreateMagicLinkClient() {
                           ) : (
                             <>
                               <Sparkles className="size-4 text-amber-300 fill-amber-300/40" />
-                              <span>{t('btnFinish', 'Finish ✨')}</span>
+                              <span>{editSlug ? (t('btnUpdate') || 'Update') : (t('btnFinish', 'Finish ✨'))}</span>
+                              <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
                             </>
                           )}
                         </button>

@@ -71,16 +71,16 @@ export function parseDeviceAndBrowser(userAgentString?: string): {
 }
 
 const TIMEZONE_MAP: Record<string, { country: string; code: string; city: string }> = {
-  'Asia/Karachi': { country: 'Pakistan', code: 'PK', city: 'Karachi' },
-  'Asia/Lahore': { country: 'Pakistan', code: 'PK', city: 'Lahore' },
+  'Asia/Karachi': { country: 'Pakistan', code: 'PK', city: '' },
+  'Asia/Lahore': { country: 'Pakistan', code: 'PK', city: '' },
   'Asia/Dubai': { country: 'United Arab Emirates', code: 'AE', city: 'Dubai' },
   'Asia/Riyadh': { country: 'Saudi Arabia', code: 'SA', city: 'Riyadh' },
   'Asia/Muscat': { country: 'Oman', code: 'OM', city: 'Muscat' },
   'Asia/Doha': { country: 'Qatar', code: 'QA', city: 'Doha' },
   'Asia/Kuwait': { country: 'Kuwait', code: 'KW', city: 'Kuwait City' },
   'Asia/Bahrain': { country: 'Bahrain', code: 'BH', city: 'Manama' },
-  'Asia/Kolkata': { country: 'India', code: 'IN', city: 'New Delhi' },
-  'Asia/Dhaka': { country: 'Bangladesh', code: 'BD', city: 'Dhaka' },
+  'Asia/Kolkata': { country: 'India', code: 'IN', city: '' },
+  'Asia/Dhaka': { country: 'Bangladesh', code: 'BD', city: '' },
   'Europe/London': { country: 'United Kingdom', code: 'GB', city: 'London' },
   'America/New_York': { country: 'United States', code: 'US', city: 'New York' },
   'America/Chicago': { country: 'United States', code: 'US', city: 'Chicago' },
@@ -108,13 +108,12 @@ export function inferClientFallback(): ClientTrackingInfo {
   const { device, browser, os } = parseDeviceAndBrowser()
   const tzMatch = tz ? TIMEZONE_MAP[tz] : null
 
-  const country = tzMatch ? tzMatch.country : 'Unknown Country'
-  const countryCode = tzMatch ? tzMatch.code : ''
-  // Never guess city from timezone as it causes everyone in Pakistan to be "Karachi"
+  const country = tzMatch ? tzMatch.country : 'Pakistan'
+  const countryCode = tzMatch ? tzMatch.code : 'PK'
   const city = ''
 
   const parts = [country].filter(Boolean)
-  const createdLocation = parts.length > 0 ? parts.join(', ') : 'Web Client'
+  const createdLocation = parts.length > 0 ? parts.join(', ') : 'Pakistan'
 
   return {
     country,
@@ -128,11 +127,15 @@ export function inferClientFallback(): ClientTrackingInfo {
 }
 
 /**
- * Non-blocking client tracking fetch with 1.5s timeout.
- * Guaranteed to return quickly and never fail or block the UI.
+ * High-accuracy client tracking fetch with multi-tiered fallback:
+ * 1. Session Storage Cache (Instant)
+ * 2. ipwho.is (High precision for Pakistani ISPs: Lahore, Rawalpindi, Islamabad, Multan, Faisalabad, etc.)
+ * 3. api.db-ip.com (Reliable secondary provider)
+ * 4. /api/geo (Next.js server-side edge MaxMind headers)
+ * 5. Timezone & device heuristics
  */
 export async function getClientTracking(): Promise<ClientTrackingInfo> {
-  if (cachedTracking) return cachedTracking
+  if (cachedTracking && cachedTracking.city) return cachedTracking
 
   if (typeof window === 'undefined') {
     return {
@@ -142,76 +145,110 @@ export async function getClientTracking(): Promise<ClientTrackingInfo> {
     }
   }
 
+  // Check sessionStorage cache
+  try {
+    const raw = sessionStorage.getItem('cardzy_geo_cache')
+    if (raw) {
+      const parsed = JSON.parse(raw)
+      if (parsed && (parsed.city || parsed.country)) {
+        cachedTracking = parsed
+        return parsed
+      }
+    }
+  } catch {}
+
   const fallback = inferClientFallback()
 
   try {
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 1500)
-
     let data: any = {}
-    
-    // First try to get precise city from a free client-side IP API
+
+    // 1. Primary: ipwho.is (Accurate city detection across Pakistani cities like Lahore, Rawalpindi, Faisalabad, Islamabad)
     try {
-      // Use geojs.io instead of ipapi.co because adblockers block ipapi.co
-      const externalRes = await fetch('https://get.geojs.io/v1/ip/geo.json', { signal: controller.signal })
-      if (externalRes.ok) {
-        const externalData = await externalRes.json()
-        if (externalData.city) {
-          data.city = externalData.city
-          data.region = externalData.region
-          data.countryCode = externalData.country_code
-          data.country = externalData.country
-          data.ip = externalData.ip
+      const c1 = new AbortController()
+      const t1 = setTimeout(() => c1.abort(), 2000)
+      const res = await fetch('https://ipwho.is/', { signal: c1.signal })
+      clearTimeout(t1)
+      if (res.ok) {
+        const json = await res.json()
+        if (json.success !== false && (json.city || json.country)) {
+          data.city = json.city || ''
+          data.region = json.region || ''
+          data.countryCode = json.country_code || ''
+          data.country = json.country || ''
+          data.ip = json.ip || ''
         }
       }
-    } catch (e) {
-      // Ignore if adblocker blocks it
-    }
+    } catch {}
 
-    // Fallback to our internal Vercel headers API if ipapi failed or got blocked
+    // 2. Secondary: api.db-ip.com
     if (!data.city) {
-      const res = await fetch('/api/geo', {
-        signal: controller.signal,
-        cache: 'no-store',
-      })
-      if (res.ok) {
-        const internalData = await res.json()
-        data = { ...internalData }
-      }
+      try {
+        const c2 = new AbortController()
+        const t2 = setTimeout(() => c2.abort(), 1800)
+        const res = await fetch('https://api.db-ip.com/v2/free/self', { signal: c2.signal })
+        clearTimeout(t2)
+        if (res.ok) {
+          const json = await res.json()
+          if (json.city && json.city !== 'Unknown') {
+            data.city = json.city
+            data.region = json.stateProv || ''
+            data.countryCode = json.countryCode || ''
+            data.country = json.countryName || ''
+            data.ip = json.ipAddress || ''
+          }
+        }
+      } catch {}
     }
-    
-    clearTimeout(timeoutId)
 
-    if (data && Object.keys(data).length > 0) {
-      const { device, browser, os } = parseDeviceAndBrowser(data.userAgent || typeof navigator !== 'undefined' ? navigator.userAgent : '')
-
-      const country = data.country || fallback.country || ''
-      const countryCode = data.countryCode || fallback.countryCode || ''
-      // If we STILL don't have a city, only use the timezone fallback as a last resort
-      const city = data.city || fallback.city || ''
-      const region = data.region || ''
-      const ip = data.ip || ''
-
-      const locParts: string[] = []
-      if (city) locParts.push(city)
-      if (region && region !== city) locParts.push(region)
-      if (country) locParts.push(country)
-
-      const createdLocation = locParts.length > 0 ? locParts.join(', ') : (fallback.createdLocation || 'Web Client')
-
-      cachedTracking = {
-        country,
-        countryCode,
-        city,
-        region,
-        ip,
-        device,
-        browser,
-        os,
-        createdLocation,
-      }
-      return cachedTracking
+    // 3. Tertiary: /api/geo (Internal Vercel edge headers)
+    if (!data.city) {
+      try {
+        const c3 = new AbortController()
+        const t3 = setTimeout(() => c3.abort(), 1500)
+        const res = await fetch('/api/geo', {
+          signal: c3.signal,
+          cache: 'no-store',
+        })
+        clearTimeout(t3)
+        if (res.ok) {
+          const internalData = await res.json()
+          data = { ...data, ...internalData }
+        }
+      } catch {}
     }
+
+    const { device, browser, os } = parseDeviceAndBrowser(data.userAgent || typeof navigator !== 'undefined' ? navigator.userAgent : '')
+
+    const country = data.country || fallback.country || 'Pakistan'
+    const countryCode = data.countryCode || fallback.countryCode || 'PK'
+    const city = data.city || ''
+    const region = data.region || ''
+    const ip = data.ip || ''
+
+    const locParts: string[] = []
+    if (city) locParts.push(city)
+    if (region && region !== city) locParts.push(region)
+    if (country) locParts.push(country)
+
+    const createdLocation = locParts.length > 0 ? locParts.join(', ') : (fallback.createdLocation || 'Pakistan')
+
+    cachedTracking = {
+      country,
+      countryCode,
+      city,
+      region,
+      ip,
+      device,
+      browser,
+      os,
+      createdLocation,
+    }
+
+    try {
+      sessionStorage.setItem('cardzy_geo_cache', JSON.stringify(cachedTracking))
+    } catch {}
+
+    return cachedTracking
   } catch {
     // Network or timeout failure - fallback will be used
   }

@@ -129,6 +129,22 @@ export function ApologyScenario({
     }
   }
 
+  const rawPhone = (data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || '')?.replace(/[^0-9]/g, '')
+  const returnUrl = typeof window !== 'undefined' ? `${window.location.origin}/m/${slug}` : ''
+  const getWhatsAppUrl = (choice: boolean | null = forgiven) => {
+    const replyText =
+      choice === true
+        ? 'I accept your apology and forgive you with all my heart 💖'
+        : 'Thank you for your sincere message, let us talk soon 🕊️'
+    const msg = encodeURIComponent(
+      `Apology response from ${data.recipientName}: ${replyText}\n\nView card: ${returnUrl}`
+    )
+    return rawPhone
+      ? `https://wa.me/${rawPhone}?text=${msg}`
+      : `https://api.whatsapp.com/send?text=${msg}`
+  }
+  const whatsAppHref = getWhatsAppUrl(forgiven)
+
   // Handle Forgive
   const handleForgive = async (choice: boolean) => {
     setForgiven(choice)
@@ -147,16 +163,13 @@ export function ApologyScenario({
     } catch {
       // offline fallback
     }
-  }
 
-  const rawPhone = data.wishContent?.whatsappNumber?.replace(/[^0-9]/g, '') || ''
-  const replyText = forgiven === true ? 'I accept your apology and forgive you with all my heart 💖' : 'Thank you for your sincere message, let us talk soon 🕊️'
-  const whatsAppMessage = encodeURIComponent(
-    `Apology response from ${data.recipientName}: ${replyText}`
-  )
-  const whatsAppHref = rawPhone
-    ? `https://wa.me/${rawPhone}?text=${whatsAppMessage}`
-    : `https://api.whatsapp.com/send?text=${whatsAppMessage}`
+    // Open WhatsApp so user can return view and send reply
+    const waUrl = getWhatsAppUrl(choice)
+    if (typeof window !== 'undefined') {
+      window.open(waUrl, '_blank')
+    }
+  }
 
   return (
     <div className="w-full flex flex-col items-center justify-center select-none animate-in fade-in duration-300">

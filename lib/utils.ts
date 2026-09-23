@@ -46,3 +46,24 @@ export function formatWhatsAppDigits(phone: string): string {
   }
   return cleaned
 }
+
+/**
+ * Checks if the current page load is a browser refresh / reload (e.g. F5, Cmd+R).
+ * Returns false on back/forward navigation or initial link clicks.
+ */
+export function isPageReload(): boolean {
+  if (typeof window === 'undefined') return false
+  try {
+    if (sessionStorage.getItem('__cardzy_reloading__') === '1') {
+      return true
+    }
+    const navEntries = performance.getEntriesByType('navigation')
+    if (navEntries && navEntries.length > 0) {
+      return (navEntries[0] as PerformanceNavigationTiming).type === 'reload'
+    }
+    return (performance as any)?.navigation?.type === 1
+  } catch {
+    return false
+  }
+}
+

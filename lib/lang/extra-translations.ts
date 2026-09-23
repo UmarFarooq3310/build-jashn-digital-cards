@@ -55,6 +55,39 @@ export const EXTRA_T: Record<string, Record<LangCode, string>> = {
   btnUpdate: {
     en: "Update", ur: "اپ ڈیٹ کریں", ar: "تحديث", es: "Actualizar", fr: "Mettre à jour", hi: "अपडेट करें", zh: "更新", pt: "Atualizar", ru: "Обновить", de: "Aktualisieren", ja: "更新", ko: "업데이트", it: "Aggiorna", tr: "Güncelle", id: "Perbarui", bn: "আপডেট করুন", vi: "Cập nhật", sw: "Sasisha"
   },
+  studioTabWish: {
+    en: "Wish Cards", ur: "وش کارڈز", ar: "بطاقات المعايدة", es: "Tarjetas de Deseos", fr: "Cartes de Vœux", hi: "विश कार्ड्स", zh: "祝贺卡", pt: "Cartões de Votos", ru: "Открытки", de: "Wunschkarten", ja: "祝賀カード", ko: "축하 카드", it: "Biglietti Auguri", tr: "Tebrik Kartları", id: "Kartu Ucapan", bn: "উইশ কার্ড", vi: "Thiệp Chúc", sw: "Kadi za Heri"
+  },
+  studioTabInvite: {
+    en: "Invitations", ur: "دعوت نامے", ar: "دعوات المناسبات", es: "Invitaciones", fr: "Invitations", hi: "निमंत्रण", zh: "邀请函", pt: "Convites", ru: "Приглашения", de: "Einladungen", ja: "招待状", ko: "초대장", it: "Inviti", tr: "Davetiyeler", id: "Undangan", bn: "আমন্ত্রণপত্র", vi: "Thiệp Mời", sw: "Mialiko"
+  },
+  studioTabMagic: {
+    en: "Magic Links", ur: "میجک لنکس", ar: "الروابط السحرية", es: "Enlaces Mágicos", fr: "Liens Magiques", hi: "मैजिक लिंक्स", zh: "魔法链接", pt: "Links Mágicos", ru: "Магические ссылки", de: "Magische Links", ja: "マジックリンク", ko: "매직 링크", it: "Link Magici", tr: "Sihirli Linkler", id: "Tautan Ajaib", bn: "ম্যাজিক লিঙ্ক", vi: "Link Ma Thuật", sw: "Viungo vya Ajabu"
+  },
+  studioTabVCard: {
+    en: "Visiting Cards", ur: "وزٹنگ کارڈز", ar: "بطاقات الأعمال", es: "Tarjetas de Visita", fr: "Cartes de Visite", hi: "विजिटिंग कार्ड्स", zh: "电子名片", pt: "Cartões de Visita", ru: "Визитки", de: "Visitenkarten", ja: "デジタル名刺", ko: "디지털 명함", it: "Biglietti da Visita", tr: "Kartvizitler", id: "Kartu Nama", bn: "ভিজিটিং কার্ড", vi: "Danh Thiếp", sw: "Kadi za Biashara"
+  },
+  catAll: {
+    en: "All", ur: "تمام", ar: "الكل", es: "Todos", fr: "Tous", hi: "सभी", zh: "全部", pt: "Todos", ru: "Все", de: "Alle", ja: "すべて", ko: "전체", it: "Tutti", tr: "Tümü", id: "Semua", bn: "সব", vi: "Tất cả", sw: "Yote"
+  },
+  catLove: {
+    en: "Love & Romance", ur: "محبت و رومانس", ar: "حب ورومانسية", es: "Amor y Romance", fr: "Amour & Romance", hi: "प्रेम और रोमांस", zh: "爱情与浪漫", pt: "Amor & Romance", ru: "Любовь и Романтика", de: "Liebe & Romantik", ja: "愛とロマンス", ko: "사랑 & 로맨스", it: "Amore & Romanticismo", tr: "Aşk & Romantizm", id: "Cinta & Romantis", bn: "প্রেম ও রোমান্স", vi: "Tình Yêu & Lãng Mạn", sw: "Upendo na Mahaba"
+  },
+  catBirthday: {
+    en: "Birthday & Party", ur: "سالگرہ و پارٹی", ar: "أعياد ميلاد وحفلات", es: "Cumpleaños y Fiestas", fr: "Anniversaire & Fête", hi: "जन्मदिन और पार्टी", zh: "生日与派对", pt: "Aniversário & Festa", ru: "День рождения и Вечеринка", de: "Geburtstag & Party", ja: "誕生日＆パーティー", ko: "생일 & 파티", it: "Compleanno & Festa", tr: "Doğum Günü & Parti", id: "Ulang Tahun & Pesta", bn: "জন্মদিন ও পার্টি", vi: "Sinh Nhật & Tiệc", sw: "Kuzaliwa na Sherehe"
+  },
+  catIslamic: {
+    en: "Islamic & Spiritual", ur: "اسلامی و روحانی", ar: "إسلامي وروحاني", es: "Islámico y Espiritual", fr: "Islamique & Spirituel", hi: "इस्लामिक और आध्यात्मिक", zh: "伊斯兰与精神", pt: "Islâmico & Espiritual", ru: "Исламские и Духовные", de: "Islamisch & Spirituell", ja: "イスラム＆スピリチュアル", ko: "이슬람 & 영적", it: "Islamico & Spirituale", tr: "İslami & Manevi", id: "Islami & Spiritual", bn: "ইসলামিক ও আধ্যাত্মিক", vi: "Hồi Giáo & Tâm Linh", sw: "Kiislamu na Kiroho"
+  },
+  catMilestones: {
+    en: "Milestones & Care", ur: "کامیابیاں و نیک تمنائیں", ar: "إنجازات وتهاني", es: "Logros y Cuidado", fr: "Étapes & Bienveillance", hi: "उपलब्धियां और शुभकामनाएं", zh: "里程碑与关怀", pt: "Marcos & Cuidado", ru: "Достижения и Забота", de: "Meilensteine & Fürsorge", ja: "マイルストーン＆ケア", ko: "기념일 & 안부", it: "Traguardi & Cura", tr: "Dönüm Noktaları & İlgi", id: "Pencapaian & Perhatian", bn: "মাইলফলক ও শুভেচ্ছা", vi: "Cột Mốc & Quan Tâm", sw: "Mafanikio na Matunzo"
+  },
+  btnDemo: {
+    en: "Demo", ur: "ڈیمو", ar: "عرض", es: "Demo", fr: "Démo", hi: "डेमो", zh: "演示", pt: "Demo", ru: "Демо", de: "Demo", ja: "デモ", ko: "데모", it: "Demo", tr: "Demo", id: "Demo", bn: "ডেমো", vi: "Bản thử", sw: "Onyesho"
+  },
+  btnChoose: {
+    en: "Choose", ur: "منتخب کریں", ar: "اختر", es: "Elegir", fr: "Choisir", hi: "चुनें", zh: "选择", pt: "Escolher", ru: "Выбрать", de: "Wählen", ja: "選択", ko: "선택", it: "Scegli", tr: "Seç", id: "Pilih", bn: "নির্বাচন", vi: "Chọn", sw: "Chagua"
+  },
   borderNameCyberHud: {
     en: "Cyber Gaming HUD", ur: "سائبر گیمنگ فریم", ar: "إطار الألعاب السيبراني", es: "Marco Cyber Gaming", fr: "Cadre Cyber Gaming", hi: "साइबर गेमिंग फ्रेम", zh: "赛博电竞 HUD 边框", pt: "Borda Cyber Gaming", ru: "Рамка Cyber Gaming", de: "Cyber Gaming Rahmen", ja: "サイバーゲーミングHUD", ko: "사이버 게이밍 HUD", it: "Bordo Cyber Gaming", tr: "Siber Oyuncu Çerçevesi", id: "Bingkai Cyber Gaming", bn: "সাইবার গেমিং ফ্রেম", vi: "Khung Cyber Gaming", sw: "Fremu ya Cyber Gaming"
   },

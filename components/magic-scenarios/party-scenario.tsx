@@ -108,6 +108,19 @@ export function PartyScenario({
     }, 700)
   }
 
+  const rawPhone = (data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || '')?.replace(/[^0-9]/g, '')
+  const returnUrl = typeof window !== 'undefined' ? `${window.location.origin}/m/${slug}` : ''
+  const rsvpStatus = attending ? `I am IN! (${guestsCount} person${guestsCount > 1 ? 's' : ''})` : 'Cannot make it this time'
+  const getWhatsAppUrl = () => {
+    const msg = encodeURIComponent(
+      `Party RSVP for ${data.recipientName}: ${rsvpStatus} 🎉🔥\n\nView celebration: ${returnUrl}`
+    )
+    return rawPhone
+      ? `https://wa.me/${rawPhone}?text=${msg}`
+      : `https://api.whatsapp.com/send?text=${msg}`
+  }
+  const whatsAppHref = getWhatsAppUrl()
+
   // Handle RSVP
   const handleSubmitRsvp = async () => {
     magicAudio.playFanfare()
@@ -129,16 +142,13 @@ export function PartyScenario({
     } catch {
       // offline fallback
     }
-  }
 
-  const rawPhone = data.wishContent?.whatsappNumber?.replace(/[^0-9]/g, '') || ''
-  const rsvpStatus = attending ? `I am IN! (${guestsCount} person${guestsCount > 1 ? 's' : ''})` : 'Cannot make it this time'
-  const whatsAppMessage = encodeURIComponent(
-    `Party RSVP for ${data.recipientName}: ${rsvpStatus} 🎉🔥`
-  )
-  const whatsAppHref = rawPhone
-    ? `https://wa.me/${rawPhone}?text=${whatsAppMessage}`
-    : `https://api.whatsapp.com/send?text=${whatsAppMessage}`
+    // Open WhatsApp so user can return view and send RSVP
+    const waUrl = getWhatsAppUrl()
+    if (typeof window !== 'undefined') {
+      window.open(waUrl, '_blank')
+    }
+  }
 
   return (
     <div className="w-full flex flex-col items-center justify-center select-none animate-in fade-in duration-300">

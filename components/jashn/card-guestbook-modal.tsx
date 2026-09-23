@@ -73,6 +73,8 @@ export function CardGuestbookModal({
   const [error, setError] = useState<string | null>(null)
   const [successNotice, setSuccessNotice] = useState<string | null>(null)
 
+  const [lastPostedWish, setLastPostedWish] = useState<{ guestName: string; message: string; emoji: string } | null>(null)
+
   // Real-time subscription to wishes for this specific card
   useEffect(() => {
     if (!isOpen || !cardSlug) return
@@ -106,16 +108,25 @@ export function CardGuestbookModal({
         emoji: selectedEmoji,
       })
 
+      const submitted = { guestName, message, emoji: selectedEmoji }
+      setLastPostedWish(submitted)
       setMessage('')
       setSuccessNotice('✨ Your wish has been pinned to the Wishes Wall!')
       if (onWishSubmitted) onWishSubmitted()
-      setTimeout(() => setSuccessNotice(null), 3500)
+      setTimeout(() => setSuccessNotice(null), 6000)
     } catch (err: any) {
       setError(err?.message || 'Could not post wish. Please try again.')
     } finally {
       setLoading(false)
     }
   }
+
+  const wishReturnUrl = typeof window !== 'undefined' ? `${window.location.origin}/${cardType === 'magic' ? 'm' : cardType === 'invite' ? 'i' : 'w'}/${cardSlug}` : ''
+  const whatsAppWishHref = lastPostedWish
+    ? `https://api.whatsapp.com/send?text=${encodeURIComponent(
+        `${lastPostedWish.emoji} "${lastPostedWish.message}" — ${lastPostedWish.guestName} sent a wish for ${recipientName} on Cardzy!\n\nView celebration: ${wishReturnUrl}`
+      )}`
+    : ''
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-3 sm:p-4 animate-in fade-in duration-200 select-none">
@@ -200,9 +211,21 @@ export function CardGuestbookModal({
 
         {/* Success Alert */}
         {successNotice && (
-          <div className="p-2.5 bg-emerald-950/80 border border-emerald-400/50 rounded-xl text-xs text-emerald-200 font-semibold flex items-center gap-2 animate-in fade-in my-1.5">
-            <Sparkles className="size-3.5 text-emerald-400 shrink-0" />
-            <span>{successNotice}</span>
+          <div className="p-3 bg-emerald-950/90 border border-emerald-400/60 rounded-2xl text-xs text-emerald-200 font-semibold flex flex-col gap-2 animate-in fade-in my-1.5 shadow-md">
+            <div className="flex items-center gap-2">
+              <Sparkles className="size-3.5 text-emerald-400 shrink-0" />
+              <span>{successNotice}</span>
+            </div>
+            {lastPostedWish && whatsAppWishHref && (
+              <a
+                href={whatsAppWishHref}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-sm transition-all"
+              >
+                <span>Share Wish via WhatsApp 💬</span>
+              </a>
+            )}
           </div>
         )}
 
