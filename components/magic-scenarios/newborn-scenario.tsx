@@ -370,6 +370,7 @@ export function NewbornScenario({
               englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `A heartfelt welcome to your precious little bundle of joy! May their tiny hands bring enormous joy, their sweet laughter fill your home with light, and may they always walk under Allah's loving protection and grace.`}
               urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
               signatureText={`— With warmest Duas, ${data.senderName}`}
+              photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
               urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
               signatureClassName="mt-3 text-right font-serif italic text-amber-300"
             />

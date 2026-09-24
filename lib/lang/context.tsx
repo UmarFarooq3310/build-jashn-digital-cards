@@ -677,33 +677,43 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   // Load language from URL ?lang= param, then localStorage, then browser language
   useEffect(() => {
-    // Priority 1: URL query parameter (?lang=es, ?lang=ur, etc.)
-    const urlParams = new URLSearchParams(window.location.search)
-    const urlLang = urlParams.get('lang') as LangCode
-    if (urlLang && LANGUAGES.some((l) => l.code === urlLang)) {
-      setLangState(urlLang)
-      localStorage.setItem('cardzy_lang', urlLang)
-      return
-    }
-
-    // Priority 2: Previously saved language in localStorage
-    const saved = localStorage.getItem('cardzy_lang') as LangCode
-    if (saved && LANGUAGES.some((l) => l.code === saved)) {
-      setLangState(saved)
-    } else {
-      // Priority 3: Browser language preference
-      const browserLang = navigator.language.split('-')[0] as LangCode
-      if (LANGUAGES.some((l) => l.code === browserLang)) {
-        setLangState(browserLang)
+    try {
+      // Priority 1: URL query parameter (?lang=es, ?lang=ur, etc.)
+      const urlParams = new URLSearchParams(window.location.search)
+      const urlLang = urlParams.get('lang') as LangCode
+      if (urlLang && LANGUAGES.some((l) => l.code === urlLang)) {
+        setLangState(urlLang)
+        try { localStorage.setItem('cardzy_lang', urlLang) } catch {}
+        return
       }
-    }
+
+      // Priority 2: Previously saved language in localStorage
+      let saved: LangCode | null = null
+      try {
+        saved = localStorage.getItem('cardzy_lang') as LangCode
+      } catch {}
+
+      if (saved && LANGUAGES.some((l) => l.code === saved)) {
+        setLangState(saved)
+      } else if (typeof navigator !== 'undefined' && navigator.language) {
+        // Priority 3: Browser language preference
+        const browserLang = navigator.language.split('-')[0] as LangCode
+        if (LANGUAGES.some((l) => l.code === browserLang)) {
+          setLangState(browserLang)
+        }
+      }
+    } catch {}
   }, [])
 
   // Sync to localStorage, set HTML direction/attributes, and trigger Google Translate
   useEffect(() => {
-    localStorage.setItem('cardzy_lang', lang)
-    document.documentElement.lang = lang
-    document.documentElement.dir = (lang === 'ur' || lang === 'ar') ? 'rtl' : 'ltr'
+    try {
+      localStorage.setItem('cardzy_lang', lang)
+    } catch {}
+    if (typeof document !== 'undefined' && document.documentElement) {
+      document.documentElement.lang = lang
+      document.documentElement.dir = (lang === 'ur' || lang === 'ar') ? 'rtl' : 'ltr'
+    }
     triggerGoogleTranslate(lang)
   }, [lang])
 

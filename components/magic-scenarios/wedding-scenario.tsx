@@ -401,6 +401,7 @@ export function WeddingScenario({
               englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `We joyfully request the pleasure of your presence and warm prayers as our beloved ${couple} embark on this beautiful sacred journey of marriage.`}
               urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
               signatureText={`— Cordially, ${data.senderName}`}
+              photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
               urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
               signatureClassName="mt-3 text-right font-serif italic text-amber-300"
             />

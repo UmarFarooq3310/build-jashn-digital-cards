@@ -23,12 +23,12 @@ export default function Error({
           <AlertCircle className="size-8" />
         </div>
 
-        <div className="space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+        <div className="space-y-1.5">
+          <h1 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
             Something went wrong
           </h1>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            We encountered an unexpected glitch while preparing this page. Our engineers have been alerted and your data is safe.
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            Please try refreshing or return to the home page.
           </p>
         </div>
 

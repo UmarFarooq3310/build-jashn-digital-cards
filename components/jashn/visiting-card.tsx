@@ -3,6 +3,7 @@
 import { useState, useRef, forwardRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
+import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 import {
   Phone,
   Mail,
@@ -294,15 +295,23 @@ END:VCARD`
                     : "bg-gradient-to-br from-[#D4AF37]/30 via-white/10 to-black/40 border-[#D4AF37] text-[#D4AF37]"
                 )}>
                   {data.avatarUrl ? (
-                    <img
+                    <ZoomableImageBadge
                       src={data.avatarUrl}
-                      alt={data.fullName ? data.fullName.slice(0, 90) : 'User Avatar'}
-                      crossOrigin="anonymous"
-                      width={160}
-                      height={160}
-                      loading="lazy"
-                      className="w-full h-full object-cover"
-                    />
+                      alt={data.fullName || 'User Profile Photo'}
+                      title={data.fullName ? `${data.fullName} — Profile Photo` : 'Profile Photo'}
+                      caption={data.title ? `${data.title}${data.company ? ` at ${data.company}` : ''}` : undefined}
+                      className="size-full rounded-full"
+                    >
+                      <img
+                        src={data.avatarUrl}
+                        alt={data.fullName ? data.fullName.slice(0, 90) : 'User Avatar'}
+                        crossOrigin="anonymous"
+                        width={160}
+                        height={160}
+                        loading="lazy"
+                        className="w-full h-full object-cover"
+                      />
+                    </ZoomableImageBadge>
                   ) : (
                     <span>{getInitials(data.fullName)}</span>
                   )}

@@ -377,6 +377,7 @@ export function FriendshipScenario({
                   englishText={data.wishContent?.secretLetter || data.wishContent?.tagline || 'Thank you for being such an extraordinary friend!'}
                   urduText={data.wishContent?.urduGreeting}
                   signatureText={`With Love, ${data.senderName}`}
+                  photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
                 />
               </div>
             )}

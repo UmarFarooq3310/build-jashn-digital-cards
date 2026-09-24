@@ -1,6 +1,6 @@
 'use client'
-import { TypewriterLetter } from "@/components/magic-scenarios/typewriter-letter";
 
+import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import {
@@ -450,6 +450,17 @@ export function ProposalScenario({
             </h2>
 
             <div className="magic-letter">
+              {(data.wishContent?.photoUrl || data.inviteContent?.photoUrl) && (
+                <div className="mb-3 flex justify-center" onClick={(e) => e.stopPropagation()}>
+                  <ZoomableImageBadge
+                    src={(data.wishContent?.photoUrl || data.inviteContent?.photoUrl)!}
+                    alt="Attached Proposal Photo"
+                    badgeText="Tap to Enlarge"
+                    className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border-2 border-rose-400/60 shadow-xl cursor-zoom-in"
+                    imgClassName="size-full object-cover"
+                  />
+                </div>
+              )}
               {formattedLetter.slice(0, displayedChars)}
               {!typewriterComplete && (
                 <span className="inline-block w-1.5 h-3.5 bg-[#f5c451] ml-0.5 animate-pulse align-middle" />

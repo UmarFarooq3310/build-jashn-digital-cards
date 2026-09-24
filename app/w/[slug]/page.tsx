@@ -4,7 +4,7 @@ import '@/app/invitation-themes-animations.css'
 import { useEffect, useRef, useState, use, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { Sparkles, Eye, Loader2, HeartHandshake, Edit3, Trash2, Share2, X, ExternalLink, MessageCircle } from 'lucide-react'
+import { Sparkles, Eye, Loader2, HeartHandshake, Edit3, Trash2, Share2, X, ExternalLink, MessageCircle, Camera, Maximize2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { WishCard } from '@/components/jashn/wish-card'
 import { ThreeDCardWrapper } from '@/components/jashn/three-d-card-wrapper'
@@ -14,6 +14,7 @@ import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
+import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
 import { getOccasion } from '@/lib/jashn/occasions'
@@ -278,6 +279,33 @@ function WishPublicContent({ slug }: { slug: string }) {
                 <WishCard ref={cardRef} data={activeWish} watermark={true} />
               </ThreeDCardWrapper>
             </div>
+
+            {/* ── Recipient Attached Photo (Tap to view large) ── */}
+            {activeWish.photoUrl && (
+              <div className="my-6 mx-auto max-w-sm p-4 rounded-3xl border border-amber-500/30 bg-card/80 backdrop-blur-md shadow-xl text-center space-y-3">
+                <div className="flex items-center justify-center gap-2">
+                  <span className="inline-flex items-center justify-center size-6 rounded-full bg-amber-500/15 text-amber-400">
+                    <Camera className="size-3.5" />
+                  </span>
+                  <p className="text-xs font-bold text-foreground">
+                    Attached Card Photo
+                  </p>
+                </div>
+                <div className="flex justify-center">
+                  <ZoomableImageBadge
+                    src={activeWish.photoUrl}
+                    alt={activeWish.recipientName || 'Wish Photo'}
+                    title={`${activeWish.recipientName || 'Greeting'} — Photo`}
+                    className="size-24 sm:size-28 rounded-2xl border-2 border-amber-500/40 shadow-md hover:scale-105 transition-transform"
+                  >
+                    <img src={activeWish.photoUrl} alt="Attached Wish Photo" className="size-full object-cover rounded-2xl" />
+                  </ZoomableImageBadge>
+                </div>
+                <p className="text-[11px] text-muted-foreground flex items-center justify-center gap-1">
+                  <Maximize2 className="size-3 text-amber-500" /> Tap photo to view in full resolution
+                </p>
+              </div>
+            )}
 
             {/* Share & QR Code Panel */}
             <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col items-center gap-6 text-left">

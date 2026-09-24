@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic'
 import Script from 'next/script'
 import type { Metadata, Viewport } from 'next'
 import { ToastNotification } from '@/components/ui/toast-notification'
+import { ImageLightboxModal } from '@/components/ui/image-lightbox'
 import { LanguageProvider } from '@/lib/lang/context'
 import './globals.css'
 
@@ -235,14 +236,79 @@ export default function RootLayout({
             `,
           }}
         />
+        <script
+          id="cardzy-ad-error-trap"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                if (typeof window === 'undefined') return;
+                function isAdError(msg, src) {
+                  if (!msg && !src) return false;
+                  var str = (String(msg || '') + ' ' + String(src || '')).toLowerCase();
+                  return str.indexOf('adsbygoogle') !== -1 ||
+                         str.indexOf('tagerror') !== -1 ||
+                         str.indexOf('all \\'ins\\' elements') !== -1 ||
+                         str.indexOf('already have ads') !== -1 ||
+                         str.indexOf('no_div') !== -1 ||
+                         str.indexOf('pagead2') !== -1 ||
+                         str.indexOf('gsi_logger') !== -1;
+                }
+                // Intercept console.error and console.warn before dev overlays capture them
+                var origConsoleError = console.error;
+                console.error = function() {
+                  var argsStr = Array.prototype.slice.call(arguments).map(function(a) {
+                    return String((a && a.message) || a || '');
+                  }).join(' ');
+                  if (isAdError(argsStr, '')) {
+                    return;
+                  }
+                  if (origConsoleError) origConsoleError.apply(console, arguments);
+                };
+                var origConsoleWarn = console.warn;
+                console.warn = function() {
+                  var argsStr = Array.prototype.slice.call(arguments).map(function(a) {
+                    return String((a && a.message) || a || '');
+                  }).join(' ');
+                  if (isAdError(argsStr, '')) {
+                    return;
+                  }
+                  if (origConsoleWarn) origConsoleWarn.apply(console, arguments);
+                };
+                window.addEventListener('error', function(e) {
+                  if (e && (isAdError(e.message, e.filename) || isAdError(e.error && e.error.message, e.filename))) {
+                    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+                    if (e.preventDefault) e.preventDefault();
+                    return true;
+                  }
+                }, true);
+                window.addEventListener('unhandledrejection', function(e) {
+                  if (e && (isAdError(e.reason && e.reason.message, '') || isAdError(e.reason, ''))) {
+                    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+                    if (e.preventDefault) e.preventDefault();
+                  }
+                }, true);
+                var origOnError = window.onerror;
+                window.onerror = function(msg, url, line, col, err) {
+                  if (isAdError(msg, url) || (err && isAdError(err.message, url))) {
+                    return true;
+                  }
+                  if (origOnError) return origOnError.apply(this, arguments);
+                  return false;
+                };
+              })();
+            `,
+          }}
+        />
       </head>
       <body className={`${poppins.variable} ${notoNastaliq.variable} ${playfair.variable} bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]`} suppressHydrationWarning>
-        <Script
-          id="google-adsense"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
+        {process.env.NODE_ENV === 'production' && (
+          <Script
+            id="google-adsense"
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
+            strategy="afterInteractive"
+            crossOrigin="anonymous"
+          />
+        )}
         <Script
           id="cardzy-cookie-dispatcher"
           strategy="afterInteractive"
@@ -290,48 +356,6 @@ export default function RootLayout({
             `,
           }}
         />
-        <Script
-          id="cardzy-ad-error-trap"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                if (typeof window === 'undefined') return;
-                function isAdError(msg, src) {
-                  if (!msg && !src) return false;
-                  var str = (String(msg || '') + ' ' + String(src || '')).toLowerCase();
-                  return str.indexOf('adsbygoogle') !== -1 ||
-                         str.indexOf('tagerror') !== -1 ||
-                         str.indexOf('all \\'ins\\' elements') !== -1 ||
-                         str.indexOf('already have ads') !== -1 ||
-                         str.indexOf('no_div') !== -1 ||
-                         str.indexOf('pagead2') !== -1;
-                }
-                window.addEventListener('error', function(e) {
-                  if (e && (isAdError(e.message, e.filename) || isAdError(e.error && e.error.message, e.filename))) {
-                    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-                    if (e.preventDefault) e.preventDefault();
-                    return true;
-                  }
-                }, true);
-                window.addEventListener('unhandledrejection', function(e) {
-                  if (e && (isAdError(e.reason && e.reason.message, '') || isAdError(e.reason, ''))) {
-                    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-                    if (e.preventDefault) e.preventDefault();
-                  }
-                }, true);
-                var origOnError = window.onerror;
-                window.onerror = function(msg, url, line, col, err) {
-                  if (isAdError(msg, url) || (err && isAdError(err.message, url))) {
-                    return true;
-                  }
-                  if (origOnError) return origOnError.apply(this, arguments);
-                  return false;
-                };
-              })();
-            `,
-          }}
-        />
         <LanguageProvider>
           <CookieBanner />
           <AdSenseCleaner />
@@ -345,6 +369,7 @@ export default function RootLayout({
             <SiteFooter />
           </div>
           <ToastNotification />
+          <ImageLightboxModal />
           <PushNotificationPrompt />
           <LivePresenceTracker />
           {process.env.NODE_ENV === 'production' && process.env.VERCEL === '1' && <Analytics />}

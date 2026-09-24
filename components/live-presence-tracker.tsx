@@ -4,14 +4,21 @@ import { useEffect } from 'react'
 import { useJashn } from '@/lib/jashn/store'
 import { getClientTracking } from '@/lib/jashn/tracking'
 
+import { isDeviceAdmin, purgeAdminPresence } from '@/lib/jashn/admin-presence'
+
 function getSessionId(): string {
   if (typeof window === 'undefined') return ''
-  let id = sessionStorage.getItem('cardzy_live_session_id')
-  if (!id) {
-    id = 's_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36)
-    sessionStorage.setItem('cardzy_live_session_id', id)
+  try {
+    if (isDeviceAdmin()) return ''
+    let id = sessionStorage.getItem('cardzy_live_session_id')
+    if (!id) {
+      id = 's_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36)
+      sessionStorage.setItem('cardzy_live_session_id', id)
+    }
+    return id
+  } catch {
+    return ''
   }
-  return id
 }
 
 export function LivePresenceTracker() {
@@ -19,6 +26,13 @@ export function LivePresenceTracker() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
+
+    // If device or user is admin, immediately purge any sessions from Firebase and abort tracking
+    if (isDeviceAdmin(user?.email)) {
+      purgeAdminPresence()
+      return
+    }
+
     const sessionId = getSessionId()
     if (!sessionId) return
 
@@ -26,6 +40,15 @@ export function LivePresenceTracker() {
 
     const updatePresence = async () => {
       try {
+        const isAdmin = isDeviceAdmin(user?.email)
+        const pathname = window.location.pathname
+
+        // If user is admin or browsing admin portal, DO NOT record presence and clean up any existing doc
+        if (isAdmin || pathname.startsWith('/admin_portal')) {
+          await purgeAdminPresence(sessionId)
+          return
+        }
+
         const { getFirebaseDb } = await import('@/lib/firebase')
         const db = getFirebaseDb()
         if (!db) return

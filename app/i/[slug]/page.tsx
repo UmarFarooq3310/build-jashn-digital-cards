@@ -10,7 +10,7 @@ import '@/app/invitation-themes-premium.css'
 import { useEffect, useRef, useState, use, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { Sparkles, MapPin, CheckCircle2, MessageCircle, Heart, Loader2, Edit3, Trash2, Eye, Share2, X, ExternalLink } from 'lucide-react'
+import { Sparkles, MapPin, CheckCircle2, MessageCircle, Heart, Loader2, Edit3, Trash2, Eye, Share2, X, ExternalLink, Camera, Maximize2 } from 'lucide-react'
 import { InvitationCard } from '@/components/jashn/invitation-card'
 import { ThreeDCardWrapper } from '@/components/jashn/three-d-card-wrapper'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
@@ -19,6 +19,7 @@ import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
+import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
@@ -297,6 +298,55 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                 <InvitationCard ref={cardRef} data={activeInvitation} watermark={true} showCountdown={false} />
               </ThreeDCardWrapper>
             </div>
+
+            {/* ── Recipient Photo Gallery (Tap to enlarge in high resolution) ── */}
+            {(activeInvitation.photoUrl || activeInvitation.photoUrl2) && (
+              <div className="my-6 mx-auto max-w-md p-4 rounded-3xl border border-amber-500/30 bg-card/80 backdrop-blur-md shadow-xl text-center space-y-3">
+                <div className="flex items-center justify-center gap-2">
+                  <span className="inline-flex items-center justify-center size-6 rounded-full bg-amber-500/15 text-amber-400">
+                    <Camera className="size-3.5" />
+                  </span>
+                  <p className="text-xs font-bold text-foreground">
+                    Attached Event Photos & Portraits
+                  </p>
+                </div>
+                <div className="flex items-center justify-center gap-4">
+                  {activeInvitation.photoUrl && (
+                    <div className="flex flex-col items-center gap-1">
+                      <ZoomableImageBadge
+                        src={activeInvitation.photoUrl}
+                        alt="Photo 1"
+                        title={activeInvitation.bride ? `${activeInvitation.bride} (Bride / Host)` : `${activeInvitation.title || 'Event'} Photo`}
+                        className="size-20 sm:size-24 rounded-2xl border-2 border-amber-500/40 shadow-md hover:scale-105 transition-transform"
+                      >
+                        <img src={activeInvitation.photoUrl} alt="Photo 1" className="size-full object-cover rounded-2xl" />
+                      </ZoomableImageBadge>
+                      <span className="text-[10px] font-semibold text-muted-foreground">
+                        {activeInvitation.bride || 'Portrait 1'}
+                      </span>
+                    </div>
+                  )}
+                  {activeInvitation.photoUrl2 && (
+                    <div className="flex flex-col items-center gap-1">
+                      <ZoomableImageBadge
+                        src={activeInvitation.photoUrl2}
+                        alt="Photo 2"
+                        title={activeInvitation.groom ? `${activeInvitation.groom} (Groom / Host)` : `${activeInvitation.title || 'Event'} Photo`}
+                        className="size-20 sm:size-24 rounded-2xl border-2 border-amber-500/40 shadow-md hover:scale-105 transition-transform"
+                      >
+                        <img src={activeInvitation.photoUrl2} alt="Photo 2" className="size-full object-cover rounded-2xl" />
+                      </ZoomableImageBadge>
+                      <span className="text-[10px] font-semibold text-muted-foreground">
+                        {activeInvitation.groom || 'Portrait 2'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <p className="text-[11px] text-muted-foreground flex items-center justify-center gap-1">
+                  <Maximize2 className="size-3 text-amber-500" /> Tap any photo to view in full resolution
+                </p>
+              </div>
+            )}
 
             {/* Location Button */}
             {activeInvitation.mapsLink && (

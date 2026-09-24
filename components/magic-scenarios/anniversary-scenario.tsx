@@ -412,6 +412,7 @@ export function AnniversaryScenario({
               englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || 'Happy Anniversary to my favorite person in the whole universe! Thank you for walking beside me through every high, every quiet evening, and every storm. Here is to our forever!'}
               urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
               signatureText={`— Forever yours, ${data.senderName}`}
+              photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
               urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
               signatureClassName="mt-3 text-right font-serif italic text-amber-300"
             />

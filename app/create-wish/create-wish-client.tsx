@@ -26,6 +26,7 @@ import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { useLang } from '@/lib/lang/context'
 import { cn, isPageReload } from '@/lib/utils'
+import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 
 const RELATIONS = [
   { id: 'Brother', en: 'Brother', ur: 'بھائی' },
@@ -1105,10 +1106,13 @@ function CreateWishContent() {
                       <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
                     </label>
                     {photoUrl && (
-                      <div className="relative size-12 rounded-full overflow-hidden border-2 border-[#D4AF37] shadow-md">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={photoUrl} alt="Custom Greeting Card Photo Upload Preview" className="size-full object-cover" />
-                      </div>
+                      <ZoomableImageBadge
+                        src={photoUrl}
+                        alt="Custom Greeting Card Photo Upload Preview"
+                        badgeText="View Large"
+                        className="size-12 rounded-full overflow-hidden border-2 border-[#D4AF37] shadow-md cursor-zoom-in"
+                        imgClassName="size-full object-cover"
+                      />
                     )}
                   </div>
                 </div>

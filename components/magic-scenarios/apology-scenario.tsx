@@ -382,6 +382,7 @@ export function ApologyScenario({
               englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `I am writing this with complete humility and sincerity. What happened was my fault, and seeing distance between us weighs heavily on my heart. You have been a source of light and warmth in my life, and I never want to jeopardize that. I am truly, deeply sorry.`}
               urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
               signatureText={`— Sincerely yours, ${data.senderName}`}
+              photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
               urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
               signatureClassName="mt-3 text-right font-serif italic text-amber-300"
             />

@@ -145,12 +145,12 @@ export async function getClientTracking(): Promise<ClientTrackingInfo> {
     }
   }
 
-  // Check sessionStorage cache
+  // Check sessionStorage cache (ONLY if city is resolved)
   try {
     const raw = sessionStorage.getItem('cardzy_geo_cache')
     if (raw) {
       const parsed = JSON.parse(raw)
-      if (parsed && (parsed.city || parsed.country)) {
+      if (parsed && parsed.city) {
         cachedTracking = parsed
         return parsed
       }
@@ -162,31 +162,50 @@ export async function getClientTracking(): Promise<ClientTrackingInfo> {
   try {
     let data: any = {}
 
-    // 1. Primary: ipwho.is (Accurate city detection across Pakistani cities like Lahore, Rawalpindi, Faisalabad, Islamabad)
+    // 1. Primary: Internal /api/geo endpoint (fast, zero adblock, uses Vercel Edge + server IP lookup)
     try {
       const c1 = new AbortController()
       const t1 = setTimeout(() => c1.abort(), 2000)
-      const res = await fetch('https://ipwho.is/', { signal: c1.signal })
+      const res = await fetch('/api/geo', {
+        signal: c1.signal,
+        cache: 'no-store',
+      })
       clearTimeout(t1)
       if (res.ok) {
-        const json = await res.json()
-        if (json.success !== false && (json.city || json.country)) {
-          data.city = json.city || ''
-          data.region = json.region || ''
-          data.countryCode = json.country_code || ''
-          data.country = json.country || ''
-          data.ip = json.ip || ''
+        const internalData = await res.json()
+        if (internalData && (internalData.city || internalData.country)) {
+          data = { ...internalData }
         }
       }
     } catch {}
 
-    // 2. Secondary: api.db-ip.com
+    // 2. Secondary: Direct client-side ipwho.is
     if (!data.city) {
       try {
         const c2 = new AbortController()
-        const t2 = setTimeout(() => c2.abort(), 1800)
-        const res = await fetch('https://api.db-ip.com/v2/free/self', { signal: c2.signal })
+        const t2 = setTimeout(() => c2.abort(), 2000)
+        const res = await fetch('https://ipwho.is/', { signal: c2.signal })
         clearTimeout(t2)
+        if (res.ok) {
+          const json = await res.json()
+          if (json.success !== false && (json.city || json.country)) {
+            data.city = json.city || ''
+            data.region = json.region || ''
+            data.countryCode = json.country_code || ''
+            data.country = json.country || ''
+            data.ip = json.ip || ''
+          }
+        }
+      } catch {}
+    }
+
+    // 3. Tertiary: api.db-ip.com
+    if (!data.city) {
+      try {
+        const c3 = new AbortController()
+        const t3 = setTimeout(() => c3.abort(), 1800)
+        const res = await fetch('https://api.db-ip.com/v2/free/self', { signal: c3.signal })
+        clearTimeout(t3)
         if (res.ok) {
           const json = await res.json()
           if (json.city && json.city !== 'Unknown') {
@@ -196,23 +215,6 @@ export async function getClientTracking(): Promise<ClientTrackingInfo> {
             data.country = json.countryName || ''
             data.ip = json.ipAddress || ''
           }
-        }
-      } catch {}
-    }
-
-    // 3. Tertiary: /api/geo (Internal Vercel edge headers)
-    if (!data.city) {
-      try {
-        const c3 = new AbortController()
-        const t3 = setTimeout(() => c3.abort(), 1500)
-        const res = await fetch('/api/geo', {
-          signal: c3.signal,
-          cache: 'no-store',
-        })
-        clearTimeout(t3)
-        if (res.ok) {
-          const internalData = await res.json()
-          data = { ...data, ...internalData }
         }
       } catch {}
     }

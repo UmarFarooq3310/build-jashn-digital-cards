@@ -382,6 +382,7 @@ export function RamadanScenario({
               englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `Ramadan Mubarak to you and your loved ones! May this holy month of fasting, reflection, and Quran bring divine peace, purification, and limitless barakah into your household. May every Suhoor and Iftar be full of gratitude.`}
               urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
               signatureText={`— In prayers, ${data.senderName}`}
+              photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
               urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
               signatureClassName="mt-3 text-right font-serif italic text-amber-300"
             />

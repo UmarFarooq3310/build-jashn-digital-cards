@@ -52,28 +52,47 @@ export function GoogleOneTap({ redirectTo = '/dashboard' }: Props) {
     promptActive = true
 
     function initOneTap() {
-      if (!window.google) return
+      try {
+        if (!window.google?.accounts?.id) return
 
-      window.google.accounts.id.initialize({
-        client_id: clientId,
-        callback: handleCredential,
-        auto_select: false,
-        cancel_on_tap_outside: true,
-        use_fedcm_for_prompt: false,
-      })
+        // Ensure container exists in DOM
+        const container = document.getElementById('google-one-tap-container')
 
-      setTimeout(() => {
-        window.google?.accounts.id.prompt((n) => {
-          if (n.isNotDisplayed()) {
-            console.info('[OneTap] not displayed:', n.getNotDisplayedReason())
-            promptActive = false
-          }
-          if (n.isSkippedMoment()) {
-            console.info('[OneTap] skipped:', n.getSkippedReason())
-            promptActive = false
-          }
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          callback: handleCredential,
+          auto_select: false,
+          cancel_on_tap_outside: true,
+          prompt_parent_id: container ? 'google-one-tap-container' : undefined,
+          use_fedcm_for_prompt: true,
         })
-      }, 800)
+
+        setTimeout(() => {
+          try {
+            window.google?.accounts?.id?.prompt((n) => {
+              try {
+                if (n.isNotDisplayed()) {
+                  const reason = n.getNotDisplayedReason()
+                  if (reason !== 'no_div' && reason !== 'suppressed_by_user') {
+                    console.info('[OneTap] not displayed:', reason)
+                  }
+                  promptActive = false
+                }
+                if (n.isSkippedMoment()) {
+                  promptActive = false
+                }
+              } catch {
+                promptActive = false
+              }
+            })
+          } catch {
+            promptActive = false
+          }
+        }, 800)
+      } catch (e) {
+        console.warn('[OneTap] init notice:', e)
+        promptActive = false
+      }
     }
 
     async function handleCredential(response: { credential: string }) {
@@ -90,20 +109,22 @@ export function GoogleOneTap({ redirectTo = '/dashboard' }: Props) {
         let userData: JashnUser | null = null
         const currentDb = getFirebaseDb() || db
         if (currentDb) {
-          const userRef = doc(currentDb, 'users', firebaseUser.uid)
-          const snap = await getDoc(userRef)
-          if (snap.exists()) {
-            userData = snap.data() as JashnUser
-          } else {
-            userData = {
-              uid: firebaseUser.uid,
-              name: firebaseUser.displayName || 'Cardzy User',
-              email: firebaseUser.email || '',
-              plan: 'free',
-              createdAt: Date.now(),
+          try {
+            const userRef = doc(currentDb, 'users', firebaseUser.uid)
+            const snap = await getDoc(userRef)
+            if (snap.exists()) {
+              userData = snap.data() as JashnUser
+            } else {
+              userData = {
+                uid: firebaseUser.uid,
+                name: firebaseUser.displayName || 'Cardzy User',
+                email: firebaseUser.email || '',
+                plan: 'free',
+                createdAt: Date.now(),
+              }
+              await setDoc(userRef, userData)
             }
-            await setDoc(userRef, userData)
-          }
+          } catch {}
         }
 
         if (!userData) {
@@ -117,7 +138,9 @@ export function GoogleOneTap({ redirectTo = '/dashboard' }: Props) {
         }
 
         // Set auth cookie so middleware lets us through
-        document.cookie = 'jashn_authed=1; path=/; max-age=1209600; SameSite=Lax'
+        try {
+          document.cookie = 'jashn_authed=1; path=/; max-age=1209600; SameSite=Lax'
+        } catch {}
 
         // Set Zustand state directly — FirebaseAuthListener will also
         // pick this up via onAuthStateChanged, but we set it here too
@@ -125,8 +148,10 @@ export function GoogleOneTap({ redirectTo = '/dashboard' }: Props) {
         useJashn.setState({ user: userData, isAuthLoading: false })
 
         // Migrate any guest cards to the new user
-        await useJashn.getState().migrateGuestCards(userData.uid)
-        await useJashn.getState().fetchUserCards()
+        try {
+          await useJashn.getState().migrateGuestCards(userData.uid)
+          await useJashn.getState().fetchUserCards()
+        } catch {}
 
         promptActive = false
 
@@ -138,7 +163,7 @@ export function GoogleOneTap({ redirectTo = '/dashboard' }: Props) {
       }
     }
 
-    if (window.google) {
+    if (window.google?.accounts?.id) {
       initOneTap()
     } else {
       const existing = document.getElementById('gsi-script')
@@ -149,6 +174,9 @@ export function GoogleOneTap({ redirectTo = '/dashboard' }: Props) {
         script.async = true
         script.defer = true
         script.onload = initOneTap
+        script.onerror = () => {
+          promptActive = false
+        }
         document.head.appendChild(script)
       } else {
         existing.addEventListener('load', initOneTap, { once: true })
@@ -156,10 +184,18 @@ export function GoogleOneTap({ redirectTo = '/dashboard' }: Props) {
     }
 
     return () => {
-      window.google?.accounts.id.cancel()
+      try {
+        window.google?.accounts?.id?.cancel()
+      } catch {}
       promptActive = false
     }
   }, [clientId])
 
-  return null
+  return (
+    <div
+      id="google-one-tap-container"
+      className="fixed top-4 right-4 z-[999999] pointer-events-auto"
+      aria-hidden="true"
+    />
+  )
 }

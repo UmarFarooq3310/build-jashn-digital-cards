@@ -11,6 +11,7 @@ import { CardDecor } from './decor'
 import { RelationAvatar, detectRelation } from './relation-avatar'
 import { AnimatedBackgroundDecor } from './animated-background-decor'
 import { CardQrCode } from './qr-code'
+import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
@@ -216,11 +217,15 @@ function GamingScorecardHUD({ data, lang, isPublicCard }: { data: WishCardData; 
       <div className="relative z-10 flex flex-col items-center gap-1.5 pt-1 max-w-full px-2">
         {data.photoUrl ? (
           <div className="relative size-16 sm:size-20 md:size-24 rounded-2xl p-1 bg-gradient-to-b from-amber-400 via-yellow-300 to-amber-600 shadow-2xl">
-            <div className="size-full rounded-[14px] overflow-hidden bg-slate-950">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+            <ZoomableImageBadge
+              src={data.photoUrl}
+              alt={data.recipientName ? `${data.recipientName} Photo` : 'Player Photo'}
+              title={data.recipientName ? `${data.recipientName} — Wish Card Photo` : 'Wish Card Photo'}
+              className="size-full rounded-[14px] bg-slate-950"
+            >
               <img src={data.photoUrl} alt="Player Photo" crossOrigin="anonymous" className="size-full object-cover" />
-            </div>
-            <span className="absolute -bottom-2 -right-1 px-2 py-0.5 rounded-md bg-amber-500 text-[8px] sm:text-[8.5px] font-black text-slate-950 shadow-md">
+            </ZoomableImageBadge>
+            <span className="absolute -bottom-2 -right-1 px-2 py-0.5 rounded-md bg-amber-500 text-[8px] sm:text-[8.5px] font-black text-slate-950 shadow-md pointer-events-none z-20">
               MVP ⭐
             </span>
           </div>
@@ -600,10 +605,15 @@ export const WishCard = forwardRef<HTMLDivElement, {
                     className="parallax-near absolute inset-0 -z-10 rounded-full blur-xl opacity-75"
                     style={{ background: 'radial-gradient(circle, var(--c-glow, #ffd700) 0%, transparent 75%)', transform: 'scale(1.5)' }}
                   />
-                  <div className="relative size-24 md:size-28 rounded-full border-4 border-[#D4AF37] overflow-hidden shadow-2xl bg-black">
+                  <ZoomableImageBadge
+                    src={data.photoUrl}
+                    alt={data.recipientName ? `${data.recipientName} Photo` : 'Uploaded Card Photo'}
+                    title={data.recipientName ? `${data.recipientName} — Wish Card Photo` : 'Wish Card Photo'}
+                    className="relative size-24 md:size-28 rounded-full border-4 border-[#D4AF37] shadow-2xl bg-black hover:scale-105 transition-transform"
+                  >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={data.photoUrl} alt="Uploaded Card Photo" crossOrigin="anonymous" className="size-full object-cover" />
-                  </div>
+                  </ZoomableImageBadge>
                 </div>
               ) : showAvatar ? (
                 <div className="avatar-float-anim relative" style={{ filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.32))' }}>

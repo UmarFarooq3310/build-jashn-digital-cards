@@ -373,6 +373,7 @@ export function PartyScenario({
               englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `Get ready for an unforgettable evening of high octane energy, electric music, signature mocktails, and memories that will last a lifetime. Cannot celebrate without you!`}
               urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
               signatureText={`— Can&apos;t wait to see you, ${data.senderName}`}
+              photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
               urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
               signatureClassName="mt-3 text-right font-serif italic text-amber-300"
             />

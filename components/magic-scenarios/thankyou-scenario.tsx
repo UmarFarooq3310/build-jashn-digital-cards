@@ -377,6 +377,7 @@ export function ThankYouScenario({
                   englishText={data.wishContent?.secretLetter || data.wishContent?.tagline || 'Thank you endlessly for your kindness and help!'}
                   urduText={data.wishContent?.urduGreeting}
                   signatureText={`With Gratitude, ${data.senderName}`}
+                  photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
                 />
               </div>
             )}

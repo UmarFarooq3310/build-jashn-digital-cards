@@ -84,29 +84,39 @@ export function ToastNotification() {
         opacity: 1,
       }}
       className={cn(
-        "fixed max-w-sm sm:max-w-md w-[calc(100vw-2rem)] sm:w-auto shadow-2xl transition-all duration-300 pointer-events-auto notranslate",
-        // Position at bottom: safe offset above mobile navigation
-        "bottom-24 sm:bottom-6",
-        // RTL on bottom-left, LTR on bottom-right
-        isRtl ? "left-4 sm:left-6" : "right-4 sm:right-6"
+        "fixed transition-all duration-300 pointer-events-auto notranslate",
+        // Mobile: Centered horizontally at bottom with safe-area spacing above nav
+        "bottom-20 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:w-[calc(100vw-2rem)] max-sm:max-w-[380px]",
+        // Desktop / Tablet: Pinned to bottom corner
+        "sm:bottom-6 sm:w-auto sm:max-w-md",
+        isRtl ? "sm:left-6" : "sm:right-6"
       )}
     >
       <div
         className={cn(
-          'flex items-center gap-3.5 rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl transition-all duration-300',
-          isError && 'bg-red-600/95 text-white border-red-500 shadow-[0_10px_30px_rgba(220,38,38,0.5)]',
-          toast.type === 'success' && 'bg-emerald-600/95 text-white border-emerald-500 shadow-[0_10px_30px_rgba(5,150,105,0.4)]',
-          toast.type === 'info' && 'bg-[#0b0d13]/98 text-white border-amber-500/50 shadow-[0_10px_30px_rgba(245,158,11,0.25)]',
+          'flex items-center gap-2.5 sm:gap-3 rounded-2xl border py-2.5 px-3.5 sm:py-3 sm:px-4 shadow-[0_10px_35px_rgba(0,0,0,0.4)] backdrop-blur-2xl transition-all duration-300',
+          // Sleek dark frosted glass with subtle iOS-style color accents
+          'bg-zinc-950/95 dark:bg-zinc-900/95 text-zinc-100',
+          isError && 'border-rose-500/40 ring-1 ring-rose-500/20 shadow-[0_8px_30px_rgba(244,63,94,0.2)]',
+          toast.type === 'success' && 'border-emerald-500/40 ring-1 ring-emerald-500/20 shadow-[0_8px_30px_rgba(16,185,129,0.2)]',
+          toast.type === 'info' && 'border-amber-500/40 ring-1 ring-amber-500/20 shadow-[0_8px_30px_rgba(245,158,11,0.15)]',
           isRtl && 'font-urdu text-right'
         )}
       >
-        <span className="shrink-0 flex items-center justify-center size-8 rounded-full bg-white/20 shadow-inner">
-          {toast.type === 'success' && <CheckCircle2 className="size-5 text-emerald-300" />}
-          {isError && <AlertCircle className="size-5 text-red-200 animate-pulse" />}
-          {toast.type === 'info' && <Info className="size-5 text-amber-400" />}
+        <span
+          className={cn(
+            "shrink-0 flex items-center justify-center size-6 sm:size-7 rounded-full",
+            toast.type === 'success' && "bg-emerald-500/15 text-emerald-400",
+            isError && "bg-rose-500/15 text-rose-400",
+            toast.type === 'info' && "bg-amber-500/15 text-amber-400"
+          )}
+        >
+          {toast.type === 'success' && <CheckCircle2 className="size-3.5 sm:size-4" />}
+          {isError && <AlertCircle className="size-3.5 sm:size-4 animate-pulse" />}
+          {toast.type === 'info' && <Info className="size-3.5 sm:size-4" />}
         </span>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold leading-snug text-white break-words">
+          <p className="text-xs sm:text-[13px] font-semibold leading-snug text-zinc-100 break-words tracking-tight">
             {toast.message}
           </p>
         </div>
@@ -114,9 +124,9 @@ export function ToastNotification() {
           type="button"
           onClick={handleClose}
           aria-label="Close notification"
-          className="rounded-lg p-1.5 hover:bg-white/20 text-white/90 hover:text-white transition-colors shrink-0 cursor-pointer"
+          className="rounded-lg p-1 hover:bg-white/10 text-zinc-400 hover:text-zinc-100 transition-colors shrink-0 cursor-pointer"
         >
-          <X className="size-4 text-white" />
+          <X className="size-3.5" />
         </button>
       </div>
     </div>,

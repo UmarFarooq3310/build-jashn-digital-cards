@@ -12,6 +12,7 @@ import { useGSAP } from '@gsap/react'
 import { GoogleOneTap } from '@/components/google-one-tap'
 import { CardzyLogo } from '@/components/ui/logo'
 import { useLang } from '@/lib/lang/context'
+import { purgeAdminPresence } from '@/lib/jashn/admin-presence'
 
 // Popular email domains for autocomplete suggestions
 const EMAIL_DOMAINS = [
@@ -229,15 +230,22 @@ function LoginPageContent() {
   // --- Google Sign-In ---
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
   // Detect if we returned from a Google signInWithRedirect — show loading overlay
-  const [isGoogleRedirecting, setIsGoogleRedirecting] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return sessionStorage.getItem('google_redirect_pending') === '1'
-  })
+  const [isGoogleRedirecting, setIsGoogleRedirecting] = useState(false)
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem('google_redirect_pending') === '1') {
+        setIsGoogleRedirecting(true)
+      }
+    } catch {}
+  }, [])
 
   // Clear the flag once auth resolves (user set or auth done loading)
   useEffect(() => {
     if (!isAuthLoading || user) {
-      sessionStorage.removeItem('google_redirect_pending')
+      try {
+        sessionStorage.removeItem('google_redirect_pending')
+      } catch {}
       setIsGoogleRedirecting(false)
     }
   }, [isAuthLoading, user])
@@ -254,10 +262,14 @@ function LoginPageContent() {
         showToast(t('googleSuccessToast') || 'Signed in with Google successfully!', 'success')
         window.location.href = redirect
       } else {
-        sessionStorage.setItem('google_redirect_pending', '1')
+        try {
+          sessionStorage.setItem('google_redirect_pending', '1')
+        } catch {}
         setIsGoogleRedirecting(true)
         setTimeout(() => {
-          sessionStorage.removeItem('google_redirect_pending')
+          try {
+            sessionStorage.removeItem('google_redirect_pending')
+          } catch {}
           setIsGoogleLoading(false)
           setIsGoogleRedirecting(false)
         }, 700)
@@ -318,6 +330,9 @@ function LoginPageContent() {
     setIsSubmitting(false)
     if (success) {
       const currentUser = useJashn.getState().user
+      if (currentUser?.email && currentUser.email.toLowerCase() === 'cardzyonline@gmail.com') {
+        purgeAdminPresence()
+      }
       if (currentUser) await migrateGuestCards(currentUser.uid)
       showToast(t('loginSuccessToast') || 'Signed in successfully!', 'success')
       window.location.href = redirect

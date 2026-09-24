@@ -56,6 +56,8 @@ import {
   type GuestbookWish,
 } from '@/lib/jashn/guestbook-service'
 import { CardShareModal, type ShareModalCardData } from '@/components/dashboard/card-share-modal'
+import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
+import { purgeAdminPresence, ADMIN_EMAILS } from '@/lib/jashn/admin-presence'
 import { SiteHeader } from '@/components/site-header'
 
 function formatDateStandard(timestamp?: number): string {
@@ -156,95 +158,85 @@ function inferOrigin(item: {
   address?: string
   venue?: string
 }): OriginInfo {
-  // If explicitly tracked and valid
-  if (item.createdLocation && item.createdLocation !== 'Web Client' && item.createdLocation !== 'Unknown Country') {
-    const flag = getCountryFlag(item.countryCode || item.country)
+  const directCity = item.cityOrigin || item.city || ''
+  const country = item.country || 'Pakistan'
+  const countryCode = item.countryCode || 'PK'
+  const flag = getCountryFlag(countryCode || country)
+
+  // 1. If direct city is available
+  if (directCity) {
+    const locText = item.region && item.region !== directCity 
+      ? `${directCity}, ${item.region}, ${country}` 
+      : `${directCity}, ${country}`
+    return {
+      locationText: locText,
+      flag,
+      country,
+      city: directCity,
+      device: item.device,
+      browser: item.browser,
+      ip: item.ip,
+    }
+  }
+
+  // 2. If createdLocation is present and contains comma (e.g. "Lahore, Punjab, Pakistan")
+  if (item.createdLocation && item.createdLocation.includes(',')) {
+    const parts = item.createdLocation.split(',').map((s) => s.trim())
+    const extractedCity = parts[0]
     return {
       locationText: item.createdLocation,
       flag,
-      country: item.country || '',
-      city: item.cityOrigin || item.city || '',
+      country: parts[parts.length - 1] || country,
+      city: extractedCity,
       device: item.device,
       browser: item.browser,
       ip: item.ip,
     }
   }
 
-  // Check phone code
+  // 3. Check venue or address or text for city names
+  const textToCheck = `${item.venue || ''} ${item.address || ''} ${item.createdLocation || ''}`.toLowerCase()
+  const PK_CITIES = [
+    'Lahore', 'Islamabad', 'Rawalpindi', 'Karachi', 'Faisalabad', 'Multan',
+    'Peshawar', 'Quetta', 'Sialkot', 'Gujranwala', 'Hyderabad', 'Abbottabad',
+    'Bahawalpur', 'Sargodha', 'Sukkur', 'Larkana', 'Sheikhupura', 'Jhang',
+    'Rahim Yar Khan', 'Gujrat', 'Kasur', 'Mardan', 'Sahiwal', 'Mirpur', 'Muzaffarabad'
+  ]
+  for (const c of PK_CITIES) {
+    if (textToCheck.includes(c.toLowerCase())) {
+      return {
+        locationText: `${c}, Pakistan`,
+        flag: '🇵🇰',
+        country: 'Pakistan',
+        city: c,
+        device: item.device,
+        browser: item.browser,
+        ip: item.ip,
+      }
+    }
+  }
+
+  // 4. If createdLocation is valid (like "United Kingdom" or "Pakistan")
+  if (item.createdLocation && item.createdLocation !== 'Web Client' && item.createdLocation !== 'Unknown Country' && item.createdLocation !== 'Unknown') {
+    return {
+      locationText: item.createdLocation,
+      flag,
+      country: item.country || item.createdLocation,
+      city: '',
+      device: item.device,
+      browser: item.browser,
+      ip: item.ip,
+    }
+  }
+
+  // 5. Check phone code
   const phone = item.phone || item.rsvpPhone || ''
   if (phone.startsWith('+92') || phone.startsWith('03') || phone.startsWith('92')) {
     return {
-      locationText: item.city ? `${item.city}, Pakistan` : 'Pakistan',
+      locationText: 'Pakistan',
       flag: '🇵🇰',
       country: 'Pakistan',
-      city: item.city || '',
-      device: item.device,
-      browser: item.browser,
-      ip: item.ip,
-    }
-  }
-  if (phone.startsWith('+971')) {
-    return {
-      locationText: 'Dubai, UAE',
-      flag: '🇦🇪',
-      country: 'UAE',
-      city: item.city || 'Dubai',
-      device: item.device,
-      browser: item.browser,
-      ip: item.ip,
-    }
-  }
-  if (phone.startsWith('+966')) {
-    return {
-      locationText: 'Saudi Arabia',
-      flag: '🇸🇦',
-      country: 'Saudi Arabia',
-      city: item.city || 'Riyadh',
-      device: item.device,
-      browser: item.browser,
-      ip: item.ip,
-    }
-  }
-  if (phone.startsWith('+1')) {
-    return {
-      locationText: 'United States',
-      flag: '🇺🇸',
-      country: 'USA',
-      city: item.city || '',
-      device: item.device,
-      browser: item.browser,
-      ip: item.ip,
-    }
-  }
-  if (phone.startsWith('+44')) {
-    return {
-      locationText: 'United Kingdom',
-      flag: '🇬🇧',
-      country: 'UK',
-      city: item.city || 'London',
-      device: item.device,
-      browser: item.browser,
-      ip: item.ip,
-    }
-  }
-
-  // Check venue or city or address
-  const textToCheck = `${item.city || ''} ${item.venue || ''} ${item.address || ''}`.toLowerCase()
-  if (
-    textToCheck.includes('lahore') ||
-    textToCheck.includes('karachi') ||
-    textToCheck.includes('islamabad') ||
-    textToCheck.includes('rawalpindi') ||
-    textToCheck.includes('faisalabad') ||
-    textToCheck.includes('multan') ||
-    textToCheck.includes('peshawar') ||
-    textToCheck.includes('quetta')
-  ) {
-    return {
-      locationText: item.city ? `${item.city}, Pakistan` : 'Pakistan',
-      flag: '🇵🇰',
-      country: 'Pakistan',
-      city: item.city || '',
+      city: '',
       device: item.device,
       browser: item.browser,
       ip: item.ip,
@@ -372,21 +364,39 @@ export default function AdminPortalPage() {
   const [liveActiveSessions, setLiveActiveSessions] = useState<any[]>([])
 
   useEffect(() => {
+    // Immediately purge any session docs from Firebase for this admin device
+    purgeAdminPresence()
+
     let unsub = () => {}
     async function listenLivePresence() {
       try {
         const firestoreDb = getFirebaseDb()
         if (!firestoreDb) return
         const collRef = collection(firestoreDb, 'active_sessions')
-        unsub = onSnapshot(collRef, (snap) => {
+        unsub = onSnapshot(collRef, async (snap) => {
           const threshold = Date.now() - 65000 // Active within the last 65 seconds
-          const allDocs = snap.docs
-            .map((doc) => ({ id: doc.id, ...doc.data() } as any))
+          const rawDocs = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() } as any))
+          
+          // Identify any admin session docs to clean up from database
+          const adminDocIds = rawDocs
+            .filter((s) => (s.page && s.page.startsWith('/admin_portal')) || (s.userEmail && ADMIN_EMAILS.includes(s.userEmail.toLowerCase().trim())))
+            .map((s) => s.id)
+
+          if (adminDocIds.length > 0) {
+            try {
+              const { deleteDoc, doc } = await import('firebase/firestore')
+              adminDocIds.forEach((id) => deleteDoc(doc(firestoreDb, 'active_sessions', id)).catch(() => {}))
+            } catch {}
+          }
+
+          // Filter out admin portal visits and admin users from the admin view
+          const visitorDocs = rawDocs
+            .filter((s) => !(s.page && s.page.startsWith('/admin_portal')) && !(s.userEmail && ADMIN_EMAILS.includes(s.userEmail.toLowerCase().trim())))
             .sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0))
           
-          setAllSessions(allDocs)
+          setAllSessions(visitorDocs)
           
-          const active = allDocs.filter((s) => s.lastSeen && s.lastSeen >= threshold)
+          const active = visitorDocs.filter((s) => s.lastSeen && s.lastSeen >= threshold)
           setLiveActiveSessions(active)
         })
       } catch (err) {
@@ -525,7 +535,12 @@ export default function AdminPortalPage() {
       if (typeof window !== 'undefined') {
         // Session valid for 20 minutes
         const expiresAt = Date.now() + 20 * 60 * 1000
-        sessionStorage.setItem('cardzy_admin_session', JSON.stringify({ authed: true, expiresAt }))
+        try {
+          sessionStorage.setItem('cardzy_admin_session', JSON.stringify({ authed: true, expiresAt }))
+          sessionStorage.setItem('cardzy_is_admin', '1')
+          localStorage.setItem('cardzy_is_admin', '1')
+          purgeAdminPresence()
+        } catch {}
       }
       setAdminError('')
       showToast('Admin Portal Unlocked — session valid for 20 min', 'success')
@@ -537,7 +552,11 @@ export default function AdminPortalPage() {
   function handleAdminLock() {
     setIsAdminAuthorized(false)
     if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('cardzy_admin_session')
+      try {
+        sessionStorage.removeItem('cardzy_admin_session')
+        sessionStorage.removeItem('cardzy_is_admin')
+        localStorage.removeItem('cardzy_is_admin')
+      } catch {}
     }
     setAdminEmailInput('')
     setAdminPasswordInput('')
@@ -1810,16 +1829,31 @@ export default function AdminPortalPage() {
                               </span>
                             </td>
                             <td className="px-4 py-3.5 text-xs text-muted-foreground">
-                              <div className="font-medium text-foreground">
-                                {session.location && session.location !== 'Asia/Karachi' && session.location !== 'Unknown'
-                                  ? session.location
-                                  : session.city
-                                  ? `${session.city}, ${session.country || 'Pakistan'}`
-                                  : session.country && session.country !== 'Unknown'
-                                  ? `${session.country} 🇵🇰`
-                                  : 'Pakistan 🇵🇰'}
-                              </div>
-                              <div className="text-[10px]">Lang: {session.language || 'en'}</div>
+                              {(() => {
+                                const sOrigin = inferOrigin({
+                                  country: session.country,
+                                  countryCode: session.countryCode,
+                                  city: session.city,
+                                  region: session.region,
+                                  createdLocation: session.location,
+                                  device: session.device,
+                                  ip: session.ip,
+                                })
+                                return (
+                                  <div>
+                                    <div className="font-medium text-foreground flex items-center gap-1.5">
+                                      <span className="text-sm">{sOrigin.flag}</span>
+                                      <span>{sOrigin.locationText}</span>
+                                    </div>
+                                    <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground/80 mt-0.5">
+                                      <span>Lang: {session.language || 'en'}</span>
+                                      {session.ip && session.ip !== '127.0.0.1' && (
+                                        <span className="font-mono bg-muted/60 px-1 rounded text-[9px]">IP: {session.ip}</span>
+                                      )}
+                                    </div>
+                                  </div>
+                                )
+                              })()}
                             </td>
                             <td className="px-4 py-3.5 text-xs text-muted-foreground truncate max-w-[120px]">
                               {session.referrer === 'Direct' ? 'Direct URL' : session.referrer || 'Direct'}
@@ -2152,34 +2186,83 @@ export default function AdminPortalPage() {
                       </td>
                     </tr>
                   ) : (
-                    magicLinks.map((m, idx) => (
-                      <tr key={(m.slug || m.id) || m.id || `ml-${idx}`} className="hover:bg-muted/20 transition-colors">
-                        <td className="py-4 px-4 font-bold text-foreground">
-                          <div className="text-base text-amber-400 font-black">{m.recipientName}</div>
-                          <div className="text-[11px] font-mono text-muted-foreground">slug: {(m.slug || m.id) || m.id}</div>
-                        </td>
-                        <td className="py-4 px-4 font-semibold text-foreground">
-                          {m.senderName || 'Anonymous Host'}
-                        </td>
-                        <td className="py-4 px-4">
-                          <span className="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-500 text-xs font-bold uppercase border border-amber-500/30">
-                            {m.occasion} · {m.type}
-                          </span>
-                          <div className="text-[10px] text-muted-foreground mt-1 capitalize font-mono">
-                            Theme: {m.theme || 'emerald-gold'}
-                          </div>
-                        </td>
-                        <td className="py-4 px-4 text-xs text-muted-foreground max-w-xs leading-snug line-clamp-2">
-                          {m.wishContent?.secretLetter || m.inviteContent?.eventTitle || 'Interactive 3D celebration capsule'}
-                        </td>
-                        <td className="py-4 px-4 text-xs">
-                          <div className="flex items-center gap-1.5">
-                            <Clock className="size-3.5 text-amber-500 shrink-0" />
-                            <span className="font-bold text-foreground">
-                              {formatDateTime(typeof m.createdAt === 'number' ? m.createdAt : (m.createdAt as any)?.toMillis?.() || (m.createdAt as any)?.seconds * 1000 || Date.now())}
+                    magicLinks.map((m, idx) => {
+                      const mOrigin = inferOrigin({
+                        country: m.country,
+                        countryCode: m.countryCode,
+                        city: m.city,
+                        region: m.region,
+                        createdLocation: m.createdLocation,
+                        device: m.device,
+                        browser: m.browser,
+                        ip: m.ip,
+                        phone: m.wishContent?.whatsappNumber || m.inviteContent?.whatsappNumber,
+                      })
+
+                      return (
+                        <tr key={(m.slug || m.id) || m.id || `ml-${idx}`} className="hover:bg-muted/20 transition-colors">
+                          <td className="py-4 px-4 font-bold text-foreground">
+                            <div className="text-base text-amber-400 font-black">{m.recipientName}</div>
+                            <div className="text-[11px] font-mono text-muted-foreground">slug: {(m.slug || m.id) || m.id}</div>
+                            {(m.wishContent?.photoUrl || m.inviteContent?.photoUrl) && (
+                              <div className="flex items-center gap-1.5 mt-1">
+                                <ZoomableImageBadge
+                                  src={m.wishContent?.photoUrl || m.inviteContent?.photoUrl}
+                                  alt={m.recipientName || 'Magic Link Photo'}
+                                  title={`${m.recipientName || 'Magic Celebration'} — Photo`}
+                                  className="size-7 rounded-lg border border-amber-500/30 shadow-xs hover:scale-110 transition-transform inline-block"
+                                >
+                                  <img src={m.wishContent?.photoUrl || m.inviteContent?.photoUrl} alt="Magic Photo" className="size-full object-cover rounded-lg" />
+                                </ZoomableImageBadge>
+                                <span className="text-[9.5px] text-amber-500 font-semibold">✨ Photo</span>
+                              </div>
+                            )}
+                          </td>
+                          <td className="py-4 px-4 font-semibold text-foreground">
+                            {m.senderName || 'Anonymous Host'}
+                          </td>
+                          <td className="py-4 px-4">
+                            <span className="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-500 text-xs font-bold uppercase border border-amber-500/30">
+                              {m.occasion} · {m.type}
                             </span>
-                          </div>
-                        </td>
+                            <div className="text-[10px] text-muted-foreground mt-1 capitalize font-mono">
+                              Theme: {m.theme || 'emerald-gold'}
+                            </div>
+                          </td>
+                          <td className="py-4 px-4 text-xs text-muted-foreground max-w-xs leading-snug line-clamp-2">
+                            {m.wishContent?.secretLetter || m.inviteContent?.eventTitle || 'Interactive 3D celebration capsule'}
+                          </td>
+                          <td className="py-4 px-4 text-xs">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5">
+                                <Clock className="size-3.5 text-amber-500 shrink-0" />
+                                <span className="font-bold text-foreground">
+                                  {formatDateTime(typeof m.createdAt === 'number' ? m.createdAt : (m.createdAt as any)?.toMillis?.() || (m.createdAt as any)?.seconds * 1000 || Date.now())}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-base shrink-0 leading-none">{mOrigin.flag}</span>
+                                <span className="font-semibold text-foreground truncate max-w-[180px]">
+                                  {mOrigin.locationText}
+                                </span>
+                              </div>
+                              {(mOrigin.device || mOrigin.ip) && (
+                                <div className="flex flex-wrap items-center gap-1 text-[10px]">
+                                  {mOrigin.device && (
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-400 font-medium">
+                                      {mOrigin.device.includes('Mobile') ? <Smartphone className="size-2.5" /> : <Monitor className="size-2.5" />}
+                                      {mOrigin.device} {mOrigin.browser ? `• ${mOrigin.browser}` : ''}
+                                    </span>
+                                  )}
+                                  {mOrigin.ip && mOrigin.ip !== '127.0.0.1' && (
+                                    <span className="px-1.5 py-0.5 rounded bg-muted/70 text-muted-foreground font-mono">
+                                      IP: {mOrigin.ip}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </td>
                         <td className="py-4 px-4 text-xs font-bold text-foreground">
                           <div className="flex items-center gap-1.5 mb-1.5">
                             <Eye className="size-3.5 text-amber-500" />
@@ -2254,7 +2337,7 @@ export default function AdminPortalPage() {
                           </div>
                         </td>
                       </tr>
-                    ))
+                    )})
                   )}
                 </tbody>
               </table>
@@ -2474,6 +2557,31 @@ export default function AdminPortalPage() {
                               <div className="text-xs font-medium text-emerald-700">{inv.groom || ''} & {inv.bride || ''}</div>
                             )}
                             <div className="text-[10px] text-muted-foreground font-mono">Slug: {(inv.slug || inv.id)}</div>
+                            {(inv.photoUrl || inv.photoUrl2) && (
+                              <div className="flex items-center gap-1.5 mt-1.5">
+                                {inv.photoUrl && (
+                                  <ZoomableImageBadge
+                                    src={inv.photoUrl}
+                                    alt="Bride / Host Photo"
+                                    title={`${inv.title || 'Event'} — Photo 1`}
+                                    className="size-7 rounded-lg border border-border shadow-xs hover:scale-110 transition-transform inline-block"
+                                  >
+                                    <img src={inv.photoUrl} alt="Photo 1" className="size-full object-cover rounded-lg" />
+                                  </ZoomableImageBadge>
+                                )}
+                                {inv.photoUrl2 && (
+                                  <ZoomableImageBadge
+                                    src={inv.photoUrl2}
+                                    alt="Groom / Host Photo"
+                                    title={`${inv.title || 'Event'} — Photo 2`}
+                                    className="size-7 rounded-lg border border-border shadow-xs hover:scale-110 transition-transform inline-block"
+                                  >
+                                    <img src={inv.photoUrl2} alt="Photo 2" className="size-full object-cover rounded-lg" />
+                                  </ZoomableImageBadge>
+                                )}
+                                <span className="text-[9.5px] text-emerald-600 font-semibold">🖼️ Photo</span>
+                              </div>
+                            )}
                           </td>
                           <td className="py-4 px-4">
                             <div className="font-semibold text-xs text-foreground">{inv.hostNames || 'Host'}</div>
@@ -2680,6 +2788,19 @@ export default function AdminPortalPage() {
                           <td className="py-4 px-4">
                             <div className="font-semibold text-foreground">{w.recipientName || 'Friend'}</div>
                             {w.relation && <div className="text-[11px] text-muted-foreground">Relation: {w.relation}</div>}
+                            {w.photoUrl && (
+                              <div className="flex items-center gap-1.5 mt-1">
+                                <ZoomableImageBadge
+                                  src={w.photoUrl}
+                                  alt={w.recipientName || 'Wish Photo'}
+                                  title={`${w.recipientName || 'Wish'} — Uploaded Photo`}
+                                  className="size-7 rounded-lg border border-border shadow-xs hover:scale-110 transition-transform inline-block"
+                                >
+                                  <img src={w.photoUrl} alt="Wish Photo" className="size-full object-cover rounded-lg" />
+                                </ZoomableImageBadge>
+                                <span className="text-[9.5px] text-amber-600 font-semibold">🖼️ Photo</span>
+                              </div>
+                            )}
                           </td>
                           <td className="py-4 px-4">
                             <span className="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 text-xs font-bold uppercase">
@@ -2861,8 +2982,22 @@ export default function AdminPortalPage() {
                       return (
                         <tr key={(vc.slug || vc.id) || vc.id || `vc-${idx}`} className="hover:bg-muted/20 transition-colors">
                           <td className="py-4 px-4">
-                            <div className="font-bold text-foreground text-sm">{vc.fullName}</div>
-                            <div className="text-xs text-muted-foreground font-medium">{vc.title}</div>
+                            <div className="flex items-center gap-2.5">
+                              {vc.avatarUrl && (
+                                <ZoomableImageBadge
+                                  src={vc.avatarUrl}
+                                  alt={vc.fullName || 'Avatar'}
+                                  title={`${vc.fullName || 'User'} — Profile Photo`}
+                                  className="size-8 rounded-full border border-border shadow-xs hover:scale-110 transition-transform shrink-0"
+                                >
+                                  <img src={vc.avatarUrl} alt={vc.fullName} className="size-full object-cover rounded-full" />
+                                </ZoomableImageBadge>
+                              )}
+                              <div>
+                                <div className="font-bold text-foreground text-sm">{vc.fullName}</div>
+                                <div className="text-xs text-muted-foreground font-medium">{vc.title}</div>
+                              </div>
+                            </div>
                             <div className="text-[10px] text-muted-foreground mt-0.5 font-mono">Theme: {vc.themeId || 'executive-gold'}</div>
                           </td>
                           <td className="py-4 px-4">

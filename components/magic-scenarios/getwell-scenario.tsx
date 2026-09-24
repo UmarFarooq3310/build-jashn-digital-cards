@@ -377,6 +377,7 @@ export function GetWellScenario({
                   englishText={data.wishContent?.secretLetter || data.wishContent?.tagline || 'Praying for your swift recovery and full health!'}
                   urduText={data.wishContent?.urduGreeting}
                   signatureText={`Warm Wishes, ${data.senderName}`}
+                  photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
                 />
               </div>
             )}

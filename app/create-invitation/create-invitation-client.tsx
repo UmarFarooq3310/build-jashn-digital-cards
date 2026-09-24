@@ -22,6 +22,7 @@ import { InvitationCard } from '@/components/jashn/invitation-card'
 import { InvitationTypePicker } from '@/components/jashn/invitation-type-picker'
 import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
 import { PreviewCardFit } from '@/components/jashn/preview-card-fit'
+import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 import { useJashn } from '@/lib/jashn/store'
 import { INVITATION_TYPES, getInvitationType } from '@/lib/jashn/invitations'
 import { getInvitationWordingTemplates, type InvitationWordingTemplate } from '@/lib/jashn/invitation-templates'
@@ -1109,12 +1110,19 @@ function CreateInvitationContent() {
                             {isCouple ? t('bridePhoto') : t('customCardPhoto')}
                           </span>
                           {photoUrl ? (
-                            <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm">
-                              <img src={photoUrl} alt="Bride or Primary Host Portrait Preview" className="size-full object-cover" />
+                            <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm group">
+                              <ZoomableImageBadge
+                                src={photoUrl}
+                                alt="Photo 1 Preview"
+                                title={isCouple ? 'Bride / Host Portrait' : 'Event Photo'}
+                                className="size-full"
+                              >
+                                <img src={photoUrl} alt="Bride or Primary Host Portrait Preview" className="size-full object-cover" />
+                              </ZoomableImageBadge>
                               <button
                                 type="button"
                                 onClick={() => setPhotoUrl('')}
-                                className="absolute top-0.5 right-0.5 bg-red-600 text-white rounded-full p-0.5 hover:bg-red-700 transition-all"
+                                className="absolute top-0.5 right-0.5 z-20 bg-red-600 text-white rounded-full p-0.5 hover:bg-red-700 transition-all shadow-md"
                               >
                                 <X className="size-3" />
                               </button>
@@ -1134,12 +1142,19 @@ function CreateInvitationContent() {
                               {t('groomPhoto')}
                             </span>
                             {photoUrl2 ? (
-                              <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm">
-                                <img src={photoUrl2} alt="Groom or Secondary Host Portrait Preview" className="size-full object-cover" />
+                              <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm group">
+                                <ZoomableImageBadge
+                                  src={photoUrl2}
+                                  alt="Photo 2 Preview"
+                                  title="Groom / Host Portrait"
+                                  className="size-full"
+                                >
+                                  <img src={photoUrl2} alt="Groom or Secondary Host Portrait Preview" className="size-full object-cover" />
+                                </ZoomableImageBadge>
                                 <button
                                   type="button"
                                   onClick={() => setPhotoUrl2('')}
-                                  className="absolute top-0.5 right-0.5 bg-red-600 text-white rounded-full p-0.5 hover:bg-red-700 transition-all"
+                                  className="absolute top-0.5 right-0.5 z-20 bg-red-600 text-white rounded-full p-0.5 hover:bg-red-700 transition-all shadow-md"
                                 >
                                   <X className="size-3" />
                                 </button>

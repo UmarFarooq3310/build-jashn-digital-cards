@@ -43,6 +43,7 @@ import { recordCardShare } from '@/lib/jashn/magic-service'
 import { cn, validateWhatsAppNumber, isPageReload } from '@/lib/utils'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
+import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 
 export default function CreateVisitingCardPage() {
   const router = useRouter()
@@ -922,10 +923,13 @@ export default function CreateVisitingCardPage() {
                         <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
                       </label>
                       {avatarUrl ? (
-                        <div className="relative size-12 rounded-full overflow-hidden border-2 border-[#D4AF37] shadow-md">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={avatarUrl} alt="Avatar Profile Preview" className="size-full object-cover" />
-                        </div>
+                        <ZoomableImageBadge
+                          src={avatarUrl}
+                          alt="Avatar Profile Preview"
+                          badgeText="View Large"
+                          className="size-12 rounded-full overflow-hidden border-2 border-[#D4AF37] shadow-md cursor-zoom-in"
+                          imgClassName="size-full object-cover"
+                        />
                       ) : (
                         <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
                           <div className="size-10 rounded-full border-2 border-dashed border-border flex items-center justify-center font-black text-xs text-[#7B0D1E] bg-muted/60">

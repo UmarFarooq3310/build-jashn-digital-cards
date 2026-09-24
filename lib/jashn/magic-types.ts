@@ -76,6 +76,7 @@ export interface MagicInviteContent {
   coupleNames?: string
   hostsNames?: string
   whatsappNumber?: string
+  photoUrl?: string
 }
 
 export interface CardShareStats {
@@ -100,6 +101,15 @@ export interface MagicLinkData {
   birthDate?: string
   wishContent?: MagicWishContent
   inviteContent?: MagicInviteContent
+  createdLocation?: string
+  country?: string
+  countryCode?: string
+  city?: string
+  region?: string
+  ip?: string
+  device?: string
+  browser?: string
+  os?: string
   viewsCount?: number
   shares?: CardShareStats
   createdAt: number | any
@@ -130,5 +140,14 @@ export interface MagicResponseData {
     dietaryNotes?: string
     wishes?: string
   }
+  createdLocation?: string
+  country?: string
+  countryCode?: string
+  city?: string
+  region?: string
+  ip?: string
+  device?: string
+  browser?: string
+  os?: string
   timestamp: number | any
 }

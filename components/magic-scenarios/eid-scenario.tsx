@@ -462,6 +462,7 @@ export function EidScenario({
               englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || 'Eid Mubarak! May Allah shower your life with limitless peace, joyful family laughter, vibrant health, and divine barakah. May all your prayers be answered!'}
               urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
               signatureText={`— Duas and love, ${data.senderName}`}
+              photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
               urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
               signatureClassName="mt-3 text-right font-serif italic text-amber-300"
             />

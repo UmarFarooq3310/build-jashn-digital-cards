@@ -14,6 +14,7 @@ import {
 } from 'firebase/firestore'
 import type { MagicLinkData, MagicResponseData } from './magic-types'
 import { markCardAsCreatedByMe } from './view-tracker'
+import { getClientTracking } from './tracking'
 
 const LOCAL_STORAGE_KEY = 'cardzy_local_magic_links'
 
@@ -71,9 +72,19 @@ export function generateShortSlug(_name?: string): string {
  */
 export async function createMagicLink(data: Omit<MagicLinkData, 'slug' | 'createdAt'>): Promise<string> {
   const slug = generateShortSlug(data.recipientName)
+  const tracking = await getClientTracking()
   const payload: MagicLinkData = {
     ...data,
     slug,
+    createdLocation: tracking.createdLocation,
+    country: tracking.country,
+    countryCode: tracking.countryCode,
+    city: tracking.city,
+    region: tracking.region,
+    ip: tracking.ip,
+    device: tracking.device,
+    browser: tracking.browser,
+    os: tracking.os,
     viewsCount: 0,
     shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 },
     createdAt: Date.now(),
@@ -270,11 +281,21 @@ export async function getMagicLink(slug: string, shouldCountView: boolean = fals
  */
 export async function submitMagicResponse(response: Omit<MagicResponseData, 'timestamp'>): Promise<boolean> {
   const activeDb = getFirebaseDb() || db
+  const tracking = await getClientTracking()
   if (isFirebaseConfigured && activeDb) {
     try {
       const colRef = collection(activeDb, 'magic_link_responses')
       await addDoc(colRef, {
         ...response,
+        createdLocation: tracking.createdLocation,
+        country: tracking.country,
+        countryCode: tracking.countryCode,
+        city: tracking.city,
+        region: tracking.region,
+        ip: tracking.ip,
+        device: tracking.device,
+        browser: tracking.browser,
+        os: tracking.os,
         timestamp: serverTimestamp(),
       })
       return true

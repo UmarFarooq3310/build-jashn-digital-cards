@@ -177,6 +177,14 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
         cacheBust: true,
         pixelRatio: 2,
         quality: 0.98,
+        filter: (node: Node) => {
+          const el = node as HTMLElement
+          if (!el || !el.tagName) return true
+          if (['IFRAME', 'SCRIPT', 'INS'].includes(el.tagName)) return false
+          if (el.hasAttribute && (el.hasAttribute('data-no-download') || el.hasAttribute('data-export-ignore'))) return false
+          if (el.classList && (el.classList.contains('no-export') || el.classList.contains('no-download'))) return false
+          return true
+        },
       })
 
       const link = document.createElement('a')

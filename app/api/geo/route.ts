@@ -54,13 +54,15 @@ export async function GET(request: Request) {
   const forwardedFor = headers.get('x-forwarded-for')
   const realIp = headers.get('x-real-ip')
   const ip = parseClientIp(forwardedFor, realIp)
+  let finalIp = ip
 
-  // If city is not provided by edge headers and we have a valid public client IP, look it up
-  if (!city && ip && ip !== '127.0.0.1') {
+  // If city is not provided by edge headers, look it up via public geo providers
+  if (!city) {
     try {
       const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 1800)
-      const ipRes = await fetch(`https://ipwho.is/${ip}`, { signal: controller.signal })
+      const timeoutId = setTimeout(() => controller.abort(), 2000)
+      const lookupUrl = ip && ip !== '127.0.0.1' ? `https://ipwho.is/${ip}` : 'https://ipwho.is/'
+      const ipRes = await fetch(lookupUrl, { signal: controller.signal })
       clearTimeout(timeoutId)
       if (ipRes.ok) {
         const ipData = await ipRes.json()
@@ -69,6 +71,27 @@ export async function GET(request: Request) {
           if (!region && ipData.region) region = ipData.region
           if (!country && ipData.country) country = ipData.country
           if (!countryCode && ipData.country_code) countryCode = ipData.country_code
+          if (ipData.ip) finalIp = ipData.ip
+        }
+      }
+    } catch {}
+  }
+
+  // Secondary fallback: db-ip
+  if (!city) {
+    try {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 1800)
+      const ipRes = await fetch('https://api.db-ip.com/v2/free/self', { signal: controller.signal })
+      clearTimeout(timeoutId)
+      if (ipRes.ok) {
+        const ipData = await ipRes.json()
+        if (ipData.city && ipData.city !== 'Unknown') {
+          city = ipData.city
+          if (!region && ipData.stateProv) region = ipData.stateProv
+          if (!country && ipData.countryName) country = ipData.countryName
+          if (!countryCode && ipData.countryCode) countryCode = ipData.countryCode
+          if (ipData.ipAddress) finalIp = ipData.ipAddress
         }
       }
     } catch {}
@@ -78,7 +101,7 @@ export async function GET(request: Request) {
 
   return NextResponse.json(
     {
-      ip,
+      ip: finalIp,
       country,
       countryCode,
       city,

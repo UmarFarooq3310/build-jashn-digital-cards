@@ -116,8 +116,14 @@ export function ShareBar({
 
       const toPngOptions: Record<string, unknown> = {
         cacheBust: true,
-        includeQueryParams: true, // Keep Firebase Storage tokens in image URLs
-        filter: (node: Node) => !['IFRAME', 'SCRIPT', 'INS'].includes((node as HTMLElement).tagName),
+        filter: (node: Node) => {
+          const el = node as HTMLElement
+          if (!el || !el.tagName) return true
+          if (['IFRAME', 'SCRIPT', 'INS'].includes(el.tagName)) return false
+          if (el.hasAttribute && (el.hasAttribute('data-no-download') || el.hasAttribute('data-export-ignore'))) return false
+          if (el.classList && (el.classList.contains('no-export') || el.classList.contains('no-download'))) return false
+          return true
+        },
         width: targetWidth,
         height: targetHeight,
         pixelRatio: 2,
@@ -134,6 +140,7 @@ export function ShareBar({
           transition: 'none',
           width: `${naturalWidth}px`,
           height: `${naturalHeight}px`,
+          maxWidth: 'none',
           margin: '0',
         },
       }
@@ -317,14 +324,8 @@ export function ShareBar({
         // Smooth ease-out cubic for cinematic push-in
         const ease = 1 - Math.pow(1 - p, 3)
 
-        // 1. Subtle cinematic 3D zoom & micro-drift
-        const zoom = 1 + ease * 0.05
-        const panY = Math.sin(p * Math.PI) * 3
-
+        // 1. Draw card image cleanly across full canvas bounds
         ctx.save()
-        ctx.translate(targetWidth / 2, targetHeight / 2 + panY)
-        ctx.scale(zoom, zoom)
-        ctx.translate(-targetWidth / 2, -targetHeight / 2)
         ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
         ctx.restore()
 
@@ -447,7 +448,14 @@ export function ShareBar({
       
       const dataUrl = await toPng(captureRef.current, {
         cacheBust: true,
-        filter: (node) => !['IFRAME', 'SCRIPT', 'INS'].includes((node as HTMLElement).tagName),
+        filter: (node: Node) => {
+          const el = node as HTMLElement
+          if (!el || !el.tagName) return true
+          if (['IFRAME', 'SCRIPT', 'INS'].includes(el.tagName)) return false
+          if (el.hasAttribute && (el.hasAttribute('data-no-download') || el.hasAttribute('data-export-ignore'))) return false
+          if (el.classList && (el.classList.contains('no-export') || el.classList.contains('no-download'))) return false
+          return true
+        },
         width: targetWidth,
         height: targetHeight,
         pixelRatio: 2,

@@ -13,6 +13,7 @@ import { RelationAvatar } from './relation-avatar'
 import { CardQrCode } from './qr-code'
 import { getInvitationTypeTheme } from '@/lib/jashn/invitationThemes'
 import { AnimatedBackgroundDecor } from './animated-background-decor'
+import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
@@ -656,9 +657,16 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
               <div className="flex flex-col items-center gap-1">
                 <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
                   {data.photoUrl ? (
-                    <div className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] overflow-hidden shadow-lg bg-black/40">
+                    <ZoomableImageBadge
+                      src={data.photoUrl}
+                      alt={data.bride || 'Bride Photo'}
+                      title={data.bride ? `${data.bride} (Bride / Host)` : 'Portrait Photo'}
+                      badgeText="Tap to zoom"
+                      badgePosition="center"
+                      className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] shadow-lg bg-black/40"
+                    >
                       <img src={data.photoUrl} alt={data.bride || "Photo 1"} crossOrigin="anonymous" className="size-full object-cover" />
-                    </div>
+                    </ZoomableImageBadge>
                   ) : (
                     <RelationAvatar relation="bride" size={60} />
                   )}
@@ -682,9 +690,16 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
               <div className="flex flex-col items-center gap-1">
                 <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
                   {data.photoUrl2 ? (
-                    <div className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] overflow-hidden shadow-lg bg-black/40">
+                    <ZoomableImageBadge
+                      src={data.photoUrl2}
+                      alt={data.groom || 'Groom Photo'}
+                      title={data.groom ? `${data.groom} (Groom / Host)` : 'Portrait Photo'}
+                      badgeText="Tap to zoom"
+                      badgePosition="center"
+                      className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] shadow-lg bg-black/40"
+                    >
                       <img src={data.photoUrl2} alt={data.groom || "Photo 2"} crossOrigin="anonymous" className="size-full object-cover" />
-                    </div>
+                    </ZoomableImageBadge>
                   ) : (
                     <RelationAvatar relation="groom" size={60} />
                   )}
@@ -697,9 +712,15 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
           ) : (data.photoUrl || data.photoUrl2) ? (
             /* ── Custom Event Photo (Single / Non-couple) ── */
             <div className="flex items-center justify-center my-2 inv-parallax-near">
-              <div className="size-20 sm:size-24 rounded-2xl border-2 border-[#D4AF37] overflow-hidden shadow-xl bg-black/40">
+              <ZoomableImageBadge
+                src={data.photoUrl || data.photoUrl2}
+                alt="Event Photo"
+                title={data.title ? `${data.title} — Event Photo` : 'Event Photo'}
+                badgeText="Tap to zoom"
+                className="size-20 sm:size-24 rounded-2xl border-2 border-[#D4AF37] shadow-xl bg-black/40"
+              >
                 <img src={data.photoUrl || data.photoUrl2} alt="Event Photo" crossOrigin="anonymous" className="size-full object-cover" />
-              </div>
+              </ZoomableImageBadge>
             </div>
           ) : (
             /* ── Single event icon ── */

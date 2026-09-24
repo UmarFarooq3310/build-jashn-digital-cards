@@ -407,6 +407,7 @@ export function GraduationScenario({
               englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || `Proudly presented to ${data.recipientName} for outstanding dedication, countless late-night study sessions, and achieving this magnificent milestone. The future is entirely yours!`}
               urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
               signatureText={`— Proudly witnessed by, ${data.senderName}`}
+              photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
               urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
               signatureClassName="mt-3 text-right font-serif italic text-amber-300"
             />

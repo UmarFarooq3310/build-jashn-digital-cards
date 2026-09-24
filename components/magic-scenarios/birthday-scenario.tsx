@@ -507,6 +507,7 @@ export function BirthdayScenario({
               englishText={data.wishContent?.secretLetter || data.inviteContent?.eventTitle || 'May this upcoming year bring you boundless happiness, soaring career milestones, vibrant health, and unforgettable journeys with the ones you love most! Keep shining bright!'}
               urduText={data.wishContent?.urduGreeting || (data.inviteContent as any)?.urduGreeting}
               signatureText={`— With love, ${data.senderName}`}
+              photoUrl={data.wishContent?.photoUrl || data.inviteContent?.photoUrl}
               urduClassName="mt-2.5 text-right font-nastaliq text-sm text-amber-200"
               signatureClassName="mt-3 text-right font-serif italic text-amber-300"
             />
