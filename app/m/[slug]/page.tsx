@@ -19,7 +19,7 @@ import {
   MessageCircle,
   Edit3,
 } from 'lucide-react'
-import { getMagicLink, submitMagicResponse } from '@/lib/jashn/magic-service'
+import { getMagicLink, submitMagicResponse, recordCardShare } from '@/lib/jashn/magic-service'
 import type { MagicLinkData, MagicThemeId } from '@/lib/jashn/magic-types'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { CardzyLogo } from '@/components/ui/logo'
@@ -363,14 +363,51 @@ function MagicLinkInner({ slug }: { slug: string }) {
   }
 
   const receiverUrl = typeof window !== 'undefined' ? `${window.location.origin}/m/${slug}` : ''
+  const [copiedLink, setCopiedLink] = useState(false)
+  const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
 
-  const handleCopyReceiverLink = () => {
+  const waMsg = `Hey ${data?.recipientName || ''}! ✨ I created an interactive celebration surprise for you on Cardzy: ${receiverUrl}`
+
+  const handleDirectWhatsApp = async () => {
+    recordCardShare('magic', slug, 'whatsapp').catch(() => {})
+    const text = encodeURIComponent(waMsg)
+    window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank')
+  }
+
+  const handleDirectNativeShare = async () => {
+    if (canNativeShare) {
+      try {
+        await navigator.share({
+          title: `${data?.recipientName || ''} - 3D Magic Celebration`,
+          text: `Hey ${data?.recipientName || ''}! ✨ I created an interactive surprise for you on Cardzy:`,
+          url: receiverUrl,
+        })
+        recordCardShare('magic', slug, 'app').catch(() => {})
+        return
+      } catch (err: any) {
+        if (err.name !== 'AbortError') {
+          setShowShareModal(true)
+        }
+      }
+    } else {
+      setShowShareModal(true)
+    }
+  }
+
+  const handleDirectCopy = () => {
     if (!receiverUrl) return
     navigator.clipboard.writeText(receiverUrl)
+    recordCardShare('magic', slug, 'copy').catch(() => {})
+    setCopiedLink(true)
     setCopied(true)
-    showToast('Magic link copied to clipboard!', 'success')
-    setTimeout(() => setCopied(false), 2000)
+    showToast('Receiver link copied to clipboard!', 'success')
+    setTimeout(() => {
+      setCopiedLink(false)
+      setCopied(false)
+    }, 2500)
   }
+
+  const handleCopyReceiverLink = handleDirectCopy
 
   if (loading) {
     return (
@@ -453,62 +490,103 @@ function MagicLinkInner({ slug }: { slug: string }) {
     }
   }
 
-  // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Creator Control Panel identical to /i/[slug]) ──
+  // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Delivery Hero + Sticky Mobile Bar) ──
   if (isSenderMode) {
     return (
-      <div className="py-8 px-4">
+      <div className="py-8 px-4 pb-28 sm:pb-12 min-h-screen">
         <div className="mx-auto max-w-2xl md:max-w-4xl text-center">
           <ConfettiRain active={confettiActive} />
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-float-slow { animation: float 6s ease-in-out infinite; }
-        .animate-float-fast { animation: float 3s ease-in-out infinite; }
-        @keyframes pulse-glow {
-          0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
-          50% { box-shadow: 0 0 40px rgba(255,255,255,0.3); }
-        }
-        .animate-pulse-glow { animation: pulse-glow 3s infinite; }
-      `}</style>
-      {/* Twinkling Stars Background Overlay */}
-      <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+          <style>{`
+            @keyframes float {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-10px); }
+            }
+            .animate-float-slow { animation: float 6s ease-in-out infinite; }
+            .animate-float-fast { animation: float 3s ease-in-out infinite; }
+            @keyframes pulse-glow {
+              0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+              50% { box-shadow: 0 0 40px rgba(255,255,255,0.3); }
+            }
+            .animate-pulse-glow { animation: pulse-glow 3s infinite; }
+          `}</style>
+          {/* Twinkling Stars Background Overlay */}
+          <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-          {/* Creator Control Panel */}
-          <div className="mb-6 rounded-2xl border border-emerald-500/30 bg-slate-900 text-white p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-xl">
-            <div>
-              <p className="text-base font-extrabold text-white flex items-center gap-2">
-                <Sparkles className="size-5 text-amber-400 animate-pulse" /> You Created This 3D Magic Link!
-              </p>
-              <p className="text-xs text-slate-300 mt-1">
-                You can preview, share, or manage your celebration card below.
-              </p>
-              <div className="mt-3 inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-950/60 px-3 py-1.5">
-                <span className="relative flex size-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full size-2 bg-emerald-400"></span>
-                </span>
-                <Eye className="size-3.5 text-emerald-400" />
-                <span className="text-sm font-extrabold text-emerald-300">{data.viewsCount || 0}</span>
-                <span className="text-xs text-emerald-400/80">total views</span>
+          {/* High-Converting Delivery Hero for Sender */}
+          <div className="mb-8 rounded-3xl border-2 border-emerald-500/50 bg-gradient-to-br from-slate-900 via-slate-950 to-emerald-950/40 text-white p-6 sm:p-8 shadow-2xl relative overflow-hidden text-left">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative z-10 flex flex-col items-center sm:items-start text-center sm:text-left space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-black uppercase tracking-wider">
+                <Sparkles className="size-3.5 text-amber-400 animate-pulse" />
+                <span>Celebration Ready to Deliver!</span>
               </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
-              <Link
-                href={receiverUrl}
-                target="_blank"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-md transition-all border border-emerald-400/30"
-              >
-                <ExternalLink className="size-3.5 text-white" /> View Receiver Screen
-              </Link>
-              <Link
-                href={`/create-magic-link?occasion=${data.occasion}`}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-amber-300/40 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-md transition-all"
-              >
-                <Edit3 className="size-3.5 text-slate-950" />
-                <span>Customize Another</span>
-              </Link>
+
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                  Send 3D Magic Link to <span className="text-amber-400">{data.recipientName}</span>
+                </h1>
+                <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
+                  Your interactive card is live! Deliver it now via WhatsApp, social apps, or copy the direct private link.
+                </p>
+              </div>
+
+              {/* Instant 1-Click Action Hub */}
+              <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <Button
+                  onClick={handleDirectWhatsApp}
+                  className="h-12 rounded-2xl bg-[#25D366] hover:bg-[#1eb955] text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-green-950/50 active:scale-95 transition-all cursor-pointer"
+                >
+                  <MessageCircle className="size-5 shrink-0" />
+                  <span>Send via WhatsApp</span>
+                </Button>
+
+                {canNativeShare ? (
+                  <Button
+                    onClick={handleDirectNativeShare}
+                    className="h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer"
+                  >
+                    <Share2 className="size-4 shrink-0" />
+                    <span>Share via Apps</span>
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => setShowShareModal(true)}
+                    className="h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer"
+                  >
+                    <QrCode className="size-4 shrink-0" />
+                    <span>QR Code & Image</span>
+                  </Button>
+                )}
+
+                <Button
+                  onClick={handleDirectCopy}
+                  variant="outline"
+                  className="h-12 rounded-2xl border-white/20 bg-white/5 hover:bg-white/10 text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
+                >
+                  {copiedLink ? <Check className="size-4 text-emerald-400 shrink-0" /> : <Copy className="size-4 shrink-0" />}
+                  <span>{copiedLink ? 'Copied!' : 'Copy Link'}</span>
+                </Button>
+              </div>
+
+              {/* Secondary Creator Options (Preview / Customize Another / Total Views) */}
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-3 border-t border-white/10 w-full text-xs">
+                <Link
+                  href={receiverUrl}
+                  target="_blank"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold transition-colors border border-white/10"
+                >
+                  <ExternalLink className="size-3 text-amber-400" /> View Receiver Screen
+                </Link>
+                <Link
+                  href={`/create-magic-link?occasion=${data.occasion}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold transition-colors border border-white/10"
+                >
+                  <Edit3 className="size-3 text-amber-400" /> Customize Another
+                </Link>
+                <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1 ml-2">
+                  <Eye className="size-3" /> {data.viewsCount || 0} visits
+                </span>
+              </div>
             </div>
           </div>
 
@@ -529,9 +607,6 @@ function MagicLinkInner({ slug }: { slug: string }) {
           <div className="my-4 flex justify-center w-full">
             {renderScenario()}
           </div>
-
-          {/* Wishes Wall Action Button */}
-
 
           {/* Share & QR Code Panel */}
           <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col items-center gap-6 text-left">
@@ -564,6 +639,32 @@ function MagicLinkInner({ slug }: { slug: string }) {
               Create Magic Link <Sparkles className="size-4" />
             </Link>
           </div>
+        </div>
+
+        {/* Sticky Mobile Share Bar for Sender Mode */}
+        <div className="fixed bottom-0 inset-x-0 z-50 p-3 bg-slate-950/95 backdrop-blur-xl border-t border-emerald-500/30 sm:hidden flex items-center justify-between gap-2 shadow-2xl">
+          <Button
+            onClick={handleDirectWhatsApp}
+            className="flex-1 h-11 rounded-xl bg-[#25D366] hover:bg-[#1eb955] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition-all"
+          >
+            <MessageCircle className="size-4 shrink-0" />
+            <span>WhatsApp</span>
+          </Button>
+          <Button
+            onClick={handleDirectCopy}
+            variant="outline"
+            className="h-11 px-3.5 rounded-xl border-white/20 bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all"
+          >
+            {copiedLink ? <Check className="size-4 text-emerald-400" /> : <Copy className="size-4" />}
+            <span>{copiedLink ? 'Copied' : 'Copy'}</span>
+          </Button>
+          <Button
+            onClick={() => setShowShareModal(true)}
+            className="h-11 px-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-1 shadow-md active:scale-95 transition-all"
+          >
+            <Share2 className="size-4" />
+            <span>Share</span>
+          </Button>
         </div>
 
         {/* Floating Action Pill for SENDER */}

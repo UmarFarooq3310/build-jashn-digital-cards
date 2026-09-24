@@ -126,7 +126,7 @@ interface JashnState {
   recordCardShare: (
     cardType: 'wish' | 'invite' | 'vcard' | 'magic',
     slug: string,
-    channel: 'whatsapp' | 'sms' | 'copy' | 'qr' | 'image'
+    channel: 'whatsapp' | 'sms' | 'copy' | 'qr' | 'image' | 'video' | 'app'
   ) => Promise<void>
 }
 
@@ -629,7 +629,7 @@ export const useJashn = create<JashnState>()(
           slug: slugify(),
           creatorId: get().user?.uid ?? 'guest',
           viewCount: 0,
-          shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 },
+          shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 },
           createdAt: Date.now(),
           createdLocation: tracking.createdLocation,
           country: tracking.country,
@@ -668,7 +668,7 @@ export const useJashn = create<JashnState>()(
           creatorId: get().user?.uid ?? 'guest',
           rsvpCount: 0,
           viewCount: 0,
-          shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 },
+          shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 },
           createdAt: Date.now(),
           createdLocation: tracking.createdLocation,
           country: tracking.country,
@@ -706,7 +706,7 @@ export const useJashn = create<JashnState>()(
           slug: slugify(),
           creatorId: get().user?.uid ?? 'guest',
           viewCount: 0,
-          shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 },
+          shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 },
           createdAt: Date.now(),
           createdLocation: tracking.createdLocation,
           country: tracking.country,
@@ -871,7 +871,7 @@ export const useJashn = create<JashnState>()(
             return {
               wishes: s.wishes.map((w) => {
                 if (w.slug === slug) {
-                  const shares = { ...(w.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 }) }
+                  const shares = { ...(w.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 }) }
                   shares[channel] = (shares[channel] || 0) + 1
                   return { ...w, shares }
                 }
@@ -883,7 +883,7 @@ export const useJashn = create<JashnState>()(
             return {
               invitations: s.invitations.map((i) => {
                 if (i.slug === slug) {
-                  const shares = { ...(i.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 }) }
+                  const shares = { ...(i.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 }) }
                   shares[channel] = (shares[channel] || 0) + 1
                   return { ...i, shares }
                 }
@@ -895,7 +895,7 @@ export const useJashn = create<JashnState>()(
             return {
               visitingCards: s.visitingCards.map((v) => {
                 if (v.slug === slug) {
-                  const shares = { ...(v.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 }) }
+                  const shares = { ...(v.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 }) }
                   shares[channel] = (shares[channel] || 0) + 1
                   return { ...v, shares }
                 }

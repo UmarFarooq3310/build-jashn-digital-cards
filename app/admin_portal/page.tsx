@@ -1044,6 +1044,7 @@ export default function AdminPortalPage() {
           qr: acc.qr + (s.qr || 0),
           image: acc.image + (s.image || 0),
           video: acc.video + (s.video || 0),
+          app: acc.app + (s.app || 0),
           total:
             acc.total +
             (s.whatsapp || 0) +
@@ -1051,10 +1052,11 @@ export default function AdminPortalPage() {
             (s.copy || 0) +
             (s.qr || 0) +
             (s.image || 0) +
-            (s.video || 0),
+            (s.video || 0) +
+            (s.app || 0),
         }
       },
-      { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, total: 0 }
+      { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0, total: 0 }
     )
   }, [invitations, wishes, visitingCards, magicLinks])
 
@@ -1675,7 +1677,7 @@ export default function AdminPortalPage() {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
             {/* 1. SMS */}
             <div className="group relative p-3.5 rounded-2xl bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-card/50 border border-blue-500/20 hover:border-blue-500/40 hover:shadow-xs transition-all duration-200">
               <div className="flex items-center justify-between mb-1.5">
@@ -1739,6 +1741,17 @@ export default function AdminPortalPage() {
               </div>
               <div className="text-2xl font-black text-rose-600 dark:text-rose-400 font-mono tracking-tight">
                 {totalAdminShares.video.toLocaleString()}
+              </div>
+            </div>
+
+            {/* 7. Apps Share */}
+            <div className="group relative p-3.5 rounded-2xl bg-gradient-to-br from-indigo-500/10 via-indigo-500/5 to-card/50 border border-indigo-500/20 hover:border-indigo-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-muted-foreground">Apps Share</span>
+                <span className="text-base">📲</span>
+              </div>
+              <div className="text-2xl font-black text-indigo-600 dark:text-indigo-400 font-mono tracking-tight">
+                {totalAdminShares.app.toLocaleString()}
               </div>
             </div>
           </div>
@@ -2856,6 +2869,9 @@ export default function AdminPortalPage() {
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
                               🎥 {m.shares?.video || 0}
                             </span>
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-extrabold border border-indigo-500/20 shadow-2xs" title="Apps / Native OS Share">
+                              📲 {m.shares?.app || 0}
+                            </span>
                           </div>
                         </td>
                         <td className="py-4 px-4 text-right">
@@ -3232,6 +3248,9 @@ export default function AdminPortalPage() {
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
                               🎥 {inv.shares?.video || 0}
                             </span>
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-extrabold border border-indigo-500/20 shadow-2xs" title="Apps / Native OS Share">
+                              📲 {inv.shares?.app || 0}
+                            </span>
                           </div>
                         </td>
                         <td className="py-4 px-4 text-right">
@@ -3443,6 +3462,9 @@ export default function AdminPortalPage() {
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
                               🎥 {w.shares?.video || 0}
                             </span>
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-extrabold border border-indigo-500/20 shadow-2xs" title="Apps / Native OS Share">
+                              📲 {w.shares?.app || 0}
+                            </span>
                           </div>
                         </td>
                         <td className="py-4 px-4 text-right">
@@ -3647,6 +3669,9 @@ export default function AdminPortalPage() {
                               </span>
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
                                 🎥 {vc.shares?.video || 0}
+                              </span>
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-extrabold border border-indigo-500/20 shadow-2xs" title="Apps / Native OS Share">
+                                📲 {vc.shares?.app || 0}
                               </span>
                             </div>
                           </td>

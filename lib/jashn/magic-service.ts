@@ -60,7 +60,7 @@ function saveLocalLink(slug: string, data: MagicLinkData) {
   }
 }
 
-export type CardShareChannel = 'whatsapp' | 'sms' | 'copy' | 'qr' | 'image' | 'video'
+export type CardShareChannel = 'whatsapp' | 'sms' | 'copy' | 'qr' | 'image' | 'video' | 'app'
 
 export function cleanForFirestore<T>(data: T): T {
   if (data === null || data === undefined) return data
@@ -107,7 +107,7 @@ export async function createMagicLink(data: Omit<MagicLinkData, 'slug' | 'create
     browser: tracking.browser,
     os: tracking.os,
     viewsCount: 0,
-    shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0 },
+    shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 },
     createdAt: Date.now(),
   }
 
@@ -203,7 +203,7 @@ export async function recordCardShare(
         const links = getLocalLinks()
         if (links[slug]) {
           if (!links[slug].shares) {
-            links[slug].shares = { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0 }
+            links[slug].shares = { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 }
           }
           links[slug].shares[channel] = (links[slug].shares[channel] || 0) + 1
           saveLocalLink(slug, links[slug])
@@ -228,7 +228,7 @@ export async function recordCardShare(
           if (listName && Array.isArray(parsed.state[listName])) {
             parsed.state[listName] = parsed.state[listName].map((card: any) => {
               if (card.slug === slug) {
-                const s = card.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0 }
+                const s = card.shares || { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 }
                 return {
                   ...card,
                   shares: {

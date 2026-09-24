@@ -45,6 +45,7 @@ export interface ShareModalCardData {
     qr?: number
     image?: number
     video?: number
+    app?: number
   }
   waMessage?: string
   occasion?: string
@@ -81,6 +82,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
     qr: 0,
     image: 0,
     video: 0,
+    app: 0,
   })
   const imageCaptureRef = useRef<HTMLDivElement>(null)
 
@@ -93,6 +95,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
       qr: card.shares?.qr || 0,
       image: card.shares?.image || 0,
       video: card.shares?.video || 0,
+      app: card.shares?.app || 0,
     }
 
     if (typeof window !== 'undefined') {
@@ -108,6 +111,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
             qr: Math.max(initialStats.qr, parsed.qr || 0),
             image: Math.max(initialStats.image, parsed.image || 0),
             video: Math.max(initialStats.video, parsed.video || 0),
+            app: Math.max(initialStats.app, parsed.app || 0),
           }
         }
       } catch {}
@@ -177,8 +181,8 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
           text: defaultWaText,
           url: fullUrl,
         })
-        recordCardShare(card.type, card.slug, 'copy')
-        setShareStats((prev) => ({ ...prev, copy: prev.copy + 1 }))
+        recordCardShare(card.type, card.slug, 'app')
+        setShareStats((prev) => ({ ...prev, app: (prev.app || 0) + 1 }))
       } catch {
         // User cancelled
       }
@@ -377,6 +381,11 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
               >
                 <Smartphone className="size-3.5" />
                 <span>Share via Other Apps (Instagram / Messages)</span>
+                {shareStats.app > 0 && (
+                  <span className="px-1.5 py-0.5 rounded-full bg-white/20 text-[10px] font-mono ml-1">
+                    {shareStats.app}
+                  </span>
+                )}
               </button>
             )}
 
@@ -744,6 +753,22 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
                     {shareStats.video || 0}
                   </span>
                 </div>
+
+                {/* 7. Apps / Native OS Share */}
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-indigo-500/10 to-transparent border border-indigo-500/20 hover:border-indigo-500/40 transition-all sm:col-span-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 shadow-2xs">
+                      <Share2 className="size-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-white block leading-tight">Apps / Native Mobile Sheet</span>
+                      <span className="text-[10px] text-zinc-400">Instagram DM, Messages, AirDrop & other apps</span>
+                    </div>
+                  </div>
+                  <span className="text-lg font-black text-indigo-400 font-mono">
+                    {shareStats.app || 0}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -753,7 +778,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
                 <span>How Share Tracking Works</span>
               </div>
               <p className="text-[11px] text-zinc-400 leading-relaxed">
-                Whenever you or a recipient taps WhatsApp, sends an SMS, copies the link, downloads the QR barcode, saves the card image, or downloads the animated video, Cardzy increments the counter in real time in Firestore and your Host Dashboard.
+                Whenever you or a recipient taps WhatsApp, shares via mobile apps, sends an SMS, copies the link, downloads the QR barcode, saves the card flyer, or exports the animated video, Cardzy increments the counter in real time in Firestore and your Host Dashboard.
               </p>
             </div>
           </div>

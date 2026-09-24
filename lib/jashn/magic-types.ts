@@ -86,6 +86,7 @@ export interface CardShareStats {
   qr?: number
   image?: number
   video?: number
+  app?: number
 }
 
 export interface MagicLinkData {

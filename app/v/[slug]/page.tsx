@@ -13,9 +13,10 @@ import { ShareBar } from '@/components/jashn/share-bar'
 import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
 import { Button } from '@/components/ui/button'
-import { Sparkles, Eye, Edit3, Trash2, ShieldCheck, Cpu, Share2, X, Loader2, ArrowLeft, ExternalLink } from 'lucide-react'
+import { Sparkles, Eye, Edit3, Trash2, ShieldCheck, Cpu, Share2, X, Loader2, ArrowLeft, ExternalLink, MessageCircle, Smartphone, Copy, Check, QrCode } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
+import { recordCardShare } from '@/lib/jashn/magic-service'
 
 export default function VisitingCardPublicPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params)
@@ -31,6 +32,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
   const [card, setCard] = useState<VisitingCard | null>(null)
   const [loading, setLoading] = useState(true)
   const [showShareModal, setShowShareModal] = useState(false)
+  const [copiedLink, setCopiedLink] = useState(false)
 
   // Sender preview: ONLY true if explicitly requested via query params (?mode=sender, ?preview=true, ?role=sender)
   // When copying clean link (/v/slug), both sender and receiver see the authentic receiver experience
@@ -150,58 +152,132 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
   const receiverUrl = `/v/${slug}`
   const waMsg = `Check out ${card.fullName}'s Digital Business Card on Cardzy: ${receiverUrl}`
 
+  // Universal share methods for creator
+  const handleDirectCopy = () => {
+    recordCardShare('vcard', card.slug, 'copy')
+    const fullReceiverUrl = typeof window !== 'undefined' ? `${window.location.origin}${receiverUrl}` : receiverUrl
+    navigator.clipboard?.writeText(fullReceiverUrl)
+    setCopiedLink(true)
+    showToast(t('linkCopied', 'Clean vCard link copied! 📋'), 'success')
+    setTimeout(() => setCopiedLink(false), 2200)
+  }
+
+  const handleDirectWhatsApp = () => {
+    recordCardShare('vcard', card.slug, 'whatsapp')
+    const fullReceiverUrl = typeof window !== 'undefined' ? `${window.location.origin}${receiverUrl}` : receiverUrl
+    const text = encodeURIComponent(`💼 Here is my official Digital Business Card:\n${fullReceiverUrl}`)
+    window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank')
+  }
+
+  const handleDirectNativeShare = async () => {
+    const fullReceiverUrl = typeof window !== 'undefined' ? `${window.location.origin}${receiverUrl}` : receiverUrl
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        recordCardShare('vcard', card.slug, 'app')
+        await navigator.share({
+          title: card.fullName || 'Digital Business Card',
+          text: `💼 Here is ${card.fullName}'s verified Digital Business Card:`,
+          url: fullReceiverUrl,
+        })
+      } catch {
+        // User cancelled
+      }
+    } else {
+      handleDirectCopy()
+    }
+  }
+
   // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Creator Control Panel) ──
   if (isSenderMode) {
     return (
-      <div className="py-8 px-4">
+      <div className="py-6 px-4 pb-28 sm:pb-12">
         <div className="mx-auto max-w-2xl md:max-w-4xl text-center">
-          {/* Creator Control Panel */}
-          <div className="mb-6 rounded-2xl border border-emerald-500/30 bg-slate-900 text-white p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-left shadow-xl">
-            <div>
-              <p className="text-base font-extrabold text-white flex items-center gap-2">
-                <Sparkles className="size-5 text-amber-400 animate-pulse" /> {t('youCreatedThisVcard') || 'You Created This Visiting Card!'}
-              </p>
-              <p className="text-xs text-slate-300 mt-1">{t('manageEditShareVcard') || 'You can edit, share, or delete your card below.'}</p>
-              <div className="mt-3 inline-flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-950/60 px-3 py-1.5">
-                <span className="relative flex size-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full size-2 bg-emerald-400"></span>
-                </span>
-                <Eye className="size-3.5 text-emerald-400" />
-                <span className="text-sm font-extrabold text-emerald-300">{card.viewCount || 0}</span>
-                <span className="text-xs text-emerald-400/80">{t('viewsLabel') || 'total views'}</span>
+          {/* ── High-Converting Card Delivery & Quick Share Hero ── */}
+          <div className="mb-6 rounded-3xl border-2 border-[#D4AF37]/50 bg-gradient-to-b from-zinc-900 via-zinc-950 to-zinc-900 text-white p-5 sm:p-7 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none" />
+            
+            <div className="relative z-10 flex flex-col items-center text-center space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/30 text-[#D4AF37] text-xs font-black uppercase tracking-wider">
+                <Sparkles className="size-3.5 text-amber-400 animate-pulse" />
+                <span>Your Smart vCard is Live! 💼</span>
               </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
-              <Link
-                href={receiverUrl}
-                target="_blank"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-md transition-all border border-emerald-400/30"
-              >
-                <ExternalLink className="size-3.5 text-white" /> {t('viewReceiverScreen') || 'View Receiver Screen'}
-              </Link>
-              <Button
-                onClick={handleEdit}
-                variant="outline"
-                size="sm"
-                className="text-xs flex items-center gap-1.5 border-amber-300/40 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl shadow-md transition-all px-4 py-2"
-              >
-                <Edit3 className="size-3.5 text-slate-950" />
-                <span>{t('editCard') || 'Edit Card'}</span>
-              </Button>
-              <Button
-                onClick={handleDelete}
-                variant="destructive"
-                size="sm"
-                className="text-xs flex items-center gap-1.5 font-extrabold rounded-xl bg-red-600 hover:bg-red-500 text-white shadow-md transition-all px-4 py-2 border border-red-400/30"
-              >
-                <Trash2 className="size-3.5" /> {t('deleteCard') || 'Delete Card'}
-              </Button>
+
+              <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                Share Profile of <span className="text-[#D4AF37]">{card.fullName}</span>
+              </h1>
+              
+              <p className="text-xs sm:text-sm text-zinc-300 max-w-md">
+                Share your executive digital business profile with clients, partners, and contacts with 1 click.
+              </p>
+
+              {/* Primary 1-Click Action Buttons */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full max-w-xl pt-2">
+                <Button
+                  onClick={handleDirectWhatsApp}
+                  className="h-12 rounded-2xl bg-[#25D366] hover:bg-[#1eb955] text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-[#25D366]/20 active:scale-95 transition-all cursor-pointer"
+                >
+                  <MessageCircle className="size-4 shrink-0" />
+                  <span>Send on WhatsApp</span>
+                </Button>
+
+                {typeof navigator !== 'undefined' && 'share' in navigator ? (
+                  <Button
+                    onClick={handleDirectNativeShare}
+                    className="h-12 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 active:scale-95 transition-all cursor-pointer"
+                  >
+                    <Share2 className="size-4 shrink-0" />
+                    <span>Share via Apps</span>
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => setShowShareModal(true)}
+                    className="h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer"
+                  >
+                    <QrCode className="size-4 shrink-0" />
+                    <span>QR Code & Image</span>
+                  </Button>
+                )}
+
+                <Button
+                  onClick={handleDirectCopy}
+                  variant="outline"
+                  className="h-12 rounded-2xl border-white/20 bg-white/5 hover:bg-white/10 text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
+                >
+                  {copiedLink ? <Check className="size-4 text-emerald-400 shrink-0" /> : <Copy className="size-4 shrink-0" />}
+                  <span>{copiedLink ? 'Copied!' : 'Copy Link'}</span>
+                </Button>
+              </div>
+
+              {/* Secondary Creator Options (Edit / Delete / Preview) */}
+              <div className="flex flex-wrap items-center justify-center gap-2 pt-3 border-t border-white/10 w-full text-xs">
+                <Link
+                  href={receiverUrl}
+                  target="_blank"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-semibold transition-colors border border-white/10"
+                >
+                  <ExternalLink className="size-3 text-amber-400" /> View Receiver Screen
+                </Link>
+                <button
+                  onClick={handleEdit}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-semibold transition-colors border border-white/10 cursor-pointer"
+                >
+                  <Edit3 className="size-3 text-amber-400" /> Edit Profile
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-950/40 hover:bg-red-900/60 text-red-300 text-[11px] font-semibold transition-colors border border-red-500/20 cursor-pointer"
+                >
+                  <Trash2 className="size-3" /> Delete
+                </button>
+                <span className="text-[11px] text-[#D4AF37] font-semibold flex items-center gap-1 ml-2">
+                  <Eye className="size-3" /> {card.viewCount || 0} views
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Badges & Views Info */}
-          <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-950/80 px-4 py-1.5 text-xs font-extrabold text-amber-300 shadow-sm">
               <Cpu className="size-4 text-amber-400" /> {
                 card.category === 'business' ? (t('catCorporate') || 'Corporate & Executive')
@@ -258,15 +334,41 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
           </div>
         </div>
 
-        {/* Floating Action Pill for SENDER */}
-        <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2">
+        {/* Sticky Mobile Share Bar for Sender Mode */}
+        <div className="fixed bottom-0 inset-x-0 z-50 p-3 bg-zinc-950/95 backdrop-blur-xl border-t border-[#D4AF37]/30 sm:hidden flex items-center justify-between gap-2 shadow-2xl">
+          <Button
+            onClick={handleDirectWhatsApp}
+            className="flex-1 h-11 rounded-xl bg-[#25D366] hover:bg-[#1eb955] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition-all"
+          >
+            <MessageCircle className="size-4 shrink-0" />
+            <span>WhatsApp</span>
+          </Button>
+          <Button
+            onClick={handleDirectCopy}
+            variant="outline"
+            className="h-11 px-3.5 rounded-xl border-white/20 bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all"
+          >
+            {copiedLink ? <Check className="size-4 text-emerald-400" /> : <Copy className="size-4" />}
+            <span>{copiedLink ? 'Copied' : 'Copy'}</span>
+          </Button>
+          <Button
+            onClick={() => setShowShareModal(true)}
+            className="h-11 px-3.5 rounded-xl bg-[#D4AF37] hover:bg-[#e5c35a] text-slate-950 font-black text-xs flex items-center justify-center gap-1 shadow-md active:scale-95 transition-all"
+          >
+            <Share2 className="size-4" />
+            <span>Share</span>
+          </Button>
+        </div>
+
+        {/* Floating Action Pill for Desktop SENDER */}
+        <div className="hidden sm:flex fixed bottom-4 right-4 z-40 items-center gap-2">
           <button
             onClick={() => setShowShareModal(true)}
-            className="group flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white text-xs font-bold shadow-xl border border-white/20 backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+            className="group flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-zinc-900/90 hover:bg-zinc-800 text-zinc-200 hover:text-white text-xs font-bold shadow-xl border border-white/20 backdrop-blur-md transition-all active:scale-95 cursor-pointer"
             title="Share Link & QR"
           >
             <Share2 className="size-3.5 text-amber-400" />
-            <span className="hidden sm:inline">Share</span>
+            <span>Share</span>
           </button>
         </div>
 
