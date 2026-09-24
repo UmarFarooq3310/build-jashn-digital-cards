@@ -101,9 +101,17 @@ export default function DashboardPage() {
       copy: acc.copy + (s.copy || 0),
       qr: acc.qr + (s.qr || 0),
       image: acc.image + (s.image || 0),
-      total: acc.total + (s.whatsapp || 0) + (s.sms || 0) + (s.copy || 0) + (s.qr || 0) + (s.image || 0),
+      video: acc.video + (s.video || 0),
+      total:
+        acc.total +
+        (s.whatsapp || 0) +
+        (s.sms || 0) +
+        (s.copy || 0) +
+        (s.qr || 0) +
+        (s.image || 0) +
+        (s.video || 0),
     }
-  }, { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, total: 0 })
+  }, { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, total: 0 })
 
   function handleDownloadGuests() {
     if (!user) return
@@ -213,94 +221,154 @@ export default function DashboardPage() {
 
         {/* ================= TOTAL VIEWS & ANALYTICS OVERVIEW BAR ================= */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-          <div className="p-5 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/10 via-card to-card shadow-sm">
-            <div className="flex items-center justify-between text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
-              <span>Total Card Views</span>
-              <Eye className="size-4 text-primary" />
+          <div className="group relative overflow-hidden rounded-3xl border border-primary/25 bg-gradient-to-br from-primary/15 via-card/90 to-card p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/40 hover:-translate-y-0.5">
+            <div className="absolute top-0 right-0 size-24 bg-primary/10 rounded-full blur-2xl -mr-6 -mt-6 pointer-events-none" />
+            <div className="flex items-center justify-between text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">
+              <span className="text-[11px] font-extrabold text-foreground/80">Total Card Views</span>
+              <div className="size-8 rounded-xl bg-primary/15 flex items-center justify-center text-primary shadow-2xs group-hover:scale-110 transition-transform">
+                <Eye className="size-4" />
+              </div>
             </div>
-            <div className="text-3xl font-black text-foreground tracking-tight">
+            <div className="text-3xl sm:text-4xl font-black text-foreground tracking-tight font-mono">
               {grandTotalViews.toLocaleString()}
             </div>
-            <p className="text-[10px] text-muted-foreground mt-1 truncate" title={`Wishes: ${wishViews} | Invites: ${invViews} | Magic: ${magicViews} | vCards: ${vcViews}`}>
-              Wishes: {wishViews} • Invites: {invViews} • Magic: {magicViews} • vCards: {vcViews}
+            <p className="text-[10px] text-muted-foreground/80 mt-2 font-medium truncate" title={`Wishes: ${wishViews} | Invites: ${invViews} | Magic: ${magicViews} | vCards: ${vcViews}`}>
+              Wishes: <span className="font-bold text-foreground">{wishViews}</span> • Invites: <span className="font-bold text-foreground">{invViews}</span> • Magic: <span className="font-bold text-foreground">{magicViews}</span>
             </p>
           </div>
 
-          <div className="p-5 rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-card to-card shadow-sm">
-            <div className="flex items-center justify-between text-xs font-bold text-amber-600 uppercase tracking-wider mb-2">
-              <span>Magic Links Views</span>
-              <Sparkles className="size-4 text-amber-500" />
+          <div className="group relative overflow-hidden rounded-3xl border border-amber-500/25 bg-gradient-to-br from-amber-500/15 via-card/90 to-card p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:border-amber-500/40 hover:-translate-y-0.5">
+            <div className="absolute top-0 right-0 size-24 bg-amber-500/10 rounded-full blur-2xl -mr-6 -mt-6 pointer-events-none" />
+            <div className="flex items-center justify-between text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-3">
+              <span className="text-[11px] font-extrabold">Magic Links Views</span>
+              <div className="size-8 rounded-xl bg-amber-500/15 flex items-center justify-center text-amber-500 shadow-2xs group-hover:scale-110 transition-transform">
+                <Sparkles className="size-4" />
+              </div>
             </div>
-            <div className="text-3xl font-black text-amber-600 tracking-tight">
+            <div className="text-3xl sm:text-4xl font-black text-amber-600 dark:text-amber-400 tracking-tight font-mono">
               {magicViews.toLocaleString()}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1">{magicLinks.length} interactive links</p>
+            <p className="text-[10px] text-muted-foreground/80 mt-2 font-medium">
+              <span className="font-bold text-foreground">{magicLinks.length}</span> interactive 3D links
+            </p>
           </div>
 
-          <div className="p-5 rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-card to-card shadow-sm">
-            <div className="flex items-center justify-between text-xs font-bold text-emerald-600 uppercase tracking-wider mb-2">
-              <span>Total Cards</span>
-              <Calendar className="size-4 text-emerald-500" />
+          <div className="group relative overflow-hidden rounded-3xl border border-emerald-500/25 bg-gradient-to-br from-emerald-500/15 via-card/90 to-card p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:border-emerald-500/40 hover:-translate-y-0.5">
+            <div className="absolute top-0 right-0 size-24 bg-emerald-500/10 rounded-full blur-2xl -mr-6 -mt-6 pointer-events-none" />
+            <div className="flex items-center justify-between text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-3">
+              <span className="text-[11px] font-extrabold">Total Cards</span>
+              <div className="size-8 rounded-xl bg-emerald-500/15 flex items-center justify-center text-emerald-500 shadow-2xs group-hover:scale-110 transition-transform">
+                <Calendar className="size-4" />
+              </div>
             </div>
-            <div className="text-3xl font-black text-foreground tracking-tight">
+            <div className="text-3xl sm:text-4xl font-black text-foreground tracking-tight font-mono">
               {grandTotalCards}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1">Active live creations</p>
+            <p className="text-[10px] text-muted-foreground/80 mt-2 font-medium">
+              Active live creations
+            </p>
           </div>
 
-          <div className="p-5 rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/10 via-card to-card shadow-sm">
-            <div className="flex items-center justify-between text-xs font-bold text-indigo-600 uppercase tracking-wider mb-2">
-              <span>Event RSVPs</span>
-              <Users className="size-4 text-indigo-500" />
+          <div className="group relative overflow-hidden rounded-3xl border border-indigo-500/25 bg-gradient-to-br from-indigo-500/15 via-card/90 to-card p-5 shadow-sm transition-all duration-300 hover:shadow-md hover:border-indigo-500/40 hover:-translate-y-0.5">
+            <div className="absolute top-0 right-0 size-24 bg-indigo-500/10 rounded-full blur-2xl -mr-6 -mt-6 pointer-events-none" />
+            <div className="flex items-center justify-between text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-3">
+              <span className="text-[11px] font-extrabold">Event RSVPs</span>
+              <div className="size-8 rounded-xl bg-indigo-500/15 flex items-center justify-center text-indigo-500 shadow-2xs group-hover:scale-110 transition-transform">
+                <Users className="size-4" />
+              </div>
             </div>
-            <div className="text-3xl font-black text-indigo-600 tracking-tight">
+            <div className="text-3xl sm:text-4xl font-black text-indigo-600 dark:text-indigo-400 tracking-tight font-mono">
               {totalRsvps}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1">Confirmed guests</p>
+            <p className="text-[10px] text-muted-foreground/80 mt-2 font-medium">
+              Confirmed guest responses
+            </p>
           </div>
         </div>
 
         {/* ================= CARD SHARING CHANNELS ANALYTICS ================= */}
-        <div className="p-4 rounded-2xl border border-border bg-card shadow-xs mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+        <div className="p-5 rounded-3xl border border-border/80 bg-gradient-to-br from-card via-card/90 to-card shadow-xs mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
             <div className="flex items-center gap-2">
-              <Share2 className="size-4 text-amber-500" />
-              <span className="text-sm font-bold text-foreground">Card Distribution & Sharing Breakdown</span>
-              <span className="text-[11px] text-muted-foreground font-mono">({totalHostShares.total} total shares)</span>
+              <div className="size-8 rounded-xl bg-amber-500/15 flex items-center justify-center text-amber-500 shadow-2xs">
+                <Share2 className="size-4" />
+              </div>
+              <div>
+                <span className="text-sm font-extrabold text-foreground block leading-tight">Card Distribution & Sharing Channels</span>
+                <span className="text-[10px] text-muted-foreground">Real-time engagement across SMS, WhatsApp, QR, Image & Video Exports</span>
+              </div>
             </div>
-            <span className="text-[10px] text-muted-foreground">Real-time engagement across SMS, WhatsApp, QR & Image Exports</span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold text-xs font-mono border border-amber-500/20 self-start sm:self-auto">
+              <Sparkles className="size-3 text-amber-500" />
+              {totalHostShares.total.toLocaleString()} Total Shares
+            </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
-            <div className="p-2.5 rounded-xl bg-muted/40 border border-border/50 flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-                <span>📱</span> SMS Text
-              </span>
-              <span className="text-sm font-black text-blue-500 font-mono">{totalHostShares.sms}</span>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {/* 1. SMS */}
+            <div className="group relative p-3 rounded-2xl bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-card/50 border border-blue-500/20 hover:border-blue-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-bold text-muted-foreground">SMS Text</span>
+                <span className="text-sm">📱</span>
+              </div>
+              <div className="text-2xl font-black text-blue-600 dark:text-blue-400 font-mono tracking-tight">
+                {totalHostShares.sms.toLocaleString()}
+              </div>
             </div>
-            <div className="p-2.5 rounded-xl bg-muted/40 border border-border/50 flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-                <span>💬</span> WhatsApp
-              </span>
-              <span className="text-sm font-black text-emerald-500 font-mono">{totalHostShares.whatsapp}</span>
+
+            {/* 2. WhatsApp */}
+            <div className="group relative p-3 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-card/50 border border-emerald-500/20 hover:border-emerald-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-bold text-muted-foreground">WhatsApp</span>
+                <span className="text-sm">💬</span>
+              </div>
+              <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono tracking-tight">
+                {totalHostShares.whatsapp.toLocaleString()}
+              </div>
             </div>
-            <div className="p-2.5 rounded-xl bg-muted/40 border border-border/50 flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-                <span>📋</span> Link Copied
-              </span>
-              <span className="text-sm font-black text-foreground font-mono">{totalHostShares.copy}</span>
+
+            {/* 3. Link Copied */}
+            <div className="group relative p-3 rounded-2xl bg-gradient-to-br from-zinc-500/10 via-zinc-500/5 to-card/50 border border-zinc-500/20 hover:border-zinc-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-bold text-muted-foreground">Link Copied</span>
+                <span className="text-sm">📋</span>
+              </div>
+              <div className="text-2xl font-black text-foreground font-mono tracking-tight">
+                {totalHostShares.copy.toLocaleString()}
+              </div>
             </div>
-            <div className="p-2.5 rounded-xl bg-muted/40 border border-border/50 flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-                <span>🔲</span> Barcode / QR
-              </span>
-              <span className="text-sm font-black text-amber-500 font-mono">{totalHostShares.qr}</span>
+
+            {/* 4. Barcode / QR */}
+            <div className="group relative p-3 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-card/50 border border-amber-500/20 hover:border-amber-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-bold text-muted-foreground">Barcode / QR</span>
+                <span className="text-sm">🔲</span>
+              </div>
+              <div className="text-2xl font-black text-amber-600 dark:text-amber-400 font-mono tracking-tight">
+                {totalHostShares.qr.toLocaleString()}
+              </div>
             </div>
-            <div className="col-span-2 sm:col-span-1 p-2.5 rounded-xl bg-muted/40 border border-border/50 flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-                <span>🖼️</span> Image PNG
-              </span>
-              <span className="text-sm font-black text-purple-500 font-mono">{totalHostShares.image}</span>
+
+            {/* 5. Image PNG */}
+            <div className="group relative p-3 rounded-2xl bg-gradient-to-br from-purple-500/10 via-purple-500/5 to-card/50 border border-purple-500/20 hover:border-purple-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-bold text-muted-foreground">Image PNG</span>
+                <span className="text-sm">🖼️</span>
+              </div>
+              <div className="text-2xl font-black text-purple-600 dark:text-purple-400 font-mono tracking-tight">
+                {totalHostShares.image.toLocaleString()}
+              </div>
+            </div>
+
+            {/* 6. Video MP4 */}
+            <div className="group relative p-3 rounded-2xl bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-card/50 border border-rose-500/20 hover:border-rose-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-bold text-muted-foreground">Video MP4</span>
+                <span className="text-sm">🎥</span>
+              </div>
+              <div className="text-2xl font-black text-rose-600 dark:text-rose-400 font-mono tracking-tight">
+                {totalHostShares.video.toLocaleString()}
+              </div>
             </div>
           </div>
         </div>
@@ -397,32 +465,37 @@ export default function DashboardPage() {
                     <div key={inv.id} className="rounded-2xl border border-border bg-card p-5 shadow-sm flex flex-col justify-between hover:border-emerald-500/40 hover:shadow-md transition-all">
                       <div>
                         <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-                          <span className="font-bold text-emerald-600 uppercase tracking-wider">{type?.label ?? 'Event'}</span>
-                          <span className="flex items-center gap-1 text-[11px] font-semibold"><Eye className="size-3" /> {inv.viewCount || 0} views</span>
+                          <span className="font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">{type?.label ?? 'Event'}</span>
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/80 text-foreground shadow-2xs">
+                            <Eye className="size-3 text-emerald-500" /> {inv.viewCount || 0} views
+                          </span>
                         </div>
                         <h4 className="text-base font-bold text-foreground leading-tight">{inv.title || `${inv.groom} & ${inv.bride}`}</h4>
                         <p className="text-xs text-muted-foreground mt-1.5">{inv.date} • {inv.city || inv.venue}</p>
-                        <div className="mt-2.5 inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-500/10 px-2 py-0.5 rounded">
-                          <Users className="size-3.5" /> {inv.rsvpCount || 0} RSVPs
+                        <div className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-1 rounded-xl shadow-2xs">
+                          <Users className="size-3.5 text-emerald-600 dark:text-emerald-400" /> {inv.rsvpCount || 0} Confirmed RSVPs
                         </div>
 
                         {/* Share Channel Breakdown Badges */}
-                        <div className="flex flex-wrap items-center gap-1 text-[10px] mt-2.5 pt-2 border-t border-border/40 text-muted-foreground font-medium">
-                          <span className="font-bold text-foreground">Shares:</span>
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="Shared via SMS">
+                        <div className="flex flex-wrap items-center gap-1.5 text-[11px] mt-3.5 pt-2.5 border-t border-border/50">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground/80 mr-0.5">Shares:</span>
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="Shared via SMS">
                             📱 {inv.shares?.sms || 0}
                           </span>
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="Shared via WhatsApp">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold border border-emerald-500/20 shadow-2xs" title="Shared via WhatsApp">
                             💬 {inv.shares?.whatsapp || 0}
                           </span>
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-500/10 dark:bg-zinc-500/20 text-foreground font-extrabold border border-zinc-500/20 shadow-2xs" title="Link Copied">
                             📋 {inv.shares?.copy || 0}
                           </span>
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR Code">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold border border-amber-500/20 shadow-2xs" title="Barcode / QR Code">
                             🔲 {inv.shares?.qr || 0}
                           </span>
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-extrabold border border-purple-500/20 shadow-2xs" title="Image Download">
                             🖼️ {inv.shares?.image || 0}
+                          </span>
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
+                            🎥 {inv.shares?.video || 0}
                           </span>
                         </div>
                       </div>
@@ -484,31 +557,36 @@ export default function DashboardPage() {
                     <div key={w.id} className="rounded-2xl border border-border bg-card p-5 shadow-sm flex flex-col justify-between hover:border-primary/40 hover:shadow-md transition-all">
                       <div>
                         <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-                          <span className="font-bold text-primary uppercase tracking-wider">{occ?.label ?? 'Wish'}</span>
-                          <span className="flex items-center gap-1 text-[11px] font-semibold"><Eye className="size-3" /> {w.viewCount || 0} views</span>
+                          <span className="font-extrabold text-primary uppercase tracking-wider text-[11px] px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20">{occ?.label ?? 'Wish'}</span>
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/80 text-foreground shadow-2xs">
+                            <Eye className="size-3 text-primary" /> {w.viewCount || 0} views
+                          </span>
                         </div>
-                        <p className="text-sm font-semibold text-foreground line-clamp-2 leading-relaxed">{w.message}</p>
-                        <p className="text-xs text-muted-foreground mt-3 pt-2 border-t border-border/50">
+                        <p className="text-sm font-semibold text-foreground max-h-24 overflow-y-auto pr-1 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">{w.message}</p>
+                        <p className="text-xs text-muted-foreground mt-3 pt-2 border-t border-border/50 break-words break-all [overflow-wrap:anywhere]">
                           For: <span className="font-bold text-foreground">{w.recipientName || 'Friend'}</span>
                         </p>
 
                         {/* Share Channel Breakdown Badges */}
-                        <div className="flex flex-wrap items-center gap-1 text-[10px] mt-2.5 pt-2 border-t border-border/40 text-muted-foreground font-medium">
-                          <span className="font-bold text-foreground">Shares:</span>
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="Shared via SMS">
+                        <div className="flex flex-wrap items-center gap-1.5 text-[11px] mt-3.5 pt-2.5 border-t border-border/50">
+                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground/80 mr-0.5">Shares:</span>
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="Shared via SMS">
                             📱 {w.shares?.sms || 0}
                           </span>
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="Shared via WhatsApp">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold border border-emerald-500/20 shadow-2xs" title="Shared via WhatsApp">
                             💬 {w.shares?.whatsapp || 0}
                           </span>
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-500/10 dark:bg-zinc-500/20 text-foreground font-extrabold border border-zinc-500/20 shadow-2xs" title="Link Copied">
                             📋 {w.shares?.copy || 0}
                           </span>
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR Code">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold border border-amber-500/20 shadow-2xs" title="Barcode / QR Code">
                             🔲 {w.shares?.qr || 0}
                           </span>
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-extrabold border border-purple-500/20 shadow-2xs" title="Image Download">
                             🖼️ {w.shares?.image || 0}
+                          </span>
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
+                            🎥 {w.shares?.video || 0}
                           </span>
                         </div>
                       </div>
@@ -570,29 +648,34 @@ export default function DashboardPage() {
                   <div key={vc.id} className="rounded-2xl border border-border bg-card p-5 shadow-sm flex flex-col justify-between hover:border-indigo-500/40 hover:shadow-md transition-all">
                     <div>
                       <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-                        <span className="font-bold text-indigo-600 uppercase tracking-wider text-[11px]">Digital vCard</span>
-                        <span className="flex items-center gap-1 text-[11px] font-semibold"><Eye className="size-3" /> {vc.viewCount || 0} views</span>
+                        <span className="font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider text-[11px] px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20">Digital vCard</span>
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/80 text-foreground shadow-2xs">
+                          <Eye className="size-3 text-indigo-500" /> {vc.viewCount || 0} views
+                        </span>
                       </div>
                       <h4 className="text-base font-bold text-foreground">{vc.fullName}</h4>
                       <p className="text-xs text-muted-foreground mt-0.5">{vc.title} • {vc.company}</p>
 
                       {/* Share Channel Breakdown Badges */}
-                      <div className="flex flex-wrap items-center gap-1 text-[10px] mt-2.5 pt-2 border-t border-border/40 text-muted-foreground font-medium">
-                        <span className="font-bold text-foreground">Shares:</span>
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="Shared via SMS">
+                      <div className="flex flex-wrap items-center gap-1.5 text-[11px] mt-3.5 pt-2.5 border-t border-border/50">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground/80 mr-0.5">Shares:</span>
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="Shared via SMS">
                           📱 {vc.shares?.sms || 0}
                         </span>
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="Shared via WhatsApp">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold border border-emerald-500/20 shadow-2xs" title="Shared via WhatsApp">
                           💬 {vc.shares?.whatsapp || 0}
                         </span>
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-500/10 dark:bg-zinc-500/20 text-foreground font-extrabold border border-zinc-500/20 shadow-2xs" title="Link Copied">
                           📋 {vc.shares?.copy || 0}
                         </span>
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR Code">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold border border-amber-500/20 shadow-2xs" title="Barcode / QR Code">
                           🔲 {vc.shares?.qr || 0}
                         </span>
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-extrabold border border-purple-500/20 shadow-2xs" title="Image Download">
                           🖼️ {vc.shares?.image || 0}
+                        </span>
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
+                          🎥 {vc.shares?.video || 0}
                         </span>
                       </div>
                     </div>
@@ -656,15 +739,15 @@ export default function DashboardPage() {
                   >
                     <div>
                       <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-                        <span className="font-bold text-amber-600 uppercase tracking-wider text-[11px] bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
+                        <span className="font-extrabold text-amber-600 dark:text-amber-400 uppercase tracking-wider text-[11px] bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
                           {m.occasion} · {m.type}
                         </span>
-                        <span className="flex items-center gap-1 text-[11px] text-muted-foreground font-semibold">
-                          <Eye className="size-3" /> {m.viewsCount || 0} views
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/80 text-foreground shadow-2xs">
+                          <Eye className="size-3 text-amber-500" /> {m.viewsCount || 0} views
                         </span>
                       </div>
-                      <h4 className="text-base font-bold text-foreground">{m.recipientName}</h4>
-                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                      <h4 className="text-base font-bold text-foreground break-words break-all [overflow-wrap:anywhere]">{m.recipientName}</h4>
+                      <p className="text-xs text-muted-foreground mt-1 max-h-20 overflow-y-auto pr-1 break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                         {m.wishContent?.secretLetter || m.inviteContent?.eventTitle || 'Interactive 3D celebration capsule'}
                       </p>
                       <p className="text-[11px] text-muted-foreground mt-3 pt-2 border-t border-border/50">
@@ -672,22 +755,25 @@ export default function DashboardPage() {
                       </p>
 
                       {/* Share Channel Breakdown Badges */}
-                      <div className="flex flex-wrap items-center gap-1 text-[10px] mt-2.5 pt-2 border-t border-border/40 text-muted-foreground font-medium">
-                        <span className="font-bold text-foreground">Shares:</span>
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="Shared via SMS">
+                      <div className="flex flex-wrap items-center gap-1.5 text-[11px] mt-3.5 pt-2.5 border-t border-border/50">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground/80 mr-0.5">Shares:</span>
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="Shared via SMS">
                           📱 {m.shares?.sms || 0}
                         </span>
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="Shared via WhatsApp">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold border border-emerald-500/20 shadow-2xs" title="Shared via WhatsApp">
                           💬 {m.shares?.whatsapp || 0}
                         </span>
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-500/10 dark:bg-zinc-500/20 text-foreground font-extrabold border border-zinc-500/20 shadow-2xs" title="Link Copied">
                           📋 {m.shares?.copy || 0}
                         </span>
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR Code">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold border border-amber-500/20 shadow-2xs" title="Barcode / QR Code">
                           🔲 {m.shares?.qr || 0}
                         </span>
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-extrabold border border-purple-500/20 shadow-2xs" title="Image Download">
                           🖼️ {m.shares?.image || 0}
+                        </span>
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
+                          🎥 {m.shares?.video || 0}
                         </span>
                       </div>
                     </div>

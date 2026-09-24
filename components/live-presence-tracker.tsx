@@ -6,6 +6,20 @@ import { getClientTracking } from '@/lib/jashn/tracking'
 
 import { isDeviceAdmin, purgeAdminPresence } from '@/lib/jashn/admin-presence'
 
+function getDeviceId(): string {
+  if (typeof window === 'undefined') return ''
+  try {
+    let id = localStorage.getItem('cardzy_device_id')
+    if (!id) {
+      id = 'dev_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now().toString(36)
+      localStorage.setItem('cardzy_device_id', id)
+    }
+    return id
+  } catch {
+    return ''
+  }
+}
+
 function getSessionId(): string {
   if (typeof window === 'undefined') return ''
   try {
@@ -60,10 +74,13 @@ export function LivePresenceTracker() {
         const exactLocation = tracking.createdLocation || (tracking.city ? `${tracking.city}, ${tracking.country || 'Pakistan'}` : tracking.country || 'Pakistan')
         const language = navigator.language || 'en'
 
+        const deviceId = getDeviceId()
+
         await setDoc(
           doc(db, 'active_sessions', sessionId),
           {
             sessionId,
+            deviceId,
             lastSeen: Date.now(),
             page: window.location.pathname,
             title: document.title || 'Cardzy',

@@ -40,6 +40,9 @@ import {
   Share2,
   Eye,
   MessageCircle,
+  ChevronDown,
+  ChevronRight,
+  Layers,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -69,10 +72,21 @@ function formatDateStandard(timestamp?: number): string {
   return `${yyyy}-${mm}-${dd}`
 }
 
-function formatDateTime(timestamp?: number | string): string {
-  if (!timestamp) return '—'
-  const t = typeof timestamp === 'string' ? Number(timestamp) || Date.parse(timestamp) : timestamp
-  if (!t || isNaN(t)) return '—'
+function toEpochMs(val?: any): number {
+  if (!val) return 0
+  if (typeof val === 'number') return val
+  if (typeof val === 'string') return Number(val) || Date.parse(val) || 0
+  if (typeof val === 'object') {
+    if (typeof val.toMillis === 'function') return val.toMillis()
+    if (typeof val._seconds === 'number') return val._seconds * 1000 + Math.floor((val._nanoseconds || 0) / 1000000)
+    if (typeof val.seconds === 'number') return val.seconds * 1000 + Math.floor((val.nanoseconds || 0) / 1000000)
+  }
+  return 0
+}
+
+function formatDateTime(timestamp?: any): string {
+  const t = toEpochMs(timestamp)
+  if (!t) return '—'
   const d = new Date(t)
   return d.toLocaleString('en-US', {
     month: 'short',
@@ -84,10 +98,9 @@ function formatDateTime(timestamp?: number | string): string {
   })
 }
 
-function formatRelativeTime(timestamp?: number | string): string {
-  if (!timestamp) return ''
-  const t = typeof timestamp === 'string' ? Number(timestamp) || Date.parse(timestamp) : timestamp
-  if (!t || isNaN(t)) return ''
+function formatRelativeTime(timestamp?: any): string {
+  const t = toEpochMs(timestamp)
+  if (!t) return ''
   const diffMs = Date.now() - t
   if (diffMs < 0) return 'Just now'
   const diffSec = Math.floor(diffMs / 1000)
@@ -362,6 +375,121 @@ export default function AdminPortalPage() {
   const [allSessions, setAllSessions] = useState<any[]>([])
   const [selectedSessions, setSelectedSessions] = useState<string[]>([])
   const [liveActiveSessions, setLiveActiveSessions] = useState<any[]>([])
+  const [expandedDevices, setExpandedDevices] = useState<Record<string, boolean>>({})
+  const [groupByDevice, setGroupByDevice] = useState<boolean>(true)
+
+  const toggleExpandDevice = (key: string) => {
+    setExpandedDevices((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }))
+  }
+
+  const toggleExpandAllDevices = (expand: boolean) => {
+    if (!expand) {
+      setExpandedDevices({})
+    } else {
+      const allKeys: Record<string, boolean> = {}
+      groupedSessions.forEach((g) => {
+        allKeys[g.deviceKey] = true
+      })
+      setExpandedDevices(allKeys)
+    }
+  }
+
+  interface DeviceSessionGroup {
+    deviceKey: string
+    deviceId?: string
+    userName: string
+    userEmail: string
+    userId?: string | null
+    device: string
+    browser?: string
+    os?: string
+    country?: string
+    countryCode?: string
+    city?: string
+    region?: string
+    location?: string
+    ip?: string
+    language?: string
+    referrer?: string
+    latestLastSeen: number
+    isActive: boolean
+    latestPage: string
+    latestTitle?: string
+    sessions: any[]
+    uniquePages: string[]
+  }
+
+  const groupedSessions = useMemo<DeviceSessionGroup[]>(() => {
+    const groupsMap = new Map<string, DeviceSessionGroup>()
+    const threshold = Date.now() - 65000
+
+    allSessions.forEach((s) => {
+      // Build unique device key based on deviceId or IP + device + user
+      const key = (s.deviceId && typeof s.deviceId === 'string' && s.deviceId.length > 3)
+        ? s.deviceId
+        : `${s.ip || 'no-ip'}_${s.device || 'device'}_${s.userId || s.userEmail || 'guest'}`
+
+      const isDocActive = (s.lastSeen || 0) >= threshold
+
+      if (!groupsMap.has(key)) {
+        groupsMap.set(key, {
+          deviceKey: key,
+          deviceId: s.deviceId,
+          userName: s.userName || 'Guest Visitor',
+          userEmail: s.userEmail || 'Guest',
+          userId: s.userId,
+          device: s.device || 'Desktop',
+          browser: s.browser,
+          os: s.os,
+          country: s.country,
+          countryCode: s.countryCode,
+          city: s.city,
+          region: s.region,
+          location: s.location,
+          ip: s.ip,
+          language: s.language,
+          referrer: s.referrer,
+          latestLastSeen: s.lastSeen || 0,
+          isActive: isDocActive,
+          latestPage: s.page || '/',
+          latestTitle: s.title,
+          sessions: [s],
+          uniquePages: [s.page || '/'],
+        })
+      } else {
+        const g = groupsMap.get(key)!
+        g.sessions.push(s)
+        if ((s.lastSeen || 0) > g.latestLastSeen) {
+          g.latestLastSeen = s.lastSeen || 0
+          g.latestPage = s.page || g.latestPage
+          g.latestTitle = s.title || g.latestTitle
+          if (s.userName && s.userName !== 'Guest' && s.userName !== 'Guest Visitor') {
+            g.userName = s.userName
+          }
+          if (s.userEmail && s.userEmail !== 'Guest' && s.userEmail !== 'Guest Visitor') {
+            g.userEmail = s.userEmail
+          }
+          if (s.userId) g.userId = s.userId
+          if (s.device) g.device = s.device
+          if (s.ip && (!g.ip || g.ip === '127.0.0.1')) g.ip = s.ip
+          if (s.location) g.location = s.location
+          if (s.country) g.country = s.country
+          if (s.city) g.city = s.city
+        }
+        if (isDocActive) {
+          g.isActive = true
+        }
+        if (s.page && !g.uniquePages.includes(s.page)) {
+          g.uniquePages.push(s.page)
+        }
+      }
+    })
+
+    return Array.from(groupsMap.values()).sort((a, b) => b.latestLastSeen - a.latestLastSeen)
+  }, [allSessions])
 
   useEffect(() => {
     // Immediately purge any session docs from Firebase for this admin device
@@ -578,16 +706,39 @@ export default function AdminPortalPage() {
   const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null)
 
   const loadFirestoreAll = useCallback(async () => {
+    setIsFirestoreLoading(true)
+    setFirestoreError(null)
+
+    // Strategy 1: Load via Server Admin SDK endpoint (bypasses all client-side Firestore rules and adblockers)
+    try {
+      const res = await fetch('/api/admin-data', { cache: 'no-store' })
+      if (res.ok) {
+        const data = await res.json()
+        if (data.success) {
+          setFirestoreUsers(data.users || [])
+          setFirestoreInvitations(data.invitations || [])
+          setFirestoreWishes(data.wishes || [])
+          setFirestoreVisitingCards(data.visitingCards || [])
+          setFirestoreRsvps(data.rsvps || [])
+          setFirestoreMagicLinks(data.magicLinks || [])
+          setLastSyncedAt(Date.now())
+          setIsFirestoreLoading(false)
+          return
+        }
+      }
+    } catch (serverErr) {
+      console.warn('[Admin Portal] Server API fetch notice, trying client SDK fallback:', serverErr)
+    }
+
+    // Strategy 2: Fallback to Client Firestore SDK
     const activeDb = getFirebaseDb() || db
     if (!isFirebaseConfigured || !activeDb) {
       setFirestoreError(
         'Cloud Database (Firebase) is not connected on this deployment. Missing NEXT_PUBLIC_FIREBASE_* environment variables.'
       )
+      setIsFirestoreLoading(false)
       return
     }
-
-    setIsFirestoreLoading(true)
-    setFirestoreError(null)
 
     try {
       // 1. Users
@@ -821,8 +972,31 @@ export default function AdminPortalPage() {
       }
     })
 
+    // 7. Creators from Magic Links
+    magicLinks.forEach((m) => {
+      if (m.senderId && m.senderId !== 'guest') {
+        if (!map.has(m.senderId)) {
+          const createdAt = typeof m.createdAt === 'number' ? m.createdAt : Date.now()
+          map.set(m.senderId, {
+            uid: m.senderId,
+            name: m.senderName || 'Magic Link Creator',
+            email: `user_${m.senderId.slice(0, 6)}@cardzy.online`,
+            plan: 'free',
+            createdAt,
+            createdLocation: m.createdLocation,
+            country: m.country,
+            countryCode: m.countryCode,
+            city: m.city,
+            device: m.device,
+            browser: m.browser,
+            ip: m.ip,
+          })
+        }
+      }
+    })
+
     return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
-  }, [firestoreUsers, invitations, wishes, visitingCards])
+  }, [firestoreUsers, invitations, wishes, visitingCards, magicLinks])
 
   // Stats calculation
   const stats = useMemo(() => {
@@ -869,16 +1043,18 @@ export default function AdminPortalPage() {
           copy: acc.copy + (s.copy || 0),
           qr: acc.qr + (s.qr || 0),
           image: acc.image + (s.image || 0),
+          video: acc.video + (s.video || 0),
           total:
             acc.total +
             (s.whatsapp || 0) +
             (s.sms || 0) +
             (s.copy || 0) +
             (s.qr || 0) +
-            (s.image || 0),
+            (s.image || 0) +
+            (s.video || 0),
         }
       },
-      { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, total: 0 }
+      { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, total: 0 }
     )
   }, [invitations, wishes, visitingCards, magicLinks])
 
@@ -1480,50 +1656,90 @@ export default function AdminPortalPage() {
         </div>
 
         {/* ================= GLOBAL CARD SHARING CHANNELS ANALYTICS ================= */}
-        <div className="p-5 rounded-3xl border border-border bg-card shadow-sm">
+        <div className="p-5 rounded-3xl border border-border/80 bg-gradient-to-br from-card via-card/90 to-card shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
             <div className="flex items-center gap-2">
-              <Share2 className="size-5 text-amber-500" />
-              <span className="text-base font-bold text-foreground">Global Card Sharing & Channel Engagement</span>
-              <span className="text-xs text-muted-foreground font-mono bg-muted px-2.5 py-0.5 rounded-full">
-                {totalAdminShares.total.toLocaleString()} total shares across all cards
-              </span>
+              <div className="size-8 rounded-xl bg-amber-500/15 flex items-center justify-center text-amber-500 shadow-2xs">
+                <Share2 className="size-4" />
+              </div>
+              <div>
+                <span className="text-base font-extrabold text-foreground block leading-tight">Global Card Sharing & Channel Engagement</span>
+                <span className="text-xs text-muted-foreground">
+                  Live engagement across SMS, WhatsApp, Clean URL Copy, Barcode / QR, Image PNG & Video MP4 Exports
+                </span>
+              </div>
             </div>
-            <span className="text-xs text-muted-foreground">
-              Live engagement across SMS, WhatsApp, Clean URL Copy, Barcode / QR & Image PNG Exports
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold text-xs font-mono border border-amber-500/20 self-start sm:self-auto">
+              <Sparkles className="size-3 text-amber-500" />
+              {totalAdminShares.total.toLocaleString()} Total Shares
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-            <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60 flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
-                <span className="text-base">📱</span> SMS Text
-              </span>
-              <span className="text-base font-black text-blue-500 font-mono">{totalAdminShares.sms.toLocaleString()}</span>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {/* 1. SMS */}
+            <div className="group relative p-3.5 rounded-2xl bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-card/50 border border-blue-500/20 hover:border-blue-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-muted-foreground">SMS Text</span>
+                <span className="text-base">📱</span>
+              </div>
+              <div className="text-2xl font-black text-blue-600 dark:text-blue-400 font-mono tracking-tight">
+                {totalAdminShares.sms.toLocaleString()}
+              </div>
             </div>
-            <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60 flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
-                <span className="text-base">💬</span> WhatsApp
-              </span>
-              <span className="text-base font-black text-emerald-500 font-mono">{totalAdminShares.whatsapp.toLocaleString()}</span>
+
+            {/* 2. WhatsApp */}
+            <div className="group relative p-3.5 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-card/50 border border-emerald-500/20 hover:border-emerald-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-muted-foreground">WhatsApp</span>
+                <span className="text-base">💬</span>
+              </div>
+              <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono tracking-tight">
+                {totalAdminShares.whatsapp.toLocaleString()}
+              </div>
             </div>
-            <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60 flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
-                <span className="text-base">📋</span> Link Copied
-              </span>
-              <span className="text-base font-black text-foreground font-mono">{totalAdminShares.copy.toLocaleString()}</span>
+
+            {/* 3. Link Copied */}
+            <div className="group relative p-3.5 rounded-2xl bg-gradient-to-br from-zinc-500/10 via-zinc-500/5 to-card/50 border border-zinc-500/20 hover:border-zinc-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-muted-foreground">Link Copied</span>
+                <span className="text-base">📋</span>
+              </div>
+              <div className="text-2xl font-black text-foreground font-mono tracking-tight">
+                {totalAdminShares.copy.toLocaleString()}
+              </div>
             </div>
-            <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/60 flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
-                <span className="text-base">🔲</span> Barcode / QR
-              </span>
-              <span className="text-base font-black text-amber-500 font-mono">{totalAdminShares.qr.toLocaleString()}</span>
+
+            {/* 4. Barcode / QR */}
+            <div className="group relative p-3.5 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-card/50 border border-amber-500/20 hover:border-amber-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-muted-foreground">Barcode / QR</span>
+                <span className="text-base">🔲</span>
+              </div>
+              <div className="text-2xl font-black text-amber-600 dark:text-amber-400 font-mono tracking-tight">
+                {totalAdminShares.qr.toLocaleString()}
+              </div>
             </div>
-            <div className="col-span-2 sm:col-span-1 p-3.5 rounded-2xl bg-muted/40 border border-border/60 flex items-center justify-between">
-              <span className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
-                <span className="text-base">🖼️</span> Image PNG
-              </span>
-              <span className="text-base font-black text-purple-500 font-mono">{totalAdminShares.image.toLocaleString()}</span>
+
+            {/* 5. Image PNG */}
+            <div className="group relative p-3.5 rounded-2xl bg-gradient-to-br from-purple-500/10 via-purple-500/5 to-card/50 border border-purple-500/20 hover:border-purple-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-muted-foreground">Image PNG</span>
+                <span className="text-base">🖼️</span>
+              </div>
+              <div className="text-2xl font-black text-purple-600 dark:text-purple-400 font-mono tracking-tight">
+                {totalAdminShares.image.toLocaleString()}
+              </div>
+            </div>
+
+            {/* 6. Video MP4 */}
+            <div className="group relative p-3.5 rounded-2xl bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-card/50 border border-rose-500/20 hover:border-rose-500/40 hover:shadow-xs transition-all duration-200">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-muted-foreground">Video MP4</span>
+                <span className="text-base">🎥</span>
+              </div>
+              <div className="text-2xl font-black text-rose-600 dark:text-rose-400 font-mono tracking-tight">
+                {totalAdminShares.video.toLocaleString()}
+              </div>
             </div>
           </div>
         </div>
@@ -1700,22 +1916,58 @@ export default function AdminPortalPage() {
         {/* 0. LIVE ACTIVE ONLINE VISITORS SECTION */}
         {(adminSection === 'all' || adminSection === 'live_users') && (
           <div className="bg-card border border-emerald-500/30 rounded-3xl shadow-xl overflow-hidden space-y-4">
-            <div className="p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-emerald-500/5 via-transparent to-transparent">
+            <div className="p-6 border-b border-border flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-gradient-to-r from-emerald-500/5 via-transparent to-transparent">
               <div>
                 <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
                   <span className="relative flex h-3 w-3">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                   </span>
-                  All Sessions (Active & Offline) ({liveActiveSessions.length})
+                  Live Visitors & Device Activity ({liveActiveSessions.length} active • {groupedSessions.length} unique devices)
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Real-time heartbeat presence connected directly to Firebase Firestore. Shows users currently browsing Cardzy.
+                  Real-time heartbeat presence connected directly to Firebase Firestore. Shows devices and all their event history.
                 </p>
               </div>
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
+                {/* View Mode Toggle */}
+                <div className="inline-flex rounded-xl bg-muted/60 p-1 border border-border/80">
+                  <button
+                    type="button"
+                    onClick={() => setGroupByDevice(true)}
+                    className={cn(
+                      "px-3 py-1 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5",
+                      groupByDevice ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    <Layers className="size-3.5" />
+                    <span>Group by Device ({groupedSessions.length})</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGroupByDevice(false)}
+                    className={cn(
+                      "px-3 py-1 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5",
+                      !groupByDevice ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    <Activity className="size-3.5" />
+                    <span>Flat Events ({allSessions.length})</span>
+                  </button>
+                </div>
+
+                {groupByDevice && groupedSessions.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => toggleExpandAllDevices(Object.keys(expandedDevices).length !== groupedSessions.length)}
+                    className="px-3 py-1 rounded-xl text-xs font-bold bg-muted/80 hover:bg-muted text-foreground border border-border/80 transition-all flex items-center gap-1.5"
+                  >
+                    <span>{Object.keys(expandedDevices).length === groupedSessions.length ? 'Collapse All' : 'Expand All'}</span>
+                  </button>
+                )}
+
                 <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 flex items-center gap-1.5">
-                  <Activity className="size-3.5 animate-pulse" /> Live Pulse Active
+                  <Activity className="size-3.5 animate-pulse" /> Live Pulse
                 </span>
               </div>
             </div>
@@ -1730,8 +1982,8 @@ export default function AdminPortalPage() {
               ) : (
                 <div className="overflow-x-auto -mx-6 px-6 relative">
                   {selectedSessions.length > 0 && (
-                    <div className="absolute top-0 left-6 right-6 bg-rose-500/10 border border-rose-500/20 rounded-t-xl p-2 flex items-center justify-between z-10">
-                      <span className="text-xs font-bold text-rose-600 px-2">{selectedSessions.length} selected</span>
+                    <div className="absolute top-0 left-6 right-6 bg-rose-500/10 border border-rose-500/20 rounded-t-xl p-2 flex items-center justify-between z-10 backdrop-blur-md">
+                      <span className="text-xs font-bold text-rose-600 px-2">{selectedSessions.length} session records selected</span>
                       <button
                         onClick={async () => {
                           if (!confirm(`Delete ${selectedSessions.length} sessions?`)) return
@@ -1751,149 +2003,462 @@ export default function AdminPortalPage() {
                       </button>
                     </div>
                   )}
-                  <table className="w-full text-sm text-left">
-                    <thead className="text-xs text-muted-foreground uppercase bg-muted/30">
-                      <tr>
-                        <th className="px-4 py-3 rounded-l-xl w-[40px]">
-                          <input 
-                            type="checkbox" 
-                            className="rounded border-border accent-emerald-500"
-                            checked={allSessions.length > 0 && selectedSessions.length === allSessions.length}
-                            onChange={(e) => {
-                              if (e.target.checked) setSelectedSessions(allSessions.map(s => s.id))
-                              else setSelectedSessions([])
-                            }}
-                          />
-                        </th>
-                        <th className="px-4 py-3">User / Visitor</th>
-                        <th className="px-4 py-3">Current Active Page</th>
-                        <th className="px-4 py-3">Device</th>
-                        <th className="px-4 py-3">Location / Timezone</th>
-                        <th className="px-4 py-3">Referrer</th>
-                        <th className="px-4 py-3">Last Heartbeat</th>
-                        <th className="px-4 py-3 rounded-r-xl text-right">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border/50">
-                      {allSessions.map((session) => {
-                        const secondsAgo = Math.max(0, Math.round((Date.now() - (session.lastSeen || Date.now())) / 1000))
-                        const isActive = secondsAgo <= 65
-                        
-                        return (
-                          <tr key={session.sessionId || session.id} className={cn("hover:bg-muted/20 transition-colors", !isActive && "opacity-60", selectedSessions.includes(session.id) && "bg-rose-500/5 hover:bg-rose-500/10")}>
-                            <td className="px-4 py-3.5">
-                              <input 
-                                type="checkbox" 
-                                className="rounded border-border accent-emerald-500"
-                                checked={selectedSessions.includes(session.id)}
-                                onChange={(e) => {
-                                  if (e.target.checked) setSelectedSessions(prev => [...prev, session.id])
-                                  else setSelectedSessions(prev => prev.filter(id => id !== session.id))
-                                }}
-                              />
-                            </td>
-                            <td className="px-4 py-3.5">
-                              <div className="flex items-center gap-2.5">
-                                {isActive ? (
-                                  <span className="relative flex h-2.5 w-2.5 shrink-0">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                                  </span>
-                                ) : (
-                                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-muted-foreground shrink-0"></span>
+
+                  {groupByDevice ? (
+                    /* ── GROUPED BY DEVICE VIEW ──────────────────────────────── */
+                    <table className="w-full text-sm text-left border-collapse">
+                      <thead className="text-xs text-muted-foreground uppercase bg-muted/30">
+                        <tr>
+                          <th className="px-4 py-3 rounded-l-xl w-[40px]">
+                            <input 
+                              type="checkbox" 
+                              className="rounded border-border accent-emerald-500"
+                              checked={allSessions.length > 0 && selectedSessions.length === allSessions.length}
+                              onChange={(e) => {
+                                if (e.target.checked) setSelectedSessions(allSessions.map(s => s.id))
+                                else setSelectedSessions([])
+                              }}
+                            />
+                          </th>
+                          <th className="px-4 py-3">Device / User</th>
+                          <th className="px-4 py-3">Latest Active Flow & Events</th>
+                          <th className="px-4 py-3">Hardware & OS</th>
+                          <th className="px-4 py-3">Location & IP</th>
+                          <th className="px-4 py-3">Last Heartbeat</th>
+                          <th className="px-4 py-3 rounded-r-xl text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border/40">
+                        {groupedSessions.map((group) => {
+                          const isExpanded = !!expandedDevices[group.deviceKey]
+                          const groupSessionIds = group.sessions.map((s) => s.id)
+                          const isAllGroupSelected = groupSessionIds.every((id) => selectedSessions.includes(id))
+                          const secondsAgo = Math.max(0, Math.round((Date.now() - (group.latestLastSeen || Date.now())) / 1000))
+                          const isGroupActive = group.isActive && secondsAgo <= 65
+
+                          return (
+                            <>
+                              <tr 
+                                key={group.deviceKey} 
+                                className={cn(
+                                  "hover:bg-muted/25 transition-colors group cursor-pointer",
+                                  !isGroupActive && "opacity-65",
+                                  isAllGroupSelected && "bg-rose-500/5 hover:bg-rose-500/10",
+                                  isExpanded && "bg-muted/15"
                                 )}
-                                <div>
-                                  <div className="font-bold text-foreground flex items-center gap-1.5">
-                                    {session.userName || 'Guest Visitor'}
-                                    {session.userId && (
-                                      <span className="text-[10px] bg-indigo-500/10 text-indigo-600 px-1.5 py-0.5 rounded font-bold">Member</span>
+                                onClick={(e) => {
+                                  // Don't toggle expand if clicking checkbox, link, or button
+                                  const target = e.target as HTMLElement
+                                  if (target.closest('input') || target.closest('a') || target.closest('button')) return
+                                  toggleExpandDevice(group.deviceKey)
+                                }}
+                              >
+                                <td className="px-4 py-3.5">
+                                  <input 
+                                    type="checkbox" 
+                                    className="rounded border-border accent-emerald-500 cursor-pointer"
+                                    checked={isAllGroupSelected}
+                                    onChange={(e) => {
+                                      e.stopPropagation()
+                                      if (e.target.checked) {
+                                        setSelectedSessions(prev => Array.from(new Set([...prev, ...groupSessionIds])))
+                                      } else {
+                                        setSelectedSessions(prev => prev.filter(id => !groupSessionIds.includes(id)))
+                                      }
+                                    }}
+                                  />
+                                </td>
+                                <td className="px-4 py-3.5">
+                                  <div className="flex items-center gap-2.5">
+                                    {isGroupActive ? (
+                                      <span className="relative flex h-2.5 w-2.5 shrink-0">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                                      </span>
+                                    ) : (
+                                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-muted-foreground shrink-0"></span>
                                     )}
-                                  </div>
-                                  <div className="text-xs text-muted-foreground">{session.userEmail || 'Guest'}</div>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="px-4 py-3.5 font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                              <Link href={session.page || '/'} target="_blank" className="hover:underline flex items-center gap-1">
-                                {session.page || '/'}
-                                <ExternalLink className="size-3 opacity-60" />
-                              </Link>
-                            </td>
-                            <td className="px-4 py-3.5 text-xs">
-                              <span className={cn(
-                                "px-2 py-1 rounded-lg font-semibold inline-flex items-center gap-1",
-                                session.device === 'Mobile' ? "bg-amber-500/10 text-amber-600" : "bg-blue-500/10 text-blue-600"
-                              )}>
-                                {session.device === 'Mobile' ? <Smartphone className="size-3.5" /> : <Monitor className="size-3.5" />}
-                                {session.device || 'Desktop'}
-                              </span>
-                            </td>
-                            <td className="px-4 py-3.5 text-xs text-muted-foreground">
-                              {(() => {
-                                const sOrigin = inferOrigin({
-                                  country: session.country,
-                                  countryCode: session.countryCode,
-                                  city: session.city,
-                                  region: session.region,
-                                  createdLocation: session.location,
-                                  device: session.device,
-                                  ip: session.ip,
-                                })
-                                return (
-                                  <div>
-                                    <div className="font-medium text-foreground flex items-center gap-1.5">
-                                      <span className="text-sm">{sOrigin.flag}</span>
-                                      <span>{sOrigin.locationText}</span>
+                                    <div>
+                                      <div className="font-bold text-foreground flex items-center gap-1.5 flex-wrap">
+                                        <span>{group.userName || 'Guest Visitor'}</span>
+                                        {group.userId && (
+                                          <span className="text-[10px] bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded font-bold border border-indigo-500/20">Member</span>
+                                        )}
+                                      </div>
+                                      <div className="text-xs text-muted-foreground flex items-center gap-2 mt-0.5">
+                                        <span>{group.userEmail || 'Guest'}</span>
+                                        {group.deviceId && (
+                                          <span className="text-[9px] font-mono text-muted-foreground/70 bg-muted/60 px-1 rounded">
+                                            {group.deviceId.slice(0, 10)}...
+                                          </span>
+                                        )}
+                                      </div>
                                     </div>
-                                    <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground/80 mt-0.5">
-                                      <span>Lang: {session.language || 'en'}</span>
-                                      {session.ip && session.ip !== '127.0.0.1' && (
-                                        <span className="font-mono bg-muted/60 px-1 rounded text-[9px]">IP: {session.ip}</span>
+                                  </div>
+                                </td>
+                                <td className="px-4 py-3.5">
+                                  <div className="space-y-1">
+                                    <div className="font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
+                                      <Link href={group.latestPage || '/'} target="_blank" className="hover:underline flex items-center gap-1">
+                                        <span className="truncate max-w-[180px]">{group.latestPage || '/'}</span>
+                                        <ExternalLink className="size-3 opacity-60 shrink-0" />
+                                      </Link>
+                                    </div>
+                                    <div className="flex items-center gap-1.5 flex-wrap">
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation()
+                                          toggleExpandDevice(group.deviceKey)
+                                        }}
+                                        className={cn(
+                                          "inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold transition-all border shadow-2xs cursor-pointer",
+                                          group.sessions.length > 1
+                                            ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 hover:bg-amber-500/20"
+                                            : "bg-muted/80 text-muted-foreground border-border/80 hover:bg-muted"
+                                        )}
+                                      >
+                                        <Sparkles className="size-2.5" />
+                                        <span>{group.sessions.length} recorded {group.sessions.length === 1 ? 'event' : 'events'}</span>
+                                        {group.uniquePages.length > 1 && (
+                                          <span className="opacity-75">({group.uniquePages.length} unique pages)</span>
+                                        )}
+                                        {isExpanded ? <ChevronDown className="size-3 ml-0.5" /> : <ChevronRight className="size-3 ml-0.5" />}
+                                      </button>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="px-4 py-3.5 text-xs">
+                                  <span className={cn(
+                                    "px-2 py-1 rounded-lg font-semibold inline-flex items-center gap-1",
+                                    group.device?.includes('Mobile') ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20" : "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20"
+                                  )}>
+                                    {group.device?.includes('Mobile') ? <Smartphone className="size-3.5" /> : <Monitor className="size-3.5" />}
+                                    {group.device || 'Desktop'}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-3.5 text-xs text-muted-foreground">
+                                  {(() => {
+                                    const sOrigin = inferOrigin({
+                                      country: group.country,
+                                      countryCode: group.countryCode,
+                                      city: group.city,
+                                      region: group.region,
+                                      createdLocation: group.location,
+                                      device: group.device,
+                                      ip: group.ip,
+                                    })
+                                    return (
+                                      <div>
+                                        <div className="font-medium text-foreground flex items-center gap-1.5">
+                                          <span className="text-sm">{sOrigin.flag}</span>
+                                          <span className="truncate max-w-[140px]">{sOrigin.locationText}</span>
+                                        </div>
+                                        <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground/80 mt-0.5">
+                                          <span>Lang: {group.language || 'en'}</span>
+                                          {group.ip && group.ip !== '127.0.0.1' && (
+                                            <span className="font-mono bg-muted/60 px-1 rounded text-[9px]">IP: {group.ip}</span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    )
+                                  })()}
+                                </td>
+                                <td className={cn("px-4 py-3.5 text-xs font-bold whitespace-nowrap", isGroupActive ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground")}>
+                                  {isGroupActive ? (secondsAgo <= 5 ? 'Just now (live)' : `${secondsAgo}s ago`) : (
+                                    <div className="flex flex-col gap-0.5">
+                                      <span>Offline</span>
+                                      {group.latestLastSeen && (
+                                        <span className="text-[10px] font-normal opacity-70">
+                                          {new Date(group.latestLastSeen).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                        </span>
                                       )}
                                     </div>
-                                  </div>
-                                )
-                              })()}
-                            </td>
-                            <td className="px-4 py-3.5 text-xs text-muted-foreground truncate max-w-[120px]">
-                              {session.referrer === 'Direct' ? 'Direct URL' : session.referrer || 'Direct'}
-                            </td>
-                            <td className={cn("px-4 py-3.5 text-xs font-bold whitespace-nowrap", isActive ? "text-emerald-600" : "text-muted-foreground")}>
-                              {isActive ? (secondsAgo <= 5 ? 'Just now (live)' : `${secondsAgo}s ago`) : (
-                                <div className="flex flex-col gap-0.5">
-                                  <span>Offline</span>
-                                  {session.lastSeen && (
-                                    <span className="text-[10px] font-normal opacity-70">
-                                      {new Date(session.lastSeen).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                                    </span>
                                   )}
-                                </div>
+                                </td>
+                                <td className="px-4 py-3.5 text-right">
+                                  <div className="flex items-center justify-end gap-1.5">
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation()
+                                        toggleExpandDevice(group.deviceKey)
+                                      }}
+                                      className="px-2.5 py-1 rounded-lg bg-muted hover:bg-muted/80 text-foreground text-xs font-bold transition-colors inline-flex items-center gap-1 shadow-2xs cursor-pointer"
+                                      title="Toggle Event History"
+                                    >
+                                      <span>{isExpanded ? 'Hide' : 'Expand'}</span>
+                                      {isExpanded ? <ChevronDown className="size-3.5" /> : <ChevronRight className="size-3.5" />}
+                                    </button>
+
+                                    <button
+                                      type="button"
+                                      onClick={async (e) => {
+                                        e.stopPropagation()
+                                        if (!confirm(`Delete all ${group.sessions.length} session records for this device?`)) return
+                                        const firestoreDb = getFirebaseDb()
+                                        if (firestoreDb) {
+                                          try {
+                                            const { deleteDoc, doc } = await import('firebase/firestore')
+                                            await Promise.all(group.sessions.map(s => deleteDoc(doc(firestoreDb, 'active_sessions', s.id))))
+                                            setAllSessions(prev => prev.filter(s => !groupSessionIds.includes(s.id)))
+                                          } catch(e) {}
+                                        }
+                                      }}
+                                      className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 transition-colors inline-flex cursor-pointer"
+                                      title="Delete Device & All Events"
+                                    >
+                                      <Trash2 className="size-4" />
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+
+                              {/* ── EXPANDABLE NESTED EVENTS / PAGES ACCORDION ─────────────── */}
+                              {isExpanded && (
+                                <tr key={`${group.deviceKey}-expanded`} className="bg-muted/20 border-b border-border/60">
+                                  <td colSpan={7} className="p-4 sm:p-5">
+                                    <div className="rounded-2xl border border-border/70 bg-card p-4 shadow-sm space-y-3">
+                                      <div className="flex items-center justify-between border-b border-border/60 pb-2.5">
+                                        <div className="flex items-center gap-2">
+                                          <Sparkles className="size-4 text-amber-500" />
+                                          <h4 className="text-xs font-extrabold uppercase tracking-wider text-foreground">
+                                            Device Event History & Open Tabs ({group.sessions.length} total events • {group.uniquePages.length} unique URLs)
+                                          </h4>
+                                        </div>
+                                        <span className="text-[10px] text-muted-foreground font-mono">
+                                          Device: {group.device} • {group.country || 'Pakistan'}
+                                        </span>
+                                      </div>
+
+                                      <div className="divide-y divide-border/40">
+                                        {group.sessions.map((sess: any, sIdx: number) => {
+                                          const sessSecAgo = Math.max(0, Math.round((Date.now() - (sess.lastSeen || Date.now())) / 1000))
+                                          const isSessActive = (sess.lastSeen || 0) >= (Date.now() - 65000)
+
+                                          return (
+                                            <div key={sess.id || sIdx} className="py-2.5 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                                              <div className="flex items-start gap-2.5 min-w-0">
+                                                <div className="mt-0.5">
+                                                  {isSessActive ? (
+                                                    <span className="size-2 rounded-full bg-emerald-500 animate-pulse block" />
+                                                  ) : (
+                                                    <span className="size-2 rounded-full bg-muted-foreground/60 block" />
+                                                  )}
+                                                </div>
+                                                <div className="min-w-0 space-y-0.5">
+                                                  <div className="flex items-center gap-2 flex-wrap">
+                                                    <Link 
+                                                      href={sess.page || '/'} 
+                                                      target="_blank"
+                                                      className="font-mono font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
+                                                    >
+                                                      <span>{sess.page || '/'}</span>
+                                                      <ExternalLink className="size-3 opacity-60 shrink-0" />
+                                                    </Link>
+                                                    {sess.title && (
+                                                      <span className="text-[11px] text-muted-foreground truncate max-w-xs font-medium">
+                                                        "{sess.title}"
+                                                      </span>
+                                                    )}
+                                                  </div>
+                                                  <div className="text-[10px] text-muted-foreground flex items-center gap-2 font-mono">
+                                                    <span>Ref: {sess.referrer || 'Direct'}</span>
+                                                    <span>•</span>
+                                                    <span>ID: {sess.sessionId || sess.id}</span>
+                                                  </div>
+                                                </div>
+                                              </div>
+
+                                              <div className="flex items-center gap-3 shrink-0 sm:text-right">
+                                                <div className="text-[11px]">
+                                                  <div className={cn("font-bold", isSessActive ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground")}>
+                                                    {isSessActive ? (sessSecAgo <= 5 ? 'Active now' : `${sessSecAgo}s ago`) : 'Offline'}
+                                                  </div>
+                                                  {sess.lastSeen && (
+                                                    <div className="text-[10px] text-muted-foreground">
+                                                      {new Date(sess.lastSeen).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                                                    </div>
+                                                  )}
+                                                </div>
+
+                                                <button
+                                                  type="button"
+                                                  onClick={async () => {
+                                                    const firestoreDb = getFirebaseDb()
+                                                    if (firestoreDb) {
+                                                      try {
+                                                        const { deleteDoc, doc } = await import('firebase/firestore')
+                                                        await deleteDoc(doc(firestoreDb, 'active_sessions', sess.id))
+                                                        setAllSessions(prev => prev.filter(s => s.id !== sess.id))
+                                                      } catch(e) {}
+                                                    }
+                                                  }}
+                                                  className="p-1 rounded-md text-rose-500 hover:bg-rose-500/10 transition-colors"
+                                                  title="Delete this event record"
+                                                >
+                                                  <Trash2 className="size-3.5" />
+                                                </button>
+                                              </div>
+                                            </div>
+                                          )
+                                        })}
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
                               )}
-                            </td>
-                            <td className="px-4 py-3.5 text-right">
-                              <button
-                                onClick={async () => {
-                                  if (!confirm('Delete this session record?')) return
-                                  const firestoreDb = getFirebaseDb()
-                                  if (firestoreDb) {
-                                    try {
-                                      const { deleteDoc, doc } = await import('firebase/firestore')
-                                      await deleteDoc(doc(firestoreDb, 'active_sessions', session.id))
-                                      setAllSessions(prev => prev.filter(s => s.id !== session.id))
-                                    } catch(e) {}
-                                  }
-                                }}
-                                className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 transition-colors inline-flex"
-                                title="Delete Session"
-                              >
-                                <Trash2 className="size-4" />
-                              </button>
-                            </td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </table>
+                            </>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  ) : (
+                    /* ── FLAT EVENTS VIEW ─────────────────────────────────────── */
+                    <table className="w-full text-sm text-left">
+                      <thead className="text-xs text-muted-foreground uppercase bg-muted/30">
+                        <tr>
+                          <th className="px-4 py-3 rounded-l-xl w-[40px]">
+                            <input 
+                              type="checkbox" 
+                              className="rounded border-border accent-emerald-500"
+                              checked={allSessions.length > 0 && selectedSessions.length === allSessions.length}
+                              onChange={(e) => {
+                                if (e.target.checked) setSelectedSessions(allSessions.map(s => s.id))
+                                else setSelectedSessions([])
+                              }}
+                            />
+                          </th>
+                          <th className="px-4 py-3">User / Visitor</th>
+                          <th className="px-4 py-3">Current Active Page</th>
+                          <th className="px-4 py-3">Device</th>
+                          <th className="px-4 py-3">Location / Timezone</th>
+                          <th className="px-4 py-3">Referrer</th>
+                          <th className="px-4 py-3">Last Heartbeat</th>
+                          <th className="px-4 py-3 rounded-r-xl text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border/50">
+                        {allSessions.map((session) => {
+                          const secondsAgo = Math.max(0, Math.round((Date.now() - (session.lastSeen || Date.now())) / 1000))
+                          const isActive = secondsAgo <= 65
+                          
+                          return (
+                            <tr key={session.sessionId || session.id} className={cn("hover:bg-muted/20 transition-colors", !isActive && "opacity-60", selectedSessions.includes(session.id) && "bg-rose-500/5 hover:bg-rose-500/10")}>
+                              <td className="px-4 py-3.5">
+                                <input 
+                                  type="checkbox" 
+                                  className="rounded border-border accent-emerald-500"
+                                  checked={selectedSessions.includes(session.id)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) setSelectedSessions(prev => [...prev, session.id])
+                                    else setSelectedSessions(prev => prev.filter(id => id !== session.id))
+                                  }}
+                                />
+                              </td>
+                              <td className="px-4 py-3.5">
+                                <div className="flex items-center gap-2.5">
+                                  {isActive ? (
+                                    <span className="relative flex h-2.5 w-2.5 shrink-0">
+                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                                    </span>
+                                  ) : (
+                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-muted-foreground shrink-0"></span>
+                                  )}
+                                  <div>
+                                    <div className="font-bold text-foreground flex items-center gap-1.5">
+                                      {session.userName || 'Guest Visitor'}
+                                      {session.userId && (
+                                        <span className="text-[10px] bg-indigo-500/10 text-indigo-600 px-1.5 py-0.5 rounded font-bold">Member</span>
+                                      )}
+                                    </div>
+                                    <div className="text-xs text-muted-foreground">{session.userEmail || 'Guest'}</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-4 py-3.5 font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                                <Link href={session.page || '/'} target="_blank" className="hover:underline flex items-center gap-1">
+                                  {session.page || '/'}
+                                  <ExternalLink className="size-3 opacity-60" />
+                                </Link>
+                              </td>
+                              <td className="px-4 py-3.5 text-xs">
+                                <span className={cn(
+                                  "px-2 py-1 rounded-lg font-semibold inline-flex items-center gap-1",
+                                  session.device === 'Mobile' ? "bg-amber-500/10 text-amber-600" : "bg-blue-500/10 text-blue-600"
+                                  )}>
+                                  {session.device === 'Mobile' ? <Smartphone className="size-3.5" /> : <Monitor className="size-3.5" />}
+                                  {session.device || 'Desktop'}
+                                </span>
+                              </td>
+                              <td className="px-4 py-3.5 text-xs text-muted-foreground">
+                                {(() => {
+                                  const sOrigin = inferOrigin({
+                                    country: session.country,
+                                    countryCode: session.countryCode,
+                                    city: session.city,
+                                    region: session.region,
+                                    createdLocation: session.location,
+                                    device: session.device,
+                                    ip: session.ip,
+                                  })
+                                  return (
+                                    <div>
+                                      <div className="font-medium text-foreground flex items-center gap-1.5">
+                                        <span className="text-sm">{sOrigin.flag}</span>
+                                        <span>{sOrigin.locationText}</span>
+                                      </div>
+                                      <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground/80 mt-0.5">
+                                        <span>Lang: {session.language || 'en'}</span>
+                                        {session.ip && session.ip !== '127.0.0.1' && (
+                                          <span className="font-mono bg-muted/60 px-1 rounded text-[9px]">IP: {session.ip}</span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  )
+                                })()}
+                              </td>
+                              <td className="px-4 py-3.5 text-xs text-muted-foreground truncate max-w-[120px]">
+                                {session.referrer === 'Direct' ? 'Direct URL' : session.referrer || 'Direct'}
+                              </td>
+                              <td className={cn("px-4 py-3.5 text-xs font-bold whitespace-nowrap", isActive ? "text-emerald-600" : "text-muted-foreground")}>
+                                {isActive ? (secondsAgo <= 5 ? 'Just now (live)' : `${secondsAgo}s ago`) : (
+                                  <div className="flex flex-col gap-0.5">
+                                    <span>Offline</span>
+                                    {session.lastSeen && (
+                                      <span className="text-[10px] font-normal opacity-70">
+                                        {new Date(session.lastSeen).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+                              </td>
+                              <td className="px-4 py-3.5 text-right">
+                                <button
+                                  onClick={async () => {
+                                    if (!confirm('Delete this session record?')) return
+                                    const firestoreDb = getFirebaseDb()
+                                    if (firestoreDb) {
+                                      try {
+                                        const { deleteDoc, doc } = await import('firebase/firestore')
+                                        await deleteDoc(doc(firestoreDb, 'active_sessions', session.id))
+                                        setAllSessions(prev => prev.filter(s => s.id !== session.id))
+                                      } catch(e) {}
+                                    }
+                                  }}
+                                  className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 transition-colors inline-flex"
+                                  title="Delete Session"
+                                >
+                                  <Trash2 className="size-4" />
+                                </button>
+                              </td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  )}
                 </div>
               )}
             </div>
@@ -2229,8 +2794,10 @@ export default function AdminPortalPage() {
                               Theme: {m.theme || 'emerald-gold'}
                             </div>
                           </td>
-                          <td className="py-4 px-4 text-xs text-muted-foreground max-w-xs leading-snug line-clamp-2">
-                            {m.wishContent?.secretLetter || m.inviteContent?.eventTitle || 'Interactive 3D celebration capsule'}
+                          <td className="py-4 px-4 text-xs text-muted-foreground max-w-xs">
+                            <div className="max-h-28 overflow-y-auto pr-1 break-words break-all [overflow-wrap:anywhere] [word-break:break-word] text-xs leading-relaxed" title={m.wishContent?.secretLetter || m.inviteContent?.eventTitle}>
+                              {m.wishContent?.secretLetter || m.inviteContent?.eventTitle || 'Interactive 3D celebration capsule'}
+                            </div>
                           </td>
                           <td className="py-4 px-4 text-xs">
                             <div className="space-y-1">
@@ -2270,21 +2837,24 @@ export default function AdminPortalPage() {
                               {m.viewsCount || 0} visits
                             </span>
                           </div>
-                          <div className="flex flex-wrap items-center gap-1 text-[10px] font-medium text-muted-foreground">
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="SMS">
+                          <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="SMS">
                               📱 {m.shares?.sms || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="WhatsApp">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold border border-emerald-500/20 shadow-2xs" title="WhatsApp">
                               💬 {m.shares?.whatsapp || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-500/10 dark:bg-zinc-500/20 text-foreground font-extrabold border border-zinc-500/20 shadow-2xs" title="Link Copied">
                               📋 {m.shares?.copy || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold border border-amber-500/20 shadow-2xs" title="Barcode / QR">
                               🔲 {m.shares?.qr || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-extrabold border border-purple-500/20 shadow-2xs" title="Image Download">
                               🖼️ {m.shares?.image || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
+                              🎥 {m.shares?.video || 0}
                             </span>
                           </div>
                         </td>
@@ -2464,7 +3034,7 @@ export default function AdminPortalPage() {
                           </div>
                         </td>
                         <td className="py-4 px-4 text-xs text-foreground max-w-md">
-                          <div className="p-2.5 rounded-xl bg-muted/40 border border-border/60 text-xs leading-relaxed font-medium italic">
+                          <div className="p-2.5 rounded-xl bg-muted/40 border border-border/60 text-xs leading-relaxed font-medium italic break-words break-all [overflow-wrap:anywhere] [word-break:break-word] max-h-32 overflow-y-auto pr-1" title={w.message}>
                             "{w.message}"
                           </div>
                         </td>
@@ -2643,21 +3213,24 @@ export default function AdminPortalPage() {
                         <td className="py-4 px-4 text-xs">
                           <div className="font-bold text-emerald-600">{inv.rsvpCount} RSVPs</div>
                           <div className="text-muted-foreground font-semibold mb-1.5">{inv.viewCount || 0} views</div>
-                          <div className="flex flex-wrap items-center gap-1 text-[10px] font-medium text-muted-foreground">
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="SMS">
+                          <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="SMS">
                               📱 {inv.shares?.sms || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="WhatsApp">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold border border-emerald-500/20 shadow-2xs" title="WhatsApp">
                               💬 {inv.shares?.whatsapp || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-500/10 dark:bg-zinc-500/20 text-foreground font-extrabold border border-zinc-500/20 shadow-2xs" title="Link Copied">
                               📋 {inv.shares?.copy || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold border border-amber-500/20 shadow-2xs" title="Barcode / QR">
                               🔲 {inv.shares?.qr || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-extrabold border border-purple-500/20 shadow-2xs" title="Image Download">
                               🖼️ {inv.shares?.image || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
+                              🎥 {inv.shares?.video || 0}
                             </span>
                           </div>
                         </td>
@@ -2784,9 +3357,9 @@ export default function AdminPortalPage() {
 
                       return (
                         <tr key={(w.slug || w.id) || w.id || `wish-${idx}`} className="hover:bg-muted/20 transition-colors">
-                          <td className="py-4 px-4 font-bold text-foreground">{w.senderName || 'Well Wisher'}</td>
+                          <td className="py-4 px-4 font-bold text-foreground break-words break-all [overflow-wrap:anywhere] max-w-[150px]">{w.senderName || 'Well Wisher'}</td>
                           <td className="py-4 px-4">
-                            <div className="font-semibold text-foreground">{w.recipientName || 'Friend'}</div>
+                            <div className="font-semibold text-foreground break-words break-all [overflow-wrap:anywhere] max-w-[150px]">{w.recipientName || 'Friend'}</div>
                             {w.relation && <div className="text-[11px] text-muted-foreground">Relation: {w.relation}</div>}
                             {w.photoUrl && (
                               <div className="flex items-center gap-1.5 mt-1">
@@ -2844,24 +3417,31 @@ export default function AdminPortalPage() {
                               )}
                             </div>
                           </td>
-                        <td className="py-4 px-4 text-xs text-muted-foreground max-w-xs leading-snug">{w.message}</td>
+                        <td className="py-4 px-4 text-xs text-muted-foreground max-w-xs">
+                          <div className="max-h-28 overflow-y-auto pr-1 break-words break-all [overflow-wrap:anywhere] [word-break:break-word] text-xs leading-relaxed" title={w.message}>
+                            {w.message}
+                          </div>
+                        </td>
                         <td className="py-4 px-4 text-xs font-bold text-foreground">
                           <div className="font-bold text-foreground mb-1.5">{w.viewCount || 0} views</div>
-                          <div className="flex flex-wrap items-center gap-1 text-[10px] font-medium text-muted-foreground">
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="SMS">
+                          <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="SMS">
                               📱 {w.shares?.sms || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="WhatsApp">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold border border-emerald-500/20 shadow-2xs" title="WhatsApp">
                               💬 {w.shares?.whatsapp || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-500/10 dark:bg-zinc-500/20 text-foreground font-extrabold border border-zinc-500/20 shadow-2xs" title="Link Copied">
                               📋 {w.shares?.copy || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold border border-amber-500/20 shadow-2xs" title="Barcode / QR">
                               🔲 {w.shares?.qr || 0}
                             </span>
-                            <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-extrabold border border-purple-500/20 shadow-2xs" title="Image Download">
                               🖼️ {w.shares?.image || 0}
+                            </span>
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
+                              🎥 {w.shares?.video || 0}
                             </span>
                           </div>
                         </td>
@@ -3049,21 +3629,24 @@ export default function AdminPortalPage() {
                           </td>
                           <td className="py-4 px-4 text-xs font-bold text-foreground">
                             <div className="font-bold text-foreground mb-1.5">{vc.viewCount || 0} views</div>
-                            <div className="flex flex-wrap items-center gap-1 text-[10px] font-medium text-muted-foreground">
-                              <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold" title="SMS">
+                            <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="SMS">
                                 📱 {vc.shares?.sms || 0}
                               </span>
-                              <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-emerald-500/10 text-emerald-600 font-bold" title="WhatsApp">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-extrabold border border-emerald-500/20 shadow-2xs" title="WhatsApp">
                                 💬 {vc.shares?.whatsapp || 0}
                               </span>
-                              <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-muted text-foreground font-bold" title="Link Copied">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-500/10 dark:bg-zinc-500/20 text-foreground font-extrabold border border-zinc-500/20 shadow-2xs" title="Link Copied">
                                 📋 {vc.shares?.copy || 0}
                               </span>
-                              <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-amber-500/10 text-amber-600 font-bold" title="Barcode / QR">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold border border-amber-500/20 shadow-2xs" title="Barcode / QR">
                                 🔲 {vc.shares?.qr || 0}
                               </span>
-                              <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-purple-500/10 text-purple-600 font-bold" title="Image Download">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-extrabold border border-purple-500/20 shadow-2xs" title="Image Download">
                                 🖼️ {vc.shares?.image || 0}
+                              </span>
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-extrabold border border-rose-500/20 shadow-2xs" title="Video Download">
+                                🎥 {vc.shares?.video || 0}
                               </span>
                             </div>
                           </td>

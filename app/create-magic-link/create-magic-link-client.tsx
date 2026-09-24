@@ -2237,10 +2237,10 @@ export default function CreateMagicLinkClient() {
                             <div className="size-16 rounded-2xl bg-gradient-to-tr from-[#3a0418] to-[#5c0b29] border border-rose-400/50 flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(244,63,94,0.4)] animate-bounce">
                               💍
                             </div>
-                            <span className="text-xs font-serif font-black text-amber-300">
+                            <span className="text-xs font-serif font-black text-amber-300 break-words break-all [overflow-wrap:anywhere]">
                               {recipientName.trim() || 'Beloved'}, Will You Marry Me?
                             </span>
-                            <p className="text-[10px] text-rose-100 italic line-clamp-3 px-2 leading-relaxed">
+                            <p className="text-[10px] text-rose-100 italic line-clamp-3 px-2 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                               &ldquo;{secretLetter}&rdquo;
                             </p>
                             
@@ -2260,10 +2260,10 @@ export default function CreateMagicLinkClient() {
                         ) : selectedOccasion === 'birthday' ? (
                           <div className="flex flex-col items-center py-2 space-y-1.5">
                             <div className="text-3xl animate-bounce">🎂</div>
-                            <span className="text-xs font-bold text-amber-300">
+                            <span className="text-xs font-bold text-amber-300 break-words break-all [overflow-wrap:anywhere]">
                               Happy Birthday {recipientName || 'Friend'}!
                             </span>
-                            <p className="text-[10px] text-slate-300 line-clamp-3 px-2 leading-relaxed">
+                            <p className="text-[10px] text-slate-300 line-clamp-3 px-2 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                               &ldquo;{secretLetter}&rdquo;
                             </p>
                             <span className="text-[9px] bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full">
@@ -2273,10 +2273,10 @@ export default function CreateMagicLinkClient() {
                         ) : selectedOccasion === 'eid' ? (
                           <div className="flex flex-col items-center py-2 space-y-1.5">
                             <div className="text-3xl animate-pulse">🌙</div>
-                            <span className="text-xs font-serif font-bold text-amber-300">
+                            <span className="text-xs font-serif font-bold text-amber-300 break-words break-all [overflow-wrap:anywhere]">
                               Eid Mubarak {recipientName || 'Friend'}!
                             </span>
-                            <p className="text-[10px] text-emerald-100 line-clamp-3 px-2 leading-relaxed">
+                            <p className="text-[10px] text-emerald-100 line-clamp-3 px-2 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                               &ldquo;{secretLetter}&rdquo;
                             </p>
                             <div className="flex items-center gap-1.5 pt-1">
@@ -2291,10 +2291,10 @@ export default function CreateMagicLinkClient() {
                         ) : selectedOccasion === 'anniversary' ? (
                           <div className="flex flex-col items-center py-2 space-y-1.5">
                             <div className="text-3xl animate-bounce">🍾</div>
-                            <span className="text-xs font-serif font-bold text-amber-300">
+                            <span className="text-xs font-serif font-bold text-amber-300 break-words break-all [overflow-wrap:anywhere]">
                               Happy Anniversary {recipientName || 'My Love'}!
                             </span>
-                            <p className="text-[10px] text-rose-100 italic line-clamp-3 px-2 leading-relaxed">
+                            <p className="text-[10px] text-rose-100 italic line-clamp-3 px-2 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                               &ldquo;{secretLetter}&rdquo;
                             </p>
                             <div className="flex items-center gap-1.5 pt-1">
@@ -2309,10 +2309,10 @@ export default function CreateMagicLinkClient() {
                         ) : selectedOccasion === 'graduation' ? (
                           <div className="flex flex-col items-center py-2 space-y-1.5">
                             <div className="text-3xl animate-bounce">🎓</div>
-                            <span className="text-xs font-serif font-bold text-amber-300">
+                            <span className="text-xs font-serif font-bold text-amber-300 break-words break-all [overflow-wrap:anywhere]">
                               Congratulations {recipientName || 'Graduate'}!
                             </span>
-                            <p className="text-[10px] text-sky-100 line-clamp-3 px-2 leading-relaxed">
+                            <p className="text-[10px] text-sky-100 line-clamp-3 px-2 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                               &ldquo;{secretLetter}&rdquo;
                             </p>
                             <div className="flex items-center gap-1.5 pt-1">
@@ -2327,10 +2327,10 @@ export default function CreateMagicLinkClient() {
                         ) : selectedOccasion === 'party' ? (
                           <div className="flex flex-col items-center py-2 space-y-1.5">
                             <div className="text-3xl animate-spin">🪩</div>
-                            <span className="text-xs font-bold text-amber-300">
+                            <span className="text-xs font-bold text-amber-300 break-words break-all [overflow-wrap:anywhere]">
                               Party Bash for {recipientName || 'VIP Guest'}!
                             </span>
-                            <p className="text-[10px] text-purple-100 line-clamp-3 px-2 leading-relaxed">
+                            <p className="text-[10px] text-purple-100 line-clamp-3 px-2 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                               &ldquo;{secretLetter}&rdquo;
                             </p>
                             <span className="text-[9px] bg-purple-500/30 text-purple-200 border border-purple-400/40 px-2 py-0.5 rounded-full">
@@ -2340,10 +2340,10 @@ export default function CreateMagicLinkClient() {
                         ) : selectedOccasion === 'newborn' ? (
                           <div className="flex flex-col items-center py-2 space-y-1.5">
                             <div className="text-3xl animate-bounce">🍼</div>
-                            <span className="text-xs font-serif font-bold text-amber-300">
+                            <span className="text-xs font-serif font-bold text-amber-300 break-words break-all [overflow-wrap:anywhere]">
                               Welcome Baby Miracle!
                             </span>
-                            <p className="text-[10px] text-emerald-100 line-clamp-3 px-2 leading-relaxed">
+                            <p className="text-[10px] text-emerald-100 line-clamp-3 px-2 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                               &ldquo;{secretLetter}&rdquo;
                             </p>
                             <span className="text-[9px] bg-pink-500/30 text-pink-200 border border-pink-400/40 px-2 py-0.5 rounded-full">
@@ -2353,10 +2353,10 @@ export default function CreateMagicLinkClient() {
                         ) : selectedOccasion === 'ramadan' ? (
                           <div className="flex flex-col items-center py-2 space-y-1.5">
                             <div className="text-3xl animate-pulse">🌙</div>
-                            <span className="text-xs font-serif font-bold text-amber-300">
+                            <span className="text-xs font-serif font-bold text-amber-300 break-words break-all [overflow-wrap:anywhere]">
                               Ramadan Kareem {recipientName || 'Family'}!
                             </span>
-                            <p className="text-[10px] text-cyan-100 line-clamp-3 px-2 leading-relaxed">
+                            <p className="text-[10px] text-cyan-100 line-clamp-3 px-2 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                               &ldquo;{secretLetter}&rdquo;
                             </p>
                             <span className="text-[9px] bg-cyan-500/30 text-cyan-200 border border-cyan-400/40 px-2 py-0.5 rounded-full">
@@ -2366,10 +2366,10 @@ export default function CreateMagicLinkClient() {
                         ) : selectedOccasion === 'apology' ? (
                           <div className="flex flex-col items-center py-2 space-y-1.5">
                             <div className="text-3xl animate-pulse">💖</div>
-                            <span className="text-xs font-serif font-bold text-amber-300">
+                            <span className="text-xs font-serif font-bold text-amber-300 break-words break-all [overflow-wrap:anywhere]">
                               From the Heart for {recipientName || 'Beloved'}
                             </span>
-                            <p className="text-[10px] text-rose-100 line-clamp-3 px-2 leading-relaxed">
+                            <p className="text-[10px] text-rose-100 line-clamp-3 px-2 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                               &ldquo;{secretLetter}&rdquo;
                             </p>
                             <span className="text-[9px] bg-rose-500/30 text-rose-200 border border-rose-400/40 px-2 py-0.5 rounded-full">
@@ -2379,10 +2379,10 @@ export default function CreateMagicLinkClient() {
                         ) : (
                           <div className="flex flex-col items-center py-2 space-y-1.5">
                             <div className="text-3xl animate-bounce">✨</div>
-                            <span className="text-xs font-bold text-amber-300">
+                            <span className="text-xs font-bold text-amber-300 break-words break-all [overflow-wrap:anywhere]">
                               {activeOccMeta.label}
                             </span>
-                            <p className="text-[10px] text-slate-300 line-clamp-3 px-2 leading-relaxed">
+                            <p className="text-[10px] text-slate-300 line-clamp-3 px-2 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                               &ldquo;{secretLetter}&rdquo;
                             </p>
                           </div>

@@ -661,17 +661,17 @@ export const WishCard = forwardRef<HTMLDivElement, {
                 return (
                   <div
                     className={cn(
-                      "wc-stagger w-full px-4 sm:px-6 parallax-near transition-all max-h-60 sm:max-h-80 overflow-y-auto overscroll-contain",
+                      "wc-stagger w-full px-4 sm:px-6 parallax-near transition-all max-h-60 sm:max-h-80 overflow-y-auto overscroll-contain break-words break-all [overflow-wrap:anywhere] [word-break:break-word]",
                       isRtlScript ? "text-right" : "text-center"
                     )}
                   >
                     <p className={cn(
-                      "text-balance transition-all",
+                      "text-balance transition-all break-words break-all [overflow-wrap:anywhere] [word-break:break-word]",
                       isRtlScript
                         ? "font-urdu text-base sm:text-lg md:text-xl leading-loose text-right"
                         : "text-sm sm:text-base leading-relaxed opacity-95 italic"
                     )}
-                    style={{ color: 'var(--c-ink)' }}
+                    style={{ color: 'var(--c-ink)', overflowWrap: 'anywhere', wordBreak: 'break-word' }}
                     >
                       &ldquo;{localizedMsg}&rdquo;
                     </p>

@@ -15,6 +15,7 @@ import {
 import type { MagicLinkData, MagicResponseData } from './magic-types'
 import { markCardAsCreatedByMe } from './view-tracker'
 import { getClientTracking } from './tracking'
+import { syncRecordToServer } from './server-sync'
 
 const LOCAL_STORAGE_KEY = 'cardzy_local_magic_links'
 
@@ -22,7 +23,27 @@ function getLocalLinks(): Record<string, MagicLinkData> {
   if (typeof window === 'undefined') return {}
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_KEY)
-    return raw ? JSON.parse(raw) : {}
+    if (!raw) return {}
+    const parsed = JSON.parse(raw)
+    if (Array.isArray(parsed)) {
+      const obj: Record<string, MagicLinkData> = {}
+      parsed.forEach((item: any, idx: number) => {
+        const k = item?.slug || item?.id || `magic_${idx}`
+        if (item) obj[k] = { ...item, slug: k }
+      })
+      return obj
+    }
+    if (parsed && typeof parsed === 'object') {
+      const obj: Record<string, MagicLinkData> = {}
+      for (const [k, v] of Object.entries(parsed)) {
+        if (v && typeof v === 'object') {
+          const s = (v as any).slug || (v as any).id || k
+          obj[s] = { ...(v as any), slug: s }
+        }
+      }
+      return obj
+    }
+    return {}
   } catch {
     return {}
   }
@@ -93,6 +114,9 @@ export async function createMagicLink(data: Omit<MagicLinkData, 'slug' | 'create
   // Always save to localStorage as instant offline cache
   saveLocalLink(slug, payload)
   markCardAsCreatedByMe(slug)
+
+  // Guaranteed Server Admin SDK sync to Firestore
+  syncRecordToServer('sync_magic', payload)
 
   const activeDb = getFirebaseDb() || db
   if (isFirebaseConfigured && activeDb) {
@@ -167,7 +191,7 @@ export async function recordCardShare(
           : 'magic_links'
       try {
         const docRef = doc(activeDb, collectionName, slug)
-        await setDoc(docRef, { shares: { [channel]: increment(1) } }, { merge: true })
+        await setDoc(docRef, { [`shares.${channel}`]: increment(1), lastSharedAt: Date.now() }, { merge: true })
       } catch {}
     }
   }
@@ -227,6 +251,10 @@ export async function recordCardShare(
       existing[channel] = (existing[channel] || 0) + 1
       localStorage.setItem(storageKey, JSON.stringify(existing))
     } catch {}
+
+    try {
+      window.dispatchEvent(new CustomEvent('cardzy_shares_updated', { detail: { cardType, slug, channel } }))
+    } catch {}
   }
 }
 
@@ -280,22 +308,30 @@ export async function getMagicLink(slug: string, shouldCountView: boolean = fals
  * Submits a recipient reaction (e.g. "Sent Love Back") or RSVP to Firestore
  */
 export async function submitMagicResponse(response: Omit<MagicResponseData, 'timestamp'>): Promise<boolean> {
-  const activeDb = getFirebaseDb() || db
   const tracking = await getClientTracking()
+  const fullResp = {
+    ...response,
+    createdLocation: tracking.createdLocation,
+    country: tracking.country,
+    countryCode: tracking.countryCode,
+    city: tracking.city,
+    region: tracking.region,
+    ip: tracking.ip,
+    device: tracking.device,
+    browser: tracking.browser,
+    os: tracking.os,
+    createdAt: Date.now(),
+  }
+
+  // Guaranteed Server Admin SDK sync to Firestore
+  syncRecordToServer('sync_magic_response', fullResp)
+
+  const activeDb = getFirebaseDb() || db
   if (isFirebaseConfigured && activeDb) {
     try {
       const colRef = collection(activeDb, 'magic_link_responses')
       await addDoc(colRef, {
-        ...response,
-        createdLocation: tracking.createdLocation,
-        country: tracking.country,
-        countryCode: tracking.countryCode,
-        city: tracking.city,
-        region: tracking.region,
-        ip: tracking.ip,
-        device: tracking.device,
-        browser: tracking.browser,
-        os: tracking.os,
+        ...fullResp,
         timestamp: serverTimestamp(),
       })
       return true
@@ -327,13 +363,25 @@ export async function getUserMagicLinks(userId?: string): Promise<MagicLinkData[
     }
   }
 
-  // Also include locally stored links that belong to this user / device
+  // Also include and sync locally stored links that belong to this user / device
   const local = getLocalLinks()
-  Object.values(local).forEach((loc) => {
-    if (!links.some((l) => l.slug === loc.slug)) {
-      if (!userId || loc.senderId === userId || !loc.senderId) {
-        links.push(loc)
-      }
+  Object.entries(local).forEach(([k, loc]) => {
+    if (!loc) return
+    const slug = loc.slug || loc.id || k
+    if (!slug) return
+    const updatedLoc: MagicLinkData = {
+      ...loc,
+      slug,
+      senderId: loc.senderId || userId || 'guest',
+    }
+    // Update local storage with normalized slug and senderId
+    saveLocalLink(slug, updatedLoc)
+
+    // Always push local magic link to Firestore
+    syncRecordToServer('sync_magic', updatedLoc)
+
+    if (!links.some((l) => (l.slug || l.id) === slug)) {
+      links.push(updatedLoc)
     }
   })
 
@@ -355,6 +403,9 @@ export async function updateMagicLink(slug: string, data: Partial<MagicLinkData>
     local[slug] = { ...local[slug], ...data }
     saveLocalLink(slug, local[slug])
   }
+
+  // Guaranteed Server Admin SDK sync to Firestore
+  syncRecordToServer('sync_magic', { slug, ...data })
 
   const activeDb = getFirebaseDb() || db
   if (isFirebaseConfigured && activeDb) {

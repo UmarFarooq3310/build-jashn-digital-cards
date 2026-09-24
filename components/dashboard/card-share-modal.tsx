@@ -24,6 +24,7 @@ import {
   Phone,
   Mail,
   Globe,
+  Video,
 } from 'lucide-react'
 import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
@@ -43,6 +44,7 @@ export interface ShareModalCardData {
     copy?: number
     qr?: number
     image?: number
+    video?: number
   }
   waMessage?: string
   occasion?: string
@@ -78,6 +80,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
     copy: 0,
     qr: 0,
     image: 0,
+    video: 0,
   })
   const imageCaptureRef = useRef<HTMLDivElement>(null)
 
@@ -89,6 +92,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
       copy: card.shares?.copy || 0,
       qr: card.shares?.qr || 0,
       image: card.shares?.image || 0,
+      video: card.shares?.video || 0,
     }
 
     if (typeof window !== 'undefined') {
@@ -103,12 +107,30 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
             copy: Math.max(initialStats.copy, parsed.copy || 0),
             qr: Math.max(initialStats.qr, parsed.qr || 0),
             image: Math.max(initialStats.image, parsed.image || 0),
+            video: Math.max(initialStats.video, parsed.video || 0),
           }
         }
       } catch {}
     }
 
     setShareStats(initialStats)
+
+    const handleShareUpdate = (e: any) => {
+      if (e?.detail?.slug === card.slug) {
+        const ch = e?.detail?.channel
+        if (ch) {
+          setShareStats((prev) => ({
+            ...prev,
+            [ch]: (prev[ch as keyof typeof prev] || 0) + 1,
+          }))
+        }
+      }
+    }
+
+    window.addEventListener('cardzy_shares_updated', handleShareUpdate)
+    return () => {
+      window.removeEventListener('cardzy_shares_updated', handleShareUpdate)
+    }
   }, [card])
 
   if (!card) return null
@@ -501,7 +523,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
                     <p className="text-[11px] text-zinc-300 font-medium">{card.subtitle}</p>
                   )}
                   {card.message && (
-                    <p className="text-[11px] text-zinc-300 italic line-clamp-2 leading-relaxed">
+                    <p className="text-[11px] text-zinc-300 italic line-clamp-2 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">
                       "{card.message}"
                     </p>
                   )}
@@ -569,36 +591,39 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
         {activeTab === 'stats' && (
           <div className="space-y-4 py-1 animate-in fade-in duration-150">
             {/* Top Stat Overview */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-              <div className="p-3.5 rounded-2xl bg-zinc-900 border border-white/10 text-center">
-                <span className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1">
-                  Total Visits
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="group relative overflow-hidden p-4 rounded-2xl bg-gradient-to-br from-amber-500/15 via-zinc-900 to-zinc-900 border border-amber-500/30 text-center shadow-xs">
+                <div className="flex items-center justify-center gap-1.5 text-[10px] uppercase font-extrabold text-amber-400 tracking-wider mb-1">
+                  <Eye className="size-3.5" /> Total Visits
+                </div>
+                <span className="text-3xl font-black text-amber-400 font-mono tracking-tight block my-0.5">
+                  {(card.viewsCount || 0).toLocaleString()}
                 </span>
-                <span className="text-2xl font-black text-amber-400">
-                  {card.viewsCount || 0}
-                </span>
-                <span className="text-[10px] text-zinc-500 block mt-0.5">Real-time views</span>
+                <span className="text-[10px] text-zinc-400 font-medium block">Real-time live views</span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-zinc-900 border border-white/10 text-center">
-                <span className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1">
-                  Total Shares
-                </span>
-                <span className="text-2xl font-black text-emerald-400">
-                  {(shareStats.whatsapp || 0) +
+              <div className="group relative overflow-hidden p-4 rounded-2xl bg-gradient-to-br from-emerald-500/15 via-zinc-900 to-zinc-900 border border-emerald-500/30 text-center shadow-xs">
+                <div className="flex items-center justify-center gap-1.5 text-[10px] uppercase font-extrabold text-emerald-400 tracking-wider mb-1">
+                  <Share2 className="size-3.5" /> Total Shares
+                </div>
+                <span className="text-3xl font-black text-emerald-400 font-mono tracking-tight block my-0.5">
+                  {(
+                    (shareStats.whatsapp || 0) +
                     (shareStats.sms || 0) +
                     (shareStats.copy || 0) +
                     (shareStats.qr || 0) +
-                    (shareStats.image || 0)}
+                    (shareStats.image || 0) +
+                    (shareStats.video || 0)
+                  ).toLocaleString()}
                 </span>
-                <span className="text-[10px] text-zinc-500 block mt-0.5">Across 5 channels</span>
+                <span className="text-[10px] text-zinc-400 font-medium block">Across 6 channels</span>
               </div>
 
-              <div className="col-span-2 sm:col-span-1 p-3.5 rounded-2xl bg-zinc-900 border border-white/10 text-center">
-                <span className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1">
-                  Card Type
-                </span>
-                <span className="text-sm font-black text-amber-300 capitalize truncate block">
+              <div className="col-span-2 sm:col-span-1 group relative overflow-hidden p-4 rounded-2xl bg-gradient-to-br from-primary/15 via-zinc-900 to-zinc-900 border border-primary/30 text-center shadow-xs">
+                <div className="flex items-center justify-center gap-1.5 text-[10px] uppercase font-extrabold text-primary tracking-wider mb-1">
+                  <Sparkles className="size-3.5" /> Card Format
+                </div>
+                <span className="text-sm font-black text-amber-300 capitalize truncate block my-1">
                   {card.type === 'invite'
                     ? 'Invitation'
                     : card.type === 'vcard'
@@ -607,98 +632,116 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
                     ? 'Magic Link'
                     : 'Wish Card'}
                 </span>
-                <span className="text-[10px] text-zinc-500 block mt-0.5">Active & Hosted</span>
+                <span className="text-[10px] text-emerald-400 font-semibold flex items-center justify-center gap-1">
+                  <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" /> Active & Hosted
+                </span>
               </div>
             </div>
 
             {/* Sharing Methods Breakdown */}
-            <div className="p-4 rounded-2xl bg-zinc-900/90 border border-white/10 space-y-3">
-              <div className="flex items-center justify-between border-b border-white/10 pb-2">
+            <div className="p-4 rounded-2xl bg-zinc-900/90 border border-white/10 space-y-3 shadow-xs">
+              <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
                 <div className="flex items-center gap-2 font-bold text-xs text-white">
                   <BarChart3 className="size-4 text-amber-400" />
-                  <span>How People Share & Access This Card</span>
+                  <span>Channel Engagement Breakdown</span>
                 </div>
-                <span className="text-[10px] text-zinc-400 font-mono">Live Firestore breakdown</span>
+                <span className="text-[10px] text-zinc-400 font-mono bg-white/5 px-2 py-0.5 rounded-md border border-white/10">Live Firestore</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {/* 1. WhatsApp */}
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-black/40 border border-white/5">
-                  <div className="flex items-center gap-2">
-                    <div className="size-7 rounded-lg bg-[#25D366]/15 flex items-center justify-center text-[#25D366]">
-                      <MessageCircle className="size-3.5" />
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-[#25D366]/10 to-transparent border border-[#25D366]/20 hover:border-[#25D366]/40 transition-all">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-lg bg-[#25D366]/20 flex items-center justify-center text-[#25D366] shadow-2xs">
+                      <MessageCircle className="size-4" />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-white block">WhatsApp Share</span>
+                      <span className="text-xs font-bold text-white block leading-tight">WhatsApp Share</span>
                       <span className="text-[10px] text-zinc-400">Direct message to contacts</span>
                     </div>
                   </div>
-                  <span className="text-base font-black text-emerald-400 font-mono">
+                  <span className="text-lg font-black text-emerald-400 font-mono">
                     {shareStats.whatsapp || 0}
                   </span>
                 </div>
 
                 {/* 2. SMS */}
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-black/40 border border-white/5">
-                  <div className="flex items-center gap-2">
-                    <div className="size-7 rounded-lg bg-blue-500/15 flex items-center justify-center text-blue-400">
-                      <Smartphone className="size-3.5" />
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-blue-500/10 to-transparent border border-blue-500/20 hover:border-blue-500/40 transition-all">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400 shadow-2xs">
+                      <Smartphone className="size-4" />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-white block">SMS Text</span>
+                      <span className="text-xs font-bold text-white block leading-tight">SMS Text</span>
                       <span className="text-[10px] text-zinc-400">Mobile carrier text</span>
                     </div>
                   </div>
-                  <span className="text-base font-black text-blue-400 font-mono">
+                  <span className="text-lg font-black text-blue-400 font-mono">
                     {shareStats.sms || 0}
                   </span>
                 </div>
 
                 {/* 3. Copy Link */}
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-black/40 border border-white/5">
-                  <div className="flex items-center gap-2">
-                    <div className="size-7 rounded-lg bg-zinc-500/15 flex items-center justify-center text-zinc-300">
-                      <Copy className="size-3.5" />
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-zinc-500/10 to-transparent border border-zinc-500/20 hover:border-zinc-500/40 transition-all">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-lg bg-zinc-500/20 flex items-center justify-center text-zinc-300 shadow-2xs">
+                      <Copy className="size-4" />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-white block">Copy Clean Link</span>
+                      <span className="text-xs font-bold text-white block leading-tight">Copy Clean Link</span>
                       <span className="text-[10px] text-zinc-400">Clipboard copies</span>
                     </div>
                   </div>
-                  <span className="text-base font-black text-zinc-200 font-mono">
+                  <span className="text-lg font-black text-zinc-200 font-mono">
                     {shareStats.copy || 0}
                   </span>
                 </div>
 
                 {/* 4. QR Barcode */}
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-black/40 border border-white/5">
-                  <div className="flex items-center gap-2">
-                    <div className="size-7 rounded-lg bg-amber-500/15 flex items-center justify-center text-amber-400">
-                      <QrCode className="size-3.5" />
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-amber-500/10 to-transparent border border-amber-500/20 hover:border-amber-500/40 transition-all">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 shadow-2xs">
+                      <QrCode className="size-4" />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-white block">Barcode / QR Code</span>
+                      <span className="text-xs font-bold text-white block leading-tight">Barcode / QR Code</span>
                       <span className="text-[10px] text-zinc-400">Scanned / Downloaded</span>
                     </div>
                   </div>
-                  <span className="text-base font-black text-amber-400 font-mono">
+                  <span className="text-lg font-black text-amber-400 font-mono">
                     {shareStats.qr || 0}
                   </span>
                 </div>
 
                 {/* 5. Flyer Image Download */}
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-black/40 border border-white/5 sm:col-span-2">
-                  <div className="flex items-center gap-2">
-                    <div className="size-7 rounded-lg bg-purple-500/15 flex items-center justify-center text-purple-400">
-                      <ImageIcon className="size-3.5" />
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-purple-500/10 to-transparent border border-purple-500/20 hover:border-purple-500/40 transition-all">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 shadow-2xs">
+                      <ImageIcon className="size-4" />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-white block">Download as Image (PNG)</span>
-                      <span className="text-[10px] text-zinc-400">Exported for Status / Story / Gallery</span>
+                      <span className="text-xs font-bold text-white block leading-tight">Card Image (PNG)</span>
+                      <span className="text-[10px] text-zinc-400">Exported snapshot</span>
                     </div>
                   </div>
-                  <span className="text-base font-black text-purple-400 font-mono">
+                  <span className="text-lg font-black text-purple-400 font-mono">
                     {shareStats.image || 0}
+                  </span>
+                </div>
+
+                {/* 6. Video Download */}
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-rose-500/10 to-transparent border border-rose-500/20 hover:border-rose-500/40 transition-all">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-lg bg-rose-500/20 flex items-center justify-center text-rose-400 shadow-2xs">
+                      <Video className="size-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-white block leading-tight">Animated Video (MP4)</span>
+                      <span className="text-[10px] text-zinc-400">3D Animated motion export</span>
+                    </div>
+                  </div>
+                  <span className="text-lg font-black text-rose-400 font-mono">
+                    {shareStats.video || 0}
                   </span>
                 </div>
               </div>
@@ -710,7 +753,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
                 <span>How Share Tracking Works</span>
               </div>
               <p className="text-[11px] text-zinc-400 leading-relaxed">
-                Whenever you or a recipient taps WhatsApp, sends an SMS, copies the link, downloads the QR barcode, or saves the card image, Cardzy increments the counter in real time in Firestore and your Host Dashboard.
+                Whenever you or a recipient taps WhatsApp, sends an SMS, copies the link, downloads the QR barcode, saves the card image, or downloads the animated video, Cardzy increments the counter in real time in Firestore and your Host Dashboard.
               </p>
             </div>
           </div>

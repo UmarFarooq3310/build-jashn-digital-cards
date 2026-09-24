@@ -1802,6 +1802,8 @@ font {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid color-mix(in srgb, var(--acc, #f5c451) 35%, transparent);
   word-break: break-word;
+  word-break: break-all;
+  overflow-wrap: anywhere;
   box-sizing: border-box;
 }
 

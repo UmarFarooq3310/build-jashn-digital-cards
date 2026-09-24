@@ -24,13 +24,25 @@ export async function POST(req: Request) {
 
     try {
       const db = getAdminDb()
-      const docRef = db.collection(collectionName).doc(slug)
+      let targetRef = db.collection(collectionName).doc(slug)
+      let docSnap = await targetRef.get()
+
+      // Fallback: If doc does not exist by direct ID, search by slug property
+      if (!docSnap.exists) {
+        const qSnap = await db.collection(collectionName).where('slug', '==', slug).limit(1).get()
+        if (!qSnap.empty) {
+          targetRef = qSnap.docs[0].ref
+          docSnap = qSnap.docs[0]
+        }
+      }
 
       if (action === 'view') {
         const viewField = cardType === 'magic' ? 'viewsCount' : 'viewCount'
-        await docRef.set(
+        await targetRef.set(
           {
             [viewField]: FieldValue.increment(1),
+            viewCount: FieldValue.increment(1),
+            viewsCount: FieldValue.increment(1),
             lastViewedAt: Date.now(),
           },
           { merge: true }
@@ -39,11 +51,10 @@ export async function POST(req: Request) {
       }
 
       if (action === 'share' && channel) {
-        await docRef.set(
+        // Use dot-notation so each specific share channel (sms, whatsapp, copy, qr, image, video) increments independently
+        await targetRef.set(
           {
-            shares: {
-              [channel]: FieldValue.increment(1),
-            },
+            [`shares.${channel}`]: FieldValue.increment(1),
             lastSharedAt: Date.now(),
           },
           { merge: true }

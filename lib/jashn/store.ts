@@ -5,6 +5,7 @@ import { persist } from 'zustand/middleware'
 import type { Invitation, JashnUser, Plan, Wish, RsvpGuest, VisitingCard } from './types'
 import { getClientTracking } from './tracking'
 import { markCardAsCreatedByMe } from './view-tracker'
+import { syncRecordToServer } from './server-sync'
 import { db, auth, isFirebaseConfigured, getFirebaseAuth, getFirebaseDb } from '../firebase'
 import {
   createUserWithEmailAndPassword,
@@ -187,6 +188,9 @@ export const useJashn = create<JashnState>()(
             }
           }
 
+          // Guaranteed Server Admin SDK sync to Firestore
+          syncRecordToServer('sync_user', newUser)
+
           setAuthCookie(true)
           set((s) => {
             const existing = s.registeredUsers || []
@@ -326,6 +330,9 @@ export const useJashn = create<JashnState>()(
             }
           }
 
+          // Guaranteed Server Admin SDK sync to Firestore
+          syncRecordToServer('sync_user', userData)
+
           setAuthCookie(true)
           set((s) => {
             const existing = s.registeredUsers || []
@@ -450,10 +457,13 @@ export const useJashn = create<JashnState>()(
           }
         }
 
+        // Guaranteed Server Admin SDK sync to Firestore
+        syncRecordToServer('sync_user', userData)
+
         set((s) => {
           const existing = s.registeredUsers || []
-          const idx = existing.findIndex((u) => u.uid === userData.uid || (u.email && u.email.toLowerCase() === userData.email?.toLowerCase()))
-          const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
+          const idx = existing.findIndex((u) => u.uid === userData!.uid || (u.email && u.email.toLowerCase() === userData!.email?.toLowerCase()))
+          const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData!, ...existing]
           return { user: userData, registeredUsers: updated }
         })
         await get().fetchUserCards()
@@ -486,6 +496,8 @@ export const useJashn = create<JashnState>()(
           }
         }
 
+        syncRecordToServer('sync_user', updatedUser)
+
         set((s) => ({
           user: updatedUser,
           registeredUsers: s.registeredUsers.map((u) => (u.uid === currentUser.uid ? updatedUser : u)),
@@ -500,6 +512,15 @@ export const useJashn = create<JashnState>()(
           wishes: s.wishes.map((w) => (w.creatorId === 'guest' ? { ...w, creatorId: userId } : w)),
           invitations: s.invitations.map((i) => (i.creatorId === 'guest' ? { ...i, creatorId: userId } : i)),
         }))
+
+        for (const wish of guestWishes) {
+          const updatedWish = { ...wish, creatorId: userId }
+          syncRecordToServer('sync_wish', updatedWish)
+        }
+        for (const inv of guestInvs) {
+          const updatedInv = { ...inv, creatorId: userId }
+          syncRecordToServer('sync_invitation', updatedInv)
+        }
 
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {
@@ -521,6 +542,17 @@ export const useJashn = create<JashnState>()(
       fetchUserCards: async () => {
         let currentUser = get().user
         if (!currentUser) return
+        const activeUid = currentUser.uid
+        // Ensure user is synced to server admin database
+        if (activeUid) {
+          syncRecordToServer('sync_user', currentUser)
+        }
+
+        const localState = get()
+        // Sync all local wishes, invitations, visiting cards to ensure none are missing from Firestore
+        localState.wishes.forEach((w) => syncRecordToServer('sync_wish', { ...w, creatorId: w.creatorId || activeUid || 'guest' }))
+        localState.invitations.forEach((i) => syncRecordToServer('sync_invitation', { ...i, creatorId: i.creatorId || activeUid || 'guest' }))
+        localState.visitingCards.forEach((vc) => syncRecordToServer('sync_vcard', { ...vc, creatorId: vc.creatorId || activeUid || 'guest' }))
 
         const activeDb = getFirebaseDb() || db
         if (!currentUser.uid) {
@@ -610,6 +642,9 @@ export const useJashn = create<JashnState>()(
           os: tracking.os,
         }
 
+        // Guaranteed Server Admin SDK sync to Firestore
+        syncRecordToServer('sync_wish', wish)
+
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {
           try {
@@ -646,6 +681,9 @@ export const useJashn = create<JashnState>()(
           os: tracking.os,
         }
 
+        // Guaranteed Server Admin SDK sync to Firestore
+        syncRecordToServer('sync_invitation', inv)
+
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {
           try {
@@ -680,6 +718,9 @@ export const useJashn = create<JashnState>()(
           browser: tracking.browser,
           os: tracking.os,
         }
+
+        // Guaranteed Server Admin SDK sync to Firestore
+        syncRecordToServer('sync_vcard', vc)
 
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {
@@ -913,6 +954,9 @@ export const useJashn = create<JashnState>()(
           wishes: s.wishes.map((w) => (w.slug === slug ? { ...w, ...data } : w)),
         }))
 
+        // Guaranteed Server Admin SDK sync to Firestore
+        syncRecordToServer('sync_wish', { slug, ...data })
+
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {
           try {
@@ -928,6 +972,9 @@ export const useJashn = create<JashnState>()(
           invitations: s.invitations.map((i) => (i.slug === slug ? { ...i, ...data } : i)),
         }))
 
+        // Guaranteed Server Admin SDK sync to Firestore
+        syncRecordToServer('sync_invitation', { slug, ...data })
+
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {
           try {
@@ -942,6 +989,9 @@ export const useJashn = create<JashnState>()(
         set((s) => ({
           visitingCards: s.visitingCards.map((v) => (v.slug === slug ? { ...v, ...data } : v)),
         }))
+
+        // Guaranteed Server Admin SDK sync to Firestore
+        syncRecordToServer('sync_vcard', { slug, ...data })
 
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {
@@ -982,6 +1032,9 @@ export const useJashn = create<JashnState>()(
             : s.user
           return { registeredUsers: updatedRegistered, user: updatedUser }
         })
+
+        // Guaranteed Server Admin SDK sync to Firestore
+        syncRecordToServer('sync_user', { uid: uidToUpdate, plan: newPlan, planActivatedAt, planExpiresAt: planExpiresAt || null })
 
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {
@@ -1070,6 +1123,9 @@ export const useJashn = create<JashnState>()(
         }
         set((s) => ({ rsvps: [newRsvp, ...(s.rsvps || [])] }))
         get().incrementRsvp(guestData.invitationSlug)
+
+        // Guaranteed Server Admin SDK sync to Firestore
+        syncRecordToServer('sync_rsvp', newRsvp)
 
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {

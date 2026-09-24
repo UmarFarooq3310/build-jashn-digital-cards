@@ -55,7 +55,7 @@ export function TypewriterLetter({
   }
 
   return (
-    <div className={className} onClick={handleSkip}>
+    <div className={`break-words break-all [overflow-wrap:anywhere] [word-break:break-word] ${className}`} onClick={handleSkip}>
       {photoUrl && (
         <div className="mb-3 flex justify-center" onClick={(e) => e.stopPropagation()}>
           <ZoomableImageBadge
@@ -67,20 +67,22 @@ export function TypewriterLetter({
           />
         </div>
       )}
-      <span style={{ whiteSpace: 'pre-wrap' }}>{englishText.slice(0, displayedChars)}</span>
+      <span style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', wordBreak: 'break-word' }} className="break-words break-all">
+        {englishText.slice(0, displayedChars)}
+      </span>
       {!isComplete && (
         <span 
-          className="inline-block w-1.5 h-3.5 ml-0.5 animate-pulse align-middle" 
+          className="inline-block w-1.5 h-3.5 ml-0.5 animate-pulse align-middle shrink-0" 
           style={{ backgroundColor: cursorColor }}
         />
       )}
       {isComplete && urduText && (
-        <div className={`animate-in fade-in duration-700 ${urduClassName}`}>
+        <div className={`animate-in fade-in duration-700 break-words break-all [overflow-wrap:anywhere] ${urduClassName}`}>
           {urduText}
         </div>
       )}
       {isComplete && signatureText && (
-        <div className={`animate-in fade-in duration-700 delay-300 fill-mode-both ${signatureClassName}`}>
+        <div className={`animate-in fade-in duration-700 delay-300 fill-mode-both break-words break-all [overflow-wrap:anywhere] ${signatureClassName}`}>
           {signatureText}
         </div>
       )}
