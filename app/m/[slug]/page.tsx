@@ -278,24 +278,27 @@ function MagicLinkInner({ slug }: { slug: string }) {
                   viewIncrementedRef.current = slug
                   setData((prev) => (prev ? { ...prev, viewsCount: (prev.viewsCount || 0) + 1 } : null))
                   
-                  // Direct Client Firestore Increment
+                  // Direct Client Firestore Increment (with server fallback if direct write fails)
                   if (activeDb) {
                     setDoc(
                       docRef,
                       { viewsCount: increment(1), lastViewedAt: Date.now() },
                       { merge: true }
-                    ).catch((err) => {
-                      console.warn('Failed to increment magic view in Firestore:', err)
+                    ).catch(() => {
+                      // Fallback to server API only if direct client write fails
+                      fetch('/api/card-activity', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ cardType: 'magic', slug, action: 'view' }),
+                      }).catch(() => {})
                     })
-                  }
-
-                  try {
+                  } else {
                     fetch('/api/card-activity', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({ cardType: 'magic', slug, action: 'view' }),
                     }).catch(() => {})
-                  } catch {}
+                  }
                 }
               }
             } else {
