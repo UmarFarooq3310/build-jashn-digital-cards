@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { useJashn } from '@/lib/jashn/store'
 import { getClientTracking } from '@/lib/jashn/tracking'
-
 import { isDeviceAdmin, purgeAdminPresence } from '@/lib/jashn/admin-presence'
 
 function getDeviceId(): string {
@@ -23,7 +23,6 @@ function getDeviceId(): string {
 function getSessionId(): string {
   if (typeof window === 'undefined') return ''
   try {
-    if (isDeviceAdmin()) return ''
     let id = sessionStorage.getItem('cardzy_live_session_id')
     if (!id) {
       id = 's_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36)
@@ -37,13 +36,14 @@ function getSessionId(): string {
 
 export function LivePresenceTracker() {
   const user = useJashn((s) => s.user)
+  const pathname = usePathname()
 
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    // If device or user is admin, immediately purge any sessions from Firebase and abort tracking
-    if (isDeviceAdmin(user?.email)) {
-      purgeAdminPresence()
+    // If currently on admin portal or admin device, purge presence and abort
+    if (pathname.startsWith('/admin_portal') || isDeviceAdmin(user?.email)) {
+      purgeAdminPresence(undefined, getDeviceId())
       return
     }
 
@@ -54,12 +54,11 @@ export function LivePresenceTracker() {
 
     const updatePresence = async () => {
       try {
-        const isAdmin = isDeviceAdmin(user?.email)
-        const pathname = window.location.pathname
+        const currentPath = window.location.pathname
 
-        // If user is admin or browsing admin portal, DO NOT record presence and clean up any existing doc
-        if (isAdmin || pathname.startsWith('/admin_portal')) {
-          await purgeAdminPresence(sessionId)
+        // Do not record presence if on admin portal or admin device
+        if (currentPath.startsWith('/admin_portal') || isDeviceAdmin(user?.email)) {
+          await purgeAdminPresence(sessionId, getDeviceId())
           return
         }
 
@@ -73,7 +72,6 @@ export function LivePresenceTracker() {
         const tracking = await getClientTracking()
         const exactLocation = tracking.createdLocation || (tracking.city ? `${tracking.city}, ${tracking.country || 'Pakistan'}` : tracking.country || 'Pakistan')
         const language = navigator.language || 'en'
-
         const deviceId = getDeviceId()
 
         await setDoc(
@@ -82,7 +80,7 @@ export function LivePresenceTracker() {
             sessionId,
             deviceId,
             lastSeen: Date.now(),
-            page: window.location.pathname,
+            page: currentPath,
             title: document.title || 'Cardzy',
             device: isMobile ? 'Mobile' : 'Desktop',
             location: exactLocation,
@@ -105,25 +103,27 @@ export function LivePresenceTracker() {
       }
     }
 
-    // Initial heartbeat
+    // Trigger immediate presence update
     updatePresence()
 
-    // Pulse heartbeat every 2.5 minutes (150s) instead of 25s to keep Firestore writes well within free limits
-    intervalId = setInterval(updatePresence, 150000)
+    // Pulse heartbeat every 35 seconds to keep active session fresh while within Firestore limits
+    intervalId = setInterval(updatePresence, 35000)
 
-    const handleVisibilityChange = () => {
+    const handleActivity = () => {
       if (document.visibilityState === 'visible') {
         updatePresence()
       }
     }
 
-    document.addEventListener('visibilitychange', handleVisibilityChange)
+    document.addEventListener('visibilitychange', handleActivity)
+    window.addEventListener('focus', handleActivity)
 
     return () => {
       if (intervalId) clearInterval(intervalId)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      document.removeEventListener('visibilitychange', handleActivity)
+      window.removeEventListener('focus', handleActivity)
     }
-  }, [user])
+  }, [user, pathname])
 
   return null
 }

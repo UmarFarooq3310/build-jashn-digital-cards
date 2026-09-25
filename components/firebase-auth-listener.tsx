@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { useJashn } from '@/lib/jashn/store'
 import type { JashnUser } from '@/lib/jashn/types'
+import { purgeAdminPresence, ADMIN_EMAILS } from '@/lib/jashn/admin-presence'
 
 function setAuthCookie(authed: boolean) {
   if (typeof document === 'undefined') return
@@ -131,6 +132,9 @@ export function FirebaseAuthListener() {
               const updated = idx >= 0 ? existing.map((u, i) => (i === idx ? { ...u, ...userData } : u)) : [userData, ...existing]
               return { user: userData, registeredUsers: updated, isAuthLoading: false }
             })
+            if (firebaseUser.email && ADMIN_EMAILS.includes(firebaseUser.email.toLowerCase().trim())) {
+              purgeAdminPresence()
+            }
             await useJashn.getState().migrateGuestCards(userData.uid)
             fetchUserCards()
 

@@ -16,14 +16,17 @@ import {
   Filter,
   Tag,
   Layers,
+  Loader2,
 } from 'lucide-react'
 import { POET_PROFILES, POPULAR_SEARCH_KEYWORDS, POETRY_DATABASE, Poem } from '@/lib/jashn/poetry-data'
 import { useLang } from '@/lib/lang/context'
+import { useJashn } from '@/lib/jashn/store'
 import { cn } from '@/lib/utils'
 
 export function PoetryClient() {
   const { lang, t } = useLang()
   const isUrdu = lang === 'ur' || lang === 'ar'
+  const showToast = useJashn((s) => s.showToast)
 
   const [poems, setPoems] = useState<Poem[]>(() => POETRY_DATABASE)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -39,8 +42,19 @@ export function PoetryClient() {
   const [isGeneratingFlyer, setIsGeneratingFlyer] = useState<string | null>(null)
   const [highlightedPoemId, setHighlightedPoemId] = useState<string | null>(null)
 
+  // Load saved favorites from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('cardzy_poetry_favorites')
+      if (saved) {
+        setLikedIds(new Set(JSON.parse(saved)))
+      }
+    } catch {}
+  }, [])
+
   // Sentinel ref for infinite scroll
   const observerTarget = useRef<HTMLDivElement | null>(null)
+
 
   // Language counts across entire 1,000 poem library
   const languageCounts = useMemo(() => {
@@ -315,16 +329,34 @@ export function PoetryClient() {
     setTimeout(() => setCopiedId(null), 2500)
   }
 
-  const handleToggleLike = (id: string) => {
+  const handleToggleLike = (poem: Poem) => {
+    const isCurrentlyLiked = likedIds.has(poem.id)
     setLikedIds((prev) => {
       const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
+      if (isCurrentlyLiked) next.delete(poem.id)
+      else next.add(poem.id)
+      try {
+        localStorage.setItem('cardzy_poetry_favorites', JSON.stringify(Array.from(next)))
+      } catch {}
       return next
     })
+
+    // Sync to Firestore backend via /api/poetry-activity
+    try {
+      fetch('/api/poetry-activity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          poemId: poem.id,
+          poet: poem.poet,
+          title: poem.title,
+          action: isCurrentlyLiked ? 'unlike' : 'like',
+        }),
+      }).catch(() => {})
+    } catch {}
   }
 
-  // WhatsApp Share: Shares active selected language text, poet name, and website line till /poetry
+  // WhatsApp Share: Shares active selected language text, poet name, and website link exactly once
   const handleWhatsAppShare = (poem: Poem) => {
     const { text, poetDisplayName, currentTab } = getActiveVerseDetails(poem)
     trackPoetryActivity(poem, 'share', `whatsapp_${currentTab}`)
@@ -334,33 +366,42 @@ export function PoetryClient() {
     window.open(`https://api.whatsapp.com/send?text=${shareText}`, '_blank')
   }
 
-  // SMS / Native Share: Shares active selected language text, poet name, and website line till /poetry
+  // SMS / Native Share: For native Web Share API (mobile), provide clean verse text so WhatsApp/apps do not duplicate url
   const handleSmsOrNativeShare = async (poem: Poem) => {
     const { text, poetDisplayName, currentTab } = getActiveVerseDetails(poem)
     trackPoetryActivity(poem, 'share', `sms_native_${currentTab}`)
-    const sharePayload = {
-      title: `${poem.title} — ${poetDisplayName}`,
-      text: `${text}\n\n— ${poetDisplayName}\n\nhttps://cardzy.online/poetry`,
-      url: 'https://cardzy.online/poetry',
-    }
+    const poetryUrl = 'https://cardzy.online/poetry'
 
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
-        await navigator.share(sharePayload)
+        // Passing the URL only in 'url' (not repeated in text) prevents WhatsApp and Android/iOS share sheet from showing the link twice
+        await navigator.share({
+          title: `${poem.title} — ${poetDisplayName}`,
+          text: `${text}\n\n— ${poetDisplayName}`,
+          url: poetryUrl,
+        })
         return
       } catch (e) {}
     }
 
-    // Fallback to SMS protocol
-    const smsBody = encodeURIComponent(`${text}\n\n— ${poetDisplayName}\n\nhttps://cardzy.online/poetry`)
+    // Fallback to SMS protocol (SMS does not take separate url, so single link in body)
+    const smsBody = encodeURIComponent(`${text}\n\n— ${poetDisplayName}\n\n${poetryUrl}`)
     window.open(`sms:?&body=${smsBody}`, '_self')
   }
 
   // Generate Tailored, Dynamic-Height Story Flyer in the Active Card Language
   const handleDownloadFlyer = async (poem: Poem) => {
     setIsGeneratingFlyer(poem.id)
-    const { text, lines, isRtl, tabLabel, poetDisplayName, poetEra, currentTab } = getActiveVerseDetails(poem)
+    const { text, lines, isRtl, poetDisplayName, poetEra, currentTab } = getActiveVerseDetails(poem)
     trackPoetryActivity(poem, 'flyer', `canvas_png_${currentTab}`)
+
+    // Show initial loading feedback for mobile and desktop users
+    showToast(
+      isUrdu
+        ? 'کارڈ تیار کیا جا رہا ہے... برائے مہربانی ایک لمحہ انتظار فرمائیں ⏳'
+        : 'Generating high-resolution card... please wait a moment ⏳',
+      'info'
+    )
 
     try {
       if (typeof document !== 'undefined' && document.fonts) {
@@ -460,7 +501,8 @@ export function PoetryClient() {
       ctx.fillStyle = '#6ee7b7'
       ctx.font = 'bold 15px sans-serif'
       const catLabel = (poem.categoryLabel || 'Masterpiece').toUpperCase()
-      ctx.fillText(`✦ ${catLabel}  •  ${tabLabel} ✦`, 540, topY)
+      // Clean category title without language or roman badges
+      ctx.fillText(`✦ ${catLabel} ✦`, 540, topY)
 
       topY += 22
       ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)'
@@ -506,15 +548,30 @@ export function PoetryClient() {
       ctx.textBaseline = 'middle'
       ctx.fillText('✦ Powered by Cardzy.online ✦', 540, footerY + 30)
 
-      // Trigger high-res PNG download
+      // Clean file naming and trigger direct image download
+      const sanitizedTitle = (poem.title || 'poetry').toLowerCase().replace(/[^a-z0-9]/g, '-')
       const imageURL = canvas.toDataURL('image/png')
       const link = document.createElement('a')
-      const sanitizedTitle = (poem.title || 'poetry').toLowerCase().replace(/[^a-z0-9]/g, '-')
-      link.download = `Cardzy-${sanitizedTitle}-${currentTab}.png`
+      link.download = `Cardzy-${sanitizedTitle}.png`
       link.href = imageURL
+      document.body.appendChild(link)
       link.click()
+      document.body.removeChild(link)
+
+      showToast(
+        isUrdu
+          ? 'کارڈ کامیابی کے ساتھ تیار اور ڈاؤن لوڈ ہو گیا! اپنی گیلری یا فائلز میں دیکھیں۔ 🎨'
+          : 'Card downloaded successfully! Check your photos or downloads 🎨',
+        'success'
+      )
     } catch (err) {
       console.error('Flyer download error:', err)
+      showToast(
+        isUrdu
+          ? 'کارڈ بنانے میں خرابی۔ برائے مہربانی دوبارہ کوشش کریں۔'
+          : 'Failed to generate card. Please try again.',
+        'error'
+      )
     } finally {
       setIsGeneratingFlyer(null)
     }
@@ -636,22 +693,22 @@ export function PoetryClient() {
         </div>
       </section>
 
-      {/* --- FILTER CONTROLS (Sticky 4-Dropdown Clean Grid) --- */}
-      <section className="sticky top-16 z-30 bg-slate-950/95 backdrop-blur-md border-b border-slate-800/80 py-3 px-3 sm:px-6 lg:px-8 shadow-md">
+      {/* --- FILTER CONTROLS (Sticky 4-Dropdown Clean Grid, Mobile-Optimized Text) --- */}
+      <section className="sticky top-16 z-30 bg-slate-950/95 backdrop-blur-md border-b border-slate-800/80 py-2 sm:py-3 px-2 sm:px-6 lg:px-8 shadow-md">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
             {/* 1. Language Dropdown */}
-            <div className="flex flex-col gap-1">
-              <label className="text-[11px] font-bold text-amber-300 flex items-center gap-1">
-                <span>🌐</span> <span>{isUrdu ? 'زبان (Language)' : 'Language'}</span>
+            <div className="flex flex-col gap-0.5 sm:gap-1">
+              <label className="text-[10px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-1">
+                <span>🌐</span> <span>{isUrdu ? 'زبان' : 'Language'}</span>
               </label>
               <select
                 value={selectedLanguage}
                 onChange={(e) => setSelectedLanguage(e.target.value)}
-                className="w-full text-xs font-bold rounded-xl bg-slate-900 border border-amber-500/40 text-slate-100 px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400 shadow-sm cursor-pointer"
+                className="w-full text-[11px] sm:text-xs font-semibold rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-2 py-1.5 sm:px-2.5 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
               >
                 <option value="all">
-                  {isUrdu ? `🌐 تمام زبانیں (${poems.length})` : `🌐 All Languages (${poems.length})`}
+                  {isUrdu ? `🌐 تمام زبانیں (${poems.length})` : `🌐 All (${poems.length})`}
                 </option>
                 <option value="ur">
                   {isUrdu ? `🇵🇰 اردو (${languageCounts['ur'] || 0})` : `🇵🇰 Urdu (${languageCounts['ur'] || 0})`}
@@ -675,29 +732,29 @@ export function PoetryClient() {
             </div>
 
             {/* 2. Poet Dropdown (Cascading: Filters based on active language) */}
-            <div className="flex flex-col gap-1">
-              <label className="text-[11px] font-bold text-amber-300 flex items-center gap-1">
-                <Feather className="size-3 text-amber-400" /> <span>{isUrdu ? 'شاعر (Poet)' : 'Poet'}</span>
+            <div className="flex flex-col gap-0.5 sm:gap-1">
+              <label className="text-[10px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-1">
+                <Feather className="size-2.5 sm:size-3 text-amber-400" /> <span>{isUrdu ? 'شاعر' : 'Poet'}</span>
               </label>
               <select
                 value={selectedPoet}
                 onChange={(e) => setSelectedPoet(e.target.value)}
-                className="w-full text-xs font-bold rounded-xl bg-slate-900 border border-amber-500/40 text-slate-100 px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400 shadow-sm cursor-pointer"
+                className="w-full text-[11px] sm:text-xs font-semibold rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-2 py-1.5 sm:px-2.5 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
               >
                 <option value="all">
                   {selectedLanguage === 'all'
-                    ? (isUrdu ? `⭐ تمام شعراء (${poetList[0]?.count || poems.length} کلام)` : `⭐ All World Poets (${poetList[0]?.count || poems.length} verses)`)
+                    ? (isUrdu ? `⭐ تمام شعراء (${poetList[0]?.count || poems.length})` : `⭐ All Poets (${poetList[0]?.count || poems.length})`)
                     : selectedLanguage === 'pa'
-                    ? (isUrdu ? `⭐ تمام پنجابی شعراء (${poetList[0]?.count || 0} کلام)` : `⭐ All Punjabi Poets (${poetList[0]?.count || 0} verses)`)
+                    ? (isUrdu ? `⭐ پنجابی شعراء (${poetList[0]?.count || 0})` : `⭐ Punjabi Poets (${poetList[0]?.count || 0})`)
                     : selectedLanguage === 'ur'
-                    ? (isUrdu ? `⭐ تمام اردو شعراء (${poetList[0]?.count || 0} کلام)` : `⭐ All Urdu Poets (${poetList[0]?.count || 0} verses)`)
+                    ? (isUrdu ? `⭐ اردو شعراء (${poetList[0]?.count || 0})` : `⭐ Urdu Poets (${poetList[0]?.count || 0})`)
                     : selectedLanguage === 'fa'
-                    ? (isUrdu ? `⭐ تمام فارسی شعراء (${poetList[0]?.count || 0} کلام)` : `⭐ All Persian Poets (${poetList[0]?.count || 0} verses)`)
+                    ? (isUrdu ? `⭐ فارسی شعراء (${poetList[0]?.count || 0})` : `⭐ Persian Poets (${poetList[0]?.count || 0})`)
                     : selectedLanguage === 'ar'
-                    ? (isUrdu ? `⭐ تمام عربی شعراء (${poetList[0]?.count || 0} کلام)` : `⭐ All Arabic Poets (${poetList[0]?.count || 0} verses)`)
+                    ? (isUrdu ? `⭐ عربی شعراء (${poetList[0]?.count || 0})` : `⭐ Arabic Poets (${poetList[0]?.count || 0})`)
                     : selectedLanguage === 'en'
-                    ? `⭐ All English Poets (${poetList[0]?.count || 0} verses)`
-                    : (isUrdu ? `⭐ تمام ہسپانوی شعراء (${poetList[0]?.count || 0} کلام)` : `⭐ All Spanish Poets (${poetList[0]?.count || 0} verses)`)}
+                    ? `⭐ English Poets (${poetList[0]?.count || 0})`
+                    : (isUrdu ? `⭐ ہسپانوی شعراء (${poetList[0]?.count || 0})` : `⭐ Spanish Poets (${poetList[0]?.count || 0})`)}
                 </option>
                 {poetList
                   .filter((p) => p.name !== 'all')
@@ -710,14 +767,14 @@ export function PoetryClient() {
             </div>
 
             {/* 3. Theme / Category Dropdown */}
-            <div className="flex flex-col gap-1">
-              <label className="text-[11px] font-bold text-amber-300 flex items-center gap-1">
-                <Filter className="size-3 text-amber-400" /> <span>{isUrdu ? 'موضوع (Theme)' : 'Theme'}</span>
+            <div className="flex flex-col gap-0.5 sm:gap-1">
+              <label className="text-[10px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-1">
+                <Filter className="size-2.5 sm:size-3 text-amber-400" /> <span>{isUrdu ? 'موضوع' : 'Theme'}</span>
               </label>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full text-xs font-bold rounded-xl bg-slate-900 border border-amber-500/40 text-slate-100 px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400 shadow-sm cursor-pointer"
+                className="w-full text-[11px] sm:text-xs font-semibold rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-2 py-1.5 sm:px-2.5 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
               >
                 {categoriesList.map((cat) => (
                   <option key={cat.id} value={cat.id}>
@@ -728,16 +785,16 @@ export function PoetryClient() {
             </div>
 
             {/* 4. Format Dropdown */}
-            <div className="flex flex-col gap-1">
-              <label className="text-[11px] font-bold text-amber-400 flex items-center gap-1">
-                <Layers className="size-3 text-amber-400" /> <span>{isUrdu ? 'طرز (Format)' : 'Format'}</span>
+            <div className="flex flex-col gap-0.5 sm:gap-1">
+              <label className="text-[10px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-1">
+                <Layers className="size-2.5 sm:size-3 text-amber-400" /> <span>{isUrdu ? 'طرز' : 'Format'}</span>
               </label>
               <select
                 value={selectedFormat}
                 onChange={(e) => setSelectedFormat(e.target.value as any)}
-                className="w-full text-xs font-bold rounded-xl bg-slate-900 border border-amber-500/40 text-slate-100 px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400 shadow-sm cursor-pointer"
+                className="w-full text-[11px] sm:text-xs font-semibold rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-2 py-1.5 sm:px-2.5 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
               >
-                <option value="all">{isUrdu ? 'تمام طرز (All Formats)' : '📜 All Formats'}</option>
+                <option value="all">{isUrdu ? '📜 تمام طرز' : '📜 All Formats'}</option>
                 <option value="two_liner">{isUrdu ? '📜 دو سطری اشعار' : '📜 2-Line Ash’aar'}</option>
                 <option value="full_poem">{isUrdu ? '📖 مکمل کلام' : '📖 Full Poems'}</option>
               </select>
@@ -915,7 +972,7 @@ export function PoetryClient() {
                           </button>
                           <button
                             type="button"
-                            onClick={() => handleToggleLike(poem.id)}
+                            onClick={() => handleToggleLike(poem)}
                             title="Save to favorites"
                             className={cn(
                               'p-1.5 rounded-full transition-colors cursor-pointer',
@@ -1199,10 +1256,25 @@ export function PoetryClient() {
                           type="button"
                           onClick={() => handleDownloadFlyer(poem)}
                           disabled={isGeneratingFlyer === poem.id}
-                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold transition-colors cursor-pointer"
+                          className={cn(
+                            "flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all border shrink-0",
+                            isGeneratingFlyer === poem.id
+                              ? "bg-amber-500/25 text-amber-200 border-amber-400/50 cursor-wait animate-pulse shadow-sm shadow-amber-500/20"
+                              : "bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border-amber-500/30 cursor-pointer active:scale-95"
+                          )}
+                          title={isUrdu ? 'کارڈ ڈاؤن لوڈ کریں' : 'Download High-Resolution Story Card'}
                         >
-                          <Download className="size-3.5" />
-                          <span>{isGeneratingFlyer === poem.id ? (isUrdu ? 'تیار ہو رہا ہے...' : 'Generating...') : (isUrdu ? 'کارڈ ڈاؤنلوڈ' : 'Story Card')}</span>
+                          {isGeneratingFlyer === poem.id ? (
+                            <>
+                              <Loader2 className="size-3.5 animate-spin text-amber-300" />
+                              <span>{isUrdu ? 'کارڈ بن رہا ہے...' : 'Generating Card...'}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Download className="size-3.5" />
+                              <span>{isUrdu ? 'کارڈ ڈاؤنلوڈ' : 'Story Card'}</span>
+                            </>
+                          )}
                         </button>
                       </div>
 

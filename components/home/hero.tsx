@@ -23,25 +23,37 @@ export function Hero() {
       <div className="mx-auto grid max-w-6xl items-start gap-8 lg:gap-10 px-4 py-6 sm:py-8 lg:py-10 lg:grid-cols-2">
         {/* ── Left column ── */}
         <div className="flex flex-col justify-center">
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
             <Link
               href="/create-magic-link"
-              className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-rose-500/10 to-purple-500/15 backdrop-blur-md px-4 py-1.5 text-xs font-black text-amber-900 dark:text-amber-200 shadow-sm hover:border-amber-400 hover:scale-105 transition-all group"
+              className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-rose-500/10 to-purple-500/15 backdrop-blur-md px-3 sm:px-4 py-1.5 text-xs font-black text-amber-900 dark:text-amber-200 shadow-sm hover:border-amber-400 hover:scale-105 transition-all group"
             >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
               </span>
               <span className="group-hover:rotate-12 transition-transform">🪄</span>
-              <span>3D Magic Links: Ring Box &amp; Candle Blowing</span>
+              <span>3D Magic Links</span>
               <span className="text-[10px] uppercase font-black bg-gradient-to-r from-rose-600 to-amber-600 text-white px-2 py-0.5 rounded-full shadow-xs">
                 NEW
               </span>
               <ArrowRight className="size-3 text-amber-500 group-hover:translate-x-0.5 transition-transform" />
             </Link>
 
+            <Link
+              href="/poetry"
+              className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-purple-500/40 bg-gradient-to-r from-purple-500/15 via-indigo-500/10 to-amber-500/15 backdrop-blur-md px-3 sm:px-3.5 py-1.5 text-xs font-black text-purple-900 dark:text-purple-200 shadow-sm hover:border-purple-400 hover:scale-105 transition-all group"
+            >
+              <span className="group-hover:rotate-12 transition-transform">📜</span>
+              <span>1,000+ Poetry Treasury</span>
+              <span className="text-[10px] uppercase font-black bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-1.5 py-0.5 rounded-full shadow-xs">
+                EXPLORE
+              </span>
+              <ArrowRight className="size-3 text-purple-400 group-hover:translate-x-0.5 transition-transform" />
+            </Link>
+
             <span
-              className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-sm px-3.5 py-1.5 text-xs font-bold text-emerald-800 dark:text-emerald-300 shadow-xs"
+              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-sm px-3 py-1.5 text-xs font-bold text-emerald-800 dark:text-emerald-300 shadow-xs"
             >
               <Sparkles className="size-3.5 text-emerald-500 animate-pulse" />
               {t('heroTagline') || '18 Languages & WhatsApp RSVP 🌍'}
@@ -80,11 +92,23 @@ export function Hero() {
               className={buttonVariants({
                 size: 'lg',
                 variant: 'outline',
-                className: 'h-13 sm:h-14 px-6 text-sm sm:text-base font-extrabold border-emerald-800/30 hover:bg-emerald-900/10 hover:border-emerald-600/40 rounded-2xl transition-all duration-300',
+                className: 'h-13 sm:h-14 px-5 text-sm sm:text-base font-extrabold border-emerald-800/30 hover:bg-emerald-900/10 hover:border-emerald-600/40 rounded-2xl transition-all duration-300',
               })}
             >
               <MailOpen className="size-4 text-amber-600" />
               {t('createInvitation')}
+            </Link>
+            <Link
+              href="/poetry"
+              aria-label="Explore 1,000+ Classical & Modern Poetry Treasury"
+              className={buttonVariants({
+                size: 'lg',
+                variant: 'outline',
+                className: 'h-13 sm:h-14 px-5 text-sm sm:text-base font-extrabold border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-900 dark:text-purple-300 hover:border-purple-500/50 rounded-2xl transition-all duration-300 flex items-center gap-2',
+              })}
+            >
+              <span className="text-base">📜</span>
+              <span>Poetry Treasury</span>
             </Link>
           </div>
         </div>

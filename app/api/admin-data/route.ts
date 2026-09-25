@@ -32,6 +32,19 @@ function normalizeFirestoreData(data: any): any {
     app: Math.max(Number(s.app || 0), Number((data as any)['shares.app'] || 0)),
   }
 
+  const likesFromMap = (result.reactions && typeof result.reactions === 'object')
+    ? Object.values(result.reactions).reduce((acc: number, v: any) => acc + (Number(v) || 0), 0)
+    : 0
+
+  result.likesCount = Math.max(
+    Number(result.likesCount || 0),
+    Number(result.likes || 0),
+    Number(result.reactionsCount || 0),
+    likesFromMap
+  )
+  result.likes = result.likesCount
+  result.reactionsCount = result.likesCount
+
   return result
 }
 

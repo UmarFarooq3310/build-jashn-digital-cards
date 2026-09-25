@@ -159,14 +159,16 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
   const handleWhatsApp = () => {
     recordCardShare(card.type, card.slug, 'whatsapp')
     setShareStats((prev) => ({ ...prev, whatsapp: prev.whatsapp + 1 }))
-    const text = encodeURIComponent(`${defaultWaText}\n${fullUrl}`)
+    const msg = defaultWaText.includes(fullUrl) ? defaultWaText : `${defaultWaText}\n${fullUrl}`
+    const text = encodeURIComponent(msg)
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank')
   }
 
   const handleSms = () => {
     recordCardShare(card.type, card.slug, 'sms')
     setShareStats((prev) => ({ ...prev, sms: prev.sms + 1 }))
-    const text = encodeURIComponent(`${defaultWaText}\n${fullUrl}`)
+    const msg = defaultWaText.includes(fullUrl) ? defaultWaText : `${defaultWaText}\n${fullUrl}`
+    const text = encodeURIComponent(msg)
     window.open(`sms:?&body=${text}`, '_blank')
   }
 
@@ -178,9 +180,10 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
   const handleNativeShare = async () => {
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
+        const cleanText = defaultWaText.replace(fullUrl, '').trim()
         await navigator.share({
           title: card.title,
-          text: defaultWaText,
+          text: cleanText || card.title,
           url: fullUrl,
         })
         recordCardShare(card.type, card.slug, 'app')

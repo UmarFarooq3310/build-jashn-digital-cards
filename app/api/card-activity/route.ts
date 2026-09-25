@@ -58,6 +58,21 @@ export async function POST(req: Request) {
         return NextResponse.json({ success: true, action: 'view' })
       }
 
+      if (action === 'reaction' || action === 'like') {
+        const reactionId = channel || 'love'
+        await targetRef.set(
+          {
+            [`reactions.${reactionId}`]: FieldValue.increment(1),
+            reactionsCount: FieldValue.increment(1),
+            likesCount: FieldValue.increment(1),
+            likes: FieldValue.increment(1),
+            lastReactedAt: Date.now(),
+          },
+          { merge: true }
+        )
+        return NextResponse.json({ success: true, action: 'reaction', channel: reactionId })
+      }
+
       if (action === 'share' && channel) {
         const allowedChannels = ['whatsapp', 'sms', 'copy', 'qr', 'image', 'video', 'app']
         const ch = allowedChannels.includes(channel) ? channel : 'whatsapp'

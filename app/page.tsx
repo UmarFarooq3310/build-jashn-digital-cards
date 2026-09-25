@@ -46,6 +46,9 @@ const AdBanner = nextDynamic(
 const CategoryTabs = nextDynamic(
   () => import('@/components/home/category-tabs').then((mod) => mod.CategoryTabs)
 )
+const PoetryShowcaseSection = nextDynamic(
+  () => import('@/components/home/poetry-showcase-section').then((mod) => mod.PoetryShowcaseSection)
+)
 const GamingWinnersSection = nextDynamic(
   () => import('@/components/home/gaming-winners-section').then((mod) => mod.GamingWinnersSection)
 )
@@ -127,6 +130,9 @@ export default function Page() {
 
       {/* Consolidated categories in tab structure */}
       <CategoryTabs />
+
+      {/* 📜 1,000+ World Poetry Treasury Showcase Section */}
+      <PoetryShowcaseSection />
 
       {/* 🎮 Gaming Winner Cards Section */}
       <GamingWinnersSection />

@@ -16,16 +16,22 @@ export async function POST(req: Request) {
     try {
       const db = getAdminDb()
 
+      if (action === 'delete_stats' || action === 'reset_stats') {
+        await db.collection('poetry_stats').doc(poemId).delete().catch(() => {})
+        return NextResponse.json({ success: true, poemId, action: 'reset' })
+      }
+
       // 1. Update Global Aggregate Summary
       const summaryRef = db.collection('poetry_stats').doc('summary')
       await summaryRef.set(
         {
-          totalInteractions: FieldValue.increment(1),
+          totalInteractions: action === 'unlike' ? FieldValue.increment(-1) : FieldValue.increment(1),
           totalViews: action === 'view' ? FieldValue.increment(1) : FieldValue.increment(0),
           totalCopies: action === 'copy' ? FieldValue.increment(1) : FieldValue.increment(0),
           totalShares: action === 'share' ? FieldValue.increment(1) : FieldValue.increment(0),
           totalFlyers: action === 'flyer' ? FieldValue.increment(1) : FieldValue.increment(0),
           totalCardCreations: action === 'card_bridge' ? FieldValue.increment(1) : FieldValue.increment(0),
+          totalLikes: action === 'like' ? FieldValue.increment(1) : action === 'unlike' ? FieldValue.increment(-1) : FieldValue.increment(0),
           lastActivityAt: Date.now(),
         },
         { merge: true }
@@ -43,12 +49,13 @@ export async function POST(req: Request) {
           shares: action === 'share' ? FieldValue.increment(1) : FieldValue.increment(0),
           flyers: action === 'flyer' ? FieldValue.increment(1) : FieldValue.increment(0),
           cardCreations: action === 'card_bridge' ? FieldValue.increment(1) : FieldValue.increment(0),
+          likes: action === 'like' ? FieldValue.increment(1) : action === 'unlike' ? FieldValue.increment(-1) : FieldValue.increment(0),
           lastInteractedAt: Date.now(),
         },
         { merge: true }
       )
 
-      // 3. Optional Recent Activity Log entry (capped by Firestore)
+      // 3. Activity Log entry (capped by Firestore)
       const activityRef = db.collection('poetry_activity').doc()
       await activityRef.set({
         poemId,
@@ -62,7 +69,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, poemId, action })
     } catch (dbErr: any) {
       console.warn('Firebase Admin poetry activity logging warning:', dbErr?.message || dbErr)
-      // Return success gracefully so client never breaks even if offline
       return NextResponse.json({ success: true, offline: true })
     }
   } catch (error: any) {

@@ -77,12 +77,30 @@ export function SiteFooter() {
                 </a>
               ))}
             </div>
+            {/* Quick Mobile & Desktop Poetry Callout Banner */}
+            <div className="mt-4 p-3.5 rounded-2xl bg-gradient-to-r from-purple-900/50 via-indigo-900/30 to-emerald-900/50 border border-purple-500/30 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
+              <div className="flex items-center gap-2.5">
+                <span className="text-xl">📜</span>
+                <div>
+                  <div className="font-extrabold text-amber-300">1,000+ Poetry Treasury</div>
+                  <div className="text-[11px] text-emerald-200/80">Iqbal, Ghalib, Faiz, Rumi &amp; Sufi Masters — Create 3D Cards</div>
+                </div>
+              </div>
+              <Link
+                href="/poetry"
+                className="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs inline-flex items-center gap-1.5 transition-colors"
+              >
+                <span>Explore Treasury</span>
+                <span>➔</span>
+              </Link>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
             <FooterCol
               title={t('footerCards')}
               links={[
+                { href: '/poetry', label: '1,000+ Poetry Treasury 📜' },
                 { href: '/create-magic-link', label: '3D Magic Links 🪄' },
                 { href: '/create-wish', label: t('sendWish') },
                 { href: '/create-invitation', label: t('createInvitation') },
@@ -92,7 +110,7 @@ export function SiteFooter() {
             <FooterCol
               title={t('guidesAndWording', 'Guides & Wording')}
               links={[
-                { href: '/poetry', label: t('navPoetry', 'Poetry & Shayari') },
+                { href: '/poetry', label: '📜 All 1,000+ Poems (Free)' },
                 { href: '/calendar', label: t('celebrationCalendar', 'Celebration Calendar') },
                 { href: '/guide/eid-wording-ideas', label: t('eidWordingAndReplies', 'Eid Wording & Replies') },
                 { href: '/blog/complete-guide-to-pakistani-wedding-invitation-wording-urdu-english', label: t('pakistaniWeddingCardText', 'Pakistani Wedding Card Text') },

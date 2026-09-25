@@ -49,6 +49,11 @@ import {
   Scroll,
   Heart,
   Plus,
+  Sliders,
+  Minus,
+  MinusCircle,
+  PlusCircle,
+  RotateCcw,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -586,7 +591,7 @@ export default function AdminPortalPage() {
 
   const groupedSessions = useMemo<DeviceSessionGroup[]>(() => {
     const groupsMap = new Map<string, DeviceSessionGroup>()
-    const threshold = Date.now() - 65000
+    const threshold = Date.now() - 120000 // Active within last 2 minutes (matches 35s pulse)
 
     allSessions.forEach((s) => {
       // Build unique device key based on deviceId or IP + device + user
@@ -655,7 +660,8 @@ export default function AdminPortalPage() {
 
   useEffect(() => {
     // Immediately purge any session docs from Firebase for this admin device
-    purgeAdminPresence()
+    const localDevId = typeof window !== 'undefined' ? (localStorage.getItem('cardzy_device_id') || undefined) : undefined
+    purgeAdminPresence(undefined, localDevId)
 
     let unsub = () => {}
     async function listenLivePresence() {
@@ -663,14 +669,21 @@ export default function AdminPortalPage() {
         const firestoreDb = getFirebaseDb()
         if (!firestoreDb) return
         const collRef = collection(firestoreDb, 'active_sessions')
-        const q = query(collRef, orderBy('lastSeen', 'desc'), limit(30))
+        const q = query(collRef, orderBy('lastSeen', 'desc'), limit(100))
         unsub = onSnapshot(q, async (snap) => {
-          const threshold = Date.now() - 300000 // Active within the last 5 minutes (matching throttled heartbeats)
+          const threshold = Date.now() - 120000 // Active within the last 2 minutes (matches 35s pulse)
           const rawDocs = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() } as any))
-          
+          const currentDevId = typeof window !== 'undefined' ? localStorage.getItem('cardzy_device_id') : null
+          const currentSessId = typeof window !== 'undefined' ? (sessionStorage.getItem('cardzy_live_session_id') || localStorage.getItem('cardzy_live_session_id')) : null
+
           // Identify any admin session docs to clean up from database
           const adminDocIds = rawDocs
-            .filter((s) => (s.page && s.page.startsWith('/admin_portal')) || (s.userEmail && ADMIN_EMAILS.includes(s.userEmail.toLowerCase().trim())))
+            .filter((s) => 
+              (s.page && s.page.startsWith('/admin_portal')) || 
+              (s.userEmail && ADMIN_EMAILS.includes(s.userEmail.toLowerCase().trim())) ||
+              (currentDevId && s.deviceId && s.deviceId === currentDevId) ||
+              (currentSessId && s.id === currentSessId)
+            )
             .map((s) => s.id)
 
           if (adminDocIds.length > 0) {
@@ -680,9 +693,15 @@ export default function AdminPortalPage() {
             } catch {}
           }
 
-          // Filter out admin portal visits and admin users from the admin view
+          // Filter out admin portal visits, admin accounts, and admin device from visitor view
           const visitorDocs = rawDocs
-            .filter((s) => !(s.page && s.page.startsWith('/admin_portal')) && !(s.userEmail && ADMIN_EMAILS.includes(s.userEmail.toLowerCase().trim())))
+            .filter((s) => {
+              if (s.page && s.page.startsWith('/admin_portal')) return false
+              if (s.userEmail && ADMIN_EMAILS.includes(s.userEmail.toLowerCase().trim())) return false
+              if (currentDevId && s.deviceId && s.deviceId === currentDevId) return false
+              if (currentSessId && s.id === currentSessId) return false
+              return true
+            })
             .sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0))
           
           setAllSessions(visitorDocs)
@@ -700,7 +719,7 @@ export default function AdminPortalPage() {
     // Interval to prune stale sessions in local state
     const interval = setInterval(() => {
       setLiveActiveSessions((prev) => {
-        const threshold = Date.now() - 65000
+        const threshold = Date.now() - 120000
         return prev.filter((s) => s.lastSeen && s.lastSeen >= threshold)
       })
     }, 10000)
@@ -715,28 +734,301 @@ export default function AdminPortalPage() {
   const [deleteUserTarget, setDeleteUserTarget] = useState<{ uid: string; name: string; email: string } | null>(null)
   const [isDeletingUser, setIsDeletingUser] = useState(false)
 
-  function handleDeleteInv(slug: string) {
-    if (confirm(`Are you sure you want to delete invitation "${slug}"? This action cannot be undone.`)) {
-      deleteInvitation(slug)
-      setFirestoreInvitations((prev) => prev.filter((i) => i.slug !== slug && i.id !== slug))
-      showToast('Invitation deleted by Admin', 'info')
+  // ── Card Cascade Delete & Metrics Adjustment Modal States ────────────
+  interface DeleteCardTarget {
+    cardType: 'invite' | 'wish' | 'vcard' | 'magic' | 'poetry'
+    slug: string
+    title: string
+    owner?: string
+    views: number
+    totalShares: number
+    sharesBreakdown: Record<string, number>
+    likes: number
+    rsvpsCount: number
+    guestbookCount: number
+    createdAt?: any
+  }
+
+  interface MetricAdjustmentTarget {
+    cardType: 'invite' | 'wish' | 'vcard' | 'magic' | 'poetry'
+    slug: string
+    title: string
+    views: number
+    totalShares: number
+    sharesBreakdown: Record<string, number>
+    likes: number
+  }
+
+  const [deleteCardTarget, setDeleteCardTarget] = useState<DeleteCardTarget | null>(null)
+  const [isDeletingCard, setIsDeletingCard] = useState(false)
+
+  const [metricAdjustmentTarget, setMetricAdjustmentTarget] = useState<MetricAdjustmentTarget | null>(null)
+  const [isAdjustingMetric, setIsAdjustingMetric] = useState(false)
+  const [customLikesInput, setCustomLikesInput] = useState('')
+  const [customViewsInput, setCustomViewsInput] = useState('')
+
+  function promptDeleteCard(cardType: 'invite' | 'wish' | 'vcard' | 'magic' | 'poetry', card: any) {
+    const slug = card.slug || card.id || card.poemId || ''
+    const title = card.title || card.hostNames || card.fullName || card.recipientName || slug
+    const owner = card.userEmail || card.userPhone || card.ownerEmail || card.creator || (card.isGuest ? 'Guest User' : 'Authenticated User')
+    const views = Number(card.viewsCount ?? card.viewCount ?? card.views ?? 0)
+    const sharesBreakdown = typeof card.shares === 'object' && card.shares ? card.shares : {}
+    const totalShares = Object.values(sharesBreakdown).reduce((a: number, b: any) => a + Number(b || 0), 0)
+    const likes = Number(card.likesCount ?? card.likes ?? card.reactionsCount ?? 0)
+
+    let rsvpsCount = 0
+    if (cardType === 'invite') {
+      rsvpsCount = firestoreRsvps.filter((r: any) => r.invitationSlug === slug || r.invitationId === slug || r.cardSlug === slug).length
     }
+    let guestbookCount = 0
+    if (cardType === 'wish') {
+      guestbookCount = allGuestbookWishes.filter((g) => g.cardSlug === slug).length
+    }
+
+    setDeleteCardTarget({
+      cardType,
+      slug,
+      title,
+      owner,
+      views,
+      totalShares,
+      sharesBreakdown,
+      likes,
+      rsvpsCount,
+      guestbookCount,
+      createdAt: card.createdAt,
+    })
+  }
+
+  function promptAdjustMetrics(cardType: 'invite' | 'wish' | 'vcard' | 'magic' | 'poetry', card: any) {
+    const slug = card.slug || card.id || card.poemId || ''
+    const title = card.title || card.hostNames || card.fullName || card.recipientName || slug
+    const views = Number(card.viewsCount ?? card.viewCount ?? card.views ?? 0)
+    const sharesBreakdown = typeof card.shares === 'object' && card.shares ? card.shares : {}
+    const totalShares = Object.values(sharesBreakdown).reduce((a: number, b: any) => a + Number(b || 0), 0)
+    const likes = Number(card.likesCount ?? card.likes ?? card.reactionsCount ?? 0)
+
+    setCustomLikesInput(String(likes))
+    setCustomViewsInput(String(views))
+    setMetricAdjustmentTarget({
+      cardType,
+      slug,
+      title,
+      views,
+      totalShares,
+      sharesBreakdown,
+      likes,
+    })
+  }
+
+  async function executeDeleteCard() {
+    if (!deleteCardTarget) return
+    setIsDeletingCard(true)
+    const { cardType, slug } = deleteCardTarget
+    try {
+      // 1. Call server API for cascading delete (removes card, linked RSVPs, wishes, etc.)
+      const res = await fetch('/api/admin-card-action', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete_card', cardType, slug }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Failed to delete card')
+      }
+
+      // 2. Client Firestore delete fallback
+      const activeDb = getFirebaseDb() || db
+      if (activeDb) {
+        const col =
+          cardType === 'invite'
+            ? 'invitations'
+            : cardType === 'wish'
+            ? 'wishes'
+            : cardType === 'vcard'
+            ? 'visitingCards'
+            : cardType === 'magic'
+            ? 'magic_links'
+            : 'custom_poetry'
+        await deleteDoc(doc(activeDb, col, slug)).catch(() => {})
+      }
+
+      // 3. Purge from local Zustand and React states immediately so all admin counts decrement
+      if (cardType === 'invite') {
+        deleteInvitation(slug)
+        setFirestoreInvitations((prev) => prev.filter((i) => i.slug !== slug && i.id !== slug))
+        setFirestoreRsvps((prev) => prev.filter((r: any) => r.invitationSlug !== slug && r.invitationId !== slug && r.cardSlug !== slug))
+      } else if (cardType === 'wish') {
+        deleteWish(slug)
+        setFirestoreWishes((prev) => prev.filter((w) => (w.slug || w.id) !== slug && w.id !== slug))
+        setAllGuestbookWishes((prev) => prev.filter((g) => g.cardSlug !== slug))
+      } else if (cardType === 'vcard') {
+        deleteVisitingCard(slug)
+        setFirestoreVisitingCards((prev) => prev.filter((v) => (v.slug || v.id) !== slug && v.id !== slug))
+      } else if (cardType === 'magic') {
+        setFirestoreMagicLinks((prev) => prev.filter((m) => (m.slug || m.id) !== slug))
+        try {
+          const raw = localStorage.getItem('cardzy_local_magic_links')
+          if (raw) {
+            const parsed = JSON.parse(raw)
+            delete parsed[slug]
+            localStorage.setItem('cardzy_local_magic_links', JSON.stringify(parsed))
+          }
+        } catch {}
+      } else if (cardType === 'poetry') {
+        setFirestoreCustomPoetry((prev) => prev.filter((p) => p.id !== slug))
+        setFirestorePoetryStats((prev) => prev.filter((s) => s.id !== slug))
+      }
+
+      showToast(`Card "${deleteCardTarget.title || slug}" and all associated data permanently deleted.`, 'success')
+      setDeleteCardTarget(null)
+    } catch (err: any) {
+      console.error('Delete card error:', err)
+      showToast(err.message || 'Failed to delete card', 'error')
+    } finally {
+      setIsDeletingCard(false)
+    }
+  }
+
+  async function executeAdjustMetric(
+    metric: 'likes' | 'views' | 'shares',
+    operation: 'decrement' | 'increment' | 'reset' | 'set',
+    value?: number
+  ) {
+    if (!metricAdjustmentTarget) return
+    setIsAdjustingMetric(true)
+    const { cardType, slug } = metricAdjustmentTarget
+
+    try {
+      const res = await fetch('/api/admin-card-action', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'adjust_metric',
+          cardType,
+          slug,
+          metric,
+          operation,
+          value,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Failed to adjust metric')
+      }
+
+      const newLikes = data.likes !== undefined ? data.likes : metricAdjustmentTarget.likes
+      const newViews = data.views !== undefined ? data.views : metricAdjustmentTarget.views
+      const newShares = data.shares !== undefined ? data.shares : metricAdjustmentTarget.sharesBreakdown
+      const newTotalShares = typeof newShares === 'object' && newShares
+        ? Object.values(newShares).reduce((a: number, b: any) => a + Number(b || 0), 0)
+        : (metric === 'shares' && operation === 'reset' ? 0 : metricAdjustmentTarget.totalShares)
+
+      setMetricAdjustmentTarget((prev) => prev ? ({
+        ...prev,
+        likes: newLikes,
+        views: newViews,
+        totalShares: newTotalShares,
+        sharesBreakdown: typeof newShares === 'object' && newShares ? newShares : prev.sharesBreakdown,
+      }) : null)
+      setCustomLikesInput(String(newLikes))
+      setCustomViewsInput(String(newViews))
+
+      if (cardType === 'invite') {
+        setFirestoreInvitations((prev) => prev.map((i) => {
+          if (i.slug === slug || i.id === slug) {
+            return {
+              ...i,
+              likesCount: newLikes,
+              likes: newLikes,
+              reactionsCount: newLikes,
+              views: newViews,
+              shares: typeof newShares === 'object' && newShares ? newShares : (metric === 'shares' && operation === 'reset' ? {} : i.shares),
+            }
+          }
+          return i
+        }))
+      } else if (cardType === 'wish') {
+        setFirestoreWishes((prev) => prev.map((w) => {
+          if ((w.slug || w.id) === slug || w.id === slug) {
+            return {
+              ...w,
+              likesCount: newLikes,
+              likes: newLikes,
+              reactionsCount: newLikes,
+              views: newViews,
+              shares: typeof newShares === 'object' && newShares ? newShares : (metric === 'shares' && operation === 'reset' ? {} : w.shares),
+            }
+          }
+          return w
+        }))
+      } else if (cardType === 'vcard') {
+        setFirestoreVisitingCards((prev) => prev.map((vc) => {
+          if ((vc.slug || vc.id) === slug || vc.id === slug) {
+            return {
+              ...vc,
+              likesCount: newLikes,
+              likes: newLikes,
+              reactionsCount: newLikes,
+              views: newViews,
+              shares: typeof newShares === 'object' && newShares ? newShares : (metric === 'shares' && operation === 'reset' ? {} : vc.shares),
+            }
+          }
+          return vc
+        }))
+      } else if (cardType === 'magic') {
+        setFirestoreMagicLinks((prev) => prev.map((m) => {
+          if ((m.slug || m.id) === slug || m.id === slug) {
+            return {
+              ...m,
+              likesCount: newLikes,
+              likes: newLikes,
+              reactionsCount: newLikes,
+              views: newViews,
+              shares: typeof newShares === 'object' && newShares ? newShares : (metric === 'shares' && operation === 'reset' ? {} : m.shares),
+            }
+          }
+          return m
+        }))
+      } else if (cardType === 'poetry') {
+        setFirestorePoetryStats((prev) => {
+          const idx = prev.findIndex((s) => s.id === slug)
+          if (idx >= 0) {
+            const updated = [...prev]
+            updated[idx] = {
+              ...updated[idx],
+              likes: newLikes,
+              views: newViews,
+              shares: typeof newShares === 'number' ? newShares : updated[idx].shares,
+            }
+            return updated
+          }
+          return [...prev, { id: slug, likes: newLikes, views: newViews, shares: 0 }]
+        })
+      }
+
+      showToast(`Updated ${metric} for "${metricAdjustmentTarget.title}": new value is ${metric === 'likes' ? newLikes : metric === 'views' ? newViews : newTotalShares}`, 'success')
+    } catch (err: any) {
+      console.error('Adjust metric error:', err)
+      showToast(err.message || 'Failed to adjust metric', 'error')
+    } finally {
+      setIsAdjustingMetric(false)
+    }
+  }
+
+  function handleDeleteInv(slug: string) {
+    const card = firestoreInvitations.find((i) => i.slug === slug || i.id === slug) || { slug, id: slug, title: slug }
+    promptDeleteCard('invite', card)
   }
 
   function handleDeleteWishCard(slug: string) {
-    if (confirm(`Are you sure you want to delete wish card "${slug}"? This action cannot be undone.`)) {
-      deleteWish(slug)
-      setFirestoreWishes((prev) => prev.filter((w) => (w.slug || w.id) !== slug && w.id !== slug))
-      showToast('Wish card deleted by Admin', 'info')
-    }
+    const card = firestoreWishes.find((w) => (w.slug || w.id) === slug || w.id === slug) || { slug, id: slug, title: slug }
+    promptDeleteCard('wish', card)
   }
 
   function handleDeleteVisitingCard(slug: string, fullName?: string) {
-    if (confirm(`Are you sure you want to delete visiting card "${fullName || slug}"? This action cannot be undone.`)) {
-      deleteVisitingCard(slug)
-      setFirestoreVisitingCards((prev) => prev.filter((vc) => (vc.slug || vc.id) !== slug && vc.id !== slug))
-      showToast('Visiting card deleted by Admin', 'info')
-    }
+    const card = firestoreVisitingCards.find((vc) => (vc.slug || vc.id) === slug || vc.id === slug) || { slug, id: slug, fullName: fullName || slug }
+    promptDeleteCard('vcard', card)
   }
 
   async function handleCreatePoetry(e: React.FormEvent) {
@@ -889,6 +1181,14 @@ export default function AdminPortalPage() {
     const ALLOWED_EMAILS = ['cardzyonline@gmail.com']
     if (currentUser?.email && ALLOWED_EMAILS.includes(currentUser.email.toLowerCase())) {
       setIsAdminAuthorized(true)
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('cardzy_is_admin', '1')
+          sessionStorage.setItem('cardzy_is_admin', '1')
+          const devId = localStorage.getItem('cardzy_device_id') || undefined
+          purgeAdminPresence(undefined, devId)
+        } catch {}
+      }
     }
   }, [currentUser])
 
@@ -939,7 +1239,8 @@ export default function AdminPortalPage() {
           sessionStorage.setItem('cardzy_admin_session', JSON.stringify({ authed: true, expiresAt }))
           sessionStorage.setItem('cardzy_is_admin', '1')
           localStorage.setItem('cardzy_is_admin', '1')
-          purgeAdminPresence()
+          const devId = localStorage.getItem('cardzy_device_id') || undefined
+          purgeAdminPresence(undefined, devId)
         } catch {}
       }
       setAdminError('')
@@ -1191,29 +1492,9 @@ export default function AdminPortalPage() {
     })
   }, [firestoreMagicLinks])
 
-  async function handleDeleteMagicLink(slug: string) {
-    if (!window.confirm(`Are you sure you want to delete Magic Link "${slug}"?`)) return
-    try {
-      const activeDb = getFirebaseDb() || db
-      if (activeDb) {
-        await deleteDoc(doc(activeDb, 'magic_links', slug))
-      }
-      if (typeof window !== 'undefined') {
-        try {
-          const raw = localStorage.getItem('cardzy_local_magic_links')
-          if (raw) {
-            const parsed = JSON.parse(raw)
-            delete parsed[slug]
-            localStorage.setItem('cardzy_local_magic_links', JSON.stringify(parsed))
-          }
-        } catch {}
-      }
-      setFirestoreMagicLinks((prev) => prev.filter((m) => (m.slug || m.id) !== slug))
-      showToast('Magic Link deleted', 'info')
-    } catch (err) {
-      console.error('Failed to delete magic link:', err)
-      alert('Could not delete magic link')
-    }
+  function handleDeleteMagicLink(slug: string) {
+    const card = firestoreMagicLinks.find((m) => (m.slug || m.id) === slug || m.id === slug) || { slug, id: slug, title: slug }
+    promptDeleteCard('magic', card)
   }
 
   // RSVPs filtered by the selected invitation slug (or all if none selected)
@@ -3191,14 +3472,28 @@ export default function AdminPortalPage() {
                           <span>View Flyer & Verse</span>
                         </button>
 
-                        <button
-                          type="button"
-                          onClick={(e) => handleDeletePoetryActivity(act.id || act.docId, act.poemId, e)}
-                          className="p-1.5 rounded-xl text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all cursor-pointer"
-                          title="Delete this poetry event log"
-                        >
-                          <Trash2 className="size-3.5" />
-                        </button>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              promptAdjustMetrics('poetry', { id: act.poemId, title: act.title, poemId: act.poemId })
+                            }}
+                            className="p-1.5 rounded-xl text-indigo-500 hover:text-indigo-600 hover:bg-indigo-500/10 border border-transparent hover:border-indigo-500/20 transition-all cursor-pointer"
+                            title="Adjust metrics (likes, views, shares)"
+                          >
+                            <Sliders className="size-3.5" />
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={(e) => handleDeletePoetryActivity(act.id || act.docId, act.poemId, e)}
+                            className="p-1.5 rounded-xl text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all cursor-pointer"
+                            title="Delete this poetry event log"
+                          >
+                            <Trash2 className="size-3.5" />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -3674,15 +3969,24 @@ export default function AdminPortalPage() {
                               <Sparkles className="size-3.5" /> Share & Image
                             </button>
 
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteMagicLink((m.slug || m.id || ""))}
-                              className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                              title="Delete Magic Link"
-                            >
-                              <Trash2 className="size-3.5" />
-                            </button>
-                          </div>
+                              <button
+                                type="button"
+                                onClick={() => promptAdjustMetrics('magic', m)}
+                                className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                                title="Adjust Likes, Views & Shares"
+                              >
+                                <Sliders className="size-3.5" /> Metrics
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteMagicLink((m.slug || m.id || ""))}
+                                className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                                title="Delete Magic Link"
+                              >
+                                <Trash2 className="size-3.5" />
+                              </button>
+                            </div>
                         </td>
                       </tr>
                     )})
@@ -4108,8 +4412,16 @@ export default function AdminPortalPage() {
                             </Link>
                             <button
                               type="button"
+                              onClick={() => promptAdjustMetrics('invite', inv)}
+                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                              title="Adjust Likes, Views & Shares"
+                            >
+                              <Sliders className="size-3.5" /> Metrics
+                            </button>
+                            <button
+                              type="button"
                               onClick={() => handleDeleteInv((inv.slug || inv.id))}
-                              className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1"
+                              className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
                               title="Delete Invitation"
                             >
                               <Trash2 className="size-3.5" />
@@ -4336,8 +4648,16 @@ export default function AdminPortalPage() {
                             </Link>
                             <button
                               type="button"
+                              onClick={() => promptAdjustMetrics('wish', w)}
+                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                              title="Adjust Likes, Views & Shares"
+                            >
+                              <Sliders className="size-3.5" /> Metrics
+                            </button>
+                            <button
+                              type="button"
                               onClick={() => handleDeleteWishCard((w.slug || w.id))}
-                              className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1"
+                              className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
                               title="Delete Wish"
                             >
                               <Trash2 className="size-3.5" />
@@ -4560,8 +4880,16 @@ export default function AdminPortalPage() {
                             </Link>
                             <button
                               type="button"
+                              onClick={() => promptAdjustMetrics('vcard', vc)}
+                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
+                              title="Adjust Likes, Views & Shares"
+                            >
+                              <Sliders className="size-3.5" /> Metrics
+                            </button>
+                            <button
+                              type="button"
                               onClick={() => handleDeleteVisitingCard((vc.slug || vc.id), vc.fullName)}
-                              className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1"
+                              className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
                               title="Delete Card"
                             >
                               <Trash2 className="size-3.5" />
@@ -4922,10 +5250,339 @@ export default function AdminPortalPage() {
             </div>
           </div>
         )}
-        
 
+        {/* ── Delete Card & Cascade Modal ─────────────────────────────────── */}
+        {deleteCardTarget && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+            <div className="w-full max-w-lg rounded-3xl border border-rose-500/30 bg-card shadow-2xl p-6 sm:p-7 space-y-5">
+              {/* Icon & Title */}
+              <div className="flex items-start gap-4">
+                <div className="size-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center shrink-0">
+                  <Trash2 className="size-6 text-rose-600" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-600 border border-rose-500/20">
+                      Permanent Cascade Delete
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-muted text-muted-foreground uppercase">
+                      {deleteCardTarget.cardType === 'invite' ? '💍 Invitation' : deleteCardTarget.cardType === 'wish' ? '🎂 Wish Card' : deleteCardTarget.cardType === 'vcard' ? '📇 Visiting Card' : deleteCardTarget.cardType === 'magic' ? '🪄 Magic Link' : '📜 Poetry'}
+                    </span>
+                  </div>
+                  <h2 className="text-base sm:text-lg font-black text-foreground mt-1 truncate">
+                    Delete &quot;{deleteCardTarget.title}&quot;?
+                  </h2>
+                  <p className="text-xs text-muted-foreground mt-0.5 font-mono">
+                    Slug: /{deleteCardTarget.cardType === 'invite' ? 'i' : deleteCardTarget.cardType === 'wish' ? 'w' : deleteCardTarget.cardType === 'vcard' ? 'v' : deleteCardTarget.cardType === 'magic' ? 'm' : 'p'}/{deleteCardTarget.slug}
+                  </p>
+                </div>
+              </div>
 
-        {/* ── Poetry Story Flyer & Verse Audit Modal ─────────────────────────────── */}
+              {/* Affected Data Breakdown */}
+              <div className="rounded-2xl border border-border bg-muted/30 p-4 space-y-3">
+                <div className="text-xs font-bold text-foreground flex items-center justify-between">
+                  <span>Affected Analytics & Counters</span>
+                  <span className="text-[11px] font-normal text-muted-foreground">Owner: {deleteCardTarget.owner || 'Guest'}</span>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div className="p-2.5 rounded-xl bg-card border border-border/80 shadow-2xs">
+                    <div className="text-[10px] uppercase font-bold text-muted-foreground">Views to Erase</div>
+                    <div className="text-sm sm:text-base font-black text-foreground font-mono">{deleteCardTarget.views.toLocaleString()}</div>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-card border border-border/80 shadow-2xs">
+                    <div className="text-[10px] uppercase font-bold text-muted-foreground">Shares to Erase</div>
+                    <div className="text-sm sm:text-base font-black text-emerald-600 dark:text-emerald-400 font-mono">{deleteCardTarget.totalShares.toLocaleString()}</div>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-card border border-border/80 shadow-2xs">
+                    <div className="text-[10px] uppercase font-bold text-muted-foreground">Likes / Reactions</div>
+                    <div className="text-sm sm:text-base font-black text-rose-600 dark:text-rose-400 font-mono">{deleteCardTarget.likes.toLocaleString()}</div>
+                  </div>
+                </div>
+
+                {/* Linked Records Warning */}
+                {deleteCardTarget.rsvpsCount > 0 && (
+                  <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-700 dark:text-amber-300 flex items-center gap-2">
+                    <AlertTriangle className="size-4 shrink-0 text-amber-600" />
+                    <span>
+                      <strong>{deleteCardTarget.rsvpsCount} Linked RSVPs</strong> will be permanently wiped from the database.
+                    </span>
+                  </div>
+                )}
+
+                {deleteCardTarget.guestbookCount > 0 && (
+                  <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-700 dark:text-amber-300 flex items-center gap-2">
+                    <AlertTriangle className="size-4 shrink-0 text-amber-600" />
+                    <span>
+                      <strong>{deleteCardTarget.guestbookCount} Wishes Wall entries</strong> will be permanently erased.
+                    </span>
+                  </div>
+                )}
+
+                <p className="text-[11px] text-muted-foreground leading-relaxed pt-1">
+                  Deleting this card removes all traces from Firestore database and local storage. Global admin total views, shares, and card counts will immediately decrement.
+                </p>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex items-center gap-3 pt-1">
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={isDeletingCard}
+                  onClick={() => setDeleteCardTarget(null)}
+                  className="flex-1 rounded-2xl font-bold"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  disabled={isDeletingCard}
+                  onClick={executeDeleteCard}
+                  className="flex-1 rounded-2xl font-extrabold bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center gap-2 shadow-lg shadow-rose-600/20"
+                >
+                  {isDeletingCard ? (
+                    <><RefreshCw className="size-4 animate-spin" /> Purging Card…</>
+                  ) : (
+                    <><Trash2 className="size-4" /> Purge Permanently</>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Adjust & Sync Card Metrics Modal ────────────────────────────── */}
+        {metricAdjustmentTarget && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+            <div className="w-full max-w-lg rounded-3xl border border-indigo-500/30 bg-card shadow-2xl p-6 sm:p-7 space-y-5">
+              {/* Icon & Title */}
+              <div className="flex items-start justify-between gap-3 border-b border-border pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="size-11 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0">
+                    <Sliders className="size-5 text-indigo-600" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 border border-indigo-500/20">
+                        Card Metrics Controller
+                      </span>
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-muted text-muted-foreground uppercase">
+                        {metricAdjustmentTarget.cardType}
+                      </span>
+                    </div>
+                    <h2 className="text-base font-extrabold text-foreground mt-0.5 truncate max-w-xs">
+                      {metricAdjustmentTarget.title}
+                    </h2>
+                    <p className="text-[11px] text-muted-foreground font-mono">
+                      Slug: {metricAdjustmentTarget.slug}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setMetricAdjustmentTarget(null)}
+                  className="p-1.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                >
+                  <XCircle className="size-5" />
+                </button>
+              </div>
+
+              <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
+                {/* Metric 1: Likes & Reactions */}
+                <div className="p-4 rounded-2xl border border-border bg-muted/20 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <Heart className="size-4 text-rose-500 fill-rose-500" />
+                      Likes & Reactions
+                    </span>
+                    <span className="text-lg font-black text-rose-600 font-mono">
+                      {metricAdjustmentTarget.likes}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 pt-1">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      disabled={isAdjustingMetric || metricAdjustmentTarget.likes <= 0}
+                      onClick={() => executeAdjustMetric('likes', 'decrement')}
+                      className="rounded-xl text-xs font-bold text-rose-600 border-rose-500/20 hover:bg-rose-500/10"
+                      title="Reduce likes by 1"
+                    >
+                      <Minus className="size-3.5 mr-1" /> -1 Like
+                    </Button>
+
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      disabled={isAdjustingMetric}
+                      onClick={() => executeAdjustMetric('likes', 'increment')}
+                      className="rounded-xl text-xs font-bold text-emerald-600 border-emerald-500/20 hover:bg-emerald-500/10"
+                      title="Add 1 like"
+                    >
+                      <Plus className="size-3.5 mr-1" /> +1 Like
+                    </Button>
+
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      disabled={isAdjustingMetric || metricAdjustmentTarget.likes === 0}
+                      onClick={() => executeAdjustMetric('likes', 'reset')}
+                      className="rounded-xl text-xs font-bold text-muted-foreground hover:text-foreground"
+                      title="Reset likes to 0"
+                    >
+                      <RotateCcw className="size-3.5 mr-1" /> Reset (0)
+                    </Button>
+                  </div>
+
+                  {/* Custom Set */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <Input
+                      type="number"
+                      min="0"
+                      value={customLikesInput}
+                      onChange={(e) => setCustomLikesInput(e.target.value)}
+                      placeholder="Set exact likes"
+                      className="h-8 text-xs rounded-xl bg-card border-border/80 w-32"
+                    />
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      disabled={isAdjustingMetric || customLikesInput === ''}
+                      onClick={() => executeAdjustMetric('likes', 'set', Math.max(0, parseInt(customLikesInput) || 0))}
+                      className="h-8 rounded-xl text-xs font-bold"
+                    >
+                      Set Likes
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Metric 2: Views */}
+                <div className="p-4 rounded-2xl border border-border bg-muted/20 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <Eye className="size-4 text-amber-500" />
+                      Card Views
+                    </span>
+                    <span className="text-lg font-black text-amber-600 font-mono">
+                      {metricAdjustmentTarget.views.toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 pt-1">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      disabled={isAdjustingMetric || metricAdjustmentTarget.views <= 0}
+                      onClick={() => executeAdjustMetric('views', 'decrement')}
+                      className="rounded-xl text-xs font-bold text-amber-600 border-amber-500/20 hover:bg-amber-500/10"
+                      title="Reduce views by 1"
+                    >
+                      <Minus className="size-3.5 mr-1" /> -1 View
+                    </Button>
+
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      disabled={isAdjustingMetric}
+                      onClick={() => executeAdjustMetric('views', 'increment')}
+                      className="rounded-xl text-xs font-bold text-emerald-600 border-emerald-500/20 hover:bg-emerald-500/10"
+                      title="Add 10 views"
+                    >
+                      <Plus className="size-3.5 mr-1" /> +10 Views
+                    </Button>
+
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      disabled={isAdjustingMetric || metricAdjustmentTarget.views === 0}
+                      onClick={() => executeAdjustMetric('views', 'reset')}
+                      className="rounded-xl text-xs font-bold text-muted-foreground hover:text-foreground"
+                      title="Reset views to 0"
+                    >
+                      <RotateCcw className="size-3.5 mr-1" /> Reset (0)
+                    </Button>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-1">
+                    <Input
+                      type="number"
+                      min="0"
+                      value={customViewsInput}
+                      onChange={(e) => setCustomViewsInput(e.target.value)}
+                      placeholder="Set exact views"
+                      className="h-8 text-xs rounded-xl bg-card border-border/80 w-32"
+                    />
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      disabled={isAdjustingMetric || customViewsInput === ''}
+                      onClick={() => executeAdjustMetric('views', 'set', Math.max(0, parseInt(customViewsInput) || 0))}
+                      className="h-8 rounded-xl text-xs font-bold"
+                    >
+                      Set Views
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Metric 3: Shares */}
+                <div className="p-4 rounded-2xl border border-border bg-muted/20 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <Share2 className="size-4 text-emerald-500" />
+                      Total Card Shares
+                    </span>
+                    <span className="text-lg font-black text-emerald-600 font-mono">
+                      {metricAdjustmentTarget.totalShares.toLocaleString()}
+                    </span>
+                  </div>
+
+                  {Object.keys(metricAdjustmentTarget.sharesBreakdown).length > 0 && (
+                    <div className="text-[11px] text-muted-foreground flex flex-wrap gap-1.5 pt-1">
+                      {Object.entries(metricAdjustmentTarget.sharesBreakdown).map(([ch, count]) => (
+                        <span key={ch} className="px-2 py-0.5 rounded-lg bg-card border border-border font-mono text-[10px]">
+                          {ch}: <strong>{count}</strong>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="pt-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      disabled={isAdjustingMetric || metricAdjustmentTarget.totalShares === 0}
+                      onClick={() => executeAdjustMetric('shares', 'reset')}
+                      className="rounded-xl text-xs font-bold text-rose-600 border-rose-500/20 hover:bg-rose-500/10"
+                      title="Reset all shares to 0"
+                    >
+                      <RotateCcw className="size-3.5 mr-1" /> Reset All Shares to 0
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-2 border-t border-border">
+                <Button
+                  type="button"
+                  onClick={() => setMetricAdjustmentTarget(null)}
+                  className="rounded-xl font-bold px-6"
+                >
+                  Done
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
         {viewingPoetryFlyer && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto">
             <div className="w-full max-w-4xl rounded-3xl border border-border bg-card shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col">
@@ -5244,7 +5901,7 @@ export default function AdminPortalPage() {
                           ctx.fillStyle = '#6ee7b7'
                           ctx.font = 'bold 15px sans-serif'
                           const catLabel = (p.categoryLabel || 'Masterpiece').toUpperCase()
-                          ctx.fillText(`✦ ${catLabel}  •  ${tabLabel} ✦`, 540, topY)
+                          ctx.fillText(`✦ ${catLabel} ✦`, 540, topY)
 
                           topY += 22
                           ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)'
@@ -5312,14 +5969,28 @@ export default function AdminPortalPage() {
                     </div>
 
                     <div className="flex items-center justify-between pt-1">
-                      <button
-                        type="button"
-                        onClick={(e) => handleDeletePoetryActivity(viewingPoetryFlyer.activity.id || viewingPoetryFlyer.activity.docId, viewingPoetryFlyer.activity.poemId, e)}
-                        className="text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-500/10 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <Trash2 className="size-3.5" />
-                        Delete Activity Event
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const p = viewingPoetryFlyer.poem
+                            promptAdjustMetrics('poetry', { id: p.id, title: p.title, poemId: p.id })
+                          }}
+                          className="text-xs font-bold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-500/10 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer border border-indigo-500/20"
+                        >
+                          <Sliders className="size-3.5" />
+                          Adjust Poem Metrics
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={(e) => handleDeletePoetryActivity(viewingPoetryFlyer.activity.id || viewingPoetryFlyer.activity.docId, viewingPoetryFlyer.activity.poemId, e)}
+                          className="text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-500/10 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Trash2 className="size-3.5" />
+                          Delete Event
+                        </button>
+                      </div>
 
                       <Button
                         variant="outline"

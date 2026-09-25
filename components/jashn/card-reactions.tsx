@@ -108,6 +108,20 @@ export function CardLiveReactions({
       return updated
     })
 
+    // Sync reaction to Firestore backend
+    try {
+      fetch('/api/card-activity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cardType,
+          slug: cardSlug,
+          action: 'reaction',
+          channel: reaction.id,
+        }),
+      }).catch(() => {})
+    } catch {}
+
     // Spawn 8-12 floating emoji particles
     const rect = e.currentTarget.getBoundingClientRect()
     const startX = rect.left + rect.width / 2

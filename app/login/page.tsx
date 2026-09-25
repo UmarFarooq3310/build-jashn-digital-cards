@@ -258,6 +258,9 @@ function LoginPageContent() {
       if (success) {
         // Popup flow succeeded — user is signed in, redirect now
         const currentUser = useJashn.getState().user
+        if (currentUser?.email && currentUser.email.toLowerCase() === 'cardzyonline@gmail.com') {
+          purgeAdminPresence()
+        }
         if (currentUser) await migrateGuestCards(currentUser.uid)
         showToast(t('googleSuccessToast') || 'Signed in with Google successfully!', 'success')
         window.location.href = redirect
