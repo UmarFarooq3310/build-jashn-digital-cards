@@ -44,7 +44,7 @@ const FEATURED_GUIDES = [
   {
     slug: "how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly",
     title: "How to Manage Pakistani Wedding Guest Lists & WhatsApp RSVPs Effortlessly",
-    excerpt: "Stop chasing guests manually. Discover how interactive digital invitations automate RSVP headcounts, dietary notes, and venue Google Maps pins.",
+    excerpt: "Stop chasing guests manually. Discover how interactive digital invitations automate RSVP headcounts, dietary notes, and event countdowns.",
     category: "Event Planning",
     categoryColor: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30",
     author: "Umar Farooq",

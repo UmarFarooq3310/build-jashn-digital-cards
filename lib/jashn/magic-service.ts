@@ -146,6 +146,7 @@ export async function recordCardShare(
   channel: CardShareChannel
 ): Promise<void> {
   if (!slug) return
+  const cleanSlug = String(slug).replace(/^\/?(i|w|v|m)\//, '').trim()
 
   const collectionName =
     cardType === 'invite'
@@ -156,54 +157,51 @@ export async function recordCardShare(
       ? 'visitingCards'
       : 'magic_links'
 
-  // Prevent rapid double-clicks (within 1.2 seconds)
-  if (typeof window !== 'undefined') {
-    const lockKey = `cardzy_share_lock_${cardType}_${slug}_${channel}`
-    const last = Number(sessionStorage.getItem(lockKey) || '0')
-    if (Date.now() - last < 1200) return
-    sessionStorage.setItem(lockKey, String(Date.now()))
-  }
-
-  // 1. Primary: Server API logging (single authoritative increment via Firebase Admin)
+  // 1. Primary: Server API logging (authoritative increment via Firebase Admin SDK)
   let serverOk = false
   if (typeof window !== 'undefined') {
     try {
       const res = await fetch('/api/card-activity', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cardType, slug, action: 'share', channel }),
+        body: JSON.stringify({ cardType, slug: cleanSlug, action: 'share', channel }),
       })
       if (res.ok) serverOk = true
     } catch {}
   }
 
-  // 2. Fallback: Only if server API was unreachable, update via client Firestore
+  // 2. Fallback: If server API was unreachable, update via client Firestore
   if (!serverOk) {
     const activeDb = getFirebaseDb() || db
     if (isFirebaseConfigured && activeDb) {
-      const collectionName =
-        cardType === 'invite'
-          ? 'invitations'
-          : cardType === 'wish'
-          ? 'wishes'
-          : cardType === 'vcard'
-          ? 'visitingCards'
-          : 'magic_links'
       try {
-        const docRef = doc(activeDb, collectionName, slug)
-        await setDoc(
-          docRef,
-          {
-            shares: {
-              [channel]: increment(1),
+        const docRef = doc(activeDb, collectionName, cleanSlug)
+        await updateDoc(docRef, {
+          [`shares.${channel}`]: increment(1),
+          lastSharedAt: Date.now(),
+        }).catch(async () => {
+          await setDoc(
+            docRef,
+            {
+              shares: {
+                [channel]: increment(1),
+              },
+              lastSharedAt: Date.now(),
             },
-            [`shares.${channel}`]: increment(1),
-            lastSharedAt: Date.now(),
-          },
-          { merge: true }
-        )
+            { merge: true }
+          )
+        })
       } catch {}
     }
+  }
+
+  // 3. Notify live listeners in window
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent('cardzy_shares_updated', {
+        detail: { cardType, slug: cleanSlug, channel },
+      })
+    )
   }
 
   // 3. Update localStorage cache
@@ -372,28 +370,6 @@ export async function getUserMagicLinks(userId?: string): Promise<MagicLinkData[
       console.warn('Error querying user magic links from Firestore:', err)
     }
   }
-
-  // Also include and sync locally stored links that belong to this user / device
-  const local = getLocalLinks()
-  Object.entries(local).forEach(([k, loc]) => {
-    if (!loc) return
-    const slug = loc.slug || loc.id || k
-    if (!slug) return
-    const updatedLoc: MagicLinkData = {
-      ...loc,
-      slug,
-      senderId: loc.senderId || userId || 'guest',
-    }
-    // Update local storage with normalized slug and senderId
-    saveLocalLink(slug, updatedLoc)
-
-    // Always push local magic link to Firestore
-    syncRecordToServer('sync_magic', updatedLoc)
-
-    if (!links.some((l) => (l.slug || l.id) === slug)) {
-      links.push(updatedLoc)
-    }
-  })
 
   // Sort newest first
   return links.sort((a, b) => {

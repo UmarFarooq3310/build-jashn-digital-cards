@@ -548,12 +548,6 @@ export const useJashn = create<JashnState>()(
           syncRecordToServer('sync_user', currentUser)
         }
 
-        const localState = get()
-        // Sync all local wishes, invitations, visiting cards to ensure none are missing from Firestore
-        localState.wishes.forEach((w) => syncRecordToServer('sync_wish', { ...w, creatorId: w.creatorId || activeUid || 'guest' }))
-        localState.invitations.forEach((i) => syncRecordToServer('sync_invitation', { ...i, creatorId: i.creatorId || activeUid || 'guest' }))
-        localState.visitingCards.forEach((vc) => syncRecordToServer('sync_vcard', { ...vc, creatorId: vc.creatorId || activeUid || 'guest' }))
-
         const activeDb = getFirebaseDb() || db
         if (!currentUser.uid) {
           const generatedUid = uid()
@@ -593,26 +587,14 @@ export const useJashn = create<JashnState>()(
             const fetchedVcs = vcSnap.docs.map((doc) => doc.data() as VisitingCard)
 
             set((s) => {
-              const otherInvs = s.invitations.filter((li) => li.creatorId !== currentUser.uid)
-              const otherWishes = s.wishes.filter((lw) => lw.creatorId !== currentUser.uid)
-              const otherVcs = (s.visitingCards || []).filter((lvc) => lvc.creatorId !== currentUser.uid)
-
-              const invsMap = new Map<string, Invitation>()
-              otherInvs.forEach((i) => invsMap.set(i.slug, i))
-              fetchedInvs.forEach((i) => invsMap.set(i.slug, i))
-
-              const wishesMap = new Map<string, Wish>()
-              otherWishes.forEach((w) => wishesMap.set(w.slug, w))
-              fetchedWishes.forEach((w) => wishesMap.set(w.slug, w))
-
-              const vcsMap = new Map<string, VisitingCard>()
-              otherVcs.forEach((vc) => vcsMap.set(vc.slug, vc))
-              fetchedVcs.forEach((vc) => vcsMap.set(vc.slug, vc))
+              const otherInvs = s.invitations.filter((li) => li.creatorId !== currentUser.uid && li.creatorId !== 'guest')
+              const otherWishes = s.wishes.filter((lw) => lw.creatorId !== currentUser.uid && lw.creatorId !== 'guest')
+              const otherVcs = (s.visitingCards || []).filter((lvc) => lvc.creatorId !== currentUser.uid && lvc.creatorId !== 'guest')
 
               return {
-                invitations: Array.from(invsMap.values()),
-                wishes: Array.from(wishesMap.values()),
-                visitingCards: Array.from(vcsMap.values()),
+                invitations: [...otherInvs, ...fetchedInvs],
+                wishes: [...otherWishes, ...fetchedWishes],
+                visitingCards: [...otherVcs, ...fetchedVcs],
               }
             })
           } catch (e) {

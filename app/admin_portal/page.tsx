@@ -42,7 +42,13 @@ import {
   MessageCircle,
   ChevronDown,
   ChevronRight,
+  ChevronLeft,
   Layers,
+  Feather,
+  BookOpen,
+  Scroll,
+  Heart,
+  Plus,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -52,6 +58,7 @@ import { collection, getDocs, query, orderBy, limit, onSnapshot, doc, deleteDoc 
 import { cn } from '@/lib/utils'
 import type { JashnUser, Plan, Invitation, Wish, VisitingCard, RsvpGuest } from '@/lib/jashn/types'
 import type { MagicLinkData } from '@/lib/jashn/magic-types'
+import { POETRY_DATABASE, POETRY_CATEGORIES, POET_PROFILES } from '@/lib/jashn/poetry-data'
 import {
   listenAllGuestbookWishes,
   deleteGuestbookWish,
@@ -291,6 +298,125 @@ function inferOrigin(item: {
   }
 }
 
+function AdminTablePagination({
+  currentPage,
+  totalItems,
+  pageSize,
+  onPageChange,
+  onPageSizeChange,
+  itemName = 'records',
+}: {
+  currentPage: number
+  totalItems: number
+  pageSize: number
+  onPageChange: (newPage: number) => void
+  onPageSizeChange?: (newSize: number) => void
+  itemName?: string
+}) {
+  if (totalItems <= 0) return null
+
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize))
+  const startIdx = Math.min(totalItems, (currentPage - 1) * pageSize + 1)
+  const endIdx = Math.min(totalItems, currentPage * pageSize)
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = []
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i)
+    } else {
+      pages.push(1)
+      if (currentPage > 3) pages.push('ellipsis-start')
+      
+      const start = Math.max(2, currentPage - 1)
+      const end = Math.min(totalPages - 1, currentPage + 1)
+      for (let i = start; i <= end; i++) {
+        if (!pages.includes(i)) pages.push(i)
+      }
+      
+      if (currentPage < totalPages - 2) pages.push('ellipsis-end')
+      if (!pages.includes(totalPages)) pages.push(totalPages)
+    }
+    return pages
+  }
+
+  return (
+    <div className="p-4 border-t border-border/80 bg-muted/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+      <div className="flex items-center gap-3 text-muted-foreground font-medium">
+        <span>
+          Showing <strong className="text-foreground font-mono">{startIdx}</strong>–<strong className="text-foreground font-mono">{endIdx}</strong> of <strong className="text-foreground font-mono">{totalItems}</strong> {itemName}
+        </span>
+        {onPageSizeChange && (
+          <div className="flex items-center gap-1.5 ml-2 border-l border-border pl-3">
+            <span className="text-[11px]">Per page:</span>
+            <select
+              value={pageSize}
+              onChange={(e) => {
+                onPageSizeChange(Number(e.target.value))
+                onPageChange(1)
+              }}
+              aria-label="Records per page"
+              className="px-2 py-1 rounded-lg bg-background border border-border text-foreground font-semibold text-xs focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
+            >
+              <option value={10}>10</option>
+              <option value={30}>30 (Default)</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+          </div>
+        )}
+      </div>
+
+      <div className="flex items-center gap-1.5 flex-wrap justify-end">
+        <button
+          type="button"
+          disabled={currentPage <= 1}
+          onClick={() => onPageChange(currentPage - 1)}
+          className="px-2.5 py-1.5 rounded-xl border border-border bg-card text-foreground font-semibold hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-1 cursor-pointer"
+        >
+          <ChevronLeft className="size-3.5" />
+          <span>Prev</span>
+        </button>
+
+        {getPageNumbers().map((page, idx) => {
+          if (typeof page === 'string') {
+            return (
+              <span key={`ell-${idx}`} className="px-1.5 text-muted-foreground font-mono">
+                …
+              </span>
+            )
+          }
+          const isActive = page === currentPage
+          return (
+            <button
+              key={page}
+              type="button"
+              onClick={() => onPageChange(page)}
+              className={cn(
+                "min-w-8 h-8 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer",
+                isActive
+                  ? "bg-indigo-600 text-white shadow-sm scale-105"
+                  : "bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted"
+              )}
+            >
+              {page}
+            </button>
+          )
+        })}
+
+        <button
+          type="button"
+          disabled={currentPage >= totalPages}
+          onClick={() => onPageChange(currentPage + 1)}
+          className="px-2.5 py-1.5 rounded-xl border border-border bg-card text-foreground font-semibold hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-1 cursor-pointer"
+        >
+          <span>Next</span>
+          <ChevronRight className="size-3.5" />
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function AdminPortalPage() {
   const [mounted, setMounted] = useState(false)
   const [isAdminAuthorized, setIsAdminAuthorized] = useState(false)
@@ -315,8 +441,44 @@ export default function AdminPortalPage() {
     showToast,
   } = useJashn()
 
-  const [adminSection, setAdminSection] = useState<'all' | 'invitations' | 'wishes' | 'visiting_cards' | 'rsvps' | 'users' | 'push_notifications' | 'live_users' | 'magic_links' | 'guestbook'>('all')
+  const [adminSection, setAdminSection] = useState<'all' | 'invitations' | 'wishes' | 'visiting_cards' | 'rsvps' | 'users' | 'push_notifications' | 'live_users' | 'magic_links' | 'guestbook' | 'poetry'>('all')
   const [searchTerm, setSearchTerm] = useState('')
+  const [poetrySearchTerm, setPoetrySearchTerm] = useState('')
+  const [poetryCategoryFilter, setPoetryCategoryFilter] = useState('all')
+  const [invitationSearch, setInvitationSearch] = useState('')
+  const [wishSearch, setWishSearch] = useState('')
+  const [vcSearch, setVcSearch] = useState('')
+  const [magicSearch, setMagicSearch] = useState('')
+  const [rsvpSearch, setRsvpSearch] = useState('')
+
+  // ── Section Pagination States (Default 30 records per page) ───────────────
+  const [pageLiveUsers, setPageLiveUsers] = useState(1)
+  const [pageSizeLiveUsers, setPageSizeLiveUsers] = useState(30)
+
+  const [pagePoetryEvents, setPagePoetryEvents] = useState(1)
+  const [pageSizePoetryEvents, setPageSizePoetryEvents] = useState(30)
+
+  const [pageUsers, setPageUsers] = useState(1)
+  const [pageSizeUsers, setPageSizeUsers] = useState(30)
+
+  const [pageInvitations, setPageInvitations] = useState(1)
+  const [pageSizeInvitations, setPageSizeInvitations] = useState(30)
+
+  const [pageWishes, setPageWishes] = useState(1)
+  const [pageSizeWishes, setPageSizeWishes] = useState(30)
+
+  const [pageVisitingCards, setPageVisitingCards] = useState(1)
+  const [pageSizeVisitingCards, setPageSizeVisitingCards] = useState(30)
+
+  const [pageMagicLinks, setPageMagicLinks] = useState(1)
+  const [pageSizeMagicLinks, setPageSizeMagicLinks] = useState(30)
+
+  const [pageGuestbook, setPageGuestbook] = useState(1)
+  const [pageSizeGuestbook, setPageSizeGuestbook] = useState(30)
+
+  const [pageRsvps, setPageRsvps] = useState(1)
+  const [pageSizeRsvps, setPageSizeRsvps] = useState(30)
+
   // Which invitation's RSVPs to show — null means all
   const [rsvpFilterSlug, setRsvpFilterSlug] = useState<string | null>(null)
 
@@ -501,8 +663,9 @@ export default function AdminPortalPage() {
         const firestoreDb = getFirebaseDb()
         if (!firestoreDb) return
         const collRef = collection(firestoreDb, 'active_sessions')
-        unsub = onSnapshot(collRef, async (snap) => {
-          const threshold = Date.now() - 65000 // Active within the last 65 seconds
+        const q = query(collRef, orderBy('lastSeen', 'desc'), limit(30))
+        unsub = onSnapshot(q, async (snap) => {
+          const threshold = Date.now() - 300000 // Active within the last 5 minutes (matching throttled heartbeats)
           const rawDocs = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() } as any))
           
           // Identify any admin session docs to clean up from database
@@ -574,6 +737,115 @@ export default function AdminPortalPage() {
       setFirestoreVisitingCards((prev) => prev.filter((vc) => (vc.slug || vc.id) !== slug && vc.id !== slug))
       showToast('Visiting card deleted by Admin', 'info')
     }
+  }
+
+  async function handleCreatePoetry(e: React.FormEvent) {
+    e.preventDefault()
+    if (!newPoetryForm.title.trim() || !newPoetryForm.poet.trim() || !newPoetryForm.originalText.trim()) {
+      showToast('Title, Poet Name, and Original Text are required.', 'error')
+      return
+    }
+
+    setIsSubmittingPoetry(true)
+    try {
+      const res = await fetch('/api/poetry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newPoetryForm),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Failed to create poetry')
+      }
+
+      setFirestoreCustomPoetry((prev) => [data.poem, ...prev])
+      showToast(`Poetry "${newPoetryForm.title}" added to treasury!`, 'success')
+      setIsAddPoetryModalOpen(false)
+      setNewPoetryForm({
+        title: '',
+        format: 'two_liner',
+        poet: '',
+        poetUrdu: '',
+        poetOrigin: 'Pakistan / South Asia',
+        poetEra: 'Modern Classical',
+        category: 'ishq',
+        categoryLabel: 'Love & Romance',
+        originalLanguage: 'ur',
+        direction: 'rtl',
+        originalText: '',
+        romanText: '',
+        englishTranslation: '',
+        meaning: '',
+        tags: '',
+        recommendedCardType: 'wish',
+        cardPrefillMsg: '',
+      })
+    } catch (err: any) {
+      console.error('Poetry creation error:', err)
+      showToast(err.message || 'Failed to save poetry', 'error')
+    } finally {
+      setIsSubmittingPoetry(false)
+    }
+  }
+
+  async function handleDeleteCustomPoetry(poemId: string, title: string) {
+    if (!confirm(`Are you sure you want to delete poem "${title}" from Firebase Firestore? This action cannot be undone.`)) return
+    try {
+      const res = await fetch(`/api/poetry?id=${poemId}`, { method: 'DELETE' })
+      const data = await res.json()
+      if (!res.ok || !data.success) throw new Error(data.error || 'Failed to delete')
+      setFirestoreCustomPoetry((prev) => prev.filter((p) => p.id !== poemId))
+      showToast(`Poem "${title}" deleted from Firebase`, 'info')
+    } catch (err: any) {
+      showToast(err.message || 'Failed to delete poem', 'error')
+    }
+  }
+
+  async function handleDeletePoetryActivity(eventDocId?: string, poemId?: string, e?: React.MouseEvent) {
+    if (e) e.stopPropagation()
+    if (!confirm('Are you sure you want to delete this poetry activity event record?')) return
+    const firestoreDb = getFirebaseDb()
+    if (firestoreDb && eventDocId) {
+      try {
+        await deleteDoc(doc(firestoreDb, 'poetry_activity', eventDocId))
+        setFirestorePoetryActivity((prev) => prev.filter((a) => (a.id || a.docId) !== eventDocId))
+        showToast('Poetry activity record deleted from Firebase', 'info')
+      } catch (err: any) {
+        setFirestorePoetryActivity((prev) => prev.filter((a) => (a.id || a.docId) !== eventDocId))
+        showToast('Activity record removed', 'info')
+      }
+    } else {
+      setFirestorePoetryActivity((prev) => prev.filter((a) => (a.id || a.docId) !== eventDocId && a.poemId !== poemId))
+      showToast('Activity record removed', 'info')
+    }
+    if (viewingPoetryFlyer && (viewingPoetryFlyer.activity?.id === eventDocId || viewingPoetryFlyer.activity?.poemId === poemId)) {
+      setViewingPoetryFlyer(null)
+    }
+  }
+
+  function handleOpenFlyerPreview(act: any, e?: React.MouseEvent) {
+    if (e) e.stopPropagation()
+    const pId = act.poemId || ''
+    const foundPoem = POETRY_DATABASE.find(
+      (p) => p.id === pId || p.title === act.title || (pId && p.id.includes(pId))
+    ) || {
+      id: act.poemId || 'poem-custom',
+      title: act.title || 'Classical Urdu Verse',
+      poet: act.poet || 'Classical Poet',
+      poetUrdu: act.poetUrdu || '',
+      format: 'two_liner',
+      category: 'ishq',
+      categoryLabel: 'Love & Romance',
+      originalLanguage: 'ur',
+      direction: 'rtl',
+      originalText: act.originalText || act.title || 'کچھ بات ہے کہ ہستی مٹتی نہیں ہماری\nصدیوں رہا ہے دشمن دورِ زماں ہمارا',
+      romanText: act.romanText || 'Kuch baat hai ke hasti mit-ti nahi hamari...',
+      englishTranslation: act.englishTranslation || 'There is something inherent in our essence that defies extinction.',
+      tags: ['poetry', 'classic'],
+      recommendedCardType: 'wish',
+      cardPrefillMsg: act.title || '',
+    }
+    setViewingPoetryFlyer({ activity: act, poem: foundPoem })
   }
 
   async function handleConfirmDeleteUser() {
@@ -700,178 +972,212 @@ export default function AdminPortalPage() {
   const [firestoreVisitingCards, setFirestoreVisitingCards] = useState<VisitingCard[]>([])
   const [firestoreRsvps, setFirestoreRsvps] = useState<RsvpGuest[]>([])
   const [firestoreMagicLinks, setFirestoreMagicLinks] = useState<MagicLinkData[]>([])
+  const [firestorePoetryStats, setFirestorePoetryStats] = useState<any[]>([])
+  const [firestorePoetryActivity, setFirestorePoetryActivity] = useState<any[]>([])
+  const [firestoreCustomPoetry, setFirestoreCustomPoetry] = useState<any[]>([])
+  const [showOnlyEngagedPoetry, setShowOnlyEngagedPoetry] = useState<boolean>(true)
+  const [isAddPoetryModalOpen, setIsAddPoetryModalOpen] = useState(false)
+  const [isSubmittingPoetry, setIsSubmittingPoetry] = useState(false)
+  const [newPoetryForm, setNewPoetryForm] = useState({
+    title: '',
+    format: 'two_liner' as 'two_liner' | 'full_poem',
+    poet: '',
+    poetUrdu: '',
+    poetOrigin: 'Pakistan / South Asia',
+    poetEra: 'Modern Classical',
+    category: 'ishq',
+    categoryLabel: 'Love & Romance',
+    originalLanguage: 'ur',
+    direction: 'rtl' as 'rtl' | 'ltr',
+    originalText: '',
+    romanText: '',
+    englishTranslation: '',
+    meaning: '',
+    tags: '',
+    recommendedCardType: 'wish' as 'wish' | 'invitation' | 'magic',
+    cardPrefillMsg: '',
+  })
   const [shareModalCard, setShareModalCard] = useState<ShareModalCardData | null>(null)
+  const [viewingPoetryFlyer, setViewingPoetryFlyer] = useState<{ activity: any; poem: any } | null>(null)
+  const [adminFlyerTab, setAdminFlyerTab] = useState<'original' | 'urdu' | 'roman' | 'english'>('original')
   const [isFirestoreLoading, setIsFirestoreLoading] = useState(false)
   const [firestoreError, setFirestoreError] = useState<string | null>(null)
   const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null)
 
   const loadFirestoreAll = useCallback(async () => {
     setIsFirestoreLoading(true)
-    setFirestoreError(null)
-
-    // Strategy 1: Load via Server Admin SDK endpoint (bypasses all client-side Firestore rules and adblockers)
     try {
       const res = await fetch('/api/admin-data', { cache: 'no-store' })
       if (res.ok) {
         const data = await res.json()
         if (data.success) {
-          setFirestoreUsers(data.users || [])
-          setFirestoreInvitations(data.invitations || [])
-          setFirestoreWishes(data.wishes || [])
-          setFirestoreVisitingCards(data.visitingCards || [])
-          setFirestoreRsvps(data.rsvps || [])
-          setFirestoreMagicLinks(data.magicLinks || [])
+          if (data.users) setFirestoreUsers(data.users)
+          if (data.invitations) setFirestoreInvitations(data.invitations)
+          if (data.wishes) setFirestoreWishes(data.wishes)
+          if (data.visitingCards) setFirestoreVisitingCards(data.visitingCards)
+          if (data.rsvps) setFirestoreRsvps(data.rsvps)
+          if (data.magicLinks) setFirestoreMagicLinks(data.magicLinks)
+          if (data.guestbookWishes && data.guestbookWishes.length > 0) setAllGuestbookWishes(data.guestbookWishes)
+          if (data.poetryStats) setFirestorePoetryStats(data.poetryStats)
+          if (data.poetryActivity) setFirestorePoetryActivity(data.poetryActivity)
           setLastSyncedAt(Date.now())
-          setIsFirestoreLoading(false)
-          return
+          showToast('Real-time database re-synced', 'success')
         }
       }
-    } catch (serverErr) {
-      console.warn('[Admin Portal] Server API fetch notice, trying client SDK fallback:', serverErr)
-    }
-
-    // Strategy 2: Fallback to Client Firestore SDK
-    const activeDb = getFirebaseDb() || db
-    if (!isFirebaseConfigured || !activeDb) {
-      setFirestoreError(
-        'Cloud Database (Firebase) is not connected on this deployment. Missing NEXT_PUBLIC_FIREBASE_* environment variables.'
-      )
-      setIsFirestoreLoading(false)
-      return
-    }
-
-    try {
-      // 1. Users
-      try {
-        const snap = await getDocs(collection(activeDb, 'users'))
-        const list: JashnUser[] = []
-        snap.forEach((docSnap) => {
-          if (docSnap.exists()) list.push(docSnap.data() as JashnUser)
-        })
-        setFirestoreUsers(list)
-      } catch (e: any) {
-        console.error('Failed to fetch users from Firestore:', e)
-      }
-
-      const normalizeShares = (data: any) => {
-        const s = data?.shares && typeof data.shares === 'object' ? data.shares : {}
-        return {
-          whatsapp: Math.max(Number(s.whatsapp || 0), Number(data?.['shares.whatsapp'] || 0)),
-          sms: Math.max(Number(s.sms || 0), Number(data?.['shares.sms'] || 0)),
-          copy: Math.max(Number(s.copy || 0), Number(data?.['shares.copy'] || 0)),
-          qr: Math.max(Number(s.qr || 0), Number(data?.['shares.qr'] || 0)),
-          image: Math.max(Number(s.image || 0), Number(data?.['shares.image'] || 0)),
-          video: Math.max(Number(s.video || 0), Number(data?.['shares.video'] || 0)),
-          app: Math.max(Number(s.app || 0), Number(data?.['shares.app'] || 0)),
-        }
-      }
-
-      // 2. Invitations
-      try {
-        const snap = await getDocs(collection(activeDb, 'invitations'))
-        const list: Invitation[] = []
-        snap.forEach((docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data() as any
-            list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
-          }
-        })
-        setFirestoreInvitations(list)
-      } catch (e: any) {
-        console.error('Failed to fetch invitations from Firestore:', e)
-      }
-
-      // 3. Wishes
-      try {
-        const snap = await getDocs(collection(activeDb, 'wishes'))
-        const list: Wish[] = []
-        snap.forEach((docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data() as any
-            list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
-          }
-        })
-        setFirestoreWishes(list)
-      } catch (e: any) {
-        console.error('Failed to fetch wishes from Firestore:', e)
-      }
-
-      // 4. Visiting Cards
-      try {
-        const snap = await getDocs(collection(activeDb, 'visitingCards'))
-        const list: VisitingCard[] = []
-        snap.forEach((docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data() as any
-            list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
-          }
-        })
-        setFirestoreVisitingCards(list)
-      } catch (e: any) {
-        console.error('Failed to fetch visiting cards from Firestore:', e)
-      }
-
-      // 5. RSVPs
-      try {
-        const snap = await getDocs(collection(activeDb, 'rsvps'))
-        const list: RsvpGuest[] = []
-        snap.forEach((docSnap) => {
-          if (docSnap.exists()) list.push(docSnap.data() as RsvpGuest)
-        })
-        setFirestoreRsvps(list)
-      } catch (e: any) {
-        console.error('Failed to fetch RSVPs from Firestore:', e)
-      }
-
-      // 6. Magic Links
-      try {
-        const snap = await getDocs(collection(activeDb, 'magic_links'))
-        const list: MagicLinkData[] = []
-        snap.forEach((docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data() as any
-            list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
-          }
-        })
-        setFirestoreMagicLinks(list)
-      } catch (e: any) {
-        console.error('Failed to fetch Magic Links from Firestore:', e)
-      }
-
-      setLastSyncedAt(Date.now())
-    } catch (err: any) {
-      console.error('Failed to load Firestore data:', err)
-      setFirestoreError(err?.message || 'Failed to sync with cloud database')
+    } catch (e) {
+      console.warn('Manual sync notice:', e)
     } finally {
       setIsFirestoreLoading(false)
     }
+  }, [showToast])
+
+  // Real-time onSnapshot Synchronization across ALL Firebase Collections
+  useEffect(() => {
+    const activeDb = getFirebaseDb() || db
+    if (!isFirebaseConfigured || !activeDb) {
+      setFirestoreError('Firebase Cloud Database is not connected.')
+      return
+    }
+
+    const normalizeShares = (data: any) => {
+      const s = data?.shares && typeof data.shares === 'object' ? data.shares : {}
+      return {
+        whatsapp: Math.max(Number(s.whatsapp || 0), Number(data?.['shares.whatsapp'] || 0)),
+        sms: Math.max(Number(s.sms || 0), Number(data?.['shares.sms'] || 0)),
+        copy: Math.max(Number(s.copy || 0), Number(data?.['shares.copy'] || 0)),
+        qr: Math.max(Number(s.qr || 0), Number(data?.['shares.qr'] || 0)),
+        image: Math.max(Number(s.image || 0), Number(data?.['shares.image'] || 0)),
+        video: Math.max(Number(s.video || 0), Number(data?.['shares.video'] || 0)),
+        app: Math.max(Number(s.app || 0), Number(data?.['shares.app'] || 0)),
+      }
+    }
+
+    setIsFirestoreLoading(true)
+
+    // 1. Live Users listener
+    const unsubUsers = onSnapshot(collection(activeDb, 'users'), (snap) => {
+      const list: JashnUser[] = []
+      snap.forEach((docSnap) => {
+        if (docSnap.exists()) list.push(docSnap.data() as JashnUser)
+      })
+      setFirestoreUsers(list)
+      setLastSyncedAt(Date.now())
+      setIsFirestoreLoading(false)
+    }, (err) => {
+      console.warn('Users listener notice:', err)
+      setIsFirestoreLoading(false)
+    })
+
+    // 2. Live Invitations listener
+    const unsubInvs = onSnapshot(collection(activeDb, 'invitations'), (snap) => {
+      const list: Invitation[] = []
+      snap.forEach((docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data() as any
+          list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
+        }
+      })
+      setFirestoreInvitations(list)
+      setLastSyncedAt(Date.now())
+    }, (err) => console.warn('Invitations listener notice:', err))
+
+    // 3. Live Wishes listener
+    const unsubWishes = onSnapshot(collection(activeDb, 'wishes'), (snap) => {
+      const list: Wish[] = []
+      snap.forEach((docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data() as any
+          list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
+        }
+      })
+      setFirestoreWishes(list)
+      setLastSyncedAt(Date.now())
+    }, (err) => console.warn('Wishes listener notice:', err))
+
+    // 4. Live Visiting Cards listener
+    const unsubVC = onSnapshot(collection(activeDb, 'visitingCards'), (snap) => {
+      const list: VisitingCard[] = []
+      snap.forEach((docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data() as any
+          list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
+        }
+      })
+      setFirestoreVisitingCards(list)
+      setLastSyncedAt(Date.now())
+    }, (err) => console.warn('Visiting cards listener notice:', err))
+
+    // 5. Live RSVPs listener
+    const unsubRsvps = onSnapshot(collection(activeDb, 'rsvps'), (snap) => {
+      const list: RsvpGuest[] = []
+      snap.forEach((docSnap) => {
+        if (docSnap.exists()) list.push(docSnap.data() as RsvpGuest)
+      })
+      setFirestoreRsvps(list)
+      setLastSyncedAt(Date.now())
+    }, (err) => console.warn('RSVPs listener notice:', err))
+
+    // 6. Live Magic Links listener
+    const unsubMagic = onSnapshot(collection(activeDb, 'magic_links'), (snap) => {
+      const list: MagicLinkData[] = []
+      snap.forEach((docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data() as any
+          list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
+        }
+      })
+      setFirestoreMagicLinks(list)
+      setLastSyncedAt(Date.now())
+    }, (err) => console.warn('Magic links listener notice:', err))
+
+    // 7. Live Poetry Stats listener
+    const unsubPoetryStats = onSnapshot(collection(activeDb, 'poetry_stats'), (snap) => {
+      const list: any[] = []
+      snap.forEach((docSnap) => {
+        if (docSnap.exists()) list.push({ id: docSnap.id, ...docSnap.data() })
+      })
+      setFirestorePoetryStats(list)
+      setLastSyncedAt(Date.now())
+    }, (err) => console.warn('Poetry stats listener notice:', err))
+
+    // 8. Live Poetry Activity listener
+    const unsubPoetryAct = onSnapshot(query(collection(activeDb, 'poetry_activity'), orderBy('timestamp', 'desc'), limit(100)), (snap) => {
+      const list: any[] = []
+      snap.forEach((docSnap) => {
+        if (docSnap.exists()) list.push({ id: docSnap.id, ...docSnap.data() })
+      })
+      setFirestorePoetryActivity(list)
+      setLastSyncedAt(Date.now())
+    }, (err) => console.warn('Poetry activity listener notice:', err))
+
+    return () => {
+      unsubUsers()
+      unsubInvs()
+      unsubWishes()
+      unsubVC()
+      unsubRsvps()
+      unsubMagic()
+      unsubPoetryStats()
+      unsubPoetryAct()
+    }
   }, [])
 
-  useEffect(() => {
-    loadFirestoreAll()
-    // Auto-refresh analytics in real time every 12 seconds
-    const interval = setInterval(() => {
-      loadFirestoreAll()
-    }, 12000)
-    return () => clearInterval(interval)
-  }, [loadFirestoreAll])
-
-  // Invitations list (Firestore only for admin consistency)
+  // Invitations list (Strictly Cloud Firebase only)
   const invitations = useMemo(() => {
     return [...firestoreInvitations].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
   }, [firestoreInvitations])
 
-  // Wishes list (Firestore only)
+  // Wishes list (Strictly Cloud Firebase only)
   const wishes = useMemo(() => {
     return [...firestoreWishes].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
   }, [firestoreWishes])
 
-  // Visiting Cards list (Firestore only)
+  // Visiting Cards list (Strictly Cloud Firebase only)
   const visitingCards = useMemo(() => {
     return [...firestoreVisitingCards].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
   }, [firestoreVisitingCards])
 
-  // RSVPs list (Firestore only)
+  // RSVPs list (Strictly Cloud Firebase only)
   const rsvps = useMemo(() => {
     return [...firestoreRsvps].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
   }, [firestoreRsvps])
@@ -1090,6 +1396,96 @@ export default function AdminPortalPage() {
     )
   }, [invitations, wishes, visitingCards, magicLinks])
 
+  // ── Poetry Analytics Computation ──────────────────────────────
+  const poetrySummary = useMemo(() => {
+    const summaryDoc = firestorePoetryStats.find((s) => s.id === 'summary')
+    if (summaryDoc) {
+      return {
+        totalInteractions: Number(summaryDoc.totalInteractions || 0),
+        totalViews: Number(summaryDoc.totalViews || 0),
+        totalCopies: Number(summaryDoc.totalCopies || 0),
+        totalShares: Number(summaryDoc.totalShares || 0),
+        totalFlyers: Number(summaryDoc.totalFlyers || 0),
+        totalCardCreations: Number(summaryDoc.totalCardCreations || 0),
+        lastActivityAt: summaryDoc.lastActivityAt,
+      }
+    }
+
+    return firestorePoetryStats.reduce(
+      (acc, curr) => {
+        if (curr.id === 'summary') return acc
+        return {
+          totalInteractions: acc.totalInteractions + (curr.views || 0) + (curr.copies || 0) + (curr.shares || 0) + (curr.flyers || 0) + (curr.cardCreations || 0),
+          totalViews: acc.totalViews + (curr.views || 0),
+          totalCopies: acc.totalCopies + (curr.copies || 0),
+          totalShares: acc.totalShares + (curr.shares || 0),
+          totalFlyers: acc.totalFlyers + (curr.flyers || 0),
+          totalCardCreations: acc.totalCardCreations + (curr.cardCreations || 0),
+          lastActivityAt: Math.max(acc.lastActivityAt || 0, curr.lastInteractedAt || 0),
+        }
+      },
+      { totalInteractions: 0, totalViews: 0, totalCopies: 0, totalShares: 0, totalFlyers: 0, totalCardCreations: 0, lastActivityAt: 0 }
+    )
+  }, [firestorePoetryStats])
+
+  const mergedPoetryList = useMemo(() => {
+    const statsMap = new Map<string, any>()
+    firestorePoetryStats.forEach((s) => {
+      if (s.id !== 'summary') statsMap.set(s.id, s)
+    })
+
+    const poemsMap = new Map<string, any>()
+
+    // 1. Load all 1,000 poems from local bundled POETRY_DATABASE
+    POETRY_DATABASE.forEach((p) => {
+      if (p && p.id) poemsMap.set(p.id, p)
+    })
+
+    // 2. Overlay Firestore custom poetry
+    firestoreCustomPoetry.forEach((p) => {
+      if (p && p.id) poemsMap.set(p.id, { ...poemsMap.get(p.id), ...p })
+    })
+
+    return Array.from(poemsMap.values()).map((p) => {
+      const live = statsMap.get(p.id) || {}
+      return {
+        ...p,
+        views: Number(live.views || 0),
+        copies: Number(live.copies || 0),
+        shares: Number(live.shares || 0),
+        flyers: Number(live.flyers || 0),
+        cardCreations: Number(live.cardCreations || 0),
+        totalInteractions:
+          Number(live.views || 0) +
+          Number(live.copies || 0) +
+          Number(live.shares || 0) +
+          Number(live.flyers || 0) +
+          Number(live.cardCreations || 0),
+        lastInteractedAt: live.lastInteractedAt || null,
+      }
+    })
+  }, [firestorePoetryStats, firestoreCustomPoetry])
+
+  const filteredPoetryList = useMemo(() => {
+    return mergedPoetryList.filter((p) => {
+      if (showOnlyEngagedPoetry) {
+        const hasEngagement = (p.copies > 0 || p.shares > 0 || p.flyers > 0 || p.cardCreations > 0 || p.views > 0 || p.isCustom)
+        if (!hasEngagement) return false
+      }
+      const matchCat = poetryCategoryFilter === 'all' || p.category === poetryCategoryFilter
+      if (!matchCat) return false
+      if (!poetrySearchTerm.trim()) return true
+      const q = poetrySearchTerm.toLowerCase().trim()
+      return (
+        p.title.toLowerCase().includes(q) ||
+        p.poet.toLowerCase().includes(q) ||
+        p.poetUrdu.includes(q) ||
+        p.originalText.toLowerCase().includes(q) ||
+        p.englishTranslation.toLowerCase().includes(q)
+      )
+    }).sort((a, b) => (b.totalInteractions || 0) - (a.totalInteractions || 0))
+  }, [mergedPoetryList, showOnlyEngagedPoetry, poetryCategoryFilter, poetrySearchTerm])
+
   // Filtered Users
   const filteredUsers = useMemo(() => {
     const now = Date.now()
@@ -1113,6 +1509,132 @@ export default function AdminPortalPage() {
       return true
     })
   }, [allUsersList, filterPlan, searchTerm])
+
+  const paginatedUsers = useMemo(() => {
+    const start = (pageUsers - 1) * pageSizeUsers
+    return filteredUsers.slice(start, start + pageSizeUsers)
+  }, [filteredUsers, pageUsers, pageSizeUsers])
+
+  // Filtered & Paginated Invitations
+  const filteredInvitations = useMemo(() => {
+    if (!invitationSearch.trim()) return invitations
+    const q = invitationSearch.toLowerCase().trim()
+    return invitations.filter((i) =>
+      (i.title && i.title.toLowerCase().includes(q)) ||
+      (i.slug && i.slug.toLowerCase().includes(q)) ||
+      (i.id && i.id.toLowerCase().includes(q)) ||
+      (i.hostNames && i.hostNames.toLowerCase().includes(q)) ||
+      (i.groom && i.groom.toLowerCase().includes(q)) ||
+      (i.bride && i.bride.toLowerCase().includes(q)) ||
+      (i.venue && i.venue.toLowerCase().includes(q)) ||
+      (i.city && i.city.toLowerCase().includes(q)) ||
+      (i.rsvpPhone && i.rsvpPhone.toLowerCase().includes(q))
+    )
+  }, [invitations, invitationSearch])
+
+  const paginatedInvitations = useMemo(() => {
+    const start = (pageInvitations - 1) * pageSizeInvitations
+    return filteredInvitations.slice(start, start + pageSizeInvitations)
+  }, [filteredInvitations, pageInvitations, pageSizeInvitations])
+
+  // Filtered & Paginated Wishes
+  const filteredWishes = useMemo(() => {
+    if (!wishSearch.trim()) return wishes
+    const q = wishSearch.toLowerCase().trim()
+    return wishes.filter((w) =>
+      (w.senderName && w.senderName.toLowerCase().includes(q)) ||
+      (w.recipientName && w.recipientName.toLowerCase().includes(q)) ||
+      (w.slug && w.slug.toLowerCase().includes(q)) ||
+      (w.id && w.id.toLowerCase().includes(q)) ||
+      (w.occasionId && w.occasionId.toLowerCase().includes(q)) ||
+      (w.message && w.message.toLowerCase().includes(q)) ||
+      (w.relation && w.relation.toLowerCase().includes(q))
+    )
+  }, [wishes, wishSearch])
+
+  const paginatedWishes = useMemo(() => {
+    const start = (pageWishes - 1) * pageSizeWishes
+    return filteredWishes.slice(start, start + pageSizeWishes)
+  }, [filteredWishes, pageWishes, pageSizeWishes])
+
+  // Filtered & Paginated Visiting Cards
+  const filteredVisitingCards = useMemo(() => {
+    if (!vcSearch.trim()) return visitingCards || []
+    const q = vcSearch.toLowerCase().trim()
+    return (visitingCards || []).filter((vc) =>
+      (vc.fullName && vc.fullName.toLowerCase().includes(q)) ||
+      (vc.title && vc.title.toLowerCase().includes(q)) ||
+      (vc.company && vc.company.toLowerCase().includes(q)) ||
+      (vc.slug && vc.slug.toLowerCase().includes(q)) ||
+      (vc.id && vc.id.toLowerCase().includes(q)) ||
+      (vc.email && vc.email.toLowerCase().includes(q)) ||
+      (vc.phone && vc.phone.toLowerCase().includes(q)) ||
+      (vc.address && vc.address.toLowerCase().includes(q))
+    )
+  }, [visitingCards, vcSearch])
+
+  const paginatedVisitingCards = useMemo(() => {
+    const start = (pageVisitingCards - 1) * pageSizeVisitingCards
+    return filteredVisitingCards.slice(start, start + pageSizeVisitingCards)
+  }, [filteredVisitingCards, pageVisitingCards, pageSizeVisitingCards])
+
+  // Filtered & Paginated Magic Links
+  const filteredMagicLinks = useMemo(() => {
+    if (!magicSearch.trim()) return magicLinks
+    const q = magicSearch.toLowerCase().trim()
+    return magicLinks.filter((m) =>
+      (m.recipientName && m.recipientName.toLowerCase().includes(q)) ||
+      (m.senderName && m.senderName.toLowerCase().includes(q)) ||
+      (m.slug && m.slug.toLowerCase().includes(q)) ||
+      (m.id && m.id.toLowerCase().includes(q)) ||
+      (m.occasion && m.occasion.toLowerCase().includes(q)) ||
+      (m.theme && m.theme.toLowerCase().includes(q))
+    )
+  }, [magicLinks, magicSearch])
+
+  const paginatedMagicLinks = useMemo(() => {
+    const start = (pageMagicLinks - 1) * pageSizeMagicLinks
+    return filteredMagicLinks.slice(start, start + pageSizeMagicLinks)
+  }, [filteredMagicLinks, pageMagicLinks, pageSizeMagicLinks])
+
+  // Paginated Guestbook Wishes
+  const paginatedGuestbookWishes = useMemo(() => {
+    const start = (pageGuestbook - 1) * pageSizeGuestbook
+    return filteredGuestbookWishes.slice(start, start + pageSizeGuestbook)
+  }, [filteredGuestbookWishes, pageGuestbook, pageSizeGuestbook])
+
+  // Filtered & Paginated RSVPs
+  const filteredRsvpsWithSearch = useMemo(() => {
+    let list = filteredRsvps
+    if (rsvpSearch.trim()) {
+      const q = rsvpSearch.toLowerCase().trim()
+      list = list.filter((r) =>
+        (r.guestName && r.guestName.toLowerCase().includes(q)) ||
+        (r.phone && r.phone.toLowerCase().includes(q)) ||
+        (r.note && r.note.toLowerCase().includes(q)) ||
+        (r.invitationSlug && r.invitationSlug.toLowerCase().includes(q))
+      )
+    }
+    return list
+  }, [filteredRsvps, rsvpSearch])
+
+  const paginatedRsvps = useMemo(() => {
+    const start = (pageRsvps - 1) * pageSizeRsvps
+    return filteredRsvpsWithSearch.slice(start, start + pageSizeRsvps)
+  }, [filteredRsvpsWithSearch, pageRsvps, pageSizeRsvps])
+
+  // Paginated Active Sessions
+  const activeSessionsList = groupByDevice ? groupedSessions : allSessions
+  const paginatedSessionsList = useMemo(() => {
+    const start = (pageLiveUsers - 1) * pageSizeLiveUsers
+    return activeSessionsList.slice(start, start + pageSizeLiveUsers)
+  }, [activeSessionsList, pageLiveUsers, pageSizeLiveUsers])
+
+  // Paginated Live Poetry Engagements Activity
+  const paginatedPoetryActivity = useMemo(() => {
+    const start = (pagePoetryEvents - 1) * pageSizePoetryEvents
+    return firestorePoetryActivity.slice(start, start + pageSizePoetryEvents)
+  }, [firestorePoetryActivity, pagePoetryEvents, pageSizePoetryEvents])
 
   const handleUpdateUserPlan = async (uid: string, plan: Plan) => {
     await adminUpdateUserPlan(uid, plan, selectedDurationDays)
@@ -1791,6 +2313,7 @@ export default function AdminPortalPage() {
         <div className="flex border-b border-border gap-2 overflow-x-auto pb-1">
           {[
             { id: 'all', label: `✨ All Database Overview`, icon: FileSpreadsheet },
+            { id: 'poetry', label: `📜 Poetry Hub (${poetrySummary.totalInteractions.toLocaleString()})`, icon: Feather },
             { id: 'live_users', label: `🟢 Live Online (${liveActiveSessions.length})`, icon: Activity },
             { id: 'magic_links', label: `🪄 Magic Links (${magicLinks.length})`, icon: Sparkles },
             { id: 'guestbook', label: `💬 Wishes Wall (${allGuestbookWishes.length})`, icon: MessageCircle },
@@ -2072,10 +2595,10 @@ export default function AdminPortalPage() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border/40">
-                        {groupedSessions.map((group) => {
+                        {paginatedSessionsList.map((group: any) => {
                           const isExpanded = !!expandedDevices[group.deviceKey]
-                          const groupSessionIds = group.sessions.map((s) => s.id)
-                          const isAllGroupSelected = groupSessionIds.every((id) => selectedSessions.includes(id))
+                          const groupSessionIds = group.sessions.map((s: any) => s.id)
+                          const isAllGroupSelected = groupSessionIds.every((id: string) => selectedSessions.includes(id))
                           const secondsAgo = Math.max(0, Math.round((Date.now() - (group.latestLastSeen || Date.now())) / 1000))
                           const isGroupActive = group.isActive && secondsAgo <= 65
 
@@ -2242,8 +2765,8 @@ export default function AdminPortalPage() {
                                         if (firestoreDb) {
                                           try {
                                             const { deleteDoc, doc } = await import('firebase/firestore')
-                                            await Promise.all(group.sessions.map(s => deleteDoc(doc(firestoreDb, 'active_sessions', s.id))))
-                                            setAllSessions(prev => prev.filter(s => !groupSessionIds.includes(s.id)))
+                                            await Promise.all(group.sessions.map((s: any) => deleteDoc(doc(firestoreDb, 'active_sessions', s.id))))
+                                            setAllSessions(prev => prev.filter((s: any) => !groupSessionIds.includes(s.id)))
                                           } catch(e) {}
                                         }
                                       }}
@@ -2332,7 +2855,7 @@ export default function AdminPortalPage() {
                                                       try {
                                                         const { deleteDoc, doc } = await import('firebase/firestore')
                                                         await deleteDoc(doc(firestoreDb, 'active_sessions', sess.id))
-                                                        setAllSessions(prev => prev.filter(s => s.id !== sess.id))
+                                                        setAllSessions(prev => prev.filter((s: any) => s.id !== sess.id))
                                                       } catch(e) {}
                                                     }
                                                   }}
@@ -2366,7 +2889,7 @@ export default function AdminPortalPage() {
                               className="rounded border-border accent-emerald-500"
                               checked={allSessions.length > 0 && selectedSessions.length === allSessions.length}
                               onChange={(e) => {
-                                if (e.target.checked) setSelectedSessions(allSessions.map(s => s.id))
+                                if (e.target.checked) setSelectedSessions(allSessions.map((s: any) => s.id))
                                 else setSelectedSessions([])
                               }}
                             />
@@ -2381,7 +2904,7 @@ export default function AdminPortalPage() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border/50">
-                        {allSessions.map((session) => {
+                        {paginatedSessionsList.map((session: any) => {
                           const secondsAgo = Math.max(0, Math.round((Date.now() - (session.lastSeen || Date.now())) / 1000))
                           const isActive = secondsAgo <= 65
                           
@@ -2504,6 +3027,193 @@ export default function AdminPortalPage() {
                 </div>
               )}
             </div>
+
+            <AdminTablePagination
+              currentPage={pageLiveUsers}
+              totalItems={activeSessionsList.length}
+              pageSize={pageSizeLiveUsers}
+              onPageChange={setPageLiveUsers}
+              onPageSizeChange={setPageSizeLiveUsers}
+              itemName={groupByDevice ? "device sessions" : "visitor sessions"}
+            />
+          </div>
+        )}
+
+        {/* ── POETRY LIVE EVENTS & ENGAGEMENT STREAM ── */}
+        {(adminSection === 'all' || adminSection === 'poetry') && (
+          <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden space-y-6">
+            <div className="p-6 border-b border-border space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20 text-xs font-bold uppercase tracking-wider">
+                    <Activity className="size-3.5 animate-pulse" /> Live Poetry Events & Engagements
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-foreground flex items-center gap-2">
+                    Poetry Interactions & Real-Time Events
+                  </h2>
+                  <p className="text-xs sm:text-sm text-muted-foreground max-w-3xl">
+                    Live stream of user interactions: WhatsApp shares, verse text copies, 1080p story flyer downloads, and card creations.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  <Link
+                    href="/poetry"
+                    target="_blank"
+                    className="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all"
+                  >
+                    <BookOpen className="size-3.5" />
+                    <span>Open Poetry Explorer (1,000 Verses)</span>
+                    <ExternalLink className="size-3 opacity-75" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* 5 Top Metric Stat Boxes */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-2">
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-card border border-amber-500/20">
+                  <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground mb-1">
+                    <span>Poetry Views</span>
+                    <Eye className="size-4 text-amber-500" />
+                  </div>
+                  <div className="text-2xl font-black text-amber-500 font-mono">
+                    {poetrySummary.totalViews.toLocaleString()}
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-card border border-emerald-500/20">
+                  <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground mb-1">
+                    <span>WhatsApp Shares</span>
+                    <Share2 className="size-4 text-emerald-500" />
+                  </div>
+                  <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
+                    {poetrySummary.totalShares.toLocaleString()}
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-card border border-blue-500/20">
+                  <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground mb-1">
+                    <span>Verses Copied</span>
+                    <FileText className="size-4 text-blue-500" />
+                  </div>
+                  <div className="text-2xl font-black text-blue-600 dark:text-blue-400 font-mono">
+                    {poetrySummary.totalCopies.toLocaleString()}
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 via-purple-500/5 to-card border border-purple-500/20">
+                  <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground mb-1">
+                    <span>Flyer Downloads</span>
+                    <Download className="size-4 text-purple-500" />
+                  </div>
+                  <div className="text-2xl font-black text-purple-600 dark:text-purple-400 font-mono">
+                    {poetrySummary.totalFlyers.toLocaleString()}
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-card border border-rose-500/20">
+                  <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground mb-1">
+                    <span>Cards Created</span>
+                    <Heart className="size-4 text-rose-500" />
+                  </div>
+                  <div className="text-2xl font-black text-rose-600 dark:text-rose-400 font-mono">
+                    {poetrySummary.totalCardCreations.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Live Real-Time Poetry Activity Feed */}
+            <div className="p-6 pt-0 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+                  <Activity className="size-4 text-emerald-500 animate-pulse" />
+                  Recent Live User Engagements
+                </h3>
+                <span className="text-[11px] text-muted-foreground font-mono">
+                  {firestorePoetryActivity.length > 0 ? `Showing latest ${firestorePoetryActivity.length} real-time events` : 'Listening for new events...'}
+                </span>
+              </div>
+
+              {firestorePoetryActivity.length === 0 ? (
+                <div className="py-12 text-center rounded-2xl bg-muted/20 border border-border/60">
+                  <Feather className="size-8 text-amber-500/40 mx-auto mb-2" />
+                  <p className="text-sm font-semibold text-foreground">No recent poetry engagement events recorded yet.</p>
+                  <p className="text-xs text-muted-foreground mt-1">Live events will appear in real time whenever users share, copy, or download story flyers.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {paginatedPoetryActivity.map((act: any, aIdx: number) => (
+                    <div
+                      key={act.id || aIdx}
+                      className="p-4 rounded-2xl bg-card border border-border/80 flex flex-col justify-between gap-3 text-xs shadow-xs hover:border-amber-500/40 transition-all group"
+                    >
+                      <div className="flex items-start justify-between gap-2.5">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className={cn(
+                            "size-8 rounded-xl flex items-center justify-center text-sm font-bold shrink-0",
+                            act.action === 'share' ? "bg-emerald-500/15 text-emerald-500 border border-emerald-500/20" :
+                            act.action === 'copy' ? "bg-blue-500/15 text-blue-500 border border-blue-500/20" :
+                            act.action === 'flyer' ? "bg-purple-500/15 text-purple-500 border border-purple-500/20" :
+                            act.action === 'card_bridge' ? "bg-rose-500/15 text-rose-500 border border-rose-500/20" :
+                            "bg-amber-500/15 text-amber-500 border border-amber-500/20"
+                          )}>
+                            {act.action === 'share' ? '💬' :
+                             act.action === 'copy' ? '📋' :
+                             act.action === 'flyer' ? '🖼️' :
+                             act.action === 'card_bridge' ? '💌' : '👁️'}
+                          </span>
+                          <div className="min-w-0">
+                            <div className="font-bold text-foreground truncate text-sm">
+                              {act.title || act.poemId}
+                            </div>
+                            <div className="text-[11px] text-muted-foreground flex items-center gap-1.5 mt-0.5">
+                              {act.poet && <span className="font-medium text-foreground/80">{act.poet}</span>}
+                              <span>•</span>
+                              <span className="capitalize font-semibold text-amber-500">{act.action.replace('_', ' ')}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <span className="text-[10px] text-muted-foreground shrink-0 font-mono bg-muted/60 px-2 py-0.5 rounded-md">
+                          {act.timestamp ? new Date(act.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'just now'}
+                        </span>
+                      </div>
+
+                      {/* Action buttons bar */}
+                      <div className="pt-2 border-t border-border/60 flex items-center justify-between gap-2">
+                        <button
+                          type="button"
+                          onClick={(e) => handleOpenFlyerPreview(act, e)}
+                          className="px-2.5 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold text-[11px] border border-purple-500/20 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        >
+                          <Eye className="size-3.5" />
+                          <span>View Flyer & Verse</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={(e) => handleDeletePoetryActivity(act.id || act.docId, act.poemId, e)}
+                          className="p-1.5 rounded-xl text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all cursor-pointer"
+                          title="Delete this poetry event log"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <AdminTablePagination
+              currentPage={pagePoetryEvents}
+              totalItems={firestorePoetryActivity.length}
+              pageSize={pageSizePoetryEvents}
+              onPageChange={setPagePoetryEvents}
+              onPageSizeChange={setPageSizePoetryEvents}
+              itemName="poetry events"
+            />
           </div>
         )}
 
@@ -2603,7 +3313,7 @@ export default function AdminPortalPage() {
                       </td>
                     </tr>
                   ) : (
-                    filteredUsers.map((u) => {
+                    paginatedUsers.map((u) => {
                       const now = Date.now()
                       const isExpired = u.planExpiresAt ? now > u.planExpiresAt : false
                       const daysLeft = u.planExpiresAt
@@ -2749,13 +3459,22 @@ export default function AdminPortalPage() {
                 </tbody>
               </table>
             </div>
+
+            <AdminTablePagination
+              currentPage={pageUsers}
+              totalItems={filteredUsers.length}
+              pageSize={pageSizeUsers}
+              onPageChange={setPageUsers}
+              onPageSizeChange={setPageSizeUsers}
+              itemName="users"
+            />
           </div>
         )}
 
         {/* MAGIC LINKS 🪄 SECTION */}
         {(adminSection === 'all' || adminSection === 'magic_links') && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden mb-8">
-            <div className="p-6 border-b border-border flex items-center justify-between">
+            <div className="p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
                   <Sparkles className="size-5 text-amber-500" /> Interactive Magic Links 🪄 ({magicLinks.length})
@@ -2764,12 +3483,26 @@ export default function AdminPortalPage() {
                   Full database of bespoke 3D animated celebration microsites (Balloons, Candles, Mughal farmaan, Lanterns).
                 </p>
               </div>
-              <Link
-                href="/create-magic-link"
-                className="rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2 text-xs font-black shadow-md flex items-center gap-1.5"
-              >
-                <Sparkles className="size-3.5" /> Create Magic Link
-              </Link>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="Search magic links..."
+                    value={magicSearch}
+                    onChange={(e) => {
+                      setMagicSearch(e.target.value)
+                      setPageMagicLinks(1)
+                    }}
+                    className="pl-8 text-xs h-8 w-48 rounded-xl"
+                  />
+                </div>
+                <Link
+                  href="/create-magic-link"
+                  className="rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 px-4 py-2 text-xs font-black shadow-md flex items-center gap-1.5"
+                >
+                  <Sparkles className="size-3.5" /> Create Magic Link
+                </Link>
+              </div>
             </div>
 
             <div className="overflow-x-auto">
@@ -2786,14 +3519,14 @@ export default function AdminPortalPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
-                  {magicLinks.length === 0 ? (
+                  {filteredMagicLinks.length === 0 ? (
                     <tr>
                       <td colSpan={7} className="py-8 text-center text-muted-foreground text-xs">
-                        No Magic Links recorded yet. Create one to test interactive celebrations!
+                        {magicSearch ? `No Magic Links match "${magicSearch}".` : 'No Magic Links recorded yet. Create one to test interactive celebrations!'}
                       </td>
                     </tr>
                   ) : (
-                    magicLinks.map((m, idx) => {
+                    paginatedMagicLinks.map((m, idx) => {
                       const mOrigin = inferOrigin({
                         country: m.country,
                         countryCode: m.countryCode,
@@ -2957,6 +3690,15 @@ export default function AdminPortalPage() {
                 </tbody>
               </table>
             </div>
+
+            <AdminTablePagination
+              currentPage={pageMagicLinks}
+              totalItems={filteredMagicLinks.length}
+              pageSize={pageSizeMagicLinks}
+              onPageChange={setPageMagicLinks}
+              onPageSizeChange={setPageSizeMagicLinks}
+              itemName="magic links"
+            />
           </div>
         )}
 
@@ -2985,7 +3727,10 @@ export default function AdminPortalPage() {
                   <Input
                     placeholder="Search guest, message, slug..."
                     value={guestbookSearch}
-                    onChange={(e) => setGuestbookSearch(e.target.value)}
+                    onChange={(e) => {
+                      setGuestbookSearch(e.target.value)
+                      setPageGuestbook(1)
+                    }}
                     className="pl-8 text-xs h-9 bg-muted/30 border-border rounded-xl"
                   />
                 </div>
@@ -3044,7 +3789,7 @@ export default function AdminPortalPage() {
                       </td>
                     </tr>
                   ) : (
-                    filteredGuestbookWishes.map((w, idx) => (
+                    paginatedGuestbookWishes.map((w, idx) => (
                       <tr key={w.id || `gbw-${idx}`} className="hover:bg-muted/20 transition-colors">
                         <td className="py-4 px-4 font-bold text-foreground">
                           <div className="flex items-center gap-2">
@@ -3111,13 +3856,22 @@ export default function AdminPortalPage() {
                 </tbody>
               </table>
             </div>
+
+            <AdminTablePagination
+              currentPage={pageGuestbook}
+              totalItems={filteredGuestbookWishes.length}
+              pageSize={pageSizeGuestbook}
+              onPageChange={setPageGuestbook}
+              onPageSizeChange={setPageSizeGuestbook}
+              itemName="guestbook wishes"
+            />
           </div>
         )}
 
         {/* 2. ACTIVE INVITATIONS SECTION */}
         {(adminSection === 'all' || adminSection === 'invitations') && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden">
-            <div className="p-6 border-b border-border flex items-center justify-between">
+            <div className="p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
                   <Calendar className="size-5 text-emerald-600" /> Active Event & Wedding Invitations ({invitations.length})
@@ -3126,9 +3880,23 @@ export default function AdminPortalPage() {
                   Full control panel to manage, edit, view, and delete all invitations.
                 </p>
               </div>
-              <Link href="/create-invitation" className="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 text-xs font-bold shadow-md">
-                + Create New Invite
-              </Link>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="Search invitations..."
+                    value={invitationSearch}
+                    onChange={(e) => {
+                      setInvitationSearch(e.target.value)
+                      setPageInvitations(1)
+                    }}
+                    className="pl-8 text-xs h-8 w-48 rounded-xl"
+                  />
+                </div>
+                <Link href="/create-invitation" className="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 text-xs font-bold shadow-md">
+                  + Create New Invite
+                </Link>
+              </div>
             </div>
 
             <div className="overflow-x-auto">
@@ -3146,12 +3914,14 @@ export default function AdminPortalPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
-                  {invitations.length === 0 ? (
+                  {filteredInvitations.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="py-8 text-center text-muted-foreground">No active invitations found.</td>
+                      <td colSpan={8} className="py-8 text-center text-muted-foreground">
+                        {invitationSearch ? `No invitations match "${invitationSearch}".` : 'No active invitations found.'}
+                      </td>
                     </tr>
                   ) : (
-                    invitations.map((inv, idx) => {
+                    paginatedInvitations.map((inv, idx) => {
                       const invOrigin = inferOrigin({
                         country: inv.country,
                         countryCode: inv.countryCode,
@@ -3353,13 +4123,22 @@ export default function AdminPortalPage() {
                 </tbody>
               </table>
             </div>
+
+            <AdminTablePagination
+              currentPage={pageInvitations}
+              totalItems={filteredInvitations.length}
+              pageSize={pageSizeInvitations}
+              onPageChange={setPageInvitations}
+              onPageSizeChange={setPageSizeInvitations}
+              itemName="invitations"
+            />
           </div>
         )}
 
         {/* 3. CREATED WISHES SECTION */}
         {(adminSection === 'all' || adminSection === 'wishes') && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden">
-            <div className="p-6 border-b border-border flex items-center justify-between">
+            <div className="p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
                   <Sparkles className="size-5 text-amber-500" /> Created Greeting Wishes & Cards ({wishes.length})
@@ -3368,9 +4147,23 @@ export default function AdminPortalPage() {
                   Complete database of all animated wish cards sent across Cardzy.
                 </p>
               </div>
-              <Link href="/create-wish" className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-xs font-bold shadow-md">
-                + Create New Wish
-              </Link>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="Search wishes..."
+                    value={wishSearch}
+                    onChange={(e) => {
+                      setWishSearch(e.target.value)
+                      setPageWishes(1)
+                    }}
+                    className="pl-8 text-xs h-8 w-48 rounded-xl"
+                  />
+                </div>
+                <Link href="/create-wish" className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-xs font-bold shadow-md">
+                  + Create New Wish
+                </Link>
+              </div>
             </div>
 
             <div className="overflow-x-auto">
@@ -3387,12 +4180,14 @@ export default function AdminPortalPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
-                  {wishes.length === 0 ? (
+                  {filteredWishes.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="py-8 text-center text-muted-foreground">No wishes recorded.</td>
+                      <td colSpan={7} className="py-8 text-center text-muted-foreground">
+                        {wishSearch ? `No wishes match "${wishSearch}".` : 'No wishes recorded.'}
+                      </td>
                     </tr>
                   ) : (
-                    wishes.map((w, idx) => {
+                    paginatedWishes.map((w, idx) => {
                       const wishOrigin = inferOrigin({
                         country: w.country,
                         countryCode: w.countryCode,
@@ -3405,7 +4200,10 @@ export default function AdminPortalPage() {
 
                       return (
                         <tr key={(w.slug || w.id) || w.id || `wish-${idx}`} className="hover:bg-muted/20 transition-colors">
-                          <td className="py-4 px-4 font-bold text-foreground break-words break-all [overflow-wrap:anywhere] max-w-[150px]">{w.senderName || 'Well Wisher'}</td>
+                          <td className="py-4 px-4 font-bold text-foreground break-words break-all [overflow-wrap:anywhere] max-w-[150px]">
+                            <div>{w.senderName || 'Well Wisher'}</div>
+                            <div className="text-[10px] text-muted-foreground font-mono font-normal mt-0.5">Slug: {(w.slug || w.id)}</div>
+                          </td>
                           <td className="py-4 px-4">
                             <div className="font-semibold text-foreground break-words break-all [overflow-wrap:anywhere] max-w-[150px]">{w.recipientName || 'Friend'}</div>
                             {w.relation && <div className="text-[11px] text-muted-foreground">Relation: {w.relation}</div>}
@@ -3553,6 +4351,15 @@ export default function AdminPortalPage() {
                 </tbody>
               </table>
             </div>
+
+            <AdminTablePagination
+              currentPage={pageWishes}
+              totalItems={filteredWishes.length}
+              pageSize={pageSizeWishes}
+              onPageChange={setPageWishes}
+              onPageSizeChange={setPageSizeWishes}
+              itemName="wishes"
+            />
           </div>
         )}
 
@@ -3568,13 +4375,27 @@ export default function AdminPortalPage() {
                   View, edit, preview, or remove digital business cards created on Cardzy.online.
                 </p>
               </div>
-              <Link
-                href="/create-visiting-card"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shrink-0 shadow-md"
-              >
-                <CreditCard className="size-4" />
-                <span>+ Create Visiting Card</span>
-              </Link>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="Search visiting cards..."
+                    value={vcSearch}
+                    onChange={(e) => {
+                      setVcSearch(e.target.value)
+                      setPageVisitingCards(1)
+                    }}
+                    className="pl-8 text-xs h-8 w-48 rounded-xl"
+                  />
+                </div>
+                <Link
+                  href="/create-visiting-card"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shrink-0 shadow-md"
+                >
+                  <CreditCard className="size-4" />
+                  <span>+ Create Visiting Card</span>
+                </Link>
+              </div>
             </div>
 
             <div className="overflow-x-auto">
@@ -3590,14 +4411,14 @@ export default function AdminPortalPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {(!visitingCards || visitingCards.length === 0) ? (
+                  {filteredVisitingCards.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="py-8 text-center text-xs text-muted-foreground">
-                        No visiting cards created yet.
+                        {vcSearch ? `No visiting cards match "${vcSearch}".` : 'No visiting cards created yet.'}
                       </td>
                     </tr>
                   ) : (
-                    visitingCards.map((vc, idx) => {
+                    paginatedVisitingCards.map((vc, idx) => {
                       const vcOrigin = inferOrigin({
                         country: vc.country,
                         countryCode: vc.countryCode,
@@ -3627,6 +4448,7 @@ export default function AdminPortalPage() {
                               <div>
                                 <div className="font-bold text-foreground text-sm">{vc.fullName}</div>
                                 <div className="text-xs text-muted-foreground font-medium">{vc.title}</div>
+                                <div className="text-[10px] text-muted-foreground font-mono">Slug: {(vc.slug || vc.id)}</div>
                               </div>
                             </div>
                             <div className="text-[10px] text-muted-foreground mt-0.5 font-mono">Theme: {vc.themeId || 'executive-gold'}</div>
@@ -3753,6 +4575,15 @@ export default function AdminPortalPage() {
                 </tbody>
               </table>
             </div>
+
+            <AdminTablePagination
+              currentPage={pageVisitingCards}
+              totalItems={filteredVisitingCards.length}
+              pageSize={pageSizeVisitingCards}
+              onPageChange={setPageVisitingCards}
+              onPageSizeChange={setPageSizeVisitingCards}
+              itemName="visiting cards"
+            />
           </div>
         )}
 
@@ -3776,6 +4607,18 @@ export default function AdminPortalPage() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+                    <Input
+                      placeholder="Search RSVPs..."
+                      value={rsvpSearch}
+                      onChange={(e) => {
+                        setRsvpSearch(e.target.value)
+                        setPageRsvps(1)
+                      }}
+                      className="pl-8 text-xs h-8 w-44 rounded-xl"
+                    />
+                  </div>
                   <Button
                     onClick={() => downloadAllGuestsPdf(rsvpFilterSlug ?? undefined)}
                     className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-md transition-all flex items-center gap-1.5 text-xs"
@@ -3875,13 +4718,13 @@ export default function AdminPortalPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
-                  {filteredRsvps.length === 0 ? (
+                  {filteredRsvpsWithSearch.length === 0 ? (
                     <tr>
                       <td colSpan={rsvpFilterSlug ? 7 : 8} className="py-10 text-center">
                         <div className="flex flex-col items-center gap-2 text-muted-foreground">
                           <Users className="size-8 opacity-30" />
                           <p className="text-sm font-semibold">
-                            {rsvpFilterSlug ? 'No RSVPs recorded for this event yet.' : 'No guest RSVPs recorded yet.'}
+                            {rsvpSearch ? `No RSVPs match "${rsvpSearch}".` : rsvpFilterSlug ? 'No RSVPs recorded for this event yet.' : 'No guest RSVPs recorded yet.'}
                           </p>
                           {rsvpFilterSlug && (
                             <button onClick={() => setRsvpFilterSlug(null)} className="text-xs text-indigo-600 hover:underline font-bold mt-1">
@@ -3892,7 +4735,7 @@ export default function AdminPortalPage() {
                       </td>
                     </tr>
                   ) : (
-                    filteredRsvps.map((r, idx) => {
+                    paginatedRsvps.map((r, idx) => {
                       const rOrigin = inferOrigin({
                         country: r.country,
                         countryCode: r.countryCode,
@@ -3904,9 +4747,11 @@ export default function AdminPortalPage() {
                         ip: r.ip,
                       })
 
+                      const globalIdx = (pageRsvps - 1) * pageSizeRsvps + idx + 1
+
                       return (
                         <tr key={r.id || idx} className="hover:bg-muted/20 transition-colors">
-                          <td className="py-3.5 px-4 text-xs text-muted-foreground font-mono">{idx + 1}</td>
+                          <td className="py-3.5 px-4 text-xs text-muted-foreground font-mono">{globalIdx}</td>
                           <td className="py-3.5 px-4 font-bold text-foreground">{r.guestName || 'Anonymous'}</td>
                           <td className="py-3.5 px-4 text-xs font-mono text-muted-foreground">{r.phone || '—'}</td>
                           <td className="py-3.5 px-4">
@@ -3965,14 +4810,23 @@ export default function AdminPortalPage() {
             </div>
 
             {/* Summary footer */}
-            {filteredRsvps.length > 0 && (
-              <div className="px-6 pb-5 pt-1 flex flex-wrap items-center gap-4 text-xs text-muted-foreground border-t border-border/60">
-                <span>Total responses: <strong className="text-foreground">{filteredRsvps.length}</strong></span>
-                <span>Attending: <strong className="text-emerald-600">{filteredRsvps.filter(r => !r.attending || String(r.attending).toLowerCase() === 'yes').length}</strong></span>
-                <span>Not attending: <strong className="text-rose-600">{filteredRsvps.filter(r => String(r.attending).toLowerCase() === 'no').length}</strong></span>
-                <span>Total guests: <strong className="text-foreground">{filteredRsvps.reduce((sum, r) => sum + (r.guestCount || 1), 0)}</strong></span>
+            {filteredRsvpsWithSearch.length > 0 && (
+              <div className="px-6 pb-2 pt-1 flex flex-wrap items-center gap-4 text-xs text-muted-foreground border-t border-border/60">
+                <span>Total responses: <strong className="text-foreground">{filteredRsvpsWithSearch.length}</strong></span>
+                <span>Attending: <strong className="text-emerald-600">{filteredRsvpsWithSearch.filter(r => !r.attending || String(r.attending).toLowerCase() === 'yes').length}</strong></span>
+                <span>Not attending: <strong className="text-rose-600">{filteredRsvpsWithSearch.filter(r => String(r.attending).toLowerCase() === 'no').length}</strong></span>
+                <span>Total guests: <strong className="text-foreground">{filteredRsvpsWithSearch.reduce((sum, r) => sum + (r.guestCount || 1), 0)}</strong></span>
               </div>
             )}
+
+            <AdminTablePagination
+              currentPage={pageRsvps}
+              totalItems={filteredRsvpsWithSearch.length}
+              pageSize={pageSizeRsvps}
+              onPageChange={setPageRsvps}
+              onPageSizeChange={setPageSizeRsvps}
+              itemName="RSVP responses"
+            />
           </div>
         )}
 
@@ -4069,6 +4923,419 @@ export default function AdminPortalPage() {
           </div>
         )}
         
+
+
+        {/* ── Poetry Story Flyer & Verse Audit Modal ─────────────────────────────── */}
+        {viewingPoetryFlyer && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto">
+            <div className="w-full max-w-4xl rounded-3xl border border-border bg-card shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col">
+              {/* Header */}
+              <div className="p-5 border-b border-border flex items-center justify-between gap-3 bg-muted/20">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="size-10 rounded-2xl bg-purple-500/10 text-purple-600 flex items-center justify-center shrink-0">
+                    <Feather className="size-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-base font-extrabold text-foreground truncate">
+                      Story Flyer & Verse Audit: {viewingPoetryFlyer.poem.title || viewingPoetryFlyer.activity.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1.5 mt-0.5">
+                      <span className="font-semibold text-foreground">{viewingPoetryFlyer.poem.poet}</span>
+                      <span>•</span>
+                      <span className="capitalize text-amber-500 font-bold">{viewingPoetryFlyer.activity.action?.replace('_', ' ')}</span>
+                      <span>•</span>
+                      <span>{viewingPoetryFlyer.activity.timestamp ? new Date(viewingPoetryFlyer.activity.timestamp).toLocaleString() : 'Recent Event'}</span>
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setViewingPoetryFlyer(null)}
+                  className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                >
+                  <XCircle className="size-5" />
+                </button>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-5 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-12 gap-6">
+                {/* Visual Story Flyer Card (Left 6 Cols) */}
+                <div className="md:col-span-6 flex flex-col items-center space-y-3">
+                  {/* Language Tab Switcher */}
+                  <div className="flex items-center gap-1 p-1 rounded-xl bg-muted/60 border border-border text-xs w-full max-w-[340px] justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setAdminFlyerTab('original')}
+                      className={cn(
+                        'px-2.5 py-1 rounded-lg font-bold transition-all text-xs cursor-pointer',
+                        adminFlyerTab === 'original' ? 'bg-amber-500 text-slate-950 shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                      )}
+                    >
+                      Original ({(viewingPoetryFlyer.poem.originalLanguage || 'ur').toUpperCase()})
+                    </button>
+                    {viewingPoetryFlyer.poem.originalLanguage !== 'ur' && (
+                      <button
+                        type="button"
+                        onClick={() => setAdminFlyerTab('urdu')}
+                        className={cn(
+                          'px-2.5 py-1 rounded-lg font-bold transition-all text-xs cursor-pointer',
+                          adminFlyerTab === 'urdu' ? 'bg-amber-500 text-slate-950 shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                        )}
+                      >
+                        Urdu
+                      </button>
+                    )}
+                    {viewingPoetryFlyer.poem.romanText && (
+                      <button
+                        type="button"
+                        onClick={() => setAdminFlyerTab('roman')}
+                        className={cn(
+                          'px-2.5 py-1 rounded-lg font-bold transition-all text-xs cursor-pointer',
+                          adminFlyerTab === 'roman' ? 'bg-amber-500 text-slate-950 shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                        )}
+                      >
+                        Roman
+                      </button>
+                    )}
+                    {viewingPoetryFlyer.poem.englishTranslation && (
+                      <button
+                        type="button"
+                        onClick={() => setAdminFlyerTab('english')}
+                        className={cn(
+                          'px-2.5 py-1 rounded-lg font-bold transition-all text-xs cursor-pointer',
+                          adminFlyerTab === 'english' ? 'bg-amber-500 text-slate-950 shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                        )}
+                      >
+                        English
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Flyer Card Preview (Adjusted Height) */}
+                  {(() => {
+                    const p = viewingPoetryFlyer.poem
+                    let activeText = p.originalText || p.title || ''
+                    let isRtl = p.direction !== 'ltr'
+                    let tabLabel = (p.originalLanguage || 'ur').toUpperCase()
+
+                    if (adminFlyerTab === 'urdu') {
+                      activeText = p.urduTranslation || p.originalText
+                      isRtl = true
+                      tabLabel = 'URDU'
+                    } else if (adminFlyerTab === 'roman') {
+                      activeText = p.romanText || p.originalText
+                      isRtl = false
+                      tabLabel = 'ROMAN URDU'
+                    } else if (adminFlyerTab === 'english') {
+                      activeText = p.englishTranslation || p.originalText
+                      isRtl = false
+                      tabLabel = 'ENGLISH'
+                    }
+
+                    const poetProfile = POET_PROFILES[p.poet] || Object.values(POET_PROFILES).find((pr) => pr.name.toLowerCase().includes(p.poet.toLowerCase()) || p.poet.toLowerCase().includes(pr.name.toLowerCase()))
+                    const poetEra = p.poetEra || poetProfile?.era || ''
+                    const poetDisplay = isRtl ? (p.poetUrdu || p.poet) : p.poet
+
+                    return (
+                      <div className="w-full max-w-[340px] rounded-3xl p-5 bg-gradient-to-br from-[#051f15] via-[#02120b] to-[#080f18] border-2 border-amber-500/60 shadow-2xl relative overflow-hidden text-center text-white space-y-3.5">
+                        {/* Ornate corners */}
+                        <div className="text-[10px] text-amber-400 font-bold tracking-widest flex items-center justify-between border-b border-amber-500/30 pb-2">
+                          <span>✦ ❖ ✦</span>
+                          <span className="text-[9px] uppercase tracking-wider text-emerald-300">
+                            {p.categoryLabel || 'Masterpiece'} • {tabLabel}
+                          </span>
+                          <span>✦ ❖ ✦</span>
+                        </div>
+
+                        {/* Top: Poet Name & Years */}
+                        <div className="space-y-0.5">
+                          <h4 className={cn("text-base font-extrabold text-amber-200", isRtl ? "font-serif" : "font-serif")}>
+                            {poetDisplay}
+                          </h4>
+                          {poetEra && (
+                            <p className="text-[11px] text-slate-400 font-medium">({poetEra})</p>
+                          )}
+                        </div>
+
+                        {/* Single Language Verse Box */}
+                        <div className="p-4 rounded-2xl bg-black/50 border border-amber-500/30 space-y-2">
+                          <p className={cn("font-medium leading-relaxed whitespace-pre-line text-xs break-words", isRtl ? "font-serif text-amber-100 text-sm" : "italic text-slate-100 font-serif")} dir={isRtl ? 'rtl' : 'ltr'}>
+                            {activeText}
+                          </p>
+                        </div>
+
+                        {/* Footer branding */}
+                        <div className="pt-2 border-t border-amber-500/30 text-[10px] text-amber-400/90 font-mono">
+                          ✦ Powered by Cardzy.online ✦
+                        </div>
+                      </div>
+                    )
+                  })()}
+                </div>
+
+                {/* Event Details & Controls (Right 6 Cols) */}
+                <div className="md:col-span-6 flex flex-col justify-between space-y-4">
+                  <div className="space-y-4">
+                    <div className="p-4 rounded-2xl bg-muted/30 border border-border space-y-2.5">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                        Event Interaction Metadata
+                      </h4>
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                          <span className="text-muted-foreground block text-[11px]">Action Type:</span>
+                          <span className="font-bold capitalize text-foreground">{viewingPoetryFlyer.activity.action?.replace('_', ' ')}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground block text-[11px]">Channel:</span>
+                          <span className="font-bold text-foreground font-mono">{viewingPoetryFlyer.activity.channel || 'web'}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground block text-[11px]">Poem ID:</span>
+                          <span className="font-mono text-[10px] text-muted-foreground truncate block">{viewingPoetryFlyer.poem.id}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground block text-[11px]">Language:</span>
+                          <span className="font-bold uppercase text-foreground">{viewingPoetryFlyer.poem.originalLanguage || 'ur'}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-bold text-foreground">Poetry Full Details:</h4>
+                      <div className="p-3.5 rounded-xl bg-card border border-border text-xs space-y-2">
+                        <div className="font-semibold text-foreground text-sm">{viewingPoetryFlyer.poem.title}</div>
+                        <p className="text-muted-foreground leading-relaxed whitespace-pre-line text-xs font-serif" dir="rtl">
+                          {viewingPoetryFlyer.poem.originalText}
+                        </p>
+                        {viewingPoetryFlyer.poem.englishTranslation && (
+                          <div className="pt-2 border-t border-border/60 text-muted-foreground text-[11px] italic">
+                            Translation: "{viewingPoetryFlyer.poem.englishTranslation}"
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action buttons */}
+                  <div className="space-y-2 pt-2 border-t border-border">
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <Button
+                        type="button"
+                        onClick={async () => {
+                          const p = viewingPoetryFlyer.poem
+                          let activeText = p.originalText || p.title || ''
+                          let isRtl = p.direction !== 'ltr'
+                          let tabLabel = (p.originalLanguage || 'ur').toUpperCase()
+
+                          if (adminFlyerTab === 'urdu') {
+                            activeText = p.urduTranslation || p.originalText
+                            isRtl = true
+                            tabLabel = 'URDU'
+                          } else if (adminFlyerTab === 'roman') {
+                            activeText = p.romanText || p.originalText
+                            isRtl = false
+                            tabLabel = 'ROMAN URDU'
+                          } else if (adminFlyerTab === 'english') {
+                            activeText = p.englishTranslation || p.originalText
+                            isRtl = false
+                            tabLabel = 'ENGLISH'
+                          }
+
+                          const cleanLines = (activeText || '')
+                            .split('\n')
+                            .map((l: string) => l.trim())
+                            .filter((l: string) => l && !l.includes('شعر نمبر') && !l.startsWith('—'))
+
+                          const poetProfile = POET_PROFILES[p.poet] || Object.values(POET_PROFILES).find((pr) => pr.name.toLowerCase().includes(p.poet.toLowerCase()) || p.poet.toLowerCase().includes(pr.name.toLowerCase()))
+                          const poetEra = p.poetEra || poetProfile?.era || ''
+                          const poetDisplay = isRtl ? (p.poetUrdu || p.poet) : p.poet
+
+                          if (typeof document !== 'undefined' && document.fonts) {
+                            try {
+                              await document.fonts.ready
+                            } catch (e) {}
+                          }
+
+                          const canvas = document.createElement('canvas')
+                          canvas.width = 1080
+                          const tempCtx = canvas.getContext('2d')
+                          if (!tempCtx) return
+
+                          const maxWidth = isRtl ? 820 : 840
+                          const fontDeclaration = isRtl
+                            ? 'bold 32px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif'
+                            : 'italic bold 28px "Georgia", "Times New Roman", serif'
+
+                          tempCtx.font = fontDeclaration
+
+                          const wrappedLines: string[] = []
+                          cleanLines.forEach((origLine: string) => {
+                            const words = origLine.split(' ')
+                            let currentLine = ''
+                            for (let w = 0; w < words.length; w++) {
+                              const testLine = currentLine ? currentLine + ' ' + words[w] : words[w]
+                              if (tempCtx.measureText(testLine).width > maxWidth && currentLine) {
+                                wrappedLines.push(currentLine)
+                                currentLine = words[w]
+                              } else {
+                                currentLine = testLine
+                              }
+                            }
+                            if (currentLine) {
+                              wrappedLines.push(currentLine)
+                            }
+                          })
+
+                          const lineHeight = isRtl ? 86 : 52
+                          const verseBoxHeight = Math.max(isRtl ? 190 : 160, wrappedLines.length * lineHeight + (isRtl ? 80 : 60))
+                          const headerHeight = poetEra ? 215 : 185
+                          const footerHeight = 110
+                          const calculatedHeight = Math.max(580, headerHeight + verseBoxHeight + footerHeight)
+
+                          canvas.height = calculatedHeight
+                          const ctx = canvas.getContext('2d')
+                          if (!ctx) return
+
+                          // Background
+                          const gradient = ctx.createLinearGradient(0, 0, 1080, canvas.height)
+                          gradient.addColorStop(0, '#051f15')
+                          gradient.addColorStop(0.4, '#02120b')
+                          gradient.addColorStop(0.75, '#04161d')
+                          gradient.addColorStop(1, '#080f18')
+                          ctx.fillStyle = gradient
+                          ctx.fillRect(0, 0, 1080, canvas.height)
+
+                          // Double Gold Borders
+                          ctx.lineWidth = 8
+                          ctx.strokeStyle = '#d97706'
+                          ctx.strokeRect(28, 28, 1024, canvas.height - 56)
+
+                          ctx.lineWidth = 1.5
+                          ctx.strokeStyle = '#fef08a'
+                          ctx.strokeRect(40, 40, 1000, canvas.height - 80)
+
+                          // Corner rosettes
+                          ctx.fillStyle = '#fbbf24'
+                          ctx.font = '24px sans-serif'
+                          ctx.textAlign = 'center'
+                          ctx.textBaseline = 'middle'
+                          ctx.fillText('✦ ❖ ✦', 110, 75)
+                          ctx.fillText('✦ ❖ ✦', 970, 75)
+                          ctx.fillText('✦ ❖ ✦', 110, canvas.height - 55)
+                          ctx.fillText('✦ ❖ ✦', 970, canvas.height - 55)
+
+                          // Top: Poet Name & Years
+                          let topY = 90
+                          ctx.fillStyle = '#fde68a'
+                          ctx.font = isRtl
+                            ? 'bold 34px "Noto Nastaliq Urdu", "Traditional Arabic", serif'
+                            : 'bold 32px "Georgia", "Times New Roman", serif'
+                          ctx.fillText(poetDisplay, 540, topY)
+
+                          if (poetEra) {
+                            topY += 38
+                            ctx.fillStyle = '#94a3b8'
+                            ctx.font = 'bold 18px sans-serif'
+                            ctx.fillText(`(${poetEra})`, 540, topY)
+                          }
+
+                          topY += 32
+                          ctx.fillStyle = '#6ee7b7'
+                          ctx.font = 'bold 15px sans-serif'
+                          const catLabel = (p.categoryLabel || 'Masterpiece').toUpperCase()
+                          ctx.fillText(`✦ ${catLabel}  •  ${tabLabel} ✦`, 540, topY)
+
+                          topY += 22
+                          ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)'
+                          ctx.lineWidth = 1.5
+                          ctx.beginPath()
+                          ctx.moveTo(220, topY)
+                          ctx.lineTo(860, topY)
+                          ctx.stroke()
+
+                          // Middle: Verse Box
+                          const boxTop = topY + 22
+                          const boxWidth = 940
+                          const boxLeft = 70
+
+                          ctx.fillStyle = 'rgba(15, 23, 42, 0.75)'
+                          ctx.fillRect(boxLeft, boxTop, boxWidth, verseBoxHeight)
+                          ctx.strokeStyle = 'rgba(251, 191, 36, 0.35)'
+                          ctx.lineWidth = 1.5
+                          ctx.strokeRect(boxLeft, boxTop, boxWidth, verseBoxHeight)
+
+                          // Verse text
+                          ctx.fillStyle = '#ffffff'
+                          ctx.font = fontDeclaration
+                          ctx.textAlign = 'center'
+                          ctx.textBaseline = 'middle'
+
+                          let verseY = boxTop + (isRtl ? 45 : 35) + (lineHeight / 2)
+                          wrappedLines.forEach((line) => {
+                            ctx.fillText(line.trim(), 540, verseY)
+                            verseY += lineHeight
+                          })
+
+                          // Footer
+                          const footerY = boxTop + verseBoxHeight + 35
+                          ctx.strokeStyle = 'rgba(245, 158, 11, 0.35)'
+                          ctx.beginPath()
+                          ctx.moveTo(260, footerY)
+                          ctx.lineTo(820, footerY)
+                          ctx.stroke()
+
+                          ctx.fillStyle = '#fef08a'
+                          ctx.font = 'bold 18px sans-serif'
+                          ctx.textBaseline = 'middle'
+                          ctx.fillText('✦ Powered by Cardzy.online ✦', 540, footerY + 30)
+
+                          const link = document.createElement('a')
+                          link.download = `cardzy-story-card-${(p.title || 'poetry').toLowerCase().replace(/[^a-z0-9]/g, '-')}-${adminFlyerTab}.png`
+                          link.href = canvas.toDataURL('image/png')
+                          link.click()
+                          showToast(`Story Card PNG (${tabLabel}) Downloaded!`, 'success')
+                        }}
+                        className="flex-1 rounded-xl font-bold bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center gap-2 text-xs"
+                      >
+                        <Download className="size-4" /> Download Story Card (PNG)
+                      </Button>
+
+                      <Link
+                        href={`/poetry?poem=${viewingPoetryFlyer.poem.id}`}
+                        target="_blank"
+                        className="px-4 py-2 rounded-xl border border-border bg-muted/60 hover:bg-muted text-foreground text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                      >
+                        <ExternalLink className="size-3.5" />
+                        <span>Poetry Explorer</span>
+                      </Link>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-1">
+                      <button
+                        type="button"
+                        onClick={(e) => handleDeletePoetryActivity(viewingPoetryFlyer.activity.id || viewingPoetryFlyer.activity.docId, viewingPoetryFlyer.activity.poemId, e)}
+                        className="text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-500/10 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Trash2 className="size-3.5" />
+                        Delete Activity Event
+                      </button>
+
+                      <Button
+                        variant="outline"
+                        onClick={() => setViewingPoetryFlyer(null)}
+                        className="rounded-xl text-xs font-bold"
+                      >
+                        Close
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Universal Share, QR & Image Export Modal */}
         <CardShareModal
           card={shareModalCard}
@@ -4121,6 +5388,15 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
   const [selectedNotifForDevices, setSelectedNotifForDevices] = useState<any | null>(null)
   const [subscribersList, setSubscribersList] = useState<any[]>([])
 
+  // Search & Pagination States (Default 30 records per page)
+  const [subSearch, setSubSearch] = useState('')
+  const [pageSubs, setPageSubs] = useState(1)
+  const [pageSizeSubs, setPageSizeSubs] = useState(30)
+
+  const [notifSearch, setNotifSearch] = useState('')
+  const [pageNotifs, setPageNotifs] = useState(1)
+  const [pageSizeNotifs, setPageSizeNotifs] = useState(30)
+
   useEffect(() => {
     let unsubscribeNotifs = () => {}
     let unsubscribeSubs = () => {}
@@ -4131,7 +5407,8 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
         if (!firestoreDb) return
 
         // Real-time listener for push subscribers
-        unsubscribeSubs = onSnapshot(collection(firestoreDb, 'push_subscribers'), (subSnap) => {
+        const subQ = query(collection(firestoreDb, 'push_subscribers'), limit(500))
+        unsubscribeSubs = onSnapshot(subQ, (subSnap) => {
           setSubscribersCount(subSnap.size)
           setSubscribersList(subSnap.docs.map(d => ({ id: d.id, ...d.data() })))
         }, (err) => {
@@ -4139,7 +5416,7 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
         })
 
         // Real-time listener for notifications history
-        const q = query(collection(firestoreDb, 'push_notifications'), orderBy('sentAt', 'desc'), limit(20))
+        const q = query(collection(firestoreDb, 'push_notifications'), orderBy('sentAt', 'desc'), limit(500))
         unsubscribeNotifs = onSnapshot(q, (snap) => {
           const notifs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
           setNotifications(notifs)
@@ -4160,6 +5437,37 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
       unsubscribeSubs()
     }
   }, [])
+
+  const filteredSubscribers = useMemo(() => {
+    if (!subSearch.trim()) return subscribersList
+    const q = subSearch.toLowerCase().trim()
+    return subscribersList.filter(s =>
+      (s.userAgent && s.userAgent.toLowerCase().includes(q)) ||
+      (s.id && s.id.toLowerCase().includes(q)) ||
+      (s.endpoint && s.endpoint.toLowerCase().includes(q))
+    )
+  }, [subscribersList, subSearch])
+
+  const paginatedSubs = useMemo(() => {
+    const start = (pageSubs - 1) * pageSizeSubs
+    return filteredSubscribers.slice(start, start + pageSizeSubs)
+  }, [filteredSubscribers, pageSubs, pageSizeSubs])
+
+  const filteredNotifs = useMemo(() => {
+    if (!notifSearch.trim()) return notifications
+    const q = notifSearch.toLowerCase().trim()
+    return notifications.filter(n =>
+      (n.title && n.title.toLowerCase().includes(q)) ||
+      (n.body && n.body.toLowerCase().includes(q)) ||
+      (n.url && n.url.toLowerCase().includes(q)) ||
+      (n.status && n.status.toLowerCase().includes(q))
+    )
+  }, [notifications, notifSearch])
+
+  const paginatedNotifs = useMemo(() => {
+    const start = (pageNotifs - 1) * pageSizeNotifs
+    return filteredNotifs.slice(start, start + pageSizeNotifs)
+  }, [filteredNotifs, pageNotifs, pageSizeNotifs])
 
   const handleSend = async () => {
     if (!title.trim() || !body.trim()) {
@@ -4318,7 +5626,7 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-1 border border-border bg-card rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="lg:col-span-1 border border-border bg-card rounded-3xl p-6 shadow-sm space-y-4 flex flex-col">
           <h3 className="font-bold text-lg flex items-center gap-2">
             <Bell className="size-5 text-indigo-500" />
             Send New Push Notification
@@ -4378,19 +5686,37 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
           </div>
 
           {/* Subscribed Devices Quick List */}
-          <div className="pt-3 border-t border-border/60">
-            <div className="flex items-center justify-between mb-2">
+          <div className="pt-3 border-t border-border/60 space-y-2">
+            <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
                 <Smartphone className="size-3.5 text-indigo-500" />
-                Subscribed Devices ({subscribersList.length})
+                Subscribed Devices ({filteredSubscribers.length})
               </span>
               <span className="text-[10px] text-muted-foreground">Auto-synced</span>
             </div>
-            {subscribersList.length === 0 ? (
-              <p className="text-xs text-muted-foreground italic py-1">No devices registered yet. Open the site on any phone/browser to auto-register.</p>
+
+            {/* Subscriber search input */}
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search subscribers..."
+                value={subSearch}
+                onChange={(e) => {
+                  setSubSearch(e.target.value)
+                  setPageSubs(1)
+                }}
+                className="w-full pl-8 pr-3 py-1.5 rounded-lg text-xs bg-muted/40 border border-border/60 text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
+              />
+            </div>
+
+            {filteredSubscribers.length === 0 ? (
+              <p className="text-xs text-muted-foreground italic py-2">
+                {subSearch ? 'No subscribers match search.' : 'No devices registered yet.'}
+              </p>
             ) : (
-              <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
-                {subscribersList.map((sub, idx) => {
+              <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                {paginatedSubs.map((sub, idx) => {
                   const ua = sub.userAgent || '';
                   const isIPhone = /iPhone/i.test(ua);
                   const isAndroid = /Android/i.test(ua);
@@ -4419,16 +5745,41 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
                 })}
               </div>
             )}
+
+            <AdminTablePagination
+              currentPage={pageSubs}
+              totalItems={filteredSubscribers.length}
+              pageSize={pageSizeSubs}
+              onPageChange={setPageSubs}
+              onPageSizeChange={setPageSizeSubs}
+              itemName="devices"
+            />
           </div>
         </div>
 
         <div className="lg:col-span-2 border border-border bg-card rounded-3xl p-6 shadow-sm overflow-hidden flex flex-col">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-lg flex items-center gap-2">
-              <CheckCircle2 className="size-5 text-emerald-500" />
-              Push History & Device Breakdown
-            </h3>
-            <span className="text-xs text-muted-foreground font-medium">Click any row to view device audit</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div>
+              <h3 className="font-bold text-lg flex items-center gap-2">
+                <CheckCircle2 className="size-5 text-emerald-500" />
+                Push History & Device Breakdown ({filteredNotifs.length})
+              </h3>
+              <span className="text-xs text-muted-foreground font-medium">Click any row to view device audit</span>
+            </div>
+
+            <div className="relative w-full sm:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search history..."
+                value={notifSearch}
+                onChange={(e) => {
+                  setNotifSearch(e.target.value)
+                  setPageNotifs(1)
+                }}
+                className="w-full pl-9 pr-3 py-1.5 rounded-xl text-xs bg-muted/40 border border-border/80 text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
+              />
+            </div>
           </div>
           
           <div className="overflow-x-auto flex-1 -mx-6 px-6">
@@ -4447,10 +5798,10 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
               <tbody>
                 {loading ? (
                   <tr><td colSpan={7} className="text-center py-8 text-muted-foreground">Loading notification history...</td></tr>
-                ) : notifications.length === 0 ? (
-                  <tr><td colSpan={7} className="text-center py-8 text-muted-foreground">No push notifications sent yet.</td></tr>
+                ) : filteredNotifs.length === 0 ? (
+                  <tr><td colSpan={7} className="text-center py-8 text-muted-foreground">{notifSearch ? 'No push notifications match search.' : 'No push notifications sent yet.'}</td></tr>
                 ) : (
-                  notifications.map((n) => (
+                  paginatedNotifs.map((n) => (
                     <tr 
                       key={n.id} 
                       onClick={() => setSelectedNotifForDevices(n)}
@@ -4502,6 +5853,15 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
               </tbody>
             </table>
           </div>
+
+          <AdminTablePagination
+            currentPage={pageNotifs}
+            totalItems={filteredNotifs.length}
+            pageSize={pageSizeNotifs}
+            onPageChange={setPageNotifs}
+            onPageSizeChange={setPageSizeNotifs}
+            itemName="notifications"
+          />
         </div>
       </div>
 

@@ -100,6 +100,16 @@ export function SearchModal({
       tags: ['birthday', 'wishes', 'quotes'],
       iconType: 'book',
     })
+    items.push({
+      id: 'section-poetry',
+      title: 'Poetry & Shayari Explorer — Urdu Ghazals & Classical Verses',
+      subtitle: 'Verified poetry by Iqbal, Ghalib, Faiz, Jaun Elia, Faraz, Parveen Shakir & Rumi with 1-click card generator.',
+      category: 'blog',
+      badge: 'Poetry & Shayari',
+      href: '/poetry',
+      tags: ['poetry', 'shayari', 'urdu', 'ghazal', 'iqbal', 'ghalib', 'faiz', 'faraz', 'jaun elia', 'rumi', 'wording', 'sher'],
+      iconType: 'sparkles',
+    })
 
     // 2. Invitation Card Templates
     INVITATION_TYPES.forEach((inv) => {

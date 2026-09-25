@@ -87,7 +87,7 @@ export function HowItWorks() {
               </p>
             </div>
             <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
-              Upload photos, add synthesized background music (shehnai, dholki, chimes), write custom messages in 18 languages, and attach event venue map links.
+              Upload photos, add synthesized background music (shehnai, dholki, chimes), write custom messages in 18 languages, and activate live event countdowns.
             </p>
           </div>
 
@@ -138,7 +138,7 @@ export function HowItWorks() {
                 {t('cardzyProPremium')}
               </div>
               <p className="font-bold text-emerald-900 text-sm flex items-center gap-1.5">
-                <Crown className="size-4 shrink-0" /> {t('liveRsvpsMaps')}
+                <Crown className="size-4 shrink-0" /> {t('liveRsvpsCountdown') || 'Live WhatsApp RSVPs & Countdown'}
               </p>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 {t('proUpgradeDesc')}

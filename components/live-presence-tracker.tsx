@@ -108,8 +108,8 @@ export function LivePresenceTracker() {
     // Initial heartbeat
     updatePresence()
 
-    // Pulse heartbeat every 25 seconds
-    intervalId = setInterval(updatePresence, 25000)
+    // Pulse heartbeat every 2.5 minutes (150s) instead of 25s to keep Firestore writes well within free limits
+    intervalId = setInterval(updatePresence, 150000)
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {

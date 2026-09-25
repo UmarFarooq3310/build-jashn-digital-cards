@@ -121,7 +121,7 @@ export function ConciergeService() {
               {t('wishGreetingCardsBadge') || '✨ Wish & Greeting Cards'}
             </span>
             <span className="bg-white/10 px-3 py-1 rounded-full text-amber-300 border border-amber-500/20 font-semibold">
-              {t('eventInvitationsRsvpBadge') || '💌 Event Invitations (RSVP & Maps)'}
+              {t('eventInvitationsRsvpBadge') || '💌 Event Invitations (RSVP & Audio)'}
             </span>
             <span className="bg-white/10 px-3 py-1 rounded-full text-teal-300 border border-teal-500/20 font-semibold">
               {t('digitalVisitingCardsVcfBadge') || '🪪 Digital Visiting Cards (.vcf)'}

@@ -355,18 +355,6 @@ export function WeddingScenario({
               </div>
             </div>
 
-            {data.inviteContent?.venueMapsUrl && (
-              <a
-                href={data.inviteContent.venueMapsUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 text-[11px] text-amber-300 hover:text-white underline mb-2"
-              >
-                <span>Open in Google Maps</span>
-                <ExternalLink className="size-3" />
-              </a>
-            )}
-
             <div className="flex items-center justify-between gap-2 mt-3">
               <button
                 type="button"

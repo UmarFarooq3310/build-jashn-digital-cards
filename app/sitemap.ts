@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticRoutePaths = [
     { path: '/', changeFrequency: 'daily' as const, priority: 1.0, lastModified: frequentUpdateDate },
+    { path: '/poetry', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
     { path: '/calendar', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
     { path: '/blog', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },
     { path: '/custom-order', changeFrequency: 'daily' as const, priority: 0.9, lastModified: frequentUpdateDate },

@@ -13,6 +13,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing slug or cardType' }, { status: 400 })
     }
 
+    const cleanSlug = String(slug).replace(/^\/?(i|w|v|m)\//, '').trim()
+
     const collectionName =
       cardType === 'invite'
         ? 'invitations'
@@ -24,12 +26,18 @@ export async function POST(req: Request) {
 
     try {
       const db = getAdminDb()
-      let targetRef = db.collection(collectionName).doc(slug)
+      let targetRef = db.collection(collectionName).doc(cleanSlug)
       let docSnap = await targetRef.get()
 
-      // Fallback: If doc does not exist by direct ID, search by slug property
+      // Fallback: If doc does not exist by direct ID, search by slug or id property
       if (!docSnap.exists) {
-        const qSnap = await db.collection(collectionName).where('slug', '==', slug).limit(1).get()
+        let qSnap = await db.collection(collectionName).where('slug', '==', cleanSlug).limit(1).get()
+        if (qSnap.empty) {
+          qSnap = await db.collection(collectionName).where('id', '==', cleanSlug).limit(1).get()
+        }
+        if (qSnap.empty && slug !== cleanSlug) {
+          qSnap = await db.collection(collectionName).where('slug', '==', slug).limit(1).get()
+        }
         if (!qSnap.empty) {
           targetRef = qSnap.docs[0].ref
           docSnap = qSnap.docs[0]
@@ -51,18 +59,26 @@ export async function POST(req: Request) {
       }
 
       if (action === 'share' && channel) {
-        // Increment both nested shares map and field path to ensure complete Firestore compatibility
-        await targetRef.set(
-          {
-            shares: {
-              [channel]: FieldValue.increment(1),
-            },
-            [`shares.${channel}`]: FieldValue.increment(1),
+        const allowedChannels = ['whatsapp', 'sms', 'copy', 'qr', 'image', 'video', 'app']
+        const ch = allowedChannels.includes(channel) ? channel : 'whatsapp'
+
+        try {
+          await targetRef.update({
+            [`shares.${ch}`]: FieldValue.increment(1),
             lastSharedAt: Date.now(),
-          },
-          { merge: true }
-        )
-        return NextResponse.json({ success: true, action: 'share', channel })
+          })
+        } catch {
+          await targetRef.set(
+            {
+              shares: {
+                [ch]: FieldValue.increment(1),
+              },
+              lastSharedAt: Date.now(),
+            },
+            { merge: true }
+          )
+        }
+        return NextResponse.json({ success: true, action: 'share', channel: ch })
       }
     } catch (dbErr: any) {
       console.warn('Firebase Admin activity logging warning:', dbErr?.message || dbErr)

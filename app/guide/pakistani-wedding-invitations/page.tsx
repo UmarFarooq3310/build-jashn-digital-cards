@@ -299,12 +299,18 @@ export default function WeddingGuidePage() {
             {/* Related Wedding Articles */}
             <div className="mt-8 p-5 rounded-2xl border border-border bg-card/60 space-y-3 text-left">
               <h4 className="font-extrabold text-sm text-foreground">Related Wedding Articles & Guides:</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <Link href="/blog/how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly" className="p-3 rounded-xl border border-border/80 hover:border-primary/50 transition-all font-semibold text-primary">
-                  → How to Manage Wedding Guest Lists & WhatsApp RSVPs
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <Link href="/poetry" className="p-3 rounded-xl border border-amber-500/40 bg-amber-500/5 hover:border-amber-500 transition-all font-semibold text-amber-500 flex flex-col justify-between">
+                  <span>✦ Poetry & Shayari Treasury</span>
+                  <span className="text-[11px] text-muted-foreground font-normal mt-1">Verified verses by Iqbal, Ghalib, Faiz & Faraz for wedding cards</span>
                 </Link>
-                <Link href="/blog/digital-vs-paper-wedding-invitations-cost-eco-comparison" className="p-3 rounded-xl border border-border/80 hover:border-primary/50 transition-all font-semibold text-primary">
-                  → Digital vs Paper Wedding Invitations: Cost & Eco Breakdown
+                <Link href="/blog/how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly" className="p-3 rounded-xl border border-border/80 hover:border-primary/50 transition-all font-semibold text-primary flex flex-col justify-between">
+                  <span>→ Wedding Guest Lists & WhatsApp RSVPs</span>
+                  <span className="text-[11px] text-muted-foreground font-normal mt-1">Effortlessly track responses in real time</span>
+                </Link>
+                <Link href="/blog/digital-vs-paper-wedding-invitations-cost-eco-comparison" className="p-3 rounded-xl border border-border/80 hover:border-primary/50 transition-all font-semibold text-primary flex flex-col justify-between">
+                  <span>→ Digital vs Paper Invitations</span>
+                  <span className="text-[11px] text-muted-foreground font-normal mt-1">Cost & eco-friendly breakdown</span>
                 </Link>
               </div>
             </div>

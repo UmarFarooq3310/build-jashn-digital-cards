@@ -6,7 +6,6 @@ import {
   getDocs,
   query,
   where,
-  orderBy,
   limit,
   deleteDoc,
   onSnapshot,
@@ -28,8 +27,6 @@ export interface GuestbookWish {
   country?: string
 }
 
-const LOCAL_STORAGE_PREFIX = 'cardzy_guestbook_'
-
 // List of prohibited spam patterns to keep comments 100% Google AdSense family-friendly
 const LINK_REGEX = /(https?:\/\/|www\.|\.com|\.net|\.org|\.io|\.xyz|\.app|\.biz|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/i
 
@@ -37,25 +34,6 @@ const PROFANITY_LIST = [
   'casino', 'crypto', 'viagra', 'porn', 'xxx', 'sex', 'nude', 'loan', 'whatsapp me', 'telegram',
   'fuck', 'bitch', 'asshole', 'shit', 'scam', 'hack'
 ]
-
-function getLocalWishes(slug: string): GuestbookWish[] {
-  if (typeof window === 'undefined') return []
-  try {
-    const raw = localStorage.getItem(`${LOCAL_STORAGE_PREFIX}${slug}`)
-    return raw ? JSON.parse(raw) : []
-  } catch {
-    return []
-  }
-}
-
-function saveLocalWishes(slug: string, wishes: GuestbookWish[]) {
-  if (typeof window === 'undefined') return
-  try {
-    localStorage.setItem(`${LOCAL_STORAGE_PREFIX}${slug}`, JSON.stringify(wishes.slice(0, 100)))
-  } catch (e) {
-    console.error('Error saving guestbook wishes locally:', e)
-  }
-}
 
 /**
  * Validates message content against spam & AdSense UGC safety rules
@@ -100,7 +78,7 @@ export function validateWishContent(guestName: string, message: string): { valid
 }
 
 /**
- * Posts a new wish to the Card Guestbook / Wishes Wall
+ * Posts a new wish to the Card Guestbook / Wishes Wall (Directly to Firebase Firestore)
  */
 export async function postGuestbookWish(params: {
   cardSlug: string
@@ -115,7 +93,7 @@ export async function postGuestbookWish(params: {
     throw new Error(validation.error || 'Invalid wish content.')
   }
 
-  // Anti-spam flood cooldown (8 seconds per browser)
+  // Anti-spam flood cooldown (8 seconds per browser session)
   if (typeof window !== 'undefined') {
     const lastPostKey = `cardzy_guestbook_cooldown_${params.cardSlug}`
     const lastTime = Number(sessionStorage.getItem(lastPostKey) || '0')
@@ -137,12 +115,7 @@ export async function postGuestbookWish(params: {
     createdAt: Date.now(),
   }
 
-  // Save to local storage cache immediately
-  const existingLocal = getLocalWishes(params.cardSlug)
-  const dedupedLocal = [wish, ...existingLocal.filter((w) => w.id !== id)]
-  saveLocalWishes(params.cardSlug, dedupedLocal)
-
-  // Save to Firebase Firestore if configured
+  // Save directly to Firebase Firestore
   const activeDb = getFirebaseDb() || db
   if (isFirebaseConfigured && activeDb) {
     try {
@@ -153,7 +126,7 @@ export async function postGuestbookWish(params: {
         serverTime: serverTimestamp(),
       })
     } catch (err) {
-      console.warn('Firestore guestbook write fallback to local storage:', err)
+      console.error('Firestore guestbook write error:', err)
     }
   }
 
@@ -161,28 +134,20 @@ export async function postGuestbookWish(params: {
 }
 
 /**
- * Subscribes to real-time wishes for a specific card slug
- * Fetches all wishes for the card and merges local and remote entries
+ * Subscribes to real-time wishes for a specific card slug from Firebase Firestore
  */
 export function subscribeCardWishes(
   cardSlug: string,
   onUpdate: (wishes: GuestbookWish[]) => void
 ): () => void {
-  // Emit local cache immediately so UI is instant
-  const local = getLocalWishes(cardSlug)
-  if (local.length > 0) {
-    onUpdate(local)
-  }
-
   const activeDb = getFirebaseDb() || db
   if (!isFirebaseConfigured || !activeDb) {
-    onUpdate(local)
+    onUpdate([])
     return () => {}
   }
 
   try {
     const collRef = collection(activeDb, 'guestbook_wishes')
-    // Query by cardSlug only (avoid composite index requirement on cardSlug + createdAt)
     const q = query(
       collRef,
       where('cardSlug', '==', cardSlug)
@@ -216,44 +181,28 @@ export function subscribeCardWishes(
           }
         })
 
-        // Merge Firestore wishes and local storage wishes to ensure nothing is missed
-        const currentLocal = getLocalWishes(cardSlug)
-        const map = new Map<string, GuestbookWish>()
-        
-        firestoreWishes.forEach((w) => map.set(w.id, w))
-        currentLocal.forEach((w) => {
-          if (!map.has(w.id)) {
-            map.set(w.id, w)
-          }
-        })
-
-        const allWishes = Array.from(map.values()).sort(
+        firestoreWishes.sort(
           (a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0)
         )
 
-        if (allWishes.length > 0) {
-          saveLocalWishes(cardSlug, allWishes)
-          onUpdate(allWishes)
-        } else {
-          onUpdate([])
-        }
+        onUpdate(firestoreWishes)
       },
       (err) => {
-        console.warn('Guestbook snapshot notice, using local cache:', err)
-        onUpdate(getLocalWishes(cardSlug))
+        console.warn('Guestbook snapshot notice:', err)
+        onUpdate([])
       }
     )
 
     return unsubscribe
   } catch (err) {
     console.warn('Error setting up guestbook listener:', err)
-    onUpdate(local)
+    onUpdate([])
     return () => {}
   }
 }
 
 /**
- * ADMIN: Subscribes to all guestbook wishes across all cards in real time
+ * ADMIN: Subscribes to all guestbook wishes across all cards in real time from Firebase Firestore
  */
 export function listenAllGuestbookWishes(
   onUpdate: (wishes: GuestbookWish[]) => void
@@ -312,7 +261,7 @@ export function listenAllGuestbookWishes(
 }
 
 /**
- * ADMIN: Deletes a single guestbook wish
+ * ADMIN: Deletes a single guestbook wish from Firebase Firestore
  */
 export async function deleteGuestbookWish(id: string, cardSlug?: string): Promise<void> {
   const activeDb = getFirebaseDb() || db
@@ -323,14 +272,6 @@ export async function deleteGuestbookWish(id: string, cardSlug?: string): Promis
     } catch (err) {
       console.error('Error deleting wish from Firestore:', err)
     }
-  }
-
-  if (cardSlug && typeof window !== 'undefined') {
-    const existing = getLocalWishes(cardSlug)
-    saveLocalWishes(
-      cardSlug,
-      existing.filter((w) => w.id !== id)
-    )
   }
 }
 
@@ -368,42 +309,11 @@ export async function deleteOldGuestbookWishes(olderThanDays: number = 30): Prom
     }
   }
 
-  // Also clean local storage if available
-  if (typeof window !== 'undefined') {
-    try {
-      const keysToProcess: string[] = []
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key && key.startsWith(LOCAL_STORAGE_PREFIX)) {
-          keysToProcess.push(key)
-        }
-      }
-      keysToProcess.forEach((k) => {
-        const raw = localStorage.getItem(k)
-        if (raw) {
-          try {
-            const list: GuestbookWish[] = JSON.parse(raw)
-            const filtered = list.filter((w) => w.createdAt > cutoffTime)
-            if (filtered.length === 0) {
-              localStorage.removeItem(k)
-            } else {
-              localStorage.setItem(k, JSON.stringify(filtered))
-            }
-          } catch {
-            // ignore
-          }
-        }
-      })
-    } catch (e) {
-      // ignore
-    }
-  }
-
   return deletedCount
 }
 
 /**
- * ADMIN: Deletes all wishes for a specific card
+ * ADMIN: Deletes all wishes for a specific card from Firebase Firestore
  */
 export async function deleteCardGuestbookWishes(cardSlug: string): Promise<number> {
   let deletedCount = 0
@@ -422,10 +332,6 @@ export async function deleteCardGuestbookWishes(cardSlug: string): Promise<numbe
     } catch (err) {
       console.error('Error clearing card guestbook wishes:', err)
     }
-  }
-
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem(`${LOCAL_STORAGE_PREFIX}${cardSlug}`)
   }
 
   return deletedCount

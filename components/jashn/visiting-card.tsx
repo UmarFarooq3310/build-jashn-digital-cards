@@ -563,6 +563,26 @@ END:VCARD`
                   &ldquo;{data.bio || '---'}&rdquo;
                 </div>
               )}
+
+              {/* 1-Tap Save Contact Button */}
+              {isPublicCard && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    downloadVCard()
+                  }}
+                  className={cn(
+                    "w-full py-2.5 px-4 rounded-xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer mt-1",
+                    isLight
+                      ? "bg-slate-900 hover:bg-slate-800 text-white"
+                      : "bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-slate-950 hover:brightness-110"
+                  )}
+                >
+                  <UserPlus className="size-3.5" />
+                  <span>{t('saveContactToPhone') || 'Save Contact to Phone (.vcf)'}</span>
+                </button>
+              )}
             </div>
           ) : (
             /* Back Side View (QR & Profile Detail) */

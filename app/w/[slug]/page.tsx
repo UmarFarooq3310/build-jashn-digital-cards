@@ -14,6 +14,7 @@ import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
+import { CardLiveReactions } from '@/components/jashn/card-reactions'
 import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
@@ -23,7 +24,7 @@ import { recordCardShare } from '@/lib/jashn/magic-service'
 import type { Wish } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
-import { doc, onSnapshot } from 'firebase/firestore'
+import { doc, getDoc, onSnapshot } from 'firebase/firestore'
 import { shouldIncrementView, isSenderOrOwner } from '@/lib/jashn/view-tracker'
 
 function WishPublicContent({ slug }: { slug: string }) {
@@ -56,41 +57,8 @@ function WishPublicContent({ slug }: { slug: string }) {
   useEffect(() => {
     if (!isMounted) return
 
-    let unsubscribe: (() => void) | undefined
     setIsLoading(true)
-
-    const activeDb = getFirebaseDb() || db
-    if (isFirebaseConfigured && activeDb) {
-      try {
-        const docRef = doc(activeDb, 'wishes', slug)
-        unsubscribe = onSnapshot(docRef, (docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data() as Wish
-            setActiveWish(data)
-            
-            if (viewIncrementedRef.current !== slug) {
-              viewIncrementedRef.current = slug
-              // Only increment view count if viewer is receiver (not sender/creator)
-              if (shouldIncrementView(slug, 'wish', data.creatorId, searchParams, user?.uid)) {
-                incrementWishView(slug)
-                setActiveWish((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
-              }
-            }
-            setIsLoading(false)
-          } else {
-            fallbackToLocalAndUrl()
-          }
-        }, (error) => {
-          console.error('Firestore listener error:', error)
-          fallbackToLocalAndUrl()
-        })
-      } catch (e) {
-        console.error('Failed to listen to wish from Firestore:', e)
-        fallbackToLocalAndUrl()
-      }
-    } else {
-      fallbackToLocalAndUrl()
-    }
+    let unsubscribe: (() => void) | null = null
 
     function fallbackToLocalAndUrl() {
       const existing = wishes.find((w) => w.slug === slug)
@@ -146,10 +114,43 @@ function WishPublicContent({ slug }: { slug: string }) {
       setIsLoading(false)
     }
 
+    const activeDb = getFirebaseDb() || db
+    if (isFirebaseConfigured && activeDb) {
+      try {
+        const docRef = doc(activeDb, 'wishes', slug)
+        unsubscribe = onSnapshot(docRef, (docSnap) => {
+          if (docSnap.exists()) {
+            const data = docSnap.data() as Wish
+            setActiveWish(data)
+            
+            if (viewIncrementedRef.current !== slug) {
+              viewIncrementedRef.current = slug
+              // Only increment view count if viewer is receiver (not sender/creator)
+              if (shouldIncrementView(slug, 'wish', data.creatorId, searchParams, user?.uid)) {
+                incrementWishView(slug)
+                setActiveWish((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+              }
+            }
+            setIsLoading(false)
+          } else {
+            fallbackToLocalAndUrl()
+          }
+        }, (err) => {
+          console.warn('Live wish listener notice:', err)
+          fallbackToLocalAndUrl()
+        })
+      } catch (e) {
+        console.error('Failed to attach real-time wish listener:', e)
+        fallbackToLocalAndUrl()
+      }
+    } else {
+      fallbackToLocalAndUrl()
+    }
+
     return () => {
       if (unsubscribe) unsubscribe()
     }
-  }, [slug, wishes, searchParams, isMounted, incrementWishView])
+  }, [slug, wishes, searchParams, isMounted, incrementWishView, user?.uid])
 
   function handleEdit() {
     router.push(`/create-wish?edit=${slug}`)
@@ -547,6 +548,18 @@ function WishPublicContent({ slug }: { slug: string }) {
             <WishCard ref={cardRef} data={activeWish} watermark={true} />
           </ThreeDCardWrapper>
         </div>
+
+        {/* Interactive Live Emoji Reactions Dock */}
+        {!isSensitive && (
+          <div className="w-full max-w-md flex justify-center">
+            <CardLiveReactions
+              cardSlug={activeWish.slug}
+              cardType="wish"
+              isUrdu={lang === 'ur' || lang === 'ar'}
+              theme="dark"
+            />
+          </div>
+        )}
       </main>
 
       {/* Receiver Screen Footer Control (Always visible & never cut off) */}

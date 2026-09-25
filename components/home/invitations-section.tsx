@@ -108,7 +108,7 @@ export function InvitationsSection() {
             <div className="grid gap-3 sm:grid-cols-2 pt-2">
               {[
                 t('featWhatsappRsvp'),
-                t('featGoogleMaps'),
+                t('featLiveReactions') || 'Live Emoji Reactions & Duas',
                 t('featCountdown'),
                 t('featDressCodeNotes'),
                 t('featHostDashboard'),

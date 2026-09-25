@@ -19,6 +19,7 @@ import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
+import { CardLiveReactions } from '@/components/jashn/card-reactions'
 import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
@@ -29,7 +30,7 @@ import { getInvitationType } from '@/lib/jashn/invitations'
 import type { Invitation } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
-import { doc, onSnapshot } from 'firebase/firestore'
+import { doc, getDoc, onSnapshot } from 'firebase/firestore'
 import { shouldIncrementView, isSenderOrOwner } from '@/lib/jashn/view-tracker'
 
 function InvitationPublicContent({ slug }: { slug: string }) {
@@ -63,41 +64,8 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   useEffect(() => {
     if (!isMounted) return
 
-    let unsubscribe: (() => void) | undefined
     setIsLoading(true)
-
-    const activeDb = getFirebaseDb() || db
-    if (isFirebaseConfigured && activeDb) {
-      try {
-        const docRef = doc(activeDb, 'invitations', slug)
-        unsubscribe = onSnapshot(docRef, (docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data() as Invitation
-            setActiveInvitation(data)
-            
-            if (viewIncrementedRef.current !== slug) {
-              viewIncrementedRef.current = slug
-              // Only increment view count if viewer is receiver (not sender/creator)
-              if (shouldIncrementView(slug, 'invite', data.creatorId, searchParams, user?.uid)) {
-                incrementInvitationView(slug)
-                setActiveInvitation((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
-              }
-            }
-            setIsLoading(false)
-          } else {
-            fallbackToLocalAndUrl()
-          }
-        }, (error) => {
-          console.error('Firestore listener error:', error)
-          fallbackToLocalAndUrl()
-        })
-      } catch (e) {
-        console.error('Failed to listen to invitation from Firestore:', e)
-        fallbackToLocalAndUrl()
-      }
-    } else {
-      fallbackToLocalAndUrl()
-    }
+    let unsubscribe: (() => void) | null = null
 
     function fallbackToLocalAndUrl() {
       const existing = invitations.find((i) => i.slug === slug)
@@ -162,10 +130,43 @@ function InvitationPublicContent({ slug }: { slug: string }) {
       setIsLoading(false)
     }
 
+    const activeDb = getFirebaseDb() || db
+    if (isFirebaseConfigured && activeDb) {
+      try {
+        const docRef = doc(activeDb, 'invitations', slug)
+        unsubscribe = onSnapshot(docRef, (docSnap) => {
+          if (docSnap.exists()) {
+            const data = docSnap.data() as Invitation
+            setActiveInvitation(data)
+            
+            if (viewIncrementedRef.current !== slug) {
+              viewIncrementedRef.current = slug
+              // Only increment view count if viewer is receiver (not sender/creator)
+              if (shouldIncrementView(slug, 'invite', data.creatorId, searchParams, user?.uid)) {
+                incrementInvitationView(slug)
+                setActiveInvitation((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+              }
+            }
+            setIsLoading(false)
+          } else {
+            fallbackToLocalAndUrl()
+          }
+        }, (err) => {
+          console.warn('Live invitation listener notice:', err)
+          fallbackToLocalAndUrl()
+        })
+      } catch (e) {
+        console.error('Failed to load invitation from Firestore:', e)
+        fallbackToLocalAndUrl()
+      }
+    } else {
+      fallbackToLocalAndUrl()
+    }
+
     return () => {
       if (unsubscribe) unsubscribe()
     }
-  }, [slug, invitations, searchParams, isMounted, incrementInvitationView])
+  }, [slug, invitations, searchParams, isMounted, incrementInvitationView, user?.uid])
 
   function handleRsvp() {
     if (!rsvped) {
@@ -428,19 +429,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
               </div>
             )}
 
-            {/* Location Button */}
-            {activeInvitation.mapsLink && (
-              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <a
-                  href={activeInvitation.mapsLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-input bg-background px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted transition-colors shadow-sm"
-                >
-                  <MapPin className="size-4 text-primary" /> Get Location on Google Maps
-                </a>
-              </div>
-            )}
+
 
             {/* Share & QR Code Panel */}
             <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col items-center gap-6 text-left">
@@ -605,7 +594,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         </div>
 
         {/* Action Buttons Right Below Card */}
-        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md px-2">
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 w-full max-w-md px-2">
           <Button
             onClick={handleRsvp}
             size="lg"
@@ -615,17 +604,13 @@ function InvitationPublicContent({ slug }: { slug: string }) {
             {rsvped ? 'RSVP Confirmed!' : 'RSVP via WhatsApp'}
           </Button>
 
-          {activeInvitation.mapsLink && (
-            <a
-              href={activeInvitation.mapsLink}
-              target="_blank"
-              rel="noreferrer"
-              className="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 hover:bg-white/20 text-white py-3 px-6 text-sm font-bold shadow-lg transition-all"
-            >
-              <MapPin className="size-4 text-amber-400" />
-              <span>Google Maps</span>
-            </a>
-          )}
+          {/* Interactive Live Emoji Reactions Dock */}
+          <CardLiveReactions
+            cardSlug={slug}
+            cardType="invite"
+            isUrdu={lang === 'ur' || lang === 'ar'}
+            theme="dark"
+          />
         </div>
       </main>
 

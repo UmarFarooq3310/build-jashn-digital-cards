@@ -48,6 +48,7 @@ import { useJashn } from '@/lib/jashn/store'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { useLang } from '@/lib/lang/context'
 import { cn, isPageReload } from '@/lib/utils'
+import { POETRY_DATABASE } from '@/lib/jashn/poetry-data'
 
 export interface OccasionMeta {
   id: MagicOccasion
@@ -733,6 +734,35 @@ export default function CreateMagicLinkClient() {
               if (d.coupleNames !== undefined) setCoupleNames(d.coupleNames)
               if (d.step) setStep(d.step as 1 | 2)
               if (d.activeTab) setActiveTab(d.activeTab as 'details' | 'design' | 'preview')
+            }
+          } else {
+            // Check for poetry prefill
+            let prefillText = ''
+            try {
+              prefillText = sessionStorage.getItem('cardzy_prefill_msg') || ''
+              sessionStorage.removeItem('cardzy_prefill_msg')
+            } catch {}
+
+            const poemP = searchParams.get('poem')
+            const msgP = searchParams.get('msg') || searchParams.get('message')
+
+            if (!prefillText && poemP) {
+              const found = POETRY_DATABASE.find((p) => p.id === poemP)
+              if (found) prefillText = found.cardPrefillMsg
+            }
+
+            if (prefillText || msgP) {
+              const text = prefillText || msgP || ''
+              setSecretLetter(text)
+              setCustomVerse(text)
+              setStep(2)
+            }
+
+            // Clean address bar
+            if (typeof window !== 'undefined' && (poemP || msgP)) {
+              try {
+                window.history.replaceState({}, '', window.location.pathname)
+              } catch {}
             }
           }
         } catch {}

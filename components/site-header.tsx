@@ -139,6 +139,7 @@ function SiteHeaderInner() {
             { href: '/create-wish', key: 'navWishes', fallback: 'Wishes' },
             { href: '/create-invitation', key: 'navInvitations', fallback: 'Invitations' },
             { href: '/create-visiting-card', key: 'navVCards', fallback: 'vCards' },
+            { href: '/poetry', key: 'navPoetry', fallback: 'Poetry' },
             { href: '/calendar', key: 'navCalendar', fallback: 'Calendar' },
             { href: '/blog', key: 'navBlog', fallback: 'Blog' },
             { href: '/pricing', key: 'navPricing', fallback: 'Pricing' },
@@ -235,19 +236,19 @@ function SiteHeaderInner() {
             <>
               <Link
                 href="/dashboard"
-                className="flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-emerald-950/10 px-2.5 py-1 text-xs xl:text-sm font-semibold transition-all hover:bg-emerald-950/20 whitespace-nowrap"
+                className="flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1 text-xs xl:text-sm font-bold text-foreground transition-all shadow-xs whitespace-nowrap"
+                title="Go to Dashboard"
               >
-                <span className="flex size-6 items-center justify-center rounded-full bg-gradient-to-r from-emerald-700 to-amber-600 text-[10px] font-bold text-white uppercase shadow-sm">
+                <span className="flex size-6 items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 to-amber-600 text-[11px] font-black text-white uppercase shadow-sm shrink-0">
                   {(user.name || 'U').charAt(0)}
                 </span>
-                <span className="text-foreground max-w-[80px] xl:max-w-[120px] truncate">
-                  {(user.name || 'User').split(' ')[0]}
-                </span>
+                <span>{t('dashboardNav', 'Dashboard')}</span>
               </Link>
               <button
                 onClick={handleSignOut}
-                className="flex items-center gap-1 rounded-full border border-border/60 bg-secondary/40 px-2 xl:px-2.5 py-1 text-xs font-semibold text-muted-foreground transition-all hover:bg-secondary hover:text-foreground whitespace-nowrap"
+                className="flex items-center gap-1 rounded-full border border-border/60 bg-secondary/40 px-2 xl:px-2.5 py-1 text-xs font-semibold text-muted-foreground transition-all hover:bg-secondary hover:text-foreground whitespace-nowrap cursor-pointer"
                 aria-label="Sign out"
+                title="Sign out"
               >
                 <LogOut className="size-3.5" />
                 <span className="hidden xl:inline">{t('signOut')}</span>
@@ -255,17 +256,14 @@ function SiteHeaderInner() {
             </>
           ) : (
             <>
-              <Link href="/login" className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), "px-2 xl:px-2.5 py-1 text-xs xl:text-sm font-semibold whitespace-nowrap")}>
+              <Link href="/login" className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), "px-2.5 xl:px-3 py-1 text-xs xl:text-sm font-semibold whitespace-nowrap")}>
                 {t('navLogIn', 'Log In')}
               </Link>
-              <Link href="/signup" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), "px-2 xl:px-3 py-1 text-xs xl:text-sm font-bold border-amber-500/30 text-amber-700 hover:bg-amber-500/10 whitespace-nowrap")}>
+              <Link href="/signup" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), "px-3 xl:px-3.5 py-1 text-xs xl:text-sm font-bold border-amber-500/30 text-amber-700 hover:bg-amber-500/10 whitespace-nowrap")}>
                 {t('navSignUp', 'Sign Up')}
               </Link>
             </>
           )}
-          <Link href="/create-wish" className={cn(buttonVariants({ size: 'sm' }), "hidden 2xl:inline-flex px-3 py-1 text-xs xl:text-sm font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm rounded-xl whitespace-nowrap")}>
-            {t('getStarted')}
-          </Link>
         </div>
 
         <div className="flex items-center gap-1 lg:hidden">
@@ -305,6 +303,7 @@ function SiteHeaderInner() {
               { href: '/create-wish', key: 'sendWish', fallback: '3D Wish Cards' },
               { href: '/create-invitation', key: 'createInvitation', fallback: 'Wedding Invitations' },
               { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Smart vCards' },
+              { href: '/poetry', key: 'navPoetry', fallback: 'Poetry & Shayari' },
               { href: '/blog', key: 'blog', fallback: 'Guides & Ideas' },
               { href: '/calendar', key: 'celebrationCalendar', fallback: 'Celebration Calendar' },
               { href: '/pricing', key: 'pricing', fallback: 'Pricing' },
@@ -364,12 +363,12 @@ function SiteHeaderInner() {
                 <Link
                   href="/dashboard"
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 rounded-xl px-3 py-3 text-base font-semibold text-foreground hover:bg-secondary min-h-[48px]"
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-3 text-base font-bold text-foreground hover:bg-secondary min-h-[48px]"
                 >
-                  <span className="flex size-6 items-center justify-center rounded-full bg-gradient-to-r from-primary to-emerald-600 text-[10px] font-bold text-white uppercase">
+                  <span className="flex size-7 items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 to-amber-600 text-xs font-black text-white uppercase shrink-0">
                     {(user.name || 'U').charAt(0)}
                   </span>
-                  <span>Dashboard ({(user.name || 'User').split(' ')[0]})</span>
+                  <span>{t('dashboardNav', 'Dashboard')}</span>
                 </Link>
                 <button
                   onClick={() => { setOpen(false); handleSignOut() }}

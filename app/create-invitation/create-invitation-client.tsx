@@ -30,6 +30,9 @@ import { useLang } from '@/lib/lang/context'
 import { cn, isPageReload } from '@/lib/utils'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
+import { SmartWordingPicker } from '@/components/jashn/smart-wording-picker'
+import { POETRY_DATABASE } from '@/lib/jashn/poetry-data'
+import { generateAIInvitationNotes } from '@/lib/jashn/ai-generator'
 
 function cleanStepLabel(text: string) {
   return text.replace(/^[\d\.\s\u0660-\u0669\u09E6-\u09EF\u0966-\u096F\u06D4\-]+/, '').trim()
@@ -46,6 +49,7 @@ function CreateInvitationContent() {
   const typeParam = searchParams.get('type')
   const titleParam = searchParams.get('title')
   const notesParam = searchParams.get('notes')
+  const poemParam = searchParams.get('poem')
   const dateParam = searchParams.get('date')
   const timeParam = searchParams.get('time')
   const venueParam = searchParams.get('venue')
@@ -56,7 +60,7 @@ function CreateInvitationContent() {
   const dressCodeParam = searchParams.get('dressCode')
 
   const [step, setStep] = useState<1 | 2 | 3 | 4>(() => {
-    if (editSlug || typeParam || titleParam) return 2
+    if (editSlug || typeParam || titleParam || poemParam || notesParam) return 2
     return 1
   })
   const [typeId, setTypeId] = useState<string>(() => {
@@ -97,6 +101,7 @@ function CreateInvitationContent() {
   const [bgVariantId, setBgVariantId] = useState('default')
   const [photoUrl, setPhotoUrl] = useState('')
   const [photoUrl2, setPhotoUrl2] = useState('')
+  const [showAiModal, setShowAiModal] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -105,6 +110,20 @@ function CreateInvitationContent() {
   const isPro = user?.plan === 'pro' || user?.plan === 'business'
 
   const wordingTemplates = getInvitationWordingTemplates(typeId, lang)
+
+  function handleGenerateAIInvitation(tone: 'formal' | 'royal' | 'islamic' | 'traditional' | 'warm') {
+    const aiText = generateAIInvitationNotes({
+      eventTypeName: selectedType?.label || 'Wedding Celebration',
+      hostNames,
+      groomName: groom,
+      brideName: bride,
+      tone,
+      lang,
+    })
+    setNotes(aiText)
+    setShowAiModal(false)
+    showToast('AI Invitation Wording Generated! ✨', 'info')
+  }
 
   function applyWordingTemplate(tmpl: InvitationWordingTemplate) {
     if (!isCouple && tmpl.title) {
@@ -267,6 +286,7 @@ function CreateInvitationContent() {
           const typeP = searchParams.get('type')
           const titleP = searchParams.get('title')
           const notesP = searchParams.get('notes')
+          const poemP = searchParams.get('poem')
           const dateP = searchParams.get('date')
           const timeP = searchParams.get('time')
           const venueP = searchParams.get('venue')
@@ -276,6 +296,18 @@ function CreateInvitationContent() {
           const brideP = searchParams.get('bride')
           const dressCodeP = searchParams.get('dressCode')
 
+          // Check if poetry was passed via sessionStorage or poem ID
+          let prefillText = ''
+          try {
+            prefillText = sessionStorage.getItem('cardzy_prefill_msg') || ''
+            sessionStorage.removeItem('cardzy_prefill_msg')
+          } catch {}
+
+          if (!prefillText && poemP) {
+            const found = POETRY_DATABASE.find((p) => p.id === poemP)
+            if (found) prefillText = found.cardPrefillMsg
+          }
+
           if (typeP) {
             setTypeId(typeP)
             setStep(2)
@@ -284,7 +316,13 @@ function CreateInvitationContent() {
             setTitle(titleP)
             setStep(2)
           }
-          if (notesP) setNotes(notesP)
+          if (prefillText) {
+            setNotes(prefillText)
+            setStep(2)
+          } else if (notesP) {
+            setNotes(notesP)
+            setStep(2)
+          }
           if (dateP) setDate(dateP)
           if (timeP) setTime(timeP)
           if (venueP) setVenue(venueP)
@@ -293,6 +331,13 @@ function CreateInvitationContent() {
           if (groomP) setGroom(groomP)
           if (brideP) setBride(brideP)
           if (dressCodeP) setDressCode(dressCodeP)
+
+          // Clean cluttered query params from the browser address bar
+          if (typeof window !== 'undefined' && (notesP || poemP)) {
+            try {
+              window.history.replaceState({}, '', window.location.pathname)
+            } catch {}
+          }
         }
       }
       if (!isCancelled) setIsInitialLoaded(true)
@@ -1003,32 +1048,18 @@ function CreateInvitationContent() {
                       )}
                     </div>
 
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <div>
-                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                          {t('mapsLinkLabel')}
-                        </label>
-                        <input
-                          type="text"
-                          value={mapsLink}
-                          onChange={(e) => setMapsLink(e.target.value)}
-                          placeholder="https://maps.google.com/..."
-                          className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
-                        />
-                      </div>
-                      <div>
-                        <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                          {t('dressCodeLabel')}
-                        </label>
-                        <input
-                          type="text"
-                          value={dressCode}
-                          onChange={(e) => setDressCode(e.target.value)}
-                          placeholder={t('placeholderDressCode')}
-                          dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
-                          className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
-                        />
-                      </div>
+                    <div>
+                      <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                        {t('dressCodeLabel')}
+                      </label>
+                      <input
+                        type="text"
+                        value={dressCode}
+                        onChange={(e) => setDressCode(e.target.value)}
+                        placeholder={t('placeholderDressCode')}
+                        dir={lang === 'ur' || lang === 'ar' ? 'auto' : 'ltr'}
+                        className="w-full rounded-2xl border border-input bg-background p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all"
+                      />
                     </div>
 
                     {/* Part 2 Navigation */}
@@ -1055,9 +1086,19 @@ function CreateInvitationContent() {
                 {/* 📝 Part 3: Wording & Photos */}
                 {step === 3 && (
                   <div className={cn('space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
-                    <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5">
-                      <Sparkles className="size-4" /> {t('stepPartWording') || '3. Wording & Photos'}
-                    </h3>
+                    <div className="flex items-center justify-between border-b border-[#7B0D1E]/10 pb-1.5">
+                      <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
+                        <Sparkles className="size-4" /> {t('stepPartWording') || '3. Wording & Photos'}
+                      </h3>
+                      <button
+                        type="button"
+                        onClick={() => setShowAiModal(true)}
+                        className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-500 to-rose-500 px-3 py-1 text-[11px] font-bold text-white shadow-xs hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+                      >
+                        <Sparkles className="size-3" />
+                        <span>{t('generateWithAi') || '✨ AI Invitation Generator'}</span>
+                      </button>
+                    </div>
 
                     {/* 📝 CHOOSE PRE-WRITTEN INVITATION TEMPLATE */}
                     {wordingTemplates.length > 0 && (
@@ -1079,6 +1120,15 @@ function CreateInvitationContent() {
                         </div>
                       </div>
                     )}
+
+                    {/* 1-Click Smart Wording, Duas & Shayari */}
+                    <SmartWordingPicker
+                      lang={lang}
+                      eventType={typeId}
+                      onSelectWording={(selectedText) => {
+                        setNotes(selectedText)
+                      }}
+                    />
 
                     <div>
                       <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
@@ -1310,6 +1360,51 @@ function CreateInvitationContent() {
         </div>
       </div>
 
+      {/* AI Invitation Generator Modal */}
+      {showAiModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="relative w-full max-w-md rounded-3xl border border-border bg-card p-6 shadow-2xl space-y-4 text-left">
+            <button
+              type="button"
+              onClick={() => setShowAiModal(false)}
+              className="absolute top-4 right-4 rounded-full p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer"
+            >
+              <X className="size-4" />
+            </button>
+
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-[#7B0D1E]">
+                <Sparkles className="size-5" />
+                <h3 className="font-extrabold text-base text-foreground">
+                  {t('generateWithAi') || 'AI Invitation Generator'}
+                </h3>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Choose a tone to automatically generate custom invitation notes & host wording for {selectedType?.label || 'your event'}.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              {[
+                { tone: 'formal' as const, label: '👔 Formal & Polite', desc: 'Standard respectful invite' },
+                { tone: 'royal' as const, label: '👑 Royal & Grand', desc: 'Regal phrasing for big events' },
+                { tone: 'islamic' as const, label: '🌙 Islamic & Dua', desc: 'Sunnah blessing & barakah' },
+                { tone: 'traditional' as const, label: '🌸 Traditional & Warm', desc: 'Heartfelt family welcome' },
+              ].map(({ tone, label, desc }) => (
+                <button
+                  key={tone}
+                  type="button"
+                  onClick={() => handleGenerateAIInvitation(tone)}
+                  className="flex flex-col items-start gap-1 p-3 rounded-2xl border border-border bg-background hover:border-[#7B0D1E]/50 hover:bg-muted/50 text-left transition-all active:scale-95 cursor-pointer shadow-2xs"
+                >
+                  <span className="text-xs font-bold text-foreground">{label}</span>
+                  <span className="text-[10px] text-muted-foreground">{desc}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Premium Guide Overview Card */}
       <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-6xl mx-auto">
@@ -1335,10 +1430,10 @@ function CreateInvitationContent() {
           </div>
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
             <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
-              {t('googleMapsVenuePinTitle') || 'Google Maps Venue Pin'}
+              {t('liveCountdownTitle') || 'Live Event Countdown Timer'}
             </h3>
             <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
-              {t('googleMapsVenuePinDesc') || 'Help guests navigate directly to your marquee or wedding hall with one click.'}
+              {t('liveCountdownDesc') || 'Real-time animated flip countdown clock ticking down to the special moment.'}
             </p>
           </div>
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">

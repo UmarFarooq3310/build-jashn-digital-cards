@@ -179,10 +179,10 @@ export default function CustomOrderPage() {
             </div>
             <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">
               <h3 className={`font-extrabold text-xs text-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>
-                {t('googleMapsVenuePinTitle') || 'Google Maps Venue Pin'}
+                {t('liveCountdownTitle') || 'Live Event Countdown Timer'}
               </h3>
               <p className={`text-[11px] text-muted-foreground mt-1 leading-relaxed ${isUrdu ? 'font-urdu text-xs leading-relaxed' : ''}`}>
-                {t('googleMapsVenuePinDesc') || 'Help guests navigate directly to your marquee or wedding hall with one click.'}
+                {t('liveCountdownDesc') || 'Real-time animated flip countdown clock ticking down to the special moment.'}
               </p>
             </div>
             <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">

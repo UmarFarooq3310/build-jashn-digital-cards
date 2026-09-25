@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getAdminDb } from '@/lib/firebase-admin'
+import poetryFallback from '@/lib/jashn/poetry-fallback.json'
 
 export const dynamic = 'force-dynamic'
 
@@ -45,13 +46,21 @@ export async function GET() {
       vCardsSnap,
       rsvpsSnap,
       magicLinksSnap,
+      guestbookSnap,
+      poetryStatsSnap,
+      poetryActivitySnap,
+      customPoetrySnap,
     ] = await Promise.all([
-      db.collection('users').get().catch(() => ({ docs: [] } as any)),
-      db.collection('invitations').get().catch(() => ({ docs: [] } as any)),
-      db.collection('wishes').get().catch(() => ({ docs: [] } as any)),
-      db.collection('visitingCards').get().catch(() => ({ docs: [] } as any)),
-      db.collection('rsvps').get().catch(() => ({ docs: [] } as any)),
-      db.collection('magic_links').get().catch(() => ({ docs: [] } as any)),
+      db.collection('users').orderBy('createdAt', 'desc').limit(100).get().catch(() => db.collection('users').limit(100).get()).catch(() => ({ docs: [] } as any)),
+      db.collection('invitations').orderBy('createdAt', 'desc').limit(100).get().catch(() => db.collection('invitations').limit(100).get()).catch(() => ({ docs: [] } as any)),
+      db.collection('wishes').orderBy('createdAt', 'desc').limit(100).get().catch(() => db.collection('wishes').limit(100).get()).catch(() => ({ docs: [] } as any)),
+      db.collection('visitingCards').orderBy('createdAt', 'desc').limit(100).get().catch(() => db.collection('visitingCards').limit(100).get()).catch(() => ({ docs: [] } as any)),
+      db.collection('rsvps').orderBy('createdAt', 'desc').limit(100).get().catch(() => db.collection('rsvps').limit(100).get()).catch(() => ({ docs: [] } as any)),
+      db.collection('magic_links').orderBy('createdAt', 'desc').limit(100).get().catch(() => db.collection('magic_links').limit(100).get()).catch(() => ({ docs: [] } as any)),
+      db.collection('guestbook_wishes').orderBy('createdAt', 'desc').limit(100).get().catch(() => db.collection('guestbook_wishes').limit(100).get()).catch(() => ({ docs: [] } as any)),
+      db.collection('poetry_stats').limit(100).get().catch(() => ({ docs: [] } as any)),
+      db.collection('poetry_activity').orderBy('timestamp', 'desc').limit(50).get().catch(() => ({ docs: [] } as any)),
+      db.collection('custom_poetry').orderBy('createdAt', 'desc').limit(100).get().catch(() => ({ docs: [] } as any)),
     ])
 
     const users = usersSnap.docs.map((doc: any) => ({
@@ -88,6 +97,41 @@ export async function GET() {
       ...normalizeFirestoreData(doc.data()),
     }))
 
+    const guestbookWishes = guestbookSnap.docs.map((doc: any) => ({
+      id: doc.id,
+      ...normalizeFirestoreData(doc.data()),
+    }))
+
+    const poetryStats = poetryStatsSnap.docs.map((doc: any) => ({
+      id: doc.id,
+      ...normalizeFirestoreData(doc.data()),
+    }))
+
+    const poetryActivity = poetryActivitySnap.docs.map((doc: any) => ({
+      id: doc.id,
+      ...normalizeFirestoreData(doc.data()),
+    }))
+
+    const customPoetryDocs = customPoetrySnap.docs.map((doc: any) => ({
+      id: doc.id,
+      ...normalizeFirestoreData(doc.data()),
+    }))
+
+    // Combine custom poetry docs with standard library and deduplicate
+    const seenTexts = new Set<string>()
+    const deduplicatedPoetry: any[] = []
+
+    const candidates = [...customPoetryDocs, ...((poetryFallback as any[]) || [])]
+
+    for (const p of candidates) {
+      if (!p || !p.originalText) continue
+      const normKey = (p.originalText || '').trim().replace(/\s+/g, ' ')
+      if (!seenTexts.has(normKey)) {
+        seenTexts.add(normKey)
+        deduplicatedPoetry.push(p)
+      }
+    }
+
     return NextResponse.json({
       success: true,
       users,
@@ -96,6 +140,11 @@ export async function GET() {
       visitingCards,
       rsvps,
       magicLinks,
+      guestbookWishes,
+      poetryStats,
+      poetryActivity,
+      poetry: deduplicatedPoetry,
+      customPoetry: deduplicatedPoetry,
       timestamp: Date.now(),
     })
   } catch (error: any) {

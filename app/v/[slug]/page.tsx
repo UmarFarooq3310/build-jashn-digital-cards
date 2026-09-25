@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, use } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
-import { doc, getDoc, updateDoc, increment } from 'firebase/firestore'
+import { doc, getDoc, updateDoc, increment, onSnapshot } from 'firebase/firestore'
 import { useJashn } from '@/lib/jashn/store'
 import type { VisitingCard } from '@/lib/jashn/types'
 import { shouldIncrementView, isSenderOrOwner } from '@/lib/jashn/view-tracker'
@@ -13,10 +13,11 @@ import { ShareBar } from '@/components/jashn/share-bar'
 import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
 import { Button } from '@/components/ui/button'
-import { Sparkles, Eye, Edit3, Trash2, ShieldCheck, Cpu, Share2, X, Loader2, ArrowLeft, ExternalLink, MessageCircle, Smartphone, Copy, Check, QrCode } from 'lucide-react'
+import { Sparkles, Eye, Edit3, Trash2, ShieldCheck, Cpu, Share2, X, Loader2, ArrowLeft, ExternalLink, MessageCircle, Smartphone, Copy, Check, QrCode, UserPlus, Download } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { recordCardShare } from '@/lib/jashn/magic-service'
+import { downloadVCard } from '@/lib/jashn/vcard-export'
 
 export default function VisitingCardPublicPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params)
@@ -42,7 +43,9 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
     searchParams.get('role') === 'sender'
 
   useEffect(() => {
-    async function loadCard() {
+    let unsubscribe: (() => void) | null = null
+
+    function fallbackLocal() {
       const storeCard = getVisitingCard(slug)
       if (storeCard) {
         setCard(storeCard)
@@ -78,15 +81,15 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
           viewCount: 184,
           createdAt: Date.now(),
         })
-        setLoading(false)
-        return
       }
+      setLoading(false)
+    }
 
-      const activeDb = getFirebaseDb() || db
-      if (isFirebaseConfigured && activeDb) {
-        try {
-          const docRef = doc(activeDb, 'visitingCards', slug)
-          const docSnap = await getDoc(docRef)
+    const activeDb = getFirebaseDb() || db
+    if (isFirebaseConfigured && activeDb) {
+      try {
+        const docRef = doc(activeDb, 'visitingCards', slug)
+        unsubscribe = onSnapshot(docRef, (docSnap) => {
           if (docSnap.exists()) {
             const fetchedCard = docSnap.data() as VisitingCard
             setCard(fetchedCard)
@@ -98,15 +101,25 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
                 setCard((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
               }
             }
+            setLoading(false)
+          } else {
+            fallbackLocal()
           }
-        } catch (e) {
-          console.error('Failed to load visiting card from Firestore:', e)
-        }
+        }, (err) => {
+          console.warn('Live vcard listener notice:', err)
+          fallbackLocal()
+        })
+      } catch (e) {
+        console.error('Failed to attach vcard listener:', e)
+        fallbackLocal()
       }
-      setLoading(false)
+    } else {
+      fallbackLocal()
     }
 
-    loadCard()
+    return () => {
+      if (unsubscribe) unsubscribe()
+    }
   }, [slug, getVisitingCard, incrementVisitingCardView, searchParams, user?.uid])
 
   function handleEdit() {
@@ -250,6 +263,15 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
 
               {/* Secondary Creator Options (Edit / Delete / Preview) */}
               <div className="flex flex-wrap items-center justify-center gap-2 pt-3 border-t border-white/10 w-full text-xs">
+                <button
+                  onClick={() => {
+                    const ok = downloadVCard(card)
+                    if (ok) showToast('Contact .vcf downloaded! 📇', 'success')
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#E5C35A] text-slate-950 text-[11px] font-bold transition-all hover:brightness-110 active:scale-95 cursor-pointer"
+                >
+                  <UserPlus className="size-3.5" /> Save Contact (.vcf)
+                </button>
                 <Link
                   href={receiverUrl}
                   target="_blank"
@@ -430,14 +452,27 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
       </main>
 
       {/* Receiver Screen Footer Control */}
-      <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pb-2 text-center">
-        <button
-          onClick={() => setShowShareModal((o) => !o)}
-          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#D4AF37]/40 bg-zinc-900/90 hover:bg-zinc-800 text-[#D4AF37] font-extrabold py-2.5 px-6 text-xs sm:text-sm shadow-xl transition-all hover:scale-105"
-        >
-          <Share2 className="size-4" />
-          <span>{t('shareVCard')}</span>
-        </button>
+      <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pb-4 text-center">
+        <div className="flex items-center justify-center gap-2.5 w-full">
+          <button
+            onClick={() => {
+              const ok = downloadVCard(card)
+              if (ok) showToast('Contact downloaded! Open file to save. 📇', 'success')
+            }}
+            className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-slate-950 font-black py-3 px-4 text-xs sm:text-sm shadow-xl hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+          >
+            <UserPlus className="size-4 shrink-0" />
+            <span>Save Contact to Phone</span>
+          </button>
+
+          <button
+            onClick={() => setShowShareModal(true)}
+            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#D4AF37]/40 bg-zinc-900/90 hover:bg-zinc-800 text-[#D4AF37] font-extrabold py-3 px-4 text-xs sm:text-sm shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            <Share2 className="size-4 shrink-0" />
+            <span className="hidden sm:inline">{t('shareVCard') || 'Share'}</span>
+          </button>
+        </div>
 
         {/* Universal Luxury Share Modal */}
         {showShareModal && (

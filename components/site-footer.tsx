@@ -92,6 +92,7 @@ export function SiteFooter() {
             <FooterCol
               title={t('guidesAndWording', 'Guides & Wording')}
               links={[
+                { href: '/poetry', label: t('navPoetry', 'Poetry & Shayari') },
                 { href: '/calendar', label: t('celebrationCalendar', 'Celebration Calendar') },
                 { href: '/guide/eid-wording-ideas', label: t('eidWordingAndReplies', 'Eid Wording & Replies') },
                 { href: '/blog/complete-guide-to-pakistani-wedding-invitation-wording-urdu-english', label: t('pakistaniWeddingCardText', 'Pakistani Wedding Card Text') },

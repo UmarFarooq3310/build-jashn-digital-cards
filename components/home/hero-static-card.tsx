@@ -332,7 +332,7 @@ export function HeroStaticCard() {
             </div>
 
             <p className="text-xs text-center text-slate-300">
-              Includes Google Maps venue pin, guest count tracking, and dress code notes.
+              Includes live event countdown timer, guest count tracking, and dress code notes.
             </p>
           </div>
         )}

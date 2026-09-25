@@ -477,7 +477,7 @@ export function CategoryTabs() {
                   {t('celebrateLoveTogetherness') || 'Celebrate Love & Eternal Togetherness'}
                 </p>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  {t('weddingCardsDesc') || 'Design royal Nikah, Mehndi, Baraat, Walima & Engagement digital cards with live countdown, maps & instant WhatsApp RSVP.'}
+                  {t('weddingCardsDesc') || 'Design royal Nikah, Mehndi, Baraat, Walima & Engagement digital cards with live countdown & instant WhatsApp RSVP.'}
                 </p>
               </div>
 
@@ -529,7 +529,7 @@ export function CategoryTabs() {
                           <span>{t('createCardFor') || 'Create'} {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label} Card</span> <ArrowRight className="size-3.5" />
                         </span>
                         <span className="text-[10px] font-bold text-muted-foreground/70 uppercase">
-                          {t('rsvpPlusMapsBadge') || 'RSVP + Maps'}
+                          {t('rsvpPlusCountdownBadge') || 'RSVP + Music'}
                         </span>
                       </div>
                     </Link>
@@ -556,7 +556,7 @@ export function CategoryTabs() {
                       {t('mughalMehndiTitle') || 'Mughal Royal Mehndi Invitation'}
                     </p>
                     <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                      {t('mughalMehndiDesc') || 'Full event invitation page with Dholki music, Google Maps, RSVP counter & countdown timer.'}
+                      {t('mughalMehndiDesc') || 'Full event invitation page with Dholki music, RSVP counter & live countdown timer.'}
                     </p>
                   </div>
 
@@ -693,7 +693,7 @@ export function CategoryTabs() {
                   {t('smartDigitalVisitingCardsTitle') || 'Smart Digital Visiting Cards with 1-Click Contact Download (.vcf)'}
                 </p>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  {t('smartDigitalVisitingCardsDesc') || 'Create executive, tech, medical, legal, and real estate digital business cards. Include phone, WhatsApp, Google Maps pin, social profiles, and 1-click Save Contact feature!'}
+                  {t('smartDigitalVisitingCardsDesc') || 'Create executive, tech, medical, legal, and real estate digital business cards. Include phone, WhatsApp, bio, social profiles, and 1-click Save Contact (.vcf) feature!'}
                 </p>
               </div>
 

@@ -26,7 +26,9 @@ import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { useLang } from '@/lib/lang/context'
 import { cn, isPageReload } from '@/lib/utils'
+import { SmartWordingPicker } from '@/components/jashn/smart-wording-picker'
 import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
+import { POETRY_DATABASE } from '@/lib/jashn/poetry-data'
 
 const RELATIONS = [
   { id: 'Brother', en: 'Brother', ur: 'بھائی' },
@@ -55,6 +57,7 @@ function CreateWishContent() {
   const occasionParam = searchParams.get('occasion')
   const categoryParam = searchParams.get('category')
   const messageParam = searchParams.get('message')
+  const poemParam = searchParams.get('poem')
   const recipientParam = searchParams.get('recipient')
   const senderParam = searchParams.get('sender')
   const relationParam = searchParams.get('relation')
@@ -179,6 +182,8 @@ function CreateWishContent() {
       recipientName: playerName || recipientName || 'Friend',
       relation,
       tone,
+      occasionId,
+      lang,
     })
     setMessage(aiText)
     setShowAiModal(false)
@@ -316,15 +321,32 @@ function CreateWishContent() {
           const occParam = searchParams.get('occasion')
           const catParam = searchParams.get('category')
           const msgParam = searchParams.get('message')
+          const poemP = searchParams.get('poem')
           const recParam = searchParams.get('recipient')
           const sndParam = searchParams.get('sender')
           const relParam = searchParams.get('relation')
 
+          // Check for poetry prefill
+          let prefillText = ''
+          try {
+            prefillText = sessionStorage.getItem('cardzy_prefill_msg') || ''
+            sessionStorage.removeItem('cardzy_prefill_msg')
+          } catch {}
+
+          if (!prefillText && poemP) {
+            const found = POETRY_DATABASE.find((p) => p.id === poemP)
+            if (found) prefillText = found.cardPrefillMsg
+          }
+
           const resolved = occParam || resolveOccasionFromCategory(catParam)
-          if (occParam || catParam) {
+          if (occParam || catParam || prefillText || poemP || msgParam) {
             setOccasionId(resolved)
-            if (msgParam) {
+            if (prefillText) {
+              setMessage(prefillText)
+              setStep(2)
+            } else if (msgParam) {
               setMessage(msgParam)
+              setStep(2)
             } else {
               const tPlates = getTemplates(resolved)
               if (tPlates.length > 0) {
@@ -335,6 +357,13 @@ function CreateWishContent() {
             if (sndParam) setSenderName(sndParam)
             if (relParam) setRelation(relParam)
             setStep(2)
+
+            // Clean cluttered URL in address bar
+            if (typeof window !== 'undefined' && (poemP || msgParam)) {
+              try {
+                window.history.replaceState({}, '', window.location.pathname)
+              } catch {}
+            }
           }
         }
       }
@@ -1031,6 +1060,18 @@ function CreateWishContent() {
                           ))}
                         </div>
                       </div>
+                    )}
+
+                    {/* 1-Click Smart Wording & Shayari Generator */}
+                    {!isGamingOccasion && (
+                      <SmartWordingPicker
+                        lang={lang}
+                        occasionId={occasionId}
+                        onSelectWording={(selectedText) => {
+                          handleFieldChange('message', selectedText, setMessage)
+                          showToast('Wording applied! ✍️✨', 'success')
+                        }}
+                      />
                     )}
 
                     <div>

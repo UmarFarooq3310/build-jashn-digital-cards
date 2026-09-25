@@ -25,11 +25,13 @@ import {
   Mail,
   Globe,
   Video,
+  UserPlus,
 } from 'lucide-react'
 import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
 import { recordCardShare } from '@/lib/jashn/magic-service'
 import { getInitials } from '@/components/jashn/visiting-card'
+import { downloadVCard } from '@/lib/jashn/vcard-export'
 
 export interface ShareModalCardData {
   title: string
@@ -372,6 +374,27 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
                 )}
               </button>
             </div>
+
+            {/* 1-Tap Save Contact (.vcf) for Visiting Cards */}
+            {card.type === 'vcard' && (
+              <button
+                onClick={() => {
+                  downloadVCard({
+                    fullName: card.recipientOrCouple || card.title,
+                    phone: card.phone,
+                    email: card.email,
+                    website: card.website,
+                    address: card.address,
+                    company: card.occasion,
+                    bio: card.message,
+                  })
+                }}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-slate-950 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg hover:brightness-110 active:scale-98 transition-all cursor-pointer"
+              >
+                <UserPlus className="size-4 shrink-0" />
+                <span>📥 Save Contact to Phone (.vcf)</span>
+              </button>
+            )}
 
             {/* Native Mobile Share Sheet */}
             {typeof navigator !== 'undefined' && 'share' in navigator && (
