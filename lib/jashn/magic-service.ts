@@ -191,7 +191,17 @@ export async function recordCardShare(
           : 'magic_links'
       try {
         const docRef = doc(activeDb, collectionName, slug)
-        await setDoc(docRef, { [`shares.${channel}`]: increment(1), lastSharedAt: Date.now() }, { merge: true })
+        await setDoc(
+          docRef,
+          {
+            shares: {
+              [channel]: increment(1),
+            },
+            [`shares.${channel}`]: increment(1),
+            lastSharedAt: Date.now(),
+          },
+          { merge: true }
+        )
       } catch {}
     }
   }

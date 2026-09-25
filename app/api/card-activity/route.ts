@@ -51,9 +51,12 @@ export async function POST(req: Request) {
       }
 
       if (action === 'share' && channel) {
-        // Use dot-notation so each specific share channel (sms, whatsapp, copy, qr, image, video) increments independently
+        // Increment both nested shares map and field path to ensure complete Firestore compatibility
         await targetRef.set(
           {
+            shares: {
+              [channel]: FieldValue.increment(1),
+            },
             [`shares.${channel}`]: FieldValue.increment(1),
             lastSharedAt: Date.now(),
           },

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import React, { useState, useMemo, useEffect, useCallback, Fragment } from 'react'
 import Link from 'next/link'
 import {
   ShieldCheck,
@@ -753,12 +753,28 @@ export default function AdminPortalPage() {
         console.error('Failed to fetch users from Firestore:', e)
       }
 
+      const normalizeShares = (data: any) => {
+        const s = data?.shares && typeof data.shares === 'object' ? data.shares : {}
+        return {
+          whatsapp: Math.max(Number(s.whatsapp || 0), Number(data?.['shares.whatsapp'] || 0)),
+          sms: Math.max(Number(s.sms || 0), Number(data?.['shares.sms'] || 0)),
+          copy: Math.max(Number(s.copy || 0), Number(data?.['shares.copy'] || 0)),
+          qr: Math.max(Number(s.qr || 0), Number(data?.['shares.qr'] || 0)),
+          image: Math.max(Number(s.image || 0), Number(data?.['shares.image'] || 0)),
+          video: Math.max(Number(s.video || 0), Number(data?.['shares.video'] || 0)),
+          app: Math.max(Number(s.app || 0), Number(data?.['shares.app'] || 0)),
+        }
+      }
+
       // 2. Invitations
       try {
         const snap = await getDocs(collection(activeDb, 'invitations'))
         const list: Invitation[] = []
         snap.forEach((docSnap) => {
-          if (docSnap.exists()) list.push(docSnap.data() as Invitation)
+          if (docSnap.exists()) {
+            const data = docSnap.data() as any
+            list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
+          }
         })
         setFirestoreInvitations(list)
       } catch (e: any) {
@@ -770,7 +786,10 @@ export default function AdminPortalPage() {
         const snap = await getDocs(collection(activeDb, 'wishes'))
         const list: Wish[] = []
         snap.forEach((docSnap) => {
-          if (docSnap.exists()) list.push(docSnap.data() as Wish)
+          if (docSnap.exists()) {
+            const data = docSnap.data() as any
+            list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
+          }
         })
         setFirestoreWishes(list)
       } catch (e: any) {
@@ -782,7 +801,10 @@ export default function AdminPortalPage() {
         const snap = await getDocs(collection(activeDb, 'visitingCards'))
         const list: VisitingCard[] = []
         snap.forEach((docSnap) => {
-          if (docSnap.exists()) list.push(docSnap.data() as VisitingCard)
+          if (docSnap.exists()) {
+            const data = docSnap.data() as any
+            list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
+          }
         })
         setFirestoreVisitingCards(list)
       } catch (e: any) {
@@ -806,7 +828,10 @@ export default function AdminPortalPage() {
         const snap = await getDocs(collection(activeDb, 'magic_links'))
         const list: MagicLinkData[] = []
         snap.forEach((docSnap) => {
-          if (docSnap.exists()) list.push({ id: docSnap.id, ...(docSnap.data() as MagicLinkData) })
+          if (docSnap.exists()) {
+            const data = docSnap.data() as any
+            list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
+          }
         })
         setFirestoreMagicLinks(list)
       } catch (e: any) {
@@ -824,6 +849,11 @@ export default function AdminPortalPage() {
 
   useEffect(() => {
     loadFirestoreAll()
+    // Auto-refresh analytics in real time every 12 seconds
+    const interval = setInterval(() => {
+      loadFirestoreAll()
+    }, 12000)
+    return () => clearInterval(interval)
   }, [loadFirestoreAll])
 
   // Invitations list (Firestore only for admin consistency)
@@ -2050,9 +2080,8 @@ export default function AdminPortalPage() {
                           const isGroupActive = group.isActive && secondsAgo <= 65
 
                           return (
-                            <>
+                            <React.Fragment key={group.deviceKey}>
                               <tr 
-                                key={group.deviceKey} 
                                 className={cn(
                                   "hover:bg-muted/25 transition-colors group cursor-pointer",
                                   !isGroupActive && "opacity-65",
@@ -2321,7 +2350,7 @@ export default function AdminPortalPage() {
                                   </td>
                                 </tr>
                               )}
-                            </>
+                            </React.Fragment>
                           )
                         })}
                       </tbody>

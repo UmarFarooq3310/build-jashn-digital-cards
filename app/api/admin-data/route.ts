@@ -19,19 +19,16 @@ function normalizeFirestoreData(data: any): any {
     }
   }
 
-  // Ensure all 7 share channels exist for legacy records created prior to tracking
-  if (!result.shares || typeof result.shares !== 'object') {
-    result.shares = { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 }
-  } else {
-    result.shares = {
-      whatsapp: Number(result.shares.whatsapp || 0),
-      sms: Number(result.shares.sms || 0),
-      copy: Number(result.shares.copy || 0),
-      qr: Number(result.shares.qr || 0),
-      image: Number(result.shares.image || 0),
-      video: Number(result.shares.video || 0),
-      app: Number(result.shares.app || 0),
-    }
+  // Extract and normalize all 7 share channels from nested map or flat Firestore fields
+  const s = (result.shares && typeof result.shares === 'object') ? result.shares : {}
+  result.shares = {
+    whatsapp: Math.max(Number(s.whatsapp || 0), Number((data as any)['shares.whatsapp'] || 0)),
+    sms: Math.max(Number(s.sms || 0), Number((data as any)['shares.sms'] || 0)),
+    copy: Math.max(Number(s.copy || 0), Number((data as any)['shares.copy'] || 0)),
+    qr: Math.max(Number(s.qr || 0), Number((data as any)['shares.qr'] || 0)),
+    image: Math.max(Number(s.image || 0), Number((data as any)['shares.image'] || 0)),
+    video: Math.max(Number(s.video || 0), Number((data as any)['shares.video'] || 0)),
+    app: Math.max(Number(s.app || 0), Number((data as any)['shares.app'] || 0)),
   }
 
   return result
