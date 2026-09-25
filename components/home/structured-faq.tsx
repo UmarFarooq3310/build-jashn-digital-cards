@@ -2,6 +2,7 @@
 
 import { HelpCircle, ChevronDown, Sparkles, ShieldCheck, Leaf, Smartphone, MessageCircle, Link2 } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
+import { cn } from '@/lib/utils'
 
 export interface FAQItem {
   id: string
@@ -292,28 +293,39 @@ export function StructuredFaqSection() {
     <section
       id="faq-section"
       aria-labelledby="faq-heading"
-      className="py-16 md:py-24 bg-card/60 border-y border-border/80 relative overflow-hidden"
+      className="py-16 md:py-24 bg-gradient-to-b from-slate-100/90 via-white to-slate-100/90 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-y border-slate-200 dark:border-slate-800/80 relative overflow-hidden"
     >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
+      {/* Subtle ambient lighting */}
+      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-full max-w-5xl h-80 bg-emerald-500/10 dark:bg-emerald-500/5 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 right-10 w-80 h-80 bg-amber-500/10 dark:bg-amber-500/5 blur-3xl" />
+
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center space-y-3 max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
-            <HelpCircle className="size-3.5" /> {t('faqKicker') || 'High-Value Knowledge Base'}
+        <div className="text-center space-y-3.5 max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700/60 px-4 py-1.5 text-xs font-extrabold text-emerald-900 dark:text-emerald-300 uppercase tracking-wider shadow-xs">
+            <HelpCircle className="size-3.5 text-emerald-700 dark:text-emerald-400" />
+            <span>{t('faqKicker') || 'High-Value Knowledge Base'}</span>
           </div>
 
           <h2
             id="faq-heading"
-            className={`text-2xl sm:text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight ${isUrdu ? 'font-urdu leading-[2]' : ''}`}
+            className={cn(
+              "text-2xl sm:text-3xl lg:text-4xl font-black text-slate-950 dark:text-white tracking-tight",
+              isUrdu ? "font-urdu leading-[2.2]" : "leading-tight"
+            )}
           >
             {t('faqsMainHeading') || 'Frequently Asked Questions About Digital Invitations & Cards'}
           </h2>
 
-          <p className={`text-sm sm:text-base text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-base' : ''}`}>
+          <p className={cn(
+            "text-sm sm:text-base text-slate-700 dark:text-slate-200 max-w-2xl mx-auto font-medium leading-relaxed",
+            isUrdu ? "font-urdu text-base sm:text-lg" : ""
+          )}>
             {t('faqSubDesc') || 'Everything you need to know about animated digital cards, 1-click WhatsApp RSVP tracking, data security, mobile compatibility, and eco-friendly event planning.'}
           </p>
         </div>
@@ -323,19 +335,22 @@ export function StructuredFaqSection() {
           {faqItems.map((item, index) => (
             <details
               key={item.id}
-              className={`group rounded-2xl sm:rounded-3xl border border-border bg-card p-5 sm:p-6 shadow-xs transition-all duration-300 hover:border-amber-500/40 hover:shadow-md [&_summary::-webkit-details-marker]:none open:border-emerald-500/40 open:bg-card/90 ${isUrdu ? 'font-urdu text-right' : ''}`}
+              className={cn(
+                "group rounded-2xl sm:rounded-3xl border border-slate-300/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6 shadow-sm transition-all duration-300 hover:border-amber-500/60 hover:shadow-md [&_summary::-webkit-details-marker]:none open:border-emerald-600/60 dark:open:border-emerald-500/60 open:shadow-md",
+                isUrdu ? "font-urdu text-right" : ""
+              )}
             >
-              <summary className="flex cursor-pointer items-center justify-between gap-4 font-bold text-base sm:text-lg text-foreground transition-colors group-hover:text-amber-500 list-none">
+              <summary className="flex cursor-pointer items-center justify-between gap-4 font-bold text-base sm:text-lg text-slate-950 dark:text-slate-50 transition-colors group-hover:text-amber-600 dark:group-hover:text-amber-400 list-none">
                 <div className="flex items-center gap-3">
-                  <span className="flex size-7 items-center justify-center rounded-full bg-emerald-500/10 text-xs font-black text-emerald-600 dark:text-emerald-400 shrink-0">
+                  <span className="flex size-7 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700/60 text-xs font-black text-emerald-900 dark:text-emerald-300 shrink-0">
                     0{index + 1}
                   </span>
                   <span className="text-left leading-snug">{item.question}</span>
                 </div>
-                <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform duration-300 group-open:-rotate-180 group-open:text-emerald-500" />
+                <ChevronDown className="size-5 shrink-0 text-slate-500 dark:text-slate-400 transition-transform duration-300 group-open:-rotate-180 group-open:text-emerald-600 dark:group-open:text-emerald-400" />
               </summary>
 
-              <div className="mt-4 pt-4 border-t border-border/60 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
                 <p>{item.answer}</p>
               </div>
             </details>

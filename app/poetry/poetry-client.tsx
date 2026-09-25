@@ -1280,65 +1280,32 @@ export function PoetryClient() {
 
                       {/* 1-Click Cardzy Bridge Buttons */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-0.5">
-                        {poem.recommendedCardType === 'invitation' ? (
-                          <>
-                            <Link
-                              href="/create-invitation"
-                              onClick={() => {
-                                try {
-                                  sessionStorage.setItem('cardzy_prefill_msg', poem.cardPrefillMsg)
-                                } catch {}
-                                trackPoetryActivity(poem, 'card_bridge', 'wedding_invitation')
-                              }}
-                              className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-800 to-teal-700 hover:from-emerald-700 hover:to-teal-600 text-white text-xs font-bold shadow-xs transition-all"
-                            >
-                              <Scroll className="size-3.5 text-amber-300" />
-                              <span>{isUrdu ? 'شادی دعوت نامہ بنائیں' : 'Use in Wedding Invite'}</span>
-                            </Link>
-                            <Link
-                              href="/create-magic-link"
-                              onClick={() => {
-                                try {
-                                  sessionStorage.setItem('cardzy_prefill_msg', poem.cardPrefillMsg)
-                                } catch {}
-                                trackPoetryActivity(poem, 'card_bridge', 'magic_link')
-                              }}
-                              className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-rose-900 to-amber-900 hover:from-rose-800 hover:to-amber-800 text-white text-xs font-bold shadow-xs transition-all"
-                            >
-                              <Sparkles className="size-3.5 text-amber-300" />
-                              <span>{isUrdu ? '3D میجک لنک' : '3D Magic Link 🪄'}</span>
-                            </Link>
-                          </>
-                        ) : (
-                          <>
-                            <Link
-                              href="/create-wish"
-                              onClick={() => {
-                                try {
-                                  sessionStorage.setItem('cardzy_prefill_msg', poem.cardPrefillMsg)
-                                } catch {}
-                                trackPoetryActivity(poem, 'card_bridge', 'wish_card')
-                              }}
-                              className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-slate-950 text-xs font-bold shadow-xs transition-all"
-                            >
-                              <Heart className="size-3.5 fill-slate-950" />
-                              <span>{isUrdu ? '3D وش کارڈ بنائیں' : 'Create 3D Wish Card'}</span>
-                            </Link>
-                            <Link
-                              href="/create-magic-link"
-                              onClick={() => {
-                                try {
-                                  sessionStorage.setItem('cardzy_prefill_msg', poem.cardPrefillMsg)
-                                } catch {}
-                                trackPoetryActivity(poem, 'card_bridge', 'magic_link')
-                              }}
-                              className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-purple-900 to-pink-900 hover:from-purple-800 hover:to-pink-800 text-white text-xs font-bold shadow-xs transition-all"
-                            >
-                              <Sparkles className="size-3.5 text-amber-300" />
-                              <span>{isUrdu ? '3D میجک لنک' : '3D Magic Link 🪄'}</span>
-                            </Link>
-                          </>
-                        )}
+                        <Link
+                          href="/create-wish"
+                          onClick={() => {
+                            try {
+                              sessionStorage.setItem('cardzy_prefill_msg', poem.cardPrefillMsg)
+                            } catch {}
+                            trackPoetryActivity(poem, 'card_bridge', 'wish_card')
+                          }}
+                          className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-slate-950 text-xs font-bold shadow-xs transition-all"
+                        >
+                          <Heart className="size-3.5 fill-slate-950" />
+                          <span>{isUrdu ? '3D وش کارڈ بنائیں' : 'Create 3D Wish Card'}</span>
+                        </Link>
+                        <Link
+                          href="/create-magic-link"
+                          onClick={() => {
+                            try {
+                              sessionStorage.setItem('cardzy_prefill_msg', poem.cardPrefillMsg)
+                            } catch {}
+                            trackPoetryActivity(poem, 'card_bridge', 'magic_link')
+                          }}
+                          className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-purple-900 to-pink-900 hover:from-purple-800 hover:to-pink-800 text-white text-xs font-bold shadow-xs transition-all"
+                        >
+                          <Sparkles className="size-3.5 text-amber-300" />
+                          <span>{isUrdu ? '3D میجک لنک' : '3D Magic Link 🪄'}</span>
+                        </Link>
                       </div>
                     </div>
                   </article>

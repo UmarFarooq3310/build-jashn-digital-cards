@@ -34,6 +34,84 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "the-ultimate-guide-to-cardzy-poetry-treasury-and-story-cards",
+    "title": "The Ultimate Guide to Cardzy’s 1,000+ Poetry Treasury: Discover Verses & Download Royal Story Cards",
+    "subtitle": "From Allama Iqbal and Mirza Ghalib to Punjabi Sufi and Arabic classics: How to explore 1,000+ verified verses, download high-res obsidian & gold story flyers, and share poetry seamlessly.",
+    "seoTitle": "Guide to 1,000+ Poetry Treasury & Royal Story Cards | Cardzy Blog",
+    "metaDescription": "Explore 1,000+ verified verses from Iqbal, Ghalib, Faiz, Rumi, and Darwish. Learn how to filter by poet and theme, download 1080px story cards for WhatsApp, and share shayari.",
+    "category": "Event Planning",
+    "author": {
+      "name": "Umar Farooq",
+      "role": "Creative Director & Cultural Lead",
+      "avatar": "/authors/umar-farooq.svg"
+    },
+    "publishedAt": "2026-09-24",
+    "updatedAt": "2026-09-24",
+    "readTime": "6 min read",
+    "wordCount": 1380,
+    "featuredImage": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=750&q=65&fm=webp",
+    "tags": ["Poetry Treasury", "Urdu Shayari", "Story Cards", "WhatsApp Status", "Allama Iqbal", "Mirza Ghalib", "Punjabi Sufi", "Rumi"],
+    "content": {
+      "intro": "In an era of fleeting social feeds and automated messages, true poetry remains an enduring anchor for the soul. Whether it is Allama Iqbal's electrifying call to selfhood (khudi), Mirza Ghalib's philosophical wit, Faiz's gentle hope, or Mian Muhammad Bakhsh's Punjabi Sufi warmth, great verses possess a timeless ability to articulate what the heart cannot say alone. Cardzy has created a dedicated digital sanctuary: an authentic 1,000+ verse treasury paired with an instant 1080px luxury Story Card generator, designed for modern readers, lovers of literature, and social creators.",
+      "sections": [
+        {
+          "id": "digital-sanctuary",
+          "title": "1. A Living Treasury of 1,000+ Classical & Modern Masterpieces",
+          "body": "Unlike scattered internet forums riddled with misattributed lines, Cardzy's Poetry Treasury is meticulously curated directly from authentic classical divans and verified manuscripts. The collection spans multiple great literary traditions — Urdu, Punjabi, Persian, Arabic, and English — featuring titans such as Allama Iqbal, Mirza Ghalib, Faiz Ahmed Faiz, Jaun Elia, Ahmad Faraz, Parveen Shakir, Mian Muhammad Bakhsh, Rumi, Shakespeare, and Mahmoud Darwish. Every entry is unique, verified, and free of duplicates.",
+          "highlight": "Quality over noise: Every poem in the treasury is checked for meter, correct textual attribution, and literary authenticity."
+        },
+        {
+          "id": "smart-multi-filters",
+          "title": "2. Finding Your Exact Mood with Dynamic Multi-Filters",
+          "body": "Navigating 1,000+ poems is effortless thanks to Cardzy's cascading real-time filter system. You can narrow down the library across four dimensions simultaneously:",
+          "bulletPoints": [
+            "By Language: Switch between Urdu, Punjabi (Gurmukhi & Shahmukhi heritage), Persian, Arabic, and English.",
+            "By Poet: Choose from over 30 celebrated masters, instantly updating the archive to show only their work.",
+            "By Theme: Explore specific human experiences — Ishq (Romance), Khudi (Motivation & Ambition), Sufi (Spirituality), Hikmat (Wisdom & Life), Dua (Blessings), Dosti (Friendship), and Gham (Melancholy).",
+            "By Format: Toggle between quick 2-liner Ash'aar (perfect for status updates) and complete Nazms or Ghazals."
+          ]
+        },
+        {
+          "id": "instant-story-cards",
+          "title": "3. Instant 1080px Luxury Story Cards (No Design Tools Needed)",
+          "body": "Sharing poetry on social media often means taking messy screenshots or battling with complex graphic editing apps. Cardzy solves this with a 1-click Story Card engine. Beneath every single verse in the treasury, simply tap 'Story Card'. The system immediately renders an ornate, high-resolution 1080px graphic featuring a luxury dark emerald and obsidian gradient, double gold filigree borders, corner rosettes, authentic centered Nastaliq typography, and poet dates.",
+          "highlight": "The graphic downloads straight to your device storage in seconds, perfectly sized and ready for WhatsApp Status, Instagram Stories, and Facebook."
+        },
+        {
+          "id": "clean-sharing-etiquette",
+          "title": "4. Frictionless WhatsApp & SMS Sharing",
+          "body": "When you want to share a verse in text format with friends or family, Cardzy provides clean 1-tap sharing buttons. Tapping WhatsApp or SMS formats the verse with proper line breaks, poet attribution, and a clean link without repetitive URL clutter. You can also switch tabs to Roman Urdu or verified English poetic translations before sharing, ensuring friends abroad can appreciate both the meaning and pronunciation.",
+          "bulletPoints": [
+            "1-Tap Copy: Copies formatted verse and attribution cleanly to your clipboard.",
+            "WhatsApp Direct: Launches WhatsApp with your selected verse pre-composed.",
+            "SMS & Messages: Native text messaging link for quick personal check-ins."
+          ]
+        },
+        {
+          "id": "nastaliq-typography",
+          "title": "5. Preserving Nastaliq Calligraphy for the Next Generation",
+          "body": "Digital right-to-left scripts frequently suffer from crude, broken fonts. Cardzy treats Urdu, Punjabi, and Arabic typography with royal respect, utilizing high-grade Nastaliq rendering that preserves character ligatures, proper letter descent (such as the graceful curve of 'ے'), and balanced negative space. For diaspora youths who may not read the Arabic script fluently, every verse is accompanied by intuitive Roman Urdu transliteration and literary English translations.",
+          "highlight": "Technology should preserve heritage, not dilute it. Cardzy bridges classical literary elegance with modern digital speed."
+        }
+      ],
+      "faq": [
+        {
+          "question": "How do I download a Story Card on mobile?",
+          "answer": "Simply navigate to any poem in the Treasury and tap 'Story Card'. You will see an immediate loading spinner ('Generating Card...'), and within a second, the high-resolution PNG is saved directly to your phone's downloads folder or photo gallery."
+        },
+        {
+          "question": "Are all 1,000+ verses completely free to explore and download?",
+          "answer": "Yes! The entire 1,000+ Verse Poetry Treasury, search filters, high-resolution Story Card downloads, and sharing tools are 100% free and open to everyone worldwide."
+        },
+        {
+          "question": "Can I search for specific keywords or lines?",
+          "answer": "Yes. Use the live search bar at the top of the Treasury to search by Urdu words, English keywords, poet names (e.g., 'Ghalib', 'Iqbal', 'Rumi'), or themes like 'love', 'hope', or 'khudi'."
+        }
+      ],
+      "conclusion": "Poetry is a mirror to the human condition — it comforts our sorrows, fuels our ambitions, and celebrates our deepest loves. Explore Cardzy's Treasury today, download your first luxury Story Card, and share a piece of timeless wisdom with someone who needs it."
+    }
+  },
+  {
     "slug": "top-10-creative-ways-to-use-magic-links-for-digital-cards",
     "title": "Top 10 Creative Ways to Use Magic Links for Your Digital Cards",
     "subtitle": "From secret VIP invites to personalized birthday surprises, discover unique ways to leverage real-time tracking for your digital cards.",
