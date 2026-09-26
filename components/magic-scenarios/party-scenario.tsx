@@ -16,7 +16,7 @@ import {
   Music,
 } from 'lucide-react'
 import type { MagicLinkData } from '@/lib/jashn/magic-types'
-import { submitMagicResponse } from '@/lib/jashn/magic-service'
+import { submitMagicResponse, normalizeWhatsAppNumber } from '@/lib/jashn/magic-service'
 import { useLang } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
 import { magicAudio } from '@/lib/jashn/magic-audio'
@@ -108,7 +108,7 @@ export function PartyScenario({
     }, 700)
   }
 
-  const rawPhone = (data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || '')?.replace(/[^0-9]/g, '')
+  const rawPhone = normalizeWhatsAppNumber(data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || (data as any)?.whatsappNumber)
   const returnUrl = typeof window !== 'undefined' ? `${window.location.origin}/m/${slug}` : ''
   const rsvpStatus = attending ? `I am IN! (${guestsCount} person${guestsCount > 1 ? 's' : ''})` : 'Cannot make it this time'
   const getWhatsAppUrl = () => {

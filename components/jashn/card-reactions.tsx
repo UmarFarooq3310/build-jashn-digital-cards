@@ -81,6 +81,7 @@ export function CardLiveReactions({
   const [counts, setCounts] = useState<Record<string, number>>({})
   const [activeParticleList, setActiveParticleList] = useState<FloatingParticle[]>([])
   const [tappedId, setTappedId] = useState<string | null>(null)
+  const [feedbackText, setFeedbackText] = useState<string | null>(null)
   const particleIdRef = useRef(0)
 
   // Load local reaction counts
@@ -98,6 +99,13 @@ export function CardLiveReactions({
     reactionAudio.playPopChime(reaction.soundFreq)
     setTappedId(reaction.id)
     setTimeout(() => setTappedId(null), 400)
+
+    setFeedbackText(
+      isUrdu
+        ? `${reaction.emoji} ${reaction.labelUr} بھیج دی گئی!`
+        : `${reaction.emoji} ${reaction.labelEn} reaction sent!`
+    )
+    setTimeout(() => setFeedbackText(null), 2400)
 
     // Update count
     setCounts((prev) => {
@@ -122,7 +130,7 @@ export function CardLiveReactions({
       }).catch(() => {})
     } catch {}
 
-    // Spawn 8-12 floating emoji particles
+    // Spawn floating emoji particles
     const rect = e.currentTarget.getBoundingClientRect()
     const startX = rect.left + rect.width / 2
     const startY = rect.top
@@ -132,7 +140,7 @@ export function CardLiveReactions({
       emoji: reaction.emoji,
       x: startX + (Math.random() * 60 - 30),
       y: startY - (Math.random() * 20),
-      size: Math.floor(Math.random() * 12) + 20, // 20px - 32px
+      size: Math.floor(Math.random() * 12) + 22,
       rotation: Math.random() * 60 - 30,
       vx: (Math.random() - 0.5) * 80,
       vy: -(Math.random() * 120 + 80),
@@ -148,7 +156,7 @@ export function CardLiveReactions({
   }
 
   return (
-    <div className="w-full flex flex-col items-center select-none my-4">
+    <div className="w-full max-w-md mx-auto my-3 sm:my-4 select-none px-2">
       {/* Floating Particles Canvas Overlay */}
       {activeParticleList.length > 0 && (
         <div className="fixed inset-0 pointer-events-none z-[99999] overflow-hidden">
@@ -170,58 +178,82 @@ export function CardLiveReactions({
         </div>
       )}
 
-      {/* Interactive Reaction Pill Dock */}
+      {/* Interactive Reaction Card Dock */}
       <div
         className={cn(
-          'inline-flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-full backdrop-blur-xl border shadow-xl transition-all',
+          'w-full p-3 sm:p-4 rounded-3xl backdrop-blur-2xl border shadow-xl transition-all',
           theme === 'light'
-            ? 'bg-white/85 border-slate-200 shadow-slate-200/50'
-            : 'bg-slate-900/80 border-white/15 shadow-black/40'
+            ? 'bg-white/90 border-slate-200/90 shadow-slate-300/40'
+            : 'bg-slate-950/85 border-amber-500/25 shadow-2xl shadow-black/60'
         )}
       >
-        <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-amber-400 pl-2 pr-1">
-          <Sparkles className="size-3 animate-pulse" />
-          <span>React:</span>
-        </span>
+        {/* Header Bar */}
+        <div className="flex items-center justify-between gap-2 mb-2.5 px-1">
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-amber-300">
+            <Sparkles className="size-3.5 text-amber-400 animate-pulse" />
+            <span>{isUrdu ? 'مبارکباد و ردِعمل بھیجیں' : 'Send a Live Reaction'}</span>
+          </div>
+          <span className="text-[10px] text-slate-400 font-medium">
+            {isUrdu ? 'ٹیپ کریں ✨' : 'Tap to celebrate ✨'}
+          </span>
+        </div>
 
-        {REACTIONS.map((r) => {
-          const count = counts[r.id] || 0
-          const isTapped = tappedId === r.id
+        {/* 6-Column Responsive Grid (Full width on mobile, no horizontal overflow) */}
+        <div className="grid grid-cols-6 gap-1.5 sm:gap-2">
+          {REACTIONS.map((r) => {
+            const count = counts[r.id] || 0
+            const isTapped = tappedId === r.id
 
-          return (
-            <button
-              key={r.id}
-              type="button"
-              onClick={(e) => handleReaction(r, e)}
-              className={cn(
-                'group relative flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-full transition-all duration-150 active:scale-90 cursor-pointer',
-                isTapped
-                  ? 'bg-amber-400/20 ring-2 ring-amber-400/50 scale-110'
-                  : theme === 'light'
-                  ? 'bg-slate-100 hover:bg-slate-200 text-slate-800'
-                  : 'bg-white/10 hover:bg-white/20 text-white'
-              )}
-              title={isUrdu ? r.labelUr : r.labelEn}
-            >
-              <span className="text-base sm:text-lg group-hover:scale-125 transition-transform duration-150">
-                {r.emoji}
-              </span>
-              <span
+            return (
+              <button
+                key={r.id}
+                type="button"
+                onClick={(e) => handleReaction(r, e)}
                 className={cn(
-                  'text-[10.5px] sm:text-xs font-bold',
-                  count > 0 ? 'text-amber-400 font-extrabold' : 'text-slate-300'
+                  'group relative flex flex-col items-center justify-center py-2 px-1 rounded-2xl transition-all duration-200 active:scale-90 cursor-pointer border min-w-0',
+                  isTapped
+                    ? 'bg-amber-400/25 border-amber-400 ring-2 ring-amber-400/60 scale-105 shadow-md shadow-amber-500/30'
+                    : theme === 'light'
+                    ? 'bg-slate-100/90 hover:bg-amber-50 border-slate-200 hover:border-amber-300 shadow-xs'
+                    : 'bg-white/5 hover:bg-white/10 border-white/10 hover:border-amber-400/40 shadow-xs'
                 )}
+                title={isUrdu ? r.labelUr : r.labelEn}
               >
-                {count > 0 ? count : (isUrdu ? r.labelUr : r.labelEn)}
-              </span>
-            </button>
-          )
-        })}
-      </div>
+                {/* Floating Gold Count Badge on Top-Right */}
+                {count > 0 && (
+                  <span className="absolute -top-1.5 -right-1 px-1.5 py-0.2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 text-[9px] sm:text-[10px] font-black shadow-md border border-amber-300 animate-scale-in">
+                    +{count}
+                  </span>
+                )}
 
-      <p className="text-[10px] text-muted-foreground mt-1.5 font-medium tracking-wide">
-        {isUrdu ? 'مبارکباد یا دعا دینے کے لیے ایموجی ٹیپ کریں ✨' : 'Tap any emoji to send instant blessings & celebration ✨'}
-      </p>
+                {/* Big Emoji Icon */}
+                <span className="text-2xl sm:text-3xl group-hover:scale-120 transition-transform duration-200 drop-shadow-sm select-none">
+                  {r.emoji}
+                </span>
+
+                {/* Crisp, Fully Readable Label Below */}
+                <span
+                  className={cn(
+                    'text-[10px] sm:text-[11px] font-bold tracking-tight text-center mt-1 leading-tight select-none w-full truncate',
+                    theme === 'light' ? 'text-slate-800' : 'text-slate-200 group-hover:text-amber-300',
+                    isUrdu && 'font-urdu text-[11px]'
+                  )}
+                >
+                  {isUrdu ? r.labelUr : r.labelEn}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Live Confirmation Status */}
+        {feedbackText && (
+          <div className="mt-2 text-center text-xs font-bold text-amber-300 animate-pulse flex items-center justify-center gap-1.5">
+            <Heart className="size-3 text-rose-400 fill-rose-400" />
+            <span>{feedbackText}</span>
+          </div>
+        )}
+      </div>
 
       <style jsx global>{`
         @keyframes fadeFlyUp {

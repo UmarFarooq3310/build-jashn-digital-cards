@@ -9,12 +9,92 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { action, cardType, slug, metric, operation, value } = body
 
-    if (!action || !cardType || !slug) {
-      return NextResponse.json({ error: 'Missing required parameters: action, cardType, slug' }, { status: 400 })
+    if (!action) {
+      return NextResponse.json({ error: 'Missing required parameter: action' }, { status: 400 })
+    }
+
+    const db = getAdminDb()
+
+    // ─────────────────────────────────────────────────────────────
+    // 0. ACTION: PURGE ADMIN & LOCAL DEVICE ACTIVE/OFFLINE SESSIONS
+    // ─────────────────────────────────────────────────────────────
+    if (action === 'purge_admin_sessions') {
+      const targetDeviceId = String(body.deviceId || '').trim()
+      const targetSessionId = String(body.sessionId || '').trim()
+      const targetIp = String(body.ip || '').trim()
+      const host = req.headers.get('host') || ''
+      const isLocalhost = Boolean(body.isLocalhost) || host.includes('localhost') || host.includes('127.0.0.1')
+
+      const snap = await db.collection('active_sessions').limit(300).get().catch(() => ({ docs: [] } as any))
+      const batch = db.batch()
+      let deletedCount = 0
+
+      snap.docs.forEach((doc: any) => {
+        const d = doc.data()
+        const email = String(d.userEmail || '').toLowerCase().trim()
+        const page = String(d.page || '')
+        const docDevId = String(d.deviceId || '')
+        const docIp = String(d.ip || '')
+        const docRef = String(d.referrer || '')
+
+        const isAdminDoc =
+          page.startsWith('/admin_portal') ||
+          email === 'cardzyonline@gmail.com' ||
+          (targetDeviceId && docDevId && docDevId === targetDeviceId) ||
+          (targetSessionId && doc.id === targetSessionId) ||
+          (targetIp && docIp && docIp === targetIp) ||
+          (isLocalhost && (
+            docIp === '127.0.0.1' ||
+            docIp === '::1' ||
+            docIp === 'localhost' ||
+            docRef.includes('localhost') ||
+            docRef.includes('127.0.0.1')
+          ))
+
+        if (isAdminDoc) {
+          batch.delete(doc.ref)
+          deletedCount++
+        }
+      })
+
+      if (deletedCount > 0) {
+        await batch.commit().catch(() => {})
+      }
+
+      return NextResponse.json({
+        success: true,
+        action: 'purge_admin_sessions',
+        deletedCount,
+        message: `Purged ${deletedCount} admin/device sessions from database.`,
+      })
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 0.1 ACTION: RESET ALL POETRY STATS & ACTIVITY LOGS
+    // ─────────────────────────────────────────────────────────────
+    if (action === 'reset_all_poetry_stats') {
+      const statsSnap = await db.collection('poetry_stats').get().catch(() => ({ docs: [] } as any))
+      const actSnap = await db.collection('poetry_activity').get().catch(() => ({ docs: [] } as any))
+
+      const batch = db.batch()
+      statsSnap.docs.forEach((d: any) => batch.delete(d.ref))
+      actSnap.docs.forEach((d: any) => batch.delete(d.ref))
+      await batch.commit().catch(() => {})
+
+      return NextResponse.json({
+        success: true,
+        action: 'reset_all_poetry_stats',
+        deletedStats: statsSnap.docs.length,
+        deletedActivities: actSnap.docs.length,
+        message: 'All poetry engagement metrics and activity records reset to 0.',
+      })
+    }
+
+    if (!cardType || !slug) {
+      return NextResponse.json({ error: 'Missing required parameters: cardType, slug' }, { status: 400 })
     }
 
     const cleanSlug = String(slug).replace(/^\/?(i|w|v|m)\//, '').trim()
-    const db = getAdminDb()
 
     const collectionName =
       cardType === 'invite' || cardType === 'invitation'
@@ -37,6 +117,41 @@ export async function POST(req: Request) {
     // 1. ACTION: DELETE CARD & ALL LINKED DATA
     // ─────────────────────────────────────────────────────────────
     if (action === 'delete_card') {
+      if (cardType === 'poetry') {
+        // Fast parallel execution for poetry deletion
+        await Promise.allSettled([
+          // Direct delete custom poem doc & poetry doc
+          db.collection('custom_poetry').doc(cleanSlug).delete().catch(() => {}),
+          db.collection('poetry').doc(cleanSlug).delete().catch(() => {}),
+          // Direct delete poetry stats doc
+          db.collection('poetry_stats').doc(cleanSlug).delete().catch(() => {}),
+          // Purge poetry activity matching poemId in one batch
+          db.collection('poetry_activity').where('poemId', '==', cleanSlug).limit(100).get().then(async (snap) => {
+            if (!snap || snap.empty) return
+            const batch = db.batch()
+            snap.docs.forEach((doc) => batch.delete(doc.ref))
+            await batch.commit().catch(() => {})
+          }).catch(() => {}),
+          // Purge poetry activity matching title in one batch
+          db.collection('poetry_activity').where('title', '==', cleanSlug).limit(100).get().then(async (snap) => {
+            if (!snap || snap.empty) return
+            const batch = db.batch()
+            snap.docs.forEach((doc) => batch.delete(doc.ref))
+            await batch.commit().catch(() => {})
+          }).catch(() => {})
+        ])
+
+        return NextResponse.json({
+          success: true,
+          action: 'delete_card',
+          cardType,
+          slug: cleanSlug,
+          deletedRsvps: 0,
+          deletedWishes: 0,
+          message: `Poetry card ${cleanSlug} and all linked records permanently deleted from Firestore.`,
+        })
+      }
+
       let docRef = db.collection(collectionName).doc(cleanSlug)
       let docSnap = await docRef.get()
 
@@ -52,43 +167,52 @@ export async function POST(req: Request) {
         }
       }
 
-      // Delete main document
-      if (docSnap.exists) {
-        await docRef.delete()
-      }
-
-      // Cascade delete linked data
+      // Cascade delete linked data in parallel
       let deletedRsvps = 0
       let deletedWishes = 0
 
-      // If invitation, delete all linked RSVPs
+      const cleanupTasks: Promise<any>[] = []
+
+      // Delete main document
+      if (docSnap.exists) {
+        cleanupTasks.push(docRef.delete().catch(() => {}))
+      }
+
+      // If invitation, delete all linked RSVPs via batch
       if (cardType === 'invite' || cardType === 'invitation') {
-        const rsvpsSnap = await db.collection('rsvps').where('invitationSlug', '==', cleanSlug).get().catch(() => ({ docs: [] } as any))
-        for (const doc of rsvpsSnap.docs) {
-          await doc.ref.delete().catch(() => {})
-          deletedRsvps++
-        }
-        // Also check by invitationId
-        const rsvpsById = await db.collection('rsvps').where('invitationId', '==', cleanSlug).get().catch(() => ({ docs: [] } as any))
-        for (const doc of rsvpsById.docs) {
-          await doc.ref.delete().catch(() => {})
-          deletedRsvps++
-        }
+        cleanupTasks.push(
+          (async () => {
+            const [rsvpsSnap, rsvpsById] = await Promise.all([
+              db.collection('rsvps').where('invitationSlug', '==', cleanSlug).get().catch(() => ({ docs: [] } as any)),
+              db.collection('rsvps').where('invitationId', '==', cleanSlug).get().catch(() => ({ docs: [] } as any)),
+            ])
+            const allRsvpDocs = [...(rsvpsSnap.docs || []), ...(rsvpsById.docs || [])]
+            if (allRsvpDocs.length > 0) {
+              const batch = db.batch()
+              allRsvpDocs.forEach((d) => batch.delete(d.ref))
+              await batch.commit().catch(() => {})
+              deletedRsvps = allRsvpDocs.length
+            }
+          })()
+        )
       }
 
-      // If wish card, delete all linked guestbook wishes
+      // If wish card, delete all linked guestbook wishes via batch
       if (cardType === 'wish') {
-        const gwSnap = await db.collection('guestbook_wishes').where('cardSlug', '==', cleanSlug).get().catch(() => ({ docs: [] } as any))
-        for (const doc of gwSnap.docs) {
-          await doc.ref.delete().catch(() => {})
-          deletedWishes++
-        }
+        cleanupTasks.push(
+          (async () => {
+            const gwSnap = await db.collection('guestbook_wishes').where('cardSlug', '==', cleanSlug).get().catch(() => ({ docs: [] } as any))
+            if (gwSnap.docs && gwSnap.docs.length > 0) {
+              const batch = db.batch()
+              gwSnap.docs.forEach((d: any) => batch.delete(d.ref))
+              await batch.commit().catch(() => {})
+              deletedWishes = gwSnap.docs.length
+            }
+          })()
+        )
       }
 
-      // If poetry, clean up from poetry_stats
-      if (cardType === 'poetry') {
-        await db.collection('poetry_stats').doc(cleanSlug).delete().catch(() => {})
-      }
+      await Promise.allSettled(cleanupTasks)
 
       return NextResponse.json({
         success: true,
@@ -153,14 +277,7 @@ export async function POST(req: Request) {
 
         if (poetryStatsRef) {
           await poetryStatsRef.set({ likes: newLikes, lastInteractedAt: Date.now() }, { merge: true })
-          // Adjust global summary
-          const diff = newLikes - curLikes
-          if (diff !== 0) {
-            await db.collection('poetry_stats').doc('summary').set({
-              totalLikes: FieldValue.increment(diff),
-              lastActivityAt: Date.now()
-            }, { merge: true }).catch(() => {})
-          }
+          db.collection('poetry_stats').doc('summary').delete().catch(() => {})
         }
 
         return NextResponse.json({

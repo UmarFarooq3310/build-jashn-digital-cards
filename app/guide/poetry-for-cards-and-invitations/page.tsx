@@ -215,7 +215,8 @@ export default function PoetryGuidePage() {
             {FEATURED_TREASURY_VERSES.map((v) => (
               <div
                 key={v.id}
-                className="p-5 rounded-2xl bg-card border border-border/80 hover:border-amber-500/40 transition-all flex flex-col justify-between space-y-4 shadow-xs"
+                translate="no"
+                className="notranslate p-5 rounded-2xl bg-card border border-border/80 hover:border-amber-500/40 transition-all flex flex-col justify-between space-y-4 shadow-xs"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-2">
@@ -227,14 +228,14 @@ export default function PoetryGuidePage() {
                     </span>
                   </div>
 
-                  <p className="font-urdu text-lg sm:text-xl text-right leading-loose text-foreground py-2 font-medium">
+                  <p translate="no" className="notranslate font-urdu text-lg sm:text-xl text-right leading-loose text-foreground py-2 font-medium">
                     {v.originalText}
                   </p>
 
-                  <p className="text-xs text-muted-foreground italic mt-2 border-t border-border/50 pt-2">
+                  <p translate="no" className="notranslate text-xs text-muted-foreground italic mt-2 border-t border-border/50 pt-2">
                     "{v.translation}"
                   </p>
-                  <p className="text-xs font-bold text-amber-500 mt-1">
+                  <p translate="no" className="notranslate text-xs font-bold text-amber-500 mt-1">
                     — {isUrdu ? v.poetUrdu : v.poet}
                   </p>
                 </div>

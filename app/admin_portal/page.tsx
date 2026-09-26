@@ -54,15 +54,20 @@ import {
   MinusCircle,
   PlusCircle,
   RotateCcw,
+  User,
+  Star,
+  MessageSquarePlus,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import type { TestimonialItem } from '@/lib/jashn/testimonials'
 import { useJashn } from '@/lib/jashn/store'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { collection, getDocs, query, orderBy, limit, onSnapshot, doc, deleteDoc } from 'firebase/firestore'
 import { cn } from '@/lib/utils'
 import type { JashnUser, Plan, Invitation, Wish, VisitingCard, RsvpGuest } from '@/lib/jashn/types'
-import type { MagicLinkData } from '@/lib/jashn/magic-types'
+import type { MagicLinkData, MagicResponseData } from '@/lib/jashn/magic-types'
+import { normalizeWhatsAppNumber } from '@/lib/jashn/magic-service'
 import { POETRY_DATABASE, POETRY_CATEGORIES, POET_PROFILES } from '@/lib/jashn/poetry-data'
 import {
   listenAllGuestbookWishes,
@@ -72,7 +77,8 @@ import {
 } from '@/lib/jashn/guestbook-service'
 import { CardShareModal, type ShareModalCardData } from '@/components/dashboard/card-share-modal'
 import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
-import { purgeAdminPresence, ADMIN_EMAILS } from '@/lib/jashn/admin-presence'
+import { purgeAdminPresence, markDeviceAsAdmin, ADMIN_EMAILS } from '@/lib/jashn/admin-presence'
+import { getClientTracking } from '@/lib/jashn/tracking'
 import { SiteHeader } from '@/components/site-header'
 
 function formatDateStandard(timestamp?: number): string {
@@ -363,7 +369,8 @@ function AdminTablePagination({
               className="px-2 py-1 rounded-lg bg-background border border-border text-foreground font-semibold text-xs focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
             >
               <option value={10}>10</option>
-              <option value={30}>30 (Default)</option>
+              <option value={20}>20</option>
+              <option value={30}>30</option>
               <option value={50}>50</option>
               <option value={100}>100</option>
             </select>
@@ -446,7 +453,7 @@ export default function AdminPortalPage() {
     showToast,
   } = useJashn()
 
-  const [adminSection, setAdminSection] = useState<'all' | 'invitations' | 'wishes' | 'visiting_cards' | 'rsvps' | 'users' | 'push_notifications' | 'live_users' | 'magic_links' | 'guestbook' | 'poetry'>('all')
+  const [adminSection, setAdminSection] = useState<'all' | 'invitations' | 'wishes' | 'visiting_cards' | 'rsvps' | 'users' | 'push_notifications' | 'live_users' | 'magic_links' | 'guestbook' | 'poetry' | 'testimonials'>('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [poetrySearchTerm, setPoetrySearchTerm] = useState('')
   const [poetryCategoryFilter, setPoetryCategoryFilter] = useState('all')
@@ -460,8 +467,26 @@ export default function AdminPortalPage() {
   const [pageLiveUsers, setPageLiveUsers] = useState(1)
   const [pageSizeLiveUsers, setPageSizeLiveUsers] = useState(30)
 
-  const [pagePoetryEvents, setPagePoetryEvents] = useState(1)
-  const [pageSizePoetryEvents, setPageSizePoetryEvents] = useState(30)
+  const [deletedPoetryIds, setDeletedPoetryIds] = useState<string[]>(() => {
+    if (typeof window === 'undefined') return []
+    try {
+      const raw = localStorage.getItem('cardzy_deleted_poetry_ids')
+      return raw ? JSON.parse(raw) : []
+    } catch {
+      return []
+    }
+  })
+
+  const [pageActivityStream, setPageActivityStream] = useState(1)
+  const [pageSizeActivityStream, setPageSizeActivityStream] = useState(20)
+
+  const [pageAdminPoetry, setPageAdminPoetry] = useState(1)
+  const [pageSizeAdminPoetry, setPageSizeAdminPoetry] = useState(12)
+
+  const [pagePoetryActivity, setPagePoetryActivity] = useState(1)
+  const [pageSizePoetryActivity, setPageSizePoetryActivity] = useState(10)
+  const [poetryActivityFilter, setPoetryActivityFilter] = useState<string>('all')
+  const [poetryActivitySearch, setPoetryActivitySearch] = useState<string>('')
 
   const [pageUsers, setPageUsers] = useState(1)
   const [pageSizeUsers, setPageSizeUsers] = useState(30)
@@ -477,6 +502,11 @@ export default function AdminPortalPage() {
 
   const [pageMagicLinks, setPageMagicLinks] = useState(1)
   const [pageSizeMagicLinks, setPageSizeMagicLinks] = useState(30)
+
+  const [pageMagicResponses, setPageMagicResponses] = useState(1)
+  const [pageSizeMagicResponses, setPageSizeMagicResponses] = useState(30)
+  const [magicResponseSearch, setMagicResponseSearch] = useState('')
+  const [magicResponseFilterSlug, setMagicResponseFilterSlug] = useState<string | null>(null)
 
   const [pageGuestbook, setPageGuestbook] = useState(1)
   const [pageSizeGuestbook, setPageSizeGuestbook] = useState(30)
@@ -660,8 +690,25 @@ export default function AdminPortalPage() {
 
   useEffect(() => {
     // Immediately purge any session docs from Firebase for this admin device
-    const localDevId = typeof window !== 'undefined' ? (localStorage.getItem('cardzy_device_id') || undefined) : undefined
+    const localDevId = typeof window !== 'undefined'
+      ? (localStorage.getItem('cardzy_device_id') || localStorage.getItem('cardzy_admin_device_id') || undefined)
+      : undefined
+    markDeviceAsAdmin(localDevId)
     purgeAdminPresence(undefined, localDevId)
+
+    const isLocal = typeof window !== 'undefined' && (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname.startsWith('192.168.')
+    )
+
+    getClientTracking().then((tr) => {
+      if (tr?.ip) {
+        try {
+          localStorage.setItem('cardzy_admin_ip', tr.ip)
+        } catch {}
+      }
+    }).catch(() => {})
 
     let unsub = () => {}
     async function listenLivePresence() {
@@ -669,39 +716,59 @@ export default function AdminPortalPage() {
         const firestoreDb = getFirebaseDb()
         if (!firestoreDb) return
         const collRef = collection(firestoreDb, 'active_sessions')
-        const q = query(collRef, orderBy('lastSeen', 'desc'), limit(100))
+        const q = query(collRef, orderBy('lastSeen', 'desc'), limit(150))
         unsub = onSnapshot(q, async (snap) => {
           const threshold = Date.now() - 120000 // Active within the last 2 minutes (matches 35s pulse)
           const rawDocs = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() } as any))
-          const currentDevId = typeof window !== 'undefined' ? localStorage.getItem('cardzy_device_id') : null
-          const currentSessId = typeof window !== 'undefined' ? (sessionStorage.getItem('cardzy_live_session_id') || localStorage.getItem('cardzy_live_session_id')) : null
+          const currentDevId = typeof window !== 'undefined'
+            ? (localStorage.getItem('cardzy_device_id') || localStorage.getItem('cardzy_admin_device_id'))
+            : null
+          const currentSessId = typeof window !== 'undefined'
+            ? (sessionStorage.getItem('cardzy_live_session_id') || localStorage.getItem('cardzy_live_session_id'))
+            : null
+          const adminIp = typeof window !== 'undefined' ? localStorage.getItem('cardzy_admin_ip') : null
+
+          // Test if any session belongs to the admin or the admin device
+          const isDocFromAdminDevice = (s: any) => {
+            if (s.page && s.page.startsWith('/admin_portal')) return true
+            if (s.userEmail && ADMIN_EMAILS.includes(String(s.userEmail).toLowerCase().trim())) return true
+            if (currentDevId && s.deviceId && s.deviceId === currentDevId) return true
+            if (currentSessId && s.id === currentSessId) return true
+            if (adminIp && s.ip && s.ip === adminIp) return true
+            if (isLocal && (
+              s.ip === '127.0.0.1' ||
+              s.ip === '::1' ||
+              s.ip === 'localhost' ||
+              (s.referrer && (s.referrer.includes('localhost') || s.referrer.includes('127.0.0.1')))
+            )) return true
+            return false
+          }
 
           // Identify any admin session docs to clean up from database
-          const adminDocIds = rawDocs
-            .filter((s) => 
-              (s.page && s.page.startsWith('/admin_portal')) || 
-              (s.userEmail && ADMIN_EMAILS.includes(s.userEmail.toLowerCase().trim())) ||
-              (currentDevId && s.deviceId && s.deviceId === currentDevId) ||
-              (currentSessId && s.id === currentSessId)
-            )
-            .map((s) => s.id)
+          const adminDocIds = rawDocs.filter(isDocFromAdminDevice).map((s) => s.id)
 
           if (adminDocIds.length > 0) {
             try {
               const { deleteDoc, doc } = await import('firebase/firestore')
               adminDocIds.forEach((id) => deleteDoc(doc(firestoreDb, 'active_sessions', id)).catch(() => {}))
             } catch {}
+            // Also call server API in background to ensure cascading deletion via Admin SDK
+            fetch('/api/admin-card-action', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'purge_admin_sessions',
+                deviceId: currentDevId,
+                sessionId: currentSessId,
+                ip: adminIp,
+                isLocalhost: isLocal,
+              }),
+            }).catch(() => {})
           }
 
-          // Filter out admin portal visits, admin accounts, and admin device from visitor view
+          // Filter out admin portal visits, admin accounts, and admin device from visitor view (both active & offline)
           const visitorDocs = rawDocs
-            .filter((s) => {
-              if (s.page && s.page.startsWith('/admin_portal')) return false
-              if (s.userEmail && ADMIN_EMAILS.includes(s.userEmail.toLowerCase().trim())) return false
-              if (currentDevId && s.deviceId && s.deviceId === currentDevId) return false
-              if (currentSessId && s.id === currentSessId) return false
-              return true
-            })
+            .filter((s) => !isDocFromAdminDevice(s))
             .sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0))
           
           setAllSessions(visitorDocs)
@@ -805,7 +872,7 @@ export default function AdminPortalPage() {
     const title = card.title || card.hostNames || card.fullName || card.recipientName || slug
     const views = Number(card.viewsCount ?? card.viewCount ?? card.views ?? 0)
     const sharesBreakdown = typeof card.shares === 'object' && card.shares ? card.shares : {}
-    const totalShares = Object.values(sharesBreakdown).reduce((a: number, b: any) => a + Number(b || 0), 0)
+    const totalShares = typeof card.shares === 'number' ? card.shares : Object.values(sharesBreakdown).reduce((a: number, b: any) => a + Number(b || 0), 0)
     const likes = Number(card.likesCount ?? card.likes ?? card.reactionsCount ?? 0)
 
     setCustomLikesInput(String(likes))
@@ -823,21 +890,66 @@ export default function AdminPortalPage() {
 
   async function executeDeleteCard() {
     if (!deleteCardTarget) return
-    setIsDeletingCard(true)
-    const { cardType, slug } = deleteCardTarget
+    const target = deleteCardTarget
+    const { cardType, slug } = target
+    const targetTitle = target.title || slug
+
+    // 1. Instantly close modal and reset state for instant UI response
+    setDeleteCardTarget(null)
+    setIsDeletingCard(false)
+
+    // 2. Instantly purge from local state so all admin counts decrement and cards vanish immediately
+    if (cardType === 'invite') {
+      deleteInvitation(slug)
+      setFirestoreInvitations((prev) => prev.filter((i) => i.slug !== slug && i.id !== slug))
+      setFirestoreRsvps((prev) => prev.filter((r: any) => r.invitationSlug !== slug && r.invitationId !== slug && r.cardSlug !== slug))
+    } else if (cardType === 'wish') {
+      deleteWish(slug)
+      setFirestoreWishes((prev) => prev.filter((w) => (w.slug || w.id) !== slug && w.id !== slug))
+      setAllGuestbookWishes((prev) => prev.filter((g) => g.cardSlug !== slug))
+    } else if (cardType === 'vcard') {
+      deleteVisitingCard(slug)
+      setFirestoreVisitingCards((prev) => prev.filter((v) => (v.slug || v.id) !== slug && v.id !== slug))
+    } else if (cardType === 'magic') {
+      setFirestoreMagicLinks((prev) => prev.filter((m) => (m.slug || m.id) !== slug))
+      try {
+        const raw = localStorage.getItem('cardzy_local_magic_links')
+        if (raw) {
+          const parsed = JSON.parse(raw)
+          delete parsed[slug]
+          localStorage.setItem('cardzy_local_magic_links', JSON.stringify(parsed))
+        }
+      } catch {}
+    } else if (cardType === 'poetry') {
+      setFirestoreCustomPoetry((prev) => prev.filter((p) => p.id !== slug))
+      setFirestorePoetryStats((prev) => prev.filter((s) => s.id !== slug))
+      setFirestorePoetryActivity((prev) => prev.filter((a) => a.poemId !== slug && a.title !== slug))
+      setDeletedPoetryIds((prev) => {
+        const updated = Array.from(new Set([...prev, slug]))
+        try {
+          localStorage.setItem('cardzy_deleted_poetry_ids', JSON.stringify(updated))
+        } catch {}
+        return updated
+      })
+    }
+
+    showToast(`Card "${targetTitle}" and all associated data permanently deleted.`, 'success')
+
+    // 3. Asynchronously trigger server and database deletions in background without blocking UI
     try {
-      // 1. Call server API for cascading delete (removes card, linked RSVPs, wishes, etc.)
-      const res = await fetch('/api/admin-card-action', {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 10000)
+
+      fetch('/api/admin-card-action', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'delete_card', cardType, slug }),
-      })
-      const data = await res.json()
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to delete card')
-      }
+        signal: controller.signal,
+      }).catch((err) => {
+        console.warn('Background admin-card-action purge notice:', err?.message || err)
+      }).finally(() => clearTimeout(timeoutId))
 
-      // 2. Client Firestore delete fallback
+      // Direct client Firestore delete fallback
       const activeDb = getFirebaseDb() || db
       if (activeDb) {
         const col =
@@ -850,43 +962,15 @@ export default function AdminPortalPage() {
             : cardType === 'magic'
             ? 'magic_links'
             : 'custom_poetry'
-        await deleteDoc(doc(activeDb, col, slug)).catch(() => {})
+        deleteDoc(doc(activeDb, col, slug)).catch(() => {})
+        if (cardType === 'poetry') {
+          deleteDoc(doc(activeDb, 'poetry_stats', slug)).catch(() => {})
+          deleteDoc(doc(activeDb, 'poetry', slug)).catch(() => {})
+          deleteDoc(doc(activeDb, 'custom_poetry', slug)).catch(() => {})
+        }
       }
-
-      // 3. Purge from local Zustand and React states immediately so all admin counts decrement
-      if (cardType === 'invite') {
-        deleteInvitation(slug)
-        setFirestoreInvitations((prev) => prev.filter((i) => i.slug !== slug && i.id !== slug))
-        setFirestoreRsvps((prev) => prev.filter((r: any) => r.invitationSlug !== slug && r.invitationId !== slug && r.cardSlug !== slug))
-      } else if (cardType === 'wish') {
-        deleteWish(slug)
-        setFirestoreWishes((prev) => prev.filter((w) => (w.slug || w.id) !== slug && w.id !== slug))
-        setAllGuestbookWishes((prev) => prev.filter((g) => g.cardSlug !== slug))
-      } else if (cardType === 'vcard') {
-        deleteVisitingCard(slug)
-        setFirestoreVisitingCards((prev) => prev.filter((v) => (v.slug || v.id) !== slug && v.id !== slug))
-      } else if (cardType === 'magic') {
-        setFirestoreMagicLinks((prev) => prev.filter((m) => (m.slug || m.id) !== slug))
-        try {
-          const raw = localStorage.getItem('cardzy_local_magic_links')
-          if (raw) {
-            const parsed = JSON.parse(raw)
-            delete parsed[slug]
-            localStorage.setItem('cardzy_local_magic_links', JSON.stringify(parsed))
-          }
-        } catch {}
-      } else if (cardType === 'poetry') {
-        setFirestoreCustomPoetry((prev) => prev.filter((p) => p.id !== slug))
-        setFirestorePoetryStats((prev) => prev.filter((s) => s.id !== slug))
-      }
-
-      showToast(`Card "${deleteCardTarget.title || slug}" and all associated data permanently deleted.`, 'success')
-      setDeleteCardTarget(null)
     } catch (err: any) {
-      console.error('Delete card error:', err)
-      showToast(err.message || 'Failed to delete card', 'error')
-    } finally {
-      setIsDeletingCard(false)
+      console.warn('Background card purge error:', err)
     }
   }
 
@@ -991,6 +1075,12 @@ export default function AdminPortalPage() {
           return m
         }))
       } else if (cardType === 'poetry') {
+        const computedShares = typeof newShares === 'number'
+          ? newShares
+          : typeof newShares === 'object' && newShares
+          ? Object.values(newShares).reduce((a: number, b: any) => a + Number(b || 0), 0)
+          : (metric === 'shares' && operation === 'reset' ? 0 : undefined)
+
         setFirestorePoetryStats((prev) => {
           const idx = prev.findIndex((s) => s.id === slug)
           if (idx >= 0) {
@@ -999,11 +1089,11 @@ export default function AdminPortalPage() {
               ...updated[idx],
               likes: newLikes,
               views: newViews,
-              shares: typeof newShares === 'number' ? newShares : updated[idx].shares,
+              shares: computedShares !== undefined ? computedShares : (updated[idx].shares || 0),
             }
             return updated
           }
-          return [...prev, { id: slug, likes: newLikes, views: newViews, shares: 0 }]
+          return [...prev, { id: slug, likes: newLikes, views: newViews, shares: computedShares || 0 }]
         })
       }
 
@@ -1093,6 +1183,27 @@ export default function AdminPortalPage() {
     }
   }
 
+  async function handleResetAllPoetryStats() {
+    if (!confirm('Are you sure you want to reset ALL poetry metrics (likes, views, shares, copies, flyers) to 0 across Firebase and this portal?')) return
+    try {
+      setFirestorePoetryStats([])
+      setFirestorePoetryActivity([])
+      try {
+        localStorage.removeItem('cardzy_poetry_favorites')
+      } catch {}
+
+      showToast('All poetry engagement counts reset to 0.', 'success')
+
+      await fetch('/api/admin-card-action', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'reset_all_poetry_stats' }),
+      })
+    } catch (err: any) {
+      showToast(err.message || 'Error resetting poetry stats', 'error')
+    }
+  }
+
   async function handleDeletePoetryActivity(eventDocId?: string, poemId?: string, e?: React.MouseEvent) {
     if (e) e.stopPropagation()
     if (!confirm('Are you sure you want to delete this poetry activity event record?')) return
@@ -1117,11 +1228,12 @@ export default function AdminPortalPage() {
 
   function handleOpenFlyerPreview(act: any, e?: React.MouseEvent) {
     if (e) e.stopPropagation()
-    const pId = act.poemId || ''
-    const foundPoem = POETRY_DATABASE.find(
-      (p) => p.id === pId || p.title === act.title || (pId && p.id.includes(pId))
-    ) || {
-      id: act.poemId || 'poem-custom',
+    const pId = act.poemId || act.id || ''
+    const foundPoem =
+      POETRY_DATABASE.find((p) => p.id === pId || p.title === act.title || (pId && p.id.includes(pId))) ||
+      firestoreCustomPoetry.find((p) => p.id === pId || p.title === act.title) ||
+      mergedPoetryList.find((p) => p.id === pId || p.title === act.title) || {
+      id: pId || 'poem-custom',
       title: act.title || 'Classical Urdu Verse',
       poet: act.poet || 'Classical Poet',
       poetUrdu: act.poetUrdu || '',
@@ -1255,8 +1367,8 @@ export default function AdminPortalPage() {
     if (typeof window !== 'undefined') {
       try {
         sessionStorage.removeItem('cardzy_admin_session')
-        sessionStorage.removeItem('cardzy_is_admin')
-        localStorage.removeItem('cardzy_is_admin')
+        // Preserve admin device stamp so this device is never logged into visitor sessions
+        markDeviceAsAdmin()
       } catch {}
     }
     setAdminEmailInput('')
@@ -1273,9 +1385,23 @@ export default function AdminPortalPage() {
   const [firestoreVisitingCards, setFirestoreVisitingCards] = useState<VisitingCard[]>([])
   const [firestoreRsvps, setFirestoreRsvps] = useState<RsvpGuest[]>([])
   const [firestoreMagicLinks, setFirestoreMagicLinks] = useState<MagicLinkData[]>([])
+  const [firestoreMagicResponses, setFirestoreMagicResponses] = useState<MagicResponseData[]>([])
   const [firestorePoetryStats, setFirestorePoetryStats] = useState<any[]>([])
   const [firestorePoetryActivity, setFirestorePoetryActivity] = useState<any[]>([])
   const [firestoreCustomPoetry, setFirestoreCustomPoetry] = useState<any[]>([])
+  const [firestoreTestimonials, setFirestoreTestimonials] = useState<TestimonialItem[]>([])
+  const [pageTestimonials, setPageTestimonials] = useState(1)
+  const [pageSizeTestimonials, setPageSizeTestimonials] = useState(20)
+  const [testimonialsSearch, setTestimonialsSearch] = useState('')
+  const [isAddReviewModalOpen, setIsAddReviewModalOpen] = useState(false)
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false)
+  const [newReviewForm, setNewReviewForm] = useState({
+    name: '',
+    role: '',
+    comment: '',
+    rating: 5,
+    location: '',
+  })
   const [showOnlyEngagedPoetry, setShowOnlyEngagedPoetry] = useState<boolean>(true)
   const [isAddPoetryModalOpen, setIsAddPoetryModalOpen] = useState(false)
   const [isSubmittingPoetry, setIsSubmittingPoetry] = useState(false)
@@ -1318,9 +1444,11 @@ export default function AdminPortalPage() {
           if (data.visitingCards) setFirestoreVisitingCards(data.visitingCards)
           if (data.rsvps) setFirestoreRsvps(data.rsvps)
           if (data.magicLinks) setFirestoreMagicLinks(data.magicLinks)
+          if (data.magicResponses) setFirestoreMagicResponses(data.magicResponses)
           if (data.guestbookWishes && data.guestbookWishes.length > 0) setAllGuestbookWishes(data.guestbookWishes)
           if (data.poetryStats) setFirestorePoetryStats(data.poetryStats)
           if (data.poetryActivity) setFirestorePoetryActivity(data.poetryActivity)
+          if (data.testimonials && Array.isArray(data.testimonials)) setFirestoreTestimonials(data.testimonials)
           setLastSyncedAt(Date.now())
           showToast('Real-time database re-synced', 'success')
         }
@@ -1431,11 +1559,18 @@ export default function AdminPortalPage() {
       setLastSyncedAt(Date.now())
     }, (err) => console.warn('Magic links listener notice:', err))
 
-    // 7. Live Poetry Stats listener
+    // 7. Live Poetry Stats listener (only individual poem-0001, poem-0002, etc.)
     const unsubPoetryStats = onSnapshot(collection(activeDb, 'poetry_stats'), (snap) => {
       const list: any[] = []
       snap.forEach((docSnap) => {
-        if (docSnap.exists()) list.push({ id: docSnap.id, ...docSnap.data() })
+        if (docSnap.exists()) {
+          if (docSnap.id === 'summary') {
+            // Auto-purge summary doc from Firebase so it never exists
+            deleteDoc(doc(activeDb, 'poetry_stats', 'summary')).catch(() => {})
+          } else {
+            list.push({ id: docSnap.id, ...docSnap.data() })
+          }
+        }
       })
       setFirestorePoetryStats(list)
       setLastSyncedAt(Date.now())
@@ -1451,6 +1586,30 @@ export default function AdminPortalPage() {
       setLastSyncedAt(Date.now())
     }, (err) => console.warn('Poetry activity listener notice:', err))
 
+    // 9. Live Magic Responses listener
+    const unsubMagicResponses = onSnapshot(query(collection(activeDb, 'magic_link_responses'), orderBy('createdAt', 'desc'), limit(200)), (snap) => {
+      const list: MagicResponseData[] = []
+      snap.forEach((docSnap) => {
+        if (docSnap.exists()) {
+          list.push({ id: docSnap.id, ...docSnap.data() } as MagicResponseData)
+        }
+      })
+      setFirestoreMagicResponses(list)
+      setLastSyncedAt(Date.now())
+    }, (err) => console.warn('Magic responses listener notice:', err))
+
+    // 10. Testimonials & Reviews listener
+    const unsubTestimonials = onSnapshot(query(collection(activeDb, 'testimonials'), orderBy('createdAt', 'desc'), limit(150)), (snap) => {
+      const list: TestimonialItem[] = []
+      snap.forEach((docSnap) => {
+        if (docSnap.exists()) {
+          list.push({ id: docSnap.id, ...(docSnap.data() as any) })
+        }
+      })
+      setFirestoreTestimonials(list)
+      setLastSyncedAt(Date.now())
+    }, (err) => console.warn('Testimonials listener notice:', err))
+
     return () => {
       unsubUsers()
       unsubInvs()
@@ -1458,8 +1617,10 @@ export default function AdminPortalPage() {
       unsubVC()
       unsubRsvps()
       unsubMagic()
+      unsubMagicResponses()
       unsubPoetryStats()
       unsubPoetryAct()
+      unsubTestimonials()
     }
   }, [])
 
@@ -1502,6 +1663,79 @@ export default function AdminPortalPage() {
     if (!rsvpFilterSlug) return rsvps
     return rsvps.filter((r) => r.invitationSlug === rsvpFilterSlug)
   }, [rsvps, rsvpFilterSlug])
+
+  // Testimonials & Reviews list & filtering
+  const filteredTestimonials = useMemo(() => {
+    const list = [...firestoreTestimonials].sort((a, b) => (toEpochMs(b.createdAt) || 0) - (toEpochMs(a.createdAt) || 0))
+    if (!testimonialsSearch.trim()) return list
+    const q = testimonialsSearch.toLowerCase()
+    return list.filter((t) =>
+      t.name?.toLowerCase().includes(q) ||
+      t.role?.toLowerCase().includes(q) ||
+      t.comment?.toLowerCase().includes(q) ||
+      (t.location && t.location.toLowerCase().includes(q))
+    )
+  }, [firestoreTestimonials, testimonialsSearch])
+
+  const paginatedTestimonials = useMemo(() => {
+    const start = (pageTestimonials - 1) * pageSizeTestimonials
+    return filteredTestimonials.slice(start, start + pageSizeTestimonials)
+  }, [filteredTestimonials, pageTestimonials, pageSizeTestimonials])
+
+  async function handleDeleteTestimonial(id: string, name?: string) {
+    if (!confirm(`Are you sure you want to permanently delete the review by "${name || 'User'}"? This cannot be undone.`)) return
+    try {
+      const activeDb = getFirebaseDb() || db
+      if (activeDb) {
+        await deleteDoc(doc(activeDb, 'testimonials', id))
+      }
+      await fetch(`/api/testimonials?id=${encodeURIComponent(id)}`, { method: 'DELETE' })
+      setFirestoreTestimonials((prev) => prev.filter((t) => t.id !== id))
+      showToast('Review permanently deleted from database', 'info')
+    } catch (e) {
+      console.error('Delete review error:', e)
+      showToast('Failed to delete review', 'error')
+    }
+  }
+
+  async function handleCreateReview(e: React.FormEvent) {
+    e.preventDefault()
+    if (!newReviewForm.name.trim() || !newReviewForm.comment.trim()) {
+      showToast('Name and comment are required', 'error')
+      return
+    }
+    setIsSubmittingReview(true)
+    try {
+      const res = await fetch('/api/testimonials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...newReviewForm,
+          stars: newReviewForm.rating,
+        }),
+      })
+      const data = await res.json()
+      if (data.success && data.testimonial) {
+        setFirestoreTestimonials((prev) => [data.testimonial, ...prev.filter((t) => t.id !== data.testimonial.id)])
+        showToast('Review added successfully!', 'success')
+        setIsAddReviewModalOpen(false)
+        setNewReviewForm({
+          name: '',
+          role: '',
+          comment: '',
+          rating: 5,
+          location: '',
+        })
+      } else {
+        showToast(data.error || 'Failed to add review', 'error')
+      }
+    } catch (e) {
+      console.error('Create review error:', e)
+      showToast('Failed to add review', 'error')
+    } finally {
+      setIsSubmittingReview(false)
+    }
+  }
 
   // The invitation object for the currently filtered event (for the header banner)
   const rsvpFilterInvitation = useMemo(() => {
@@ -1649,9 +1883,156 @@ export default function AdminPortalPage() {
     }
   }, [allUsersList])
 
+  // ── 1. Merged Poetry List (Database + Live Stats + User Activity Logs) ──
+  const mergedPoetryList = useMemo(() => {
+    const statsMap = new Map<string, any>()
+    firestorePoetryStats.forEach((s) => {
+      if (s && s.id && s.id !== 'summary') statsMap.set(s.id, s)
+    })
+
+    // Activity aggregation map across all live events
+    const activityMap = new Map<string, {
+      likes: number
+      views: number
+      copies: number
+      shares: number
+      flyers: number
+      cardCreations: number
+      latestEvent?: any
+    }>()
+
+    firestorePoetryActivity.forEach((act) => {
+      const pId = act.poemId || act.title || ''
+      if (!pId) return
+      if (!activityMap.has(pId)) {
+        activityMap.set(pId, { likes: 0, views: 0, copies: 0, shares: 0, flyers: 0, cardCreations: 0 })
+      }
+      const item = activityMap.get(pId)!
+      if (act.action === 'like') item.likes++
+      else if (act.action === 'unlike') item.likes = Math.max(0, item.likes - 1)
+      else if (act.action === 'share') item.shares++
+      else if (act.action === 'copy') item.copies++
+      else if (act.action === 'flyer' || act.action === 'download') item.flyers++
+      else if (act.action === 'card_bridge') item.cardCreations++
+      else if (act.action === 'view' || act.action === 'click') item.views++
+
+      const eventTime = toEpochMs(act.timestamp)
+      const currentLatestTime = toEpochMs(item.latestEvent?.timestamp)
+      if (!item.latestEvent || eventTime > currentLatestTime) {
+        item.latestEvent = act
+      }
+    })
+
+    const poemsMap = new Map<string, any>()
+
+    // 1. Load all 1,000 poems from local bundled POETRY_DATABASE
+    POETRY_DATABASE.forEach((p) => {
+      if (p && p.id && !deletedPoetryIds.includes(p.id)) poemsMap.set(p.id, p)
+    })
+
+    // 2. Overlay Firestore custom poetry
+    firestoreCustomPoetry.forEach((p) => {
+      if (p && p.id && !deletedPoetryIds.includes(p.id)) poemsMap.set(p.id, { ...poemsMap.get(p.id), ...p })
+    })
+
+    return Array.from(poemsMap.values()).map((p) => {
+      const live = statsMap.get(p.id) || {}
+      const actLive = activityMap.get(p.id) || activityMap.get(p.title) || {
+        likes: 0,
+        views: 0,
+        copies: 0,
+        shares: 0,
+        flyers: 0,
+        cardCreations: 0,
+        latestEvent: null,
+      }
+
+      const likes = Math.max(Number(live.likes || 0), actLive.likes)
+      const views = Math.max(Number(live.views || 0), actLive.views)
+      const copies = Math.max(Number(live.copies || 0), actLive.copies)
+      const shares = Math.max(Number(live.shares || 0), actLive.shares)
+      const flyers = Math.max(Number(live.flyers || 0), actLive.flyers)
+      const cardCreations = Math.max(Number(live.cardCreations || 0), actLive.cardCreations)
+
+      const latestAct = actLive.latestEvent
+      const lastInteractedAt = Math.max(
+        toEpochMs(live.lastInteractedAt),
+        toEpochMs(latestAct?.timestamp)
+      ) || null
+
+      const lastUserName = (latestAct?.userName && latestAct.userName !== 'Guest Visitor')
+        ? latestAct.userName
+        : (live.lastUserName || latestAct?.userName || null)
+      const lastCity = latestAct?.city || live.lastCity || null
+      const lastCountry = latestAct?.country || live.lastCountry || null
+      const lastCountryCode = latestAct?.countryCode || null
+      const lastDevice = latestAct?.device || null
+      const lastBrowser = latestAct?.browser || null
+      const lastIp = latestAct?.ip || null
+      const lastLocation = latestAct?.createdLocation || null
+
+      return {
+        ...p,
+        likes,
+        views,
+        copies,
+        shares,
+        flyers,
+        cardCreations,
+        totalInteractions: likes + views + copies + shares + flyers + cardCreations,
+        lastInteractedAt,
+        lastCity,
+        lastCountry,
+        lastCountryCode,
+        lastUserName,
+        lastDevice,
+        lastBrowser,
+        lastIp,
+        lastLocation,
+      }
+    })
+  }, [firestorePoetryStats, firestoreCustomPoetry, firestorePoetryActivity, deletedPoetryIds])
+
+  // ── 2. Poetry Analytics Computation (Derives directly by summing across individual cards) ──
+  const poetrySummary = useMemo(() => {
+    let totalViews = 0
+    let totalLikes = 0
+    let totalCopies = 0
+    let totalShares = 0
+    let totalFlyers = 0
+    let totalCardCreations = 0
+    let lastActivityAt = 0
+
+    mergedPoetryList.forEach((p) => {
+      totalViews += (p.views || 0)
+      totalLikes += (p.likes || 0)
+      totalCopies += (p.copies || 0)
+      totalShares += (p.shares || 0)
+      totalFlyers += (p.flyers || 0)
+      totalCardCreations += (p.cardCreations || 0)
+      const t = toEpochMs(p.lastInteractedAt)
+      if (t > lastActivityAt) {
+        lastActivityAt = t
+      }
+    })
+
+    const totalInteractions = totalViews + totalLikes + totalCopies + totalShares + totalFlyers + totalCardCreations
+
+    return {
+      totalInteractions,
+      totalViews,
+      totalLikes,
+      totalCopies,
+      totalShares,
+      totalFlyers,
+      totalCardCreations,
+      lastActivityAt,
+    }
+  }, [mergedPoetryList])
+
   const totalAdminShares = useMemo(() => {
     const all = [...invitations, ...wishes, ...visitingCards, ...magicLinks]
-    return all.reduce(
+    const base = all.reduce(
       (acc, card: any) => {
         const s = card.shares || {}
         return {
@@ -1675,82 +2056,27 @@ export default function AdminPortalPage() {
       },
       { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0, total: 0 }
     )
-  }, [invitations, wishes, visitingCards, magicLinks])
 
-  // ── Poetry Analytics Computation ──────────────────────────────
-  const poetrySummary = useMemo(() => {
-    const summaryDoc = firestorePoetryStats.find((s) => s.id === 'summary')
-    if (summaryDoc) {
-      return {
-        totalInteractions: Number(summaryDoc.totalInteractions || 0),
-        totalViews: Number(summaryDoc.totalViews || 0),
-        totalCopies: Number(summaryDoc.totalCopies || 0),
-        totalShares: Number(summaryDoc.totalShares || 0),
-        totalFlyers: Number(summaryDoc.totalFlyers || 0),
-        totalCardCreations: Number(summaryDoc.totalCardCreations || 0),
-        lastActivityAt: summaryDoc.lastActivityAt,
-      }
+    const pShares = poetrySummary.totalShares || 0
+    const pCopies = poetrySummary.totalCopies || 0
+    const pFlyers = poetrySummary.totalFlyers || 0
+
+    return {
+      whatsapp: base.whatsapp + pShares,
+      sms: base.sms,
+      copy: base.copy + pCopies,
+      qr: base.qr,
+      image: base.image + pFlyers,
+      video: base.video,
+      app: base.app,
+      total: base.total + pShares + pCopies + pFlyers,
     }
-
-    return firestorePoetryStats.reduce(
-      (acc, curr) => {
-        if (curr.id === 'summary') return acc
-        return {
-          totalInteractions: acc.totalInteractions + (curr.views || 0) + (curr.copies || 0) + (curr.shares || 0) + (curr.flyers || 0) + (curr.cardCreations || 0),
-          totalViews: acc.totalViews + (curr.views || 0),
-          totalCopies: acc.totalCopies + (curr.copies || 0),
-          totalShares: acc.totalShares + (curr.shares || 0),
-          totalFlyers: acc.totalFlyers + (curr.flyers || 0),
-          totalCardCreations: acc.totalCardCreations + (curr.cardCreations || 0),
-          lastActivityAt: Math.max(acc.lastActivityAt || 0, curr.lastInteractedAt || 0),
-        }
-      },
-      { totalInteractions: 0, totalViews: 0, totalCopies: 0, totalShares: 0, totalFlyers: 0, totalCardCreations: 0, lastActivityAt: 0 }
-    )
-  }, [firestorePoetryStats])
-
-  const mergedPoetryList = useMemo(() => {
-    const statsMap = new Map<string, any>()
-    firestorePoetryStats.forEach((s) => {
-      if (s.id !== 'summary') statsMap.set(s.id, s)
-    })
-
-    const poemsMap = new Map<string, any>()
-
-    // 1. Load all 1,000 poems from local bundled POETRY_DATABASE
-    POETRY_DATABASE.forEach((p) => {
-      if (p && p.id) poemsMap.set(p.id, p)
-    })
-
-    // 2. Overlay Firestore custom poetry
-    firestoreCustomPoetry.forEach((p) => {
-      if (p && p.id) poemsMap.set(p.id, { ...poemsMap.get(p.id), ...p })
-    })
-
-    return Array.from(poemsMap.values()).map((p) => {
-      const live = statsMap.get(p.id) || {}
-      return {
-        ...p,
-        views: Number(live.views || 0),
-        copies: Number(live.copies || 0),
-        shares: Number(live.shares || 0),
-        flyers: Number(live.flyers || 0),
-        cardCreations: Number(live.cardCreations || 0),
-        totalInteractions:
-          Number(live.views || 0) +
-          Number(live.copies || 0) +
-          Number(live.shares || 0) +
-          Number(live.flyers || 0) +
-          Number(live.cardCreations || 0),
-        lastInteractedAt: live.lastInteractedAt || null,
-      }
-    })
-  }, [firestorePoetryStats, firestoreCustomPoetry])
+  }, [invitations, wishes, visitingCards, magicLinks, poetrySummary])
 
   const filteredPoetryList = useMemo(() => {
     return mergedPoetryList.filter((p) => {
       if (showOnlyEngagedPoetry) {
-        const hasEngagement = (p.copies > 0 || p.shares > 0 || p.flyers > 0 || p.cardCreations > 0 || p.views > 0 || p.isCustom)
+        const hasEngagement = (p.likes > 0 || p.copies > 0 || p.shares > 0 || p.flyers > 0 || p.cardCreations > 0 || p.views > 0 || p.isCustom)
         if (!hasEngagement) return false
       }
       const matchCat = poetryCategoryFilter === 'all' || p.category === poetryCategoryFilter
@@ -1766,6 +2092,11 @@ export default function AdminPortalPage() {
       )
     }).sort((a, b) => (b.totalInteractions || 0) - (a.totalInteractions || 0))
   }, [mergedPoetryList, showOnlyEngagedPoetry, poetryCategoryFilter, poetrySearchTerm])
+
+  const paginatedPoetryCards = useMemo(() => {
+    const start = (pageAdminPoetry - 1) * pageSizeAdminPoetry
+    return filteredPoetryList.slice(start, start + pageSizeAdminPoetry)
+  }, [filteredPoetryList, pageAdminPoetry, pageSizeAdminPoetry])
 
   // Filtered Users
   const filteredUsers = useMemo(() => {
@@ -1878,6 +2209,53 @@ export default function AdminPortalPage() {
     return filteredMagicLinks.slice(start, start + pageSizeMagicLinks)
   }, [filteredMagicLinks, pageMagicLinks, pageSizeMagicLinks])
 
+  // Filtered & Paginated Magic Responses
+  const filteredMagicResponses = useMemo(() => {
+    let list = firestoreMagicResponses
+    if (magicResponseFilterSlug) {
+      list = list.filter((r) => r.linkId === magicResponseFilterSlug || (r as any).slug === magicResponseFilterSlug)
+    }
+    if (magicResponseSearch.trim()) {
+      const q = magicResponseSearch.toLowerCase().trim()
+      list = list.filter((r) =>
+        (r.recipientName && r.recipientName.toLowerCase().includes(q)) ||
+        (r.linkId && r.linkId.toLowerCase().includes(q)) ||
+        (r.reaction && r.reaction.toLowerCase().includes(q)) ||
+        (r.proposalAnswer?.choiceText && r.proposalAnswer.choiceText.toLowerCase().includes(q)) ||
+        (r.rsvp?.guestName && r.rsvp.guestName.toLowerCase().includes(q)) ||
+        (r.rsvpDetails?.guestName && r.rsvpDetails.guestName.toLowerCase().includes(q)) ||
+        (r.country && r.country.toLowerCase().includes(q)) ||
+        (r.city && r.city.toLowerCase().includes(q)) ||
+        (r.ip && r.ip.toLowerCase().includes(q)) ||
+        (r.device && r.device.toLowerCase().includes(q))
+      )
+    }
+    return list.sort((a, b) => {
+      const tA = toEpochMs(a.createdAt || a.timestamp)
+      const tB = toEpochMs(b.createdAt || b.timestamp)
+      return tB - tA
+    })
+  }, [firestoreMagicResponses, magicResponseFilterSlug, magicResponseSearch])
+
+  const paginatedMagicResponses = useMemo(() => {
+    const start = (pageMagicResponses - 1) * pageSizeMagicResponses
+    return filteredMagicResponses.slice(start, start + pageSizeMagicResponses)
+  }, [filteredMagicResponses, pageMagicResponses, pageSizeMagicResponses])
+
+  async function handleDeleteMagicResponse(responseId: string) {
+    if (!confirm('Are you sure you want to delete this magic link response record? This cannot be undone.')) return
+    try {
+      const activeDb = getFirebaseDb() || db
+      if (activeDb) {
+        await deleteDoc(doc(activeDb, 'magic_link_responses', responseId)).catch(() => {})
+      }
+      setFirestoreMagicResponses((prev) => prev.filter((r) => (r.id || (r as any).docId) !== responseId))
+      showToast('Magic response record removed', 'info')
+    } catch {
+      showToast('Failed to delete response', 'error')
+    }
+  }
+
   // Paginated Guestbook Wishes
   const paginatedGuestbookWishes = useMemo(() => {
     const start = (pageGuestbook - 1) * pageSizeGuestbook
@@ -1911,11 +2289,44 @@ export default function AdminPortalPage() {
     return activeSessionsList.slice(start, start + pageSizeLiveUsers)
   }, [activeSessionsList, pageLiveUsers, pageSizeLiveUsers])
 
-  // Paginated Live Poetry Engagements Activity
+  // Single Most Recent Live Poetry Engagement Activity
+  const latestPoetryActivity = useMemo(() => {
+    return firestorePoetryActivity.length > 0 ? firestorePoetryActivity[0] : null
+  }, [firestorePoetryActivity])
+
+  // Paginated and Filtered Real-Time Poetry Engagements List
+  const filteredPoetryActivity = useMemo(() => {
+    return firestorePoetryActivity.filter((act) => {
+      if (poetryActivityFilter !== 'all') {
+        if (act.action !== poetryActivityFilter) return false
+      }
+      if (poetryActivitySearch.trim()) {
+        const q = poetryActivitySearch.toLowerCase().trim()
+        const title = (act.title || act.poemId || '').toLowerCase()
+        const poet = (act.poet || '').toLowerCase()
+        const userName = (act.userName || '').toLowerCase()
+        const userEmail = (act.userEmail || '').toLowerCase()
+        const city = (act.city || '').toLowerCase()
+        const country = (act.country || '').toLowerCase()
+        const action = (act.action || '').toLowerCase()
+        return (
+          title.includes(q) ||
+          poet.includes(q) ||
+          userName.includes(q) ||
+          userEmail.includes(q) ||
+          city.includes(q) ||
+          country.includes(q) ||
+          action.includes(q)
+        )
+      }
+      return true
+    })
+  }, [firestorePoetryActivity, poetryActivityFilter, poetryActivitySearch])
+
   const paginatedPoetryActivity = useMemo(() => {
-    const start = (pagePoetryEvents - 1) * pageSizePoetryEvents
-    return firestorePoetryActivity.slice(start, start + pageSizePoetryEvents)
-  }, [firestorePoetryActivity, pagePoetryEvents, pageSizePoetryEvents])
+    const start = (pagePoetryActivity - 1) * pageSizePoetryActivity
+    return filteredPoetryActivity.slice(start, start + pageSizePoetryActivity)
+  }, [filteredPoetryActivity, pagePoetryActivity, pageSizePoetryActivity])
 
   const handleUpdateUserPlan = async (uid: string, plan: Plan) => {
     await adminUpdateUserPlan(uid, plan, selectedDurationDays)
@@ -2076,6 +2487,12 @@ export default function AdminPortalPage() {
 
     return items.sort((a, b) => (b.time || 0) - (a.time || 0))
   }, [allUsersList, invitations, wishes, visitingCards, magicLinks])
+
+  // Paginated Activity Stream (20 records per page by default)
+  const paginatedActivities = useMemo(() => {
+    const start = (pageActivityStream - 1) * pageSizeActivityStream
+    return recentActivities.slice(start, start + pageSizeActivityStream)
+  }, [recentActivities, pageActivityStream, pageSizeActivityStream])
 
   // 🔒 Render Admin Login Lock Gate if not authorized
   if (!mounted) return null
@@ -2596,8 +3013,9 @@ export default function AdminPortalPage() {
             { id: 'all', label: `✨ All Database Overview`, icon: FileSpreadsheet },
             { id: 'poetry', label: `📜 Poetry Hub (${poetrySummary.totalInteractions.toLocaleString()})`, icon: Feather },
             { id: 'live_users', label: `🟢 Live Online (${liveActiveSessions.length})`, icon: Activity },
-            { id: 'magic_links', label: `🪄 Magic Links (${magicLinks.length})`, icon: Sparkles },
+            { id: 'magic_links', label: `🪄 Magic Links (${magicLinks.length}${firestoreMagicResponses.length > 0 ? ` · ${firestoreMagicResponses.length} Resp` : ''})`, icon: Sparkles },
             { id: 'guestbook', label: `💬 Wishes Wall (${allGuestbookWishes.length})`, icon: MessageCircle },
+            { id: 'testimonials', label: `⭐ Reviews & Feedback (${firestoreTestimonials.length})`, icon: Star },
             { id: 'invitations', label: `Active Invitations (${invitations.length})`, icon: Calendar },
             { id: 'wishes', label: `Created Wishes (${wishes.length})`, icon: Sparkles },
             { id: 'visiting_cards', label: `Visiting Cards (${visitingCards?.length || 0})`, icon: CreditCard },
@@ -2692,7 +3110,7 @@ export default function AdminPortalPage() {
                     No activity recorded yet.
                   </div>
                 ) : (
-                  recentActivities.slice(0, 15).map((act, i) => (
+                  paginatedActivities.map((act, i) => (
                     <div key={i} className="py-3 first:pt-1 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                       <div className="flex items-start gap-3 min-w-0">
                         <div className={cn(
@@ -2756,6 +3174,15 @@ export default function AdminPortalPage() {
                   ))
                 )}
               </div>
+
+              <AdminTablePagination
+                currentPage={pageActivityStream}
+                totalItems={recentActivities.length}
+                pageSize={pageSizeActivityStream}
+                onPageChange={setPageActivityStream}
+                onPageSizeChange={setPageSizeActivityStream}
+                itemName="stream events"
+              />
             </div>
           </div>
         )}
@@ -2812,6 +3239,20 @@ export default function AdminPortalPage() {
                     <span>{Object.keys(expandedDevices).length === groupedSessions.length ? 'Collapse All' : 'Expand All'}</span>
                   </button>
                 )}
+
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const devId = localStorage.getItem('cardzy_device_id') || localStorage.getItem('cardzy_admin_device_id')
+                    await purgeAdminPresence(undefined, devId || undefined)
+                    showToast('Admin device sessions purged from database', 'success')
+                  }}
+                  className="px-3 py-1 rounded-xl text-xs font-bold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                  title="Purge and ensure your current admin device is excluded from active/offline sessions"
+                >
+                  <ShieldCheck className="size-3.5" />
+                  <span>My Device Excluded</span>
+                </button>
 
                 <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 flex items-center gap-1.5">
                   <Activity className="size-3.5 animate-pulse" /> Live Pulse
@@ -3338,6 +3779,16 @@ export default function AdminPortalPage() {
                 </div>
 
                 <div className="flex items-center gap-2.5 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={handleResetAllPoetryStats}
+                    className="px-3.5 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-bold flex items-center gap-1.5 border border-rose-500/20 transition-all cursor-pointer shadow-2xs"
+                    title="Purge and reset all poetry counts (likes, views, shares, copies, flyers) to 0"
+                  >
+                    <RotateCcw className="size-3.5" />
+                    <span>Reset All Counts to 0</span>
+                  </button>
+
                   <Link
                     href="/poetry"
                     target="_blank"
@@ -3350,8 +3801,8 @@ export default function AdminPortalPage() {
                 </div>
               </div>
 
-              {/* 5 Top Metric Stat Boxes */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-2">
+              {/* 6 Top Metric Stat Boxes - Aggregated live across all items in the collection */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-2">
                 <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-card border border-amber-500/20">
                   <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground mb-1">
                     <span>Poetry Views</span>
@@ -3359,6 +3810,16 @@ export default function AdminPortalPage() {
                   </div>
                   <div className="text-2xl font-black text-amber-500 font-mono">
                     {poetrySummary.totalViews.toLocaleString()}
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-card border border-rose-500/20">
+                  <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground mb-1">
+                    <span>Total Likes</span>
+                    <Heart className="size-4 text-rose-500 fill-rose-500/30" />
+                  </div>
+                  <div className="text-2xl font-black text-rose-600 dark:text-rose-400 font-mono">
+                    {poetrySummary.totalLikes.toLocaleString()}
                   </div>
                 </div>
 
@@ -3392,94 +3853,291 @@ export default function AdminPortalPage() {
                   </div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-card border border-rose-500/20">
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-500/10 via-indigo-500/5 to-card border border-indigo-500/20">
                   <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground mb-1">
                     <span>Cards Created</span>
-                    <Heart className="size-4 text-rose-500" />
+                    <Sparkles className="size-4 text-indigo-500" />
                   </div>
-                  <div className="text-2xl font-black text-rose-600 dark:text-rose-400 font-mono">
+                  <div className="text-2xl font-black text-indigo-600 dark:text-indigo-400 font-mono">
                     {poetrySummary.totalCardCreations.toLocaleString()}
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Live Real-Time Poetry Activity Feed */}
+            {/* Recent Live User Engagements List */}
             <div className="p-6 pt-0 space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-                  <Activity className="size-4 text-emerald-500 animate-pulse" />
-                  Recent Live User Engagements
-                </h3>
-                <span className="text-[11px] text-muted-foreground font-mono">
-                  {firestorePoetryActivity.length > 0 ? `Showing latest ${firestorePoetryActivity.length} real-time events` : 'Listening for new events...'}
-                </span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+                    <Activity className="size-4 text-emerald-500 animate-pulse" />
+                    Recent Live User Engagements
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                      Live Real-Time Stream
+                    </span>
+                  </h3>
+                  <span className="text-[11px] text-muted-foreground font-mono">
+                    {firestorePoetryActivity.length > 0 ? `Total Events: ${firestorePoetryActivity.length}` : 'Listening for new events...'}
+                  </span>
+                </div>
+
+                {/* Search */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <div className="relative">
+                    <Search className="size-3.5 text-muted-foreground absolute left-2.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Search poem, user, city..."
+                      value={poetryActivitySearch}
+                      onChange={(e) => {
+                        setPoetryActivitySearch(e.target.value)
+                        setPagePoetryActivity(1)
+                      }}
+                      className="pl-8 pr-7 py-1 text-xs rounded-xl bg-muted/40 border border-border/70 focus:outline-none focus:ring-1 focus:ring-primary w-44 sm:w-56"
+                    />
+                    {poetryActivitySearch && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPoetryActivitySearch('')
+                          setPagePoetryActivity(1)
+                        }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs"
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
 
-              {firestorePoetryActivity.length === 0 ? (
-                <div className="py-12 text-center rounded-2xl bg-muted/20 border border-border/60">
-                  <Feather className="size-8 text-amber-500/40 mx-auto mb-2" />
-                  <p className="text-sm font-semibold text-foreground">No recent poetry engagement events recorded yet.</p>
-                  <p className="text-xs text-muted-foreground mt-1">Live events will appear in real time whenever users share, copy, or download story flyers.</p>
+              {/* Action Filter Pills */}
+              {firestorePoetryActivity.length > 0 && (
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPoetryActivityFilter('all')
+                      setPagePoetryActivity(1)
+                    }}
+                    className={cn(
+                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
+                      poetryActivityFilter === 'all'
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
+                    )}
+                  >
+                    All ({firestorePoetryActivity.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPoetryActivityFilter('like')
+                      setPagePoetryActivity(1)
+                    }}
+                    className={cn(
+                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
+                      poetryActivityFilter === 'like'
+                        ? "bg-rose-500 text-white border-rose-500"
+                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
+                    )}
+                  >
+                    ❤️ Likes ({firestorePoetryActivity.filter(a => a.action === 'like').length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPoetryActivityFilter('share')
+                      setPagePoetryActivity(1)
+                    }}
+                    className={cn(
+                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
+                      poetryActivityFilter === 'share'
+                        ? "bg-emerald-500 text-white border-emerald-500"
+                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
+                    )}
+                  >
+                    💬 Shares ({firestorePoetryActivity.filter(a => a.action === 'share').length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPoetryActivityFilter('copy')
+                      setPagePoetryActivity(1)
+                    }}
+                    className={cn(
+                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
+                      poetryActivityFilter === 'copy'
+                        ? "bg-blue-500 text-white border-blue-500"
+                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
+                    )}
+                  >
+                    📋 Copies ({firestorePoetryActivity.filter(a => a.action === 'copy').length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPoetryActivityFilter('flyer')
+                      setPagePoetryActivity(1)
+                    }}
+                    className={cn(
+                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
+                      poetryActivityFilter === 'flyer'
+                        ? "bg-purple-500 text-white border-purple-500"
+                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
+                    )}
+                  >
+                    🖼️ Flyers ({firestorePoetryActivity.filter(a => a.action === 'flyer').length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPoetryActivityFilter('card_bridge')
+                      setPagePoetryActivity(1)
+                    }}
+                    className={cn(
+                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
+                      poetryActivityFilter === 'card_bridge'
+                        ? "bg-indigo-500 text-white border-indigo-500"
+                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
+                    )}
+                  >
+                    💌 Wishes ({firestorePoetryActivity.filter(a => a.action === 'card_bridge').length})
+                  </button>
+                </div>
+              )}
+
+              {filteredPoetryActivity.length === 0 ? (
+                <div className="py-8 text-center rounded-2xl bg-muted/20 border border-border/60">
+                  <Feather className="size-7 text-amber-500/40 mx-auto mb-1.5" />
+                  <p className="text-xs font-semibold text-foreground">
+                    {firestorePoetryActivity.length === 0
+                      ? 'No recent live poetry engagement recorded yet.'
+                      : 'No engagements matching your filter.'}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                    User engagement events will appear here in real time as visitors like, share, copy, or download flyers.
+                  </p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {paginatedPoetryActivity.map((act: any, aIdx: number) => (
-                    <div
-                      key={act.id || aIdx}
-                      className="p-4 rounded-2xl bg-card border border-border/80 flex flex-col justify-between gap-3 text-xs shadow-xs hover:border-amber-500/40 transition-all group"
-                    >
-                      <div className="flex items-start justify-between gap-2.5">
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <span className={cn(
-                            "size-8 rounded-xl flex items-center justify-center text-sm font-bold shrink-0",
-                            act.action === 'share' ? "bg-emerald-500/15 text-emerald-500 border border-emerald-500/20" :
-                            act.action === 'copy' ? "bg-blue-500/15 text-blue-500 border border-blue-500/20" :
-                            act.action === 'flyer' ? "bg-purple-500/15 text-purple-500 border border-purple-500/20" :
-                            act.action === 'card_bridge' ? "bg-rose-500/15 text-rose-500 border border-rose-500/20" :
-                            "bg-amber-500/15 text-amber-500 border border-amber-500/20"
-                          )}>
-                            {act.action === 'share' ? '💬' :
+                <div className="space-y-3">
+                  {paginatedPoetryActivity.map((act: any, idx: number) => {
+                    const actOrigin = inferOrigin({
+                      country: act.country,
+                      countryCode: act.countryCode,
+                      city: act.city,
+                      createdLocation: act.createdLocation,
+                      device: act.device,
+                      browser: act.browser,
+                      ip: act.ip,
+                    })
+
+                    return (
+                      <div
+                        key={act.id || act.docId || `${act.poemId}-${act.timestamp}-${idx}`}
+                        className="p-4 sm:p-5 rounded-2xl bg-card border border-border/80 hover:border-emerald-500/30 transition-all shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4"
+                      >
+                        <div className="flex items-start sm:items-center gap-3.5 min-w-0">
+                          <span
+                            className={cn(
+                              "size-11 rounded-2xl flex items-center justify-center text-lg font-bold shrink-0 shadow-xs",
+                              act.action === 'like' ? "bg-rose-500/15 text-rose-500 border border-rose-500/20" :
+                              act.action === 'share' ? "bg-emerald-500/15 text-emerald-500 border border-emerald-500/20" :
+                              act.action === 'copy' ? "bg-blue-500/15 text-blue-500 border border-blue-500/20" :
+                              act.action === 'flyer' ? "bg-purple-500/15 text-purple-500 border border-purple-500/20" :
+                              act.action === 'card_bridge' ? "bg-indigo-500/15 text-indigo-500 border border-indigo-500/20" :
+                              "bg-amber-500/15 text-amber-500 border border-amber-500/20"
+                            )}
+                          >
+                            {act.action === 'like' ? '❤️' :
+                             act.action === 'unlike' ? '💔' :
+                             act.action === 'share' ? '💬' :
                              act.action === 'copy' ? '📋' :
                              act.action === 'flyer' ? '🖼️' :
                              act.action === 'card_bridge' ? '💌' : '👁️'}
                           </span>
-                          <div className="min-w-0">
-                            <div className="font-bold text-foreground truncate text-sm">
-                              {act.title || act.poemId}
+
+                          <div className="min-w-0 space-y-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="font-extrabold text-foreground text-sm sm:text-base truncate">
+                                {act.title || act.poemId}
+                              </span>
+                              {act.poet && (
+                                <span className="text-xs text-muted-foreground font-medium">
+                                  by <strong className="text-foreground/90">{act.poet}</strong>
+                                </span>
+                              )}
+                              <span
+                                className={cn(
+                                  "px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase border",
+                                  act.action === 'like' ? "bg-rose-500/10 text-rose-600 border-rose-500/20" :
+                                  act.action === 'share' ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" :
+                                  act.action === 'copy' ? "bg-blue-500/10 text-blue-600 border-blue-500/20" :
+                                  act.action === 'flyer' ? "bg-purple-500/10 text-purple-600 border-purple-500/20" :
+                                  "bg-amber-500/10 text-amber-600 border-amber-500/20"
+                                )}
+                              >
+                                {act.action === 'like' ? 'Liked Verse' :
+                                 act.action === 'unlike' ? 'Unliked' :
+                                 act.action === 'share' ? 'Shared to WhatsApp' :
+                                 act.action === 'copy' ? 'Copied Verse' :
+                                 act.action === 'flyer' ? 'Downloaded Story Flyer' :
+                                 act.action === 'card_bridge' ? 'Created 3D Wish Card' : 'Viewed Verse'}
+                              </span>
                             </div>
-                            <div className="text-[11px] text-muted-foreground flex items-center gap-1.5 mt-0.5">
-                              {act.poet && <span className="font-medium text-foreground/80">{act.poet}</span>}
+
+                            {/* Who & Where Visitor Details */}
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1 font-semibold text-foreground">
+                                <User className="size-3 text-primary shrink-0" />
+                                {act.userName || 'Guest Visitor'}
+                                {act.userEmail && <span className="text-[10px] text-muted-foreground font-normal">({act.userEmail})</span>}
+                              </span>
                               <span>•</span>
-                              <span className="capitalize font-semibold text-amber-500">{act.action.replace('_', ' ')}</span>
+                              <span className="flex items-center gap-1 font-medium text-foreground">
+                                <span className="text-sm leading-none">{actOrigin.flag}</span>
+                                {actOrigin.locationText}
+                              </span>
+                              {actOrigin.device && (
+                                <>
+                                  <span>•</span>
+                                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-muted text-[10px] font-medium text-muted-foreground">
+                                    {actOrigin.device.includes('Mobile') ? <Smartphone className="size-2.5" /> : <Monitor className="size-2.5" />}
+                                    {actOrigin.device} {actOrigin.browser ? `• ${actOrigin.browser}` : ''}
+                                  </span>
+                                </>
+                              )}
+                              {actOrigin.ip && actOrigin.ip !== '127.0.0.1' && (
+                                <span className="px-1.5 py-0.5 rounded bg-muted/70 text-[10px] text-muted-foreground font-mono">
+                                  IP: {actOrigin.ip}
+                                </span>
+                              )}
                             </div>
                           </div>
                         </div>
 
-                        <span className="text-[10px] text-muted-foreground shrink-0 font-mono bg-muted/60 px-2 py-0.5 rounded-md">
-                          {act.timestamp ? new Date(act.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'just now'}
-                        </span>
-                      </div>
+                        {/* Action buttons & timestamp */}
+                        <div className="flex items-center justify-between md:justify-end gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-border/50">
+                          <span className="text-[11px] text-muted-foreground font-mono bg-muted/60 px-2.5 py-1 rounded-lg">
+                            {act.timestamp ? new Date(act.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'just now'}
+                          </span>
 
-                      {/* Action buttons bar */}
-                      <div className="pt-2 border-t border-border/60 flex items-center justify-between gap-2">
-                        <button
-                          type="button"
-                          onClick={(e) => handleOpenFlyerPreview(act, e)}
-                          className="px-2.5 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold text-[11px] border border-purple-500/20 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
-                        >
-                          <Eye className="size-3.5" />
-                          <span>View Flyer & Verse</span>
-                        </button>
+                          <button
+                            type="button"
+                            onClick={(e) => handleOpenFlyerPreview(act, e)}
+                            className="px-3 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold text-xs border border-purple-500/20 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                          >
+                            <Eye className="size-3.5" />
+                            <span>View Flyer & Verse</span>
+                          </button>
 
-                        <div className="flex items-center gap-1.5">
                           <button
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation()
                               promptAdjustMetrics('poetry', { id: act.poemId, title: act.title, poemId: act.poemId })
                             }}
-                            className="p-1.5 rounded-xl text-indigo-500 hover:text-indigo-600 hover:bg-indigo-500/10 border border-transparent hover:border-indigo-500/20 transition-all cursor-pointer"
+                            className="p-2 rounded-xl text-indigo-500 hover:text-indigo-600 hover:bg-indigo-500/10 border border-border/70 transition-all cursor-pointer"
                             title="Adjust metrics (likes, views, shares)"
                           >
                             <Sliders className="size-3.5" />
@@ -3488,27 +4146,325 @@ export default function AdminPortalPage() {
                           <button
                             type="button"
                             onClick={(e) => handleDeletePoetryActivity(act.id || act.docId, act.poemId, e)}
-                            className="p-1.5 rounded-xl text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all cursor-pointer"
+                            className="p-2 rounded-xl text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border border-border/70 transition-all cursor-pointer"
                             title="Delete this poetry event log"
                           >
                             <Trash2 className="size-3.5" />
                           </button>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  })}
+
+                  <AdminTablePagination
+                    currentPage={pagePoetryActivity}
+                    totalItems={filteredPoetryActivity.length}
+                    pageSize={pageSizePoetryActivity}
+                    onPageChange={setPagePoetryActivity}
+                    onPageSizeChange={setPageSizePoetryActivity}
+                    itemName="engagements"
+                  />
                 </div>
               )}
             </div>
 
-            <AdminTablePagination
-              currentPage={pagePoetryEvents}
-              totalItems={firestorePoetryActivity.length}
-              pageSize={pageSizePoetryEvents}
-              onPageChange={setPagePoetryEvents}
-              onPageSizeChange={setPageSizePoetryEvents}
-              itemName="poetry events"
-            />
+            {/* ── ALL POETRY CARDS & PER-CARD STATS ("ON TOP OF THAT CARD") ── */}
+            <div className="border-t border-border p-6 space-y-5 bg-muted/10">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-lg font-extrabold text-foreground flex items-center gap-2">
+                    <BookOpen className="size-5 text-amber-500" />
+                    All Poetry Cards & Live Engagement Metrics
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Browse all 1,000 poems with live like counters, shares, copies, and views displayed directly on top of each card.
+                  </p>
+                </div>
+
+                {/* Search & Filter Toolbar */}
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <div className="relative min-w-[200px]">
+                    <Search className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      value={poetrySearchTerm}
+                      onChange={(e) => {
+                        setPoetrySearchTerm(e.target.value)
+                        setPageAdminPoetry(1)
+                      }}
+                      placeholder="Search poet, title, verse..."
+                      className="pl-8 h-8 rounded-xl text-xs bg-card border-border"
+                    />
+                  </div>
+
+                  <select
+                    value={poetryCategoryFilter}
+                    onChange={(e) => {
+                      setPoetryCategoryFilter(e.target.value)
+                      setPageAdminPoetry(1)
+                    }}
+                    className="h-8 px-2.5 rounded-xl text-xs bg-card border border-border text-foreground font-medium"
+                  >
+                    <option value="all">All Categories ({POETRY_CATEGORIES.length})</option>
+                    {POETRY_CATEGORIES.map((c) => (
+                      <option key={c.id} value={c.id}>{c.label}</option>
+                    ))}
+                  </select>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowOnlyEngagedPoetry(!showOnlyEngagedPoetry)
+                      setPageAdminPoetry(1)
+                    }}
+                    className={cn(
+                      "px-3 py-1.5 rounded-xl font-bold transition-all border text-xs flex items-center gap-1.5 cursor-pointer",
+                      showOnlyEngagedPoetry
+                        ? "bg-amber-500 text-slate-950 border-amber-500 shadow-xs"
+                        : "bg-card border-border text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    <Heart className="size-3" />
+                    <span>Engaged Only ({mergedPoetryList.filter(p => (p.likes > 0 || p.shares > 0 || p.copies > 0 || p.views > 0)).length})</span>
+                  </button>
+
+                  {deletedPoetryIds.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm(`Restore ${deletedPoetryIds.length} deleted cards back to the catalog?`)) {
+                          setDeletedPoetryIds([])
+                          try {
+                            localStorage.removeItem('cardzy_deleted_poetry_ids')
+                          } catch {}
+                          showToast('Catalog cards restored', 'success')
+                        }
+                      }}
+                      className="px-2.5 py-1.5 rounded-xl font-semibold bg-muted hover:bg-muted/80 text-muted-foreground border border-border text-xs flex items-center gap-1.5 cursor-pointer"
+                      title="Restore previously purged cards"
+                    >
+                      <RotateCcw className="size-3" />
+                      <span>Restore Deleted ({deletedPoetryIds.length})</span>
+                    </button>
+                  )}
+
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={() => setIsAddPoetryModalOpen(true)}
+                    className="h-8 rounded-xl bg-primary text-primary-foreground font-bold text-xs gap-1.5"
+                  >
+                    <Plus className="size-3.5" />
+                    <span>Add Poem</span>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Cards Grid */}
+              {filteredPoetryList.length === 0 ? (
+                <div className="py-12 text-center rounded-2xl bg-card border border-border">
+                  <p className="text-sm font-semibold text-foreground">No poetry matches your active filters.</p>
+                  <p className="text-xs text-muted-foreground mt-1">Try clearing your search query or toggling "Engaged Only".</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {paginatedPoetryCards.map((p) => {
+                    return (
+                      <div
+                        key={p.id}
+                        className="rounded-3xl border border-border bg-card shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
+                      >
+                        {/* ── TOP STATS BAR ("ON TOP OF THAT CARD") ── */}
+                        <div className="px-4 py-2.5 bg-gradient-to-r from-rose-500/10 via-amber-500/10 to-blue-500/10 border-b border-border/80 flex items-center justify-between gap-1.5 flex-wrap">
+                          <div className="flex items-center gap-1.5 text-xs font-black font-mono">
+                            <span
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/25"
+                              title="Likes count"
+                            >
+                              <Heart className="size-3 fill-rose-500 text-rose-500" />
+                              <span>{p.likes || 0}</span>
+                            </span>
+                            <span
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25"
+                              title="WhatsApp & social shares"
+                            >
+                              <Share2 className="size-3" />
+                              <span>{p.shares || 0}</span>
+                            </span>
+                            <span
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/25"
+                              title="Verses copied"
+                            >
+                              <FileText className="size-3" />
+                              <span>{p.copies || 0}</span>
+                            </span>
+                            <span
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/25"
+                              title="Card views"
+                            >
+                              <Eye className="size-3" />
+                              <span>{p.views || 0}</span>
+                            </span>
+                            <span
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/25"
+                              title="Story flyers downloaded"
+                            >
+                              <Download className="size-3" />
+                              <span>{p.flyers || 0}</span>
+                            </span>
+                          </div>
+
+                          {p.lastInteractedAt && (
+                            <span className="text-[10px] text-muted-foreground font-mono">
+                              {formatRelativeTime(p.lastInteractedAt)}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Card Body */}
+                        <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
+                          <div className="space-y-2">
+                            <div className="flex items-start justify-between gap-2">
+                              <div>
+                                <h4 className="font-extrabold text-foreground text-sm line-clamp-1">
+                                  {p.title}
+                                </h4>
+                                <p className="text-xs text-muted-foreground font-medium flex items-center gap-1.5 mt-0.5">
+                                  <span className="text-foreground font-bold">{p.poet}</span>
+                                  {p.poetUrdu && <span className="font-serif">({p.poetUrdu})</span>}
+                                  {p.poetEra && <span className="text-[10px] text-muted-foreground">• {p.poetEra}</span>}
+                                </p>
+                              </div>
+                              <span className="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase bg-muted border border-border text-muted-foreground shrink-0">
+                                {p.originalLanguage || 'ur'}
+                              </span>
+                            </div>
+
+                            {/* Verse text snippet */}
+                            <div className="p-3 rounded-2xl bg-muted/40 border border-border/60">
+                              <p
+                                className="text-xs font-medium font-serif leading-relaxed whitespace-pre-line text-foreground line-clamp-3 text-right"
+                                dir={p.direction !== 'ltr' ? 'rtl' : 'ltr'}
+                              >
+                                {p.originalText}
+                              </p>
+                              {p.englishTranslation && (
+                                <p className="text-[11px] text-muted-foreground italic mt-2 pt-1.5 border-t border-border/40 line-clamp-2">
+                                  "{p.englishTranslation}"
+                                </p>
+                              )}
+                            </div>
+
+                            {/* Who & Where Interaction Details (matching v, i, and w cards) */}
+                            {(p.lastUserName || p.lastCity || p.lastCountry || p.lastDevice || p.lastIp) && (() => {
+                              const pOrigin = inferOrigin({
+                                country: p.lastCountry,
+                                countryCode: p.lastCountryCode,
+                                city: p.lastCity,
+                                createdLocation: p.lastLocation,
+                                device: p.lastDevice,
+                                browser: p.lastBrowser,
+                                ip: p.lastIp,
+                              })
+
+                              return (
+                                <div className="p-2.5 rounded-2xl bg-muted/40 border border-border/60 space-y-1.5 text-xs">
+                                  <div className="flex items-center justify-between gap-1 text-[11px]">
+                                    <div className="flex items-center gap-1.5 text-foreground font-bold truncate">
+                                      <User className="size-3 text-amber-500 shrink-0" />
+                                      <span className="truncate">{p.lastUserName || 'Guest Visitor'}</span>
+                                    </div>
+                                    {p.lastInteractedAt && (
+                                      <span className="text-[10px] text-muted-foreground font-mono shrink-0">
+                                        {formatDateTime(p.lastInteractedAt)}
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  <div className="flex items-center gap-1.5 text-xs">
+                                    <span className="text-sm shrink-0 leading-none">{pOrigin.flag}</span>
+                                    <span className="font-semibold text-foreground truncate">
+                                      {pOrigin.locationText}
+                                    </span>
+                                  </div>
+
+                                  {(pOrigin.device || pOrigin.ip) && (
+                                    <div className="flex flex-wrap items-center gap-1 text-[10px] pt-0.5">
+                                      {pOrigin.device && (
+                                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-400 font-medium">
+                                          {pOrigin.device.includes('Mobile') ? <Smartphone className="size-2.5" /> : <Monitor className="size-2.5" />}
+                                          {pOrigin.device} {pOrigin.browser ? `• ${pOrigin.browser}` : ''}
+                                        </span>
+                                      )}
+                                      {pOrigin.ip && pOrigin.ip !== '127.0.0.1' && (
+                                        <span className="px-1.5 py-0.5 rounded bg-muted/70 text-muted-foreground font-mono">
+                                          IP: {pOrigin.ip}
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              )
+                            })()}
+                          </div>
+
+                          {/* Action Toolbar */}
+                          <div className="pt-3 border-t border-border/60 flex items-center justify-between gap-2">
+                            <button
+                              type="button"
+                              onClick={(e) => handleOpenFlyerPreview({ poemId: p.id, title: p.title, poet: p.poet, action: 'view' }, e)}
+                              className="px-2.5 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold text-[11px] border border-purple-500/20 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                            >
+                              <Eye className="size-3.5" />
+                              <span>Story Flyer</span>
+                            </button>
+
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => promptAdjustMetrics('poetry', p)}
+                                className="px-2.5 py-1.5 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-bold text-[11px] border border-indigo-500/20 transition-all flex items-center gap-1.5 cursor-pointer"
+                                title="Adjust likes, views, shares"
+                              >
+                                <Sliders className="size-3.5" />
+                                <span>Adjust</span>
+                              </button>
+
+                              <Link
+                                href={`/poetry?poem=${p.id}`}
+                                target="_blank"
+                                className="p-1.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted border border-border transition-all"
+                                title="Open in Poetry Explorer"
+                              >
+                                <ExternalLink className="size-3.5" />
+                              </Link>
+
+                              <button
+                                type="button"
+                                onClick={() => promptDeleteCard('poetry', p)}
+                                className="p-1.5 rounded-xl text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border border-rose-500/20 transition-all cursor-pointer"
+                                title={p.isCustom ? "Delete Custom Poem & Engagement Data" : "Delete Card & Purge Engagement Data"}
+                              >
+                                <Trash2 className="size-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+
+              <AdminTablePagination
+                currentPage={pageAdminPoetry}
+                totalItems={filteredPoetryList.length}
+                pageSize={pageSizeAdminPoetry}
+                onPageChange={setPageAdminPoetry}
+                onPageSizeChange={setPageSizeAdminPoetry}
+                itemName="poetry cards"
+              />
+            </div>
           </div>
         )}
 
@@ -3907,6 +4863,31 @@ export default function AdminPortalPage() {
                               {m.viewsCount || 0} visits
                             </span>
                           </div>
+                          {(() => {
+                            const linkSlug = (m.slug || m.id) || ''
+                            const mResponses = firestoreMagicResponses.filter((r) => r.linkId === linkSlug || (r as any).slug === linkSlug)
+                            const respCount = Math.max(mResponses.length, Number((m as any).responsesCount || 0))
+                            return (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setMagicResponseFilterSlug(magicResponseFilterSlug === linkSlug ? null : (linkSlug || null))
+                                  const ledgerEl = document.getElementById('magic-responses-ledger')
+                                  if (ledgerEl) ledgerEl.scrollIntoView({ behavior: 'smooth' })
+                                }}
+                                className={cn(
+                                  "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md font-mono font-bold text-xs mb-1.5 transition-colors cursor-pointer border",
+                                  respCount > 0
+                                    ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 border-emerald-500/30"
+                                    : "bg-muted text-muted-foreground hover:bg-muted/80 border-border"
+                                )}
+                                title={`Click to view ${respCount} response${respCount !== 1 ? 's' : ''} in ledger`}
+                              >
+                                <MessageCircle className="size-3" />
+                                <span>{respCount} {respCount === 1 ? 'Response' : 'Responses'}</span>
+                              </button>
+                            )
+                          })()}
                           <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="SMS">
                               📱 {m.shares?.sms || 0}
@@ -4003,6 +4984,281 @@ export default function AdminPortalPage() {
               onPageSizeChange={setPageSizeMagicLinks}
               itemName="magic links"
             />
+
+            {/* ── MAGIC LINK RESPONSES & RSVP LEDGER ── */}
+            <div id="magic-responses-ledger" className="border-t border-border pt-6 mt-2">
+              <div className="p-6 border-b border-border flex flex-col md:flex-row md:items-center justify-between gap-4 bg-muted/10">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+                      <MessageCircle className="size-5 text-emerald-500" />
+                      {magicResponseFilterSlug ? (
+                        <>Responses for: <span className="text-amber-500 font-mono text-sm">{magicResponseFilterSlug}</span></>
+                      ) : (
+                        <>Interactive Responses & RSVPs ({firestoreMagicResponses.length})</>
+                      )}
+                    </h3>
+                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                      ⚡ 1-Tap WhatsApp Connected
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Real-time recipient reactions, proposal choices, and RSVP submissions from 3D magic celebrations.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+                    <Input
+                      placeholder="Search responses..."
+                      value={magicResponseSearch}
+                      onChange={(e) => {
+                        setMagicResponseSearch(e.target.value)
+                        setPageMagicResponses(1)
+                      }}
+                      className="pl-8 text-xs h-8 w-44 rounded-xl"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Link Filter Chips */}
+              <div className="px-6 py-3 border-b border-border/60 bg-muted/5 flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMagicResponseFilterSlug(null)
+                    setPageMagicResponses(1)
+                  }}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all border cursor-pointer',
+                    !magicResponseFilterSlug
+                      ? 'bg-amber-500 text-slate-950 border-amber-500 shadow-xs'
+                      : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
+                  )}
+                >
+                  <Sparkles className="size-3.5" /> All Magic Links ({firestoreMagicResponses.length})
+                </button>
+
+                {magicLinks
+                  .filter((m) => {
+                    const slug = m.slug || m.id
+                    return firestoreMagicResponses.some((r) => r.linkId === slug || (r as any).slug === slug)
+                  })
+                  .map((m) => {
+                    const slug = m.slug || m.id
+                    const count = firestoreMagicResponses.filter((r) => r.linkId === slug || (r as any).slug === slug).length
+                    const isActive = magicResponseFilterSlug === slug
+                    return (
+                      <button
+                        key={slug}
+                        type="button"
+                        onClick={() => {
+                          setMagicResponseFilterSlug(isActive ? null : (slug || null))
+                          setPageMagicResponses(1)
+                        }}
+                        className={cn(
+                          'flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-bold transition-all border max-w-[220px] truncate cursor-pointer',
+                          isActive
+                            ? 'bg-amber-500 text-slate-950 border-amber-500 shadow-xs'
+                            : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
+                        )}
+                        title={`${m.recipientName} (${slug})`}
+                      >
+                        <span className="truncate">{m.recipientName || slug}</span>
+                        <span className="px-1.5 py-0.2 rounded-full bg-slate-950/20 text-[10px] font-mono font-bold">
+                          {count}
+                        </span>
+                      </button>
+                    )
+                  })}
+              </div>
+
+              {/* Table of Responses */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead className="bg-muted/40 border-b border-border text-xs uppercase font-semibold text-muted-foreground">
+                    <tr>
+                      <th className="py-3 px-4">Celebrant / Link</th>
+                      <th className="py-3 px-4">Response / Reaction</th>
+                      <th className="py-3 px-4">Origin & Location</th>
+                      <th className="py-3 px-4">Submitted When</th>
+                      <th className="py-3 px-4 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border/60">
+                    {filteredMagicResponses.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="py-8 text-center text-muted-foreground text-xs">
+                          {magicResponseSearch || magicResponseFilterSlug
+                            ? 'No magic responses match the current search / filter.'
+                            : 'No interactive responses recorded yet. Responses will appear here when recipients interact with 3D magic celebrations!'}
+                        </td>
+                      </tr>
+                    ) : (
+                      paginatedMagicResponses.map((resp, rIdx) => {
+                        const parentLink = magicLinks.find((m) => (m.slug || m.id) === resp.linkId || m.id === resp.linkId)
+                        const respOrigin = inferOrigin({
+                          country: resp.country,
+                          countryCode: resp.countryCode,
+                          city: resp.city,
+                          region: resp.region,
+                          createdLocation: resp.createdLocation,
+                          device: resp.device,
+                          browser: resp.browser,
+                          ip: resp.ip,
+                        })
+
+                        const creatorPhone = normalizeWhatsAppNumber(
+                          (parentLink as any)?.whatsappNumber ||
+                          parentLink?.wishContent?.whatsappNumber ||
+                          (parentLink?.inviteContent as any)?.whatsappNumber
+                        )
+
+                        return (
+                          <tr key={resp.id || `mresp-${rIdx}`} className="hover:bg-muted/20 transition-colors">
+                            <td className="py-3.5 px-4">
+                              <div className="font-bold text-foreground text-sm">
+                                {resp.recipientName || parentLink?.recipientName || 'Celebrant'}
+                              </div>
+                              <div className="flex items-center gap-1.5 mt-0.5">
+                                <Link
+                                  href={`/m/${resp.linkId}`}
+                                  target="_blank"
+                                  className="text-[11px] font-mono text-amber-500 hover:underline flex items-center gap-1"
+                                >
+                                  /m/{resp.linkId}
+                                  <ExternalLink className="size-2.5" />
+                                </Link>
+                              </div>
+                            </td>
+
+                            <td className="py-3.5 px-4">
+                              {resp.type === 'reaction' && (
+                                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-foreground font-bold text-xs">
+                                  <span className="text-base">{resp.reaction?.slice(0, 2) || '❤️'}</span>
+                                  <span>{resp.reaction || 'Loved Celebration'}</span>
+                                </div>
+                              )}
+
+                              {resp.type === 'proposal_answer' && (
+                                <div className="space-y-1">
+                                  <div className={cn(
+                                    "inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold border",
+                                    resp.proposalAnswer?.accepted
+                                      ? "bg-rose-500/10 text-rose-500 border-rose-500/30"
+                                      : "bg-muted text-muted-foreground border-border"
+                                  )}>
+                                    <span>💍</span>
+                                    <span>{resp.proposalAnswer?.choiceText || (resp.proposalAnswer?.accepted ? 'Said YES!' : 'Declined')}</span>
+                                  </div>
+                                </div>
+                              )}
+
+                              {resp.type === 'rsvp' && (
+                                <div className="space-y-1">
+                                  <div className={cn(
+                                    "inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold border",
+                                    resp.rsvp?.attending || resp.rsvpDetails?.attending
+                                      ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                                      : "bg-muted text-muted-foreground border-border"
+                                  )}>
+                                    <span>{resp.rsvp?.attending || resp.rsvpDetails?.attending ? '✅ Attending' : '❌ Unable to attend'}</span>
+                                    {(resp.rsvp?.guestsCount || resp.rsvpDetails?.guestsCount) && (
+                                      <span className="font-mono text-[10px] opacity-80">
+                                        ({resp.rsvp?.guestsCount || resp.rsvpDetails?.guestsCount} guests)
+                                      </span>
+                                    )}
+                                  </div>
+                                  {(resp.rsvp?.wishes || resp.rsvpDetails?.wishes) && (
+                                    <p className="text-[11px] text-muted-foreground italic line-clamp-2 max-w-xs">
+                                      &ldquo;{resp.rsvp?.wishes || resp.rsvpDetails?.wishes}&rdquo;
+                                    </p>
+                                  )}
+                                </div>
+                              )}
+                            </td>
+
+                            <td className="py-3.5 px-4 text-xs">
+                              <div className="space-y-1">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-base shrink-0 leading-none">{respOrigin.flag}</span>
+                                  <span className="font-semibold text-foreground truncate max-w-[160px]">
+                                    {respOrigin.locationText}
+                                  </span>
+                                </div>
+                                {(respOrigin.device || respOrigin.ip) && (
+                                  <div className="flex flex-wrap items-center gap-1 text-[10px]">
+                                    {respOrigin.device && (
+                                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                                        {respOrigin.device.includes('Mobile') ? <Smartphone className="size-2.5" /> : <Monitor className="size-2.5" />}
+                                        {respOrigin.device}
+                                      </span>
+                                    )}
+                                    {respOrigin.ip && respOrigin.ip !== '127.0.0.1' && (
+                                      <span className="px-1.5 py-0.5 rounded bg-muted/70 text-muted-foreground font-mono">
+                                        IP: {respOrigin.ip}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+
+                            <td className="py-3.5 px-4 text-xs font-medium text-muted-foreground whitespace-nowrap">
+                              <div className="font-bold text-foreground">
+                                {formatDateTime(resp.createdAt || resp.timestamp)}
+                              </div>
+                              <div className="text-[10px] text-muted-foreground">
+                                {formatRelativeTime(resp.createdAt || resp.timestamp)}
+                              </div>
+                            </td>
+
+                            <td className="py-3.5 px-4 text-right">
+                              <div className="flex items-center justify-end gap-1.5">
+                                {creatorPhone && (
+                                  <a
+                                    href={`https://wa.me/${creatorPhone}?text=${encodeURIComponent(
+                                      `Hi ${parentLink?.senderName || 'there'}! Check out the response for ${resp.recipientName || 'your magic link'}: ${resp.reaction || resp.proposalAnswer?.choiceText || 'Responded'} https://cardzy.online/m/${resp.linkId}`
+                                    )}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 text-xs font-bold flex items-center gap-1"
+                                    title="Contact / Notify Host via WhatsApp"
+                                  >
+                                    <MessageCircle className="size-3.5" />
+                                    <span className="hidden sm:inline">WhatsApp</span>
+                                  </a>
+                                )}
+
+                                <button
+                                  type="button"
+                                  onClick={() => resp.id && handleDeleteMagicResponse(resp.id)}
+                                  className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold transition-colors cursor-pointer"
+                                  title="Delete response"
+                                >
+                                  <Trash2 className="size-3.5" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              <AdminTablePagination
+                currentPage={pageMagicResponses}
+                totalItems={filteredMagicResponses.length}
+                pageSize={pageSizeMagicResponses}
+                onPageChange={setPageMagicResponses}
+                onPageSizeChange={setPageSizeMagicResponses}
+                itemName="responses"
+              />
+            </div>
           </div>
         )}
 
@@ -4168,6 +5424,227 @@ export default function AdminPortalPage() {
               onPageChange={setPageGuestbook}
               onPageSizeChange={setPageSizeGuestbook}
               itemName="guestbook wishes"
+            />
+          </div>
+        )}
+
+        {/* USER REVIEWS & TESTIMONIALS SECTION */}
+        {(adminSection === 'all' || adminSection === 'testimonials') && (
+          <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden mb-8">
+            <div className="p-6 border-b border-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+                    <Star className="size-5 text-amber-500 fill-amber-500" /> User Reviews & Testimonials ({firestoreTestimonials.length})
+                  </h2>
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20">
+                    ⭐ Live Social Proof
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Public customer testimonials, ratings, and quotes displayed on the Cardzy homepage. Live synced with Firebase.
+                </p>
+              </div>
+
+              {/* Action Toolbar: Search + Add Review */}
+              <div className="flex flex-wrap items-center gap-2.5">
+                <div className="relative min-w-[200px]">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="Search reviewer, role, comment..."
+                    value={testimonialsSearch}
+                    onChange={(e) => {
+                      setTestimonialsSearch(e.target.value)
+                      setPageTestimonials(1)
+                    }}
+                    className="pl-8 text-xs h-9 bg-muted/30 border-border rounded-xl"
+                  />
+                </div>
+
+                <Button
+                  onClick={() => setIsAddReviewModalOpen(true)}
+                  className="h-9 px-3.5 text-xs font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white rounded-xl shadow-xs flex items-center gap-1.5"
+                >
+                  <MessageSquarePlus className="size-3.5" />
+                  <span>Add Review</span>
+                </Button>
+              </div>
+            </div>
+
+            {/* Quick Metrics Bar */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-muted/20 border-b border-border text-xs">
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-card border border-border/60">
+                <div className="size-9 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500">
+                  <Star className="size-4 fill-amber-500" />
+                </div>
+                <div>
+                  <div className="text-[11px] text-muted-foreground font-semibold">Total Reviews</div>
+                  <div className="text-lg font-black text-foreground">{firestoreTestimonials.length}</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-card border border-border/60">
+                <div className="size-9 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+                  <CheckCircle2 className="size-4" />
+                </div>
+                <div>
+                  <div className="text-[11px] text-muted-foreground font-semibold">5-Star Reviews</div>
+                  <div className="text-lg font-black text-emerald-600">
+                    {firestoreTestimonials.filter((t) => (t.stars ?? t.rating ?? 5) === 5).length}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-card border border-border/60">
+                <div className="size-9 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-600">
+                  <Sparkles className="size-4" />
+                </div>
+                <div>
+                  <div className="text-[11px] text-muted-foreground font-semibold">Average Rating</div>
+                  <div className="text-lg font-black text-indigo-600">
+                    {firestoreTestimonials.length > 0
+                      ? (
+                          firestoreTestimonials.reduce((acc, curr) => acc + (curr.stars ?? curr.rating ?? 5), 0) /
+                          firestoreTestimonials.length
+                        ).toFixed(1)
+                      : '5.0'} / 5.0
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonials Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-border bg-muted/20 text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                    <th className="py-3 px-4">Reviewer</th>
+                    <th className="py-3 px-4">Rating</th>
+                    <th className="py-3 px-4">Review / Comment</th>
+                    <th className="py-3 px-4">Submitted At</th>
+                    <th className="py-3 px-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/60">
+                  {paginatedTestimonials.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-12 text-center text-xs text-muted-foreground">
+                        {testimonialsSearch
+                          ? 'No testimonials matched your search query.'
+                          : 'No user reviews recorded yet. You can add one using the "Add Review" button above.'}
+                      </td>
+                    </tr>
+                  ) : (
+                    paginatedTestimonials.map((t) => {
+                      const ratingNum = Math.min(5, Math.max(1, t.stars ?? t.rating ?? 5))
+                      const initials = (t.name || 'U').charAt(0).toUpperCase()
+                      const bgMap: Record<string, string> = {
+                        emerald: 'bg-emerald-600',
+                        amber: 'bg-amber-600',
+                        rose: 'bg-rose-600',
+                        purple: 'bg-purple-600',
+                        blue: 'bg-blue-600',
+                        teal: 'bg-teal-600',
+                      }
+                      const avatarClass = t.accentColor || (t.color && bgMap[t.color]) || 'bg-gradient-to-br from-amber-500 to-amber-600'
+                      const isVerified = t.verified ?? t.isApproved ?? true
+
+                      return (
+                        <tr key={t.id} className="hover:bg-muted/30 transition-colors">
+                          <td className="py-4 px-4 text-xs">
+                            <div className="flex items-center gap-3">
+                              <div
+                                className={cn(
+                                  "size-9 rounded-2xl flex items-center justify-center font-black text-sm text-white shrink-0 shadow-xs",
+                                  avatarClass
+                                )}
+                              >
+                                {initials}
+                              </div>
+                              <div>
+                                <div className="font-bold text-foreground flex items-center gap-1.5">
+                                  <span>{t.name}</span>
+                                  {isVerified && (
+                                    <span className="text-[10px] px-1.5 py-0.2 rounded-md bg-emerald-500/10 text-emerald-600 font-bold border border-emerald-500/20">
+                                      Verified
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="text-[11px] text-muted-foreground">
+                                  {t.role || 'Happy User'}
+                                </div>
+                                {t.location && (
+                                  <div className="text-[10px] text-muted-foreground/80 flex items-center gap-1 mt-0.5">
+                                    <MapPin className="size-2.5" />
+                                    <span>{t.location}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-4 px-4 text-xs whitespace-nowrap">
+                            <div className="flex items-center gap-0.5">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star
+                                  key={star}
+                                  className={cn(
+                                    "size-3.5",
+                                    star <= ratingNum
+                                      ? "text-amber-400 fill-amber-400"
+                                      : "text-muted-foreground/30"
+                                  )}
+                                />
+                              ))}
+                              <span className="text-[11px] font-bold text-muted-foreground ml-1.5 font-mono">
+                                {ratingNum}.0
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-4 px-4 text-xs text-foreground max-w-md">
+                            <div
+                              className="p-2.5 rounded-xl bg-muted/40 border border-border/60 text-xs leading-relaxed font-medium italic break-words break-all [overflow-wrap:anywhere] [word-break:break-word] max-h-32 overflow-y-auto pr-1"
+                              title={t.comment}
+                            >
+                              "{t.comment}"
+                            </div>
+                          </td>
+                          <td className="py-4 px-4 text-xs whitespace-nowrap">
+                            <div className="flex items-center gap-1.5">
+                              <Clock className="size-3.5 text-muted-foreground shrink-0" />
+                              <span className="font-bold text-foreground">
+                                {formatDateTime(t.createdAt)}
+                              </span>
+                            </div>
+                            <div className="text-[10px] text-muted-foreground mt-0.5 font-mono">
+                              {formatRelativeTime(t.createdAt)}
+                            </div>
+                          </td>
+                          <td className="py-4 px-4 text-right">
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteTestimonial(t.id, t.name)}
+                              className="p-2 rounded-xl bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold inline-flex items-center gap-1 cursor-pointer transition-colors shadow-xs"
+                              title="Delete this review"
+                            >
+                              <Trash2 className="size-3.5" />
+                              <span>Delete</span>
+                            </button>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            <AdminTablePagination
+              currentPage={pageTestimonials}
+              totalItems={filteredTestimonials.length}
+              pageSize={pageSizeTestimonials}
+              onPageChange={setPageTestimonials}
+              onPageSizeChange={setPageSizeTestimonials}
+              itemName="reviews"
             />
           </div>
         )}
@@ -5251,6 +6728,126 @@ export default function AdminPortalPage() {
           </div>
         )}
 
+        {/* ── Add Review / Testimonial Modal ──────────────────────────────── */}
+        {isAddReviewModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-150">
+            <div className="w-full max-w-md rounded-3xl border border-amber-500/30 bg-card shadow-2xl p-6 sm:p-7 space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-border">
+                <div className="flex items-center gap-2.5">
+                  <div className="size-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500">
+                    <Star className="size-5 fill-amber-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-foreground">Add User Review</h3>
+                    <p className="text-xs text-muted-foreground">Will appear instantly on homepage</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsAddReviewModalOpen(false)}
+                  className="text-muted-foreground hover:text-foreground p-1 text-sm font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleCreateReview} className="space-y-4">
+                {/* Rating selection */}
+                <div>
+                  <label className="block text-xs font-bold text-foreground mb-1.5">Rating (1 to 5 Stars)</label>
+                  <div className="flex items-center gap-2 p-2.5 rounded-2xl bg-muted/40 border border-border">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        type="button"
+                        key={star}
+                        onClick={() => setNewReviewForm((prev) => ({ ...prev, rating: star }))}
+                        className="p-1 hover:scale-110 transition-transform"
+                      >
+                        <Star
+                          className={cn(
+                            "size-6",
+                            star <= newReviewForm.rating
+                              ? "text-amber-400 fill-amber-400"
+                              : "text-muted-foreground/30 hover:text-amber-300"
+                          )}
+                        />
+                      </button>
+                    ))}
+                    <span className="text-xs font-bold text-amber-500 ml-auto font-mono">
+                      {newReviewForm.rating} of 5 Stars
+                    </span>
+                  </div>
+                </div>
+
+                {/* Name */}
+                <div>
+                  <label className="block text-xs font-bold text-foreground mb-1">Reviewer Name *</label>
+                  <Input
+                    required
+                    placeholder="e.g. Zainab M., Ahmed Khan"
+                    value={newReviewForm.name}
+                    onChange={(e) => setNewReviewForm((prev) => ({ ...prev, name: e.target.value }))}
+                    className="rounded-xl text-xs h-9 bg-muted/30"
+                  />
+                </div>
+
+                {/* Role / Occasion */}
+                <div>
+                  <label className="block text-xs font-bold text-foreground mb-1">Role / Occasion</label>
+                  <Input
+                    placeholder="e.g. Bride & Nikah Host, Birthday Sender, Clan Lead"
+                    value={newReviewForm.role}
+                    onChange={(e) => setNewReviewForm((prev) => ({ ...prev, role: e.target.value }))}
+                    className="rounded-xl text-xs h-9 bg-muted/30"
+                  />
+                </div>
+
+                {/* Location */}
+                <div>
+                  <label className="block text-xs font-bold text-foreground mb-1">City / Country</label>
+                  <Input
+                    placeholder="e.g. Karachi, Pakistan or London, UK"
+                    value={newReviewForm.location}
+                    onChange={(e) => setNewReviewForm((prev) => ({ ...prev, location: e.target.value }))}
+                    className="rounded-xl text-xs h-9 bg-muted/30"
+                  />
+                </div>
+
+                {/* Comment */}
+                <div>
+                  <label className="block text-xs font-bold text-foreground mb-1">Review / Feedback Comment *</label>
+                  <textarea
+                    required
+                    rows={4}
+                    placeholder="Share the experience with 3D unboxing, audio, WhatsApp invitation..."
+                    value={newReviewForm.comment}
+                    onChange={(e) => setNewReviewForm((prev) => ({ ...prev, comment: e.target.value }))}
+                    className="w-full text-xs p-3 rounded-xl bg-muted/30 border border-border focus:ring-2 focus:ring-amber-500 outline-none text-foreground resize-none"
+                  />
+                </div>
+
+                <div className="flex items-center gap-3 pt-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsAddReviewModalOpen(false)}
+                    className="flex-1 rounded-xl text-xs font-bold h-9"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={isSubmittingReview}
+                    className="flex-1 rounded-xl text-xs font-bold h-9 bg-amber-500 hover:bg-amber-600 text-white"
+                  >
+                    {isSubmittingReview ? 'Publishing...' : 'Publish Review'}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
         {/* ── Delete Card & Cascade Modal ─────────────────────────────────── */}
         {deleteCardTarget && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
@@ -5315,6 +6912,15 @@ export default function AdminPortalPage() {
                     <AlertTriangle className="size-4 shrink-0 text-amber-600" />
                     <span>
                       <strong>{deleteCardTarget.guestbookCount} Wishes Wall entries</strong> will be permanently erased.
+                    </span>
+                  </div>
+                )}
+
+                {deleteCardTarget.cardType === 'poetry' && (
+                  <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-700 dark:text-rose-300 flex items-center gap-2">
+                    <AlertTriangle className="size-4 shrink-0 text-rose-600" />
+                    <span>
+                      All live metrics, visitor history, and recorded interactions for this poetry card will be permanently purged.
                     </span>
                   </div>
                 )}
@@ -5700,7 +7306,7 @@ export default function AdminPortalPage() {
                         <div className="text-[10px] text-amber-400 font-bold tracking-widest flex items-center justify-between border-b border-amber-500/30 pb-2">
                           <span>✦ ❖ ✦</span>
                           <span className="text-[9px] uppercase tracking-wider text-emerald-300">
-                            {p.categoryLabel || 'Masterpiece'} • {tabLabel}
+                            {tabLabel}
                           </span>
                           <span>✦ ❖ ✦</span>
                         </div>
@@ -5748,12 +7354,25 @@ export default function AdminPortalPage() {
                           <span className="font-bold text-foreground font-mono">{viewingPoetryFlyer.activity.channel || 'web'}</span>
                         </div>
                         <div>
-                          <span className="text-muted-foreground block text-[11px]">Poem ID:</span>
-                          <span className="font-mono text-[10px] text-muted-foreground truncate block">{viewingPoetryFlyer.poem.id}</span>
+                          <span className="text-muted-foreground block text-[11px]">Visitor Name:</span>
+                          <span className="font-bold text-foreground truncate block">{viewingPoetryFlyer.activity.userName || 'Guest Visitor'}</span>
                         </div>
                         <div>
-                          <span className="text-muted-foreground block text-[11px]">Language:</span>
-                          <span className="font-bold uppercase text-foreground">{viewingPoetryFlyer.poem.originalLanguage || 'ur'}</span>
+                          <span className="text-muted-foreground block text-[11px]">Location / IP:</span>
+                          <span className="font-bold text-foreground truncate block">
+                            {viewingPoetryFlyer.activity.city ? `${viewingPoetryFlyer.activity.city}, ` : ''}{viewingPoetryFlyer.activity.country || 'Global'}
+                            {viewingPoetryFlyer.activity.ip && viewingPoetryFlyer.activity.ip !== '127.0.0.1' ? ` (${viewingPoetryFlyer.activity.ip})` : ''}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground block text-[11px]">Device:</span>
+                          <span className="font-bold text-foreground truncate block">
+                            {viewingPoetryFlyer.activity.device || 'Desktop'} {viewingPoetryFlyer.activity.browser ? `• ${viewingPoetryFlyer.activity.browser}` : ''}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground block text-[11px]">Poem ID:</span>
+                          <span className="font-mono text-[10px] text-muted-foreground truncate block">{viewingPoetryFlyer.poem.id}</span>
                         </div>
                       </div>
                     </div>
@@ -5846,9 +7465,9 @@ export default function AdminPortalPage() {
 
                           const lineHeight = isRtl ? 86 : 52
                           const verseBoxHeight = Math.max(isRtl ? 190 : 160, wrappedLines.length * lineHeight + (isRtl ? 80 : 60))
-                          const headerHeight = poetEra ? 215 : 185
+                          const headerHeight = poetEra ? 170 : 140
                           const footerHeight = 110
-                          const calculatedHeight = Math.max(580, headerHeight + verseBoxHeight + footerHeight)
+                          const calculatedHeight = Math.max(540, headerHeight + verseBoxHeight + footerHeight)
 
                           canvas.height = calculatedHeight
                           const ctx = canvas.getContext('2d')
@@ -5897,13 +7516,7 @@ export default function AdminPortalPage() {
                             ctx.fillText(`(${poetEra})`, 540, topY)
                           }
 
-                          topY += 32
-                          ctx.fillStyle = '#6ee7b7'
-                          ctx.font = 'bold 15px sans-serif'
-                          const catLabel = (p.categoryLabel || 'Masterpiece').toUpperCase()
-                          ctx.fillText(`✦ ${catLabel} ✦`, 540, topY)
-
-                          topY += 22
+                          topY += 28
                           ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)'
                           ctx.lineWidth = 1.5
                           ctx.beginPath()

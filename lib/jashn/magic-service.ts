@@ -313,12 +313,44 @@ export async function getMagicLink(slug: string, shouldCountView: boolean = fals
 }
 
 /**
+ * Normalizes phone numbers for WhatsApp API links (replaces leading 03 with 92 for Pakistan)
+ */
+export function normalizeWhatsAppNumber(phone?: string): string {
+  if (!phone) return ''
+  let cleaned = phone.replace(/[^0-9]/g, '')
+  if (cleaned.startsWith('00')) {
+    cleaned = cleaned.slice(2)
+  }
+  if (cleaned.startsWith('03') && cleaned.length === 11) {
+    cleaned = '92' + cleaned.slice(1)
+  }
+  return cleaned
+}
+
+/**
+ * Builds direct WhatsApp redirect URL with prefilled celebration response
+ */
+export function getMagicWhatsAppUrl(data: MagicLinkData, responseText: string, returnUrl?: string): string {
+  const raw = (data as any)?.whatsappNumber || data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || ''
+  const phone = normalizeWhatsAppNumber(raw)
+  const celebrationUrl = returnUrl || (typeof window !== 'undefined' ? `${window.location.origin}/m/${data.slug || (data as any).id}` : '')
+  const message = `Hey ${data.senderName || 'there'}! ✨ ${data.recipientName} responded to your 3D Magic Celebration on Cardzy: ${responseText}\n\nView celebration: ${celebrationUrl}`
+  const encoded = encodeURIComponent(message)
+  return phone ? `https://wa.me/${phone}?text=${encoded}` : `https://api.whatsapp.com/send?text=${encoded}`
+}
+
+/**
  * Submits a recipient reaction (e.g. "Sent Love Back") or RSVP to Firestore
  */
 export async function submitMagicResponse(response: Omit<MagicResponseData, 'timestamp'>): Promise<boolean> {
-  const tracking = await getClientTracking()
-  const fullResp = {
+  const tracking = await getClientTracking().catch(() => ({} as any))
+  const respId = response.id || `mresp_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`
+  const cleanSlug = String(response.linkId || '').replace(/^\/?m\//, '').trim()
+
+  const fullResp: MagicResponseData = {
     ...response,
+    id: respId,
+    linkId: cleanSlug || response.linkId,
     createdLocation: tracking.createdLocation,
     country: tracking.country,
     countryCode: tracking.countryCode,
@@ -329,6 +361,7 @@ export async function submitMagicResponse(response: Omit<MagicResponseData, 'tim
     browser: tracking.browser,
     os: tracking.os,
     createdAt: Date.now(),
+    timestamp: Date.now(),
   }
 
   // Guaranteed Server Admin SDK sync to Firestore
@@ -337,11 +370,21 @@ export async function submitMagicResponse(response: Omit<MagicResponseData, 'tim
   const activeDb = getFirebaseDb() || db
   if (isFirebaseConfigured && activeDb) {
     try {
-      const colRef = collection(activeDb, 'magic_link_responses')
-      await addDoc(colRef, {
+      // 1. Write to magic_link_responses collection with guaranteed fixed ID
+      await setDoc(doc(activeDb, 'magic_link_responses', respId), {
         ...fullResp,
         timestamp: serverTimestamp(),
       })
+
+      // 2. Increment responsesCount on parent magic_links document
+      if (cleanSlug) {
+        const linkDocRef = doc(activeDb, 'magic_links', cleanSlug)
+        await updateDoc(linkDocRef, {
+          responsesCount: increment(1),
+          lastResponseAt: Date.now(),
+        }).catch(() => {})
+      }
+
       return true
     } catch (err) {
       console.warn('Firestore response submission error:', err)

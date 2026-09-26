@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { useJashn } from '@/lib/jashn/store'
 import { getClientTracking } from '@/lib/jashn/tracking'
-import { isDeviceAdmin, purgeAdminPresence } from '@/lib/jashn/admin-presence'
+import { isDeviceAdmin, markDeviceAsAdmin, purgeAdminPresence } from '@/lib/jashn/admin-presence'
 
 function getDeviceId(): string {
   if (typeof window === 'undefined') return ''
@@ -41,8 +41,9 @@ export function LivePresenceTracker() {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    // If currently on admin portal or admin device, purge presence and abort
+    // If currently on admin portal or admin device, purge presence and abort immediately
     if (pathname.startsWith('/admin_portal') || isDeviceAdmin(user?.email)) {
+      markDeviceAsAdmin(getDeviceId())
       purgeAdminPresence(undefined, getDeviceId())
       return
     }
@@ -51,28 +52,73 @@ export function LivePresenceTracker() {
     if (!sessionId) return
 
     let intervalId: NodeJS.Timeout | undefined
+    let isTerminated = false
+
+    const terminateTracking = () => {
+      isTerminated = true
+      if (intervalId) {
+        clearInterval(intervalId)
+        intervalId = undefined
+      }
+      const devId = getDeviceId()
+      purgeAdminPresence(sessionId, devId)
+    }
+
+    // Cross-tab broadcast listener: abort immediately if any tab marks admin presence
+    let bc: BroadcastChannel | undefined
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        bc = new BroadcastChannel('cardzy_presence_channel')
+        bc.onmessage = (event) => {
+          if (event.data?.action === 'ADMIN_ACTIVE') {
+            terminateTracking()
+          }
+        }
+      }
+    } catch {}
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (
+        e.key === 'cardzy_is_admin' ||
+        e.key === 'cardzy_admin_device' ||
+        e.key === 'cardzy_admin_session'
+      ) {
+        terminateTracking()
+      }
+    }
+    window.addEventListener('storage', handleStorageChange)
 
     const updatePresence = async () => {
+      if (isTerminated) return
+
       try {
         const currentPath = window.location.pathname
 
         // Do not record presence if on admin portal or admin device
         if (currentPath.startsWith('/admin_portal') || isDeviceAdmin(user?.email)) {
-          await purgeAdminPresence(sessionId, getDeviceId())
+          terminateTracking()
           return
         }
 
         const { getFirebaseDb } = await import('@/lib/firebase')
         const db = getFirebaseDb()
-        if (!db) return
+        if (!db || isTerminated) return
 
         const { doc, setDoc } = await import('firebase/firestore')
+
+        // Final check before write: abort if this is an admin device
+        if (isDeviceAdmin(user?.email)) {
+          terminateTracking()
+          return
+        }
 
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
         const tracking = await getClientTracking()
         const exactLocation = tracking.createdLocation || (tracking.city ? `${tracking.city}, ${tracking.country || 'Pakistan'}` : tracking.country || 'Pakistan')
         const language = navigator.language || 'en'
         const deviceId = getDeviceId()
+
+        if (isTerminated) return
 
         await setDoc(
           doc(db, 'active_sessions', sessionId),
@@ -110,7 +156,7 @@ export function LivePresenceTracker() {
     intervalId = setInterval(updatePresence, 35000)
 
     const handleActivity = () => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === 'visible' && !isTerminated) {
         updatePresence()
       }
     }
@@ -120,6 +166,10 @@ export function LivePresenceTracker() {
 
     return () => {
       if (intervalId) clearInterval(intervalId)
+      if (bc) {
+        try { bc.close() } catch {}
+      }
+      window.removeEventListener('storage', handleStorageChange)
       document.removeEventListener('visibilitychange', handleActivity)
       window.removeEventListener('focus', handleActivity)
     }

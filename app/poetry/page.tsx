@@ -52,6 +52,8 @@ export const metadata: Metadata = {
   },
 }
 
+import { Suspense } from 'react'
+
 export default function PoetryPage() {
   // Generate JSON-LD Schema for rich search snippets
   const jsonLd = {
@@ -117,7 +119,9 @@ export default function PoetryPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <PoetryClient />
+      <Suspense fallback={<div className="min-h-screen bg-slate-950 flex items-center justify-center text-amber-300 text-sm">Loading Poetry Treasury...</div>}>
+        <PoetryClient />
+      </Suspense>
     </>
   )
 }

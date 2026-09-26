@@ -19,7 +19,7 @@ import type { MagicLinkData } from '@/lib/jashn/magic-types'
 import { useLang } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
 import { magicAudio } from '@/lib/jashn/magic-audio'
-import { submitMagicResponse } from '@/lib/jashn/magic-service'
+import { submitMagicResponse, normalizeWhatsAppNumber } from '@/lib/jashn/magic-service'
 
 interface ScenarioProps {
   data: MagicLinkData
@@ -157,7 +157,7 @@ export function BirthdayScenario({
     }, 600)
   }
 
-  const rawPhone = (data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || '')?.replace(/[^0-9]/g, '')
+  const rawPhone = normalizeWhatsAppNumber(data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || (data as any)?.whatsappNumber)
   const returnUrl = typeof window !== 'undefined' ? `${window.location.origin}/m/${slug}` : ''
   const getWhatsAppUrl = (emoji: string) => {
     const msg = encodeURIComponent(

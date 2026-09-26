@@ -1,8 +1,10 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { Feather, Sparkles, ArrowRight, Heart, Share2, Eye, Compass, BookOpen } from 'lucide-react'
+import { Feather, Sparkles, ArrowRight, BookOpen, Copy, Check, Share2, Eye } from 'lucide-react'
+import { useJashn } from '@/lib/jashn/store'
+import { cn } from '@/lib/utils'
 
 interface FeaturedVerse {
   id: string
@@ -12,6 +14,7 @@ interface FeaturedVerse {
   categoryLabel: string
   origin: string
   langBadge: string
+  lang: 'ur' | 'pa' | 'fa' | 'ar' | 'en'
   direction: 'rtl' | 'ltr'
   originalText: string
   translation: string
@@ -26,6 +29,7 @@ const FEATURED_VERSES: FeaturedVerse[] = [
     categoryLabel: 'Wisdom & Purpose',
     origin: 'Sialkot / Lahore, Pakistan',
     langBadge: '🇵🇰 Urdu',
+    lang: 'ur',
     direction: 'rtl',
     originalText: 'ستاروں سے آگے جہاں اور بھی ہیں\nابھی عشق کے امتحان اور بھی ہیں',
     translation: 'Beyond these glittering stars lie yet other worlds; the trials of passionate love are not yet ended.',
@@ -38,6 +42,7 @@ const FEATURED_VERSES: FeaturedVerse[] = [
     categoryLabel: 'Ishq & Romance',
     origin: 'Agra / Delhi, India',
     langBadge: '🇵🇰 Urdu',
+    lang: 'ur',
     direction: 'rtl',
     originalText: 'ہزاروں خواہشیں ایسی کہ ہر خواہش پہ دم نکلے\nبہت نکلے مرے ارمان لیکن پھر بھی کم نکلے',
     translation: 'Thousands of intense desires, each worth dying for; many of my yearnings were fulfilled, yet so few they still seem.',
@@ -50,6 +55,7 @@ const FEATURED_VERSES: FeaturedVerse[] = [
     categoryLabel: 'Hope & Renewal',
     origin: 'Sialkot / Lahore, Pakistan',
     langBadge: '🇵🇰 Urdu',
+    lang: 'ur',
     direction: 'rtl',
     originalText: 'گلوں میں رنگ بھرے بادِ نوبہار چلے\nچلے بھی آؤ کہ گلشن کا کاروبار چلے',
     translation: 'May the vernal breeze breathe vibrant hues into the blossoms; do return, so the garden may flourish once more.',
@@ -62,6 +68,7 @@ const FEATURED_VERSES: FeaturedVerse[] = [
     categoryLabel: 'Punjabi Sufi Classic',
     origin: 'Mirpur, Kashmir / Punjab',
     langBadge: '🌾 Punjabi',
+    lang: 'pa',
     direction: 'rtl',
     originalText: 'اول حمد ثنا الٰہی جو مالک ہر ہر دا\nاس دا نام چتارن والا ہر دم رہندا تردا',
     translation: 'First praise belongs to the Almighty Creator, the Sovereign of all; whoever cherishes His divine Name sails unharmed through life.',
@@ -74,6 +81,7 @@ const FEATURED_VERSES: FeaturedVerse[] = [
     categoryLabel: 'Persian Spiritual',
     origin: 'Balkh / Konya (Persian / Sufi)',
     langBadge: '🇮🇷 Persian',
+    lang: 'fa',
     direction: 'rtl',
     originalText: 'بشنو از نی چون حکایت می‌کند\nوز جدایی‌ها شکایت می‌کند',
     translation: 'Listen to the reed flute as it laments, telling the deep tale of eternal separation from its divine origin.',
@@ -86,13 +94,105 @@ const FEATURED_VERSES: FeaturedVerse[] = [
     categoryLabel: 'Arabic Resilience & Life',
     origin: 'Al-Birwa, Palestine',
     langBadge: '🇸🇦 Arabic',
+    lang: 'ar',
     direction: 'rtl',
     originalText: 'وَنَحْنُ نُحِبُّ الحَيَاةَ إِذَا مَا اسْتَطَعْنَا إِلَيْهَا سَبِيلا\nنُحِبُّ الحَيَاةَ إِذَا مَا اسْتَطَعْنَا إِلَيْهَا سَبِيلا',
     translation: 'And we love life whenever we can find a way to it; we love life whenever we can find a way to it.',
   },
+  {
+    id: 'poem-0094',
+    poet: 'William Shakespeare',
+    poetUrdu: 'ولیم شیکسپیئر',
+    category: 'ishq',
+    categoryLabel: 'Eternal Love & Sonnet',
+    origin: 'Stratford-upon-Avon, England',
+    langBadge: '🇬🇧 English',
+    lang: 'en',
+    direction: 'ltr',
+    originalText: "Shall I compare thee to a summer's day?\nThou art more lovely and more temperate.",
+    translation: 'کیا میں تیرا موازنہ موسمِ گرما کے کسی دلکش دن سے کروں؟\nتو تو اس سے کہیں زیادہ پیاری اور پُروقار ہے۔',
+  },
+  {
+    id: 'poem-0118',
+    poet: 'Robert Frost',
+    poetUrdu: 'رابرٹ فراسٹ',
+    category: 'azm',
+    categoryLabel: 'Purpose & Determination',
+    origin: 'San Francisco / New England, USA',
+    langBadge: '🇬🇧 English',
+    lang: 'en',
+    direction: 'ltr',
+    originalText: 'The woods are lovely, dark and deep,\nBut I have promises to keep,\nAnd miles to go before I sleep.',
+    translation: 'جنگل دلکش ہیں، تاریک اور پرشکوہ گہرے،\nلیکن مجھے اپنے وعدے نبھانے ہیں،\nاور سونے سے پہلے مجھے میلوں دور کا سفر طے کرنا ہے۔',
+  },
+  {
+    id: 'poem-0119',
+    poet: 'John Keats',
+    poetUrdu: 'جان کیٹس',
+    category: 'qudrat',
+    categoryLabel: 'Timeless Beauty & Art',
+    origin: 'London, England',
+    langBadge: '🇬🇧 English',
+    lang: 'en',
+    direction: 'ltr',
+    originalText: 'A thing of beauty is a joy for ever:\nIts loveliness increases; it will never\nPass into nothingness.',
+    translation: 'ہر دلکش و خوبصورت شے ابدی مسرت کا باعث ہوتی ہے:\nاس کا حسن و جمال وقت کے ساتھ بڑھتا ہی چلا جاتا ہے،\nاور کبھی فنا نہیں ہوتا۔',
+  },
 ]
 
 export function PoetryShowcaseSection() {
+  const [copiedId, setCopiedId] = useState<string | null>(null)
+  const showToast = useJashn((s) => s.showToast)
+
+  const trackPoetryAction = (item: FeaturedVerse, action: 'click' | 'copy' | 'share') => {
+    fetch('/api/poetry-activity', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        poemId: item.id,
+        poet: item.poet,
+        title: item.poet,
+        action,
+        channel: `home_${action}`,
+      }),
+    }).catch(() => {})
+  }
+
+  const handleCopyVerse = (item: FeaturedVerse) => {
+    const poemUrl = typeof window !== 'undefined' ? `${window.location.origin}/poetry?poem=${item.id}&lang=${item.lang}` : `https://cardzy.online/poetry?poem=${item.id}&lang=${item.lang}`
+    const textToCopy = `${item.originalText}\n\n— ${item.poet}${item.poetUrdu ? ` (${item.poetUrdu})` : ''}\n${poemUrl}`
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText(textToCopy)
+      setCopiedId(item.id)
+      trackPoetryAction(item, 'copy')
+      showToast('Verse copied to clipboard! 📋', 'success')
+      setTimeout(() => setCopiedId(null), 2000)
+    }
+  }
+
+  const handleShareVerse = async (item: FeaturedVerse) => {
+    const poemUrl = typeof window !== 'undefined' ? `${window.location.origin}/poetry?poem=${item.id}&lang=${item.lang}` : `https://cardzy.online/poetry?poem=${item.id}&lang=${item.lang}`
+    const shareText = `${item.originalText}\n\n— ${item.poet}${item.poetUrdu ? ` (${item.poetUrdu})` : ''}\n${poemUrl}`
+    trackPoetryAction(item, 'share')
+
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: `${item.poet} | Cardzy Poetry`,
+          text: `${item.originalText}\n\n— ${item.poet}`,
+          url: poemUrl,
+        })
+        return
+      } catch (err: any) {
+        if (err.name === 'AbortError') return
+      }
+    }
+
+    // Fallback: WhatsApp share
+    const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`
+    window.open(waUrl, '_blank')
+  }
+
   return (
     <section className="relative overflow-hidden py-14 sm:py-20 bg-gradient-to-b from-slate-950 via-[#0d0918] to-background text-foreground border-y border-purple-900/30">
       {/* Background ambient glows */}
@@ -147,7 +247,8 @@ export function PoetryShowcaseSection() {
           {FEATURED_VERSES.map((item) => (
             <div
               key={item.id}
-              className="rounded-3xl bg-slate-900/90 border border-purple-500/20 hover:border-amber-500/40 p-5 sm:p-6 flex flex-col justify-between gap-5 transition-all duration-300 hover:shadow-xl hover:shadow-purple-950/30 group relative overflow-hidden backdrop-blur-md"
+              translate="no"
+              className="notranslate rounded-3xl bg-slate-900/90 border border-purple-500/20 hover:border-amber-500/40 p-5 sm:p-6 flex flex-col justify-between gap-5 transition-all duration-300 hover:shadow-xl hover:shadow-purple-950/30 group relative overflow-hidden backdrop-blur-md"
             >
               {/* Subtle card decorative top glow */}
               <div className="pointer-events-none absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-400/40 to-transparent group-hover:via-amber-400 transition-all" />
@@ -158,56 +259,96 @@ export function PoetryShowcaseSection() {
                   <span className="font-mono text-[11px] px-2 py-0.5 rounded-lg bg-slate-800/80 text-amber-300 border border-slate-700/50">
                     {item.langBadge}
                   </span>
-                  <span className="text-[11px] font-semibold text-purple-300 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-lg">
-                    {item.categoryLabel}
-                  </span>
                 </div>
 
                 <div className="mt-3 flex items-center justify-between gap-2">
                   <div>
-                    <h3 className="font-extrabold text-white text-base sm:text-lg group-hover:text-amber-300 transition-colors">
+                    <h3 translate="no" className="notranslate font-extrabold text-white text-base sm:text-lg group-hover:text-amber-300 transition-colors">
                       {item.poet}
                     </h3>
                     <p className="text-xs text-slate-400 font-medium">{item.origin}</p>
                   </div>
                   {item.poetUrdu && (
-                    <span className="font-urdu text-sm sm:text-base text-amber-400/90 shrink-0">
+                    <span translate="no" className="notranslate font-urdu text-sm sm:text-base text-amber-400/90 shrink-0">
                       {item.poetUrdu}
                     </span>
                   )}
                 </div>
 
-                {/* The Verse Calligraphy Box */}
-                <div className="mt-4 p-4 rounded-2xl bg-black/40 border border-slate-800/80 group-hover:border-purple-500/30 transition-all text-center">
+                {/* The Verse Calligraphy Box - Clicking navigates directly to the poem with language filter */}
+                <Link
+                  href={`/poetry?poem=${item.id}&lang=${item.lang}`}
+                  onClick={() => trackPoetryAction(item, 'click')}
+                  translate="no"
+                  className="notranslate mt-4 p-4 rounded-2xl bg-black/40 border border-slate-800/80 hover:border-amber-400/50 hover:bg-black/60 transition-all text-center block group/calligraphy cursor-pointer relative"
+                  title="Click to view and download full poem in Poetry Treasury"
+                >
                   <p
                     dir={item.direction}
-                    className="font-urdu text-lg sm:text-xl md:text-2xl text-amber-200 leading-[2.1] whitespace-pre-line tracking-wide drop-shadow-xs"
+                    translate="no"
+                    className={cn(
+                      "notranslate text-lg sm:text-xl md:text-2xl text-amber-200 leading-[2.1] whitespace-pre-line tracking-wide drop-shadow-xs group-hover/calligraphy:text-amber-300 transition-colors",
+                      item.direction === 'rtl' ? "font-urdu" : "font-serif italic font-medium tracking-normal leading-[1.8]"
+                    )}
                   >
                     {item.originalText}
                   </p>
-                  <p className="mt-3 text-xs text-slate-300/85 leading-relaxed font-sans italic border-t border-slate-800/70 pt-2.5">
-                    &ldquo;{item.translation}&rdquo;
+                  <p
+                    translate="no"
+                    className={cn(
+                      "notranslate mt-3 text-xs leading-relaxed border-t border-slate-800/70 pt-2.5",
+                      item.direction === 'rtl' ? "font-sans italic text-slate-300/85" : "font-urdu text-amber-300/90 text-sm leading-[1.9]"
+                    )}
+                  >
+                    {item.direction === 'rtl' ? `“${item.translation}”` : item.translation}
                   </p>
-                </div>
+                  <div className="mt-2 text-[10px] text-amber-400/80 font-mono flex items-center justify-center gap-1 opacity-0 group-hover/calligraphy:opacity-100 transition-opacity">
+                    <span>Open in Poetry Hub</span>
+                    <ArrowRight className="size-3" />
+                  </div>
+                </Link>
               </div>
 
-              {/* Action Buttons */}
-              <div className="pt-2 border-t border-slate-800/70 flex items-center gap-2">
-                <Link
-                  href={`/create-wish?prefill=${encodeURIComponent(item.originalText)}&poet=${encodeURIComponent(item.poet)}`}
-                  className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white text-xs font-bold text-center flex items-center justify-center gap-1.5 shadow-md shadow-rose-950/30 transition-all"
+              {/* Action Buttons: Pure Icons (Copy, Share, View in Treasury) */}
+              <div className="pt-2 border-t border-slate-800/70 grid grid-cols-3 gap-2">
+                {/* Copy Verse Button */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleCopyVerse(item)
+                  }}
+                  className="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition-all active:scale-95 cursor-pointer shadow-xs"
+                  title="Copy verse"
                 >
-                  <Sparkles className="size-3.5" />
-                  <span>Create 3D Card</span>
-                </Link>
+                  {copiedId === item.id ? (
+                    <Check className="size-4 text-emerald-400" />
+                  ) : (
+                    <Copy className="size-4" />
+                  )}
+                </button>
 
-                <Link
-                  href={`/poetry?poem=${item.id}`}
-                  className="py-2 px-3 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-200 hover:text-white text-xs font-semibold border border-slate-700 flex items-center gap-1 transition-all"
-                  title="View full poem and flyer"
+                {/* Share Button */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleShareVerse(item)
+                  }}
+                  className="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition-all active:scale-95 cursor-pointer shadow-xs"
+                  title="Share verse"
                 >
-                  <Eye className="size-3.5" />
-                  <span>Story</span>
+                  <Share2 className="size-4" />
+                </button>
+
+                {/* Primary: View Full Poem & Flyer in Treasury */}
+                <Link
+                  href={`/poetry?poem=${item.id}&lang=${item.lang}`}
+                  onClick={() => trackPoetryAction(item, 'click')}
+                  className="py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 flex items-center justify-center shadow-md shadow-amber-500/20 hover:shadow-amber-500/30 transition-all hover:scale-[1.02] active:scale-95"
+                  title="View full poem and story flyer in Treasury"
+                >
+                  <BookOpen className="size-4" />
                 </Link>
               </div>
             </div>

@@ -151,4 +151,5 @@ export interface MagicResponseData {
   browser?: string
   os?: string
   timestamp: number | any
+  createdAt?: number | any
 }

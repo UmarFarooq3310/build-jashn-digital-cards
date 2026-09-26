@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import {
   Search,
   Copy,
@@ -17,16 +18,46 @@ import {
   Tag,
   Layers,
   Loader2,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
 } from 'lucide-react'
 import { POET_PROFILES, POPULAR_SEARCH_KEYWORDS, POETRY_DATABASE, Poem } from '@/lib/jashn/poetry-data'
 import { useLang } from '@/lib/lang/context'
 import { useJashn } from '@/lib/jashn/store'
+import { getClientTracking } from '@/lib/jashn/tracking'
+import { isDeviceAdmin } from '@/lib/jashn/admin-presence'
 import { cn } from '@/lib/utils'
 
 export function PoetryClient() {
   const { lang, t } = useLang()
-  const isUrdu = lang === 'ur' || lang === 'ar'
+  const isUrdu = lang === 'ur'
   const showToast = useJashn((s) => s.showToast)
+  const user = useJashn((s) => s.user)
+  const searchParams = useSearchParams()
+
+  const LANGUAGE_OPTIONS = useMemo(() => [
+    { id: 'all', label: isUrdu ? '🌐 تمام کلام (1,000+)' : '🌐 All (1,000+)' },
+    { id: 'ur', label: isUrdu ? '🇵🇰 اردو غزلیں (710+)' : '🇵🇰 Urdu Ghazals (710+)' },
+    { id: 'pa', label: isUrdu ? '🌾 پنجابی صوفی (120+)' : '🌾 Punjabi Sufi (120+)' },
+    { id: 'fa', label: isUrdu ? '🇮🇷 فارسی حکمت (50+)' : '🇮🇷 Persian Wisdom (50+)' },
+    { id: 'ar', label: isUrdu ? '🇸🇦 عربی کلاسیک (50+)' : '🇸🇦 Arabic Classics (50+)' },
+    { id: 'en', label: isUrdu ? '🇬🇧 انگلش (70+)' : '🇬🇧 English (70+)' },
+  ], [isUrdu])
+
+  const handleSelectLanguage = (langId: string) => {
+    setSelectedLanguage(langId)
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      if (langId === 'all') {
+        url.searchParams.delete('lang')
+      } else {
+        url.searchParams.set('lang', langId)
+      }
+      window.history.replaceState({}, '', url.toString())
+    }
+  }
 
   const [poems, setPoems] = useState<Poem[]>(() => POETRY_DATABASE)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -35,7 +66,8 @@ export function PoetryClient() {
   const [selectedPoet, setSelectedPoet] = useState<string>('all')
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all')
   const [selectedFormat, setSelectedFormat] = useState<'all' | 'two_liner' | 'full_poem'>('all')
-  const [visibleCount, setVisibleCount] = useState<number>(30)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [pageSize, setPageSize] = useState<number>(30)
   const [activeTabMap, setActiveTabMap] = useState<Record<string, 'original' | 'roman' | 'english' | 'urdu' | 'meaning'>>({})
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set())
@@ -51,9 +83,6 @@ export function PoetryClient() {
       }
     } catch {}
   }, [])
-
-  // Sentinel ref for infinite scroll
-  const observerTarget = useRef<HTMLDivElement | null>(null)
 
 
   // Language counts across entire 1,000 poem library
@@ -169,10 +198,10 @@ export function PoetryClient() {
     })
   }, [poems, searchQuery, selectedCategory, selectedPoet, selectedLanguage, selectedFormat])
 
-  // Automatically reset visibleCount to 30 whenever any filter or search changes
+  // Automatically reset currentPage to 1 whenever any filter or search changes
   useEffect(() => {
-    setVisibleCount(30)
-  }, [searchQuery, selectedCategory, selectedPoet, selectedLanguage, selectedFormat])
+    setCurrentPage(1)
+  }, [searchQuery, selectedCategory, selectedPoet, selectedLanguage, selectedFormat, pageSize])
 
   // Cascading Filter: If selected poet does not exist in the active language, reset poet to 'all'
   useEffect(() => {
@@ -184,71 +213,142 @@ export function PoetryClient() {
     }
   }, [selectedLanguage, poetList, selectedPoet])
 
-  // Infinite Scroll Observer: As the user scrolls down, automatically load more verses from the dataset
-  useEffect(() => {
-    const target = observerTarget.current
-    if (!target) return
+  // Pagination calculations: 30 items per page by default, ensuring users can reach footer and page bottom easily
+  const totalPages = Math.max(1, Math.ceil(filteredPoems.length / pageSize))
+  const startIndex = (currentPage - 1) * pageSize
+  const endIndex = Math.min(filteredPoems.length, currentPage * pageSize)
+  const displayedPoems = useMemo(() => {
+    return filteredPoems.slice(startIndex, endIndex)
+  }, [filteredPoems, startIndex, endIndex])
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisibleCount((prev) => {
-            if (prev < filteredPoems.length) {
-              return Math.min(prev + 30, filteredPoems.length)
-            }
-            return prev
-          })
-        }
-      },
-      { root: null, rootMargin: '500px', threshold: 0.05 }
-    )
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages) return
+    setCurrentPage(newPage)
+    setTimeout(() => {
+      const el = document.getElementById('poetry-collection-header')
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      } else {
+        window.scrollTo({ top: 380, behavior: 'smooth' })
+      }
+    }, 40)
+  }
 
-    observer.observe(target)
-    return () => {
-      observer.disconnect()
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = []
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i)
+    } else {
+      pages.push(1)
+      if (currentPage > 3) pages.push('ellipsis-start')
+
+      const start = Math.max(2, currentPage - 1)
+      const end = Math.min(totalPages - 1, currentPage + 1)
+      for (let i = start; i <= end; i++) {
+        if (!pages.includes(i)) pages.push(i)
+      }
+
+      if (currentPage < totalPages - 2) pages.push('ellipsis-end')
+      if (!pages.includes(totalPages)) pages.push(totalPages)
     }
-  }, [filteredPoems.length])
+    return pages
+  }
 
-  // Handle URL deep link query params (?poem=... or ?poet=...)
+  // Handle URL deep link query params (?poem=... or ?poet=... or ?lang=... or ?category=...)
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    const params = new URLSearchParams(window.location.search)
-    const poemParam = params.get('poem')
-    const poetParam = params.get('poet')
-    const categoryParam = params.get('category')
+    if (!searchParams) return
+    const poemParam = searchParams.get('poem')
+    const poetParam = searchParams.get('poet')
+    const categoryParam = searchParams.get('category')
+    const langParam = searchParams.get('lang')
 
-    if (categoryParam) setSelectedCategory(categoryParam)
-    if (poetParam) setSelectedPoet(poetParam)
+    if (langParam) {
+      setSelectedLanguage(langParam)
+    }
+    if (categoryParam) {
+      setSelectedCategory(categoryParam)
+    }
+    if (poetParam) {
+      setSelectedPoet(poetParam)
+    }
 
     if (poemParam) {
       setHighlightedPoemId(poemParam)
       const foundPoem = poems.find((p) => p.id === poemParam)
       if (foundPoem) {
         trackPoetryActivity(foundPoem, 'view', 'direct_link')
+        // Automatically switch language filter to match the poem if no explicit lang was provided
+        if (!langParam && foundPoem.originalLanguage) {
+          setSelectedLanguage(foundPoem.originalLanguage)
+        }
       }
+    }
+  }, [searchParams, poems])
+
+  // Pagination & auto-scroll to highlighted poem when filters/page are updated
+  useEffect(() => {
+    if (!highlightedPoemId) return
+    const poemIndex = filteredPoems.findIndex((p) => p.id === highlightedPoemId)
+    if (poemIndex !== -1) {
+      const targetPage = Math.floor(poemIndex / pageSize) + 1
+      setCurrentPage(targetPage)
       setTimeout(() => {
-        const el = document.getElementById(poemParam)
+        const el = document.getElementById(highlightedPoemId)
         if (el) {
           el.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
       }, 350)
     }
-  }, [poems])
+  }, [highlightedPoemId, filteredPoems, pageSize])
 
-  // Track poetry activity
-  const trackPoetryActivity = (poem: Poem, action: 'view' | 'share' | 'copy' | 'flyer' | 'card_bridge', channel?: string) => {
+  // Track poetry activity (views, clicks, copies, shares, flyers, likes)
+  const trackPoetryActivity = (
+    poem: Poem,
+    action: 'view' | 'click' | 'share' | 'copy' | 'flyer' | 'download' | 'card_bridge' | 'like' | 'unlike',
+    channel?: string
+  ) => {
     try {
-      fetch('/api/poetry-activity', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          poemId: poem.id,
-          poet: poem.poet,
-          title: poem.title,
-          action,
-          channel: channel || 'web',
-        }),
-      }).catch(() => {})
+      getClientTracking()
+        .then((tracking) => {
+          fetch('/api/poetry-activity', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              poemId: poem.id,
+              poet: poem.poet,
+              title: poem.title,
+              action,
+              channel: channel || 'web',
+              userName: user?.name || (typeof window !== 'undefined' ? localStorage.getItem('cardzy_visitor_name') || '' : ''),
+              userEmail: user?.email || '',
+              userId: user?.uid || '',
+              country: tracking?.country,
+              countryCode: tracking?.countryCode,
+              city: tracking?.city,
+              region: tracking?.region,
+              createdLocation: tracking?.createdLocation,
+              device: tracking?.device,
+              browser: tracking?.browser,
+              ip: tracking?.ip,
+            }),
+          }).catch(() => {})
+        })
+        .catch(() => {
+          fetch('/api/poetry-activity', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              poemId: poem.id,
+              poet: poem.poet,
+              title: poem.title,
+              action,
+              channel: channel || 'web',
+              userName: user?.name || '',
+              userEmail: user?.email || '',
+              userId: user?.uid || '',
+            }),
+          }).catch(() => {})
+        })
     } catch (e) {}
   }
 
@@ -257,7 +357,7 @@ export function PoetryClient() {
     const currentTab =
       tabOverride ||
       activeTabMap[poem.id] ||
-      (isUrdu && poem.originalLanguage !== 'ur' && poem.urduTranslation ? 'urdu' : 'original')
+      'original'
 
     let text = ''
     let isRtl = false
@@ -341,19 +441,8 @@ export function PoetryClient() {
       return next
     })
 
-    // Sync to Firestore backend via /api/poetry-activity
-    try {
-      fetch('/api/poetry-activity', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          poemId: poem.id,
-          poet: poem.poet,
-          title: poem.title,
-          action: isCurrentlyLiked ? 'unlike' : 'like',
-        }),
-      }).catch(() => {})
-    } catch {}
+    // Sync to Firestore backend with visitor metadata
+    trackPoetryActivity(poem, isCurrentlyLiked ? 'unlike' : 'like', 'heart_button')
   }
 
   // WhatsApp Share: Shares active selected language text, poet name, and website link exactly once
@@ -417,9 +506,14 @@ export function PoetryClient() {
 
       // Measure & wrap verse lines cleanly with comfortable margins
       const maxWidth = isRtl ? 820 : 840
+      const isLongPoem = lines.length > 8
       const fontDeclaration = isRtl
-        ? 'bold 32px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif'
-        : 'italic bold 28px "Georgia", "Times New Roman", serif'
+        ? (isLongPoem
+            ? 'bold 25px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif'
+            : 'bold 32px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif')
+        : (isLongPoem
+            ? 'italic bold 22px "Georgia", "Times New Roman", serif'
+            : 'italic bold 28px "Georgia", "Times New Roman", serif')
 
       tempCtx.font = fontDeclaration
 
@@ -441,13 +535,13 @@ export function PoetryClient() {
         }
       })
 
-      // Generous line height (86px for Urdu to prevent dots and descenders colliding, 52px for English)
-      const lineHeight = isRtl ? 86 : 52
+      // Generous line height adapted for length (66px for long Urdu, 86px for standard)
+      const lineHeight = isRtl ? (isLongPoem ? 66 : 86) : (isLongPoem ? 42 : 52)
       const verseBoxHeight = Math.max(isRtl ? 190 : 160, wrappedLines.length * lineHeight + (isRtl ? 80 : 60))
       
-      const headerHeight = poetEra ? 215 : 185
+      const headerHeight = poetEra ? 170 : 140
       const footerHeight = 110
-      const calculatedHeight = Math.max(580, headerHeight + verseBoxHeight + footerHeight)
+      const calculatedHeight = Math.max(540, headerHeight + verseBoxHeight + footerHeight)
 
       // Set exact dynamic canvas height to eliminate unnecessary empty space
       canvas.height = calculatedHeight
@@ -497,14 +591,7 @@ export function PoetryClient() {
         ctx.fillText(`(${poetEra})`, 540, topY)
       }
 
-      topY += 32
-      ctx.fillStyle = '#6ee7b7'
-      ctx.font = 'bold 15px sans-serif'
-      const catLabel = (poem.categoryLabel || 'Masterpiece').toUpperCase()
-      // Clean category title without language or roman badges
-      ctx.fillText(`✦ ${catLabel} ✦`, 540, topY)
-
-      topY += 22
+      topY += 28
       ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)'
       ctx.lineWidth = 1.5
       ctx.beginPath()
@@ -689,57 +776,95 @@ export function PoetryClient() {
                 </button>
               ))}
             </div>
+
+            {/* Quick Language Filter Pills in Hero */}
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+              {LANGUAGE_OPTIONS.map((pill) => (
+                <button
+                  key={pill.id}
+                  type="button"
+                  onClick={() => handleSelectLanguage(pill.id)}
+                  className={cn(
+                    "px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 border",
+                    selectedLanguage === pill.id
+                      ? "bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 border-amber-400 shadow-amber-500/25 ring-2 ring-amber-400/80 scale-105 font-black"
+                      : "bg-slate-900/90 text-slate-300 hover:text-white hover:bg-slate-800 border-slate-700/80 hover:border-amber-400/40"
+                  )}
+                >
+                  {pill.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* --- FILTER CONTROLS (Sticky 4-Dropdown Clean Grid, Mobile-Optimized Text) --- */}
-      <section className="sticky top-16 z-30 bg-slate-950/95 backdrop-blur-md border-b border-slate-800/80 py-2 sm:py-3 px-2 sm:px-6 lg:px-8 shadow-md">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
+      <section className="sticky top-16 z-30 bg-slate-950/95 backdrop-blur-md border-b border-slate-800/80 py-1.5 sm:py-3 px-2 sm:px-6 lg:px-8 shadow-md">
+        <div className="max-w-7xl mx-auto space-y-1.5 sm:space-y-2.5">
+          {/* Quick Language Pills Bar inside Sticky Header */}
+          <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar pb-0.5">
+            {LANGUAGE_OPTIONS.map((pill) => (
+              <button
+                key={pill.id}
+                type="button"
+                onClick={() => handleSelectLanguage(pill.id)}
+                className={cn(
+                  'px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10.5px] sm:text-[13px] font-bold whitespace-nowrap transition-all cursor-pointer shrink-0 shadow-xs border',
+                  selectedLanguage === pill.id
+                    ? 'bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 border-amber-400 shadow-amber-500/20 font-black scale-[1.02]'
+                    : 'bg-slate-900/90 text-slate-300 hover:text-white hover:bg-slate-800 border-slate-700/80 hover:border-amber-400/40'
+                )}
+              >
+                {pill.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 sm:gap-3">
             {/* 1. Language Dropdown */}
-            <div className="flex flex-col gap-0.5 sm:gap-1">
-              <label className="text-[10px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-1">
+            <div className="flex flex-col gap-0.5">
+              <label className="text-[9.5px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-0.5 sm:gap-1 leading-none tracking-tight">
                 <span>🌐</span> <span>{isUrdu ? 'زبان' : 'Language'}</span>
               </label>
               <select
                 value={selectedLanguage}
-                onChange={(e) => setSelectedLanguage(e.target.value)}
-                className="w-full text-[11px] sm:text-xs font-semibold rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-2 py-1.5 sm:px-2.5 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
+                onChange={(e) => handleSelectLanguage(e.target.value)}
+                className="w-full text-[9.5px] sm:text-xs font-semibold rounded-lg sm:rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-1 sm:px-2.5 py-1 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
               >
                 <option value="all">
-                  {isUrdu ? `🌐 تمام زبانیں (${poems.length})` : `🌐 All (${poems.length})`}
+                  {isUrdu ? '🌐 تمام کلام (1,000+)' : '🌐 All (1,000+)'}
                 </option>
                 <option value="ur">
-                  {isUrdu ? `🇵🇰 اردو (${languageCounts['ur'] || 0})` : `🇵🇰 Urdu (${languageCounts['ur'] || 0})`}
+                  {isUrdu ? '🇵🇰 اردو (710+)' : '🇵🇰 Urdu (710+)'}
                 </option>
                 <option value="pa">
-                  {isUrdu ? `🌾 پنجابی (${languageCounts['pa'] || 0})` : `🌾 Punjabi (${languageCounts['pa'] || 0})`}
+                  {isUrdu ? '🌾 پنجابی (120+)' : '🌾 Punjabi (120+)'}
                 </option>
                 <option value="fa">
-                  {isUrdu ? `🇮🇷 فارسی (${languageCounts['fa'] || 0})` : `🇮🇷 Persian (${languageCounts['fa'] || 0})`}
+                  {isUrdu ? '🇮🇷 فارسی (50+)' : '🇮🇷 Persian (50+)'}
                 </option>
                 <option value="ar">
-                  {isUrdu ? `🇸🇦 عربی (${languageCounts['ar'] || 0})` : `🇸🇦 Arabic (${languageCounts['ar'] || 0})`}
+                  {isUrdu ? '🇸🇦 عربی (50+)' : '🇸🇦 Arabic (50+)'}
                 </option>
                 <option value="en">
-                  🇬🇧 English ({languageCounts['en'] || 0})
+                  {isUrdu ? '🇬🇧 انگلش (70+)' : '🇬🇧 English (70+)'}
                 </option>
                 <option value="es">
-                  {isUrdu ? `🇪🇸 ہسپانوی (${languageCounts['es'] || 0})` : `🇪🇸 Spanish (${languageCounts['es'] || 0})`}
+                  {isUrdu ? '🇪🇸 ہسپانوی (5+)' : '🇪🇸 Spanish (5+)'}
                 </option>
               </select>
             </div>
 
             {/* 2. Poet Dropdown (Cascading: Filters based on active language) */}
-            <div className="flex flex-col gap-0.5 sm:gap-1">
-              <label className="text-[10px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-1">
+            <div className="flex flex-col gap-0.5">
+              <label className="text-[9.5px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-0.5 sm:gap-1 leading-none tracking-tight">
                 <Feather className="size-2.5 sm:size-3 text-amber-400" /> <span>{isUrdu ? 'شاعر' : 'Poet'}</span>
               </label>
               <select
                 value={selectedPoet}
                 onChange={(e) => setSelectedPoet(e.target.value)}
-                className="w-full text-[11px] sm:text-xs font-semibold rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-2 py-1.5 sm:px-2.5 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
+                className="w-full text-[9.5px] sm:text-xs font-semibold rounded-lg sm:rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-1 sm:px-2.5 py-1 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
               >
                 <option value="all">
                   {selectedLanguage === 'all'
@@ -767,14 +892,14 @@ export function PoetryClient() {
             </div>
 
             {/* 3. Theme / Category Dropdown */}
-            <div className="flex flex-col gap-0.5 sm:gap-1">
-              <label className="text-[10px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-1">
+            <div className="flex flex-col gap-0.5">
+              <label className="text-[9.5px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-0.5 sm:gap-1 leading-none tracking-tight">
                 <Filter className="size-2.5 sm:size-3 text-amber-400" /> <span>{isUrdu ? 'موضوع' : 'Theme'}</span>
               </label>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full text-[11px] sm:text-xs font-semibold rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-2 py-1.5 sm:px-2.5 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
+                className="w-full text-[9.5px] sm:text-xs font-semibold rounded-lg sm:rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-1 sm:px-2.5 py-1 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
               >
                 {categoriesList.map((cat) => (
                   <option key={cat.id} value={cat.id}>
@@ -785,14 +910,14 @@ export function PoetryClient() {
             </div>
 
             {/* 4. Format Dropdown */}
-            <div className="flex flex-col gap-0.5 sm:gap-1">
-              <label className="text-[10px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-1">
+            <div className="flex flex-col gap-0.5">
+              <label className="text-[9.5px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-0.5 sm:gap-1 leading-none tracking-tight">
                 <Layers className="size-2.5 sm:size-3 text-amber-400" /> <span>{isUrdu ? 'طرز' : 'Format'}</span>
               </label>
               <select
                 value={selectedFormat}
                 onChange={(e) => setSelectedFormat(e.target.value as any)}
-                className="w-full text-[11px] sm:text-xs font-semibold rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-2 py-1.5 sm:px-2.5 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
+                className="w-full text-[9.5px] sm:text-xs font-semibold rounded-lg sm:rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-1 sm:px-2.5 py-1 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
               >
                 <option value="all">{isUrdu ? '📜 تمام طرز' : '📜 All Formats'}</option>
                 <option value="two_liner">{isUrdu ? '📜 دو سطری اشعار' : '📜 2-Line Ash’aar'}</option>
@@ -838,17 +963,26 @@ export function PoetryClient() {
 
       {/* --- POETRY GRID --- */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-6 p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
+        <div id="poetry-collection-header" className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-6 p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
           <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-200 flex-wrap">
             <span>
-              {isUrdu ? 'دکھائے جا رہے ہیں' : 'Showing'}{' '}
-              <strong className="text-amber-400 font-black text-base">{Math.min(visibleCount, filteredPoems.length)}</strong>{' '}
-              {isUrdu ? 'از' : 'of'}{' '}
-              <strong className="text-amber-400 font-black text-base">{filteredPoems.length}</strong>{' '}
-              {isUrdu ? 'شاہکار اشعار' : 'masterpiece verses'}{' '}
-              <span className="text-slate-400 text-xs font-normal">
-                ({isUrdu ? 'مکمل 1000 کے گنجینہ سے' : 'from 1,000 total library'})
-              </span>
+              {isUrdu ? (
+                <>
+                  صفحہ <strong className="text-amber-400 font-black text-base">{currentPage}</strong> از <strong className="text-white font-bold">{totalPages}</strong>{' '}
+                  <span className="text-slate-400 text-xs font-normal">
+                    ({filteredPoems.length} میں سے {filteredPoems.length > 0 ? startIndex + 1 : 0} تا {endIndex} اشعار)
+                  </span>
+                </>
+              ) : (
+                <>
+                  Showing <strong className="text-amber-400 font-black text-base">{filteredPoems.length > 0 ? startIndex + 1 : 0}–{endIndex}</strong> of{' '}
+                  <strong className="text-amber-400 font-black text-base">{filteredPoems.length}</strong>{' '}
+                  masterpiece verses{' '}
+                  <span className="text-slate-400 text-xs font-normal">
+                    (Page {currentPage} of {totalPages})
+                  </span>
+                </>
+              )}
             </span>
             {selectedPoet !== 'all' && (
               <span className="text-xs px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 font-bold">
@@ -861,21 +995,42 @@ export function PoetryClient() {
               </span>
             )}
           </div>
-          {(selectedCategory !== 'all' || selectedPoet !== 'all' || selectedLanguage !== 'all' || selectedFormat !== 'all' || searchQuery) && (
-            <button
-              onClick={() => {
-                setSelectedCategory('all')
-                setSelectedPoet('all')
-                setSelectedLanguage('all')
-                setSelectedFormat('all')
-                setSearchQuery('')
-              }}
-              className="px-3 py-1 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 hover:text-amber-200 border border-amber-500/40 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer self-start sm:self-auto"
-            >
-              <span>↺</span>
-              <span>{isUrdu ? 'تمام فلٹرز ختم کریں' : 'Reset All Filters'}</span>
-            </button>
-          )}
+          
+          <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+            {/* Per-page selector */}
+            <div className="flex items-center gap-1.5 text-xs text-slate-400">
+              <span className="text-[11px]">{isUrdu ? 'فی صفحہ:' : 'Per page:'}</span>
+              <select
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value))
+                  setCurrentPage(1)
+                }}
+                className="px-2 py-1 rounded-lg bg-slate-950 border border-slate-800 text-amber-300 text-xs font-bold cursor-pointer focus:outline-hidden focus:border-amber-500"
+              >
+                <option value={15}>15</option>
+                <option value={30}>30</option>
+                <option value={60}>60</option>
+                <option value={90}>90</option>
+              </select>
+            </div>
+
+            {(selectedCategory !== 'all' || selectedPoet !== 'all' || selectedLanguage !== 'all' || selectedFormat !== 'all' || searchQuery) && (
+              <button
+                onClick={() => {
+                  setSelectedCategory('all')
+                  setSelectedPoet('all')
+                  setSelectedLanguage('all')
+                  setSelectedFormat('all')
+                  setSearchQuery('')
+                }}
+                className="px-3 py-1 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 hover:text-amber-200 border border-amber-500/40 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+              >
+                <span>↺</span>
+                <span>{isUrdu ? 'تمام فلٹرز ختم کریں' : 'Reset All Filters'}</span>
+              </button>
+            )}
+          </div>
         </div>
 
         {isLoading ? (
@@ -914,8 +1069,8 @@ export function PoetryClient() {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6">
-              {filteredPoems.slice(0, visibleCount).map((poem) => {
-                const currentTab = activeTabMap[poem.id] || (isUrdu && poem.originalLanguage !== 'ur' && poem.urduTranslation ? 'urdu' : 'original')
+              {displayedPoems.map((poem) => {
+                const currentTab = activeTabMap[poem.id] || 'original'
                 const isLiked = likedIds.has(poem.id)
                 const isCopied = copiedId === poem.id
                 const isHighlighted = highlightedPoemId === poem.id
@@ -924,8 +1079,9 @@ export function PoetryClient() {
                   <article
                     key={poem.id}
                     id={poem.id}
+                    translate="no"
                     className={cn(
-                      "group relative flex flex-col justify-between rounded-3xl bg-slate-900/80 border p-4 sm:p-6 shadow-lg hover:shadow-2xl hover:shadow-amber-500/5 transition-all duration-300 backdrop-blur-xs overflow-hidden break-words",
+                      "notranslate group relative flex flex-col justify-between rounded-3xl bg-slate-900/80 border p-4 sm:p-6 shadow-lg hover:shadow-2xl hover:shadow-amber-500/5 transition-all duration-300 backdrop-blur-xs overflow-hidden break-words",
                       isHighlighted
                         ? "border-amber-400 ring-2 ring-amber-400/40 shadow-amber-500/10"
                         : "border-slate-800/90 hover:border-amber-500/40"
@@ -936,25 +1092,28 @@ export function PoetryClient() {
                       <div className="flex items-start justify-between gap-2 mb-3">
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-[11px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold">
-                              {poem.categoryLabel}
-                            </span>
                             <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">
                               {poem.originalLanguage}
                             </span>
+                            {poem.format === 'full_poem' && (
+                              <span className="text-[10px] text-purple-300 bg-purple-950/60 px-2 py-0.5 rounded-full border border-purple-800/50 font-bold flex items-center gap-1">
+                                <BookOpen className="size-2.5" />
+                                <span>{isUrdu ? 'مکمل کلام' : 'Full Poem'}</span>
+                              </span>
+                            )}
                             {poem.poetOrigin && (
                               <span className="text-[10px] text-emerald-400/80 bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-800/40 truncate max-w-[120px]">
                                 {poem.poetOrigin}
                               </span>
                             )}
                           </div>
-                          <h3 className="text-base font-bold text-slate-100 mt-1.5 group-hover:text-amber-300 transition-colors truncate">
+                          <h3 translate="no" className="notranslate text-base font-bold text-slate-100 mt-1.5 group-hover:text-amber-300 transition-colors truncate">
                             {poem.title}
                           </h3>
-                          <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5 flex-wrap">
+                          <p translate="no" className="notranslate text-xs text-slate-400 mt-0.5 flex items-center gap-1.5 flex-wrap">
                             <span>By <strong>{poem.poet}</strong></span>
                             {poem.poetUrdu && (
-                              <span className="text-emerald-400 font-urdu text-xs font-bold">{poem.poetUrdu}</span>
+                              <span translate="no" className="notranslate text-emerald-400 font-urdu text-xs font-bold">{poem.poetUrdu}</span>
                             )}
                           </p>
                         </div>
@@ -1036,14 +1195,15 @@ export function PoetryClient() {
                         }
 
                         return (
-                          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-950/80 border border-slate-800/80 mb-3 overflow-x-auto no-scrollbar">
+                          <div translate="no" className="notranslate flex items-center gap-1.5 p-1 rounded-xl bg-slate-950/80 border border-slate-800/80 mb-3 overflow-x-auto no-scrollbar">
                             {tabs.map((tab) => (
                               <button
                                 key={tab.id}
                                 type="button"
+                                translate="no"
                                 onClick={() => setActiveTabMap((prev) => ({ ...prev, [poem.id]: tab.id }))}
                                 className={cn(
-                                  'shrink-0 py-1.5 px-3 rounded-lg text-xs font-bold transition-all text-center whitespace-nowrap cursor-pointer shadow-2xs',
+                                  'notranslate shrink-0 py-1.5 px-3 rounded-lg text-xs font-bold transition-all text-center whitespace-nowrap cursor-pointer shadow-2xs',
                                   currentTab === tab.id
                                     ? 'bg-amber-500 text-slate-950 shadow-xs font-black'
                                     : 'text-slate-300 hover:text-white bg-slate-900/60 hover:bg-slate-800'
@@ -1057,23 +1217,24 @@ export function PoetryClient() {
                       })()}
 
                       {/* Main Verse Content Area */}
-                      <div className="min-h-[150px] flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-slate-950/90 to-slate-900/60 border border-slate-800/80 relative overflow-hidden">
+                      <div translate="no" className="notranslate min-h-[150px] flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-slate-950/90 to-slate-900/60 border border-slate-800/80 relative overflow-hidden">
                         <div className="absolute right-3 bottom-2 opacity-5 text-5xl select-none font-serif text-amber-300 pointer-events-none">
                           ❦
                         </div>
 
                         {/* --- 1. ORIGINAL SCRIPT VIEW --- */}
                         {currentTab === 'original' && (
-                          <div className="w-full flex flex-col justify-between flex-1">
-                            <div className={cn("space-y-2.5 w-full", poem.direction === 'rtl' ? "text-right" : "text-left")}>
+                          <div translate="no" className="notranslate w-full flex flex-col justify-between flex-1">
+                            <div className={cn("space-y-2.5 w-full max-h-[380px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-amber-500/30", poem.direction === 'rtl' ? "text-right" : "text-left")}>
                               {poem.originalText
                                 .split('\n')
                                 .filter((line) => line.trim() && !line.includes('شعر نمبر') && !line.startsWith('—'))
                                 .map((line, idx) => (
                                 <p
                                   key={idx}
+                                  translate="no"
                                   className={cn(
-                                    "leading-relaxed break-words",
+                                    "notranslate leading-relaxed break-words",
                                     poem.direction === 'rtl'
                                       ? "font-urdu text-lg sm:text-xl text-amber-100"
                                       : "font-serif text-sm sm:text-base text-slate-100 italic"
@@ -1087,25 +1248,26 @@ export function PoetryClient() {
 
                             {/* Poet Attribution */}
                             <div
+                              translate="no"
                               className={cn(
-                                "mt-4 pt-2.5 border-t border-amber-500/20 flex items-center gap-2",
+                                "notranslate mt-4 pt-2.5 border-t border-amber-500/20 flex items-center gap-2",
                                 poem.direction === 'rtl' ? "justify-end text-right" : "justify-start text-left"
                               )}
                               dir={poem.direction}
                             >
                               {poem.direction === 'rtl' ? (
                                 <>
-                                  <span className="text-[11px] text-slate-400">({poem.poetOrigin || poem.poet})</span>
-                                  <span className="font-urdu text-sm sm:text-base font-extrabold text-amber-300">
+                                  <span translate="no" className="notranslate text-[11px] text-slate-400">({poem.poetOrigin || poem.poet})</span>
+                                  <span translate="no" className="notranslate font-urdu text-sm sm:text-base font-extrabold text-amber-300">
                                     — {poem.poetUrdu}
                                   </span>
                                 </>
                               ) : (
                                 <>
-                                  <span className="font-serif text-xs sm:text-sm font-bold text-amber-300">
+                                  <span translate="no" className="notranslate font-serif text-xs sm:text-sm font-bold text-amber-300">
                                     — {poem.poet}
                                   </span>
-                                  <span className="text-[11px] text-slate-400">({poem.poetOrigin || poem.poetEra})</span>
+                                  <span translate="no" className="notranslate text-[11px] text-slate-400">({poem.poetOrigin || poem.poetEra})</span>
                                 </>
                               )}
                             </div>
@@ -1114,21 +1276,21 @@ export function PoetryClient() {
 
                         {/* --- 2. URDU TRANSLATION VIEW --- */}
                         {currentTab === 'urdu' && (
-                          <div className="w-full flex flex-col justify-between flex-1 text-right" dir="rtl">
-                            <div className="space-y-2.5 w-full text-right">
+                          <div translate="no" className="notranslate w-full flex flex-col justify-between flex-1 text-right" dir="rtl">
+                            <div className="space-y-2.5 w-full max-h-[380px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-amber-500/30 text-right">
                               {(poem.urduTranslation || poem.originalText)
                                 .split('\n')
                                 .filter((line) => line.trim() && !line.includes('شعر نمبر') && !line.startsWith('—'))
                                 .map((line, idx) => (
-                                <p key={idx} className="font-urdu text-lg sm:text-xl text-amber-100 leading-relaxed break-words">
+                                <p key={idx} translate="no" className="notranslate font-urdu text-lg sm:text-xl text-amber-100 leading-relaxed break-words">
                                   {line}
                                 </p>
                               ))}
                             </div>
 
-                            <div className="mt-4 pt-2.5 border-t border-amber-500/20 flex items-center justify-end gap-2 text-right">
-                              <span className="text-[11px] text-slate-400">({poem.poet})</span>
-                              <span className="font-urdu text-sm sm:text-base font-extrabold text-amber-300">
+                            <div translate="no" className="notranslate mt-4 pt-2.5 border-t border-amber-500/20 flex items-center justify-end gap-2 text-right">
+                              <span translate="no" className="notranslate text-[11px] text-slate-400">({poem.poet})</span>
+                              <span translate="no" className="notranslate font-urdu text-sm sm:text-base font-extrabold text-amber-300">
                                 — {poem.poetUrdu}
                               </span>
                             </div>
@@ -1137,24 +1299,24 @@ export function PoetryClient() {
 
                         {/* --- 3. ROMAN URDU VIEW --- */}
                         {currentTab === 'roman' && (
-                          <div className="w-full flex flex-col justify-between flex-1 text-left" dir="ltr">
-                            <div className="space-y-2 w-full">
+                          <div translate="no" className="notranslate w-full flex flex-col justify-between flex-1 text-left" dir="ltr">
+                            <div className="space-y-2 w-full max-h-[380px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-amber-500/30">
                               {poem.romanText
                                 .split('\n')
                                 .filter((line) => line.trim() && !line.includes('شعر نمبر') && !line.startsWith('—'))
                                 .map((line, idx) => (
-                                <p key={idx} className="text-xs sm:text-sm text-slate-200 font-medium italic break-words">
+                                <p key={idx} translate="no" className="notranslate text-xs sm:text-sm text-slate-200 font-medium italic break-words">
                                   {line.split(' — ')[0]}
                                 </p>
                               ))}
                             </div>
 
-                            <div className="mt-4 pt-2.5 border-t border-slate-800/80 flex items-center justify-start gap-2 text-left" dir="ltr">
-                              <span className="font-serif text-xs sm:text-sm font-bold text-amber-300">
+                            <div translate="no" className="notranslate mt-4 pt-2.5 border-t border-slate-800/80 flex items-center justify-start gap-2 text-left" dir="ltr">
+                              <span translate="no" className="notranslate font-serif text-xs sm:text-sm font-bold text-amber-300">
                                 — {poem.poet}
                               </span>
                               {poem.poetUrdu && (
-                                <span className="text-xs font-urdu text-emerald-400">({poem.poetUrdu})</span>
+                                <span translate="no" className="notranslate text-xs font-urdu text-emerald-400">({poem.poetUrdu})</span>
                               )}
                             </div>
                           </div>
@@ -1162,26 +1324,26 @@ export function PoetryClient() {
 
                         {/* --- 4. ENGLISH TRANSLATION VIEW --- */}
                         {currentTab === 'english' && (
-                          <div className="w-full flex flex-col justify-between flex-1 text-left" dir="ltr">
-                            <div className="space-y-2 w-full">
+                          <div translate="no" className="notranslate w-full flex flex-col justify-between flex-1 text-left" dir="ltr">
+                            <div className="space-y-2 w-full max-h-[380px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-amber-500/30">
                               {poem.englishTranslation.split('\n').map((line, idx) => (
-                                <p key={idx} className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans break-words">
+                                <p key={idx} translate="no" className="notranslate text-xs sm:text-sm text-slate-300 leading-relaxed font-sans break-words">
                                   {line}
                                 </p>
                               ))}
                               {poem.meaning && (
-                                <p className="text-[11px] text-amber-400/90 mt-2 pt-1.5 border-t border-slate-800">
+                                <p translate="no" className="notranslate text-[11px] text-amber-400/90 mt-2 pt-1.5 border-t border-slate-800">
                                   💡 <strong>Context:</strong> {poem.meaning}
                                 </p>
                               )}
                             </div>
 
-                            <div className="mt-4 pt-2.5 border-t border-slate-800/80 flex items-center justify-start gap-2 text-left" dir="ltr">
-                              <span className="font-serif text-xs sm:text-sm font-bold text-amber-300">
+                            <div translate="no" className="notranslate mt-4 pt-2.5 border-t border-slate-800/80 flex items-center justify-start gap-2 text-left" dir="ltr">
+                              <span translate="no" className="notranslate font-serif text-xs sm:text-sm font-bold text-amber-300">
                                 — {poem.poet}
                               </span>
                               {poem.poetUrdu && (
-                                <span className="text-xs font-urdu text-emerald-400">({poem.poetUrdu})</span>
+                                <span translate="no" className="notranslate text-xs font-urdu text-emerald-400">({poem.poetUrdu})</span>
                               )}
                             </div>
                           </div>
@@ -1189,15 +1351,15 @@ export function PoetryClient() {
 
                         {/* --- 5. CONTEXT & MEANING VIEW --- */}
                         {currentTab === 'meaning' && (
-                          <div className="w-full flex flex-col justify-between flex-1 text-left" dir="ltr">
+                          <div translate="no" className="notranslate w-full flex flex-col justify-between flex-1 text-left" dir="ltr">
                             <div className="space-y-2 w-full">
-                              <p className="text-xs sm:text-sm text-amber-200/95 leading-relaxed font-sans break-words">
+                              <p translate="no" className="notranslate text-xs sm:text-sm text-amber-200/95 leading-relaxed font-sans break-words">
                                 {poem.meaning || poem.englishTranslation}
                               </p>
                               {poem.tags && poem.tags.length > 0 && (
-                                <div className="flex flex-wrap gap-1 pt-1.5">
+                                <div translate="no" className="notranslate flex flex-wrap gap-1 pt-1.5">
                                   {poem.tags.map((t, idx) => (
-                                    <span key={idx} className="text-[10px] px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700/60">
+                                    <span key={idx} translate="no" className="notranslate text-[10px] px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700/60">
                                       #{t}
                                     </span>
                                   ))}
@@ -1205,12 +1367,12 @@ export function PoetryClient() {
                               )}
                             </div>
 
-                            <div className="mt-4 pt-2.5 border-t border-slate-800/80 flex items-center justify-start gap-2 text-left" dir="ltr">
-                              <span className="font-serif text-xs sm:text-sm font-bold text-amber-300">
+                            <div translate="no" className="notranslate mt-4 pt-2.5 border-t border-slate-800/80 flex items-center justify-start gap-2 text-left" dir="ltr">
+                              <span translate="no" className="notranslate font-serif text-xs sm:text-sm font-bold text-amber-300">
                                 — {poem.poet}
                               </span>
                               {poem.poetUrdu && (
-                                <span className="text-xs font-urdu text-emerald-400">({poem.poetUrdu})</span>
+                                <span translate="no" className="notranslate text-xs font-urdu text-emerald-400">({poem.poetUrdu})</span>
                               )}
                             </div>
                           </div>
@@ -1313,32 +1475,126 @@ export function PoetryClient() {
               })}
             </div>
 
-            {/* Infinite Scroll Sentinel & Load More Indicator */}
-            <div ref={observerTarget} className="mt-10 py-6 flex flex-col items-center justify-center">
-              {filteredPoems.length > visibleCount ? (
-                <div className="flex flex-col items-center gap-3">
-                  <div className="flex items-center gap-2 text-xs text-amber-300 bg-slate-900/90 px-4 py-2 rounded-full border border-amber-500/30">
-                    <div className="size-4 rounded-full border-2 border-amber-400/40 border-t-amber-400 animate-spin" />
-                    <span>{isUrdu ? 'مزید اشعار خودکار طور پر لوڈ ہو رہے ہیں...' : 'Loading more verses on scroll...'}</span>
-                  </div>
+            {/* --- PAGINATION BAR --- */}
+            {totalPages > 1 ? (
+              <div className="mt-12 pt-6 border-t border-slate-800/90 flex flex-col items-center gap-4">
+                <div className="flex items-center justify-center gap-1.5 flex-wrap">
+                  {/* First Page */}
                   <button
                     type="button"
-                    onClick={() => setVisibleCount((prev) => Math.min(prev + 30, filteredPoems.length))}
-                    className="px-6 py-2 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer"
+                    onClick={() => handlePageChange(1)}
+                    disabled={currentPage === 1}
+                    className="size-9 rounded-xl border border-slate-800 bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center transition-all cursor-pointer shadow-xs"
+                    title={isUrdu ? 'پہلا صفحہ' : 'First Page'}
+                    aria-label="First Page"
                   >
-                    {isUrdu
-                      ? `مزید لوڈ کریں (+30) — باقی ${filteredPoems.length - visibleCount}`
-                      : `Load More (+30) — ${filteredPoems.length - visibleCount} remaining`}
+                    <ChevronsLeft className="size-4" />
+                  </button>
+
+                  {/* Previous Page */}
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="px-3 h-9 rounded-xl border border-amber-500/30 bg-slate-900/90 hover:bg-amber-500/10 text-amber-300 hover:text-amber-200 disabled:opacity-30 disabled:pointer-events-none flex items-center gap-1.5 text-xs font-bold transition-all cursor-pointer shadow-xs"
+                    title={isUrdu ? 'پچھلا صفحہ' : 'Previous Page'}
+                    aria-label="Previous Page"
+                  >
+                    <ChevronLeft className="size-4" />
+                    <span className="hidden sm:inline">{isUrdu ? 'پچھلا' : 'Prev'}</span>
+                  </button>
+
+                  {/* Page numbers */}
+                  <div className="flex items-center gap-1">
+                    {getPageNumbers().map((p, idx) => {
+                      if (typeof p === 'string') {
+                        return (
+                          <span key={`ellipsis-${idx}`} className="px-1.5 text-slate-500 text-xs select-none">
+                            •••
+                          </span>
+                        )
+                      }
+                      const isActive = p === currentPage
+                      return (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => handlePageChange(p)}
+                          className={cn(
+                            "min-w-9 h-9 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center",
+                            isActive
+                              ? "bg-amber-500 text-slate-950 font-black shadow-md shadow-amber-500/25 ring-2 ring-amber-400/50 scale-105"
+                              : "bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800/80"
+                          )}
+                          aria-current={isActive ? 'page' : undefined}
+                        >
+                          {p}
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  {/* Next Page */}
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="px-3 h-9 rounded-xl border border-amber-500/30 bg-slate-900/90 hover:bg-amber-500/10 text-amber-300 hover:text-amber-200 disabled:opacity-30 disabled:pointer-events-none flex items-center gap-1.5 text-xs font-bold transition-all cursor-pointer shadow-xs"
+                    title={isUrdu ? 'اگلا صفحہ' : 'Next Page'}
+                    aria-label="Next Page"
+                  >
+                    <span className="hidden sm:inline">{isUrdu ? 'اگلا' : 'Next'}</span>
+                    <ChevronRight className="size-4" />
+                  </button>
+
+                  {/* Last Page */}
+                  <button
+                    type="button"
+                    onClick={() => handlePageChange(totalPages)}
+                    disabled={currentPage === totalPages}
+                    className="size-9 rounded-xl border border-slate-800 bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center transition-all cursor-pointer shadow-xs"
+                    title={isUrdu ? 'آخری صفحہ' : 'Last Page'}
+                    aria-label="Last Page"
+                  >
+                    <ChevronsRight className="size-4" />
                   </button>
                 </div>
-              ) : filteredPoems.length > 0 ? (
-                <div className="text-center py-4">
-                  <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400/80 bg-emerald-950/40 border border-emerald-800/30 px-3.5 py-1.5 rounded-full font-medium">
-                    ✓ {isUrdu ? `تمام ${filteredPoems.length} اشعار لوڈ ہو چکے ہیں` : `All ${filteredPoems.length} matching verses loaded`}
+
+                {/* Quick Page Jump & Page Summary */}
+                <div className="flex items-center gap-3 text-xs text-slate-400 flex-wrap justify-center">
+                  <span>
+                    {isUrdu ? (
+                      <>صفحہ <strong className="text-amber-300 font-bold">{currentPage}</strong> از <strong className="text-white font-bold">{totalPages}</strong></>
+                    ) : (
+                      <>Page <strong className="text-amber-300 font-bold">{currentPage}</strong> of <strong className="text-white font-bold">{totalPages}</strong></>
+                    )}
                   </span>
+                  {totalPages > 4 && (
+                    <div className="flex items-center gap-1.5 border-l border-slate-800 pl-3">
+                      <span>{isUrdu ? 'براہ راست صفحہ:' : 'Jump to:'}</span>
+                      <select
+                        value={currentPage}
+                        onChange={(e) => handlePageChange(Number(e.target.value))}
+                        className="px-2 py-1 rounded-lg bg-slate-900 border border-slate-800 text-amber-300 font-bold text-xs cursor-pointer focus:outline-hidden focus:border-amber-500"
+                        aria-label="Jump to page"
+                      >
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pNum) => (
+                          <option key={pNum} value={pNum}>
+                            {isUrdu ? `صفحہ ${pNum}` : `Page ${pNum}`}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                 </div>
-              ) : null}
-            </div>
+              </div>
+            ) : filteredPoems.length > 0 ? (
+              <div className="text-center py-6 mt-6 border-t border-slate-800/80">
+                <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400/80 bg-emerald-950/40 border border-emerald-800/30 px-3.5 py-1.5 rounded-full font-medium">
+                  ✓ {isUrdu ? `تمام ${filteredPoems.length} اشعار لوڈ ہو چکے ہیں` : `All ${filteredPoems.length} matching verses loaded`}
+                </span>
+              </div>
+            ) : null}
           </>
         )}
       </main>

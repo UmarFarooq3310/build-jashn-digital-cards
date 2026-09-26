@@ -136,6 +136,7 @@ function SiteHeaderInner() {
 
         <nav className="hidden items-center gap-0.5 xl:gap-1 2xl:gap-1.5 lg:flex">
           {[
+            { href: '/', key: 'navHome', fallback: 'Home' },
             { href: '/create-wish', key: 'navWishes', fallback: 'Wishes' },
             { href: '/create-invitation', key: 'navInvitations', fallback: 'Invitations' },
             { href: '/create-visiting-card', key: 'navVCards', fallback: 'vCards' },
@@ -300,6 +301,7 @@ function SiteHeaderInner() {
         <div className="border-t border-border bg-background px-4 py-3 lg:hidden">
           <nav className="flex flex-col gap-1.5">
             {[
+              { href: '/', key: 'navHome', fallback: 'Home' },
               { href: '/create-wish', key: 'sendWish', fallback: '3D Wish Cards' },
               { href: '/create-invitation', key: 'createInvitation', fallback: 'Wedding Invitations' },
               { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Smart vCards' },

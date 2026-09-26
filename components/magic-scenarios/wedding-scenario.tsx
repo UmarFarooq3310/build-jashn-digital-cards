@@ -18,7 +18,7 @@ import {
   MessageCircle,
 } from 'lucide-react'
 import type { MagicLinkData } from '@/lib/jashn/magic-types'
-import { submitMagicResponse } from '@/lib/jashn/magic-service'
+import { submitMagicResponse, normalizeWhatsAppNumber } from '@/lib/jashn/magic-service'
 import { useLang } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
 import { magicAudio } from '@/lib/jashn/magic-audio'
@@ -120,7 +120,7 @@ export function WeddingScenario({
     onSendLove()
   }
 
-  const rawPhone = (data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || '')?.replace(/[^0-9]/g, '')
+  const rawPhone = normalizeWhatsAppNumber(data.wishContent?.whatsappNumber || (data.inviteContent as any)?.whatsappNumber || (data as any)?.whatsappNumber)
   const returnUrl = typeof window !== 'undefined' ? `${window.location.origin}/m/${slug}` : ''
   const rsvpStatus = attending ? `Confirming Attendance (${guestsCount} guest${guestsCount > 1 ? 's' : ''})` : 'Unable to attend with warm regards'
   const getWhatsAppUrl = () => {

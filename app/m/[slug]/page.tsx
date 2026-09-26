@@ -19,7 +19,7 @@ import {
   MessageCircle,
   Edit3,
 } from 'lucide-react'
-import { getMagicLink, submitMagicResponse, recordCardShare } from '@/lib/jashn/magic-service'
+import { getMagicLink, submitMagicResponse, recordCardShare, getMagicWhatsAppUrl } from '@/lib/jashn/magic-service'
 import type { MagicLinkData, MagicThemeId } from '@/lib/jashn/magic-types'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { CardzyLogo } from '@/components/ui/logo'
@@ -362,6 +362,12 @@ function MagicLinkInner({ slug }: { slug: string }) {
       })
     } catch {
       // Offline or network error
+    }
+
+    // Direct WhatsApp send to the creator
+    const waUrl = getMagicWhatsAppUrl(data, '❤️ Sent Love & Prayers!')
+    if (typeof window !== 'undefined') {
+      window.open(waUrl, '_blank')
     }
   }
 

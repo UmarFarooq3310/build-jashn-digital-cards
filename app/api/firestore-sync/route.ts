@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getAdminDb } from '@/lib/firebase-admin'
+import { FieldValue } from 'firebase-admin/firestore'
 
 export const dynamic = 'force-dynamic'
 
@@ -123,15 +124,28 @@ export async function POST(req: Request) {
     }
 
     if (action === 'sync_magic_response') {
-      const id = cleaned.id || `magic_resp_${Date.now()}`
+      const id = cleaned.id || `mresp_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`
       const respRef = db.collection('magic_link_responses').doc(id)
       await respRef.set(
         {
           ...cleaned,
+          id,
           createdAt: cleaned.createdAt || Date.now(),
         },
         { merge: true }
       )
+
+      if (cleaned.linkId) {
+        const cleanSlug = String(cleaned.linkId).replace(/^\/?m\//, '').trim()
+        await db.collection('magic_links').doc(cleanSlug).set(
+          {
+            responsesCount: FieldValue.increment(1),
+            lastResponseAt: Date.now(),
+          },
+          { merge: true }
+        ).catch(() => {})
+      }
+
       return NextResponse.json({ success: true, action, id })
     }
 
