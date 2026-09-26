@@ -70,9 +70,9 @@ import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS, SITE_PUBLISHER, SIT
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
-  title: 'Cardzy — 3D Digital Cards, Wedding Invitations & Smart vCards',
+  title: 'Cardzy — Free 3D Animated Cards, Wedding Invitations & Smart vCards',
   description:
-    'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP, and smart digital business cards in 18 languages with Cardzy.',
+    'Create stunning free 3D animated wish cards, digital wedding invitations with WhatsApp RSVP tracking, and smart digital business cards in 18 languages. Trusted by 60+ countries.',
   keywords: DEFAULT_KEYWORDS,
   authors: [
     { name: 'Umar Farooq', url: 'https://cardzy.online/authors/umar-farooq' },
@@ -104,9 +104,9 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: 'Cardzy | 3D Animated Digital Wish Cards & Wedding Invitations',
+    title: 'Cardzy — Free 3D Animated Cards, Wedding Invitations & Smart vCards',
     description:
-      'Design, personalize, and share interactive 3D digital cards with music, photo upload, and instant WhatsApp RSVP tracking.',
+      'Create free 3D animated wish cards, wedding invitations with WhatsApp RSVP tracking, and smart digital business cards in 18 languages. Trusted in 60+ countries.',
     url: 'https://cardzy.online',
     siteName: 'Cardzy',
     images: [
@@ -114,7 +114,7 @@ export const metadata: Metadata = {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Cardzy Digital Wish Cards & Invitations Preview',
+        alt: 'Cardzy — Free 3D Animated Digital Cards & Wedding Invitations',
       },
     ],
     locale: 'en_US',
@@ -122,9 +122,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Cardzy | 3D Animated Digital Wish Cards & Wedding Invitations',
+    title: 'Cardzy — Free 3D Animated Cards, Wedding Invitations & Smart vCards',
     description:
-      'Create 3D animated wish cards, wedding invitations with WhatsApp RSVP, and executive digital visiting cards with Cardzy.',
+      'Free 3D animated wish cards, wedding invitations with WhatsApp RSVP, and smart digital business cards in 18 languages.',
     images: ['/og-image.jpg'],
   },
 }

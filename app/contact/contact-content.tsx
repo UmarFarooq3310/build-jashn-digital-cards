@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { Mail, MapPin, Clock, MessageSquare, CheckCircle, HelpCircle } from 'lucide-react'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 import { ContactForm } from '@/components/contact-form'
 import { useLang } from '@/lib/lang/context'
 import { CONTACT_T, pt } from '@/lib/lang/page-translations'
@@ -16,8 +15,7 @@ export function ContactClientContent() {
       {/* ── Header / Hero ─────────────────────────────────────────── */}
       <section className="bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950 text-white py-12 md:py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs items={[{ label: pt(CONTACT_T.h1, lang), href: '/contact' }]} />
-          <div className="mt-6 text-center max-w-2xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
               {pt(CONTACT_T.h1, lang)}
             </h1>

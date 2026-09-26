@@ -615,7 +615,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
       </main>
 
       {/* Receiver Screen Footer Control */}
-      <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pb-2 text-center">
+      <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pt-2 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] text-center shrink-0">
         <div className="flex flex-wrap items-center justify-center gap-2">
 
           <button

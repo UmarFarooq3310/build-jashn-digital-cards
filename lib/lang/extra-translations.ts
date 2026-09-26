@@ -223,6 +223,36 @@ export const EXTRA_T: Record<string, Record<LangCode, string>> = {
   occ_gyarvi_sharif: {
     en: "Gyarvi Sharif", ur: "گیارہویں شریف مبارک", ar: "الحادية عشرة الشريفة مباركة", es: "Gyarvi Sharif", fr: "Gyarvi Sharif", hi: "ग्यारहवीं शरीफ मुबारक", zh: "第十一吉日志庆", pt: "Gyarvi Sharif", ru: "Гьярви Шариф Мубарак", de: "Gyarvi Sharif", ja: "ギャールウィー・シャリーフ", ko: "기아르비 샤리프", it: "Gyarvi Sharif", tr: "Gyarvi Şerif", id: "Gyarvi Syarif", bn: "গিয়ারভী শরীফ মোবারক", vi: "Gyarvi Sharif", sw: "Gyarvi Sharif"
   },
+  occ_youm_e_ali: {
+    en: "Youm-e-Ali (A.S.)", ur: "یومِ علیؑ مبارک", ar: "ذكرى ولادة الإمام علي (ع)", es: "Día del Imán Alí (a.s.)", fr: "Jour de l'Imam Ali (a.s.)", hi: "यौम-ए-अली (अ.स.) मुबारक", zh: "伊玛目阿里诞辰吉庆", pt: "Dia do Imam Ali (a.s.)", ru: "День Имама Али (а.с.)", de: "Tag von Imam Ali (a.s.)", ja: "イマーム・アリーの日", ko: "이맘 알리의 날", it: "Giorno dell'Imam Ali (a.s.)", tr: "Hz. Ali'nin Doğumu (Mevlid-i Ali)", id: "Hari Lahir Imam Ali (a.s.)", bn: "যৌমে আলী (আ.) মোবারক", vi: "Ngày Kỷ Niệm Imam Ali (a.s.)", sw: "Siku ya Imam Ali (a.s.)"
+  },
+  tag_youm_e_ali: {
+    en: "Youm-e-Ali Mubarak", ur: "ولادتِ امیر المومنینؑ مبارک", ar: "مبارك ذكرى ولادة أمير المؤمنين (ع)", es: "¡Feliz Día del Imán Alí!", fr: "Béni Jour de l'Imam Ali", hi: "यौम-ए-अली की हार्दिक शुभकामनाएं", zh: "祝伊玛目阿里诞辰吉祥安康", pt: "Abençoado Dia do Imam Ali", ru: "Благословенный День Имама Али", de: "Gesegneter Tag von Imam Ali", ja: "イマーム・アリーの日おめでとうございます", ko: "이맘 알리의 날을 축하합니다", it: "Benedetto Giorno dell'Imam Ali", tr: "Hz. Ali Mevlidi Mübarek Olsun", id: "Selamat Memperingati Hari Lahir Imam Ali", bn: "যৌমে আলী মোবারকের আন্তরিক শুভেচ্ছা", vi: "Chúc Mừng Ngày Kỷ Niệm Imam Ali", sw: "Heri ya Siku ya Imam Ali"
+  },
+  occ_urs: {
+    en: "Urs Mubarak", ur: "عرس مبارک", ar: "ذكرى العرس المبارك", es: "Urs Mubarak", fr: "Urs Moubarak", hi: "उर्स मुबारक", zh: "乌尔斯圣纪节吉庆", pt: "Urs Mubarak", ru: "Урс Мубарак", de: "Urs Mubarak", ja: "ウルス・ムバラク（聖者祭）", ko: "우르스 무바라크 (성자 추모제)", it: "Urs Mubarak", tr: "Urs-i Şerifiniz Mübarek Olsun", id: "Haul Akbar / Urs Mubarak", bn: "উরস মোবারক", vi: "Lễ Kỷ Niệm Urs Mubarak", sw: "Urs Mubarak"
+  },
+  tag_urs: {
+    en: "Blessed Urs Mubarak", ur: "عرس مبارک کی دلی مبارکباد", ar: "عرس مبارك ودعوات مستجابة", es: "Bendito Urs Mubarak", fr: "Béni Urs Moubarak", hi: "पावन उर्स मुबारक", zh: "祥和吉庆的乌尔斯纪念日", pt: "Abençoado Urs Mubarak", ru: "Благословенный Урс Мубарак", de: "Gesegneter Urs Mubarak", ja: "祝福に満ちたウルス・ムバラク", ko: "축복 가득한 우르스 무바라크", it: "Benedetto Urs Mubarak", tr: "Mübarek Urs-i Şerif", id: "Peringatan Haul / Urs yang Penuh Berkah", bn: "পবিত্র উরস মোবারক", vi: "Chúc Lễ Kỷ Niệm Urs May Mắn", sw: "Urs Mubarak Yenye Baraka"
+  },
+  occ_urs_data_ganj_bakhsh: {
+    en: "Urs Mubarak (Data Ganj Bakhsh)", ur: "عرس مبارک (داتا گنج بخشؒ)", ar: "ذكرى العرس المبارك (داتا كنج بخش)", es: "Urs Mubarak (Data Ganj Bakhsh)", fr: "Urs Moubarak (Data Ganj Bakhsh)", hi: "उर्स मुबारक (दाता गंज बख्श)", zh: "乌尔斯圣纪节（达塔甘吉巴赫什）", pt: "Urs Mubarak (Data Ganj Bakhsh)", ru: "Урс Мубарак (Дата Гандж Бахш)", de: "Urs Mubarak (Data Ganj Bakhsh)", ja: "ウルス・ムバラク（ダタ・ガンジ・バフシュ）", ko: "우르스 무바라크 (다타 간즈 바흐쉬)", it: "Urs Mubarak (Data Ganj Bakhsh)", tr: "Urs-i Şerif (Data Genc Bahş)", id: "Haul Akbar Urs Mubarak (Data Ganj Bakhsh)", bn: "উরস মোবারক (দাতা গঞ্জ বখশ)", vi: "Lễ Kỷ Niệm Urs Mubarak (Data Ganj Bakhsh)", sw: "Urs Mubarak (Data Ganj Bakhsh)"
+  },
+  occ_gyarvi_shareef: {
+    en: "Gyarvi Sharif", ur: "گیارہویں شریف مبارک", ar: "الحادية عشرة الشريفة مباركة", es: "Gyarvi Sharif", fr: "Gyarvi Sharif", hi: "ग्यारहवीं शरीफ मुबारक", zh: "第十一吉日志庆", pt: "Gyarvi Sharif", ru: "Гьярви Шариф Мубарак", de: "Gyarvi Sharif", ja: "ギャールウィー・シャリーフ", ko: "기아르비 샤리프", it: "Gyarvi Sharif", tr: "Gyarvi Şerif", id: "Gyarvi Syarif", bn: "গিয়ারভী শরীফ মোবারক", vi: "Gyarvi Sharif", sw: "Gyarvi Sharif"
+  },
+  occ_chehlum_imam_hussain: {
+    en: "Arbaeen / Chehlum", ur: "چہلم امام حسینؑ", ar: "أربعينية الإمام الحسين", es: "Arbaeen / Chehlum", fr: "Arbaïn / Chehlum", hi: "चेहल्लुम इमाम हुसैन", zh: "阿巴因节 / 彻赫卢姆", pt: "Arbaeen / Chehlum", ru: "Арбаин / Чехлум", de: "Arbaeen / Chehlum", ja: "アルバイン（四十日祭）", ko: "아르바인 추모일", it: "Arbaeen / Chehlum", tr: "Erbain / Çehlum", id: "Arba'in / Chehlum", bn: "চেহলাম", vi: "Arbaeen / Chehlum", sw: "Arbaeen / Chehlum"
+  },
+  occ_quaid_e_azam_day: {
+    en: "Quaid-e-Azam Day", ur: "یومِ ولادت قائد اعظمؒ مبارک", ar: "يوم القائد الأعظم محمد علي جناح", es: "Día de Quaid-e-Azam", fr: "Jour de Quaid-e-Azam", hi: "कायदे आजम दिवस", zh: "国父真纳诞辰纪念日", pt: "Dia de Quaid-e-Azam", ru: "День Каид-э-Азама", de: "Quaid-e-Azam-Tag", ja: "カイデ・アザムの日", ko: "콰이드 에 아잠의 날", it: "Giorno di Quaid-e-Azam", tr: "Quaid-e-Azam Günü", id: "Hari Quaid-e-Azam", bn: "কায়েদে আজম দিবস", vi: "Ngày Quaid-e-Azam", sw: "Siku ya Quaid-e-Azam"
+  },
+  occ_pakistan_defense_day: {
+    en: "Defence Day of Pakistan", ur: "یومِ دفاع پاکستان (6 ستمبر)", ar: "يوم الدفاع الوطني الباكستاني", es: "Día de la Defensa de Pakistán", fr: "Jour de la Défense du Pakistan", hi: "पाकिस्तान रक्षा दिवस", zh: "巴基斯坦国防日", pt: "Dia da Defesa do Paquistão", ru: "День обороны Пакистана", de: "Verteidigungstag von Pakistan", ja: "パキスタン国防の日", ko: "파키스탄 국방의 날", it: "Giorno della Difesa del Pakistan", tr: "Pakistan Savunma Günü", id: "Hari Pertahanan Pakistan", bn: "পাকিস্তানের প্রতিরক্ষা দিবস", vi: "Ngày Quốc Phòng Pakistan", sw: "Siku ya Ulinzi ya Pakistan"
+  },
+  occ_iqbal_day_pakistan: {
+    en: "Iqbal Day", ur: "یومِ اقبال — علامہ محمد اقبالؒ", ar: "يوم الشاعر محمد إقبال", es: "Día de Iqbal", fr: "Jour d'Iqbal", hi: "इकबाल दिवस", zh: "伊克巴尔纪念日", pt: "Dia de Iqbal", ru: "День Икбала", de: "Iqbal-Tag", ja: "イクバールの日", ko: "이크발의 날", it: "Giorno di Iqbal", tr: "İkbal Günü", id: "Hari Iqbal", bn: "ইকবাল দিবস", vi: "Ngày Iqbal", sw: "Siku ya Iqbal"
+  },
   occ_all_saints_day: {
     en: "All Saints' Day", ur: "آل سینٹس ڈے", ar: "عيد جميع القديسين", es: "Día de Todos los Santos", fr: "Toussaint", hi: "सभी संतों का दिवस", zh: "诸圣节", pt: "Dia de Todos os Santos", ru: "День всех святых", de: "Allerheiligen", ja: "諸聖人の日", ko: "모든 성인의 날", it: "Tutti i Santi", tr: "Tüm Azizler Günü", id: "Hari Raya Semua Orang Kudus", bn: "সমস্ত সাধুদের দিন", vi: "Lễ Các Thánh", sw: "Siku ya Watakatifu Wote"
   },

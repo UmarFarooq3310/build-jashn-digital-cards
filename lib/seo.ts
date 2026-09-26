@@ -11,6 +11,7 @@ export type SupportedLang = (typeof SUPPORTED_LANGS)[number]
 
 export const DEFAULT_KEYWORDS = [
   'Urdu Eid wishes',
+  'Eid Mubarak card free',
   'wedding card wording',
   'Pakistani wedding card text',
   'digital wish cards',
@@ -26,6 +27,14 @@ export const DEFAULT_KEYWORDS = [
   'Walima invitation website',
   'online birthday cards with photo',
   'multilingual digital cards',
+  'animated Eid card with photo',
+  'birthday card with music',
+  'QR code business card Pakistan',
+  'digital visiting card maker',
+  'Islamic occasion cards',
+  'Ramadan Mubarak cards',
+  'online greeting card maker',
+  'wedding invitation with map',
   'Cardzy',
 ]
 

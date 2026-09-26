@@ -18,8 +18,10 @@ function SiteHeaderInner() {
   const signOut = useJashn((s) => s.signOut)
   const [open, setOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [moreOpen, setMoreOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const langDropdownRef = useRef<HTMLDivElement>(null)
+  const moreDropdownRef = useRef<HTMLDivElement>(null)
   const { lang, setLang, t } = useLang()
 
   // Listen for Cmd+K / Ctrl+K keyboard shortcut
@@ -36,15 +38,18 @@ function SiteHeaderInner() {
 
   const currentLang = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0]
 
-  // Close language dropdown on outside click or touch
+  // Close language and more dropdowns on outside click or touch
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
         setLangOpen(false)
       }
+      if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target as Node)) {
+        setMoreOpen(false)
+      }
     }
 
-    if (langOpen) {
+    if (langOpen || moreOpen) {
       document.addEventListener('mousedown', handleClickOutside)
       document.addEventListener('touchstart', handleClickOutside)
     }
@@ -53,7 +58,7 @@ function SiteHeaderInner() {
       document.removeEventListener('mousedown', handleClickOutside)
       document.removeEventListener('touchstart', handleClickOutside)
     }
-  }, [langOpen])
+  }, [langOpen, moreOpen])
 
   // Enforce zero top offset on client-side route navigation
   useEffect(() => {
@@ -125,8 +130,10 @@ function SiteHeaderInner() {
   }
 
   return (
-    <header className="sticky top-0 z-[100] border-b border-emerald-900/20 bg-background/95 backdrop-blur-md shadow-sm transition-all w-full overflow-x-clip">
-      <div className="flex h-16 w-full max-w-full items-center justify-between px-3 sm:px-4 lg:px-3 xl:px-5 2xl:px-8">
+    <header className={cn("site-header sticky top-0 w-full transition-all", (moreOpen || langOpen) ? "z-[9999999]" : "z-[1000]")}>
+      {/* Header background layer — isolated so backdrop-blur never clips dropdown children */}
+      <div className="absolute inset-0 h-16 border-b border-emerald-900/20 bg-background/95 backdrop-blur-md shadow-sm pointer-events-none -z-10" />
+      <div className="relative flex h-16 w-full max-w-full items-center justify-between px-3 sm:px-4 lg:px-3 xl:px-5 2xl:px-8">
         <Link href="/" onClick={handleNavClick} className="flex items-center gap-2 xl:gap-2.5 group shrink-0">
           <CardzyLogo className="size-8 xl:size-9 transition-transform group-hover:scale-105" />
           <span className="text-lg xl:text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-800 to-amber-600 dark:from-emerald-400 dark:to-amber-400 bg-clip-text text-transparent">
@@ -134,26 +141,20 @@ function SiteHeaderInner() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-0.5 xl:gap-1 2xl:gap-1.5 lg:flex">
+        <nav className="hidden items-center gap-1 xl:gap-1.5 lg:flex">
           {[
             { href: '/', key: 'navHome', fallback: 'Home' },
             { href: '/create-wish', key: 'navWishes', fallback: 'Wishes' },
             { href: '/create-invitation', key: 'navInvitations', fallback: 'Invitations' },
             { href: '/create-visiting-card', key: 'navVCards', fallback: 'vCards' },
             { href: '/poetry', key: 'navPoetry', fallback: 'Poetry' },
-            { href: '/calendar', key: 'navCalendar', fallback: 'Calendar' },
-            { href: '/blog', key: 'navBlog', fallback: 'Blog' },
-            { href: '/pricing', key: 'navPricing', fallback: 'Pricing' },
-            { href: '/custom-order', key: 'navCustom', fallback: 'Custom' },
-            { href: '/faq', key: 'navFaqs', fallback: 'FAQs' },
-            { href: '/contact', key: 'navContact', fallback: 'Contact' },
           ].map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={handleNavClick}
               className={cn(
-                'rounded-lg xl:rounded-xl px-1.5 xl:px-2 2xl:px-2.5 py-1 xl:py-1.5 text-xs xl:text-sm font-semibold text-muted-foreground transition-all hover:bg-emerald-950/10 hover:text-emerald-800 dark:hover:text-amber-400 whitespace-nowrap',
+                'rounded-lg xl:rounded-xl px-2 xl:px-2.5 py-1 xl:py-1.5 text-xs xl:text-sm font-semibold text-muted-foreground transition-all hover:bg-emerald-950/10 hover:text-emerald-800 dark:hover:text-amber-400 whitespace-nowrap',
                 (lang === 'ur' || lang === 'ar') && 'font-urdu text-xs xl:text-sm',
                 pathname === item.href && 'text-emerald-800 dark:text-amber-400 font-bold bg-emerald-950/5',
               )}
@@ -166,7 +167,7 @@ function SiteHeaderInner() {
           <Link
             href="/create-magic-link"
             onClick={handleNavClick}
-            className="relative inline-flex items-center gap-1 xl:gap-1.5 rounded-lg xl:rounded-xl px-1.5 xl:px-2.5 py-1 xl:py-1.5 text-xs xl:text-sm font-bold whitespace-nowrap transition-all"
+            className="relative inline-flex items-center gap-1 xl:gap-1.5 rounded-lg xl:rounded-xl px-2 xl:px-2.5 py-1 xl:py-1.5 text-xs xl:text-sm font-bold whitespace-nowrap transition-all"
             style={
               pathname === '/create-magic-link'
                 ? {
@@ -183,6 +184,58 @@ function SiteHeaderInner() {
           >
             <span>{t('magicLinksNav' as any, 'Magic Link')}</span>
           </Link>
+
+          {/* More ▾ Dropdown — at the end of the navigation */}
+          <div ref={moreDropdownRef} className="relative z-[999999]">
+            <button
+              type="button"
+              onClick={() => setMoreOpen((o) => !o)}
+              className={cn(
+                'inline-flex items-center gap-1 rounded-lg xl:rounded-xl px-2 xl:px-2.5 py-1 xl:py-1.5 text-xs xl:text-sm font-semibold text-muted-foreground transition-all hover:bg-emerald-950/10 hover:text-emerald-800 dark:hover:text-amber-400 whitespace-nowrap cursor-pointer',
+                ['/calendar', '/blog', '/pricing', '/custom-order', '/faq', '/contact'].includes(pathname) &&
+                  'text-emerald-800 dark:text-amber-400 font-bold bg-emerald-950/5',
+              )}
+              aria-label="More navigation links"
+              aria-expanded={moreOpen}
+            >
+              <span>{t('navMore' as any, 'More')}</span>
+              <ChevronDown className={cn('size-3 transition-transform duration-200', moreOpen && 'rotate-180')} />
+            </button>
+
+            {moreOpen && (
+              <div className="absolute right-0 top-full mt-2 min-w-[210px] w-max max-w-[280px] rounded-2xl border border-emerald-900/15 dark:border-emerald-500/20 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 p-2 shadow-2xl ring-1 ring-black/10 z-[999999] animate-in fade-in slide-in-from-top-2 duration-150">
+                {[
+                  { href: '/calendar', key: 'navCalendar', fallback: 'Calendar', icon: '📅' },
+                  { href: '/blog', key: 'navBlog', fallback: 'Blog', icon: '✍️' },
+                  { href: '/pricing', key: 'navPricing', fallback: 'Pricing', icon: '💎' },
+                  { href: '/custom-order', key: 'navCustom', fallback: 'Custom Order', icon: '✨' },
+                  { href: '/faq', key: 'navFaqs', fallback: 'FAQs', icon: '❓' },
+                  { href: '/contact', key: 'navContact', fallback: 'Contact', icon: '📬' },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setMoreOpen(false)
+                      handleNavClick()
+                      router.push(item.href)
+                    }}
+                    className={cn(
+                      'flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs xl:text-sm font-medium transition-colors hover:bg-emerald-950/10 hover:text-emerald-800 dark:hover:bg-emerald-500/10 dark:hover:text-amber-400 whitespace-nowrap cursor-pointer pointer-events-auto',
+                      pathname === item.href
+                        ? 'font-bold text-emerald-800 dark:text-amber-400 bg-emerald-950/10 dark:bg-emerald-500/10'
+                        : 'text-slate-700 dark:text-slate-200',
+                      (lang === 'ur' || lang === 'ar') && 'font-urdu',
+                    )}
+                  >
+                    <span className="text-base select-none shrink-0">{item.icon}</span>
+                    <span className="whitespace-nowrap">{t(item.key as any, item.fallback)}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </nav>
 
         <div className="hidden items-center gap-1.5 xl:gap-2 lg:flex shrink-0">
@@ -201,10 +254,10 @@ function SiteHeaderInner() {
           </button>
 
           {/* Language Switcher */}
-          <div ref={langDropdownRef} className="relative z-[9999] notranslate" translate="no">
+          <div ref={langDropdownRef} className="relative z-[999999] notranslate" translate="no">
             <button
               onClick={() => setLangOpen((o) => !o)}
-              className="flex items-center gap-1 xl:gap-1.5 rounded-full border border-amber-500/40 bg-amber-100 dark:bg-amber-950/40 px-2 xl:px-2.5 2xl:px-3 py-1 text-xs font-bold text-amber-950 dark:text-amber-300 transition-all hover:bg-amber-200 shadow-xs whitespace-nowrap notranslate"
+              className="flex items-center gap-1 xl:gap-1.5 rounded-full border border-amber-500/40 bg-amber-100 dark:bg-amber-950/40 px-2 xl:px-2.5 2xl:px-3 py-1 text-xs font-bold text-amber-950 dark:text-amber-300 transition-all hover:bg-amber-200 shadow-xs whitespace-nowrap notranslate cursor-pointer"
               aria-label="Select language"
               translate="no"
             >
@@ -214,7 +267,7 @@ function SiteHeaderInner() {
               <ChevronDown className={cn('size-3 transition-transform shrink-0', langOpen && 'rotate-180')} />
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full mt-2 z-[9999] w-56 rounded-2xl border border-amber-500/40 bg-card shadow-2xl p-2.5 max-h-80 overflow-y-auto ring-1 ring-black/5 notranslate" translate="no">
+              <div className="absolute right-0 top-full mt-2 z-[999999] min-w-[220px] w-56 rounded-2xl border border-amber-500/40 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 shadow-2xl p-2 max-h-80 overflow-y-auto ring-1 ring-black/10 notranslate" translate="no">
                 {LANGUAGES.map((l) => (
                   <button
                     key={l.code}
@@ -222,8 +275,8 @@ function SiteHeaderInner() {
                     translate="no"
                     onClick={() => { setLang(l.code); setLangOpen(false) }}
                     className={cn(
-                      'w-full text-left rounded-xl px-3 py-2 text-xs sm:text-sm font-medium transition-colors hover:bg-emerald-950/10 notranslate',
-                      lang === l.code ? 'font-bold text-emerald-800 bg-emerald-950/10' : 'text-foreground'
+                      'w-full text-left rounded-xl px-3.5 py-2 text-xs sm:text-sm font-medium transition-colors hover:bg-emerald-950/10 dark:hover:bg-white/10 notranslate whitespace-nowrap cursor-pointer pointer-events-auto',
+                      lang === l.code ? 'font-bold text-emerald-800 dark:text-amber-400 bg-emerald-950/10 dark:bg-emerald-500/10' : 'text-slate-700 dark:text-slate-200'
                     )}
                   >
                     {l.label}

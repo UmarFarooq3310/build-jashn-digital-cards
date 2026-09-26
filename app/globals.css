@@ -91,7 +91,7 @@
     overflow-x: hidden !important;
     max-width: 100vw !important;
   }
-  header {
+  header.site-header {
     overflow: visible !important;
     position: sticky !important;
     top: 0 !important;
@@ -1197,7 +1197,7 @@ div[class*="adsbygoogle-noablate"] {
   bottom: 0 !important;
 }
 
-header {
+header.site-header {
   top: 0px !important;
   margin-top: 0px !important;
 }

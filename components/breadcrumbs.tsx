@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ChevronRight, Home } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export interface BreadcrumbItem {
@@ -10,20 +10,15 @@ export interface BreadcrumbItem {
 interface BreadcrumbsProps {
   items: BreadcrumbItem[]
   className?: string
-  homeLabel?: string
   isDark?: boolean
 }
 
 export function Breadcrumbs({
   items,
   className,
-  homeLabel = 'Home',
   isDark = false,
 }: BreadcrumbsProps) {
-  const fullItems: BreadcrumbItem[] = [
-    { label: homeLabel, href: '/' },
-    ...items,
-  ]
+  const fullItems: BreadcrumbItem[] = [...items]
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -55,18 +50,15 @@ export function Breadcrumbs({
             const isLast = idx === fullItems.length - 1
             return (
               <li key={idx} className="flex items-center gap-1.5">
-                {idx === 0 ? (
-                  <Link
-                    href="/"
+                {idx > 0 && (
+                  <ChevronRight
                     className={cn(
-                      'inline-flex items-center gap-1 transition-colors hover:underline',
-                      isDark ? 'text-[#D4AF37] hover:text-white' : 'text-emerald-700 hover:text-foreground'
+                      'size-3.5 shrink-0 opacity-60',
+                      isDark ? 'text-zinc-500' : 'text-muted-foreground/60'
                     )}
-                  >
-                    <Home className="size-3.5" />
-                    <span>{item.label}</span>
-                  </Link>
-                ) : item.href && !isLast ? (
+                  />
+                )}
+                {item.href && !isLast ? (
                   <Link
                     href={item.href}
                     className={cn(
@@ -86,15 +78,6 @@ export function Breadcrumbs({
                   >
                     {item.label}
                   </span>
-                )}
-
-                {!isLast && (
-                  <ChevronRight
-                    className={cn(
-                      'size-3.5 shrink-0 opacity-60',
-                      isDark ? 'text-zinc-500' : 'text-muted-foreground/60'
-                    )}
-                  />
                 )}
               </li>
             )

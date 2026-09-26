@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { HelpCircle, Sparkles, MessageSquare, Mail } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
 
-import { Breadcrumbs } from '@/components/breadcrumbs'
 import { LOCALIZED_FAQS } from '@/lib/lang/faq-data'
 
 export default function FaqPage() {
@@ -25,8 +24,6 @@ export default function FaqPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <div className={`py-8 md:py-16 ${isUrdu ? 'font-urdu' : ''}`}>
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs items={[{ label: t('faqTitle') || 'Frequently Asked Questions', href: '/faq' }]} className="mb-6" />
-
           {/* Header */}
           <div className="mb-12 text-center">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary uppercase tracking-wider">

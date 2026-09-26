@@ -635,20 +635,47 @@ export function PoetryClient() {
       ctx.textBaseline = 'middle'
       ctx.fillText('✦ Powered by Cardzy.online ✦', 540, footerY + 30)
 
-      // Clean file naming and trigger direct image download
+      // Clean file naming and trigger direct image download or native mobile share
       const sanitizedTitle = (poem.title || 'poetry').toLowerCase().replace(/[^a-z0-9]/g, '-')
-      const imageURL = canvas.toDataURL('image/png')
-      const link = document.createElement('a')
-      link.download = `Cardzy-${sanitizedTitle}.png`
-      link.href = imageURL
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
+      const fileName = `Cardzy-${sanitizedTitle}.png`
+      let sharedViaNavigator = false
+
+      if (typeof navigator !== 'undefined' && typeof window !== 'undefined' && navigator.canShare && canvas.toBlob) {
+        try {
+          const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'))
+          if (blob) {
+            const file = new File([blob], fileName, { type: 'image/png' })
+            if (navigator.canShare({ files: [file] })) {
+              await navigator.share({
+                files: [file],
+                title: `${poem.title || poem.poet} - Cardzy Poetry`,
+                text: `${text}\n— ${poetDisplayName}\nRead on Cardzy: ${window.location.origin}/poetry?id=${poem.id}`,
+              })
+              sharedViaNavigator = true
+            }
+          }
+        } catch (shareErr: any) {
+          // If user cancels the share dialog, do not show error or force download
+          if (shareErr?.name === 'AbortError') {
+            sharedViaNavigator = true
+          }
+        }
+      }
+
+      if (!sharedViaNavigator) {
+        const imageURL = canvas.toDataURL('image/png')
+        const link = document.createElement('a')
+        link.download = fileName
+        link.href = imageURL
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
 
       showToast(
         isUrdu
-          ? 'کارڈ کامیابی کے ساتھ تیار اور ڈاؤن لوڈ ہو گیا! اپنی گیلری یا فائلز میں دیکھیں۔ 🎨'
-          : 'Card downloaded successfully! Check your photos or downloads 🎨',
+          ? 'کارڈ کامیابی کے ساتھ تیار ہو گیا! 🎨'
+          : 'Card generated successfully! 🎨',
         'success'
       )
     } catch (err) {

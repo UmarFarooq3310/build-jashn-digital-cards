@@ -9,6 +9,7 @@ const DISALLOWED_PATHS = [
   '/i/',
   '/w/',
   '/v/',
+  '/m/',
   '/login',
   '/signup',
   '/*?*lang=*',

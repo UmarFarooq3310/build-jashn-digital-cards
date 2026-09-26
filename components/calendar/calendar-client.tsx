@@ -17,7 +17,6 @@ import {
   Award,
   RefreshCw,
 } from 'lucide-react'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 import {
   getEventsForRollingYear,
   CATEGORY_LABELS,
@@ -205,11 +204,8 @@ export function CelebrationCalendarClient() {
 
   return (
     <div className={cn('space-y-10', isRtl && 'rtl', isUrdu && 'font-urdu')}>
-      {/* ── Breadcrumbs ── */}
-      <Breadcrumbs items={[{ label: t('celebrationCalendar') || 'Celebration Calendar', href: '/calendar' }]} />
-
       {/* ── Page Header ── */}
-      <header className="rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-xs mt-4 space-y-4">
+      <div className="rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-xs mt-4 space-y-4">
         <div className="inline-flex items-center gap-2 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 px-3.5 py-1 text-xs font-bold text-[#D4AF37] uppercase tracking-wider">
           <CalendarIcon className="size-3.5" />
           <span>{t('calHeaderBadge') || '365-Day Rolling Celebration Guide'}</span>
@@ -242,7 +238,7 @@ export function CelebrationCalendarClient() {
             <span>{(categoryCounts.national || 0) + (categoryCounts.milestones || 0) || 24} {t('calOccMilestones') || 'Civic & Milestones'}</span>
           </span>
         </div>
-      </header>
+      </div>
 
       {/* ── Live Worldwide Holiday API Status Bar ── */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-emerald-500/25 bg-emerald-500/5 px-4 py-2.5 text-xs text-muted-foreground shadow-xs">

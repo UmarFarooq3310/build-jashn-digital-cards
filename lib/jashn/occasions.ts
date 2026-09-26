@@ -73,6 +73,8 @@ const RAW_OCCASIONS: any[] = [
   { id: 'ashura', label: "Youm-e-Ashura", tagline: "Solemn Day of Ashura (10 Muharram)", urdu: "یومِ عاشورہ", category: 'Islamic', icon: 'Moon', bgGradient: 'linear-gradient(160deg,#18181b,#27272a,#3f3f46)' },
   { id: 'chehlum', label: "Arbaeen / Chehlum", tagline: "Solemn Remembrance & Tribute", urdu: "چہلم امام حسینؑ", category: 'Islamic', icon: 'Moon', bgGradient: 'linear-gradient(160deg,#09090b,#18181b,#27272a)' },
   { id: 'gyarvi-sharif', label: "Gyarvi Sharif", tagline: "Blessed Gyarvi Sharif Blessings", urdu: "گیارہویں شریف مبارک", category: 'Islamic', icon: 'Star', bgGradient: 'linear-gradient(160deg,#1e1b4b,#312e81,#047857)' },
+  { id: 'youm-e-ali', label: "Youm-e-Ali (A.S.)", tagline: "Commemorating the Blessed Birth & Legacy of Imam Ali (A.S.)", urdu: "یومِ علیؑ مبارک", category: 'Islamic', icon: 'Moon', bgGradient: 'linear-gradient(160deg,#064e3b,#047857,#022c22)' },
+  { id: 'urs', label: "Urs Mubarak", tagline: "Blessed Urs Mubarak & Spiritual Blessings", urdu: "عرس مبارک", category: 'Islamic', icon: 'Star', bgGradient: 'linear-gradient(160deg,#1e1b4b,#312e81,#047857)' },
   { id: 'all-saints-day', label: "All Saints Day", tagline: "Honoring All Saints & Martyrs", urdu: "آل سینٹس ڈے", category: 'Universal', icon: 'Star', bgGradient: 'linear-gradient(160deg,#1e293b,#334155,#64748b)' },
   { id: 'boxing-day', label: "Boxing Day", tagline: "Happy Boxing Day & Family Time", urdu: "باکسنگ ڈے مبارک", category: 'Universal', icon: 'Gift', bgGradient: 'linear-gradient(160deg,#831843,#be185d,#ec4899)' },
   { id: 'orthodox-christmas', label: "Orthodox Christmas", tagline: "Blessed Orthodox Christmas", urdu: "آرتھوڈوکس کرسمس", category: 'Universal', icon: 'TreePine', bgGradient: 'linear-gradient(160deg,#1e3a8a,#2563eb,#60a5fa)' },
@@ -558,6 +560,50 @@ export const MESSAGE_TEMPLATES: Record<string, MessageTemplate[]> = {
   ],
   'teachers-day': [
     { en: "Happy Teachers' Day! Thank you for inspiring, guiding, and illuminating our path with wisdom and patience.", ur: "اساتذہ کا عالمی دن مبارک! علم اور حکمت سے ہماری زندگیوں کو روشن کرنے پر آپ کا تہہ دل سے شکریہ۔", ar: "يوم معلم سعيد! شكراً لكم على العطاء والإلهام الدائم.", hi: "शिक्षक दिवस की हार्दिक शुभकामनाएं! हमारे मार्गदर्शक बनने के लिए दिल से धन्यवाद।" },
+  ],
+  'youm-e-ali': [
+    {
+      en: "Heartiest greetings on Youm-e-Ali (A.S.)! May the wisdom, justice, and courage of Imam Ali (A.S.) guide your path with endless blessings.",
+      ur: "ولادتِ باسعادت امیر المومنین حضرت علیؑ بہت بہت مبارک ہو۔ مولا علیؑ کا اسوہ و بصیرت آپ کی زندگی کو منور رکھے۔",
+      ar: "نرفع أسمى آيات التهاني والتبريكات بمناسبة ذكرى ولادة أمير المؤمنين الإمام علي بن أبي طالب (عليه السلام). كل عام وأنتم بخير!",
+      es: "¡Mis más cálidos saludos en el Día del Imán Alí (a.s.)! Que su justicia, sabiduría y bendiciones iluminen siempre tu vida.",
+      fr: "Meilleurs vœux à l'occasion du jour de l'Imam Ali (a.s.) ! Que sa sagesse, sa justice et ses bénédictions éclairent votre vie.",
+      hi: "यौम-ए-अली (अ.स.) मुबारक! हज़रत अली (अ.स.) का ज्ञान, न्याय और शिक्षाएं आपके जीवन में सुख और शांति लाएं।",
+      zh: "热烈祝贺伊玛目阿里（愿主赐福之）诞辰吉庆！愿伊玛目的智慧与美德为您带来平安与光明。",
+      pt: "Calorosas saudações no Dia do Imam Ali (a.s.)! Que sua sabedoria, justiça e bênçãos iluminem sua vida.",
+      ru: "Сердечные поздравления с днем рождения Имама Али (а.с.)! Пусть его мудрость, справедливость и благодать озаряют ваш путь.",
+      de: "Herzliche Glückwünsche zum Tag von Imam Ali (a.s.)! Möge seine Weisheit und Gerechtigkeit Ihr Leben segnen.",
+      ja: "イマーム・アリー（彼に平安あれ）の生誕記念日に心よりお祝いを申し上げます。知恵と祝福が共にあらんことを。",
+      ko: "이맘 알리의 탄생을 기념하며 진심으로 축하의 인사를 전합니다. 지혜와 평화가 늘 함께하시기를 기원합니다.",
+      it: "I più calorosi auguri nel giorno dell'Imam Ali (a.s.)! Che la sua saggezza e rettitudine illuminino il tuo cammino.",
+      tr: "Hz. Ali'nin (k.v.) veladeti ve Mevlid-i Ali mübarek olsun! Adaleti ve ilmi daima yolunuza ışık tutsun.",
+      id: "Selamat memperingati Hari Lahir Imam Ali (a.s.)! Semoga hikmah, keadilan, dan akhlak beliau senantiasa menerangi kehidupan Anda.",
+      bn: "যৌমে আলী (আ.) মোবারক! হযরত আলী (আ.)-এর জ্ঞান, প্রজ্ঞা ও ইনসাফ আপনার জীবনে সুখ ও বরকত নিয়ে আসুক।",
+      vi: "Kính chúc mừng ngày kỷ niệm Đức Imam Ali (a.s.)! Cầu mong trí tuệ, sự công chính và phước lành luôn ở bên bạn.",
+      sw: "Heri ya Siku ya Imam Ali (a.s.)! Hekima, uadilifu na baraka zake ziongoze maisha yako daima."
+    }
+  ],
+  'urs': [
+    {
+      en: "Urs Mubarak! May the spiritual grace, peace, and blessings of the revered saints illuminate your heart and home.",
+      ur: "عرس مبارک! اللہ تعالیٰ اولیائے کرام کے فیض، امن اور برکتوں سے آپ کے گھر اور دل کو سدا منور رکھے۔",
+      ar: "عرس مبارك! نسأل الله تعالى أن يملأ قلوبكم بالسكينة والبركات والأنوار الإيمانية الدائمة.",
+      es: "¡Urs Mubarak! Que la paz, la serenidad y las bendiciones de los santos iluminen tu corazón y tu hogar.",
+      fr: "Urs Moubarak ! Que la sérénité spirituelle, la paix et les bénédictions illuminent votre cœur et votre foyer.",
+      hi: "उर्स मुबारक! ईश्वर की कृपा, संतों का आशीर्वाद और रूहानी सुकून आपके घर-आंगन को रोशन रखे।",
+      zh: "乌尔斯圣纪吉庆！愿圣贤的安宁、智慧与吉祥神圣光芒长照您的家庭与心灵。",
+      pt: "Urs Mubarak! Que a serenidade espiritual, a paz e as bênçãos iluminem seu lar e coração.",
+      ru: "Урс Мубарак! Пусть духовное умиротворение, милость и благословения праведников наполнят ваш дом светом.",
+      de: "Urs Mubarak! Möge der spirituelle Frieden und der göttliche Segen dein Herz und dein Zuhause erleuchten.",
+      ja: "ウルス・ムバラク！聖者たちの霊的な平安と祝福が、あなたのご家庭と心を明るく照らしますように。",
+      ko: "우르스 무바라크! 성자들의 영적 평화와 축복이 당신의 가정과 마음에 가득하기를 기원합니다.",
+      it: "Urs Mubarak! Che la pace spirituale e le benedizioni dei santi illuminino la tua casa e il tuo cuore.",
+      tr: "Urs-i Şerifiniz mübarek olsun! Manevi huzur, feyiz ve bereket yuvanızı ve kalbinizi aydınlatsın.",
+      id: "Selamat Memperingati Haul Akbar / Urs Mubarak! Semoga kedamaian spiritual dan berkah para kekasih Allah menyertai Anda.",
+      bn: "উরস মোবারক! আল্লাহর ওলিদের রুহানি ফয়েজ, বরকত এবং শান্তি আপনার জীবনে অফুরন্ত আলো দান করুক।",
+      vi: "Chúc mừng Lễ Urs Mubarak! Cầu mong sự bình an thanh tịnh và phước lành soi sáng mái ấm của bạn.",
+      sw: "Urs Mubarak! Amani ya kiroho na baraka za waja wema ziangazie moyo na nyumba yako daima."
+    }
   ],
 }
 

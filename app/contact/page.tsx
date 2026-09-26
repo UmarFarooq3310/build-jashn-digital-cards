@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { Mail, MapPin, Clock, MessageSquare, CheckCircle, HelpCircle } from 'lucide-react'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 import { ContactForm } from '@/components/contact-form'
 
 // ── Structured Data JSON-LD ──────────────────────────────────────────────────

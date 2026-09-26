@@ -563,7 +563,7 @@ function WishPublicContent({ slug }: { slug: string }) {
       </main>
 
       {/* Receiver Screen Footer Control (Always visible & never cut off) */}
-      <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pt-4 pb-4 text-center shrink-0">
+      <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pt-4 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] text-center shrink-0">
         <div className="flex items-center gap-3 w-full justify-center">
           <button
             onClick={() => setShowShareModal((o) => !o)}
