@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useMemo, useEffect, useCallback, Fragment } from 'react'
+import React, { useState, useMemo, useEffect, useCallback, useRef, Fragment } from 'react'
 import Link from 'next/link'
 import {
   ShieldCheck,
@@ -63,7 +63,7 @@ import { Input } from '@/components/ui/input'
 import type { TestimonialItem } from '@/lib/jashn/testimonials'
 import { useJashn } from '@/lib/jashn/store'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
-import { collection, getDocs, query, orderBy, limit, onSnapshot, doc, deleteDoc } from 'firebase/firestore'
+import { collection, getDocs, query, orderBy, limit, startAfter, onSnapshot, doc, deleteDoc, type DocumentSnapshot } from 'firebase/firestore'
 import { cn } from '@/lib/utils'
 import type { JashnUser, Plan, Invitation, Wish, VisitingCard, RsvpGuest } from '@/lib/jashn/types'
 import type { MagicLinkData, MagicResponseData } from '@/lib/jashn/magic-types'
@@ -73,6 +73,7 @@ import {
   listenAllGuestbookWishes,
   deleteGuestbookWish,
   deleteOldGuestbookWishes,
+  fetchMoreGuestbookWishes,
   type GuestbookWish,
 } from '@/lib/jashn/guestbook-service'
 import { CardShareModal, type ShareModalCardData } from '@/components/dashboard/card-share-modal'
@@ -465,7 +466,7 @@ export default function AdminPortalPage() {
 
   // ── Section Pagination States (Default 30 records per page) ───────────────
   const [pageLiveUsers, setPageLiveUsers] = useState(1)
-  const [pageSizeLiveUsers, setPageSizeLiveUsers] = useState(30)
+  const [pageSizeLiveUsers, setPageSizeLiveUsers] = useState(5)
 
   const [deletedPoetryIds, setDeletedPoetryIds] = useState<string[]>(() => {
     if (typeof window === 'undefined') return []
@@ -517,18 +518,82 @@ export default function AdminPortalPage() {
   // Which invitation's RSVPs to show — null means all
   const [rsvpFilterSlug, setRsvpFilterSlug] = useState<string | null>(null)
 
+  // ── Per-tab cursor state for true server-side pagination ─────────────────
+  // Stores the last Firestore DocumentSnapshot for each tab so we can use
+  // startAfter() to fetch the exact next page without re-reading old docs.
+  const [tabCursors, setTabCursors] = useState<Record<string, DocumentSnapshot | null>>({
+    users: null,
+    invitations: null,
+    wishes: null,
+    visiting_cards: null,
+    rsvps: null,
+    magic_links: null,
+    guestbook: null,
+    poetry: null,
+    testimonials: null,
+  })
+  const [tabHasMore, setTabHasMore] = useState<Record<string, boolean>>({
+    users: false,
+    invitations: false,
+    wishes: false,
+    visiting_cards: false,
+    rsvps: false,
+    magic_links: false,
+    guestbook: false,
+    poetry: false,
+    testimonials: false,
+  })
+  const [isTabLoadingMore, setIsTabLoadingMore] = useState(false)
+
+  // ── Activity Stream: own Firestore listener (not derived from tab data) ──
+  const [activityStreamItems, setActivityStreamItems] = useState<any[]>([])
+  const [activityStreamCursor, setActivityStreamCursor] = useState<DocumentSnapshot | null>(null)
+  const [activityStreamHasMore, setActivityStreamHasMore] = useState(false)
+  const [isLoadingMoreActivity, setIsLoadingMoreActivity] = useState(false)
+  // Ref holds the full sorted merged list from all 4 sources so handleLoadMoreActivity
+  // can slice the next page without re-fetching from Firestore. A ref is used instead of
+  // state so the useEffect closure always writes to the same stable object.
+  const activityStreamAllRef = useRef<any[]>([])
+
   // ── Guestbook & Wishes Wall Real-Time State ──────────────────────────────
   const [allGuestbookWishes, setAllGuestbookWishes] = useState<GuestbookWish[]>([])
+  const [guestbookHasMore, setGuestbookHasMore] = useState(false)
+  const [guestbookLastDoc, setGuestbookLastDoc] = useState<DocumentSnapshot | null>(null)
+  const [isLoadingMoreGuestbook, setIsLoadingMoreGuestbook] = useState(false)
   const [guestbookSearch, setGuestbookSearch] = useState('')
   const [isCleaningOldWishes, setIsCleaningOldWishes] = useState(false)
   const [guestbookCleanupDays, setGuestbookCleanupDays] = useState(30)
 
+  // Gate guestbook listener: only subscribe when the guestbook tab is active
   useEffect(() => {
-    const unsub = listenAllGuestbookWishes((wishes) => {
+    if (adminSection !== 'guestbook') return
+    const unsub = listenAllGuestbookWishes((wishes, hasMore, lastDoc) => {
       setAllGuestbookWishes(wishes)
-    })
+      setGuestbookHasMore(hasMore)
+      // Store the cursor so handleLoadMoreGuestbook can fetch the next page via startAfter()
+      setGuestbookLastDoc(lastDoc)
+    }, 5)
     return () => unsub()
-  }, [])
+  }, [adminSection])
+
+  async function handleLoadMoreGuestbook() {
+    if (!guestbookLastDoc || !guestbookHasMore || isLoadingMoreGuestbook) return
+    setIsLoadingMoreGuestbook(true)
+    try {
+      const result = await fetchMoreGuestbookWishes(guestbookLastDoc, 5)
+      setAllGuestbookWishes((prev) => {
+        const existingIds = new Set(prev.map((w) => w.id))
+        const newWishes = result.wishes.filter((w) => !existingIds.has(w.id))
+        return [...prev, ...newWishes]
+      })
+      setGuestbookHasMore(result.hasMore)
+      setGuestbookLastDoc(result.lastDoc)
+    } catch {
+      // silent
+    } finally {
+      setIsLoadingMoreGuestbook(false)
+    }
+  }
 
   async function handleDeleteSingleWish(wishId: string, cardSlug?: string) {
     if (!confirm('Are you sure you want to delete this guestbook wish? This cannot be undone.')) return
@@ -716,7 +781,7 @@ export default function AdminPortalPage() {
         const firestoreDb = getFirebaseDb()
         if (!firestoreDb) return
         const collRef = collection(firestoreDb, 'active_sessions')
-        const q = query(collRef, orderBy('lastSeen', 'desc'), limit(150))
+        const q = query(collRef, orderBy('lastSeen', 'desc'), limit(20))
         unsub = onSnapshot(q, async (snap) => {
           const threshold = Date.now() - 120000 // Active within the last 2 minutes (matches 35s pulse)
           const rawDocs = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() } as any))
@@ -1460,7 +1525,13 @@ export default function AdminPortalPage() {
     }
   }, [showToast])
 
-  // Real-time onSnapshot Synchronization across ALL Firebase Collections
+  // ── Per-tab lazy Firestore listeners ────────────────────────────────────────
+  // Main page ('all') loads NOTHING from collections — only active_sessions is
+  // loaded on the main page (handled separately above).
+  // Each tab subscribes to its own collection with limit(5) when active,
+  // and unsubscribes when you leave. This keeps reads to an absolute minimum.
+  // Cursor (lastDoc) is stored per-tab so "Load More" fetches the NEXT 5 docs
+  // from Firestore rather than re-slicing an already-loaded in-memory array.
   useEffect(() => {
     const activeDb = getFirebaseDb() || db
     if (!isFirebaseConfigured || !activeDb) {
@@ -1481,148 +1552,494 @@ export default function AdminPortalPage() {
       }
     }
 
-    setIsFirestoreLoading(true)
+    const PAGE_SIZE = 5 // initial docs to fetch per tab
 
-    // 1. Live Users listener
-    const unsubUsers = onSnapshot(collection(activeDb, 'users'), (snap) => {
-      const list: JashnUser[] = []
-      snap.forEach((docSnap) => {
-        if (docSnap.exists()) list.push(docSnap.data() as JashnUser)
-      })
-      setFirestoreUsers(list)
-      setLastSyncedAt(Date.now())
-      setIsFirestoreLoading(false)
-    }, (err) => {
-      console.warn('Users listener notice:', err)
-      setIsFirestoreLoading(false)
-    })
+    let unsub = () => {}
 
-    // 2. Live Invitations listener
-    const unsubInvs = onSnapshot(collection(activeDb, 'invitations'), (snap) => {
-      const list: Invitation[] = []
-      snap.forEach((docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data() as any
-          list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
-        }
-      })
-      setFirestoreInvitations(list)
-      setLastSyncedAt(Date.now())
-    }, (err) => console.warn('Invitations listener notice:', err))
-
-    // 3. Live Wishes listener
-    const unsubWishes = onSnapshot(collection(activeDb, 'wishes'), (snap) => {
-      const list: Wish[] = []
-      snap.forEach((docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data() as any
-          list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
-        }
-      })
-      setFirestoreWishes(list)
-      setLastSyncedAt(Date.now())
-    }, (err) => console.warn('Wishes listener notice:', err))
-
-    // 4. Live Visiting Cards listener
-    const unsubVC = onSnapshot(collection(activeDb, 'visitingCards'), (snap) => {
-      const list: VisitingCard[] = []
-      snap.forEach((docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data() as any
-          list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
-        }
-      })
-      setFirestoreVisitingCards(list)
-      setLastSyncedAt(Date.now())
-    }, (err) => console.warn('Visiting cards listener notice:', err))
-
-    // 5. Live RSVPs listener
-    const unsubRsvps = onSnapshot(collection(activeDb, 'rsvps'), (snap) => {
-      const list: RsvpGuest[] = []
-      snap.forEach((docSnap) => {
-        if (docSnap.exists()) list.push(docSnap.data() as RsvpGuest)
-      })
-      setFirestoreRsvps(list)
-      setLastSyncedAt(Date.now())
-    }, (err) => console.warn('RSVPs listener notice:', err))
-
-    // 6. Live Magic Links listener
-    const unsubMagic = onSnapshot(collection(activeDb, 'magic_links'), (snap) => {
-      const list: MagicLinkData[] = []
-      snap.forEach((docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data() as any
-          list.push({ ...data, id: docSnap.id, slug: data.slug || docSnap.id, shares: normalizeShares(data) })
-        }
-      })
-      setFirestoreMagicLinks(list)
-      setLastSyncedAt(Date.now())
-    }, (err) => console.warn('Magic links listener notice:', err))
-
-    // 7. Live Poetry Stats listener (only individual poem-0001, poem-0002, etc.)
-    const unsubPoetryStats = onSnapshot(collection(activeDb, 'poetry_stats'), (snap) => {
-      const list: any[] = []
-      snap.forEach((docSnap) => {
-        if (docSnap.exists()) {
-          if (docSnap.id === 'summary') {
-            // Auto-purge summary doc from Firebase so it never exists
-            deleteDoc(doc(activeDb, 'poetry_stats', 'summary')).catch(() => {})
-          } else {
-            list.push({ id: docSnap.id, ...docSnap.data() })
-          }
-        }
-      })
-      setFirestorePoetryStats(list)
-      setLastSyncedAt(Date.now())
-    }, (err) => console.warn('Poetry stats listener notice:', err))
-
-    // 8. Live Poetry Activity listener
-    const unsubPoetryAct = onSnapshot(query(collection(activeDb, 'poetry_activity'), orderBy('timestamp', 'desc'), limit(100)), (snap) => {
-      const list: any[] = []
-      snap.forEach((docSnap) => {
-        if (docSnap.exists()) list.push({ id: docSnap.id, ...docSnap.data() })
-      })
-      setFirestorePoetryActivity(list)
-      setLastSyncedAt(Date.now())
-    }, (err) => console.warn('Poetry activity listener notice:', err))
-
-    // 9. Live Magic Responses listener
-    const unsubMagicResponses = onSnapshot(query(collection(activeDb, 'magic_link_responses'), orderBy('createdAt', 'desc'), limit(200)), (snap) => {
-      const list: MagicResponseData[] = []
-      snap.forEach((docSnap) => {
-        if (docSnap.exists()) {
-          list.push({ id: docSnap.id, ...docSnap.data() } as MagicResponseData)
-        }
-      })
-      setFirestoreMagicResponses(list)
-      setLastSyncedAt(Date.now())
-    }, (err) => console.warn('Magic responses listener notice:', err))
-
-    // 10. Testimonials & Reviews listener
-    const unsubTestimonials = onSnapshot(query(collection(activeDb, 'testimonials'), orderBy('createdAt', 'desc'), limit(150)), (snap) => {
-      const list: TestimonialItem[] = []
-      snap.forEach((docSnap) => {
-        if (docSnap.exists()) {
-          list.push({ id: docSnap.id, ...(docSnap.data() as any) })
-        }
-      })
-      setFirestoreTestimonials(list)
-      setLastSyncedAt(Date.now())
-    }, (err) => console.warn('Testimonials listener notice:', err))
-
-    return () => {
-      unsubUsers()
-      unsubInvs()
-      unsubWishes()
-      unsubVC()
-      unsubRsvps()
-      unsubMagic()
-      unsubMagicResponses()
-      unsubPoetryStats()
-      unsubPoetryAct()
-      unsubTestimonials()
+    // Helper: store last doc cursor for a tab
+    const setCursor = (tab: string, lastDoc: DocumentSnapshot | null, hasMore: boolean) => {
+      setTabCursors((prev) => ({ ...prev, [tab]: lastDoc }))
+      setTabHasMore((prev) => ({ ...prev, [tab]: hasMore }))
     }
-  }, [])
+
+    // ── users tab ────────────────────────────────────────────────────────────
+    if (adminSection === 'users') {
+      setIsFirestoreLoading(true)
+      unsub = onSnapshot(
+        query(collection(activeDb, 'users'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE + 1)),
+        (snap) => {
+          const allDocs = snap.docs
+          const hasMore = allDocs.length > PAGE_SIZE
+          const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
+          const list: JashnUser[] = visibleDocs.filter((d) => d.exists()).map((d) => d.data() as JashnUser)
+          setFirestoreUsers(list)
+          setCursor('users', visibleDocs[visibleDocs.length - 1] ?? null, hasMore)
+          setLastSyncedAt(Date.now())
+          setIsFirestoreLoading(false)
+        },
+        (err) => { console.warn('Users listener:', err); setIsFirestoreLoading(false) }
+      )
+    }
+
+    // ── invitations tab ───────────────────────────────────────────────────────
+    else if (adminSection === 'invitations') {
+      unsub = onSnapshot(
+        query(collection(activeDb, 'invitations'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE + 1)),
+        (snap) => {
+          const allDocs = snap.docs
+          const hasMore = allDocs.length > PAGE_SIZE
+          const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
+          const list: Invitation[] = visibleDocs.filter((d) => d.exists()).map((d) => {
+            const data = d.data() as any
+            return { ...data, id: d.id, slug: data.slug || d.id, shares: normalizeShares(data) }
+          })
+          setFirestoreInvitations(list)
+          setCursor('invitations', visibleDocs[visibleDocs.length - 1] ?? null, hasMore)
+          setLastSyncedAt(Date.now())
+        },
+        (err) => console.warn('Invitations listener:', err)
+      )
+    }
+
+    // ── wishes tab ────────────────────────────────────────────────────────────
+    else if (adminSection === 'wishes') {
+      unsub = onSnapshot(
+        query(collection(activeDb, 'wishes'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE + 1)),
+        (snap) => {
+          const allDocs = snap.docs
+          const hasMore = allDocs.length > PAGE_SIZE
+          const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
+          const list: Wish[] = visibleDocs.filter((d) => d.exists()).map((d) => {
+            const data = d.data() as any
+            return { ...data, id: d.id, slug: data.slug || d.id, shares: normalizeShares(data) }
+          })
+          setFirestoreWishes(list)
+          setCursor('wishes', visibleDocs[visibleDocs.length - 1] ?? null, hasMore)
+          setLastSyncedAt(Date.now())
+        },
+        (err) => console.warn('Wishes listener:', err)
+      )
+    }
+
+    // ── visiting cards tab ────────────────────────────────────────────────────
+    else if (adminSection === 'visiting_cards') {
+      unsub = onSnapshot(
+        query(collection(activeDb, 'visitingCards'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE + 1)),
+        (snap) => {
+          const allDocs = snap.docs
+          const hasMore = allDocs.length > PAGE_SIZE
+          const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
+          const list: VisitingCard[] = visibleDocs.filter((d) => d.exists()).map((d) => {
+            const data = d.data() as any
+            return { ...data, id: d.id, slug: data.slug || d.id, shares: normalizeShares(data) }
+          })
+          setFirestoreVisitingCards(list)
+          setCursor('visiting_cards', visibleDocs[visibleDocs.length - 1] ?? null, hasMore)
+          setLastSyncedAt(Date.now())
+        },
+        (err) => console.warn('Visiting cards listener:', err)
+      )
+    }
+
+    // ── rsvps tab ─────────────────────────────────────────────────────────────
+    else if (adminSection === 'rsvps') {
+      unsub = onSnapshot(
+        query(collection(activeDb, 'rsvps'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE + 1)),
+        (snap) => {
+          const allDocs = snap.docs
+          const hasMore = allDocs.length > PAGE_SIZE
+          const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
+          const list: RsvpGuest[] = visibleDocs.filter((d) => d.exists()).map((d) => d.data() as RsvpGuest)
+          setFirestoreRsvps(list)
+          setCursor('rsvps', visibleDocs[visibleDocs.length - 1] ?? null, hasMore)
+          setLastSyncedAt(Date.now())
+        },
+        (err) => console.warn('RSVPs listener:', err)
+      )
+    }
+
+    // ── magic links tab ───────────────────────────────────────────────────────
+    else if (adminSection === 'magic_links') {
+      unsub = onSnapshot(
+        query(collection(activeDb, 'magic_links'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE + 1)),
+        (snap) => {
+          const allDocs = snap.docs
+          const hasMore = allDocs.length > PAGE_SIZE
+          const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
+          const list: MagicLinkData[] = visibleDocs.filter((d) => d.exists()).map((d) => {
+            const data = d.data() as any
+            return { ...data, id: d.id, slug: data.slug || d.id, shares: normalizeShares(data) }
+          })
+          setFirestoreMagicLinks(list)
+          setCursor('magic_links', visibleDocs[visibleDocs.length - 1] ?? null, hasMore)
+          setLastSyncedAt(Date.now())
+        },
+        (err) => console.warn('Magic links listener:', err)
+      )
+    }
+
+    // ── poetry tab ────────────────────────────────────────────────────────────
+    else if (adminSection === 'poetry') {
+      const u1 = onSnapshot(
+        query(collection(activeDb, 'poetry_stats'), limit(PAGE_SIZE + 1)),
+        (snap) => {
+          const allDocs = snap.docs
+          const hasMore = allDocs.length > PAGE_SIZE
+          const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
+          const list: any[] = []
+          visibleDocs.forEach((d) => {
+            if (d.exists()) {
+              if (d.id === 'summary') {
+                deleteDoc(doc(activeDb, 'poetry_stats', 'summary')).catch(() => {})
+              } else {
+                list.push({ id: d.id, ...d.data() })
+              }
+            }
+          })
+          setFirestorePoetryStats(list)
+          setCursor('poetry', visibleDocs[visibleDocs.length - 1] ?? null, hasMore)
+          setLastSyncedAt(Date.now())
+        },
+        (err) => console.warn('Poetry stats listener:', err)
+      )
+      const u2 = onSnapshot(
+        query(collection(activeDb, 'poetry_activity'), orderBy('timestamp', 'desc'), limit(PAGE_SIZE + 1)),
+        (snap) => {
+          const allDocs = snap.docs
+          const hasMore = allDocs.length > PAGE_SIZE
+          const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
+          const list: any[] = visibleDocs.filter((d) => d.exists()).map((d) => ({ id: d.id, ...d.data() }))
+          setFirestorePoetryActivity(list)
+          setLastSyncedAt(Date.now())
+        },
+        (err) => console.warn('Poetry activity listener:', err)
+      )
+      unsub = () => { u1(); u2() }
+    }
+
+    // ── guestbook tab ─────────────────────────────────────────────────────────
+    // Note: guestbook_wishes are handled by the gated listenAllGuestbookWishes effect above.
+    // Here we only load magic_link_responses (RSVP-style responses).
+    else if (adminSection === 'guestbook') {
+      unsub = onSnapshot(
+        query(collection(activeDb, 'magic_link_responses'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE + 1)),
+        (snap) => {
+          const allDocs = snap.docs
+          const hasMore = allDocs.length > PAGE_SIZE
+          const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
+          const list: MagicResponseData[] = visibleDocs.filter((d) => d.exists()).map((d) => ({ id: d.id, ...d.data() } as MagicResponseData))
+          setFirestoreMagicResponses(list)
+          setCursor('guestbook', visibleDocs[visibleDocs.length - 1] ?? null, hasMore)
+          setLastSyncedAt(Date.now())
+        },
+        (err) => console.warn('Magic responses listener:', err)
+      )
+    }
+
+    // ── testimonials tab ──────────────────────────────────────────────────────
+    else if (adminSection === 'testimonials') {
+      unsub = onSnapshot(
+        query(collection(activeDb, 'testimonials'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE + 1)),
+        (snap) => {
+          const allDocs = snap.docs
+          const hasMore = allDocs.length > PAGE_SIZE
+          const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
+          const list: TestimonialItem[] = visibleDocs.filter((d) => d.exists()).map((d) => ({ id: d.id, ...(d.data() as any) }))
+          setFirestoreTestimonials(list)
+          setCursor('testimonials', visibleDocs[visibleDocs.length - 1] ?? null, hasMore)
+          setLastSyncedAt(Date.now())
+        },
+        (err) => console.warn('Testimonials listener:', err)
+      )
+    }
+
+    // ── 'all' (main page) & live_users: no collection listeners ──────────────
+    // active_sessions is handled by the separate listenLivePresence() above.
+    // No other reads happen on the main page.
+
+    return () => { unsub() }
+  }, [adminSection])
+
+  // ── Load More: fetch next 5 docs from Firestore using startAfter cursor ──
+  // Called when the admin paginates inside a tab. Instead of slicing an
+  // in-memory array, this issues a real Firestore query for the next page.
+  const loadMoreForTab = useCallback(async (tab: string) => {
+    const cursor = tabCursors[tab]
+    if (!cursor || !tabHasMore[tab] || isTabLoadingMore) return
+    const activeDb = getFirebaseDb() || db
+    if (!isFirebaseConfigured || !activeDb) return
+
+    setIsTabLoadingMore(true)
+    const PAGE_SIZE = 5
+    try {
+      const normalizeShares = (data: any) => {
+        const s = data?.shares && typeof data.shares === 'object' ? data.shares : {}
+        return {
+          whatsapp: Math.max(Number(s.whatsapp || 0), Number(data?.['shares.whatsapp'] || 0)),
+          sms: Math.max(Number(s.sms || 0), Number(data?.['shares.sms'] || 0)),
+          copy: Math.max(Number(s.copy || 0), Number(data?.['shares.copy'] || 0)),
+          qr: Math.max(Number(s.qr || 0), Number(data?.['shares.qr'] || 0)),
+          image: Math.max(Number(s.image || 0), Number(data?.['shares.image'] || 0)),
+          video: Math.max(Number(s.video || 0), Number(data?.['shares.video'] || 0)),
+          app: Math.max(Number(s.app || 0), Number(data?.['shares.app'] || 0)),
+        }
+      }
+
+      let q: any
+      if (tab === 'users') {
+        q = query(collection(activeDb, 'users'), orderBy('createdAt', 'desc'), startAfter(cursor), limit(PAGE_SIZE + 1))
+      } else if (tab === 'invitations') {
+        q = query(collection(activeDb, 'invitations'), orderBy('createdAt', 'desc'), startAfter(cursor), limit(PAGE_SIZE + 1))
+      } else if (tab === 'wishes') {
+        q = query(collection(activeDb, 'wishes'), orderBy('createdAt', 'desc'), startAfter(cursor), limit(PAGE_SIZE + 1))
+      } else if (tab === 'visiting_cards') {
+        q = query(collection(activeDb, 'visitingCards'), orderBy('createdAt', 'desc'), startAfter(cursor), limit(PAGE_SIZE + 1))
+      } else if (tab === 'rsvps') {
+        q = query(collection(activeDb, 'rsvps'), orderBy('createdAt', 'desc'), startAfter(cursor), limit(PAGE_SIZE + 1))
+      } else if (tab === 'magic_links') {
+        q = query(collection(activeDb, 'magic_links'), orderBy('createdAt', 'desc'), startAfter(cursor), limit(PAGE_SIZE + 1))
+      } else if (tab === 'guestbook') {
+        q = query(collection(activeDb, 'magic_link_responses'), orderBy('createdAt', 'desc'), startAfter(cursor), limit(PAGE_SIZE + 1))
+      } else if (tab === 'testimonials') {
+        q = query(collection(activeDb, 'testimonials'), orderBy('createdAt', 'desc'), startAfter(cursor), limit(PAGE_SIZE + 1))
+      } else {
+        return
+      }
+
+      const snap = await getDocs(q)
+      const allDocs = snap.docs
+      const hasMore = allDocs.length > PAGE_SIZE
+      const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
+      const newLastDoc = visibleDocs[visibleDocs.length - 1] ?? null
+
+      setTabCursors((prev) => ({ ...prev, [tab]: newLastDoc }))
+      setTabHasMore((prev) => ({ ...prev, [tab]: hasMore }))
+      setLastSyncedAt(Date.now())
+
+      if (tab === 'users') {
+        const newItems = visibleDocs.filter((d) => d.exists()).map((d) => d.data() as JashnUser)
+        setFirestoreUsers((prev) => {
+          const ids = new Set(prev.map((u) => u.uid || u.email))
+          return [...prev, ...newItems.filter((u) => !ids.has(u.uid || u.email))]
+        })
+      } else if (tab === 'invitations') {
+        const newItems = visibleDocs.filter((d) => d.exists()).map((d) => {
+          const data = d.data() as any
+          return { ...data, id: d.id, slug: data.slug || d.id, shares: normalizeShares(data) } as Invitation
+        })
+        setFirestoreInvitations((prev) => {
+          const ids = new Set(prev.map((i) => i.id || i.slug))
+          return [...prev, ...newItems.filter((i) => !ids.has(i.id || i.slug))]
+        })
+      } else if (tab === 'wishes') {
+        const newItems = visibleDocs.filter((d) => d.exists()).map((d) => {
+          const data = d.data() as any
+          return { ...data, id: d.id, slug: data.slug || d.id, shares: normalizeShares(data) } as Wish
+        })
+        setFirestoreWishes((prev) => {
+          const ids = new Set(prev.map((w) => w.id || (w as any).slug))
+          return [...prev, ...newItems.filter((w) => !ids.has(w.id || (w as any).slug))]
+        })
+      } else if (tab === 'visiting_cards') {
+        const newItems = visibleDocs.filter((d) => d.exists()).map((d) => {
+          const data = d.data() as any
+          return { ...data, id: d.id, slug: data.slug || d.id, shares: normalizeShares(data) } as VisitingCard
+        })
+        setFirestoreVisitingCards((prev) => {
+          const ids = new Set(prev.map((v) => v.id || (v as any).slug))
+          return [...prev, ...newItems.filter((v) => !ids.has(v.id || (v as any).slug))]
+        })
+      } else if (tab === 'rsvps') {
+        const newItems = visibleDocs.filter((d) => d.exists()).map((d) => d.data() as RsvpGuest)
+        setFirestoreRsvps((prev) => {
+          const ids = new Set(prev.map((r) => (r as any).id))
+          return [...prev, ...newItems.filter((r) => !ids.has((r as any).id))]
+        })
+      } else if (tab === 'magic_links') {
+        const newItems = visibleDocs.filter((d) => d.exists()).map((d) => {
+          const data = d.data() as any
+          return { ...data, id: d.id, slug: data.slug || d.id, shares: normalizeShares(data) } as MagicLinkData
+        })
+        setFirestoreMagicLinks((prev) => {
+          const ids = new Set(prev.map((m) => m.id || (m as any).slug))
+          return [...prev, ...newItems.filter((m) => !ids.has(m.id || (m as any).slug))]
+        })
+      } else if (tab === 'guestbook') {
+        const newItems = visibleDocs.filter((d) => d.exists()).map((d) => ({ id: d.id, ...d.data() } as MagicResponseData))
+        setFirestoreMagicResponses((prev) => {
+          const ids = new Set(prev.map((r) => r.id || (r as any).docId))
+          return [...prev, ...newItems.filter((r) => !ids.has(r.id || (r as any).docId))]
+        })
+      } else if (tab === 'testimonials') {
+        const newItems = visibleDocs.filter((d) => d.exists()).map((d) => ({ id: d.id, ...(d.data() as any) } as TestimonialItem))
+        setFirestoreTestimonials((prev) => {
+          const ids = new Set(prev.map((t) => t.id))
+          return [...prev, ...newItems.filter((t) => !ids.has(t.id))]
+        })
+      }
+    } catch (err) {
+      console.warn('loadMoreForTab error:', err)
+    } finally {
+      setIsTabLoadingMore(false)
+    }
+  }, [tabCursors, tabHasMore, isTabLoadingMore])
+
+  // ── Activity Stream: own Firestore listener on 'all' section ─────────────
+  // Loads latest 5 records from each key collection (invitations, wishes, visitingCards,
+  // magic_links) using a single merged real-time listener. This replaces the
+  // old in-memory derivation from tab data.
+  useEffect(() => {
+    if (adminSection !== 'all') return
+    const activeDb = getFirebaseDb() || db
+    if (!isFirebaseConfigured || !activeDb) return
+
+    const PAGE_SIZE = 5
+    const allItems: any[] = []
+    let loadedCount = 0
+    const SOURCES = 4 // invitations, wishes, visitingCards, magic_links
+
+    // Helper to merge and sort when all sources have responded.
+    // Writes into activityStreamAllRef so handleLoadMoreActivity (outside this closure)
+    // can slice the next page without issuing another Firestore read.
+    const mergeAndSet = () => {
+      loadedCount++
+      if (loadedCount >= SOURCES) {
+        allItems.sort((a, b) => (b.time || 0) - (a.time || 0))
+        activityStreamAllRef.current = allItems.slice()
+        const initialPage = allItems.slice(0, PAGE_SIZE)
+        setActivityStreamItems(initialPage)
+        setActivityStreamHasMore(allItems.length > PAGE_SIZE)
+      }
+    }
+
+    const toMs = (val: any): number => {
+      if (!val) return 0
+      if (typeof val === 'number') return val
+      if (val?.toMillis) return val.toMillis()
+      if (val?._seconds) return val._seconds * 1000
+      if (val?.seconds) return val.seconds * 1000
+      return 0
+    }
+
+    const u1 = onSnapshot(
+      query(collection(activeDb, 'invitations'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE)),
+      (snap) => {
+        const remove = allItems.filter((i) => i._src !== 'invitation')
+        allItems.length = 0
+        allItems.push(...remove)
+        snap.docs.forEach((d) => {
+          if (!d.exists()) return
+          const data = d.data() as any
+          allItems.push({
+            _src: 'invitation',
+            type: 'invitation', typeLabel: 'Invitation Created',
+            title: data.title || 'Event Invitation',
+            subtitle: `By ${data.hostNames || 'Host'} • ${data.city || data.venue || 'Event'}`,
+            time: toMs(data.createdAt),
+            origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
+            link: `/i/${data.slug || d.id}`,
+          })
+        })
+        mergeAndSet()
+      },
+      () => mergeAndSet()
+    )
+
+    const u2 = onSnapshot(
+      query(collection(activeDb, 'wishes'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE)),
+      (snap) => {
+        const remove = allItems.filter((i) => i._src !== 'wish')
+        allItems.length = 0
+        allItems.push(...remove)
+        snap.docs.forEach((d) => {
+          if (!d.exists()) return
+          const data = d.data() as any
+          allItems.push({
+            _src: 'wish',
+            type: 'wish', typeLabel: 'Wish Card Created',
+            title: `${data.senderName || 'Sender'} → ${data.recipientName || 'Recipient'}`,
+            subtitle: `Occasion: ${data.occasionId || 'wish'} • "${(data.message || '').slice(0, 45)}..."`,
+            time: toMs(data.createdAt),
+            origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
+            link: `/w/${data.slug || d.id}`,
+          })
+        })
+        mergeAndSet()
+      },
+      () => mergeAndSet()
+    )
+
+    const u3 = onSnapshot(
+      query(collection(activeDb, 'visitingCards'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE)),
+      (snap) => {
+        const remove = allItems.filter((i) => i._src !== 'visiting_card')
+        allItems.length = 0
+        allItems.push(...remove)
+        snap.docs.forEach((d) => {
+          if (!d.exists()) return
+          const data = d.data() as any
+          allItems.push({
+            _src: 'visiting_card',
+            type: 'visiting_card', typeLabel: 'Visiting Card',
+            title: data.fullName || 'Digital Card',
+            subtitle: `${data.title || 'Professional'} • ${data.company || 'Company'}`,
+            time: toMs(data.createdAt),
+            origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
+            link: `/v/${data.slug || d.id}`,
+          })
+        })
+        mergeAndSet()
+      },
+      () => mergeAndSet()
+    )
+
+    const u4 = onSnapshot(
+      query(collection(activeDb, 'magic_links'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE)),
+      (snap) => {
+        const remove = allItems.filter((i) => i._src !== 'magic_link')
+        allItems.length = 0
+        allItems.push(...remove)
+        snap.docs.forEach((d) => {
+          if (!d.exists()) return
+          const data = d.data() as any
+          allItems.push({
+            _src: 'magic_link',
+            type: 'magic_link', typeLabel: 'Magic Link',
+            title: `${data.senderName || 'Sender'} → ${data.recipientName || 'Recipient'}`,
+            subtitle: `Type: ${data.type || 'magic'} • Occasion: ${data.occasion || 'event'}`,
+            time: toMs(data.createdAt),
+            origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
+            link: `/m/${data.slug || d.id}`,
+          })
+        })
+        mergeAndSet()
+      },
+      () => mergeAndSet()
+    )
+
+    return () => { u1(); u2(); u3(); u4() }
+  }, [adminSection])
+
+  // Load more activity stream items from the already-fetched merged set.
+  // Reads activityStreamAllRef.current — the stable ref written by the useEffect above —
+  // so each "load more" click slices the next 5 from the in-memory list without any
+  // additional Firestore reads (the 4 listeners already fetched the latest 5 per source).
+  const handleLoadMoreActivity = useCallback(async () => {
+    if (!activityStreamHasMore || isLoadingMoreActivity) return
+    setIsLoadingMoreActivity(true)
+    try {
+      const all = activityStreamAllRef.current
+      const nextPage = all.slice(activityStreamItems.length, activityStreamItems.length + 5)
+      if (nextPage.length > 0) {
+        setActivityStreamItems((prev) => [...prev, ...nextPage])
+        setActivityStreamHasMore(all.length > activityStreamItems.length + nextPage.length)
+      } else {
+        setActivityStreamHasMore(false)
+      }
+    } finally {
+      setIsLoadingMoreActivity(false)
+    }
+  }, [activityStreamItems, activityStreamHasMore, isLoadingMoreActivity])
 
   // Invitations list (Strictly Cloud Firebase only)
   const invitations = useMemo(() => {
@@ -2123,9 +2540,10 @@ export default function AdminPortalPage() {
   }, [allUsersList, filterPlan, searchTerm])
 
   const paginatedUsers = useMemo(() => {
-    const start = (pageUsers - 1) * pageSizeUsers
-    return filteredUsers.slice(start, start + pageSizeUsers)
-  }, [filteredUsers, pageUsers, pageSizeUsers])
+    // Server-side pagination: Firestore loads 5 at a time via loadMoreForTab.
+    // filteredUsers already contains only the docs fetched so far — just return all.
+    return filteredUsers
+  }, [filteredUsers])
 
   // Filtered & Paginated Invitations
   const filteredInvitations = useMemo(() => {
@@ -2146,8 +2564,8 @@ export default function AdminPortalPage() {
 
   const paginatedInvitations = useMemo(() => {
     const start = (pageInvitations - 1) * pageSizeInvitations
-    return filteredInvitations.slice(start, start + pageSizeInvitations)
-  }, [filteredInvitations, pageInvitations, pageSizeInvitations])
+    return filteredInvitations
+  }, [filteredInvitations])
 
   // Filtered & Paginated Wishes
   const filteredWishes = useMemo(() => {
@@ -3042,148 +3460,107 @@ export default function AdminPortalPage() {
           })}
         </div>
 
-        {/* Real-Time Activity & Geolocation Radar (Shown in Overview tab) */}
+        {/* Live Real-Time Activity & Creation Stream — shown only on Overview tab */}
         {adminSection === 'all' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Top Countries / Geolocation Summary */}
-            <div className="bg-card border border-border rounded-3xl p-6 shadow-xl space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-bold text-foreground flex items-center gap-2">
-                  <Globe className="size-4 text-indigo-600" />
-                  Origin & Geolocation
-                </h3>
-                <span className="text-[11px] font-semibold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                  Real-time
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Distribution of where users register and cards are created across Cardzy.
-              </p>
+          <div className="bg-card border border-border rounded-3xl p-6 shadow-xl space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-foreground flex items-center gap-2">
+                <Activity className="size-4 text-emerald-600 animate-pulse" />
+                Live Real-Time Activity & Creation Stream
+              </h3>
+              <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                Live Feed
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Chronological timeline of latest user registrations, event invitations, greeting wishes, magic links, and visiting cards.
+            </p>
 
-              {/* Country Badges / List */}
-              <div className="space-y-2.5 pt-1">
-                {geoCountryStats.length === 0 ? (
-                  <div className="py-6 text-center text-xs text-muted-foreground">
-                    No location data recorded yet.
-                  </div>
-                ) : (
-                  geoCountryStats.slice(0, 6).map((item) => (
-                    <div
-                      key={item.country}
-                      className="flex items-center justify-between p-2.5 rounded-2xl bg-muted/40 hover:bg-muted/60 transition-colors text-xs"
-                    >
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="text-lg leading-none shrink-0">{item.flag}</span>
-                        <span className="font-semibold text-foreground truncate">{item.country}</span>
+            <div className="divide-y divide-border/60">
+              {activityStreamItems.length === 0 ? (
+                <div className="py-8 text-center text-xs text-muted-foreground">
+                  No activity recorded yet.
+                </div>
+              ) : (
+                activityStreamItems.map((act, i) => (
+                  <div key={i} className="py-3 first:pt-1 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <div className={cn(
+                        "size-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5",
+                        act.type === 'user' ? 'bg-indigo-500/10 text-indigo-600' :
+                        act.type === 'invitation' ? 'bg-emerald-500/10 text-emerald-600' :
+                        act.type === 'wish' ? 'bg-amber-500/10 text-amber-600' :
+                        act.type === 'magic_link' ? 'bg-pink-500/10 text-pink-600' :
+                        'bg-purple-500/10 text-purple-600'
+                      )}>
+                        {act.type === 'user' ? <Users className="size-4" /> :
+                         act.type === 'invitation' ? <Calendar className="size-4" /> :
+                         act.type === 'wish' ? <Sparkles className="size-4" /> :
+                         act.type === 'magic_link' ? <MousePointerClick className="size-4" /> :
+                         <CreditCard className="size-4" />}
                       </div>
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400">
-                          {item.count}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground">events</span>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-foreground">{act.title}</span>
+                          <span className={cn(
+                            "px-2 py-0.5 rounded-md text-[10px] font-bold uppercase",
+                            act.type === 'user' ? 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-400' :
+                            act.type === 'invitation' ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400' :
+                            act.type === 'wish' ? 'bg-amber-500/15 text-amber-800 dark:text-amber-400' :
+                            act.type === 'magic_link' ? 'bg-pink-500/15 text-pink-700 dark:text-pink-400' :
+                            'bg-purple-500/15 text-purple-700 dark:text-purple-400'
+                          )}>
+                            {act.typeLabel}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-muted-foreground mt-0.5 truncate max-w-sm">
+                          {act.subtitle}
+                        </div>
                       </div>
                     </div>
-                  ))
-                )}
-              </div>
-            </div>
 
-            {/* Live Activity & Creation Stream */}
-            <div className="lg:col-span-2 bg-card border border-border rounded-3xl p-6 shadow-xl space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-bold text-foreground flex items-center gap-2">
-                  <Activity className="size-4 text-emerald-600 animate-pulse" />
-                  Live Real-Time Activity & Creation Stream
-                </h3>
-                <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
-                  <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                  Live Feed
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Chronological timeline of latest user registrations, event invitations, greeting wishes, magic links, and visiting cards.
-              </p>
-
-              <div className="divide-y divide-border/60">
-                {recentActivities.length === 0 ? (
-                  <div className="py-8 text-center text-xs text-muted-foreground">
-                    No activity recorded yet.
-                  </div>
-                ) : (
-                  paginatedActivities.map((act, i) => (
-                    <div key={i} className="py-3 first:pt-1 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                      <div className="flex items-start gap-3 min-w-0">
-                        <div className={cn(
-                          "size-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5",
-                          act.type === 'user' ? 'bg-indigo-500/10 text-indigo-600' :
-                          act.type === 'invitation' ? 'bg-emerald-500/10 text-emerald-600' :
-                          act.type === 'wish' ? 'bg-amber-500/10 text-amber-600' :
-                          act.type === 'magic_link' ? 'bg-pink-500/10 text-pink-600' :
-                          'bg-purple-500/10 text-purple-600'
-                        )}>
-                          {act.type === 'user' ? <Users className="size-4" /> :
-                           act.type === 'invitation' ? <Calendar className="size-4" /> :
-                           act.type === 'wish' ? <Sparkles className="size-4" /> :
-                           act.type === 'magic_link' ? <MousePointerClick className="size-4" /> :
-                           <CreditCard className="size-4" />}
+                    <div className="flex items-center gap-3 shrink-0 sm:text-right">
+                      <div>
+                        <div className="flex items-center sm:justify-end gap-1 font-semibold text-foreground">
+                          <span>{act.origin.flag}</span>
+                          <span className="truncate max-w-[150px]">{act.origin.locationText}</span>
                         </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-bold text-foreground">{act.title}</span>
-                            <span className={cn(
-                              "px-2 py-0.5 rounded-md text-[10px] font-bold uppercase",
-                              act.type === 'user' ? 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-400' :
-                              act.type === 'invitation' ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400' :
-                              act.type === 'wish' ? 'bg-amber-500/15 text-amber-800 dark:text-amber-400' :
-                              act.type === 'magic_link' ? 'bg-pink-500/15 text-pink-700 dark:text-pink-400' :
-                              'bg-purple-500/15 text-purple-700 dark:text-purple-400'
-                            )}>
-                              {act.typeLabel}
-                            </span>
-                          </div>
-                          <div className="text-[11px] text-muted-foreground mt-0.5 truncate max-w-sm">
-                            {act.subtitle}
-                          </div>
+                        <div className="text-[10px] text-muted-foreground flex items-center sm:justify-end gap-1 mt-0.5">
+                          <Clock className="size-3 text-muted-foreground" />
+                          <span>{formatDateTime(act.time)} • {formatRelativeTime(act.time) || 'Recently'}</span>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3 shrink-0 sm:text-right">
-                        <div>
-                          <div className="flex items-center sm:justify-end gap-1 font-semibold text-foreground">
-                            <span>{act.origin.flag}</span>
-                            <span className="truncate max-w-[150px]">{act.origin.locationText}</span>
-                          </div>
-                          <div className="text-[10px] text-muted-foreground flex items-center sm:justify-end gap-1 mt-0.5">
-                            <Clock className="size-3 text-muted-foreground" />
-                            <span>{formatDateTime(act.time)} • {formatRelativeTime(act.time) || 'Recently'}</span>
-                          </div>
-                        </div>
-
-                        {act.link && (
-                          <Link
-                            href={act.link}
-                            target="_blank"
-                            className="p-1.5 rounded-lg bg-muted hover:bg-muted/80 text-foreground transition-colors shrink-0"
-                            title="Open Link"
-                          >
-                            <ExternalLink className="size-3.5" />
-                          </Link>
-                        )}
-                      </div>
+                      {act.link && (
+                        <Link
+                          href={act.link}
+                          target="_blank"
+                          className="p-1.5 rounded-lg bg-muted hover:bg-muted/80 text-foreground transition-colors shrink-0"
+                          title="Open Link"
+                        >
+                          <ExternalLink className="size-3.5" />
+                        </Link>
+                      )}
                     </div>
-                  ))
-                )}
-              </div>
-
-              <AdminTablePagination
-                currentPage={pageActivityStream}
-                totalItems={recentActivities.length}
-                pageSize={pageSizeActivityStream}
-                onPageChange={setPageActivityStream}
-                onPageSizeChange={setPageSizeActivityStream}
-                itemName="stream events"
-              />
+                  </div>
+                ))
+              )}
             </div>
+
+            {activityStreamHasMore && (
+              <div className="pt-4 flex justify-center">
+                <button
+                  type="button"
+                  onClick={handleLoadMoreActivity}
+                  disabled={isLoadingMoreActivity}
+                  className="px-5 py-2 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  <RefreshCw className={cn("size-3.5", isLoadingMoreActivity && "animate-spin")} />
+                  {isLoadingMoreActivity ? 'Loading…' : 'Load More Activity'}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -3762,7 +4139,7 @@ export default function AdminPortalPage() {
         )}
 
         {/* ── POETRY LIVE EVENTS & ENGAGEMENT STREAM ── */}
-        {(adminSection === 'all' || adminSection === 'poetry') && (
+        {adminSection === 'poetry' && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden space-y-6">
             <div className="p-6 border-b border-border space-y-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -4469,7 +4846,7 @@ export default function AdminPortalPage() {
         )}
 
         {/* 1. USER ACCOUNTS SECTION */}
-        {(adminSection === 'all' || adminSection === 'users') && (
+        {adminSection === 'users' && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden">
             <div className="p-6 border-b border-border space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -4711,19 +5088,20 @@ export default function AdminPortalPage() {
               </table>
             </div>
 
-            <AdminTablePagination
-              currentPage={pageUsers}
-              totalItems={filteredUsers.length}
-              pageSize={pageSizeUsers}
-              onPageChange={setPageUsers}
-              onPageSizeChange={setPageSizeUsers}
-              itemName="users"
-            />
+            {tabHasMore['users'] && (
+              <div className="p-4 border-t border-border/80 flex justify-center">
+                <button type="button" onClick={() => loadMoreForTab('users')} disabled={isTabLoadingMore}
+                  className="px-5 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-60">
+                  <RefreshCw className={cn("size-3.5", isTabLoadingMore && "animate-spin")} />
+                  {isTabLoadingMore ? 'Loading…' : 'Load More Users'}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
         {/* MAGIC LINKS 🪄 SECTION */}
-        {(adminSection === 'all' || adminSection === 'magic_links') && (
+        {adminSection === 'magic_links' && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden mb-8">
             <div className="p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
@@ -4976,14 +5354,15 @@ export default function AdminPortalPage() {
               </table>
             </div>
 
-            <AdminTablePagination
-              currentPage={pageMagicLinks}
-              totalItems={filteredMagicLinks.length}
-              pageSize={pageSizeMagicLinks}
-              onPageChange={setPageMagicLinks}
-              onPageSizeChange={setPageSizeMagicLinks}
-              itemName="magic links"
-            />
+            {tabHasMore['magic_links'] && (
+              <div className="p-4 border-t border-border/80 flex justify-center">
+                <button type="button" onClick={() => loadMoreForTab('magic_links')} disabled={isTabLoadingMore}
+                  className="px-5 py-2 rounded-2xl bg-pink-600 hover:bg-pink-700 text-white text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-60">
+                  <RefreshCw className={cn("size-3.5", isTabLoadingMore && "animate-spin")} />
+                  {isTabLoadingMore ? 'Loading…' : 'Load More Magic Links'}
+                </button>
+              </div>
+            )}
 
             {/* ── MAGIC LINK RESPONSES & RSVP LEDGER ── */}
             <div id="magic-responses-ledger" className="border-t border-border pt-6 mt-2">
@@ -5250,20 +5629,21 @@ export default function AdminPortalPage() {
                 </table>
               </div>
 
-              <AdminTablePagination
-                currentPage={pageMagicResponses}
-                totalItems={filteredMagicResponses.length}
-                pageSize={pageSizeMagicResponses}
-                onPageChange={setPageMagicResponses}
-                onPageSizeChange={setPageSizeMagicResponses}
-                itemName="responses"
-              />
+              {tabHasMore['guestbook'] && (
+                <div className="p-4 border-t border-border/80 flex justify-center">
+                  <button type="button" onClick={() => loadMoreForTab('guestbook')} disabled={isTabLoadingMore}
+                    className="px-5 py-2 rounded-2xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-60">
+                    <RefreshCw className={cn("size-3.5", isTabLoadingMore && "animate-spin")} />
+                    {isTabLoadingMore ? 'Loading…' : 'Load More Responses'}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
 
         {/* EVENT CARD GUESTBOOK / WISHES WALL SECTION */}
-        {(adminSection === 'all' || adminSection === 'guestbook') && (
+        {adminSection === 'guestbook' && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden mb-8">
             <div className="p-6 border-b border-border flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
@@ -5417,19 +5797,20 @@ export default function AdminPortalPage() {
               </table>
             </div>
 
-            <AdminTablePagination
-              currentPage={pageGuestbook}
-              totalItems={filteredGuestbookWishes.length}
-              pageSize={pageSizeGuestbook}
-              onPageChange={setPageGuestbook}
-              onPageSizeChange={setPageSizeGuestbook}
-              itemName="guestbook wishes"
-            />
+            {guestbookHasMore && (
+              <div className="p-4 border-t border-border/80 flex justify-center">
+                <button type="button" onClick={handleLoadMoreGuestbook} disabled={isLoadingMoreGuestbook}
+                  className="px-5 py-2 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-60">
+                  <RefreshCw className={cn("size-3.5", isLoadingMoreGuestbook && "animate-spin")} />
+                  {isLoadingMoreGuestbook ? 'Loading…' : 'Load More Wishes'}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
         {/* USER REVIEWS & TESTIMONIALS SECTION */}
-        {(adminSection === 'all' || adminSection === 'testimonials') && (
+        {adminSection === 'testimonials' && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden mb-8">
             <div className="p-6 border-b border-border flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
@@ -5638,19 +6019,20 @@ export default function AdminPortalPage() {
               </table>
             </div>
 
-            <AdminTablePagination
-              currentPage={pageTestimonials}
-              totalItems={filteredTestimonials.length}
-              pageSize={pageSizeTestimonials}
-              onPageChange={setPageTestimonials}
-              onPageSizeChange={setPageSizeTestimonials}
-              itemName="reviews"
-            />
+            {tabHasMore['testimonials'] && (
+              <div className="p-4 border-t border-border/80 flex justify-center">
+                <button type="button" onClick={() => loadMoreForTab('testimonials')} disabled={isTabLoadingMore}
+                  className="px-5 py-2 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-60">
+                  <RefreshCw className={cn("size-3.5", isTabLoadingMore && "animate-spin")} />
+                  {isTabLoadingMore ? 'Loading…' : 'Load More Reviews'}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
         {/* 2. ACTIVE INVITATIONS SECTION */}
-        {(adminSection === 'all' || adminSection === 'invitations') && (
+        {adminSection === 'invitations' && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden">
             <div className="p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
@@ -5913,19 +6295,20 @@ export default function AdminPortalPage() {
               </table>
             </div>
 
-            <AdminTablePagination
-              currentPage={pageInvitations}
-              totalItems={filteredInvitations.length}
-              pageSize={pageSizeInvitations}
-              onPageChange={setPageInvitations}
-              onPageSizeChange={setPageSizeInvitations}
-              itemName="invitations"
-            />
+            {tabHasMore['invitations'] && (
+              <div className="p-4 border-t border-border/80 flex justify-center">
+                <button type="button" onClick={() => loadMoreForTab('invitations')} disabled={isTabLoadingMore}
+                  className="px-5 py-2 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-60">
+                  <RefreshCw className={cn("size-3.5", isTabLoadingMore && "animate-spin")} />
+                  {isTabLoadingMore ? 'Loading…' : 'Load More Invitations'}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
         {/* 3. CREATED WISHES SECTION */}
-        {(adminSection === 'all' || adminSection === 'wishes') && (
+        {adminSection === 'wishes' && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden">
             <div className="p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
@@ -6149,19 +6532,20 @@ export default function AdminPortalPage() {
               </table>
             </div>
 
-            <AdminTablePagination
-              currentPage={pageWishes}
-              totalItems={filteredWishes.length}
-              pageSize={pageSizeWishes}
-              onPageChange={setPageWishes}
-              onPageSizeChange={setPageSizeWishes}
-              itemName="wishes"
-            />
+            {tabHasMore['wishes'] && (
+              <div className="p-4 border-t border-border/80 flex justify-center">
+                <button type="button" onClick={() => loadMoreForTab('wishes')} disabled={isTabLoadingMore}
+                  className="px-5 py-2 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-60">
+                  <RefreshCw className={cn("size-3.5", isTabLoadingMore && "animate-spin")} />
+                  {isTabLoadingMore ? 'Loading…' : 'Load More Wishes'}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
         {/* 3. VISITING CARDS SECTION */}
-        {(adminSection === 'all' || adminSection === 'visiting_cards') && (
+        {adminSection === 'visiting_cards' && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden">
             <div className="p-6 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
@@ -6381,19 +6765,20 @@ export default function AdminPortalPage() {
               </table>
             </div>
 
-            <AdminTablePagination
-              currentPage={pageVisitingCards}
-              totalItems={filteredVisitingCards.length}
-              pageSize={pageSizeVisitingCards}
-              onPageChange={setPageVisitingCards}
-              onPageSizeChange={setPageSizeVisitingCards}
-              itemName="visiting cards"
-            />
+            {tabHasMore['visiting_cards'] && (
+              <div className="p-4 border-t border-border/80 flex justify-center">
+                <button type="button" onClick={() => loadMoreForTab('visiting_cards')} disabled={isTabLoadingMore}
+                  className="px-5 py-2 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-60">
+                  <RefreshCw className={cn("size-3.5", isTabLoadingMore && "animate-spin")} />
+                  {isTabLoadingMore ? 'Loading…' : 'Load More Visiting Cards'}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
         {/* 4. GUEST RSVPs SECTION */}
-        {(adminSection === 'all' || adminSection === 'rsvps') && (
+        {adminSection === 'rsvps' && (
           <div className="bg-card border border-border rounded-3xl shadow-xl overflow-hidden space-y-4">
             <div className="p-6 border-b border-border space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -6624,14 +7009,15 @@ export default function AdminPortalPage() {
               </div>
             )}
 
-            <AdminTablePagination
-              currentPage={pageRsvps}
-              totalItems={filteredRsvpsWithSearch.length}
-              pageSize={pageSizeRsvps}
-              onPageChange={setPageRsvps}
-              onPageSizeChange={setPageSizeRsvps}
-              itemName="RSVP responses"
-            />
+            {tabHasMore['rsvps'] && (
+              <div className="p-4 border-t border-border/80 flex justify-center">
+                <button type="button" onClick={() => loadMoreForTab('rsvps')} disabled={isTabLoadingMore}
+                  className="px-5 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-60">
+                  <RefreshCw className={cn("size-3.5", isTabLoadingMore && "animate-spin")} />
+                  {isTabLoadingMore ? 'Loading…' : 'Load More RSVPs'}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -7690,8 +8076,8 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
         const firestoreDb = getFirebaseDb()
         if (!firestoreDb) return
 
-        // Real-time listener for push subscribers
-        const subQ = query(collection(firestoreDb, 'push_subscribers'), limit(500))
+        // Real-time listener for push subscribers — latest 50 only
+        const subQ = query(collection(firestoreDb, 'push_subscribers'), limit(50))
         unsubscribeSubs = onSnapshot(subQ, (subSnap) => {
           setSubscribersCount(subSnap.size)
           setSubscribersList(subSnap.docs.map(d => ({ id: d.id, ...d.data() })))
@@ -7699,8 +8085,8 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
           console.error("Error listening to push_subscribers", err)
         })
 
-        // Real-time listener for notifications history
-        const q = query(collection(firestoreDb, 'push_notifications'), orderBy('sentAt', 'desc'), limit(500))
+        // Real-time listener for notifications history — latest 20 only
+        const q = query(collection(firestoreDb, 'push_notifications'), orderBy('sentAt', 'desc'), limit(20))
         unsubscribeNotifs = onSnapshot(q, (snap) => {
           const notifs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
           setNotifications(notifs)

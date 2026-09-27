@@ -28,6 +28,7 @@ export function AdSenseHandler() {
 
     const checkConsent = () => {
       const prefsStr =
+        localStorage.getItem('cardzy_consent_v3') ||
         localStorage.getItem('cardzy_consent_v2') ||
         localStorage.getItem('cardzy_cookie_prefs')
       if (prefsStr) {

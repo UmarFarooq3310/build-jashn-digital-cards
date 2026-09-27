@@ -7,9 +7,12 @@ import {
   query,
   where,
   limit,
+  orderBy,
+  startAfter,
   deleteDoc,
   onSnapshot,
   serverTimestamp,
+  type DocumentSnapshot,
 } from 'firebase/firestore'
 
 export interface GuestbookWish {
@@ -202,25 +205,38 @@ export function subscribeCardWishes(
 }
 
 /**
- * ADMIN: Subscribes to all guestbook wishes across all cards in real time from Firebase Firestore
+ * ADMIN: Subscribes to the latest 5 guestbook wishes in real time from Firebase Firestore.
+ * Returns an unsubscribe function AND a `loadMore` function to fetch the next 5 with a cursor.
+ * This prevents loading 500 docs on every admin portal mount.
+ *
+ * The callback now receives a third argument — `lastDoc` — which the admin page stores so
+ * `fetchMoreGuestbookWishes(lastDoc, pageSize)` can fetch the exact next page via startAfter().
  */
 export function listenAllGuestbookWishes(
-  onUpdate: (wishes: GuestbookWish[]) => void
+  onUpdate: (wishes: GuestbookWish[], hasMore: boolean, lastDoc: DocumentSnapshot | null) => void,
+  pageSize: number = 5
 ): () => void {
   const activeDb = getFirebaseDb() || db
   if (!isFirebaseConfigured || !activeDb) {
-    onUpdate([])
+    onUpdate([], false, null)
     return () => {}
   }
 
   try {
     const collRef = collection(activeDb, 'guestbook_wishes')
-    const q = query(collRef, limit(500))
+    const q = query(collRef, orderBy('createdAt', 'desc'), limit(pageSize + 1))
 
     const unsubscribe = onSnapshot(
       q,
       (snapshot) => {
-        const wishes: GuestbookWish[] = snapshot.docs.map((d) => {
+        const allDocs = snapshot.docs
+        // Fetch one extra to know if there are more pages
+        const hasMore = allDocs.length > pageSize
+        const visibleDocs = hasMore ? allDocs.slice(0, pageSize) : allDocs
+        // The last visible doc is the cursor for the next page
+        const lastDoc = visibleDocs.length > 0 ? visibleDocs[visibleDocs.length - 1] : null
+
+        const wishes: GuestbookWish[] = visibleDocs.map((d) => {
           const data = d.data()
           let parsedTime = Date.now()
           if (typeof data.createdAt === 'number') {
@@ -245,8 +261,7 @@ export function listenAllGuestbookWishes(
           }
         })
 
-        wishes.sort((a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0))
-        onUpdate(wishes)
+        onUpdate(wishes, hasMore, lastDoc)
       },
       (err) => {
         console.warn('Admin guestbook listener notice:', err)
@@ -257,6 +272,64 @@ export function listenAllGuestbookWishes(
   } catch (err) {
     console.warn('Error setting up admin guestbook listener:', err)
     return () => {}
+  }
+}
+
+/**
+ * ADMIN: Fetches the next page of guestbook wishes using a Firestore cursor (startAfter).
+ * Used for server-side pagination — only fetches the next 5 docs, not the entire collection.
+ */
+export async function fetchMoreGuestbookWishes(
+  afterDoc: DocumentSnapshot,
+  pageSize: number = 5
+): Promise<{ wishes: GuestbookWish[]; hasMore: boolean; lastDoc: DocumentSnapshot | null }> {
+  const activeDb = getFirebaseDb() || db
+  if (!isFirebaseConfigured || !activeDb) {
+    return { wishes: [], hasMore: false, lastDoc: null }
+  }
+
+  try {
+    const collRef = collection(activeDb, 'guestbook_wishes')
+    const q = query(collRef, orderBy('createdAt', 'desc'), startAfter(afterDoc), limit(pageSize + 1))
+    const snapshot = await getDocs(q)
+
+    const allDocs = snapshot.docs
+    const hasMore = allDocs.length > pageSize
+    const visibleDocs = hasMore ? allDocs.slice(0, pageSize) : allDocs
+
+    const wishes: GuestbookWish[] = visibleDocs.map((d) => {
+      const data = d.data()
+      let parsedTime = Date.now()
+      if (typeof data.createdAt === 'number') {
+        parsedTime = data.createdAt
+      } else if (data.createdAt?.toMillis) {
+        parsedTime = data.createdAt.toMillis()
+      } else if (data.serverTime?.toMillis) {
+        parsedTime = data.serverTime.toMillis()
+      }
+
+      return {
+        id: d.id,
+        cardSlug: data.cardSlug || 'unknown',
+        cardType: data.cardType || 'magic',
+        cardTitle: data.cardTitle,
+        guestName: data.guestName || 'Guest',
+        message: data.message || '',
+        emoji: data.emoji || '💖',
+        createdAt: parsedTime,
+        city: data.city,
+        country: data.country,
+      }
+    })
+
+    return {
+      wishes,
+      hasMore,
+      lastDoc: visibleDocs.length > 0 ? visibleDocs[visibleDocs.length - 1] : null,
+    }
+  } catch (err) {
+    console.warn('fetchMoreGuestbookWishes error:', err)
+    return { wishes: [], hasMore: false, lastDoc: null }
   }
 }
 
@@ -276,7 +349,9 @@ export async function deleteGuestbookWish(id: string, cardSlug?: string): Promis
 }
 
 /**
- * ADMIN: Batch deletes wishes older than X days (e.g. 30 days) to keep database clean
+ * ADMIN: Batch deletes wishes older than X days (e.g. 30 days) to keep database clean.
+ * Uses a Firestore `where('createdAt', '<=', cutoffTime)` query so only matching docs
+ * are read — the entire collection is never downloaded.
  */
 export async function deleteOldGuestbookWishes(olderThanDays: number = 30): Promise<number> {
   const cutoffTime = Date.now() - olderThanDays * 24 * 60 * 60 * 1000
@@ -286,23 +361,16 @@ export async function deleteOldGuestbookWishes(olderThanDays: number = 30): Prom
   if (isFirebaseConfigured && activeDb) {
     try {
       const collRef = collection(activeDb, 'guestbook_wishes')
-      const snapshot = await getDocs(collRef)
+      // Server-side filter: only fetch documents older than the cutoff date.
+      // This prevents reading the entire collection just to find old entries.
+      const q = query(collRef, where('createdAt', '<=', cutoffTime))
+      const snapshot = await getDocs(q)
 
-      const deletePromises: Promise<void>[] = []
-      snapshot.docs.forEach((docSnap) => {
-        const data = docSnap.data()
-        const t =
-          typeof data.createdAt === 'number'
-            ? data.createdAt
-            : data.createdAt?.toMillis?.() || (data.createdAt?.toDate ? data.createdAt.toDate().getTime() : 0)
-        if (t && t <= cutoffTime) {
-          deletePromises.push(
-            deleteDoc(docSnap.ref).then(() => {
-              deletedCount++
-            })
-          )
-        }
-      })
+      const deletePromises: Promise<void>[] = snapshot.docs.map((docSnap) =>
+        deleteDoc(docSnap.ref).then(() => {
+          deletedCount++
+        })
+      )
       await Promise.all(deletePromises)
     } catch (err) {
       console.error('Error deleting old guestbook wishes:', err)
