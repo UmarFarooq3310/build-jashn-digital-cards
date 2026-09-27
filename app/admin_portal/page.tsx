@@ -1810,7 +1810,7 @@ export default function AdminPortalPage() {
       const allDocs = snap.docs
       const hasMore = allDocs.length > PAGE_SIZE
       const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
-      const newLastDoc = visibleDocs[visibleDocs.length - 1] ?? null
+      const newLastDoc = (visibleDocs[visibleDocs.length - 1] ?? null) as DocumentSnapshot | null
 
       setTabCursors((prev) => ({ ...prev, [tab]: newLastDoc }))
       setTabHasMore((prev) => ({ ...prev, [tab]: hasMore }))
@@ -1865,7 +1865,7 @@ export default function AdminPortalPage() {
           return [...prev, ...newItems.filter((m) => !ids.has(m.id || (m as any).slug))]
         })
       } else if (tab === 'guestbook') {
-        const newItems = visibleDocs.filter((d) => d.exists()).map((d) => ({ id: d.id, ...d.data() } as MagicResponseData))
+        const newItems = visibleDocs.filter((d) => d.exists()).map((d) => ({ id: d.id, ...(d.data() as any) } as MagicResponseData))
         setFirestoreMagicResponses((prev) => {
           const ids = new Set(prev.map((r) => r.id || (r as any).docId))
           return [...prev, ...newItems.filter((r) => !ids.has(r.id || (r as any).docId))]
