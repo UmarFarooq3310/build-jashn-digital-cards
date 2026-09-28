@@ -122,9 +122,8 @@ export function SiteFooter() {
             <FooterCol
               title={t('footerAccount')}
               links={[
-                { href: '/dashboard', label: t('dashboard') },
                 { href: '/pricing', label: t('pricing') },
-                { href: '/login', label: t('logIn') },
+                { href: '/custom-order', label: t('customOrder', 'Custom Order') },
               ]}
             />
             <FooterCol

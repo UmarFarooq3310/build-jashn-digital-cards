@@ -42,5 +42,19 @@ export default function BirthdayGuideLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <>{children}</>
+  const breadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://cardzy.online' },
+      { '@type': 'ListItem', position: 2, name: 'Guides', item: 'https://cardzy.online/guide' },
+      { '@type': 'ListItem', position: 3, name: 'Birthday Wishes Wording', item: 'https://cardzy.online/guide/birthday-wishes-wording' },
+    ],
+  }
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      {children}
+    </>
+  )
 }

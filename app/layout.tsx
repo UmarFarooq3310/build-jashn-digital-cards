@@ -111,7 +111,7 @@ export const metadata: Metadata = {
     siteName: 'Cardzy',
     images: [
       {
-        url: '/og-image.jpg',
+        url: 'https://cardzy.online/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Cardzy — Free 3D Animated Digital Cards & Wedding Invitations',
@@ -125,7 +125,7 @@ export const metadata: Metadata = {
     title: 'Cardzy — Free 3D Animated Cards, Wedding Invitations & Smart vCards',
     description:
       'Free 3D animated wish cards, wedding invitations with WhatsApp RSVP, and smart digital business cards in 18 languages.',
-    images: ['/og-image.jpg'],
+    images: ['https://cardzy.online/og-image.jpg'],
   },
 }
 
@@ -152,6 +152,14 @@ const jsonLd = [
     url: 'https://cardzy.online',
     description:
       'Create stunning 3D animated digital wish cards, digital wedding invitations with WhatsApp RSVP tracking, and executive digital visiting cards.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://cardzy.online/blog?q={search_term_string}',
+      },
+      'query-input': 'required name=search_term_string',
+    },
   },
 ]
 

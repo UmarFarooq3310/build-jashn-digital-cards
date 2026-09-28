@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.jpg',
+        url: 'https://cardzy.online/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Cardzy — Free 3D Animated Cards, Wedding Invitations & Smart vCards',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: 'Cardzy — Free 3D Animated Cards, Wedding Invitations & Smart vCards',
     description:
       'Free 3D animated wish cards, wedding invitations with WhatsApp RSVP, and smart digital business cards in 18 languages.',
-    images: ['/og-image.jpg'],
+    images: ['https://cardzy.online/og-image.jpg'],
   },
 }
 

@@ -676,6 +676,68 @@ export function BlogIndexClient() {
         )}
       </section>
 
+      {/* ─── Internal Guide Links Strip ──────────────────────────────────────── */}
+      <section className="py-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-[#D4AF37] mb-5">
+          <BookOpen className="w-4 h-4" />
+          <span>Explore Our Expert Guides</span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            {
+              href: '/guide/pakistani-wedding-invitations',
+              emoji: '💍',
+              title: 'Pakistani Wedding Invitation Wording',
+              desc: 'Bilingual Urdu & English templates for Nikkah, Barat, Walima & Mehndi.',
+            },
+            {
+              href: '/guide/eid-wording-ideas',
+              emoji: '🌙',
+              title: 'Eid Card Wording Ideas',
+              desc: 'Beautiful Eid Mubarak messages in Urdu, Arabic and English.',
+            },
+            {
+              href: '/guide/birthday-wishes-wording',
+              emoji: '🎂',
+              title: 'Birthday Wishes Wording',
+              desc: 'Heartfelt birthday card messages for friends, family and colleagues.',
+            },
+            {
+              href: '/guide/poetry-for-cards-and-invitations',
+              emoji: '📜',
+              title: 'Poetry for Cards & Invitations',
+              desc: 'Iqbal, Ghalib, Faiz & Rumi verses for every occasion.',
+            },
+            {
+              href: '/guide/magic-links-guide',
+              emoji: '✨',
+              title: 'Magic Links Guide',
+              desc: 'How to share cards with real-time view tracking and RSVP.',
+            },
+            {
+              href: '/guide',
+              emoji: '📚',
+              title: 'Browse All Guides →',
+              desc: 'See every how-to guide and wording tip on Cardzy.',
+            },
+          ].map((g) => (
+            <Link
+              key={g.href}
+              href={g.href}
+              className="group flex items-start gap-3 p-4 rounded-2xl border border-white/10 bg-[#0a0a0c]/80 hover:border-[#D4AF37]/50 hover:bg-[#D4AF37]/5 transition-all"
+            >
+              <span className="text-xl shrink-0 mt-0.5">{g.emoji}</span>
+              <div>
+                <p className="text-sm font-bold text-white group-hover:text-[#D4AF37] transition-colors leading-snug">
+                  {g.title}
+                </p>
+                <p className="text-xs text-zinc-500 mt-0.5 leading-relaxed">{g.desc}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* ❓ High-Value Semantic Structured FAQ Section */}
       <div className="mt-12 border-t border-white/10 bg-[#07080c]">
         <StructuredFaqSection />

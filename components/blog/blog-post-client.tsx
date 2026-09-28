@@ -396,6 +396,73 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
   },
 }
 
+// ─── Contextual CTA config — maps category → core page link ─────────────────
+type BlogCategory = 'Wedding & Nikkah' | 'Eid & Holidays' | 'Business & vCards' | 'Event Planning'
+
+const CATEGORY_CTA: Record<BlogCategory, {
+  href: string
+  labelEn: string
+  labelUr: string
+  labelAr: string
+  descEn: string
+  emoji: string
+}> = {
+  'Wedding & Nikkah': {
+    href: '/create-invitation',
+    labelEn: 'Create Your Wedding Invitation',
+    labelUr: 'اپنی شادی کا دعوت نامہ بنائیں',
+    labelAr: 'أنشئ دعوة زفافك الآن',
+    descEn: 'Design a stunning digital Nikkah or Walima invite with WhatsApp RSVP in minutes.',
+    emoji: '💍',
+  },
+  'Eid & Holidays': {
+    href: '/create-wish',
+    labelEn: 'Send a Free Eid Wish Card',
+    labelUr: 'مفت عید مبارک کارڈ بھیجیں',
+    labelAr: 'أرسل بطاقة عيد مجانية الآن',
+    descEn: 'Create animated Eid, Ramadan, and holiday wish cards with your photo — free.',
+    emoji: '🌙',
+  },
+  'Business & vCards': {
+    href: '/create-visiting-card',
+    labelEn: 'Create Your Smart Digital Business Card',
+    labelUr: 'اپنا ڈیجیٹل وزٹنگ کارڈ بنائیں',
+    labelAr: 'أنشئ بطاقة أعمالك الرقمية الذكية',
+    descEn: 'Generate a shareable vCard with QR code, NFC link, and all your contact details.',
+    emoji: '💼',
+  },
+  'Event Planning': {
+    href: '/create-magic-link',
+    labelEn: 'Create a Magic Link Card',
+    labelUr: 'میجک لنک کارڈ بنائیں',
+    labelAr: 'أنشئ بطاقة رابط سحري',
+    descEn: 'Share your event with a real-time view tracker and live RSVP — all in one link.',
+    emoji: '✨',
+  },
+}
+
+function CtaBanner({ category, lang }: { category: BlogCategory; lang: string }) {
+  const cta = CATEGORY_CTA[category] || CATEGORY_CTA['Event Planning']
+  const label = lang === 'ur' ? cta.labelUr : lang === 'ar' ? cta.labelAr : cta.labelEn
+  return (
+    <Link
+      href={cta.href}
+      className="group flex items-center justify-between gap-4 p-5 rounded-2xl border border-[#D4AF37]/50 bg-gradient-to-r from-[#D4AF37]/10 via-[#D4AF37]/5 to-transparent hover:border-[#D4AF37] hover:from-[#D4AF37]/20 transition-all shadow-lg"
+    >
+      <div className="flex items-center gap-3 min-w-0">
+        <span className="text-2xl shrink-0">{cta.emoji}</span>
+        <div className="min-w-0">
+          <p className="text-sm font-extrabold text-[#D4AF37] leading-snug">{label}</p>
+          <p className="text-xs text-zinc-400 mt-0.5 line-clamp-1">{cta.descEn}</p>
+        </div>
+      </div>
+      <span className="shrink-0 inline-flex items-center gap-1 text-xs font-black text-slate-950 bg-[#D4AF37] px-3 py-1.5 rounded-xl group-hover:bg-amber-400 transition-colors whitespace-nowrap">
+        Try Free <ArrowLeft className="w-3 h-3 rotate-180" />
+      </span>
+    </Link>
+  )
+}
+
 function renderTextWithLinks(text: string) {
   if (!text) return null
   const regex = /\[([^\]]+)\]\(([^)]+)\)/g
@@ -450,7 +517,12 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
   const [copied, setCopied] = useState(false)
 
   const post = getLocalizedPost(initialPost, lang)
-  const relatedPosts = BLOG_POSTS.filter((p) => p.slug !== post.slug)
+
+  // Prioritise same-category posts first, then fill with others
+  const otherPosts = BLOG_POSTS.filter((p) => p.slug !== post.slug)
+  const sameCat = otherPosts.filter((p) => p.category === initialPost.category)
+  const diffCat = otherPosts.filter((p) => p.category !== initialPost.category)
+  const relatedPosts = [...sameCat, ...diffCat]
     .slice(0, 3)
     .map((p) => getLocalizedPost(p, lang))
 
@@ -606,6 +678,9 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
             {renderTextWithLinks(post.content.intro)}
           </div>
 
+          {/* Contextual CTA — links to the relevant core page */}
+          <CtaBanner category={initialPost.category} lang={lang} />
+
           {/* Sections */}
           {post.content.sections.map((section) => (
             <section key={section.id} id={section.id} className="space-y-4 pt-6 border-t border-white/10 scroll-mt-24">
@@ -667,6 +742,9 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
               {renderTextWithLinks(post.content.conclusion)}
             </p>
           </div>
+
+          {/* Bottom CTA — second touch point before author box */}
+          <CtaBanner category={initialPost.category} lang={lang} />
 
           {/* Author Box / Detailed Byline Card */}
           <div className="mt-10 p-6 sm:p-8 rounded-3xl border border-[#D4AF37]/40 bg-[#0a0a0c] shadow-2xl space-y-4">

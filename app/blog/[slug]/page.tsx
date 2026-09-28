@@ -103,6 +103,31 @@ export default async function BlogPostPage({ params, searchParams }: PageProps) 
     },
   }
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://cardzy.online',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog & Guides',
+        item: 'https://cardzy.online/blog',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: post.title,
+        item: `https://cardzy.online/blog/${post.slug}`,
+      },
+    ],
+  }
+
   const faqJsonLd = post.content.faq && post.content.faq.length > 0 ? {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -121,6 +146,10 @@ export default async function BlogPostPage({ params, searchParams }: PageProps) 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       {faqJsonLd && (
         <script

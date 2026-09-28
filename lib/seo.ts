@@ -64,10 +64,35 @@ export function getLanguageAlternates(path: string): Record<string, string> {
 /**
  * Returns the `alternates` metadata object for Next.js metadata.
  * Ensures the canonical URL is strictly clean and unified across all query parameter variations.
+ * Includes hreflang alternates for all 18 supported languages.
+ * Google uses ?lang= query param — canonical always points to the clean base URL.
  */
 export function getPageAlternates(path: string, _lang?: string | null) {
+  const canonical = getCanonicalUrl(path)
+  const languages: Record<string, string> = {
+    'x-default': canonical,
+    'en': canonical,
+    'ur': `${canonical}?lang=ur`,
+    'ar': `${canonical}?lang=ar`,
+    'hi': `${canonical}?lang=hi`,
+    'es': `${canonical}?lang=es`,
+    'fr': `${canonical}?lang=fr`,
+    'zh': `${canonical}?lang=zh`,
+    'pt': `${canonical}?lang=pt`,
+    'ru': `${canonical}?lang=ru`,
+    'de': `${canonical}?lang=de`,
+    'ja': `${canonical}?lang=ja`,
+    'ko': `${canonical}?lang=ko`,
+    'it': `${canonical}?lang=it`,
+    'tr': `${canonical}?lang=tr`,
+    'id': `${canonical}?lang=id`,
+    'bn': `${canonical}?lang=bn`,
+    'vi': `${canonical}?lang=vi`,
+    'sw': `${canonical}?lang=sw`,
+  }
   return {
-    canonical: getCanonicalUrl(path),
+    canonical,
+    languages,
   }
 }
 
