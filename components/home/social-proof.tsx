@@ -5,8 +5,6 @@ import Link from 'next/link'
 import { Star, Award, MessageSquarePlus, X, Send, Loader2, Sparkles, User, MapPin } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
 import { useJashn } from '@/lib/jashn/store'
-import { getFirebaseDb } from '@/lib/firebase'
-import { collection, onSnapshot } from 'firebase/firestore'
 import { TestimonialItem } from '@/lib/jashn/testimonials'
 import { cn } from '@/lib/utils'
 
@@ -33,7 +31,7 @@ export function SocialProofSection() {
   useEffect(() => {
     let isMounted = true
 
-    // 1. Fetch immediately from backend API (connected to Firebase Admin Firestore)
+    // Fetch immediately from backend API (cached, lightweight)
     fetch('/api/testimonials')
       .then((res) => res.json())
       .then((data) => {
@@ -49,46 +47,8 @@ export function SocialProofSection() {
         if (isMounted) setIsLoading(false)
       })
 
-    // 2. Also listen for real-time live updates if client Firebase is connected
-    let unsub = () => {}
-    try {
-      const activeDb = getFirebaseDb()
-      if (activeDb) {
-        const collRef = collection(activeDb, 'testimonials')
-        unsub = onSnapshot(
-          collRef,
-          (snap) => {
-            if (!isMounted) return
-            const list: TestimonialItem[] = snap.docs.map((doc) => {
-              const data = doc.data()
-              return {
-                id: doc.id,
-                name: data.name || 'Anonymous Sender',
-                role: data.role || 'Digital Card Sender',
-                comment: data.comment || '',
-                stars: Number(data.stars ?? data.rating ?? 5),
-                color: data.color || 'emerald',
-                createdAt: data.createdAt || Date.now(),
-                location: data.location || '',
-                country: data.country || '',
-                city: data.city || '',
-                isApproved: data.isApproved !== false,
-              }
-            })
-            list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
-            setReviews(list)
-            setIsLoading(false)
-          },
-          (err) => {
-            console.warn('Snapshot listener notice:', err)
-          }
-        )
-      }
-    } catch {}
-
     return () => {
       isMounted = false
-      unsub()
     }
   }, [])
 

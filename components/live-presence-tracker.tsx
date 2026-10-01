@@ -41,6 +41,12 @@ export function LivePresenceTracker() {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
+    // 0. Disable completely on localhost/development to protect Firebase quota
+    const hostname = window.location.hostname
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.') || hostname.endsWith('.local')) {
+      return
+    }
+
     // If currently on admin portal or admin device, purge presence and abort immediately
     if (pathname.startsWith('/admin_portal') || isDeviceAdmin(user?.email)) {
       markDeviceAsAdmin(getDeviceId())
@@ -149,20 +155,28 @@ export function LivePresenceTracker() {
       }
     }
 
+    let lastWriteTime = Date.now()
+
     // Trigger immediate presence update
     updatePresence()
 
-    // Pulse heartbeat every 35 seconds to keep active session fresh while within Firestore limits
-    intervalId = setInterval(updatePresence, 35000)
+    // Pulse heartbeat every 90 seconds (reduces Firestore writes by 65%)
+    intervalId = setInterval(() => {
+      lastWriteTime = Date.now()
+      updatePresence()
+    }, 90000)
 
-    const handleActivity = () => {
+    const handleVisibility = () => {
       if (document.visibilityState === 'visible' && !isTerminated) {
-        updatePresence()
+        // Only update if at least 60s has passed since last write to prevent write spikes
+        if (Date.now() - lastWriteTime >= 60000) {
+          lastWriteTime = Date.now()
+          updatePresence()
+        }
       }
     }
 
-    document.addEventListener('visibilitychange', handleActivity)
-    window.addEventListener('focus', handleActivity)
+    document.addEventListener('visibilitychange', handleVisibility)
 
     return () => {
       if (intervalId) clearInterval(intervalId)
@@ -170,8 +184,7 @@ export function LivePresenceTracker() {
         try { bc.close() } catch {}
       }
       window.removeEventListener('storage', handleStorageChange)
-      document.removeEventListener('visibilitychange', handleActivity)
-      window.removeEventListener('focus', handleActivity)
+      document.removeEventListener('visibilitychange', handleVisibility)
     }
   }, [user, pathname])
 

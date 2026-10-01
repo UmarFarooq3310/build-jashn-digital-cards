@@ -14,7 +14,7 @@ import { canCreateCard, getGuestCardCount, recordGuestCardCreated, clearGuestCar
 // Each userId maps to the timestamp of the last successful Firestore fetch.
 // If fetched within TTL, we skip the query and use the data already in Zustand.
 const _userCardsCacheTs = new Map<string, number>()
-const USER_CARDS_CACHE_TTL_MS = 2 * 60 * 1000 // 2 minutes
+const USER_CARDS_CACHE_TTL_MS = 5 * 60 * 1000 // 5 minutes
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
