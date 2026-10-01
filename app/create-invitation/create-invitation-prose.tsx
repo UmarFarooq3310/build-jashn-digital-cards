@@ -7,7 +7,7 @@ export function CreateInvitationProse() {
 
   const steps = [
     { title: t('inviteStep1Title', 'Choose Your Invitation Type'), desc: t('inviteStep1Desc', 'Select from Nikkah, Mehndi, Dholki, Barat, Walima, Birthday Party, Iftaar, Event Khatam, Graduation Party, Baby Shower, and 10+ more.') },
-    { title: t('inviteStep2Title', 'Enter Event Details'), desc: t('inviteStep2Desc', 'Add host names, event title, date and time, venue name, and address. Cardzy automatically generates a Google Maps link.') },
+    { title: t('inviteStep2Title', 'Enter Event Details'), desc: t('inviteStep2Desc', 'Add host names, event title, date and time, venue name, and address with custom styling.') },
     { title: t('inviteStep3Title', 'Write Your Message'), desc: t('inviteStep3Desc', 'Use one of our elegant pre-written templates or write your own. Templates available in formal Urdu Nastaliq, bilingual Urdu-English, and modern English.') },
     { title: t('inviteStep4Title', 'Customise the Design'), desc: t('inviteStep4Desc', 'Pick an animated theme, decorative borders, and optional background music.') },
     { title: t('inviteStep5Title', 'Add RSVP Contact'), desc: t('inviteStep5Desc', 'Enter your WhatsApp number. Cardzy generates a pre-filled WhatsApp RSVP button so guests can confirm with one tap.') },
@@ -25,7 +25,7 @@ export function CreateInvitationProse() {
 
   const features = [
     { title: t('inviteFeat1Title', 'Live RSVP Tracking'), desc: t('inviteFeat1Desc', 'See exactly how many guests have confirmed in real time. Export the full guest list to CSV for seating and catering planning.') },
-    { title: t('inviteFeat2Title', 'Google Maps Integration'), desc: t('inviteFeat2Desc', "Guests tap the venue address to open Google Maps navigation directly — eliminating the 'I can't find the venue' problem.") },
+    { title: t('inviteFeat2Title', 'Venue & Program Schedule'), desc: t('inviteFeat2Desc', 'Clearly display your event hall, city, timings, and program details in an elegant typographic layout.') },
     { title: t('inviteFeat3Title', 'WhatsApp One-Tap RSVP'), desc: t('inviteFeat3Desc', 'A pre-filled WhatsApp message is generated for each invitation, increasing RSVP response rates.') },
     { title: t('inviteFeat4Title', 'Countdown Timer'), desc: t('inviteFeat4Desc', 'A live countdown to the event day builds excitement and serves as a constant reminder.') },
     { title: t('inviteFeat5Title', '18 Language Support'), desc: t('inviteFeat5Desc', 'Send invitations to family members who prefer Urdu, Arabic, Hindi, or any of the 15 other supported languages.') },
@@ -39,6 +39,16 @@ export function CreateInvitationProse() {
     t('inviteTip4', 'For bilingual families, use the English-Urdu hybrid wording template so both elders and younger relatives feel addressed.'),
     t('inviteTip5', 'Always double-check the venue address before sharing — once the link is out to 200 family members, corrections require a new message.'),
     t('inviteTip6', 'Send a reminder 2 days before the event — it often doubles RSVP confirmation rates.'),
+  ]
+
+  const tableRows = [
+    { feature: t('rowInviteFeat1', 'Custom Event Details & Host Photos'), free: '✓', pro: '✓' },
+    { feature: t('rowInviteFeat2', 'Interactive RSVP Tracking & WhatsApp Button'), free: '✓', pro: '✓' },
+    { feature: t('rowInviteFeat3', 'Live Flip Countdown Clock & Audio Track'), free: '✓', pro: '✓' },
+    { feature: t('rowInviteFeat4', 'Download High-Res Card Image (PNG)'), free: '✓', pro: '✓' },
+    { feature: t('rowInviteFeat5', 'Link Retention Period'), free: t('rowFreeRetention', '30 Days (Active)'), pro: t('rowProRetention', 'Permanent Lifetime (No Purge)') },
+    { feature: t('rowInviteFeat6', 'Max Active Invitations'), free: t('rowFreeLimit', 'Up to 5 Free Cards'), pro: t('rowProLimit', 'Unlimited Lifetime') },
+    { feature: t('rowInviteFeat7', 'VIP Themes & Watermark'), free: t('rowFreeWatermark', 'Standard / Subtle Brand'), pro: t('rowProWatermark', 'All VIP Themes + No Watermark') },
   ]
 
   return (
@@ -86,6 +96,33 @@ export function CreateInvitationProse() {
                 <p className={`text-xs leading-relaxed text-muted-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>{feat.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Free vs Pro Comparison */}
+        <div className="space-y-4">
+          <h2 className={`text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+            {t('tableHeaderTitle', 'Cardzy Invitation Plans: Free vs Pro')}
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className={`py-3 text-left font-bold text-foreground ${isUrdu ? 'font-urdu text-right' : ''}`}>{t('tableHeaderFeature', 'Feature')}</th>
+                  <th className="py-3 text-center font-bold text-emerald-700">{t('tableHeaderFree', 'Free')}</th>
+                  <th className="py-3 text-center font-bold text-amber-700">{t('tableHeaderPro', 'Pro')}</th>
+                </tr>
+              </thead>
+              <tbody className="text-muted-foreground">
+                {tableRows.map((row) => (
+                  <tr key={row.feature} className="border-b border-border/50">
+                    <td className={`py-2.5 ${isUrdu ? 'font-urdu text-sm text-right' : ''}`}>{row.feature}</td>
+                    <td className="py-2.5 text-center font-medium">{row.free}</td>
+                    <td className="py-2.5 text-center font-medium">{row.pro}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 

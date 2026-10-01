@@ -16,6 +16,7 @@ import type { MagicLinkData, MagicResponseData } from './magic-types'
 import { markCardAsCreatedByMe } from './view-tracker'
 import { getClientTracking } from './tracking'
 import { syncRecordToServer } from './server-sync'
+import { canCreateCard, getGuestCardCount, recordGuestCardCreated } from './plan-limits'
 
 const LOCAL_STORAGE_KEY = 'cardzy_local_magic_links'
 
@@ -92,6 +93,16 @@ export function generateShortSlug(_name?: string): string {
  * Creates and stores a new Magic Link in Firestore (with localStorage fallback)
  */
 export async function createMagicLink(data: Omit<MagicLinkData, 'slug' | 'createdAt'>): Promise<string> {
+  // If not logged in, enforce guest limit of 5 magic links
+  const userId = data.creatorId || data.senderId
+  if (!userId) {
+    const guestMagicCount = getGuestCardCount('magic')
+    const check = canCreateCard('free', 'magic', guestMagicCount, false)
+    if (!check.allowed) {
+      throw new Error(check.reason ?? 'Magic link limit reached. Upgrade to Pro for unlimited.')
+    }
+  }
+
   const slug = generateShortSlug(data.recipientName)
   const tracking = await getClientTracking()
   const payload: MagicLinkData = {
@@ -114,6 +125,9 @@ export async function createMagicLink(data: Omit<MagicLinkData, 'slug' | 'create
   // Always save to localStorage as instant offline cache
   saveLocalLink(slug, payload)
   markCardAsCreatedByMe(slug)
+  if (!userId) {
+    recordGuestCardCreated('magic')
+  }
 
   // Guaranteed Server Admin SDK sync to Firestore
   syncRecordToServer('sync_magic', payload)

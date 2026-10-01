@@ -3,7 +3,7 @@ import { getAdminDb } from '@/lib/firebase-admin';
 
 export async function POST(req: Request) {
   try {
-    const { token, userAgent, deviceId } = await req.json();
+    const { token, userAgent, deviceId, isAdmin, userId } = await req.json();
 
     if (!token || typeof token !== 'string') {
       return NextResponse.json({ error: 'Valid token is required' }, { status: 400 });
@@ -43,21 +43,27 @@ export async function POST(req: Request) {
     }
 
     if (existingDoc) {
-      await (existingDoc as FirebaseFirestore.DocumentSnapshot).ref.set({
+      const updateData: any = {
         token: cleanToken,
         deviceId: deviceId || (existingDoc as any).data()?.deviceId || 'device_' + cleanToken.slice(-8),
         userAgent: userAgent || (existingDoc as any).data()?.userAgent || 'Device',
         createdAt: (existingDoc as any).data()?.createdAt || Date.now(),
         lastActive: Date.now(),
-      }, { merge: true });
+      };
+      if (isAdmin === true) updateData.isAdmin = true;
+      if (userId && typeof userId === 'string') updateData.userId = userId;
+      await (existingDoc as FirebaseFirestore.DocumentSnapshot).ref.set(updateData, { merge: true });
     } else {
-      await subsRef.add({
+      const newData: any = {
         token: cleanToken,
         deviceId: deviceId || 'device_' + cleanToken.slice(-8),
         userAgent: userAgent || 'Mobile/Desktop Device',
         createdAt: Date.now(),
         lastActive: Date.now(),
-      });
+      };
+      if (isAdmin === true) newData.isAdmin = true;
+      if (userId && typeof userId === 'string') newData.userId = userId;
+      await subsRef.add(newData);
     }
 
     return NextResponse.json({ success: true, message: 'Device registered uniquely' });

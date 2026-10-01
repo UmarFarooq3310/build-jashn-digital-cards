@@ -23,16 +23,16 @@ export function CreateWishProse() {
   ]
 
   const tableRows = [
-    { feature: t('tableRowCreateShare', 'Create & share wish cards'), free: '✓', pro: '✓' },
-    { feature: t('tableRow35Occasions', '35+ occasions'), free: '✓', pro: '✓' },
-    { feature: t('tableRow18Languages', '18 languages'), free: '✓', pro: '✓' },
-    { feature: t('tableRowClassicThemes', 'Classic themes'), free: '✓', pro: '✓' },
-    { feature: t('tableRowPremiumThemes', 'Premium & animated themes'), free: '—', pro: '✓' },
-    { feature: t('tableRowPhotoUpload', 'Photo upload'), free: '✓', pro: '✓' },
-    { feature: t('tableRowBgMusic', 'Background music'), free: '✓', pro: '✓' },
-    { feature: t('tableRowRemoveWatermark', 'Remove watermark'), free: '—', pro: '✓' },
-    { feature: t('tableRowDownloadImage', 'Download as image (PNG)'), free: '—', pro: '✓' },
-    { feature: t('tableRowUnlimitedStorage', 'Unlimited card storage'), free: '—', pro: '✓' },
+    { feature: t('tableRowCreateShare', 'Create & share wish cards'), free: '✓ Free', pro: '✓ Pro' },
+    { feature: t('tableRow35Occasions', '35+ celebration occasions'), free: '✓', pro: '✓' },
+    { feature: t('tableRow18Languages', '18 languages supported'), free: '✓', pro: '✓' },
+    { feature: t('tableRowClassicThemes', 'Standard & celebratory themes'), free: '✓', pro: '✓' },
+    { feature: t('tableRowPremiumThemes', 'Royal & exclusive animated themes'), free: '—', pro: '✓' },
+    { feature: t('tableRowPhotoUpload', 'Personal photo upload'), free: '✓', pro: '✓' },
+    { feature: t('tableRowBgMusic', 'Background synthesized music'), free: '✓', pro: '✓' },
+    { feature: t('tableRowDownloadImage', 'Download high-res image (PNG)'), free: '✓', pro: '✓' },
+    { feature: t('tableRowRemoveWatermark', 'Ad-free & 100% white-label (no branding)'), free: '—', pro: '✓' },
+    { feature: t('tableRowUnlimitedStorage', 'Link retention period'), free: '30 Days', pro: 'Permanent Lifetime' },
   ]
 
   const tips = [

@@ -1,8 +1,12 @@
 /**
  * Cardzy Jashn - Intelligent View Tracking System
- * - Sender mode (?mode=sender, ?preview=true, ?role=sender): Never increment view count.
- * - Receiver view (clean public URL): Increments view count with a 5-second debounce
- *   to ensure authentic recipient visits always count reliably.
+ *
+ * Rules:
+ * 1. SENDER / CREATOR / OWNER: Never counted as a view. They create the card,
+ *    preview it, copy the clean link, and share it.
+ * 2. ADMIN: Never counted as a view. Admin preview mode is always zero-impact.
+ * 3. RECIPIENT: Authentic recipient visits (clean public URL on another device/browser)
+ *    are counted with a debounce to prevent double-counting.
  */
 
 export function markCardAsCreatedByMe(slug: string) {
@@ -59,6 +63,36 @@ export function isSenderOrOwner(
     }
   } catch {}
 
+  // 3. Admin Check: Admin previews and visits NEVER count as views
+  try {
+    if (
+      localStorage.getItem('cardzy_is_admin') === '1' ||
+      sessionStorage.getItem('cardzy_is_admin') === '1' ||
+      sessionStorage.getItem('cardzy_admin_session')
+    ) {
+      return true
+    }
+  } catch {}
+
+  // 4. Authenticated creator check: If current logged-in user is the creator of this card
+  if (currentUserId && creatorId && currentUserId === creatorId) {
+    return true
+  }
+
+  // 5. Local storage ownership check: Browser that created this card
+  try {
+    if (localStorage.getItem(`cardzy_owner_${slug}`) === '1') {
+      return true
+    }
+    const rawMyCards = localStorage.getItem('cardzy_my_cards')
+    if (rawMyCards) {
+      const myCards: string[] = JSON.parse(rawMyCards)
+      if (Array.isArray(myCards) && myCards.includes(slug)) {
+        return true
+      }
+    }
+  } catch {}
+
   return false
 }
 
@@ -71,17 +105,17 @@ export function shouldIncrementView(
 ): boolean {
   if (typeof window === 'undefined' || !slug) return false
 
-  // 1. NEVER increment if explicitly on the sender control screen / preview mode
+  // 1. NEVER increment if viewer is the sender, owner, creator, or admin!
   if (isSenderOrOwner(slug, creatorId, searchParams, currentUserId)) {
     return false
   }
 
-  // 2. Debounce by 3 seconds per browser tab to avoid React StrictMode double-fire
+  // 2. Debounce by 5 seconds per browser tab to avoid double-counting on refresh
   try {
     const sessionKey = `cardzy_last_view_${cardType}_${slug}`
     const lastViewed = Number(sessionStorage.getItem(sessionKey) || '0')
     const now = Date.now()
-    if (now - lastViewed < 3000) {
+    if (now - lastViewed < 5000) {
       return false
     }
     sessionStorage.setItem(sessionKey, String(now))

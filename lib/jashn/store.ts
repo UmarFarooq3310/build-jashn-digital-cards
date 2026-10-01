@@ -7,6 +7,13 @@ import { getClientTracking } from './tracking'
 import { markCardAsCreatedByMe } from './view-tracker'
 import { syncRecordToServer } from './server-sync'
 import { db, auth, isFirebaseConfigured, getFirebaseAuth, getFirebaseDb } from '../firebase'
+import { canCreateCard, getGuestCardCount, recordGuestCardCreated, clearGuestCardCounts } from './plan-limits'
+
+// ── Module-level cache: prevents 3x getDocs on every dashboard mount ──────────
+// Each userId maps to the timestamp of the last successful Firestore fetch.
+// If fetched within TTL, we skip the query and use the data already in Zustand.
+const _userCardsCacheTs = new Map<string, number>()
+const USER_CARDS_CACHE_TTL_MS = 2 * 60 * 1000 // 2 minutes
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -91,6 +98,7 @@ interface JashnState {
   upgrade: (plan: Plan) => Promise<void>
   migrateGuestCards: (userId: string) => Promise<void>
   fetchUserCards: () => Promise<void>
+  refreshUserCards: () => Promise<void>
 
   createWish: (data: Omit<Wish, 'id' | 'slug' | 'creatorId' | 'viewCount' | 'createdAt'>) => Promise<Wish>
   createInvitation: (
@@ -507,10 +515,12 @@ export const useJashn = create<JashnState>()(
       migrateGuestCards: async (userId) => {
         const guestWishes = get().wishes.filter((w) => w.creatorId === 'guest')
         const guestInvs = get().invitations.filter((i) => i.creatorId === 'guest')
+        const guestVcs = (get().visitingCards || []).filter((v) => v.creatorId === 'guest')
 
         set((s) => ({
           wishes: s.wishes.map((w) => (w.creatorId === 'guest' ? { ...w, creatorId: userId } : w)),
           invitations: s.invitations.map((i) => (i.creatorId === 'guest' ? { ...i, creatorId: userId } : i)),
+          visitingCards: (s.visitingCards || []).map((v) => (v.creatorId === 'guest' ? { ...v, creatorId: userId } : v)),
         }))
 
         for (const wish of guestWishes) {
@@ -520,6 +530,10 @@ export const useJashn = create<JashnState>()(
         for (const inv of guestInvs) {
           const updatedInv = { ...inv, creatorId: userId }
           syncRecordToServer('sync_invitation', updatedInv)
+        }
+        for (const vc of guestVcs) {
+          const updatedVc = { ...vc, creatorId: userId }
+          syncRecordToServer('sync_vcard', updatedVc)
         }
 
         const activeDb = getFirebaseDb() || db
@@ -533,20 +547,36 @@ export const useJashn = create<JashnState>()(
               const updatedInv = { ...inv, creatorId: userId }
               await setDoc(doc(activeDb, 'invitations', inv.slug), cleanForFirestore(updatedInv))
             }
+            for (const vc of guestVcs) {
+              const updatedVc = { ...vc, creatorId: userId }
+              await setDoc(doc(activeDb, 'visitingCards', vc.slug), cleanForFirestore(updatedVc))
+            }
           } catch (e) {
             console.error('Failed to migrate guest cards to Firestore:', e)
           }
         }
+
+        clearGuestCardCounts()
       },
 
       fetchUserCards: async () => {
         let currentUser = get().user
         if (!currentUser) return
         const activeUid = currentUser.uid
+
+        // ── 2-minute cache guard: skip Firestore reads if data is fresh ──────
+        // Without this, 3x getDocs fires on every dashboard mount, burning quota.
+        const lastFetch = _userCardsCacheTs.get(activeUid)
+        if (lastFetch && Date.now() - lastFetch < USER_CARDS_CACHE_TTL_MS) {
+          return // data already fresh in Zustand store
+        }
+        _userCardsCacheTs.set(activeUid, Date.now())
+
         // Ensure user is synced to server admin database
         if (activeUid) {
           syncRecordToServer('sync_user', currentUser)
         }
+
 
         const activeDb = getFirebaseDb() || db
         if (!currentUser.uid) {
@@ -603,7 +633,26 @@ export const useJashn = create<JashnState>()(
         }
       },
 
+      refreshUserCards: async () => {
+        // Force bypass the 2-minute cache (e.g., after creating/deleting a card)
+        const activeUid = get().user?.uid
+        if (activeUid) _userCardsCacheTs.delete(activeUid)
+        await get().fetchUserCards()
+      },
+
       createWish: async (data) => {
+        // ── Free plan limit check ──────────────────────────────────────────────
+        const currentUser = get().user
+        const plan = currentUser?.plan ?? 'free'
+        const storeWishCount = get().wishes.filter(w => w.creatorId === (currentUser?.uid ?? 'guest')).length
+        const guestWishCount = currentUser ? 0 : getGuestCardCount('wish')
+        const ownWishCount = Math.max(storeWishCount, guestWishCount)
+        const check = canCreateCard(plan, 'wish', ownWishCount, !!currentUser)
+        if (!check.allowed) {
+          get().showToast(check.reason ?? 'Wish card limit reached. Upgrade to Pro for unlimited.', 'error')
+          throw new Error(check.reason ?? 'Card limit reached')
+        }
+
         const tracking = await getClientTracking()
         const wish: Wish = {
           ...data,
@@ -637,11 +686,25 @@ export const useJashn = create<JashnState>()(
         }
 
         markCardAsCreatedByMe(wish.slug)
+        if (!currentUser) {
+          recordGuestCardCreated('wish')
+        }
         set((s) => ({ wishes: [wish, ...s.wishes] }))
         return wish
       },
 
       createInvitation: async (data) => {
+        // ── Free plan limit check ──────────────────────────────────────────────
+        const currentUser = get().user
+        const plan = currentUser?.plan ?? 'free'
+        const storeInvCount = get().invitations.filter(i => i.creatorId === (currentUser?.uid ?? 'guest')).length
+        const guestInvCount = currentUser ? 0 : getGuestCardCount('invite')
+        const ownCount = Math.max(storeInvCount, guestInvCount)
+        const check = canCreateCard(plan, 'invite', ownCount, !!currentUser)
+        if (!check.allowed) {
+          get().showToast(check.reason ?? 'Invitation limit reached. Upgrade to Pro for unlimited.', 'error')
+          throw new Error(check.reason ?? 'Invitation limit reached')
+        }
         const tracking = await getClientTracking()
         const inv: Invitation = {
           ...data,
@@ -676,11 +739,25 @@ export const useJashn = create<JashnState>()(
         }
 
         markCardAsCreatedByMe(inv.slug)
+        if (!currentUser) {
+          recordGuestCardCreated('invite')
+        }
         set((s) => ({ invitations: [inv, ...s.invitations] }))
         return inv
       },
 
       createVisitingCard: async (data) => {
+        // ── Visiting cards limit check (5 free, unlimited pro) ────────────────
+        const currentUser = get().user
+        const plan = currentUser?.plan ?? 'free'
+        const storeVcCount = (get().visitingCards || []).filter(v => v.creatorId === (currentUser?.uid ?? 'guest')).length
+        const guestVcCount = currentUser ? 0 : getGuestCardCount('vcard')
+        const ownVcCount = Math.max(storeVcCount, guestVcCount)
+        const check = canCreateCard(plan, 'vcard', ownVcCount, !!currentUser)
+        if (!check.allowed) {
+          get().showToast(check.reason ?? 'Visiting card limit reached. Upgrade to Pro for unlimited.', 'error')
+          throw new Error(check.reason ?? 'Visiting card limit reached')
+        }
         const tracking = await getClientTracking()
         const vc: VisitingCard = {
           ...data,
@@ -714,6 +791,9 @@ export const useJashn = create<JashnState>()(
         }
 
         markCardAsCreatedByMe(vc.slug)
+        if (!currentUser) {
+          recordGuestCardCreated('vcard')
+        }
         set((s) => ({ visitingCards: [vc, ...s.visitingCards] }))
         return vc
       },

@@ -33,6 +33,9 @@ const SiteHeader = dynamic(
 const SiteFooter = dynamic(
   () => import('@/components/site-footer').then((mod) => mod.SiteFooter)
 )
+const MobileBottomDock = dynamic(
+  () => import('@/components/mobile-bottom-dock').then((mod) => mod.MobileBottomDock)
+)
 
 import { Poppins, Noto_Nastaliq_Urdu, Playfair_Display } from 'next/font/google'
 
@@ -369,12 +372,13 @@ export default function RootLayout({
           <AdSenseCleaner />
           <AdSenseHandler />
           <FirebaseAuthListener />
-          <div className="app-root-layout flex min-h-screen flex-col bg-background">
+          <div className="app-root-layout flex min-h-screen flex-col bg-background pb-14 lg:pb-0">
             <SiteHeader />
             <main className="flex-1 w-full">
               {children}
             </main>
             <SiteFooter />
+            <MobileBottomDock />
           </div>
           <ToastNotification />
           <ImageLightboxModal />

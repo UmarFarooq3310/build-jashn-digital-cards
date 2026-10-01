@@ -8,6 +8,10 @@ export const VISITING_CARD_CATEGORIES: { id: VisitingCardCategory; label: string
   { id: 'real-estate', label: 'Real Estate & Builders', icon: 'Home', tagline: 'Realtor, Property Agent, Builder & Interior Architect' },
   { id: 'beauty', label: 'Fashion & Beauty Salon', icon: 'Sparkles', tagline: 'Makeup Artist, Hair Stylist, Fashion Designer & Boutique' },
   { id: 'services', label: 'Services & Consultants', icon: 'Wrench', tagline: 'Chef, Fitness Trainer, Electrician, Auto Service & Handyman' },
+  { id: 'education', label: 'Education & Academics', icon: 'GraduationCap', tagline: 'Professor, Teacher, Principal, Academic Coach & Tutor' },
+  { id: 'culinary', label: 'Chefs, Food & Restaurants', icon: 'Utensils', tagline: 'Master Chef, Baker, Restaurateur & Catering Specialist' },
+  { id: 'fitness', label: 'Fitness, Sports & Wellness', icon: 'Activity', tagline: 'Fitness Coach, Personal Trainer, Yoga Instructor & Nutritionist' },
+  { id: 'finance', label: 'Finance, CA & Accounting', icon: 'Coins', tagline: 'Chartered Accountant, Tax Advisor, Banker & Investment Consultant' },
 ]
 
 export const VISITING_CARD_THEMES: VisitingCardTheme[] = [
@@ -82,6 +86,42 @@ export const VISITING_CARD_THEMES: VisitingCardTheme[] = [
     accentColor: '#e9d5ff',
     cardBg: '#1e1b4b',
     isPremium: false,
+  },
+  {
+    id: 'aurora-emerald',
+    name: 'Nordic Aurora & Emerald',
+    bgGradient: 'linear-gradient(135deg, #022c22 0%, #064e3b 50%, #10b981 100%)',
+    textColor: '#ffffff',
+    accentColor: '#34d399',
+    cardBg: '#022c22',
+    isPremium: false,
+  },
+  {
+    id: 'sunset-crimson',
+    name: 'Sunset Velvet & Amber',
+    bgGradient: 'linear-gradient(135deg, #3b0764 0%, #831843 50%, #f59e0b 100%)',
+    textColor: '#ffffff',
+    accentColor: '#fbbf24',
+    cardBg: '#2a0528',
+    isPremium: true,
+  },
+  {
+    id: 'midnight-neon',
+    name: 'Cyber Midnight & Violet',
+    bgGradient: 'linear-gradient(135deg, #09090b 0%, #1e1b4b 50%, #8b5cf6 100%)',
+    textColor: '#ffffff',
+    accentColor: '#a78bfa',
+    cardBg: '#0f0c29',
+    isPremium: true,
+  },
+  {
+    id: 'platinum-minimal',
+    name: 'Titanium Slate & Silver',
+    bgGradient: 'linear-gradient(135deg, #18181b 0%, #27272a 60%, #e4e4e7 100%)',
+    textColor: '#ffffff',
+    accentColor: '#cbd5e1',
+    cardBg: '#18181b',
+    isPremium: true,
   },
 ]
 

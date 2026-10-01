@@ -47,6 +47,59 @@ function cleanStepLabel(text: string) {
   return text.replace(/^[\d\.\s\u0660-\u0669\u09E6-\u09EF\u0966-\u096F\u06D4\-]+/, '').trim()
 }
 
+const WISH_QUICK_STARTERS = [
+  {
+    id: 'birthday-bestie',
+    label: '🎂 Birthday Bestie',
+    occasionId: 'birthday',
+    recipientName: 'Best Friend',
+    relation: 'BestFriend',
+    message: 'Happy Birthday to my favourite person in the universe! May this year bring you endless laughter, boundless success, and all your heart desires! 🎂✨',
+    audioTrack: 'birthday_melody',
+    themeId: 'royal-navy',
+  },
+  {
+    id: 'anniversary-love',
+    label: '💍 Romantic Anniversary',
+    occasionId: 'anniversary',
+    recipientName: 'My Love',
+    relation: 'Wife',
+    message: 'Happy Anniversary! Every moment with you is a blessing, and I fall in love with you more each day. Forever and always. 💍💖',
+    audioTrack: 'romantic_strings',
+    themeId: 'crimson-gold',
+  },
+  {
+    id: 'eid-mubarak',
+    label: '🌙 Eid Mubarak',
+    occasionId: 'eid-ul-fitr',
+    recipientName: 'Dear Family',
+    relation: 'Family',
+    message: 'Eid Mubarak! May Allah bless you and your loved ones with peace, good health, joy, and prosperity today and always. 🌙✨',
+    audioTrack: 'shehnai_celebration',
+    themeId: 'islamic-emerald',
+  },
+  {
+    id: 'congrats-success',
+    label: '🎉 Congratulations',
+    occasionId: 'congratulations',
+    recipientName: 'Champion',
+    relation: 'Friend',
+    message: 'Huge congratulations on your big achievement! So proud of your dedication and hard work. Wishing you many more milestones! 🌟🚀',
+    audioTrack: 'victory_anthem',
+    themeId: 'cyber-neon',
+  },
+  {
+    id: 'thank-you',
+    label: '💐 Thank You',
+    occasionId: 'thank-you',
+    recipientName: 'Dearest Friend',
+    relation: 'Friend',
+    message: 'Thank you from the bottom of my heart for your kindness, support, and friendship. You truly make a difference in my life! 💐',
+    audioTrack: 'chimes',
+    themeId: 'warm-amber',
+  },
+]
+
 function CreateWishContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -188,6 +241,17 @@ function CreateWishContent() {
     setMessage(aiText)
     setShowAiModal(false)
     showToast('AI Wish Generated! ✨', 'info')
+  }
+
+  const handleApplyQuickStarter = (starter: typeof WISH_QUICK_STARTERS[0]) => {
+    setOccasionId(starter.occasionId)
+    setRecipientName(starter.recipientName)
+    setRelation(starter.relation)
+    setMessage(starter.message)
+    if (starter.audioTrack) setAudioTrack(starter.audioTrack)
+    if (starter.themeId) setThemeId(starter.themeId)
+    setStep(2)
+    showToast(`✨ Loaded ${starter.label}! Personalize names & send.`, 'success')
   }
 
   const draftKey = editSlug ? `cardzy_draft_wish_edit_${editSlug}` : 'cardzy_draft_wish'
@@ -617,30 +681,56 @@ function CreateWishContent() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-20">
-      <div className="mb-8 text-center">
-        {/* Card Studio Mode Switcher */}
-        <div className="inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs mb-6">
-          <div className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-xs bg-[#7B0D1E]">
+      <div className="mb-8 text-center space-y-4">
+        {/* Studio Product Switcher */}
+        <div className="inline-flex items-center justify-center gap-1.5 p-1 rounded-2xl bg-muted/60 border border-border/70 backdrop-blur-md">
+          <span className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-black text-white shadow-xs bg-[#7B0D1E]">
             💌 {t('studioTabWish', 'Wish Cards')}
-          </div>
+          </span>
           <Link
             href="/create-invitation"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             🎉 {t('studioTabInvite', 'Invitations')}
           </Link>
           <Link
             href="/create-magic-link"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             🪄 {t('studioTabMagic', 'Magic Links')}
           </Link>
           <Link
             href="/create-visiting-card"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             📇 {t('studioTabVCard', 'Visiting Cards')}
           </Link>
+        </div>
+
+        {/* Hero Title & Subtitle */}
+        <div className="max-w-2xl mx-auto space-y-2">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+            Create & Send a Digital Greeting Card ✨
+          </h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            Personalize in 60 seconds with live preview. 100% Free to create and send directly via WhatsApp.
+          </p>
+
+          {/* Reassurance Trust Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold">
+              🎁 100% Free Forever
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-[11px] font-bold">
+              ⚡ No Signup Required
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 text-[11px] font-bold">
+              📱 Interactive 3D on Phones
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-[11px] font-bold">
+              ⭐ Pro Lifetime Storage
+            </span>
+          </div>
         </div>
 
         {/* 4-Part Progress Stepper */}
@@ -709,6 +799,30 @@ function CreateWishContent() {
                   </h2>
                   <span className="text-xs font-medium text-muted-foreground">{t('clickTileToPersonalize')}</span>
                 </div>
+
+                {/* 1-Tap Quick Starters */}
+                <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <Sparkles className="size-3.5 text-amber-500 animate-pulse" />
+                      1-Tap Instant Starters (Pre-fills message &amp; theme):
+                    </span>
+                    <span className="text-[10px] text-muted-foreground hidden sm:inline">Tap any card to start</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {WISH_QUICK_STARTERS.map((s) => (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => handleApplyQuickStarter(s)}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold bg-card border border-border hover:border-amber-500 hover:bg-amber-500/10 text-foreground transition-all shadow-2xs hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-1"
+                      >
+                        <span>{s.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <OccasionPicker value={occasionId} onChange={handleOccasionSelect} />
                 <div className="flex justify-end pt-4 border-t border-border">
                   <Button
@@ -741,10 +855,30 @@ function CreateWishContent() {
                     variant="outline"
                     size="sm"
                     onClick={() => setStep(1)}
-                    className="text-[11px] h-7 px-2.5 rounded-lg flex items-center gap-1 border-border bg-card hover:bg-muted text-foreground font-semibold"
+                    className="text-[11px] h-7 px-2.5 rounded-lg flex items-center gap-1 border-border bg-card hover:bg-muted text-foreground font-semibold cursor-pointer"
                   >
                     <Grid className="size-3 text-[#7B0D1E]" /> {t('viewOccasions')}
                   </Button>
+                </div>
+
+                {/* Quick Switch Template Pills */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                  <span className="text-[10px] font-bold text-muted-foreground shrink-0 uppercase tracking-wider">Quick Fill:</span>
+                  {WISH_QUICK_STARTERS.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => handleApplyQuickStarter(s)}
+                      className={cn(
+                        "px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all shrink-0 border cursor-pointer",
+                        occasionId === s.occasionId
+                          ? "bg-[#7B0D1E]/15 border-[#7B0D1E]/40 text-[#7B0D1E] font-bold"
+                          : "bg-muted/50 border-border hover:bg-muted text-foreground"
+                      )}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
                 </div>
 
                 <div className={cn('space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>
@@ -1341,7 +1475,7 @@ function CreateWishContent() {
 
         {/* Desktop & Mobile Right Column — Sticky Live Animated Card Preview */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden" suppressHydrationWarning>
+          <div id="card-live-preview-box" className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden" suppressHydrationWarning>
             <div className="mb-3 flex items-center justify-between px-1">
               <p className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
                 <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
@@ -1432,6 +1566,21 @@ function CreateWishContent() {
           </div>
         </div>
       )}
+
+      {/* Mobile Sticky Floating "View Live Card" Button */}
+      <div className="fixed bottom-4 right-4 z-40 lg:hidden">
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById('card-live-preview-box')
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }}
+          className="flex items-center gap-2 rounded-full bg-slate-900/90 text-white border border-[#7B0D1E]/40 px-4 py-2.5 text-xs font-bold shadow-2xl backdrop-blur-md hover:bg-slate-800 active:scale-95 transition-all cursor-pointer"
+        >
+          <Eye className="size-4 text-amber-400 animate-pulse" />
+          <span>View Live Card</span>
+        </button>
+      </div>
 
       {/* Premium Guide Overview Card */}
       <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-6xl mx-auto">

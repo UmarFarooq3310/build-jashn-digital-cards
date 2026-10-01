@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server'
 import { getAdminDb } from '@/lib/firebase-admin'
 import { FieldValue } from 'firebase-admin/firestore'
+import { notifyAdmins, notifyUserById } from '@/lib/push-admin-notify'
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { cardType, slug, action, channel } = body
+    const { cardType, slug, action, channel, rsvp, reactionEmoji, reactionLabel } = body
 
     if (!slug || !cardType) {
       return NextResponse.json({ error: 'Missing slug or cardType' }, { status: 400 })
@@ -70,6 +71,28 @@ export async function POST(req: Request) {
           },
           { merge: true }
         )
+
+        // Notify Admin and Card Creator
+        if (rsvp) {
+          const status = rsvp.attending ? `Attending (${rsvp.guests || 1} guest/s)` : 'Not attending'
+          const rsvpBody = `${rsvp.name || 'A guest'} responded: ${status}`
+          notifyAdmins('New RSVP Received! 💌', rsvpBody, '/admin_portal').catch(() => {})
+          const creatorId = docSnap.exists ? (docSnap.data() as any)?.creatorId : null
+          if (creatorId) {
+            notifyUserById(creatorId, 'New RSVP on your card! 💌', rsvpBody, `/dashboard`).catch(() => {})
+          }
+        } else {
+          const emoji = reactionEmoji || (reactionId === 'love' ? '❤️' : reactionId === 'dua' ? '🤲' : reactionId === 'mubarak' ? '🎉' : reactionId === 'congrats' ? '💐' : reactionId === 'cheer' ? '👏' : '😂')
+          const label = reactionLabel || reactionId
+          const cardTitle = docSnap.exists ? ((docSnap.data() as any)?.title || (docSnap.data() as any)?.name || cleanSlug) : cleanSlug
+          const reactionBody = `Someone sent a ${emoji} ${label} reaction on your card!`
+          notifyAdmins(`New Reaction on "${cardTitle}" ${emoji}`, `Someone reacted to "${cardTitle}"`, '/admin_portal').catch(() => {})
+          const creatorId = docSnap.exists ? (docSnap.data() as any)?.creatorId : null
+          if (creatorId) {
+            notifyUserById(creatorId, `New reaction on your card! ${emoji}`, reactionBody, `/dashboard`).catch(() => {})
+          }
+        }
+
         return NextResponse.json({ success: true, action: 'reaction', channel: reactionId })
       }
 

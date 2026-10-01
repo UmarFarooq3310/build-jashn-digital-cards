@@ -45,9 +45,9 @@ const SLIDES = [
   {
     id: 3,
     title: 'Slide 3: Interactive Features',
-    headline: 'One Link. RSVP, Maps & Countdown.',
-    caption: 'Smartphone UI featuring WhatsApp RSVP button, Google Maps venue card, live flip countdown clock, and dress code notes.',
-    badge: 'RSVP & Maps',
+    headline: 'One Link. RSVP, Schedule & Countdown.',
+    caption: 'Smartphone UI featuring WhatsApp RSVP button, venue details, live flip countdown clock, and dress code notes.',
+    badge: 'RSVP & Details',
     tags: ['#RSVP', '#EventInvitation', '#DigitalRSVP', '#WeddingPlanning'],
   },
   {
@@ -74,7 +74,7 @@ Create 3D animated wish cards & event invitations with custom photo upload, back
 
 📲 Features:
 • 1-Click WhatsApp RSVP Tracking
-• Google Maps Location Direct Link
+• Event Venue & Schedule Logistics
 • Live Event Countdown Timers
 • 18 Multilingual Fonts & Pre-written Wishes
 • 100% Free Forever Plan Available!
@@ -266,7 +266,7 @@ export default function CampaignPage() {
                         <div className="p-2.5 rounded-xl bg-card/15 border border-white/10 text-white text-[10px] flex items-center gap-2">
                           <MapPin className="size-4 text-amber-400 shrink-0" />
                           <div className="truncate">
-                            <p className="font-extrabold text-white">Google Maps Venue Pin</p>
+                            <p className="font-extrabold text-white">Event Venue & Directions</p>
                             <p className="text-[9px] text-emerald-200/90 truncate">Pearl Continental Lawn, Rawalpindi</p>
                           </div>
                         </div>

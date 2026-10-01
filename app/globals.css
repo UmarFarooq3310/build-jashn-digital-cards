@@ -1633,11 +1633,11 @@ font {
 }
 @media (min-width: 1024px) {
   .magic-card {
-    width: min(90vw, 560px);
-    max-width: 560px;
-    min-height: min(530px, calc(100dvh - 40px));
-    max-height: min(680px, calc(100dvh - 32px));
-    padding: 24px 30px 20px;
+    width: min(90vw, 480px);
+    max-width: 480px;
+    min-height: auto;
+    max-height: min(620px, calc(100vh - 6.5rem));
+    padding: 16px 22px 14px;
   }
 }
 

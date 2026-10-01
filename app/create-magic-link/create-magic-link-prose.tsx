@@ -36,12 +36,22 @@ export function CreateMagicLinkProse() {
     },
     {
       title: '👑 Royal Wedding & Shaadi Invitations',
-      desc: 'Mughal-style gold digital wedding invitations with Google Maps venue integration, instant WhatsApp RSVP tracking, and dress code information.',
+      desc: 'Mughal-style gold digital wedding invitations with venue details, instant WhatsApp RSVP tracking, and dress code information.',
     },
     {
       title: '🌙 Eid Mubarak & Ramadan Greetings',
       desc: 'Crescent moon lanterns, sacred Dua reflections, and festive Chand Raat greetings in genuine Nastaliq Urdu calligraphy.',
     },
+  ]
+
+  const tableRows = [
+    { feature: 'Interactive 3D Capsule & Prop Animations', free: '✓', pro: '✓' },
+    { feature: 'Personal Secret Letter & Photo Upload', free: '✓', pro: '✓' },
+    { feature: 'Spatial Background Music & FX', free: '✓', pro: '✓' },
+    { feature: 'Real-Time Reaction & WhatsApp Sharing', free: '✓', pro: '✓' },
+    { feature: 'Link Retention Period', free: '30 Days (Active)', pro: 'Permanent Lifetime (No Purge)' },
+    { feature: 'Max Active Magic Links', free: 'Up to 5 Free Links', pro: 'Unlimited Lifetime' },
+    { feature: 'VIP Palettes & Watermark Removal', free: 'Standard / Subtle Brand', pro: 'All VIP Palettes + No Watermark' },
   ]
 
   return (
@@ -116,6 +126,33 @@ export function CreateMagicLinkProse() {
           </div>
         </div>
 
+        {/* Free vs Pro Comparison */}
+        <div className="space-y-4">
+          <h2 className={`text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+            Cardzy Magic Link Plans: Free vs Pro
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className={`py-3 text-left font-bold text-foreground ${isUrdu ? 'font-urdu text-right' : ''}`}>Feature</th>
+                  <th className="py-3 text-center font-bold text-emerald-700">Free</th>
+                  <th className="py-3 text-center font-bold text-amber-700">Pro</th>
+                </tr>
+              </thead>
+              <tbody className="text-muted-foreground">
+                {tableRows.map((row) => (
+                  <tr key={row.feature} className="border-b border-border/50">
+                    <td className={`py-2.5 ${isUrdu ? 'font-urdu text-sm text-right' : ''}`}>{row.feature}</td>
+                    <td className="py-2.5 text-center font-medium">{row.free}</td>
+                    <td className="py-2.5 text-center font-medium">{row.pro}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div className="space-y-4">
           <h2
@@ -149,7 +186,7 @@ export function CreateMagicLinkProse() {
                 Is creating a Magic Link really free?
               </h4>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Yes! Anyone can create and share unlimited Magic Links for free with no credit card required.
+                Yes! You can create and deliver up to 5 Magic Links 100% free with no credit card required. Free links stay active for 30 days. Pro users can upgrade anytime for unlimited links, permanent lifetime storage without auto-purge, and full watermark removal.
               </p>
             </div>
           </div>

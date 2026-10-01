@@ -351,44 +351,89 @@ function SiteHeaderInner() {
       </div>
 
       {open && (
-        <div className="border-t border-border bg-background px-4 py-3 lg:hidden">
-          <nav className="flex flex-col gap-1.5">
-            {[
-              { href: '/', key: 'navHome', fallback: 'Home' },
-              { href: '/create-wish', key: 'sendWish', fallback: '3D Wish Cards' },
-              { href: '/create-invitation', key: 'createInvitation', fallback: 'Wedding Invitations' },
-              { href: '/create-visiting-card', key: 'createVisitingCard', fallback: 'Smart vCards' },
-              { href: '/poetry', key: 'navPoetry', fallback: 'Poetry & Shayari' },
-              { href: '/blog', key: 'blog', fallback: 'Guides & Ideas' },
-              { href: '/calendar', key: 'celebrationCalendar', fallback: 'Celebration Calendar' },
-              { href: '/pricing', key: 'pricing', fallback: 'Pricing' },
-              { href: '/custom-order', key: 'customOrder', fallback: 'Custom Order' },
-              { href: '/faq', key: 'faqs', fallback: 'FAQs' },
-              { href: '/contact', key: 'contact', fallback: 'Contact' },
-            ].map((item) => (
+        <nav className="border-t border-border bg-background/95 backdrop-blur-xl px-4 py-4 lg:hidden max-h-[85vh] overflow-y-auto space-y-4">
+          {/* Section 1: 4 Card Studios */}
+          <div>
+            <p className="px-1 mb-2 text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              Create a Digital Card
+            </p>
+            <div className="grid grid-cols-2 gap-2">
               <Link
-                key={item.href}
-                href={item.href}
+                href="/create-wish"
                 onClick={() => setOpen(false)}
-                className="rounded-xl px-3 py-3 text-base font-medium text-foreground hover:bg-secondary min-h-[48px] flex items-center"
+                className="flex items-center gap-2 p-2.5 rounded-xl border border-rose-500/20 bg-rose-500/5 hover:bg-rose-500/10 transition-colors"
               >
-                {t(item.key as any) || item.fallback}
+                <span className="text-xl">💌</span>
+                <div className="text-left min-w-0">
+                  <span className="text-xs font-bold text-foreground block truncate">Wish Cards</span>
+                  <span className="text-[9.5px] text-muted-foreground block truncate">Free 3D Greeting</span>
+                </div>
               </Link>
-            ))}
 
-            {/* Magic Link — special highlighted row */}
-            <Link
-              href="/create-magic-link"
-              onClick={() => setOpen(false)}
-              className="rounded-xl px-3 py-3 min-h-[48px] flex items-center gap-2.5 font-bold"
-              style={{
-                background: 'linear-gradient(135deg, rgba(122,30,43,0.08), rgba(180,83,9,0.06))',
-                border: '1px solid rgba(122,30,43,0.18)',
-                color: '#7A1E2B',
-              }}
-            >
-              <span className="flex-1">{t('magicLinksNav' as any, 'Magic Link')}</span>
-            </Link>
+              <Link
+                href="/create-invitation"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 p-2.5 rounded-xl border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 transition-colors"
+              >
+                <span className="text-xl">💍</span>
+                <div className="text-left min-w-0">
+                  <span className="text-xs font-bold text-foreground block truncate">Invitations</span>
+                  <span className="text-[9.5px] text-muted-foreground block truncate">WhatsApp RSVP</span>
+                </div>
+              </Link>
+
+              <Link
+                href="/create-magic-link"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 p-2.5 rounded-xl border border-purple-500/25 bg-gradient-to-r from-purple-500/10 to-rose-500/10 hover:from-purple-500/15 hover:to-rose-500/15 transition-colors"
+              >
+                <span className="text-xl">🪄</span>
+                <div className="text-left min-w-0">
+                  <span className="text-xs font-bold text-foreground block truncate">Magic Link</span>
+                  <span className="text-[9.5px] text-purple-600 dark:text-purple-400 font-bold block truncate">3D Balloons &amp; Props</span>
+                </div>
+              </Link>
+
+              <Link
+                href="/create-visiting-card"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 p-2.5 rounded-xl border border-[#D4AF37]/25 bg-[#D4AF37]/5 hover:bg-[#D4AF37]/10 transition-colors"
+              >
+                <span className="text-xl">💼</span>
+                <div className="text-left min-w-0">
+                  <span className="text-xs font-bold text-foreground block truncate">Smart vCards</span>
+                  <span className="text-[9.5px] text-muted-foreground block truncate">1-Click Save &amp; QR</span>
+                </div>
+              </Link>
+            </div>
+          </div>
+
+          {/* Section 2: Explore & Resources */}
+          <div>
+            <p className="px-1 mb-1.5 text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              Explore &amp; Tools
+            </p>
+            <div className="grid grid-cols-2 gap-1.5">
+              {[
+                { href: '/poetry', icon: '📜', label: 'Poetry Treasury' },
+                { href: '/calendar', icon: '📅', label: 'Celebration Calendar' },
+                { href: '/blog', icon: '✍️', label: 'Guides & Ideas' },
+                { href: '/pricing', icon: '💎', label: 'Pricing & Pro' },
+                { href: '/custom-order', icon: '✨', label: 'Custom Orders' },
+                { href: '/faq', icon: '❓', label: 'FAQs & Help' },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 p-2 rounded-xl text-xs font-semibold text-foreground hover:bg-muted transition-colors"
+                >
+                  <span>{item.icon}</span>
+                  <span className="truncate">{item.label}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
 
             {/* Mobile language picker */}
             <div className="mt-2 pt-2 border-t border-border notranslate" translate="no">
@@ -464,8 +509,7 @@ function SiteHeaderInner() {
               <span>🔔 Enable Notifications</span>
             </button>
           </nav>
-        </div>
-      )}
+        )}
 
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>

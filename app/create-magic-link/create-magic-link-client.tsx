@@ -41,6 +41,10 @@ import {
   Phone,
   PartyPopper,
   HeartHandshake,
+  Home,
+  Briefcase,
+  Plane,
+  Star,
 } from 'lucide-react'
 import { createMagicLink, updateMagicLink, getMagicLink, recordCardShare } from '@/lib/jashn/magic-service'
 import type { MagicLinkType, MagicOccasion, MagicThemeId } from '@/lib/jashn/magic-types'
@@ -121,7 +125,7 @@ export const OCCASIONS: OccasionMeta[] = [
     trending: true,
     icon: Crown,
     defaultType: 'invite',
-    desc: 'Royal couple celebration, Nikah & Baraat invite with 1-click RSVP & Google Maps',
+    desc: 'Royal couple celebration, Nikah & Baraat invite with 1-click RSVP & venue details',
     theme: 'mughal-gold',
     defaultLetter:
       'Two beautiful souls united in an eternal bond of love, respect, and faith. May your union be blessed with perpetual peace and barakah.',
@@ -367,6 +371,115 @@ export const OCCASIONS: OccasionMeta[] = [
       'Here is to 365 new opportunities to shine, love, and conquer new heights! ✨',
       'Wishing you radiant health, infinite peace, and prosperous beginnings! 🥂',
       'Let go of the past and step boldly into your most triumphant year yet! 🌟',
+    ],
+  },
+  {
+    id: 'umrah',
+    label: 'Umrah & Hajj Mubarak',
+    urdu: 'عمرہ و حج مبارک',
+    badge: '🕋 Sacred Journey & Dua',
+    category: 'islamic',
+    trending: true,
+    icon: Star,
+    defaultType: 'wish',
+    desc: 'Holy Kaaba reverence, spiritual lantern glow, and heartfelt Duas for accepted pilgrimage',
+    theme: 'emerald-gold',
+    defaultLetter:
+      'Umrah Mubarak! May Allah accept your sacred pilgrimage, forgive all sins, and reward you with immense barakah and tranquility. May your heart always stay close to the Holy Haram!',
+    defaultVerse: 'May Allah accept your Umrah and shower your life with divine grace 🕋',
+    urduVerse: 'عمرہ مبارک! اللّٰہ پاک آپ کی تمام عبادات، دعائیں اور طواف قبول فرمائے 🤲',
+    defaultQuotes: [
+      'May Allah accept your sacred pilgrimage and grant you Hajj & Umrah Mabroor! 🕋',
+      'May the peace and purity of the Holy Haram stay in your heart forever. 🕊️',
+      'Taqabbal Allahu ta\'atikum — prayers for your continued happiness and faith. 🤲',
+      'Blessed are those who stood before the Kaaba with tears of gratitude. ✨',
+    ],
+  },
+  {
+    id: 'career',
+    label: 'Job Promotion & Career',
+    urdu: 'ترقی و نئی ملازمت مبارک',
+    badge: '🚀 Career Breakthrough & Trophy',
+    category: 'milestones',
+    trending: true,
+    icon: Briefcase,
+    defaultType: 'wish',
+    desc: 'Golden achievement badge, cosmic career meter, and congratulations on promotion',
+    theme: 'mughal-gold',
+    defaultLetter:
+      'Heartiest congratulations on your outstanding career achievement! Your relentless dedication, leadership, and brilliance have deservedly taken you to this impressive milestone. Onwards and upwards!',
+    defaultVerse: 'Celebrating your well-deserved promotion and inspiring success 🏆',
+    urduVerse: 'شاندار کامیابی اور ترقی پر دلی مبارکباد! آپ کا مستقبل مزید درخشاں ہو 🌟',
+    defaultQuotes: [
+      'Your sheer hard work and dedication have made this victory inevitable! 🚀',
+      'Huge congratulations on your well-deserved promotion and leadership step! 💼',
+      'The sky is not the limit — it is just the launchpad for your brilliance! ✨',
+      'Wishing you continued triumph, wisdom, and boundless success ahead! 🏆',
+    ],
+  },
+  {
+    id: 'farewell',
+    label: 'Farewell & Bon Voyage',
+    urdu: 'الوداع و نیک تمنائیں',
+    badge: '✈️ New Chapter & Memories',
+    category: 'milestones',
+    icon: Plane,
+    defaultType: 'wish',
+    desc: 'Golden flight compass, timeless memory cards, and heartfelt wishes for your new adventure',
+    theme: 'royal-sapphire',
+    defaultLetter:
+      'As you embark on this exciting new adventure, know that you will be truly missed! Thank you for all the unforgettable moments, laughter, and support. Wishing you boundless success in your new path!',
+    defaultVerse: 'Wishing you skies full of joy, safety, and triumph in your new journey ✈️',
+    urduVerse: 'نئے سفر اور نئی منزلوں کے لیے دلی نیک تمنائیں اور دعائیں ✈️',
+    defaultQuotes: [
+      'Goodbyes are not forever — they simply mean we will cheer for you from afar! 💫',
+      'Wishing you soaring heights, amazing opportunities, and safe travels! 🌍',
+      'Thank you for the inspiring memories and friendship along the way. 🤝',
+      'May your next chapter be your most rewarding and breathtaking yet! 🌟',
+    ],
+  },
+  {
+    id: 'housewarming',
+    label: 'New Home & Housewarming',
+    urdu: 'نیا گھر مبارک',
+    badge: '🏡 Sweet Home & Barakah',
+    category: 'milestones',
+    trending: true,
+    icon: Home,
+    defaultType: 'invite',
+    desc: 'Golden house crest, welcoming door reveal, and housewarming celebration invite',
+    theme: 'emerald-gold',
+    defaultLetter:
+      'Congratulations on your gorgeous new home! May this haven be filled with love, laughter, health, and abundant barakah for you and your family for decades to come.',
+    defaultVerse: 'May your new home be a haven of warmth, peace, and eternal joy 🏡',
+    urduVerse: 'نیا گھر بہت بہت مبارک ہو! اللّٰہ پاک اس گھر کو برکت اور خوشیوں سے بھر دے 🏡',
+    defaultQuotes: [
+      'A house is made of bricks, but a home is made of love and shared dreams! 🏡',
+      'May the walls of your new home echo with laughter, peace, and blessings! ✨',
+      'Wishing your family infinite happiness and warmth in your beautiful new space! 🌸',
+      'MashaAllah on your gorgeous new residence! Heartfelt congratulations! 🤲',
+    ],
+  },
+  {
+    id: 'roza-kushai',
+    label: 'Roza Kushai & First Fast',
+    urdu: 'روزہ کشائی مبارک',
+    badge: '🌙 First Fast & Iftar Feast',
+    category: 'islamic',
+    trending: true,
+    icon: Moon,
+    defaultType: 'wish',
+    desc: 'Spiritual starlight arch, Iftar dates & sherbet blessings, and first fast milestone celebration',
+    theme: 'emerald-gold',
+    defaultLetter:
+      'Roza Kushai Mubarak! Congratulations to our precious little star on keeping their very first fast! May Allah bless you with righteous character, divine knowledge, and eternal happiness.',
+    defaultVerse: 'Congratulations on keeping your first fast with so much devotion 🌙',
+    urduVerse: 'پہلا روزہ مبارک! اللّٰہ پاک آپ کو ہمیشہ اپنے حفظ و امان اور رحمت میں رکھے 🌙',
+    defaultQuotes: [
+      'So immensely proud of you for observing your very first fast with love! 🌙',
+      'May Allah accept this blessed worship and make you a source of pride for your parents! 🤲',
+      'Sending the sweetest blessings, love, and special Iftar treats your way! 🍯',
+      'May your life always be illuminated with the light of Quran and faith! ✨',
     ],
   },
 ]
@@ -905,9 +1018,7 @@ export default function CreateMagicLinkClient() {
     if (!recipientName.trim()) {
       errs.recipientName = t('recipientNameRequired', 'Recipient / Partner Name is required')
     }
-    if (!whatsappNumber.trim()) {
-      errs.whatsappNumber = t('whatsappNumberRequired', 'WhatsApp number is required so you can receive instant replies')
-    } else {
+    if (whatsappNumber.trim()) {
       const cleanPhone = whatsappNumber.replace(/[^0-9]/g, '')
       if (cleanPhone.length < 7) {
         errs.whatsappNumber = t('whatsappNumberInvalid', 'Please enter a valid WhatsApp phone number with country code')
@@ -1081,33 +1192,60 @@ export default function CreateMagicLinkClient() {
     <div className="mx-auto w-full max-w-full pb-20 min-w-0">
       
       {/* Universal Studio Mode Switcher */}
-      <div className="mb-8 text-center">
-        <div className="inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs">
+      <div className="mb-8 text-center space-y-4">
+        <div className="inline-flex items-center justify-center gap-1.5 p-1 rounded-2xl bg-muted/60 border border-border/70 backdrop-blur-md">
           <Link
             href="/create-wish"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             💌 {t('studioTabWish', 'Wish Cards')}
           </Link>
           <Link
             href="/create-invitation"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             🎉 {t('studioTabInvite', 'Invitations')}
           </Link>
-          <div
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-xs bg-[#7B0D1E]"
+          <span
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-black text-white shadow-xs bg-[#7B0D1E]"
           >
-            <span>🪄</span>
-            <span>{t('studioTabMagic', 'Magic Links')}</span>
-          </div>
+            🪄 {t('studioTabMagic', 'Magic Links')}
+          </span>
           <Link
             href="/create-visiting-card"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             📇 {t('studioTabVCard', 'Visiting Cards')}
           </Link>
         </div>
+
+        {/* Hero Title & Subtitle */}
+        {!createdSlug && (
+          <div className="max-w-2xl mx-auto space-y-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+              Craft 3D Interactive Surprise Links 🪄
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Create an unforgettable 3D unboxing experience with personalized letters, music & animations. 100% Free!
+            </p>
+
+            {/* Reassurance Trust Pills */}
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold">
+                🎁 100% Free Forever
+              </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 text-[11px] font-bold">
+                🪄 3D Interactive Envelope
+              </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-[11px] font-bold">
+                ⚡ Instant WhatsApp Delivery
+              </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-[11px] font-bold">
+                ⭐ Pro Lifetime Storage
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* SUCCESS SCREEN */}
@@ -1748,7 +1886,7 @@ export default function CreateMagicLinkClient() {
                       {/* WhatsApp Number for Instant Alert & Direct Reply */}
                       <div>
                         <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider block mb-1.5", isUrdu ? "text-right font-urdu" : "text-left")}>
-                          {t('magicWhatsAppLabel', 'Your WhatsApp Number for Instant Replies')} *
+                          {t('magicWhatsAppLabel', 'Your WhatsApp Number for Instant Replies')} <span className="text-muted-foreground font-normal text-[10px] lowercase">({t('optional', 'optional')})</span>
                         </label>
                         <div className="relative overflow-hidden">
                           <Phone className="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />

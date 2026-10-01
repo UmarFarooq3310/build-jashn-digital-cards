@@ -126,27 +126,6 @@ export async function POST(req: Request) {
 
       await poemRef.set(poemUpdates, { merge: true })
 
-      // 3. Activity Log entry with rich visitor metadata (matching v, i, and w cards)
-      const activityRef = db.collection('poetry_activity').doc()
-      await activityRef.set({
-        poemId,
-        poet: poet || '',
-        title: title || '',
-        action,
-        channel: channel || 'web',
-        timestamp: Date.now(),
-        userName: finalUserName,
-        userEmail: body.userEmail || '',
-        userId: body.userId || '',
-        city: finalCity,
-        country: finalCountry,
-        countryCode: finalCountryCode,
-        createdLocation: finalLocation,
-        device: finalDevice,
-        browser: finalBrowser,
-        ip: finalIp,
-      })
-
       return NextResponse.json({ success: true, poemId, action })
     } catch (dbErr: any) {
       console.warn('Firebase Admin poetry activity logging warning:', dbErr?.message || dbErr)

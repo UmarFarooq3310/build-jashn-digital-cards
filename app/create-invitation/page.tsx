@@ -8,7 +8,7 @@ export const dynamic = 'force-static'
 export const metadata: Metadata = {
   title: 'Create Wedding Invitations & Urdu Cards with RSVP | Cardzy',
   description:
-    'Design luxury animated wedding invitations with Urdu wording, Google Maps, background music & 1-click WhatsApp RSVP tracking. Build your dream invite free!',
+    'Design luxury animated wedding invitations with Urdu wording, venue details, background music & 1-click WhatsApp RSVP tracking. Build your dream invite free!',
   keywords: [
     'wedding card wording',
     'Pakistani wedding card maker',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Create Wedding Invitations & Urdu Cards with RSVP | Cardzy',
     description:
-      'Design luxury animated wedding invitations with Urdu wording, Google Maps, background music & 1-click WhatsApp RSVP tracking. Build your dream invite free!',
+      'Design luxury animated wedding invitations with Urdu wording, venue details, background music & 1-click WhatsApp RSVP tracking. Build your dream invite free!',
     url: 'https://cardzy.online/create-invitation',
     siteName: 'Cardzy',
     type: 'website',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Create Wedding Invitations & Urdu Cards with RSVP | Cardzy',
     description:
-      'Design luxury animated wedding invitations with Urdu wording, Google Maps, background music & 1-click WhatsApp RSVP tracking. Build your dream invite free!',
+      'Design luxury animated wedding invitations with Urdu wording, venue details, background music & 1-click WhatsApp RSVP tracking. Build your dream invite free!',
     images: ['/og-image.jpg'],
   },
 }

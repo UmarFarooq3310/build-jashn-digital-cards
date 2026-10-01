@@ -169,6 +169,71 @@ export function FirebaseAuthListener() {
     }
   }, [fetchUserCards])
 
+  // ── Foreground push handler ─────────────────────────────────────────────────
+  // Firebase silently swallows push messages when the app tab is open.
+  // This intercepts them and shows a real OS-level notification via the
+  // service worker — so users get the popup whether the tab is open or not.
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return
+    if (!('Notification' in window) || Notification.permission !== 'granted') return
+
+    let unsubForeground: (() => void) | undefined
+    let isCancelled = false
+
+    const attachForegroundListener = async () => {
+      try {
+        const { getMessaging, onMessage } = await import('firebase/messaging')
+        const { getFirebaseApp } = await import('@/lib/firebase')
+        const app = getFirebaseApp()
+        if (!app || isCancelled) return
+
+        const messaging = getMessaging(app)
+
+        unsubForeground = onMessage(messaging, (payload) => {
+          const title =
+            payload.notification?.title ||
+            (payload.data as any)?.title ||
+            'Cardzy 🔔'
+          const body =
+            payload.notification?.body ||
+            (payload.data as any)?.body ||
+            ''
+          const url =
+            (payload.fcmOptions as any)?.link ||
+            (payload.data as any)?.url ||
+            (payload.data as any)?.link ||
+            '/'
+          const notificationId =
+            (payload.data as any)?.notificationId ||
+            `fg_${Date.now()}`
+
+          // Use SAME tag format as SW so the OS collapses both into 1 notification (no duplicates)
+          const tag = `cardzy-${String(notificationId).replace(/[^a-zA-Z0-9]/g, '_')}`
+
+          // Route through the service worker so it renders as a real OS popup
+          navigator.serviceWorker.ready.then((reg) => {
+            reg.showNotification(title, {
+              body,
+              icon: '/android-chrome-192x192.png',
+              badge: '/favicon-32x32.png',
+              tag,
+              renotify: false,
+              requireInteraction: false,
+              data: { url, notificationId },
+            } as NotificationOptions)
+          }).catch(() => {})
+        })
+      } catch (_) {}
+    }
+
+    attachForegroundListener()
+
+    return () => {
+      isCancelled = true
+      if (unsubForeground) unsubForeground()
+    }
+  }, [])
+
   return null
 }
 

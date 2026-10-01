@@ -58,7 +58,7 @@ export const BORDERS = [
     id: 'woven',
     name: 'Woven Lattice',
     desc: 'Diagonal cross-hatch edge border',
-    isPremium: true,
+    isPremium: false,
     preview: 'woven',
   },
   {

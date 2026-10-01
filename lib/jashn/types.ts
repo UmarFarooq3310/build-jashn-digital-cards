@@ -178,7 +178,7 @@ export interface Invitation {
   time: string
   venue: string
   city: string
-  mapsLink: string
+  mapsLink?: string
   dressCode: string
   notes: string
   rsvpPhone: string
@@ -212,6 +212,10 @@ export type VisitingCardCategory =
   | 'real-estate'
   | 'beauty'
   | 'services'
+  | 'education'
+  | 'culinary'
+  | 'fitness'
+  | 'finance'
 
 export interface VisitingCardTheme {
   id: string

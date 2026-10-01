@@ -34,15 +34,15 @@ export const THEMES: CardTheme[] = [
     previewColor: '#1B5E20',
     motif: 'floral',
   },
-  // Premium
   {
     id: 'saffron-kesari',
     name: 'Saffron Kesari',
     cssClass: 'theme-saffron-kesari',
-    isPremium: true,
+    isPremium: false,
     previewColor: '#e65100',
     motif: 'petals',
   },
+  // Premium
   {
     id: 'plum-jamuni',
     name: 'Plum Jamuni',

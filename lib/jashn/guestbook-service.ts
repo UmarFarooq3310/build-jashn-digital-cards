@@ -128,6 +128,31 @@ export async function postGuestbookWish(params: {
         createdAt: Date.now(),
         serverTime: serverTimestamp(),
       })
+
+      // Notify admin
+      fetch('/api/push/notify-admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: `New Guestbook Wish! ${wish.emoji}`,
+          body: `${wish.guestName} left a message on "${wish.cardTitle || wish.cardSlug}"`,
+          url: `/admin_portal`
+        })
+      }).catch(() => {});
+
+      // Notify card creator
+      fetch('/api/push/notify-creator', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cardSlug: wish.cardSlug,
+          cardType: wish.cardType || 'magic',
+          title: `New wish on your card! ${wish.emoji}`,
+          body: `${wish.guestName}: "${wish.message.slice(0, 80)}${wish.message.length > 80 ? '…' : ''}"`,
+          url: '/dashboard'
+        })
+      }).catch(() => {});
+
     } catch (err) {
       console.error('Firestore guestbook write error:', err)
     }

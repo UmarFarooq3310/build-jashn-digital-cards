@@ -61,7 +61,6 @@ export async function GET() {
       magicLinksSnap,
       guestbookSnap,
       poetryStatsSnap,
-      poetryActivitySnap,
       customPoetrySnap,
       magicResponsesSnap,
       testimonialsSnap,
@@ -74,7 +73,6 @@ export async function GET() {
       db.collection('magic_links').orderBy('createdAt', 'desc').limit(5).get().catch(() => db.collection('magic_links').limit(5).get()).catch(() => ({ docs: [] } as any)),
       db.collection('guestbook_wishes').orderBy('createdAt', 'desc').limit(5).get().catch(() => db.collection('guestbook_wishes').limit(5).get()).catch(() => ({ docs: [] } as any)),
       db.collection('poetry_stats').limit(5).get().catch(() => ({ docs: [] } as any)),
-      db.collection('poetry_activity').orderBy('timestamp', 'desc').limit(5).get().catch(() => db.collection('poetry_activity').limit(5).get()).catch(() => ({ docs: [] } as any)),
       db.collection('custom_poetry').orderBy('createdAt', 'desc').limit(5).get().catch(() => db.collection('custom_poetry').limit(5).get()).catch(() => ({ docs: [] } as any)),
       db.collection('magic_link_responses').orderBy('createdAt', 'desc').limit(5).get().catch(() => db.collection('magic_link_responses').limit(5).get()).catch(() => ({ docs: [] } as any)),
       db.collection('testimonials').orderBy('createdAt', 'desc').limit(5).get().catch(() => ({ docs: [] } as any)),
@@ -126,10 +124,7 @@ export async function GET() {
         ...normalizeFirestoreData(doc.data()),
       }))
 
-    const poetryActivity = poetryActivitySnap.docs.map((doc: any) => ({
-      id: doc.id,
-      ...normalizeFirestoreData(doc.data()),
-    }))
+    const poetryActivity: any[] = []
 
     const customPoetryDocs = customPoetrySnap.docs.map((doc: any) => ({
       id: doc.id,

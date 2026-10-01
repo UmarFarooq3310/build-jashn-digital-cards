@@ -43,7 +43,7 @@ export function getOrCreateDeviceId(): string {
   return id;
 }
 
-export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
+export async function subscribeToPushWithResult(isAdmin = false, userId?: string): Promise<SubscribeResult> {
   if (typeof window === 'undefined' || !('serviceWorker' in navigator) || !('Notification' in window)) {
     const msg = 'Push notifications are not supported on this browser.'
     await sendDebugLog('unsupported_environment', { error: msg })
@@ -162,6 +162,8 @@ export async function subscribeToPushWithResult(): Promise<SubscribeResult> {
           token,
           deviceId,
           userAgent: navigator.userAgent,
+          isAdmin,
+          ...(userId ? { userId } : {}),
         }),
       })
       const apiRes = await res.json()

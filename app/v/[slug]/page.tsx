@@ -8,6 +8,7 @@ import { doc, getDoc, updateDoc, increment, onSnapshot } from 'firebase/firestor
 import { useJashn } from '@/lib/jashn/store'
 import type { VisitingCard } from '@/lib/jashn/types'
 import { shouldIncrementView, isSenderOrOwner } from '@/lib/jashn/view-tracker'
+import { isCardExpired } from '@/lib/jashn/plan-limits'
 import { VisitingCardView } from '@/components/jashn/visiting-card'
 import { ShareBar } from '@/components/jashn/share-bar'
 import { CardQrCode } from '@/components/jashn/qr-code'
@@ -18,6 +19,8 @@ import { useLang } from '@/lib/lang/context'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { recordCardShare } from '@/lib/jashn/magic-service'
 import { downloadVCard } from '@/lib/jashn/vcard-export'
+import { downloadCardPng } from '@/lib/jashn/card-media-export'
+import { cn } from '@/lib/utils'
 
 export default function VisitingCardPublicPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params)
@@ -34,13 +37,15 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
   const [loading, setLoading] = useState(true)
   const [showShareModal, setShowShareModal] = useState(false)
   const [copiedLink, setCopiedLink] = useState(false)
+  const [isDownloadingPng, setIsDownloadingPng] = useState(false)
+  const [downloadingQr, setDownloadingQr] = useState(false)
 
-  // Sender preview: ONLY true if explicitly requested via query params (?mode=sender, ?preview=true, ?role=sender)
-  // When copying clean link (/v/slug), both sender and receiver see the authentic receiver experience
+  // Sender/Creator mode: active if requested via URL OR if viewer is detected as the creator/admin
   const isSenderMode =
     searchParams.get('mode') === 'sender' ||
     searchParams.get('preview') === 'true' ||
-    searchParams.get('role') === 'sender'
+    searchParams.get('role') === 'sender' ||
+    (typeof window !== 'undefined' && isSenderOrOwner(slug, card?.creatorId, searchParams, user?.uid))
 
   useEffect(() => {
     let unsubscribe: (() => void) | null = null
@@ -161,6 +166,30 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
     )
   }
 
+  // ── 30-Day Expiration for Free Visiting Cards ──
+  const isExpiredCard = isCardExpired(card.createdAt, (card as any).plan || (card.creatorId === user?.uid ? user?.plan : undefined))
+  if (isExpiredCard) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#050507] p-6 text-center space-y-4 text-white">
+        <div className="size-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400 text-2xl">
+          ⏳
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#D4AF37]">vCard Profile Expired</h1>
+        <p className="text-xs sm:text-sm text-zinc-400 max-w-md leading-relaxed">
+          Free digital visiting cards remain active for 30 days. To keep your executive digital visiting card and QR profile active forever, upgrade to a Pro account.
+        </p>
+        <div className="flex items-center justify-center gap-3 pt-2">
+          <Link href="/pricing" className="rounded-2xl bg-[#D4AF37] hover:bg-[#E5C35A] px-5 py-2.5 font-bold text-xs text-slate-950 shadow-lg transition-all">
+            Upgrade to Pro ($1.99 / Rs 499)
+          </Link>
+          <Link href="/create-visiting-card" className="rounded-2xl border border-white/20 bg-white/10 hover:bg-white/15 px-5 py-2.5 font-bold text-xs text-white transition-all">
+            Create New vCard
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   // Always share the CLEAN receiver URL without ?mode=sender
   const receiverUrl = `/v/${slug}`
   const waMsg = `Check out ${card.fullName}'s Digital Business Card on Cardzy: ${receiverUrl}`
@@ -182,6 +211,21 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank')
   }
 
+  const handleDownloadPng = async () => {
+    if (!cardRef.current) return
+    setIsDownloadingPng(true)
+    try {
+      await downloadCardPng({
+        element: cardRef.current,
+        fileName: `vcard-${card.slug}`,
+        cardType: 'vcard',
+        cardSlug: card.slug,
+      })
+    } finally {
+      setIsDownloadingPng(false)
+    }
+  }
+
   const handleDirectNativeShare = async () => {
     const fullReceiverUrl = typeof window !== 'undefined' ? `${window.location.origin}${receiverUrl}` : receiverUrl
     if (typeof navigator !== 'undefined' && navigator.share) {
@@ -200,167 +244,240 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
     }
   }
 
+  const handleDownloadQr = async () => {
+    if (!card) return
+    setDownloadingQr(true)
+    try {
+      recordCardShare('vcard', card.slug, 'qr')
+      const fullReceiverUrl = typeof window !== 'undefined' ? `${window.location.origin}${receiverUrl}` : receiverUrl
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&color=09090b&bgcolor=ffffff&data=${encodeURIComponent(fullReceiverUrl)}`
+      const response = await fetch(qrUrl)
+      const blob = await response.blob()
+      const blobUrl = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = blobUrl
+      link.download = `vcard-qr-${slug}.png`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(blobUrl)
+      showToast('QR Code downloaded! 📲', 'success')
+    } catch {
+      const fullReceiverUrl = typeof window !== 'undefined' ? `${window.location.origin}${receiverUrl}` : receiverUrl
+      window.open(`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(fullReceiverUrl)}`, '_blank')
+    } finally {
+      setDownloadingQr(false)
+    }
+  }
+
   // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Creator Control Panel) ──
+  // ── 1. SENDER / CREATOR SCREEN (Clean Responsive Desktop/Mobile Layout, No Repetition) ──
   if (isSenderMode) {
+    const fullReceiverUrl = typeof window !== 'undefined' ? `${window.location.origin}${receiverUrl}` : receiverUrl
+
     return (
-      <div className="py-6 px-4 pb-28 sm:pb-12">
-        <div className="mx-auto max-w-2xl md:max-w-4xl text-center">
-          {/* ── High-Converting Card Delivery & Quick Share Hero ── */}
-          <div className="mb-6 rounded-3xl border-2 border-[#D4AF37]/50 bg-gradient-to-b from-zinc-900 via-zinc-950 to-zinc-900 text-white p-5 sm:p-7 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-48 h-48 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none" />
-            
-            <div className="relative z-10 flex flex-col items-center text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/30 text-[#D4AF37] text-xs font-black uppercase tracking-wider">
-                <Sparkles className="size-3.5 text-amber-400 animate-pulse" />
-                <span>Your Smart vCard is Live! 💼</span>
+      <div className="pt-2 sm:pt-3 pb-24 sm:pb-8 lg:py-2 px-3 sm:px-5 max-w-7xl mx-auto lg:h-[calc(100dvh-4.25rem)] lg:max-h-[calc(100dvh-4.25rem)] flex flex-col justify-center">
+        {/* ── Main Responsive Grid: vCard Preview (Left on Desktop, Below on Mobile) + Delivery Hub (Top on Mobile, Right on Desktop) ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-5 items-center lg:h-full lg:max-h-full">
+          {/* Digital Visiting Card Surface Column */}
+          <div className="order-2 lg:order-1 lg:col-span-7 xl:col-span-7 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
+            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                <Eye className="size-3.5 text-[#D4AF37]" /> Interactive Client View
+              </span>
+            </div>
+
+            <div className="w-full flex-1 min-h-0 pt-4 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
+              <div className="w-full max-w-md">
+                <VisitingCardView ref={cardRef} data={card} showShareBtn={false} showQrCode={false} />
+              </div>
+            </div>
+          </div>
+
+          {/* Unified 1-Click Delivery Hub Column (Top on Mobile, Vertically Centered on Desktop) */}
+          <div className="order-1 lg:order-2 lg:col-span-5 xl:col-span-5 flex flex-col justify-center lg:h-full lg:max-h-full">
+            <div className="rounded-2xl xl:rounded-3xl border-2 border-[#D4AF37]/40 bg-gradient-to-b from-zinc-900 via-zinc-950 to-zinc-900 text-white p-3.5 sm:p-4 lg:p-3.5 xl:p-4 shadow-xl space-y-2 lg:space-y-2 xl:space-y-2.5 text-left lg:max-h-[calc(100dvh-5.5rem)] lg:overflow-y-auto scrollbar-none">
+              {/* Ready to Deliver celebration highlight */}
+              <div className="p-2 lg:p-2.5 rounded-xl bg-gradient-to-r from-[#D4AF37]/20 via-[#E5C35A]/15 to-[#D4AF37]/20 border border-[#D4AF37]/35 shadow-xs flex items-center gap-2">
+                <span className="text-xl animate-bounce shrink-0">🎉</span>
+                <div className="flex-1 min-w-0 text-left">
+                  <span className="text-[#D4AF37] font-extrabold text-xs block leading-tight">vCard Live & Ready to Share!</span>
+                  <p className="text-zinc-300 text-[10px] leading-tight truncate mt-0.5">
+                    Share directly on WhatsApp or download the <strong>.vcf contact card</strong>!
+                  </p>
+                </div>
               </div>
 
-              <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                Share Profile of <span className="text-[#D4AF37]">{card.fullName}</span>
-              </h1>
-              
-              <p className="text-xs sm:text-sm text-zinc-300 max-w-md">
-                Share your executive digital business profile with clients, partners, and contacts with 1 click.
-              </p>
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#D4AF37]/20 text-[#D4AF37] text-[10px] font-black uppercase tracking-wider">
+                    <Sparkles className="size-2.5 text-amber-400" /> 1-Click Share Hub
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-zinc-800/90 border border-white/10 px-2 py-0.5 text-[9.5px] font-bold text-zinc-300">
+                    <Eye className="size-2.5 text-emerald-400" /> {card.viewCount || 0} views
+                  </span>
+                </div>
+                <h2 className="text-base sm:text-lg font-black text-white leading-tight">
+                  Share Your vCard
+                </h2>
+                <p className="text-[10.5px] text-zinc-300 mt-0.5">
+                  Deliver your verified digital business card to clients and business contacts instantly.
+                </p>
+              </div>
 
-              {/* Primary 1-Click Action Buttons */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full max-w-xl pt-2">
-                <Button
-                  onClick={handleDirectWhatsApp}
-                  className="h-12 rounded-2xl bg-[#25D366] hover:bg-[#1eb955] text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-[#25D366]/20 active:scale-95 transition-all cursor-pointer"
-                >
-                  <MessageCircle className="size-4 shrink-0" />
-                  <span>Send on WhatsApp</span>
-                </Button>
+              {/* Download Contact (.vcf) */}
+              <button
+                type="button"
+                onClick={() => {
+                  const ok = downloadVCard(card)
+                  if (ok) showToast('Contact .vcf downloaded! 📇', 'success')
+                }}
+                className="w-full h-9 sm:h-10 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#E5C35A] hover:brightness-110 text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer"
+              >
+                <UserPlus className="size-3.5 shrink-0" />
+                <span>Save Contact (.vcf)</span>
+              </button>
 
+              {/* Primary 1-Click WhatsApp Button */}
+              <Button
+                onClick={handleDirectWhatsApp}
+                className="w-full h-10 sm:h-11 rounded-xl bg-[#25D366] hover:bg-[#1eb955] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md shadow-[#25D366]/25 active:scale-95 transition-all cursor-pointer"
+              >
+                <MessageCircle className="size-4 shrink-0" />
+                <span>Send on WhatsApp</span>
+              </Button>
+
+              {/* Clean vCard Link Box */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                  Clean Profile Link
+                </label>
+                <div className="flex items-center gap-2 p-1 rounded-xl border border-white/15 bg-white/5">
+                  <input
+                    type="text"
+                    readOnly
+                    value={fullReceiverUrl}
+                    className="flex-1 bg-transparent px-2 text-[11px] text-zinc-200 outline-none truncate font-mono select-all"
+                  />
+                  <Button
+                    onClick={handleDirectCopy}
+                    size="sm"
+                    className={cn(
+                      "h-7 px-2.5 rounded-lg font-bold text-[11px] shrink-0 transition-all cursor-pointer",
+                      copiedLink
+                        ? "bg-[#D4AF37] text-slate-950"
+                        : "bg-white/10 hover:bg-white/20 text-white"
+                    )}
+                  >
+                    {copiedLink ? <Check className="size-3" /> : <Copy className="size-3" />}
+                    <span>{copiedLink ? 'Copied' : 'Copy'}</span>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Direct 1-Click Media Exports & Share Apps */}
+              <div className="grid grid-cols-2 gap-2 pt-0.5">
                 {typeof navigator !== 'undefined' && 'share' in navigator ? (
                   <Button
                     onClick={handleDirectNativeShare}
-                    className="h-12 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 active:scale-95 transition-all cursor-pointer"
+                    variant="outline"
+                    className="h-8.5 rounded-lg border-white/20 bg-white/5 hover:bg-white/10 text-white font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
                   >
-                    <Share2 className="size-4 shrink-0" />
-                    <span>Share via Apps</span>
+                    <Share2 className="size-3" />
+                    <span>Share Apps</span>
                   </Button>
-                ) : (
-                  <Button
-                    onClick={() => setShowShareModal(true)}
-                    className="h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer"
-                  >
-                    <QrCode className="size-4 shrink-0" />
-                    <span>QR Code & Image</span>
-                  </Button>
-                )}
+                ) : null}
 
                 <Button
-                  onClick={handleDirectCopy}
+                  onClick={handleDownloadPng}
+                  disabled={isDownloadingPng}
                   variant="outline"
-                  className="h-12 rounded-2xl border-white/20 bg-white/5 hover:bg-white/10 text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
+                  className={cn(
+                    "h-8.5 rounded-lg border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer disabled:opacity-50",
+                    !(typeof navigator !== 'undefined' && 'share' in navigator) && "col-span-2"
+                  )}
                 >
-                  {copiedLink ? <Check className="size-4 text-emerald-400 shrink-0" /> : <Copy className="size-4 shrink-0" />}
-                  <span>{copiedLink ? 'Copied!' : 'Copy Link'}</span>
+                  {isDownloadingPng ? (
+                    <Loader2 className="size-3 animate-spin text-[#D4AF37]" />
+                  ) : (
+                    <Download className="size-3 text-[#D4AF37]" />
+                  )}
+                  <span>{isDownloadingPng ? 'Saving...' : 'Download Image'}</span>
                 </Button>
               </div>
 
-              {/* Secondary Creator Options (Edit / Delete / Preview) */}
-              <div className="flex flex-wrap items-center justify-center gap-2 pt-3 border-t border-white/10 w-full text-xs">
-                <button
-                  onClick={() => {
-                    const ok = downloadVCard(card)
-                    if (ok) showToast('Contact .vcf downloaded! 📇', 'success')
-                  }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#E5C35A] text-slate-950 text-[11px] font-bold transition-all hover:brightness-110 active:scale-95 cursor-pointer"
+              {/* Integrated vCard QR Code (Compact Horizontal Row with Download Icon) */}
+              <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <button
+                    type="button"
+                    onClick={handleDownloadQr}
+                    className="relative group p-1 rounded-xl bg-white shadow-xs shrink-0 cursor-pointer hover:ring-2 hover:ring-[#D4AF37] transition-all text-slate-900"
+                    title="Click to Download QR Code (PNG)"
+                  >
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=09090b&bgcolor=ffffff&data=${encodeURIComponent(fullReceiverUrl)}`}
+                      alt="Receiver QR Code"
+                      className="size-11 rounded object-contain block"
+                    />
+                    <span className="absolute inset-0 bg-black/60 rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white">
+                      <Download className="size-4 text-[#D4AF37]" />
+                    </span>
+                  </button>
+                  <div className="min-w-0 text-left">
+                    <span className="text-[10.5px] font-bold text-[#D4AF37] uppercase tracking-wider block">
+                      Receiver QR Code
+                    </span>
+                    <p className="text-[9.5px] text-zinc-400 leading-tight mt-0.5 truncate">
+                      Scan or download barcode
+                    </p>
+                  </div>
+                </div>
+
+                <Button
+                  type="button"
+                  onClick={handleDownloadQr}
+                  disabled={downloadingQr}
+                  size="sm"
+                  variant="outline"
+                  className="h-7 px-2.5 rounded-lg border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37] text-[10.5px] font-bold shrink-0 flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+                  title="Download high-resolution QR code"
                 >
-                  <UserPlus className="size-3.5" /> Save Contact (.vcf)
-                </button>
-                <Link
-                  href={receiverUrl}
-                  target="_blank"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-semibold transition-colors border border-white/10"
-                >
-                  <ExternalLink className="size-3 text-amber-400" /> View Receiver Screen
+                  {downloadingQr ? <Loader2 className="size-3 animate-spin text-[#D4AF37]" /> : <Download className="size-3" />}
+                  <span>Download</span>
+                </Button>
+              </div>
+
+              {/* Free vs Pro Link Retention Status */}
+              <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[10px]">
+                <div className="flex items-center gap-1 text-zinc-300">
+                  <Sparkles className="size-3 text-[#D4AF37]" />
+                  <span>Free vCard · 30-Day Active</span>
+                </div>
+                <Link href="/pricing" className="text-[#D4AF37] hover:brightness-110 font-bold underline transition-colors">
+                  Keep Forever (Pro)
                 </Link>
-                <button
-                  onClick={handleEdit}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[11px] font-semibold transition-colors border border-white/10 cursor-pointer"
-                >
-                  <Edit3 className="size-3 text-amber-400" /> Edit Profile
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-950/40 hover:bg-red-900/60 text-red-300 text-[11px] font-semibold transition-colors border border-red-500/20 cursor-pointer"
-                >
-                  <Trash2 className="size-3" /> Delete
-                </button>
-                <span className="text-[11px] text-[#D4AF37] font-semibold flex items-center gap-1 ml-2">
-                  <Eye className="size-3" /> {card.viewCount || 0} views
-                </span>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Badges & Views Info */}
-          <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-950/80 px-4 py-1.5 text-xs font-extrabold text-amber-300 shadow-sm">
-              <Cpu className="size-4 text-amber-400" /> {
-                card.category === 'business' ? (t('catCorporate') || 'Corporate & Executive')
-                : card.category === 'creative' ? (t('catTech') || 'Tech & Creative')
-                : card.category === 'medical' ? (t('catMedical') || 'Medical & Healthcare')
-                : card.category === 'legal' ? (t('catLegal') || 'Legal & Financial')
-                : card.category === 'real-estate' ? (t('catRealEstate') || 'Real Estate & Property')
-                : card.category === 'beauty' ? (t('catFashion') || 'Beauty & Fashion')
-                : card.category === 'services' ? (t('catServices') || 'Professional Services')
-                : (card.category || 'Executive Profile')
-              }
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-900/80 px-4 py-1.5 text-xs font-extrabold text-emerald-300 shadow-sm">
-              <ShieldCheck className="size-4 text-emerald-400" /> {t('verifiedVCard') || 'Verified Smart vCard'}
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/90 px-4 py-1.5 text-xs font-extrabold text-slate-200 shadow-sm">
-              <Eye className="size-4 text-emerald-400" /> {card.viewCount || 0} {t('viewsLabel') || 'views'}
-            </span>
-          </div>
-
-          {/* Main Visiting Card Surface */}
-          <div className="my-6 py-4 flex justify-center">
-            <div className="w-full max-w-md">
-              <VisitingCardView ref={cardRef} data={card} showShareBtn={false} showQrCode={false} />
-            </div>
-          </div>
-
-          {/* Share & QR Code Panel */}
-          <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col items-center gap-6 text-left">
-            <div className="w-full text-center sm:text-left">
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                {t('shareReceiverLink') || 'Share Receiver Link With Contacts'}
-              </h3>
-              <ShareBar url={receiverUrl} waMessage={waMsg} captureRef={cardRef} fileName={`cardzy-vcard-${card.slug}`} />
-            </div>
-
-            <div className="w-full pt-4 border-t border-border flex flex-col items-center text-center space-y-2">
-              <span className="text-xs font-bold text-primary uppercase tracking-wider">
-                {t('receiverQrCode') || 'Receiver Shareable QR Code'}
-              </span>
-              <CardQrCode slug={slug} cardType="v" size={160} showDownloadBtn={true} />
-            </div>
-          </div>
-
-          {/* CTA Banner */}
-          <div className="mt-8 rounded-2xl p-6 text-center border border-border bg-card shadow-sm">
-            <p className="text-base font-bold mb-1 text-foreground">{t('createAnotherBusinessCard') || 'Create Another Digital Business Card'}</p>
-            <Link
-              href="/create-visiting-card"
-              className="mt-3 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"
-            >
-              {t('buildYourVcard') || 'Create Visiting Card'} <Sparkles className="size-4" />
-            </Link>
-          </div>
+        {/* CTA Banner (Mobile Only) */}
+        <div className="mt-8 rounded-2xl p-4 text-center border border-border bg-card shadow-sm max-w-xl mx-auto lg:hidden">
+          <p className="text-sm font-bold mb-1 text-foreground">{t('createAnotherBusinessCard') || 'Create Another Digital Business Card'}</p>
+          <Link
+            href="/create-visiting-card"
+            className="mt-2 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2 text-xs font-bold text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"
+          >
+            {t('buildYourVcard') || 'Create Visiting Card'} <Sparkles className="size-3.5" />
+          </Link>
         </div>
 
         {/* Sticky Mobile Share Bar for Sender Mode */}
         <div className="fixed bottom-0 inset-x-0 z-50 p-3 bg-zinc-950/95 backdrop-blur-xl border-t border-[#D4AF37]/30 sm:hidden flex items-center justify-between gap-2 shadow-2xl">
           <Button
             onClick={handleDirectWhatsApp}
-            className="flex-1 h-11 rounded-xl bg-[#25D366] hover:bg-[#1eb955] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition-all"
+            className="flex-1 h-11 rounded-xl bg-[#25D366] hover:bg-[#1eb955] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition-all cursor-pointer"
           >
             <MessageCircle className="size-4 shrink-0" />
             <span>WhatsApp</span>
@@ -368,54 +485,32 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
           <Button
             onClick={handleDirectCopy}
             variant="outline"
-            className="h-11 px-3.5 rounded-xl border-white/20 bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all"
+            className="h-11 px-4 rounded-xl border-white/20 bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer"
           >
             {copiedLink ? <Check className="size-4 text-emerald-400" /> : <Copy className="size-4" />}
             <span>{copiedLink ? 'Copied' : 'Copy'}</span>
           </Button>
-          <Button
-            onClick={() => setShowShareModal(true)}
-            className="h-11 px-3.5 rounded-xl bg-[#D4AF37] hover:bg-[#e5c35a] text-slate-950 font-black text-xs flex items-center justify-center gap-1 shadow-md active:scale-95 transition-all"
-          >
-            <Share2 className="size-4" />
-            <span>Share</span>
-          </Button>
+          {typeof navigator !== 'undefined' && 'share' in navigator ? (
+            <Button
+              onClick={handleDirectNativeShare}
+              variant="outline"
+              className="h-11 px-4 rounded-xl border-white/20 bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer"
+            >
+              <Share2 className="size-4" />
+              <span>Share</span>
+            </Button>
+          ) : (
+            <Button
+              onClick={handleDownloadPng}
+              disabled={isDownloadingPng}
+              variant="outline"
+              className="h-11 px-4 rounded-xl border-white/20 bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer"
+            >
+              <Download className="size-4" />
+              <span>Image</span>
+            </Button>
+          )}
         </div>
-
-        {/* Floating Action Pill for Desktop SENDER */}
-        <div className="hidden sm:flex fixed bottom-4 right-4 z-40 items-center gap-2">
-          <button
-            onClick={() => setShowShareModal(true)}
-            className="group flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-zinc-900/90 hover:bg-zinc-800 text-zinc-200 hover:text-white text-xs font-bold shadow-xl border border-white/20 backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-            title="Share Link & QR"
-          >
-            <Share2 className="size-3.5 text-amber-400" />
-            <span>Share</span>
-          </button>
-        </div>
-
-        {/* Universal Luxury Share Modal */}
-        {showShareModal && (
-          <CardShareModal
-            card={{
-              title: card.fullName || 'Digital Visiting Card',
-              recipientOrCouple: card.fullName,
-              type: 'vcard',
-              slug: card.slug,
-              url: `/v/${card.slug}`,
-              viewsCount: card.viewCount || 0,
-              shares: card.shares,
-              occasion: card.company || card.title || 'Digital Business Profile',
-              senderName: card.fullName,
-              waMessage: waMsg,
-              phone: card.phone,
-              email: card.email,
-              website: card.website,
-              address: card.address,
-            }}
-            onClose={() => setShowShareModal(false)}
-          />
-        )}
       </div>
     )
   }

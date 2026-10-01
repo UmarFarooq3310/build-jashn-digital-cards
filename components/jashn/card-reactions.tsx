@@ -116,7 +116,7 @@ export function CardLiveReactions({
       return updated
     })
 
-    // Sync reaction to Firestore backend
+    // Sync reaction to Firestore backend and notify card creator
     try {
       fetch('/api/card-activity', {
         method: 'POST',
@@ -126,6 +126,8 @@ export function CardLiveReactions({
           slug: cardSlug,
           action: 'reaction',
           channel: reaction.id,
+          reactionEmoji: reaction.emoji,
+          reactionLabel: reaction.labelEn,
         }),
       }).catch(() => {})
     } catch {}

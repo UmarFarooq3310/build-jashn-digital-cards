@@ -15,6 +15,11 @@ export type MagicOccasion =
   | 'thankyou'
   | 'getwell'
   | 'newyear'
+  | 'umrah'
+  | 'career'
+  | 'farewell'
+  | 'housewarming'
+  | 'roza-kushai'
 
 export type MagicThemeId =
   | 'emerald-gold'
@@ -97,6 +102,7 @@ export interface MagicLinkData {
   theme: MagicThemeId
   senderName: string
   senderId?: string
+  creatorId?: string
   recipientName: string
   recipientAge?: number
   birthDate?: string

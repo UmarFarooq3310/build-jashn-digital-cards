@@ -38,6 +38,69 @@ function cleanStepLabel(text: string) {
   return text.replace(/^[\d\.\s\u0660-\u0669\u09E6-\u09EF\u0966-\u096F\u06D4\-]+/, '').trim()
 }
 
+const INVITATION_QUICK_STARTERS = [
+  {
+    id: 'royal-nikkah',
+    label: '🌿 Royal Nikkah Ceremony',
+    typeId: 'nikkah',
+    title: 'The Blessed Nikkah Ceremony',
+    hostNames: 'Mr. & Mrs. Tariq Mahmood & Mr. & Mrs. Usman Khan',
+    groom: 'Hassan Mahmood',
+    bride: 'Ayesha Khan',
+    venue: 'Grand Ballroom, Pearl Continental',
+    city: 'Lahore',
+    time: '19:00',
+    dressCode: 'Traditional Royal / Formal',
+    notes: 'In the name of Allah, the Most Gracious, the Most Merciful. We cordially invite you to witness and bless the union of our children.',
+    themeId: 'mughal-emerald',
+  },
+  {
+    id: 'baraat-grand',
+    label: '👑 Grand Baraat Banquet',
+    typeId: 'baraat',
+    title: 'Grand Baraat Celebration',
+    hostNames: 'Chaudhry Family & Relatives',
+    groom: 'Zayn Chaudhry',
+    bride: 'Mariam Farooq',
+    venue: 'Serena Hotel, Sheesh Mahal',
+    city: 'Islamabad',
+    time: '20:00',
+    dressCode: 'Royal Gold & Velvet',
+    notes: 'Your gracious presence and heartfelt prayers will double our joy on this memorable evening.',
+    themeId: 'royal-gold',
+  },
+  {
+    id: 'walima-reception',
+    label: '✨ Elegant Walima Reception',
+    typeId: 'walima',
+    title: 'Walima Dinner Reception',
+    hostNames: 'The Family of Malik Riaz',
+    groom: 'Hamza Riaz',
+    bride: 'Zainab Qureshi',
+    venue: 'The Nishat Hotel, Emperor Hall',
+    city: 'Lahore',
+    time: '19:30',
+    dressCode: 'Black Tie / Evening Formal',
+    notes: 'Please join us for an evening of celebratory dinner and blessings for the newly wedded couple.',
+    themeId: 'regal-sapphire',
+  },
+  {
+    id: 'birthday-party',
+    label: '🎂 Birthday Gala Celebration',
+    typeId: 'birthday-party',
+    title: 'Magical Birthday Celebration',
+    hostNames: 'Family & Friends',
+    groom: 'Ayaan',
+    bride: '',
+    venue: 'Crystal Lounge Club',
+    city: 'Karachi',
+    time: '18:00',
+    dressCode: 'Festive & Fun',
+    notes: 'Come celebrate another wonderful year of joy, cake, and unforgettable memories!',
+    themeId: 'birthday-blue',
+  },
+]
+
 function CreateInvitationContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -140,6 +203,22 @@ function CreateInvitationContent() {
     setErrors(newErrors)
 
     showToast('Pre-written invitation template applied! ✨', 'info')
+  }
+
+  const handleApplyQuickStarter = (starter: typeof INVITATION_QUICK_STARTERS[0]) => {
+    setTypeId(starter.typeId)
+    setTitle(starter.title)
+    setHostNames(starter.hostNames)
+    setGroom(starter.groom)
+    setBride(starter.bride)
+    setVenue(starter.venue)
+    setCity(starter.city)
+    setTime(starter.time)
+    setDressCode(starter.dressCode)
+    setNotes(starter.notes)
+    if (starter.themeId) setThemeId(starter.themeId)
+    setStep(2)
+    showToast(`✨ Loaded ${starter.label}! Personalize names & details.`, 'success')
   }
 
   // Free creation for everyone - no login required to send invitations
@@ -667,33 +746,54 @@ function CreateInvitationContent() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-20">
-      <div className="mb-6 text-center">
-        {/* Card Studio Mode Switcher */}
-        <div className="inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs mb-5">
+      <div className="mb-8 text-center space-y-4">
+        {/* Studio Product Switcher */}
+        <div className="inline-flex items-center justify-center gap-1.5 p-1 rounded-2xl bg-muted/60 border border-border/70 backdrop-blur-md">
           <Link
             href="/create-wish"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             💌 {t('studioTabWish', 'Wish Cards')}
           </Link>
-          <div className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-xs bg-[#7B0D1E]">
+          <span className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-black text-white shadow-xs bg-[#7B0D1E]">
             🎉 {t('studioTabInvite', 'Invitations')}
-          </div>
+          </span>
           <Link
             href="/create-magic-link"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             🪄 {t('studioTabMagic', 'Magic Links')}
           </Link>
           <Link
             href="/create-visiting-card"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             📇 {t('studioTabVCard', 'Visiting Cards')}
           </Link>
         </div>
 
+        {/* Hero Title & Subtitle */}
+        <div className="max-w-2xl mx-auto space-y-2">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+            Design & Deliver Royal Digital Invitations 👑
+          </h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            Bilingual Nikkah, Barat, Walima, and Birthday invites with interactive RSVP & live countdown.
+          </p>
 
+          {/* Reassurance Trust Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold">
+              🎁 100% Free to Create & Send
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 text-[11px] font-bold">
+              💌 1-Tap WhatsApp RSVP Tracking
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-[11px] font-bold">
+              ⭐ Pro Lifetime Storage
+            </span>
+          </div>
+        </div>
 
         {/* 4-Part Progress Stepper */}
         <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
@@ -764,6 +864,29 @@ function CreateInvitationContent() {
                   <span className="text-xs font-medium text-muted-foreground">{t('clickTileToPersonalize')}</span>
                 </div>
 
+                {/* 1-Tap Quick Starters */}
+                <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                      <Sparkles className="size-3.5 text-amber-500 animate-pulse" />
+                      1-Tap Royal Starters (Pre-fills ceremony &amp; theme):
+                    </span>
+                    <span className="text-[10px] text-muted-foreground hidden sm:inline">Tap to start instantly</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {INVITATION_QUICK_STARTERS.map((s) => (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => handleApplyQuickStarter(s)}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold bg-card border border-border hover:border-amber-500 hover:bg-amber-500/10 text-foreground transition-all shadow-2xs hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-1"
+                      >
+                        <span>{s.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <InvitationTypePicker
                   value={typeId}
                   onChange={handleTypeSelect}
@@ -797,10 +920,30 @@ function CreateInvitationContent() {
                     variant="outline"
                     size="sm"
                     onClick={() => changeStep(1)}
-                    className="text-[11px] h-7 px-2.5 rounded-lg flex items-center gap-1 border-border bg-card hover:bg-muted text-foreground font-semibold"
+                    className="text-[11px] h-7 px-2.5 rounded-lg flex items-center gap-1 border-border bg-card hover:bg-muted text-foreground font-semibold cursor-pointer"
                   >
                     <Grid className="size-3 text-[#7B0D1E]" /> {t('viewOccasions')}
                   </Button>
+                </div>
+
+                {/* Quick Switch Template Pills */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                  <span className="text-[10px] font-bold text-muted-foreground shrink-0 uppercase tracking-wider">Quick Fill:</span>
+                  {INVITATION_QUICK_STARTERS.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => handleApplyQuickStarter(s)}
+                      className={cn(
+                        "px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all shrink-0 border cursor-pointer",
+                        typeId === s.typeId
+                          ? "bg-[#7B0D1E]/15 border-[#7B0D1E]/40 text-[#7B0D1E] font-bold"
+                          : "bg-muted/50 border-border hover:bg-muted text-foreground"
+                      )}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
                 </div>
 
                 {/* 📝 Part 2: Event Details */}
@@ -1321,7 +1464,7 @@ function CreateInvitationContent() {
 
         {/* Desktop & Mobile Right Column — Sticky Live Interactive Preview */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden" suppressHydrationWarning>
+          <div id="invitation-live-preview-box" className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden" suppressHydrationWarning>
             <div className="mb-3 flex items-center justify-between px-1">
               <p className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
                 <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
@@ -1406,6 +1549,21 @@ function CreateInvitationContent() {
         </div>
       )}
 
+      {/* Mobile Sticky Floating "View Live Card" Button */}
+      <div className="fixed bottom-4 right-4 z-40 lg:hidden">
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById('invitation-live-preview-box')
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }}
+          className="flex items-center gap-2 rounded-full bg-slate-900/90 text-white border border-[#7B0D1E]/40 px-4 py-2.5 text-xs font-bold shadow-2xl backdrop-blur-md hover:bg-slate-800 active:scale-95 transition-all cursor-pointer"
+        >
+          <Eye className="size-4 text-amber-400 animate-pulse" />
+          <span>View Live Card</span>
+        </button>
+      </div>
+
       {/* Premium Guide Overview Card */}
       <section className="mt-16 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 shadow-sm backdrop-blur-xs text-left space-y-4 max-w-6xl mx-auto">
         <div className="flex items-center gap-2">
@@ -1417,7 +1575,7 @@ function CreateInvitationContent() {
           {t('royalWeddingInvitationsTitle') || 'Royal 4K Animated Wedding Invitations & Online Nikkah Cards'}
         </h2>
         <p className={`text-xs sm:text-sm text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-sm sm:text-base leading-relaxed' : ''}`}>
-          {t('royalWeddingInvitationsDesc') || 'Create breathtaking animated digital wedding invitation websites for Nikkah, Mehndi, Barat, Walima, and Save-The-Date celebrations. Features include custom venue pins with Google Maps directions, background music tracks, custom RSVP form with automatic WhatsApp host notifications, and multiday event itineraries.'}
+          {t('royalWeddingInvitationsDesc') || 'Create breathtaking animated digital wedding invitation websites for Nikkah, Mehndi, Barat, Walima, and Save-The-Date celebrations. Features include custom venue details, background music tracks, custom RSVP form with automatic WhatsApp host notifications, and multiday event itineraries.'}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">

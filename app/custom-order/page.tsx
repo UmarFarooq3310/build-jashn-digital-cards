@@ -90,7 +90,7 @@ export default function CustomOrderPage() {
               {t('faqWhichCardTypesQ') || 'Which Card Types can I request?'}
             </h3>
             <p className={`text-xs text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-sm leading-relaxed text-right' : ''}`}>
-              {t('faqWhichCardTypesA') || 'You can request Wish & Greeting Cards (Birthday, Eid, Anniversary, Friendship), Event Invitations (Wedding, Nikah, Birthday Party with RSVP & Google Maps), or Digital Visiting Cards (.vcf contact card).'}
+              {t('faqWhichCardTypesA') || 'You can request Wish & Greeting Cards (Birthday, Eid, Anniversary, Friendship), Event Invitations (Wedding, Nikah, Birthday Party with RSVP & venue details), or Digital Visiting Cards (.vcf contact card).'}
             </p>
           </div>
 

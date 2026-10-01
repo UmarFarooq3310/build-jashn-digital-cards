@@ -32,6 +32,8 @@ import { CardzyLogo } from '@/components/ui/logo'
 import { recordCardShare } from '@/lib/jashn/magic-service'
 import { getInitials } from '@/components/jashn/visiting-card'
 import { downloadVCard } from '@/lib/jashn/vcard-export'
+import { downloadCardVideo } from '@/lib/jashn/card-media-export'
+import { cn } from '@/lib/utils'
 
 export interface ShareModalCardData {
   title: string
@@ -232,6 +234,29 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
     }
   }
 
+  const [downloadingVideo, setDownloadingVideo] = useState(false)
+  const [videoProgress, setVideoProgress] = useState(0)
+
+  const handleDownloadCardVideo = async () => {
+    if (!imageCaptureRef.current) return
+    setDownloadingVideo(true)
+    setVideoProgress(0)
+    try {
+      setShareStats((prev) => ({ ...prev, video: prev.video + 1 }))
+      await downloadCardVideo({
+        element: imageCaptureRef.current,
+        fileName: `cardzy-${card.type}-${card.slug}`,
+        cardType: card.type,
+        cardSlug: card.slug,
+        onProgress: (p) => setVideoProgress(p),
+      })
+    } catch (err) {
+      console.error('Failed to render card video:', err)
+    } finally {
+      setDownloadingVideo(false)
+    }
+  }
+
   // Visual Theme Badges & Labels based on Card Type
   const typeBadge =
     card.type === 'invite'
@@ -255,19 +280,10 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
         </button>
 
         {/* Header */}
-        <div>
-          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-            <span className={`inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded-full border ${typeBadge.color}`}>
-              <Share2 className="size-3" /> {typeBadge.label}
-            </span>
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-zinc-400 bg-zinc-900 px-2.5 py-0.5 rounded-full border border-white/10">
-              <Eye className="size-3 text-amber-400" /> {card.viewsCount || 0} visits
-            </span>
-          </div>
-          <h3 className="text-lg sm:text-xl font-black tracking-tight text-white line-clamp-1">{card.title}</h3>
-          <p className="text-xs text-zinc-400 mt-0.5">
-            For: <span className="font-semibold text-amber-300">{card.recipientOrCouple}</span>
-          </p>
+        <div className="pr-8">
+          <h3 className="text-base sm:text-lg font-black tracking-tight text-white truncate">
+            {card.recipientOrCouple || card.title}
+          </h3>
         </div>
 
         {/* 4 Interactive Navigation Tabs */}
@@ -305,7 +321,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
             }`}
           >
             <ImageIcon className="size-3.5" />
-            <span>Image</span>
+            <span>Image / Video</span>
           </button>
 
           <button
@@ -415,20 +431,6 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
               </button>
             )}
 
-            {/* Open Host Preview Link */}
-            <a
-              href={`${fullUrl}${card.url.includes('?') ? '&' : '?'}mode=sender`}
-              target="_blank"
-              rel="noreferrer"
-              className="w-full py-2.5 rounded-xl border border-white/15 bg-zinc-900/60 hover:bg-zinc-900 text-xs font-semibold flex items-center justify-center gap-1.5 text-zinc-300 hover:text-white transition-colors"
-            >
-              <span>Open Host Preview (with Controls)</span>
-              <ExternalLink className="size-3.5 text-amber-400" />
-            </a>
-
-            <div className="rounded-xl p-3 bg-zinc-900/50 border border-white/5 text-[11px] text-zinc-400">
-              💡 <span className="font-semibold text-zinc-300">Pro Tip:</span> When you send this link, the recipient sees a clean, full-screen immersive experience without any admin edit controls.
-            </div>
           </div>
         )}
 
@@ -594,30 +596,50 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
               </div>
             </div>
 
-            {/* 1-Click Download Button */}
-            <div className="pt-2">
+            {/* 1-Click Download Buttons (PNG & MP4 Video) */}
+            <div className={cn("pt-2 gap-2", (card.type === 'vcard' || card.type === 'magic') ? "flex" : "grid grid-cols-1 sm:grid-cols-2")}>
               <button
                 onClick={handleDownloadCardImage}
-                disabled={downloadingImage}
-                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-zinc-950 font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer disabled:opacity-50"
+                disabled={downloadingImage || downloadingVideo}
+                className="w-full py-3 px-3 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-zinc-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer disabled:opacity-50"
               >
                 {downloadingImage ? (
                   <>
                     <Loader2 className="size-4 animate-spin text-zinc-950" />
-                    <span>Rendering High-Res PNG...</span>
+                    <span>Rendering PNG...</span>
                   </>
                 ) : imageDownloaded ? (
                   <>
                     <CheckCircle2 className="size-4 text-emerald-950" />
-                    <span>Card Image Downloaded! 🎉</span>
+                    <span>Card Image Saved! 🎉</span>
                   </>
                 ) : (
                   <>
                     <Download className="size-4 text-zinc-950" />
-                    <span>Download Card Image (PNG)</span>
+                    <span>Download Image (PNG)</span>
                   </>
                 )}
               </button>
+
+              {card.type !== 'vcard' && card.type !== 'magic' && (
+                <button
+                  onClick={handleDownloadCardVideo}
+                  disabled={downloadingImage || downloadingVideo}
+                  className="w-full py-3 px-3 rounded-xl bg-gradient-to-r from-[#7A1E2B] via-[#922333] to-[#7A1E2B] hover:brightness-110 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {downloadingVideo ? (
+                    <>
+                      <Loader2 className="size-4 animate-spin text-white" />
+                      <span>{videoProgress > 0 ? `Making Video ${videoProgress}%` : 'Making Video...'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Video className="size-4 text-white" />
+                      <span>Download Video (MP4)</span>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -810,21 +832,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
           </div>
         )}
 
-        {/* Footer info bar */}
-        <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-zinc-400">
-          <span className="flex items-center gap-1.5 text-[11px]">
-            <Eye className="size-3.5 text-amber-400" /> {card.viewsCount || 0} views tracked
-          </span>
-          <a
-            href={fullUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="text-[11px] font-bold text-amber-400 hover:underline flex items-center gap-1"
-          >
-            <span>Open Link</span>
-            <ExternalLink className="size-3" />
-          </a>
-        </div>
+
 
       </div>
     </div>

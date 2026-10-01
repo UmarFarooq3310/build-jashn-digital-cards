@@ -18,9 +18,12 @@ import {
   Heart,
   MessageCircle,
   Edit3,
+  Download,
 } from 'lucide-react'
+import { downloadCardPng } from '@/lib/jashn/card-media-export'
 import { getMagicLink, submitMagicResponse, recordCardShare, getMagicWhatsAppUrl } from '@/lib/jashn/magic-service'
 import type { MagicLinkData, MagicThemeId } from '@/lib/jashn/magic-types'
+import { isCardExpired } from '@/lib/jashn/plan-limits'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
 import { CardzyLogo } from '@/components/ui/logo'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
@@ -196,6 +199,9 @@ function MagicLinkInner({ slug }: { slug: string }) {
   const [copied, setCopied] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
   const [showGuestbookModal, setShowGuestbookModal] = useState(false)
+  const [copiedLink, setCopiedLink] = useState(false)
+  const [isDownloadingPng, setIsDownloadingPng] = useState(false)
+  const [downloadingQr, setDownloadingQr] = useState(false)
   const viewIncrementedRef = useRef<string | null>(null)
   // --- Holographic 3D Tilt Effect ---
   const cardRef = useRef<HTMLDivElement>(null)
@@ -236,12 +242,12 @@ function MagicLinkInner({ slug }: { slug: string }) {
     setTilt({ x: 0, y: 0, glareX: 50, glareY: 50 })
   }
 
-  // Sender preview: ONLY true if explicitly requested via query params (?mode=sender, ?preview=true, ?role=sender)
-  // When copying clean link (/m/slug), both sender and receiver see the authentic receiver experience
+  // Sender/Creator mode: active if requested via URL OR if viewer is detected as the creator/admin
   const isSenderMode =
     searchParams.get('mode') === 'sender' ||
     searchParams.get('preview') === 'true' ||
-    searchParams.get('role') === 'sender'
+    searchParams.get('role') === 'sender' ||
+    (typeof window !== 'undefined' && isSenderOrOwner(slug, (data as any)?.senderId || (data as any)?.creatorId, searchParams, user?.uid))
 
   useEffect(() => {
     return () => {
@@ -372,7 +378,6 @@ function MagicLinkInner({ slug }: { slug: string }) {
   }
 
   const receiverUrl = typeof window !== 'undefined' ? `${window.location.origin}/m/${slug}` : ''
-  const [copiedLink, setCopiedLink] = useState(false)
   const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
 
   const waMsg = `Hey ${data?.recipientName || ''}! ✨ I created an interactive celebration surprise for you on Cardzy: ${receiverUrl}`
@@ -381,6 +386,21 @@ function MagicLinkInner({ slug }: { slug: string }) {
     recordCardShare('magic', slug, 'whatsapp').catch(() => {})
     const text = encodeURIComponent(waMsg)
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank')
+  }
+
+  const handleDownloadPng = async () => {
+    if (!cardRef.current) return
+    setIsDownloadingPng(true)
+    try {
+      await downloadCardPng({
+        element: cardRef.current,
+        fileName: `magic-${data?.occasion || 'card'}-${slug}`,
+        cardType: 'magic',
+        cardSlug: slug,
+      })
+    } finally {
+      setIsDownloadingPng(false)
+    }
   }
 
   const handleDirectNativeShare = async () => {
@@ -395,11 +415,11 @@ function MagicLinkInner({ slug }: { slug: string }) {
         return
       } catch (err: any) {
         if (err.name !== 'AbortError') {
-          setShowShareModal(true)
+          handleDirectCopy()
         }
       }
     } else {
-      setShowShareModal(true)
+      handleDirectCopy()
     }
   }
 
@@ -417,6 +437,30 @@ function MagicLinkInner({ slug }: { slug: string }) {
   }
 
   const handleCopyReceiverLink = handleDirectCopy
+
+  const handleDownloadQr = async () => {
+    if (!data) return
+    setDownloadingQr(true)
+    try {
+      recordCardShare('magic', slug, 'qr').catch(() => {})
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&color=09090b&bgcolor=ffffff&data=${encodeURIComponent(receiverUrl)}`
+      const response = await fetch(qrUrl)
+      const blob = await response.blob()
+      const blobUrl = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = blobUrl
+      link.download = `magic-qr-${slug}.png`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(blobUrl)
+      showToast('QR Code downloaded! 📲', 'success')
+    } catch {
+      window.open(`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(receiverUrl)}`, '_blank')
+    } finally {
+      setDownloadingQr(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -445,6 +489,30 @@ function MagicLinkInner({ slug }: { slug: string }) {
         >
           Create a Magic Link 🪄
         </Link>
+      </div>
+    )
+  }
+
+  // ── 30-Day Expiration for Free Magic Links ──
+  const isExpiredCard = isCardExpired((data as any).createdAt, (data as any).plan || (data.senderId === user?.uid ? user?.plan : undefined))
+  if (isExpiredCard) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center bg-slate-950 text-white space-y-4">
+        <div className="size-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400 text-2xl">
+          ⏳
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-amber-400">Magic Link Expired</h1>
+        <p className="text-xs sm:text-sm text-slate-300 max-w-md leading-relaxed">
+          Free Cardzy magic links remain active for 30 days from creation. To preserve your celebrations forever, upgrade to a Pro account.
+        </p>
+        <div className="flex items-center justify-center gap-3 pt-2">
+          <Link href="/pricing" className="rounded-2xl bg-amber-500 hover:bg-amber-400 px-5 py-2.5 font-bold text-xs text-slate-950 shadow-lg transition-all">
+            Upgrade to Pro ($1.99 / Rs 499)
+          </Link>
+          <Link href="/create-magic-link" className="rounded-2xl border border-white/20 bg-white/10 hover:bg-white/15 px-5 py-2.5 font-bold text-xs text-white transition-all">
+            Create New Link
+          </Link>
+        </div>
       </div>
     )
   }
@@ -494,160 +562,223 @@ function MagicLinkInner({ slug }: { slug: string }) {
         return <GetWellScenario {...commonProps} />
       case 'newyear':
         return <PartyScenario {...commonProps} />
+      case 'umrah':
+        return <EidScenario {...commonProps} />
+      case 'career':
+        return <GraduationScenario {...commonProps} />
+      case 'farewell':
+        return <FriendshipScenario {...commonProps} />
+      case 'housewarming':
+        return <PartyScenario {...commonProps} />
+      case 'roza-kushai':
+        return <RamadanScenario {...commonProps} />
       default:
         return <BirthdayScenario {...commonProps} />
     }
   }
 
   // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Delivery Hero + Sticky Mobile Bar) ──
+  // ── 1. SENDER / CREATOR SCREEN (Clean Responsive Desktop/Mobile Layout, No Repetition) ──
   if (isSenderMode) {
-    return (
-      <div className="py-8 px-4 pb-28 sm:pb-12 min-h-screen">
-        <div className="mx-auto max-w-2xl md:max-w-4xl text-center">
-          <ConfettiRain active={confettiActive} />
-          <style>{`
-            @keyframes float {
-              0%, 100% { transform: translateY(0); }
-              50% { transform: translateY(-10px); }
-            }
-            .animate-float-slow { animation: float 6s ease-in-out infinite; }
-            .animate-float-fast { animation: float 3s ease-in-out infinite; }
-            @keyframes pulse-glow {
-              0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
-              50% { box-shadow: 0 0 40px rgba(255,255,255,0.3); }
-            }
-            .animate-pulse-glow { animation: pulse-glow 3s infinite; }
-          `}</style>
-          {/* Twinkling Stars Background Overlay */}
-          <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+    const fullReceiverUrl = typeof window !== 'undefined' ? `${window.location.origin}${receiverUrl}` : receiverUrl
 
-          {/* High-Converting Delivery Hero for Sender */}
-          <div className="mb-8 rounded-3xl border-2 border-emerald-500/50 bg-gradient-to-br from-slate-900 via-slate-950 to-emerald-950/40 text-white p-6 sm:p-8 shadow-2xl relative overflow-hidden text-left">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="relative z-10 flex flex-col items-center sm:items-start text-center sm:text-left space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-black uppercase tracking-wider">
-                <Sparkles className="size-3.5 text-amber-400 animate-pulse" />
-                <span>Celebration Ready to Deliver!</span>
+    return (
+      <div className="pt-2 sm:pt-3 pb-24 sm:pb-8 lg:py-2 px-3 sm:px-5 max-w-7xl mx-auto lg:h-[calc(100dvh-4.25rem)] lg:max-h-[calc(100dvh-4.25rem)] flex flex-col justify-center">
+        <ConfettiRain active={confettiActive} />
+        <style>{`
+          @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+          }
+          .animate-float-slow { animation: float 6s ease-in-out infinite; }
+          .animate-float-fast { animation: float 3s ease-in-out infinite; }
+          @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+            50% { box-shadow: 0 0 40px rgba(255,255,255,0.3); }
+          }
+          .animate-pulse-glow { animation: pulse-glow 3s infinite; }
+        `}</style>
+        {/* Twinkling Stars Background Overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+
+        {/* ── Main Responsive Grid: Magic Scene (Left on Desktop, Below on Mobile) + Delivery Hub (Top on Mobile, Right on Desktop) ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-5 items-center lg:h-full lg:max-h-full">
+          {/* Interactive Magic Link Capsule Column */}
+          <div className="order-2 lg:order-1 lg:col-span-7 xl:col-span-7 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
+            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                <Eye className="size-3.5 text-purple-400" /> Interactive Receiver Preview
+              </span>
+            </div>
+
+            <div ref={cardRef} className="w-full flex-1 min-h-0 pt-4 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
+              <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl">
+                {renderScenario()}
+              </div>
+            </div>
+          </div>
+
+          {/* Unified 1-Click Delivery Hub Column (Top on Mobile, Vertically Centered on Desktop) */}
+          <div className="order-1 lg:order-2 lg:col-span-5 xl:col-span-5 flex flex-col justify-center lg:h-full lg:max-h-full">
+            <div className="rounded-2xl xl:rounded-3xl border-2 border-purple-500/40 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 text-white p-3.5 sm:p-4 lg:p-3.5 xl:p-4 shadow-xl space-y-2 lg:space-y-2 xl:space-y-2.5 text-left lg:max-h-[calc(100dvh-5.5rem)] lg:overflow-y-auto scrollbar-none">
+              {/* Ready to Deliver celebration highlight */}
+              <div className="p-2 lg:p-2.5 rounded-xl bg-gradient-to-r from-purple-500/20 via-pink-500/15 to-purple-500/20 border border-purple-400/35 shadow-xs flex items-center gap-2">
+                <span className="text-xl animate-bounce shrink-0">🎉</span>
+                <div className="flex-1 min-w-0 text-left">
+                  <span className="text-purple-300 font-extrabold text-xs block leading-tight">Magic Link Live & Ready to Deliver!</span>
+                  <p className="text-zinc-300 text-[10px] leading-tight truncate mt-0.5">
+                    Send to <strong>{data.recipientName}</strong> to unbox a 3D celebration capsule!
+                  </p>
+                </div>
               </div>
 
               <div>
-                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                  Send 3D Magic Link to <span className="text-amber-400">{data.recipientName}</span>
-                </h1>
-                <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
-                  Your interactive card is live! Deliver it now via WhatsApp, social apps, or copy the direct private link.
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-black uppercase tracking-wider">
+                    <Sparkles className="size-2.5 text-amber-400" /> 1-Click Delivery Hub
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-800/90 border border-white/10 px-2 py-0.5 text-[9.5px] font-bold text-slate-300">
+                    <Eye className="size-2.5 text-emerald-400" /> {data.viewsCount || 0} visits
+                  </span>
+                </div>
+                <h2 className="text-base sm:text-lg font-black text-white leading-tight">
+                  Deliver to {data.recipientName}
+                </h2>
+                <p className="text-[10.5px] text-slate-300 mt-0.5">
+                  Send the clean link directly. The receiver unlocks the interactive capsule on arrival.
                 </p>
               </div>
 
-              {/* Instant 1-Click Action Hub */}
-              <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                <Button
-                  onClick={handleDirectWhatsApp}
-                  className="h-12 rounded-2xl bg-[#25D366] hover:bg-[#1eb955] text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-green-950/50 active:scale-95 transition-all cursor-pointer"
-                >
-                  <MessageCircle className="size-5 shrink-0" />
-                  <span>Send via WhatsApp</span>
-                </Button>
+              {/* Primary 1-Click WhatsApp Button */}
+              <Button
+                onClick={handleDirectWhatsApp}
+                className="w-full h-10 sm:h-11 rounded-xl bg-[#25D366] hover:bg-[#1eb955] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md shadow-[#25D366]/25 active:scale-95 transition-all cursor-pointer"
+              >
+                <MessageCircle className="size-4 shrink-0" />
+                <span>Send via WhatsApp</span>
+              </Button>
 
-                {canNativeShare ? (
+              {/* Clean Receiver Link Box */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Clean Receiver Link
+                </label>
+                <div className="flex items-center gap-2 p-1 rounded-xl border border-white/15 bg-white/5">
+                  <input
+                    type="text"
+                    readOnly
+                    value={fullReceiverUrl}
+                    className="flex-1 bg-transparent px-2 text-[11px] text-slate-200 outline-none truncate font-mono select-all"
+                  />
                   <Button
-                    onClick={handleDirectNativeShare}
-                    className="h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer"
+                    onClick={handleDirectCopy}
+                    size="sm"
+                    className={cn(
+                      "h-7 px-2.5 rounded-lg font-bold text-[11px] shrink-0 transition-all cursor-pointer",
+                      copiedLink
+                        ? "bg-purple-500 text-white"
+                        : "bg-white/10 hover:bg-white/20 text-white"
+                    )}
                   >
-                    <Share2 className="size-4 shrink-0" />
-                    <span>Share via Apps</span>
+                    {copiedLink ? <Check className="size-3" /> : <Copy className="size-3" />}
+                    <span>{copiedLink ? 'Copied' : 'Copy'}</span>
                   </Button>
-                ) : (
-                  <Button
-                    onClick={() => setShowShareModal(true)}
-                    className="h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer"
-                  >
-                    <QrCode className="size-4 shrink-0" />
-                    <span>QR Code & Image</span>
-                  </Button>
-                )}
+                </div>
+              </div>
 
+              {/* Direct 1-Click Media Export: Download Image (PNG) */}
+              <div className="pt-0.5">
                 <Button
-                  onClick={handleDirectCopy}
+                  onClick={handleDownloadPng}
+                  disabled={isDownloadingPng}
                   variant="outline"
-                  className="h-12 rounded-2xl border-white/20 bg-white/5 hover:bg-white/10 text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
+                  className="w-full h-8.5 rounded-lg border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer disabled:opacity-50"
                 >
-                  {copiedLink ? <Check className="size-4 text-emerald-400 shrink-0" /> : <Copy className="size-4 shrink-0" />}
-                  <span>{copiedLink ? 'Copied!' : 'Copy Link'}</span>
+                  {isDownloadingPng ? (
+                    <Loader2 className="size-3 animate-spin text-purple-400" />
+                  ) : (
+                    <Download className="size-3 text-purple-400" />
+                  )}
+                  <span>{isDownloadingPng ? 'Saving...' : 'Download Card Image (PNG)'}</span>
                 </Button>
               </div>
 
-              {/* Secondary Creator Options (Preview / Customize Another / Total Views) */}
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-3 border-t border-white/10 w-full text-xs">
-                <Link
-                  href={receiverUrl}
-                  target="_blank"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold transition-colors border border-white/10"
+              {canNativeShare ? (
+                <Button
+                  onClick={handleDirectNativeShare}
+                  variant="outline"
+                  className="w-full h-8 rounded-lg border-white/15 bg-white/5 hover:bg-white/10 text-white font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
                 >
-                  <ExternalLink className="size-3 text-amber-400" /> View Receiver Screen
-                </Link>
-                <Link
-                  href={`/create-magic-link?occasion=${data.occasion}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold transition-colors border border-white/10"
+                  <Share2 className="size-3" />
+                  <span>Share via Other Apps</span>
+                </Button>
+              ) : null}
+
+              {/* Integrated Receiver QR Code (Compact Horizontal Row with Download Icon) */}
+              <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <button
+                    type="button"
+                    onClick={handleDownloadQr}
+                    className="relative group p-1 rounded-xl bg-white shadow-xs shrink-0 cursor-pointer hover:ring-2 hover:ring-purple-400 transition-all text-slate-900"
+                    title="Click to Download QR Code (PNG)"
+                  >
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=09090b&bgcolor=ffffff&data=${encodeURIComponent(receiverUrl)}`}
+                      alt="Receiver QR Code"
+                      className="size-11 rounded object-contain block"
+                    />
+                    <span className="absolute inset-0 bg-black/60 rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white">
+                      <Download className="size-4 text-purple-300" />
+                    </span>
+                  </button>
+                  <div className="min-w-0 text-left">
+                    <span className="text-[10.5px] font-bold text-purple-300 uppercase tracking-wider block">
+                      Receiver QR Code
+                    </span>
+                    <p className="text-[9.5px] text-slate-400 leading-tight mt-0.5 truncate">
+                      Scan or download barcode
+                    </p>
+                  </div>
+                </div>
+
+                <Button
+                  type="button"
+                  onClick={handleDownloadQr}
+                  disabled={downloadingQr}
+                  size="sm"
+                  variant="outline"
+                  className="h-7 px-2.5 rounded-lg border-purple-400/40 bg-purple-400/10 hover:bg-purple-400/20 text-purple-300 text-[10.5px] font-bold shrink-0 flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+                  title="Download high-resolution QR code"
                 >
-                  <Edit3 className="size-3 text-amber-400" /> Customize Another
+                  {downloadingQr ? <Loader2 className="size-3 animate-spin text-purple-300" /> : <Download className="size-3" />}
+                  <span>Download</span>
+                </Button>
+              </div>
+
+              {/* Free vs Pro Link Retention Status */}
+              <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[10px]">
+                <div className="flex items-center gap-1 text-zinc-300">
+                  <Sparkles className="size-3 text-amber-400" />
+                  <span>Free Celebration · 30-Day Active</span>
+                </div>
+                <Link href="/pricing" className="text-amber-400 hover:text-amber-300 font-bold underline transition-colors">
+                  Keep Forever (Pro)
                 </Link>
-                <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1 ml-2">
-                  <Eye className="size-3" /> {data.viewsCount || 0} visits
-                </span>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Badges & Views */}
-          <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/40 bg-amber-950/80 px-4 py-1.5 text-xs font-extrabold text-amber-300 shadow-sm">
-              <Sparkles className="size-4 text-amber-400" /> 3D Magic Link Capsule
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-purple-500/40 bg-purple-950/80 px-4 py-1.5 text-xs font-extrabold text-purple-300 shadow-sm">
-              <Heart className="size-4 text-pink-400" /> For {data.recipientName}
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/90 px-4 py-1.5 text-xs font-extrabold text-slate-200 shadow-sm">
-              <Eye className="size-4 text-emerald-400" /> {data.viewsCount || 0} views
-            </span>
-          </div>
-
-          {/* 3D Magic Card Display */}
-          <div className="my-4 flex justify-center w-full">
-            {renderScenario()}
-          </div>
-
-          {/* Share & QR Code Panel */}
-          <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-sm flex flex-col items-center gap-6 text-left">
-            <div className="w-full text-center sm:text-left">
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                Share Receiver Link With Loved Ones
-              </h3>
-              <ShareBar
-                url={receiverUrl}
-                waMessage={`Hey ${data.recipientName}! ✨ I created an interactive surprise for you on Cardzy:`}
-                fileName={`cardzy-magic-${slug}`}
-              />
-            </div>
-
-            <div className="w-full pt-4 border-t border-border flex flex-col items-center text-center space-y-2">
-              <span className="text-xs font-bold text-primary uppercase tracking-wider">
-                Receiver Shareable QR Code
-              </span>
-              <CardQrCode slug={slug} cardType="m" size={160} showDownloadBtn={true} />
-            </div>
-          </div>
-
-          {/* CTA Banner */}
-          <div className="mt-8 rounded-2xl p-6 text-center border border-border bg-card shadow-sm">
-            <p className="text-base font-bold mb-1 text-foreground">Create Another 3D Animated Magic Link</p>
-            <Link
-              href="/create-magic-link"
-              className="mt-3 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"
-            >
-              Create Magic Link <Sparkles className="size-4" />
-            </Link>
-          </div>
+        {/* CTA Banner (Mobile Only) */}
+        <div className="mt-8 rounded-2xl p-4 text-center border border-border bg-card shadow-sm max-w-xl mx-auto lg:hidden">
+          <p className="text-sm font-bold mb-1 text-foreground">Create Another 3D Animated Magic Link</p>
+          <Link
+            href="/create-magic-link"
+            className="mt-2 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2 text-xs font-bold text-primary-foreground shadow-md hover:bg-primary/90 transition-colors"
+          >
+            Create Magic Link <Sparkles className="size-3.5" />
+          </Link>
         </div>
 
         {/* Sticky Mobile Share Bar for Sender Mode */}
@@ -667,25 +798,30 @@ function MagicLinkInner({ slug }: { slug: string }) {
             {copiedLink ? <Check className="size-4 text-emerald-400" /> : <Copy className="size-4" />}
             <span>{copiedLink ? 'Copied' : 'Copy'}</span>
           </Button>
-          <Button
-            onClick={() => setShowShareModal(true)}
-            className="h-11 px-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-1 shadow-md active:scale-95 transition-all"
-          >
-            <Share2 className="size-4" />
-            <span>Share</span>
-          </Button>
+          {canNativeShare ? (
+            <Button
+              onClick={handleDirectNativeShare}
+              variant="outline"
+              className="h-11 px-3.5 rounded-xl border-white/20 bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all"
+            >
+              <Share2 className="size-4" />
+              <span>Share</span>
+            </Button>
+          ) : (
+            <Button
+              onClick={handleDownloadPng}
+              disabled={isDownloadingPng}
+              variant="outline"
+              className="h-11 px-3.5 rounded-xl border-white/20 bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all"
+            >
+              <Download className="size-4" />
+              <span>Image</span>
+            </Button>
+          )}
         </div>
 
         {/* Floating Action Pill for SENDER */}
         <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-40 flex items-center gap-1.5">
-          <button
-            onClick={() => setShowShareModal(true)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-900/80 hover:bg-slate-800 text-amber-300 hover:text-amber-200 text-xs font-bold shadow-xl shadow-black/50 border border-amber-400/30 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
-            title="Share Celebration"
-          >
-            <Share2 className="size-3.5 text-amber-400" />
-            <span className="hidden sm:inline">Share</span>
-          </button>
           <button
             onClick={() => setShowGuestbookModal(true)}
             className="group flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 hover:from-purple-600 hover:to-indigo-600 text-white text-xs font-bold shadow-2xl shadow-purple-950/70 border border-purple-400/40 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
@@ -695,32 +831,6 @@ function MagicLinkInner({ slug }: { slug: string }) {
             <span>💬 Wishes Wall</span>
           </button>
         </div>
-
-        {/* Universal Share & Image Modal */}
-        <CardShareModal
-          card={
-            showShareModal
-              ? {
-                  title: `${data.occasion.toUpperCase()} Magic Link`,
-                  recipientOrCouple: data.recipientName,
-                  type: 'magic',
-                  slug: slug,
-                  url: `/m/${slug}`,
-                  viewsCount: data.viewsCount,
-                  shares: data.shares,
-                  occasion: `${data.occasion.toUpperCase()} Magic Celebration`,
-                  message: data.wishContent?.secretLetter || data.inviteContent?.eventTitle,
-                  date: data.inviteContent?.eventDate,
-                  time: data.inviteContent?.eventTime,
-                  venue: data.inviteContent?.venueName,
-                  senderName: data.senderName,
-                  theme: data.theme,
-                  waMessage: `Hey ${data.recipientName}! ✨ I created an interactive surprise for you on Cardzy:`,
-                }
-              : null
-          }
-          onClose={() => setShowShareModal(false)}
-        />
 
         {/* Event Card Guestbook & Wishes Wall Modal */}
         <CardGuestbookModal

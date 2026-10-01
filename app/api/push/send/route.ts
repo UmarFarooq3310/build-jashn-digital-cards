@@ -107,15 +107,22 @@ export async function POST(req: Request) {
     const notifDocRef = doc(notifsRef);
     const notifId = notifDocRef.id;
 
-    // 3. Dispatch FCM HTTP v1 multicast with Data-only payload and exact notificationId
+    // 3. Dispatch FCM HTTP v1 multicast.
+    // IMPORTANT: Always include both notification:{} AND data:{} blocks.
+    // - notification:{} is required for browser-closed delivery on Mac, Windows, Android.
+    //   Without it, FCM sends to the device but the OS silently drops the push.
+    // - data:{} is used by the SW to get the URL and notificationId for click handling.
     try {
       const messaging = getAdminMessaging();
       const messagePayload = {
         tokens,
+        // Top-level notification block (for Android native)
+        notification: { title, body },
+        // data block available in SW for URL routing and tracking
         data: {
           title,
           body,
-          url: url || '/',
+          url: url || '/dashboard',
           notificationId: notifId,
         },
         webpush: {
@@ -123,13 +130,27 @@ export async function POST(req: Request) {
             Urgency: 'high',
             TTL: '86400',
           },
+          // webpush.notification is what Chrome/Firefox/Edge on Mac & Windows use
+          notification: {
+            title,
+            body,
+            icon: '/android-chrome-192x192.png',
+            badge: '/favicon-32x32.png',
+            tag: `cardzy-${notifId}`,
+            renotify: true,
+            requireInteraction: false,
+            data: {
+              url: url || '/dashboard',
+              notificationId: notifId,
+            },
+          },
           fcmOptions: {
-            link: url || '/',
+            link: url || '/dashboard',
           },
           data: {
             title,
             body,
-            url: url || '/',
+            url: url || '/dashboard',
             notificationId: notifId,
           },
         },

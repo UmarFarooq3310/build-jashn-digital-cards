@@ -477,33 +477,56 @@ export default function CreateVisitingCardPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto px-4 sm:px-6 pb-20">
-      {/* Universal Studio Mode Switcher */}
-      <div className="text-center mb-6">
-        <div className="inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-20">
+      <div className="mb-8 text-center space-y-4">
+        {/* Studio Product Switcher */}
+        <div className="inline-flex items-center justify-center gap-1.5 p-1 rounded-2xl bg-muted/60 border border-border/70 backdrop-blur-md">
           <Link
             href="/create-wish"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             💌 {t('studioTabWish', 'Wish Cards')}
           </Link>
           <Link
             href="/create-invitation"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             🎉 {t('studioTabInvite', 'Invitations')}
           </Link>
           <Link
             href="/create-magic-link"
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-semibold transition-all text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent hover:border-border/60"
+            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
           >
             🪄 {t('studioTabMagic', 'Magic Links')}
           </Link>
-          <div
-            className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-xs bg-[#7B0D1E]"
-          >
-            <span>📇</span>
-            <span>{t('studioTabVCard', 'Visiting Cards')}</span>
+          <span className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-black text-white shadow-xs bg-[#7B0D1E]">
+            📇 {t('studioTabVCard', 'Visiting Cards')}
+          </span>
+        </div>
+
+        {/* Hero Title & Subtitle */}
+        <div className="max-w-2xl mx-auto space-y-2">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+            Build Your Smart Digital Business Card 💼
+          </h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            Create an NFC & WhatsApp ready vCard in 60 seconds. Clients save your number with 1 tap.
+          </p>
+
+          {/* Reassurance Trust Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold">
+              🎁 100% Free Forever
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-[11px] font-bold">
+              📇 1-Tap Save Contact (.vcf)
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 text-[11px] font-bold">
+              📲 QR Code for Networking
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-[11px] font-bold">
+              ⭐ Pro Lifetime Storage
+            </span>
           </div>
         </div>
       </div>
@@ -1127,7 +1150,7 @@ export default function CreateVisitingCardPage() {
           {t('smartDigitalBusinessCardsTitle') || 'Smart Digital Business Cards & Executive vCard Builder'}
         </h2>
         <p className={`text-xs sm:text-sm text-muted-foreground leading-relaxed ${isUrdu ? 'font-urdu text-sm sm:text-base leading-relaxed' : ''}`}>
-          {t('smartDigitalBusinessCardsDesc') || 'Create smart digital business cards with Cardzy. Share your contact info, social links, WhatsApp, and Google Maps office pins with one tap. Save money on paper cards and network faster.'}
+          {t('smartDigitalBusinessCardsDesc') || 'Create smart digital business cards with Cardzy. Share your contact info, social links, WhatsApp, and office address with one tap. Save money on paper cards and network faster.'}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
           <div className="p-4 rounded-2xl border border-border/70 bg-background/60 shadow-2xs hover:border-emerald-500/30 transition-all">

@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Free Digital Wedding Invitation Maker with WhatsApp RSVP | Cardzy',
   description:
-    'Design free luxury animated wedding invitations with Urdu wording, Google Maps, background music & 1-click WhatsApp RSVP tracking. Build your dream invite in minutes!',
+    'Design free luxury animated wedding invitations with Urdu wording, venue details, background music & 1-click WhatsApp RSVP tracking. Build your dream invite in minutes!',
   keywords: [
     'wedding card wording',
     'Pakistani wedding card maker',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Free Digital Wedding Invitation Maker with WhatsApp RSVP | Cardzy',
     description:
-      'Animated wedding invitations with Urdu wording, maps, music & WhatsApp RSVP. Nikkah, Mehndi, Barat & Walima — all in one free tool.',
+      'Animated wedding invitations with Urdu wording, schedule details, music & WhatsApp RSVP. Nikkah, Mehndi, Barat & Walima — all in one free tool.',
     url: 'https://cardzy.online/create-invitation',
     siteName: 'Cardzy',
     type: 'website',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Free Digital Wedding Invitation Maker with WhatsApp RSVP | Cardzy',
-    description: 'Animated Urdu wedding invitations with maps, music & WhatsApp RSVP tracking. Free!',
+    description: 'Animated Urdu wedding invitations with schedule details, music & WhatsApp RSVP tracking. Free!',
     images: ['/og-image.jpg'],
   },
 }

@@ -10,6 +10,9 @@ const RAW_INVITATION_TYPES: any[] = [
   { id: 'walima',     label: 'Walima',            category: 'Wedding',      icon: 'Utensils',      couple: true, bgImage: '/invitations/walima.jpg',          bgGradient: 'linear-gradient(160deg,#1b1528,#352245,#120c1e)' },
   { id: 'engagement', label: 'Engagement Ceremony',            category: 'Wedding',      icon: 'Heart',         couple: true, bgImage: '/invitations/engagement.jpg',      bgGradient: 'linear-gradient(160deg,#880e4f,#c2185b)' },
   { id: 'bridal-shower', label: 'Bridal Shower', category: 'Wedding', icon: 'Heart', couple: false, bgImage: '/invitations/engagement.jpg', bgGradient: 'linear-gradient(160deg,#ad1457,#f48fb1)' },
+  { id: 'sangeet-night', label: 'Sangeet & Dance Night', category: 'Wedding', icon: 'Music', couple: true, bgGradient: 'linear-gradient(160deg,#831843,#c026d3)' },
+  { id: 'qawwali-night', label: 'Sufi Qawwali & Dinner Mehfil', category: 'Wedding', icon: 'Music', couple: true, bgGradient: 'linear-gradient(160deg,#241703,#78350f,#d97706)' },
+  { id: 'reception-party', label: 'Grand Wedding Reception', category: 'Wedding', icon: 'Crown', couple: true, bgGradient: 'linear-gradient(160deg,#1e1b4b,#4338ca,#f59e0b)' },
 
   // RELIGIOUS & CULTURAL EVENTS
   { id: 'eid-party',     label: 'Eid Party / Gathering',      category: 'Religious',    icon: 'Moon',                      bgImage: '/invitations/eid-party.jpg',       bgGradient: 'linear-gradient(160deg,#1b5e20,#33691e)' },
@@ -24,6 +27,10 @@ const RAW_INVITATION_TYPES: any[] = [
   { id: 'holi-celebration', label: 'Holi Color Festival & Gathering', category: 'Religious', icon: 'Sparkles', couple: false, bgGradient: 'linear-gradient(160deg,#b91c1c,#f59e0b,#ec4899)' },
   { id: 'easter-brunch', label: 'Easter Sunday Family Gathering', category: 'Religious', icon: 'Egg', couple: false, bgGradient: 'linear-gradient(160deg,#3b0764,#a855f7)' },
   { id: 'aqiqah-party', label: 'Aqiqah & Baby Celebration', category: 'Religious', icon: 'Baby', couple: false, bgGradient: 'linear-gradient(160deg,#042f2e,#14b8a6)' },
+  { id: 'majlis-aza', label: 'Majlis-e-Aza & Remembrance', category: 'Religious', icon: 'Moon', couple: false, bgGradient: 'linear-gradient(160deg,#09090b,#18181b,#27272a)' },
+  { id: 'dars-quran', label: 'Dars-e-Quran & Islamic Circle', category: 'Religious', icon: 'BookOpen', couple: false, bgGradient: 'linear-gradient(160deg,#022c22,#065f46,#10b981)' },
+  { id: 'milad-mehfil', label: 'Mehfil-e-Milad & Naat Evening', category: 'Religious', icon: 'Star', couple: false, bgGradient: 'linear-gradient(160deg,#1e1b4b,#1e3a8a,#065f46)' },
+  { id: 'dua-khatam', label: 'Khatam Sharif & Family Dua', category: 'Religious', icon: 'BookOpen', couple: false, bgGradient: 'linear-gradient(160deg,#042f2e,#0f766e,#d97706)' },
 
   // SOCIAL & GLOBAL EVENTS
   { id: 'halloween-party', label: 'Halloween Costume Party', category: 'Social', icon: 'Sparkles', couple: false, bgGradient: 'linear-gradient(160deg,#180b28,#ea580c)' },
@@ -40,6 +47,10 @@ const RAW_INVITATION_TYPES: any[] = [
   { id: 'kids-party',      label: 'Kids Party',category: 'Social',       icon: 'PartyPopper',               bgImage: '/invitations/kids-party.jpg',      bgGradient: 'linear-gradient(160deg,#e91e63,#ff9800)' },
   { id: 'house-warming',   label: 'House Warming',   category: 'Social',       icon: 'House',                     bgImage: '/invitations/house-warming.jpg',   bgGradient: 'linear-gradient(160deg,#4e342e,#795548)' },
   { id: 'game-night', label: 'Game & Movie Night', category: 'Social', icon: 'Gamepad2', bgGradient: 'linear-gradient(160deg,#1e293b,#0f172a)' },
+  { id: 'alumni-reunion', label: 'Alumni Reunion & Get-Together', category: 'Social', icon: 'Users', couple: false, bgGradient: 'linear-gradient(160deg,#1e1b4b,#2563eb)' },
+  { id: 'mushaira-evening', label: 'Mehfil-e-Mushaira & Poetry Night', category: 'Social', icon: 'BookOpen', couple: false, bgGradient: 'linear-gradient(160deg,#2e1065,#6b21a8,#f59e0b)' },
+  { id: 'rooftop-gathering', label: 'Rooftop Soirée & Barbecue', category: 'Social', icon: 'Sun', couple: false, bgGradient: 'linear-gradient(160deg,#1e293b,#0f172a,#ea580c)' },
+  { id: 'kitty-party', label: 'Ladies Kitty Party & Brunch', category: 'Social', icon: 'Sparkles', couple: false, bgGradient: 'linear-gradient(160deg,#831843,#db2777,#ec4899)' },
 
   // PROFESSIONAL / BUSINESS
   { id: 'shop-opening',   label: 'Shop / Grand Opening', category: 'Professional', icon: 'Store',      bgImage: '/invitations/shop-opening.jpg',    bgGradient: 'linear-gradient(160deg,#0d47a1,#1565c0)' },
@@ -50,6 +61,10 @@ const RAW_INVITATION_TYPES: any[] = [
   { id: 'school-function',label: 'School / College Function',          category: 'Professional', icon: 'Building2',  bgImage: '/invitations/school-function.jpg', bgGradient: 'linear-gradient(160deg,#1b5e20,#0d47a1)' },
   { id: 'teachers-day-event', label: 'Teachers Honor Ceremony', category: 'Professional', icon: 'Award', couple: false, bgGradient: 'linear-gradient(160deg,#172554,#2563eb)' },
   { id: 'national-day-gala', label: 'National Day Reception', category: 'Professional', icon: 'Flag', couple: false, bgGradient: 'linear-gradient(160deg,#064e3b,#059669)' },
+  { id: 'annual-awards', label: 'Annual Excellence Awards & Dinner', category: 'Professional', icon: 'Award', couple: false, bgGradient: 'linear-gradient(160deg,#172554,#1e3a8a,#ca8a04)' },
+  { id: 'networking-mixer', label: 'Founders & Tech Networking Mixer', category: 'Professional', icon: 'Briefcase', couple: false, bgGradient: 'linear-gradient(160deg,#09090b,#0284c7,#2563eb)' },
+  { id: 'hackathon-demo', label: 'Hackathon & Tech Demo Day', category: 'Professional', icon: 'Rocket', couple: false, bgGradient: 'linear-gradient(160deg,#0f172a,#3b82f6,#06b6d4)' },
+  { id: 'medical-symposium', label: 'Medical Conference & Symposium', category: 'Professional', icon: 'Award', couple: false, bgGradient: 'linear-gradient(160deg,#042f2e,#0d9488,#14b8a6)' },
 ]
 
 export const INVITATION_TYPES: InvitationType[] = RAW_INVITATION_TYPES.map(type => {

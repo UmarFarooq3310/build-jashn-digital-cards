@@ -90,6 +90,173 @@ export async function POST(req: Request) {
       })
     }
 
+    // ─────────────────────────────────────────────────────────────
+    // 0.2 ACTION: PURGE GUEST CARDS OLDER THAN N DAYS (STRICTLY PRESERVES ALL ACCOUNTS)
+    // ─────────────────────────────────────────────────────────────
+    if (action === 'purge_guest_data') {
+      const days = Math.max(1, Number(body.days || 30))
+      const cutoff = Date.now() - (days * 24 * 60 * 60 * 1000)
+
+      // 1. Get all registered member IDs & emails from users collection
+      const usersSnap = await db.collection('users').get().catch(() => ({ docs: [] } as any))
+      const registeredUserIds = new Set<string>()
+      const registeredEmails = new Set<string>()
+      usersSnap.docs.forEach((d: any) => {
+        registeredUserIds.add(d.id)
+        const udata = d.data()
+        if (udata?.uid) registeredUserIds.add(udata.uid)
+        if (udata?.email) registeredEmails.add(udata.email.toLowerCase().trim())
+      })
+
+      const targetCol = body.targetCollection ? String(body.targetCollection).trim() : null
+      const validCollections = ['wishes', 'invitations', 'visitingCards', 'magic_links', 'magic_link_responses', 'rsvps']
+      const collections = targetCol && validCollections.includes(targetCol)
+        ? [targetCol]
+        : ['wishes', 'invitations', 'visitingCards', 'magic_links']
+
+      const counts: Record<string, number> = {}
+      collections.forEach((c) => { counts[c] = 0 })
+
+      for (const colName of collections) {
+        // Query older documents
+        const snap = await db.collection(colName).where('createdAt', '<=', cutoff).limit(300).get().catch(() => ({ docs: [] } as any))
+        const batch = db.batch()
+        let batchCount = 0
+
+        snap.docs.forEach((doc: any) => {
+          const data = doc.data()
+          const creatorId = data.creatorId || data.senderId || data.userId
+          const creatorEmail = (data.creatorEmail || data.email || '').toLowerCase().trim()
+          
+          // STRICT RULE: If this card belongs to an authenticated member with an account (no delete button), NEVER PURGE!
+          const isMemberCard =
+            (creatorId && creatorId !== 'guest' && creatorId !== 'anonymous' && (registeredUserIds.has(creatorId) || creatorId.length > 5)) ||
+            (creatorEmail && registeredEmails.has(creatorEmail))
+
+          if (isMemberCard) {
+            return // Skip! Member data is strictly protected and preserved
+          }
+
+          // Guest card or orphaned card older than threshold -> purge
+          batch.delete(doc.ref)
+          batchCount++
+          counts[colName]++
+        })
+
+        if (batchCount > 0) {
+          await batch.commit().catch(() => {})
+        }
+      }
+
+      const totalPurged = Object.values(counts).reduce((a, b) => a + b, 0)
+
+      return NextResponse.json({
+        success: true,
+        action: 'purge_guest_data',
+        days,
+        totalPurged,
+        counts,
+        message: `Purged ${totalPurged} guest cards older than ${days} days. All registered member accounts and cards were safely preserved.`,
+      })
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 0.3 ACTION: PURGE FREE USER CARDS OLDER THAN 30 DAYS (PRO ACCOUNTS PRESERVED FOREVER)
+    // ─────────────────────────────────────────────────────────────
+    if (action === 'purge_free_user_old_cards') {
+      const days = Math.max(1, Number(body.days || 30))
+      const cutoff = Date.now() - (days * 24 * 60 * 60 * 1000)
+      const targetUid = body.targetUid ? String(body.targetUid).trim() : null
+      const targetCol = body.targetCollection ? String(body.targetCollection).trim() : null
+
+      const usersSnap = await db.collection('users').get().catch(() => ({ docs: [] } as any))
+      const proUserIds = new Set<string>()
+      const proUserEmails = new Set<string>()
+      const freeUserIds = new Set<string>()
+      const freeUserEmails = new Set<string>()
+
+      usersSnap.docs.forEach((d: any) => {
+        const udata = d.data()
+        const plan = (udata?.plan || 'free').toLowerCase()
+        if (plan === 'pro' || plan === 'business') {
+          proUserIds.add(d.id)
+          if (udata?.uid) proUserIds.add(udata.uid)
+          if (udata?.email) proUserEmails.add(udata.email.toLowerCase().trim())
+        } else {
+          // Free user
+          if (!targetUid || d.id === targetUid || udata?.uid === targetUid) {
+            freeUserIds.add(d.id)
+            if (udata?.uid) freeUserIds.add(udata.uid)
+            if (udata?.email) freeUserEmails.add(udata.email.toLowerCase().trim())
+          }
+        }
+      })
+
+      const validCollections = ['wishes', 'invitations', 'visitingCards', 'magic_links']
+      const collections = targetCol && validCollections.includes(targetCol)
+        ? [targetCol]
+        : validCollections
+
+      const counts: Record<string, number> = {
+        wishes: 0,
+        invitations: 0,
+        visitingCards: 0,
+        magic_links: 0,
+      }
+
+      for (const colName of collections) {
+        const snap = await db.collection(colName).where('createdAt', '<=', cutoff).limit(500).get().catch(() => ({ docs: [] } as any))
+        const batch = db.batch()
+        let batchCount = 0
+
+        snap.docs.forEach((doc: any) => {
+          const data = doc.data()
+          const creatorId = data.creatorId || data.senderId || data.userId
+          const creatorEmail = (data.creatorEmail || data.email || '').toLowerCase().trim()
+          const creatorPlan = (data.creatorPlan || '').toLowerCase().trim()
+
+          // STRICT PROTECTION: If this card belongs to a Pro / Business user, NEVER DELETE IT!
+          const isProCard =
+            creatorPlan === 'pro' ||
+            creatorPlan === 'business' ||
+            (creatorId && proUserIds.has(creatorId)) ||
+            (creatorEmail && proUserEmails.has(creatorEmail))
+
+          if (isProCard) {
+            return // Protected!
+          }
+
+          // If targeting a specific free user:
+          if (targetUid) {
+            const isTargetUser =
+              (creatorId && freeUserIds.has(creatorId)) ||
+              (creatorEmail && freeUserEmails.has(creatorEmail))
+            if (!isTargetUser) return
+          }
+
+          // Card is not paid and is older than 30 days -> PURGE!
+          batch.delete(doc.ref)
+          batchCount++
+          counts[colName]++
+        })
+
+        if (batchCount > 0) {
+          await batch.commit().catch(() => {})
+        }
+      }
+
+      const totalPurged = Object.values(counts).reduce((a, b) => a + b, 0)
+
+      return NextResponse.json({
+        success: true,
+        action: 'purge_free_user_old_cards',
+        days,
+        totalPurged,
+        counts,
+        message: `Purged ${totalPurged} cards older than ${days} days belonging to Free & Guest accounts. Paid Pro accounts remain untouched.`,
+      })
+    }
+
     if (!cardType || !slug) {
       return NextResponse.json({ error: 'Missing required parameters: cardType, slug' }, { status: 400 })
     }

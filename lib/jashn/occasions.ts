@@ -50,6 +50,10 @@ const RAW_OCCASIONS: any[] = [
   { id: 'new-home', label: 'New Home / Housewarming', tagline: 'Congratulations on Your New Home', urdu: 'نیا گھر مبارک', category: 'Achievements', icon: 'House', bgImage: '/occasions/new-home.jpg', bgGradient: 'linear-gradient(160deg,#4e342e,#795548)' },
   { id: 'business-launch', label: 'Business Launch', tagline: 'Wishing Your Business Great Success', urdu: 'نیا کاروبار مبارک', category: 'Achievements', icon: 'Rocket', bgImage: '/occasions/business-launch.jpg', bgGradient: 'linear-gradient(160deg,#0d47a1,#1565c0)' },
   { id: 'exam-pass', label: 'Result / Exam Pass', tagline: 'Congratulations on Passing!', urdu: 'کامیابی مبارک', category: 'Achievements', icon: 'ScrollText', bgImage: '/occasions/exam-pass.jpg', bgGradient: 'linear-gradient(160deg,#1a237e,#283593)' },
+  { id: 'phd-defense', label: 'Doctorate / PhD Defense', tagline: 'Congratulations Dr.!', urdu: 'پی ایچ ڈی و ڈاکٹریٹ مبارک', category: 'Achievements', icon: 'GraduationCap', bgGradient: 'linear-gradient(160deg,#1e1b4b,#312e81,#ca8a04)' },
+  { id: 'driving-license', label: 'Driving License Passed', tagline: 'License Passed! Ready to Roll', urdu: 'ڈرائیونگ لائسنس مبارک', category: 'Achievements', icon: 'Award', bgGradient: 'linear-gradient(160deg,#0f172a,#0284c7,#10b981)' },
+  { id: 'sports-trophy', label: 'Sports & Tournament Trophy', tagline: 'Champion of the Field!', urdu: 'کھیل میں شاندار فتح مبارک', category: 'Achievements', icon: 'Trophy', bgGradient: 'linear-gradient(160deg,#1c1917,#78350f,#eab308)' },
+  { id: 'visa-approved', label: 'Visa & Immigration Approval', tagline: 'Visa Approved! Pack Your Bags', urdu: 'ویزا منظوری مبارک', category: 'Achievements', icon: 'Plane', bgGradient: 'linear-gradient(160deg,#042f2e,#0d9488,#38bdf8)' },
 
   // SEASONAL & NATIONAL
   { id: 'independence-day', label: 'Independence Day', tagline: 'Happy Independence Day', urdu: 'یومِ آزادی مبارک', category: 'National', icon: 'Flag', bgImage: '/occasions/independence-day.jpg', bgGradient: 'linear-gradient(160deg,#1b5e20,#2e7d32)' },
@@ -61,6 +65,8 @@ const RAW_OCCASIONS: any[] = [
   { id: 'shaadi', label: 'Shaadi Mubarak', tagline: 'Shaadi Mubarak', urdu: 'شادی مبارک', category: 'Family', icon: 'Crown', bgImage: '/occasions/shaadi.jpg', bgGradient: 'linear-gradient(160deg,#8e0f24,#4a0510)' },
   { id: 'mehndi', label: 'Mehndi Mubarak', tagline: 'Mehndi Mubarak', urdu: 'مہندی مبارک', category: 'Family', icon: 'Flower2', bgImage: '/occasions/mehndi.jpg', bgGradient: 'linear-gradient(160deg,#2e7d32,#f9a825)' },
   { id: 'baby-shower', label: 'Baby Shower', tagline: 'Congratulations Baby Shower!', urdu: 'بیبی شاور مبارک', category: 'Family', icon: 'Gift', bgImage: '/occasions/new-baby.jpg', bgGradient: 'linear-gradient(160deg,#f48fb1,#81d4fa)' },
+  { id: 'baat-pakki', label: 'Baat Pakki / Roka', tagline: 'Baat Pakki Mubarak', urdu: 'بات پکی مبارک', category: 'Family', icon: 'Heart', bgGradient: 'linear-gradient(160deg,#831843,#be185d,#ca8a04)' },
+  { id: 'housewarming-blessings', label: 'Ghar Parvesh / Housewarming', tagline: 'Home Sweet Home Blessings', urdu: 'نیا گھر مبارک ہو', category: 'Family', icon: 'House', bgGradient: 'linear-gradient(160deg,#064e3b,#047857,#f59e0b)' },
 
   // WORLDWIDE CALENDAR CELEBRATIONS
   { id: 'shab-e-miraj', label: "Shab-e-Miraj", tagline: "The Blessed Night Journey & Miraj", urdu: "شبِ معراج مبارک", category: 'Islamic', icon: 'Moon', bgGradient: 'linear-gradient(160deg,#0f172a,#1e1b4b,#065f46)' },

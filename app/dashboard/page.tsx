@@ -117,8 +117,8 @@ export default function DashboardPage() {
 
   function handleDownloadGuests() {
     if (!user) return
-    if (user.plan !== 'business') {
-      alert('Downloading all guests in CSV format is exclusively available for Business plan subscribers. Please upgrade to the Business plan.')
+    if (user.plan !== 'pro' && user.plan !== 'business') {
+      alert('Downloading all guests in CSV format is a Pro feature. Please upgrade to the Pro plan.')
       router.push('/pricing')
       return
     }
@@ -127,8 +127,8 @@ export default function DashboardPage() {
 
   function handleDownloadGuestsPdf() {
     if (!user) return
-    if (user.plan !== 'business') {
-      alert('Downloading guest report in PDF format is exclusively available for Business plan subscribers. Please upgrade to the Business plan.')
+    if (user.plan !== 'pro' && user.plan !== 'business') {
+      alert('Downloading guest report in PDF format is a Pro feature. Please upgrade to the Pro plan.')
       router.push('/pricing')
       return
     }
@@ -169,16 +169,16 @@ export default function DashboardPage() {
               onClick={handleDownloadGuestsPdf}
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-bold h-auto transition-all",
-                user.plan === 'business'
+                user.plan === 'pro' || user.plan === 'business'
                   ? "border-indigo-500/30 bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20"
                   : "border-amber-500/40 bg-amber-500/10 text-amber-700 hover:bg-amber-500/20"
               )}
             >
               <FileText className="size-4" />
               <span>Download PDF Report</span>
-              {user.plan !== 'business' && (
+              {user.plan !== 'pro' && user.plan !== 'business' && (
                 <span className="ml-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-extrabold uppercase text-amber-800 border border-amber-500/30">
-                  Business Only
+                  Pro
                 </span>
               )}
             </Button>
@@ -189,16 +189,16 @@ export default function DashboardPage() {
               onClick={handleDownloadGuests}
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-bold h-auto transition-all",
-                user.plan === 'business'
+                user.plan === 'pro' || user.plan === 'business'
                   ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20"
                   : "border-amber-500/40 bg-amber-500/10 text-amber-700 hover:bg-amber-500/20"
               )}
             >
               <FileText className="size-4" />
               <span>Export CSV</span>
-              {user.plan !== 'business' && (
+              {user.plan !== 'pro' && user.plan !== 'business' && (
                 <span className="ml-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-extrabold uppercase text-amber-800 border border-amber-500/30">
-                  Business Only
+                  Pro
                 </span>
               )}
             </Button>

@@ -82,6 +82,19 @@ import { purgeAdminPresence, markDeviceAsAdmin, ADMIN_EMAILS } from '@/lib/jashn
 import { getClientTracking } from '@/lib/jashn/tracking'
 import { SiteHeader } from '@/components/site-header'
 
+// ── Module-level caches ───────────────────────────────────────────────────────
+// These survive tab switches and section changes, preventing Firestore re-reads.
+// Each admin portal mount only subscribes if cache has expired.
+
+/** Activity stream ('all' section) cache */
+let _cachedActivityStream: any[] = []
+let _activityCacheTsMs = 0
+const ACTIVITY_CACHE_TTL_MS = 5 * 60 * 1000 // 5 minutes
+
+/** Per-tab data cache (users, invitations, wishes, etc.) */
+const _tabCache = new Map<string, { data: any[]; ts: number; hasMore: boolean }>()
+const TAB_CACHE_TTL_MS = 3 * 60 * 1000 // 3 minutes
+
 function formatDateStandard(timestamp?: number): string {
   if (!timestamp) return '—'
   const d = new Date(timestamp)
@@ -484,13 +497,10 @@ export default function AdminPortalPage() {
   const [pageAdminPoetry, setPageAdminPoetry] = useState(1)
   const [pageSizeAdminPoetry, setPageSizeAdminPoetry] = useState(12)
 
-  const [pagePoetryActivity, setPagePoetryActivity] = useState(1)
-  const [pageSizePoetryActivity, setPageSizePoetryActivity] = useState(10)
-  const [poetryActivityFilter, setPoetryActivityFilter] = useState<string>('all')
-  const [poetryActivitySearch, setPoetryActivitySearch] = useState<string>('')
-
   const [pageUsers, setPageUsers] = useState(1)
   const [pageSizeUsers, setPageSizeUsers] = useState(30)
+  const [expandedUserCardsUid, setExpandedUserCardsUid] = useState<string | null>(null)
+  const [isPurgingFreeUserCards, setIsPurgingFreeUserCards] = useState<string | null>(null)
 
   const [pageInvitations, setPageInvitations] = useState(1)
   const [pageSizeInvitations, setPageSizeInvitations] = useState(30)
@@ -531,6 +541,7 @@ export default function AdminPortalPage() {
     guestbook: null,
     poetry: null,
     testimonials: null,
+    live_users: null,
   })
   const [tabHasMore, setTabHasMore] = useState<Record<string, boolean>>({
     users: false,
@@ -542,6 +553,7 @@ export default function AdminPortalPage() {
     guestbook: false,
     poetry: false,
     testimonials: false,
+    live_users: false,
   })
   const [isTabLoadingMore, setIsTabLoadingMore] = useState(false)
 
@@ -639,6 +651,8 @@ export default function AdminPortalPage() {
   const [liveActiveSessions, setLiveActiveSessions] = useState<any[]>([])
   const [expandedDevices, setExpandedDevices] = useState<Record<string, boolean>>({})
   const [groupByDevice, setGroupByDevice] = useState<boolean>(true)
+  /** Cumulative total unique visitors since day 1 (persisted in Firestore site_stats doc) */
+  const [totalUniqueVisitors, setTotalUniqueVisitors] = useState<number>(0)
 
   const toggleExpandDevice = (key: string) => {
     setExpandedDevices((prev) => ({
@@ -677,6 +691,7 @@ export default function AdminPortalPage() {
     language?: string
     referrer?: string
     latestLastSeen: number
+    firstSeen: number
     isActive: boolean
     latestPage: string
     latestTitle?: string
@@ -689,12 +704,13 @@ export default function AdminPortalPage() {
     const threshold = Date.now() - 120000 // Active within last 2 minutes (matches 35s pulse)
 
     allSessions.forEach((s) => {
-      // Build unique device key based on deviceId or IP + device + user
+      // Group by persistent device ID, or location + IP + device category
       const key = (s.deviceId && typeof s.deviceId === 'string' && s.deviceId.length > 3)
         ? s.deviceId
-        : `${s.ip || 'no-ip'}_${s.device || 'device'}_${s.userId || s.userEmail || 'guest'}`
+        : `${s.city || s.location || 'location'}_${s.ip || 'ip'}_${s.device || 'device'}`
 
       const isDocActive = (s.lastSeen || 0) >= threshold
+      const sessionTime = s.lastSeen || s.createdAt || Date.now()
 
       if (!groupsMap.has(key)) {
         groupsMap.set(key, {
@@ -714,7 +730,8 @@ export default function AdminPortalPage() {
           ip: s.ip,
           language: s.language,
           referrer: s.referrer,
-          latestLastSeen: s.lastSeen || 0,
+          latestLastSeen: sessionTime,
+          firstSeen: sessionTime,
           isActive: isDocActive,
           latestPage: s.page || '/',
           latestTitle: s.title,
@@ -724,8 +741,10 @@ export default function AdminPortalPage() {
       } else {
         const g = groupsMap.get(key)!
         g.sessions.push(s)
-        if ((s.lastSeen || 0) > g.latestLastSeen) {
-          g.latestLastSeen = s.lastSeen || 0
+        g.firstSeen = Math.min(g.firstSeen || sessionTime, sessionTime)
+
+        if (sessionTime > g.latestLastSeen) {
+          g.latestLastSeen = sessionTime
           g.latestPage = s.page || g.latestPage
           g.latestTitle = s.title || g.latestTitle
           if (s.userName && s.userName !== 'Guest' && s.userName !== 'Guest Visitor') {
@@ -750,8 +769,98 @@ export default function AdminPortalPage() {
       }
     })
 
+    // Sort device sessions internally by newest first
+    groupsMap.forEach((g) => {
+      g.sessions.sort((a, b) => (b.lastSeen || b.createdAt || 0) - (a.lastSeen || a.createdAt || 0))
+    })
+
     return Array.from(groupsMap.values()).sort((a, b) => b.latestLastSeen - a.latestLastSeen)
   }, [allSessions])
+
+  // ── Guest Cards Purge State (Strictly preserves member cards) ─────────────
+  const [guestPurgeDays, setGuestPurgeDays] = useState(30)
+  const [isPurgingGuestData, setIsPurgingGuestData] = useState<string | false>(false)
+
+  async function handlePurgeGuestData(targetCollection?: string, sectionLabel?: string) {
+    const label = sectionLabel || 'guest cards'
+    if (!confirm(`Are you sure you want to permanently purge unauthenticated ${label} older than ${guestPurgeDays} days?\n\n🛡️ Strict Rule: Registered user accounts & cards are NEVER deleted.`)) return
+    setIsPurgingGuestData(targetCollection || 'all')
+    try {
+      const res = await fetch('/api/admin-card-action', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'purge_guest_data',
+          days: guestPurgeDays,
+          targetCollection: targetCollection || undefined,
+        }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        showToast(data.message || `Cleaned up ${data.totalPurged} ${label}. Member accounts and cards preserved.`, 'success')
+        const cutoff = Date.now() - (guestPurgeDays * 24 * 60 * 60 * 1000)
+        const isPreserved = (card: any) => {
+          const cId = card.creatorId || card.senderId || card.userId
+          if (cId && cId !== 'guest' && cId !== 'anonymous') return true
+          return (card.createdAt || 0) > cutoff
+        }
+        if (!targetCollection || targetCollection === 'wishes') {
+          setFirestoreWishes(prev => prev.filter(isPreserved))
+        }
+        if (!targetCollection || targetCollection === 'invitations') {
+          setFirestoreInvitations(prev => prev.filter(isPreserved))
+        }
+        if (!targetCollection || targetCollection === 'visitingCards') {
+          setFirestoreVisitingCards(prev => prev.filter(isPreserved))
+        }
+        if (!targetCollection || targetCollection === 'magic_links') {
+          setFirestoreMagicLinks(prev => prev.filter(isPreserved))
+        }
+        if (targetCollection === 'magic_link_responses') {
+          setFirestoreMagicResponses(prev => prev.filter((r: any) => (r.createdAt || 0) > cutoff))
+        }
+        if (targetCollection === 'rsvps') {
+          setFirestoreRsvps(prev => prev.filter((r: any) => (r.createdAt || 0) > cutoff))
+        }
+      } else {
+        showToast(data.error || `Failed to purge ${label}`, 'error')
+      }
+    } catch (err: any) {
+      showToast(err?.message || `Error executing purge for ${label}`, 'error')
+    } finally {
+      setIsPurgingGuestData(false)
+    }
+  }
+
+  // Helper to detect if a session belongs to admin device or admin user
+  const isDocFromAdminDevice = useCallback((s: any) => {
+    if (!s) return false
+    const currentDevId = typeof window !== 'undefined'
+      ? (localStorage.getItem('cardzy_device_id') || localStorage.getItem('cardzy_admin_device_id'))
+      : null
+    const currentSessId = typeof window !== 'undefined'
+      ? (sessionStorage.getItem('cardzy_live_session_id') || localStorage.getItem('cardzy_live_session_id'))
+      : null
+    const adminIp = typeof window !== 'undefined' ? localStorage.getItem('cardzy_admin_ip') : null
+    const isLocal = typeof window !== 'undefined' && (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname.startsWith('192.168.')
+    )
+
+    if (s.page && s.page.startsWith('/admin_portal')) return true
+    if (s.userEmail && ADMIN_EMAILS.includes(String(s.userEmail).toLowerCase().trim())) return true
+    if (currentDevId && s.deviceId && s.deviceId === currentDevId) return true
+    if (currentSessId && s.id === currentSessId) return true
+    if (adminIp && s.ip && s.ip === adminIp) return true
+    if (isLocal && (
+      s.ip === '127.0.0.1' ||
+      s.ip === '::1' ||
+      s.ip === 'localhost' ||
+      (s.referrer && (s.referrer.includes('localhost') || s.referrer.includes('127.0.0.1')))
+    )) return true
+    return false
+  }, [])
 
   useEffect(() => {
     // Immediately purge any session docs from Firebase for this admin device
@@ -781,10 +890,13 @@ export default function AdminPortalPage() {
         const firestoreDb = getFirebaseDb()
         if (!firestoreDb) return
         const collRef = collection(firestoreDb, 'active_sessions')
-        const q = query(collRef, orderBy('lastSeen', 'desc'), limit(20))
+        const PAGE_SIZE = 5
+        // Fetch 5 active sessions on initial load (+1 to check if there are more for server pagination)
+        const q = query(collRef, orderBy('lastSeen', 'desc'), limit(PAGE_SIZE + 1))
         unsub = onSnapshot(q, async (snap) => {
           const threshold = Date.now() - 120000 // Active within the last 2 minutes (matches 35s pulse)
-          const rawDocs = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() } as any))
+          const allSnapDocs = snap.docs
+          const rawDocs = allSnapDocs.map((doc) => ({ id: doc.id, ...doc.data() } as any))
           const currentDevId = typeof window !== 'undefined'
             ? (localStorage.getItem('cardzy_device_id') || localStorage.getItem('cardzy_admin_device_id'))
             : null
@@ -792,22 +904,6 @@ export default function AdminPortalPage() {
             ? (sessionStorage.getItem('cardzy_live_session_id') || localStorage.getItem('cardzy_live_session_id'))
             : null
           const adminIp = typeof window !== 'undefined' ? localStorage.getItem('cardzy_admin_ip') : null
-
-          // Test if any session belongs to the admin or the admin device
-          const isDocFromAdminDevice = (s: any) => {
-            if (s.page && s.page.startsWith('/admin_portal')) return true
-            if (s.userEmail && ADMIN_EMAILS.includes(String(s.userEmail).toLowerCase().trim())) return true
-            if (currentDevId && s.deviceId && s.deviceId === currentDevId) return true
-            if (currentSessId && s.id === currentSessId) return true
-            if (adminIp && s.ip && s.ip === adminIp) return true
-            if (isLocal && (
-              s.ip === '127.0.0.1' ||
-              s.ip === '::1' ||
-              s.ip === 'localhost' ||
-              (s.referrer && (s.referrer.includes('localhost') || s.referrer.includes('127.0.0.1')))
-            )) return true
-            return false
-          }
 
           // Identify any admin session docs to clean up from database
           const adminDocIds = rawDocs.filter(isDocFromAdminDevice).map((s) => s.id)
@@ -836,10 +932,51 @@ export default function AdminPortalPage() {
             .filter((s) => !isDocFromAdminDevice(s))
             .sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0))
           
-          setAllSessions(visitorDocs)
+          const hasMore = allSnapDocs.length > PAGE_SIZE
+          const visibleDocs = hasMore ? visitorDocs.slice(0, PAGE_SIZE) : visitorDocs
+          const lastDocSnapshot = (allSnapDocs[Math.min(allSnapDocs.length - 1, PAGE_SIZE - 1)] ?? null) as DocumentSnapshot | null
+
+          setAllSessions((prev) => {
+            const map = new Map<string, any>()
+            visibleDocs.forEach((s) => map.set(s.id, s))
+            prev.forEach((s) => {
+              if (!map.has(s.id) && !isDocFromAdminDevice(s)) {
+                map.set(s.id, s)
+              }
+            })
+            return Array.from(map.values()).sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0))
+          })
           
           const active = visitorDocs.filter((s) => s.lastSeen && s.lastSeen >= threshold)
           setLiveActiveSessions(active)
+
+          setTabCursors((prev) => ({
+            ...prev,
+            live_users: prev.live_users || lastDocSnapshot,
+          }))
+          setTabHasMore((prev) => ({
+            ...prev,
+            live_users: prev.live_users ? prev.live_users : hasMore,
+          }))
+
+          // ── 30-day session cleanup ─────────────────────────────────────────
+          // Delete session docs older than 30 days from Firestore.
+          // The cumulative count is safely preserved in site_stats before deleting.
+          const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000
+          const staleAdminDocs = rawDocs.filter(s => (s.lastSeen || 0) < thirtyDaysAgo)
+          if (staleAdminDocs.length > 0) {
+            try {
+              const { deleteDoc: del, doc: d, getDoc, setDoc: sDoc, increment: inc } = await import('firebase/firestore')
+              // Increment the all-time visitor counter BEFORE deleting
+              const statsRef = d(firestoreDb, 'site_stats', 'global')
+              await sDoc(statsRef, {
+                totalVisitors: inc(staleAdminDocs.length),
+                lastCleanupAt: Date.now(),
+              }, { merge: true })
+              // Now delete the stale docs
+              staleAdminDocs.forEach(s => del(d(firestoreDb, 'active_sessions', s.id)).catch(() => {}))
+            } catch {}
+          }
         })
       } catch (err) {
         console.warn('Presence listener notice:', err)
@@ -847,6 +984,21 @@ export default function AdminPortalPage() {
     }
 
     listenLivePresence()
+
+    // Load cumulative all-time visitor count from site_stats
+    ;(async () => {
+      try {
+        const firestoreDb = getFirebaseDb()
+        if (!firestoreDb) return
+        const { doc, getDoc } = await import('firebase/firestore')
+        const statsSnap = await getDoc(doc(firestoreDb, 'site_stats', 'global'))
+        if (statsSnap.exists()) {
+          const data = statsSnap.data() as any
+          const storedTotal = Number(data?.totalVisitors || 0)
+          setTotalUniqueVisitors(storedTotal)
+        }
+      } catch {}
+    })()
 
     // Interval to prune stale sessions in local state
     const interval = setInterval(() => {
@@ -861,6 +1013,7 @@ export default function AdminPortalPage() {
       clearInterval(interval)
     }
   }, [])
+
 
   // ── Delete User Modal state ──────────────────────────────────────────────
   const [deleteUserTarget, setDeleteUserTarget] = useState<{ uid: string; name: string; email: string } | null>(null)
@@ -1702,19 +1855,7 @@ export default function AdminPortalPage() {
         },
         (err) => console.warn('Poetry stats listener:', err)
       )
-      const u2 = onSnapshot(
-        query(collection(activeDb, 'poetry_activity'), orderBy('timestamp', 'desc'), limit(PAGE_SIZE + 1)),
-        (snap) => {
-          const allDocs = snap.docs
-          const hasMore = allDocs.length > PAGE_SIZE
-          const visibleDocs = hasMore ? allDocs.slice(0, PAGE_SIZE) : allDocs
-          const list: any[] = visibleDocs.filter((d) => d.exists()).map((d) => ({ id: d.id, ...d.data() }))
-          setFirestorePoetryActivity(list)
-          setLastSyncedAt(Date.now())
-        },
-        (err) => console.warn('Poetry activity listener:', err)
-      )
-      unsub = () => { u1(); u2() }
+      unsub = () => { u1() }
     }
 
     // ── guestbook tab ─────────────────────────────────────────────────────────
@@ -1802,6 +1943,8 @@ export default function AdminPortalPage() {
         q = query(collection(activeDb, 'magic_link_responses'), orderBy('createdAt', 'desc'), startAfter(cursor), limit(PAGE_SIZE + 1))
       } else if (tab === 'testimonials') {
         q = query(collection(activeDb, 'testimonials'), orderBy('createdAt', 'desc'), startAfter(cursor), limit(PAGE_SIZE + 1))
+      } else if (tab === 'live_users') {
+        q = query(collection(activeDb, 'active_sessions'), orderBy('lastSeen', 'desc'), startAfter(cursor), limit(PAGE_SIZE + 1))
       } else {
         return
       }
@@ -1876,154 +2019,109 @@ export default function AdminPortalPage() {
           const ids = new Set(prev.map((t) => t.id))
           return [...prev, ...newItems.filter((t) => !ids.has(t.id))]
         })
+      } else if (tab === 'live_users') {
+        const newItems = visibleDocs.filter((d) => d.exists()).map((d) => ({ id: d.id, ...(d.data() as any) }))
+        const visitorNew = newItems.filter((s) => !isDocFromAdminDevice(s))
+        setAllSessions((prev) => {
+          const ids = new Set(prev.map((s) => s.id))
+          return [...prev, ...visitorNew.filter((s) => !ids.has(s.id))]
+        })
       }
     } catch (err) {
       console.warn('loadMoreForTab error:', err)
     } finally {
       setIsTabLoadingMore(false)
     }
-  }, [tabCursors, tabHasMore, isTabLoadingMore])
+  }, [tabCursors, tabHasMore, isTabLoadingMore, isDocFromAdminDevice])
 
-  // ── Activity Stream: own Firestore listener on 'all' section ─────────────
-  // Loads latest 5 records from each key collection (invitations, wishes, visitingCards,
-  // magic_links) using a single merged real-time listener. This replaces the
-  // old in-memory derivation from tab data.
-  useEffect(() => {
-    if (adminSection !== 'all') return
+   // ── Activity Stream: On-Demand Loader to save Firebase reads ────────────
+  // Does NOT auto-subscribe to 4 collections on login. Only fetches when requested,
+  // keeping initial admin login down to only 5 active session reads.
+  const [isLoadingActivity, setIsLoadingActivity] = useState(false)
+
+  const handleFetchActivityStream = useCallback(async () => {
     const activeDb = getFirebaseDb() || db
-    if (!isFirebaseConfigured || !activeDb) return
-
-    const PAGE_SIZE = 5
-    const allItems: any[] = []
-    let loadedCount = 0
-    const SOURCES = 4 // invitations, wishes, visitingCards, magic_links
-
-    // Helper to merge and sort when all sources have responded.
-    // Writes into activityStreamAllRef so handleLoadMoreActivity (outside this closure)
-    // can slice the next page without issuing another Firestore read.
-    const mergeAndSet = () => {
-      loadedCount++
-      if (loadedCount >= SOURCES) {
-        allItems.sort((a, b) => (b.time || 0) - (a.time || 0))
-        activityStreamAllRef.current = allItems.slice()
-        const initialPage = allItems.slice(0, PAGE_SIZE)
-        setActivityStreamItems(initialPage)
-        setActivityStreamHasMore(allItems.length > PAGE_SIZE)
+    if (!isFirebaseConfigured || !activeDb || isLoadingActivity) return
+    setIsLoadingActivity(true)
+    try {
+      const { collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')
+      const toMs = (val: any): number => {
+        if (!val) return 0
+        if (typeof val === 'number') return val
+        if (val?.toMillis) return val.toMillis()
+        if (val?._seconds) return val._seconds * 1000
+        if (val?.seconds) return val.seconds * 1000
+        return 0
       }
+
+      const [invSnap, wishSnap, vcSnap, magicSnap] = await Promise.all([
+        getDocs(query(collection(activeDb, 'invitations'), orderBy('createdAt', 'desc'), limit(3))).catch(() => ({ docs: [] } as any)),
+        getDocs(query(collection(activeDb, 'wishes'), orderBy('createdAt', 'desc'), limit(3))).catch(() => ({ docs: [] } as any)),
+        getDocs(query(collection(activeDb, 'visitingCards'), orderBy('createdAt', 'desc'), limit(3))).catch(() => ({ docs: [] } as any)),
+        getDocs(query(collection(activeDb, 'magic_links'), orderBy('createdAt', 'desc'), limit(3))).catch(() => ({ docs: [] } as any)),
+      ])
+
+      const allItems: any[] = []
+      invSnap.docs.forEach((d: any) => {
+        if (!d.exists()) return
+        const data = d.data()
+        allItems.push({
+          _src: 'invitation', type: 'invitation', typeLabel: 'Invitation',
+          title: data.title || 'Event Invitation',
+          subtitle: `By ${data.hostNames || 'Host'} • ${data.city || data.venue || 'Event'}`,
+          time: toMs(data.createdAt),
+          origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
+          link: `/i/${data.slug || d.id}`,
+        })
+      })
+      wishSnap.docs.forEach((d: any) => {
+        if (!d.exists()) return
+        const data = d.data()
+        allItems.push({
+          _src: 'wish', type: 'wish', typeLabel: 'Wish Card',
+          title: `${data.senderName || 'Sender'} → ${data.recipientName || 'Recipient'}`,
+          subtitle: `Occasion: ${data.occasionId || 'wish'} • "${(data.message || '').slice(0, 40)}..."`,
+          time: toMs(data.createdAt),
+          origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
+          link: `/w/${data.slug || d.id}`,
+        })
+      })
+      vcSnap.docs.forEach((d: any) => {
+        if (!d.exists()) return
+        const data = d.data()
+        allItems.push({
+          _src: 'visiting_card', type: 'visiting_card', typeLabel: 'Visiting Card',
+          title: data.fullName || 'Digital Card',
+          subtitle: `${data.title || 'Professional'} • ${data.company || 'Company'}`,
+          time: toMs(data.createdAt),
+          origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
+          link: `/v/${data.slug || d.id}`,
+        })
+      })
+      magicSnap.docs.forEach((d: any) => {
+        if (!d.exists()) return
+        const data = d.data()
+        allItems.push({
+          _src: 'magic_link', type: 'magic_link', typeLabel: 'Magic Link',
+          title: `${data.senderName || 'Sender'} → ${data.recipientName || 'Recipient'}`,
+          subtitle: `Type: ${data.type || 'magic'} • Occasion: ${data.occasion || 'event'}`,
+          time: toMs(data.createdAt),
+          origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
+          link: `/m/${data.slug || d.id}`,
+        })
+      })
+
+      allItems.sort((a, b) => (b.time || 0) - (a.time || 0))
+      activityStreamAllRef.current = allItems.slice()
+      _cachedActivityStream = allItems.slice()
+      _activityCacheTsMs = Date.now()
+      setActivityStreamItems(allItems.slice(0, 10))
+      setActivityStreamHasMore(allItems.length > 10)
+    } finally {
+      setIsLoadingActivity(false)
     }
+  }, [isLoadingActivity])
 
-    const toMs = (val: any): number => {
-      if (!val) return 0
-      if (typeof val === 'number') return val
-      if (val?.toMillis) return val.toMillis()
-      if (val?._seconds) return val._seconds * 1000
-      if (val?.seconds) return val.seconds * 1000
-      return 0
-    }
-
-    const u1 = onSnapshot(
-      query(collection(activeDb, 'invitations'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE)),
-      (snap) => {
-        const remove = allItems.filter((i) => i._src !== 'invitation')
-        allItems.length = 0
-        allItems.push(...remove)
-        snap.docs.forEach((d) => {
-          if (!d.exists()) return
-          const data = d.data() as any
-          allItems.push({
-            _src: 'invitation',
-            type: 'invitation', typeLabel: 'Invitation Created',
-            title: data.title || 'Event Invitation',
-            subtitle: `By ${data.hostNames || 'Host'} • ${data.city || data.venue || 'Event'}`,
-            time: toMs(data.createdAt),
-            origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
-            link: `/i/${data.slug || d.id}`,
-          })
-        })
-        mergeAndSet()
-      },
-      () => mergeAndSet()
-    )
-
-    const u2 = onSnapshot(
-      query(collection(activeDb, 'wishes'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE)),
-      (snap) => {
-        const remove = allItems.filter((i) => i._src !== 'wish')
-        allItems.length = 0
-        allItems.push(...remove)
-        snap.docs.forEach((d) => {
-          if (!d.exists()) return
-          const data = d.data() as any
-          allItems.push({
-            _src: 'wish',
-            type: 'wish', typeLabel: 'Wish Card Created',
-            title: `${data.senderName || 'Sender'} → ${data.recipientName || 'Recipient'}`,
-            subtitle: `Occasion: ${data.occasionId || 'wish'} • "${(data.message || '').slice(0, 45)}..."`,
-            time: toMs(data.createdAt),
-            origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
-            link: `/w/${data.slug || d.id}`,
-          })
-        })
-        mergeAndSet()
-      },
-      () => mergeAndSet()
-    )
-
-    const u3 = onSnapshot(
-      query(collection(activeDb, 'visitingCards'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE)),
-      (snap) => {
-        const remove = allItems.filter((i) => i._src !== 'visiting_card')
-        allItems.length = 0
-        allItems.push(...remove)
-        snap.docs.forEach((d) => {
-          if (!d.exists()) return
-          const data = d.data() as any
-          allItems.push({
-            _src: 'visiting_card',
-            type: 'visiting_card', typeLabel: 'Visiting Card',
-            title: data.fullName || 'Digital Card',
-            subtitle: `${data.title || 'Professional'} • ${data.company || 'Company'}`,
-            time: toMs(data.createdAt),
-            origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
-            link: `/v/${data.slug || d.id}`,
-          })
-        })
-        mergeAndSet()
-      },
-      () => mergeAndSet()
-    )
-
-    const u4 = onSnapshot(
-      query(collection(activeDb, 'magic_links'), orderBy('createdAt', 'desc'), limit(PAGE_SIZE)),
-      (snap) => {
-        const remove = allItems.filter((i) => i._src !== 'magic_link')
-        allItems.length = 0
-        allItems.push(...remove)
-        snap.docs.forEach((d) => {
-          if (!d.exists()) return
-          const data = d.data() as any
-          allItems.push({
-            _src: 'magic_link',
-            type: 'magic_link', typeLabel: 'Magic Link',
-            title: `${data.senderName || 'Sender'} → ${data.recipientName || 'Recipient'}`,
-            subtitle: `Type: ${data.type || 'magic'} • Occasion: ${data.occasion || 'event'}`,
-            time: toMs(data.createdAt),
-            origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
-            link: `/m/${data.slug || d.id}`,
-          })
-        })
-        mergeAndSet()
-      },
-      () => mergeAndSet()
-    )
-
-    return () => { u1(); u2(); u3(); u4() }
-  }, [adminSection])
-
-  // Load more activity stream items from the already-fetched merged set.
-  // Reads activityStreamAllRef.current — the stable ref written by the useEffect above —
-  // so each "load more" click slices the next 5 from the in-memory list without any
-  // additional Firestore reads (the 4 listeners already fetched the latest 5 per source).
   const handleLoadMoreActivity = useCallback(async () => {
     if (!activityStreamHasMore || isLoadingMoreActivity) return
     setIsLoadingMoreActivity(true)
@@ -2040,6 +2138,7 @@ export default function AdminPortalPage() {
       setIsLoadingMoreActivity(false)
     }
   }, [activityStreamItems, activityStreamHasMore, isLoadingMoreActivity])
+
 
   // Invitations list (Strictly Cloud Firebase only)
   const invitations = useMemo(() => {
@@ -2265,6 +2364,203 @@ export default function AdminPortalPage() {
 
     return Array.from(map.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
   }, [firestoreUsers, invitations, wishes, visitingCards, magicLinks])
+
+  // Lookup map for fast registered user checks
+  const registeredUsersLookup = useMemo(() => {
+    const map = new Map<string, JashnUser>()
+    allUsersList.forEach((u) => {
+      if (u.uid) map.set(u.uid, u)
+      if (u.email) map.set(u.email.toLowerCase().trim(), u)
+    })
+    return map
+  }, [allUsersList])
+
+  const getCardUser = useCallback((card: any): JashnUser | null => {
+    if (!card) return null
+    const cId = card.creatorId || card.senderId || card.userId
+    if (cId && cId !== 'guest' && cId !== 'anonymous') {
+      if (registeredUsersLookup.has(cId)) return registeredUsersLookup.get(cId)!
+      if (typeof cId === 'string' && cId.length >= 6) {
+        return {
+          uid: cId,
+          email: `member_${cId.slice(0, 6)}@cardzy.online`,
+          plan: 'free',
+          name: card.senderName || card.fullName || card.hostNames || 'Registered Member',
+        } as JashnUser
+      }
+    }
+    const email = (card.creatorEmail || card.email || '').toLowerCase().trim()
+    if (email && registeredUsersLookup.has(email)) return registeredUsersLookup.get(email)!
+    return null
+  }, [registeredUsersLookup])
+
+  const isUserCard = useCallback((card: any): boolean => {
+    return getCardUser(card) !== null
+  }, [getCardUser])
+
+  async function handlePurgeFreeUserCards(targetUid?: string, targetCollection?: string, collectionLabel?: string) {
+    const days = 30
+    const confirmMsg = targetUid
+      ? `Are you sure you want to permanently purge cards older than ${days} days for this Free user?\n\n🛡️ Pro accounts and cards newer than 30 days are strictly protected.`
+      : targetCollection
+      ? `Are you sure you want to permanently purge all Free user & guest ${collectionLabel || targetCollection} older than ${days} days?\n\n🛡️ Pro accounts and active cards (< 30 days) are strictly preserved.`
+      : `Are you sure you want to permanently purge ALL Free user & guest cards older than ${days} days across all categories?\n\n🛡️ Pro accounts and active cards (< 30 days) are strictly preserved.`
+    if (!confirm(confirmMsg)) return
+
+    const purgeKey = targetUid || targetCollection || 'all'
+    setIsPurgingFreeUserCards(purgeKey)
+    try {
+      const res = await fetch('/api/admin-card-action', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'purge_free_user_old_cards',
+          days,
+          targetUid: targetUid || undefined,
+          targetCollection: targetCollection || undefined,
+        }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        showToast(data.message || `Purged ${data.totalPurged} old cards from Free account(s).`, 'success')
+        const cutoff = Date.now() - (days * 24 * 60 * 60 * 1000)
+        const filterOldFree = (card: any) => {
+          const u = getCardUser(card)
+          if (u && (u.plan === 'pro' || u.plan === 'business')) return true
+          if (card.creatorPlan === 'pro' || card.creatorPlan === 'business') return true
+          if (targetUid && u && u.uid !== targetUid) return true
+          const ts = typeof card.createdAt === 'number' ? card.createdAt : 0
+          return ts > cutoff
+        }
+        if (!targetCollection || targetCollection === 'wishes') {
+          setFirestoreWishes(prev => prev.filter(filterOldFree))
+        }
+        if (!targetCollection || targetCollection === 'invitations') {
+          setFirestoreInvitations(prev => prev.filter(filterOldFree))
+        }
+        if (!targetCollection || targetCollection === 'visitingCards') {
+          setFirestoreVisitingCards(prev => prev.filter(filterOldFree))
+        }
+        if (!targetCollection || targetCollection === 'magic_links') {
+          setFirestoreMagicLinks(prev => prev.filter(filterOldFree))
+        }
+      } else {
+        showToast(data.error || 'Failed to purge old free cards', 'error')
+      }
+    } catch (err: any) {
+      showToast(err?.message || 'Error purging old free cards', 'error')
+    } finally {
+      setIsPurgingFreeUserCards(null)
+    }
+  }
+
+  // Count cards older than 30 days belonging to Free and Guest users (Pro protected)
+  const oldFreeCardsCount = useMemo(() => {
+    const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000)
+    const isOldFree = (card: any) => {
+      const u = getCardUser(card)
+      if (u && (u.plan === 'pro' || u.plan === 'business')) return false
+      if (card.creatorPlan === 'pro' || card.creatorPlan === 'business') return false
+      const ts = typeof card.createdAt === 'number' ? card.createdAt : 0
+      return ts > 0 && ts <= cutoff
+    }
+    const invCount = firestoreInvitations.filter(isOldFree).length
+    const wishCount = firestoreWishes.filter(isOldFree).length
+    const vcardCount = firestoreVisitingCards.filter(isOldFree).length
+    const magicCount = firestoreMagicLinks.filter(isOldFree).length
+    return {
+      total: invCount + wishCount + vcardCount + magicCount,
+      invitations: invCount,
+      wishes: wishCount,
+      visitingCards: vcardCount,
+      magicLinks: magicCount,
+    }
+  }, [firestoreInvitations, firestoreWishes, firestoreVisitingCards, firestoreMagicLinks, getCardUser])
+
+  // Get all cards created by a specific user account
+  const getUserCards = useCallback((u: JashnUser) => {
+    if (!u) return []
+    const uId = u.uid
+    const uEmail = (u.email || '').toLowerCase().trim()
+    const list: Array<{
+      id: string
+      slug?: string
+      cardType: 'magic' | 'invitation' | 'wish' | 'visiting'
+      typeLabel: string
+      title: string
+      createdAt: number
+      previewUrl: string
+    }> = []
+
+    invitations.forEach((item) => {
+      const inv = item as any
+      const cId = inv.creatorId || inv.senderId || inv.userId
+      const email = (inv.creatorEmail || inv.email || '').toLowerCase().trim()
+      if ((uId && cId === uId) || (uEmail && email === uEmail)) {
+        list.push({
+          id: inv.id || inv.slug || '',
+          slug: inv.slug,
+          cardType: 'invitation',
+          typeLabel: 'Invitation',
+          title: inv.title || (inv.brideName ? `${inv.brideName} & ${inv.groomName || ''}` : (inv.hostNames ? `By ${inv.hostNames}` : 'Invitation Card')),
+          createdAt: typeof inv.createdAt === 'number' ? inv.createdAt : (inv.createdAt?.seconds ? inv.createdAt.seconds * 1000 : 0),
+          previewUrl: `/i/${inv.slug || inv.id}?mode=sender&preview=true`,
+        })
+      }
+    })
+
+    wishes.forEach((item) => {
+      const w = item as any
+      const cId = w.creatorId || w.senderId || w.userId
+      const email = (w.creatorEmail || w.email || '').toLowerCase().trim()
+      if ((uId && cId === uId) || (uEmail && email === uEmail)) {
+        list.push({
+          id: w.id || w.slug || '',
+          slug: w.slug,
+          cardType: 'wish',
+          typeLabel: 'Wish',
+          title: w.recipientName ? `Wish for ${w.recipientName}` : (w.title || 'Wish Card'),
+          createdAt: typeof w.createdAt === 'number' ? w.createdAt : (w.createdAt?.seconds ? w.createdAt.seconds * 1000 : 0),
+          previewUrl: `/w/${w.slug || w.id}?mode=sender&preview=true`,
+        })
+      }
+    })
+
+    visitingCards.forEach((item) => {
+      const vc = item as any
+      const cId = vc.creatorId || vc.senderId || vc.userId
+      const email = (vc.email || '').toLowerCase().trim()
+      if ((uId && cId === uId) || (uEmail && email === uEmail)) {
+        list.push({
+          id: vc.id || vc.slug || '',
+          slug: vc.slug,
+          cardType: 'visiting',
+          typeLabel: 'Visiting Card',
+          title: vc.fullName || vc.company || 'Visiting Card',
+          createdAt: typeof vc.createdAt === 'number' ? vc.createdAt : (vc.createdAt?.seconds ? vc.createdAt.seconds * 1000 : 0),
+          previewUrl: `/v/${vc.slug || vc.id}?mode=sender&preview=true`,
+        })
+      }
+    })
+
+    magicLinks.forEach((item) => {
+      const m = item as any
+      const cId = m.senderId || m.creatorId || m.userId
+      if (uId && cId === uId) {
+        list.push({
+          id: m.id || m.slug || '',
+          slug: m.slug,
+          cardType: 'magic',
+          typeLabel: 'Magic Link',
+          title: m.senderName ? `From ${m.senderName}` : 'Magic Link Card',
+          createdAt: typeof m.createdAt === 'number' ? m.createdAt : (m.createdAt?.seconds ? m.createdAt.seconds * 1000 : 0),
+          previewUrl: `/m/${m.slug || m.id}?mode=sender&preview=true`,
+        })
+      }
+    })
+
+    return list.sort((a, b) => b.createdAt - a.createdAt)
+  }, [invitations, wishes, visitingCards, magicLinks])
 
   // Stats calculation
   const stats = useMemo(() => {
@@ -2703,48 +2999,9 @@ export default function AdminPortalPage() {
   // Paginated Active Sessions
   const activeSessionsList = groupByDevice ? groupedSessions : allSessions
   const paginatedSessionsList = useMemo(() => {
-    const start = (pageLiveUsers - 1) * pageSizeLiveUsers
-    return activeSessionsList.slice(start, start + pageSizeLiveUsers)
-  }, [activeSessionsList, pageLiveUsers, pageSizeLiveUsers])
+    return activeSessionsList
+  }, [activeSessionsList])
 
-  // Single Most Recent Live Poetry Engagement Activity
-  const latestPoetryActivity = useMemo(() => {
-    return firestorePoetryActivity.length > 0 ? firestorePoetryActivity[0] : null
-  }, [firestorePoetryActivity])
-
-  // Paginated and Filtered Real-Time Poetry Engagements List
-  const filteredPoetryActivity = useMemo(() => {
-    return firestorePoetryActivity.filter((act) => {
-      if (poetryActivityFilter !== 'all') {
-        if (act.action !== poetryActivityFilter) return false
-      }
-      if (poetryActivitySearch.trim()) {
-        const q = poetryActivitySearch.toLowerCase().trim()
-        const title = (act.title || act.poemId || '').toLowerCase()
-        const poet = (act.poet || '').toLowerCase()
-        const userName = (act.userName || '').toLowerCase()
-        const userEmail = (act.userEmail || '').toLowerCase()
-        const city = (act.city || '').toLowerCase()
-        const country = (act.country || '').toLowerCase()
-        const action = (act.action || '').toLowerCase()
-        return (
-          title.includes(q) ||
-          poet.includes(q) ||
-          userName.includes(q) ||
-          userEmail.includes(q) ||
-          city.includes(q) ||
-          country.includes(q) ||
-          action.includes(q)
-        )
-      }
-      return true
-    })
-  }, [firestorePoetryActivity, poetryActivityFilter, poetryActivitySearch])
-
-  const paginatedPoetryActivity = useMemo(() => {
-    const start = (pagePoetryActivity - 1) * pageSizePoetryActivity
-    return filteredPoetryActivity.slice(start, start + pageSizePoetryActivity)
-  }, [filteredPoetryActivity, pagePoetryActivity, pageSizePoetryActivity])
 
   const handleUpdateUserPlan = async (uid: string, plan: Plan) => {
     await adminUpdateUserPlan(uid, plan, selectedDurationDays)
@@ -3426,20 +3683,20 @@ export default function AdminPortalPage() {
         </div>
 
         {/* Section Navigation Bar */}
-        <div className="flex border-b border-border gap-2 overflow-x-auto pb-1">
+        <div className="flex border-b border-border gap-1 sm:gap-1.5 overflow-x-auto pb-1 scrollbar-none items-center">
           {[
-            { id: 'all', label: `✨ All Database Overview`, icon: FileSpreadsheet },
-            { id: 'poetry', label: `📜 Poetry Hub (${poetrySummary.totalInteractions.toLocaleString()})`, icon: Feather },
-            { id: 'live_users', label: `🟢 Live Online (${liveActiveSessions.length})`, icon: Activity },
-            { id: 'magic_links', label: `🪄 Magic Links (${magicLinks.length}${firestoreMagicResponses.length > 0 ? ` · ${firestoreMagicResponses.length} Resp` : ''})`, icon: Sparkles },
-            { id: 'guestbook', label: `💬 Wishes Wall (${allGuestbookWishes.length})`, icon: MessageCircle },
-            { id: 'testimonials', label: `⭐ Reviews & Feedback (${firestoreTestimonials.length})`, icon: Star },
-            { id: 'invitations', label: `Active Invitations (${invitations.length})`, icon: Calendar },
-            { id: 'wishes', label: `Created Wishes (${wishes.length})`, icon: Sparkles },
-            { id: 'visiting_cards', label: `Visiting Cards (${visitingCards?.length || 0})`, icon: CreditCard },
-            { id: 'rsvps', label: `Recorded RSVPs (${rsvps?.length || 0})`, icon: FileSpreadsheet },
-            { id: 'users', label: `User Accounts (${allUsersList.length})`, icon: Users },
-            { id: 'push_notifications', label: `🔔 Push Notifications`, icon: Bell },
+            { id: 'all', label: 'Overview', icon: FileSpreadsheet },
+            { id: 'poetry', label: `Poetry (${poetrySummary.totalInteractions.toLocaleString()})`, icon: Feather },
+            { id: 'live_users', label: `Live (${liveActiveSessions.length})`, icon: Activity },
+            { id: 'magic_links', label: `Magic (${magicLinks.length})`, icon: Sparkles },
+            { id: 'guestbook', label: `Wall (${allGuestbookWishes.length})`, icon: MessageCircle },
+            { id: 'testimonials', label: `Reviews (${firestoreTestimonials.length})`, icon: Star },
+            { id: 'invitations', label: `Invitations (${invitations.length})`, icon: Calendar },
+            { id: 'wishes', label: `Wishes (${wishes.length})`, icon: Sparkles },
+            { id: 'visiting_cards', label: `vCards (${visitingCards?.length || 0})`, icon: CreditCard },
+            { id: 'rsvps', label: `RSVPs (${rsvps?.length || 0})`, icon: FileSpreadsheet },
+            { id: 'users', label: `Users (${allUsersList.length})`, icon: Users },
+            { id: 'push_notifications', label: 'Push', icon: Bell },
           ].map((tab) => {
             const IconComp = tab.icon
             return (
@@ -3447,13 +3704,13 @@ export default function AdminPortalPage() {
                 key={tab.id}
                 onClick={() => setAdminSection(tab.id as any)}
                 className={cn(
-                  "px-5 py-3 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-2 shrink-0 rounded-t-2xl",
+                  "px-2.5 py-2 sm:px-3 text-xs font-bold border-b-2 transition-all flex items-center gap-1.5 shrink-0 rounded-t-xl whitespace-nowrap cursor-pointer",
                   adminSection === tab.id
-                    ? "border-indigo-600 text-indigo-600 bg-indigo-500/5 shadow-sm"
-                    : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                    ? "border-indigo-600 text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 font-extrabold shadow-2xs"
+                    : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40"
                 )}
               >
-                <IconComp className="size-4" />
+                <IconComp className={cn("size-3.5", tab.id === 'live_users' && liveActiveSessions.length > 0 && "text-emerald-500 animate-pulse")} />
                 <span>{tab.label}</span>
               </button>
             )
@@ -3468,10 +3725,15 @@ export default function AdminPortalPage() {
                 <Activity className="size-4 text-emerald-600 animate-pulse" />
                 Live Real-Time Activity & Creation Stream
               </h3>
-              <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
-                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                Live Feed
-              </span>
+              <button
+                type="button"
+                onClick={handleFetchActivityStream}
+                disabled={isLoadingActivity}
+                className="text-[11px] font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full flex items-center gap-1.5 hover:bg-emerald-500/20 cursor-pointer disabled:opacity-50"
+              >
+                <RefreshCw className={cn("size-3", isLoadingActivity && "animate-spin")} />
+                <span>{isLoadingActivity ? 'Loading...' : activityStreamItems.length > 0 ? 'Refresh Feed' : 'Load Feed'}</span>
+              </button>
             </div>
             <p className="text-xs text-muted-foreground">
               Chronological timeline of latest user registrations, event invitations, greeting wishes, magic links, and visiting cards.
@@ -3479,8 +3741,19 @@ export default function AdminPortalPage() {
 
             <div className="divide-y divide-border/60">
               {activityStreamItems.length === 0 ? (
-                <div className="py-8 text-center text-xs text-muted-foreground">
-                  No activity recorded yet.
+                <div className="py-8 text-center space-y-3">
+                  <p className="text-xs text-muted-foreground">
+                    Live stream queries are paused on initial login to save Firebase read quota.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleFetchActivityStream}
+                    disabled={isLoadingActivity}
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all inline-flex items-center gap-2 shadow-xs cursor-pointer disabled:opacity-50"
+                  >
+                    <RefreshCw className={cn("size-3.5", isLoadingActivity && "animate-spin")} />
+                    <span>{isLoadingActivity ? 'Loading Activity...' : 'Load Recent Activity Stream (On-Demand)'}</span>
+                  </button>
                 </div>
               ) : (
                 activityStreamItems.map((act, i) => (
@@ -3577,7 +3850,12 @@ export default function AdminPortalPage() {
                   Live Visitors & Device Activity ({liveActiveSessions.length} active • {groupedSessions.length} unique devices)
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Real-time heartbeat presence connected directly to Firebase Firestore. Shows devices and all their event history.
+                  Real-time heartbeat connected to Firebase. Sessions auto-delete after 30 days.
+                  {totalUniqueVisitors > 0 && (
+                    <span className="ml-2 font-semibold text-emerald-400">
+                      📊 All-time: {totalUniqueVisitors.toLocaleString()} total visitors
+                    </span>
+                  )}
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2 shrink-0">
@@ -3940,8 +4218,8 @@ export default function AdminPortalPage() {
                                                     {isSessActive ? (sessSecAgo <= 5 ? 'Active now' : `${sessSecAgo}s ago`) : 'Offline'}
                                                   </div>
                                                   {sess.lastSeen && (
-                                                    <div className="text-[10px] text-muted-foreground">
-                                                      {new Date(sess.lastSeen).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                                                    <div className="text-[10px] text-muted-foreground font-mono">
+                                                      {new Date(sess.lastSeen).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                                                     </div>
                                                   )}
                                                 </div>
@@ -4127,14 +4405,19 @@ export default function AdminPortalPage() {
               )}
             </div>
 
-            <AdminTablePagination
-              currentPage={pageLiveUsers}
-              totalItems={activeSessionsList.length}
-              pageSize={pageSizeLiveUsers}
-              onPageChange={setPageLiveUsers}
-              onPageSizeChange={setPageSizeLiveUsers}
-              itemName={groupByDevice ? "device sessions" : "visitor sessions"}
-            />
+            {tabHasMore['live_users'] && (
+              <div className="p-4 border-t border-border/80 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => loadMoreForTab('live_users')}
+                  disabled={isTabLoadingMore}
+                  className="px-5 py-2 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-60 cursor-pointer shadow-sm"
+                >
+                  <RefreshCw className={cn("size-3.5", isTabLoadingMore && "animate-spin")} />
+                  {isTabLoadingMore ? 'Loading…' : 'Load More Live Visitors'}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -4240,309 +4523,6 @@ export default function AdminPortalPage() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Recent Live User Engagements List */}
-            <div className="p-6 pt-0 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-                    <Activity className="size-4 text-emerald-500 animate-pulse" />
-                    Recent Live User Engagements
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
-                      Live Real-Time Stream
-                    </span>
-                  </h3>
-                  <span className="text-[11px] text-muted-foreground font-mono">
-                    {firestorePoetryActivity.length > 0 ? `Total Events: ${firestorePoetryActivity.length}` : 'Listening for new events...'}
-                  </span>
-                </div>
-
-                {/* Search */}
-                <div className="flex items-center gap-2 flex-wrap">
-                  <div className="relative">
-                    <Search className="size-3.5 text-muted-foreground absolute left-2.5 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="text"
-                      placeholder="Search poem, user, city..."
-                      value={poetryActivitySearch}
-                      onChange={(e) => {
-                        setPoetryActivitySearch(e.target.value)
-                        setPagePoetryActivity(1)
-                      }}
-                      className="pl-8 pr-7 py-1 text-xs rounded-xl bg-muted/40 border border-border/70 focus:outline-none focus:ring-1 focus:ring-primary w-44 sm:w-56"
-                    />
-                    {poetryActivitySearch && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setPoetryActivitySearch('')
-                          setPagePoetryActivity(1)
-                        }}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs"
-                      >
-                        ×
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Filter Pills */}
-              {firestorePoetryActivity.length > 0 && (
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setPoetryActivityFilter('all')
-                      setPagePoetryActivity(1)
-                    }}
-                    className={cn(
-                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
-                      poetryActivityFilter === 'all'
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
-                    )}
-                  >
-                    All ({firestorePoetryActivity.length})
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setPoetryActivityFilter('like')
-                      setPagePoetryActivity(1)
-                    }}
-                    className={cn(
-                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
-                      poetryActivityFilter === 'like'
-                        ? "bg-rose-500 text-white border-rose-500"
-                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
-                    )}
-                  >
-                    ❤️ Likes ({firestorePoetryActivity.filter(a => a.action === 'like').length})
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setPoetryActivityFilter('share')
-                      setPagePoetryActivity(1)
-                    }}
-                    className={cn(
-                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
-                      poetryActivityFilter === 'share'
-                        ? "bg-emerald-500 text-white border-emerald-500"
-                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
-                    )}
-                  >
-                    💬 Shares ({firestorePoetryActivity.filter(a => a.action === 'share').length})
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setPoetryActivityFilter('copy')
-                      setPagePoetryActivity(1)
-                    }}
-                    className={cn(
-                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
-                      poetryActivityFilter === 'copy'
-                        ? "bg-blue-500 text-white border-blue-500"
-                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
-                    )}
-                  >
-                    📋 Copies ({firestorePoetryActivity.filter(a => a.action === 'copy').length})
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setPoetryActivityFilter('flyer')
-                      setPagePoetryActivity(1)
-                    }}
-                    className={cn(
-                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
-                      poetryActivityFilter === 'flyer'
-                        ? "bg-purple-500 text-white border-purple-500"
-                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
-                    )}
-                  >
-                    🖼️ Flyers ({firestorePoetryActivity.filter(a => a.action === 'flyer').length})
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setPoetryActivityFilter('card_bridge')
-                      setPagePoetryActivity(1)
-                    }}
-                    className={cn(
-                      "px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer border",
-                      poetryActivityFilter === 'card_bridge'
-                        ? "bg-indigo-500 text-white border-indigo-500"
-                        : "bg-muted/40 text-muted-foreground hover:bg-muted border-border/60"
-                    )}
-                  >
-                    💌 Wishes ({firestorePoetryActivity.filter(a => a.action === 'card_bridge').length})
-                  </button>
-                </div>
-              )}
-
-              {filteredPoetryActivity.length === 0 ? (
-                <div className="py-8 text-center rounded-2xl bg-muted/20 border border-border/60">
-                  <Feather className="size-7 text-amber-500/40 mx-auto mb-1.5" />
-                  <p className="text-xs font-semibold text-foreground">
-                    {firestorePoetryActivity.length === 0
-                      ? 'No recent live poetry engagement recorded yet.'
-                      : 'No engagements matching your filter.'}
-                  </p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">
-                    User engagement events will appear here in real time as visitors like, share, copy, or download flyers.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {paginatedPoetryActivity.map((act: any, idx: number) => {
-                    const actOrigin = inferOrigin({
-                      country: act.country,
-                      countryCode: act.countryCode,
-                      city: act.city,
-                      createdLocation: act.createdLocation,
-                      device: act.device,
-                      browser: act.browser,
-                      ip: act.ip,
-                    })
-
-                    return (
-                      <div
-                        key={act.id || act.docId || `${act.poemId}-${act.timestamp}-${idx}`}
-                        className="p-4 sm:p-5 rounded-2xl bg-card border border-border/80 hover:border-emerald-500/30 transition-all shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4"
-                      >
-                        <div className="flex items-start sm:items-center gap-3.5 min-w-0">
-                          <span
-                            className={cn(
-                              "size-11 rounded-2xl flex items-center justify-center text-lg font-bold shrink-0 shadow-xs",
-                              act.action === 'like' ? "bg-rose-500/15 text-rose-500 border border-rose-500/20" :
-                              act.action === 'share' ? "bg-emerald-500/15 text-emerald-500 border border-emerald-500/20" :
-                              act.action === 'copy' ? "bg-blue-500/15 text-blue-500 border border-blue-500/20" :
-                              act.action === 'flyer' ? "bg-purple-500/15 text-purple-500 border border-purple-500/20" :
-                              act.action === 'card_bridge' ? "bg-indigo-500/15 text-indigo-500 border border-indigo-500/20" :
-                              "bg-amber-500/15 text-amber-500 border border-amber-500/20"
-                            )}
-                          >
-                            {act.action === 'like' ? '❤️' :
-                             act.action === 'unlike' ? '💔' :
-                             act.action === 'share' ? '💬' :
-                             act.action === 'copy' ? '📋' :
-                             act.action === 'flyer' ? '🖼️' :
-                             act.action === 'card_bridge' ? '💌' : '👁️'}
-                          </span>
-
-                          <div className="min-w-0 space-y-1">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <span className="font-extrabold text-foreground text-sm sm:text-base truncate">
-                                {act.title || act.poemId}
-                              </span>
-                              {act.poet && (
-                                <span className="text-xs text-muted-foreground font-medium">
-                                  by <strong className="text-foreground/90">{act.poet}</strong>
-                                </span>
-                              )}
-                              <span
-                                className={cn(
-                                  "px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase border",
-                                  act.action === 'like' ? "bg-rose-500/10 text-rose-600 border-rose-500/20" :
-                                  act.action === 'share' ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" :
-                                  act.action === 'copy' ? "bg-blue-500/10 text-blue-600 border-blue-500/20" :
-                                  act.action === 'flyer' ? "bg-purple-500/10 text-purple-600 border-purple-500/20" :
-                                  "bg-amber-500/10 text-amber-600 border-amber-500/20"
-                                )}
-                              >
-                                {act.action === 'like' ? 'Liked Verse' :
-                                 act.action === 'unlike' ? 'Unliked' :
-                                 act.action === 'share' ? 'Shared to WhatsApp' :
-                                 act.action === 'copy' ? 'Copied Verse' :
-                                 act.action === 'flyer' ? 'Downloaded Story Flyer' :
-                                 act.action === 'card_bridge' ? 'Created 3D Wish Card' : 'Viewed Verse'}
-                              </span>
-                            </div>
-
-                            {/* Who & Where Visitor Details */}
-                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                              <span className="flex items-center gap-1 font-semibold text-foreground">
-                                <User className="size-3 text-primary shrink-0" />
-                                {act.userName || 'Guest Visitor'}
-                                {act.userEmail && <span className="text-[10px] text-muted-foreground font-normal">({act.userEmail})</span>}
-                              </span>
-                              <span>•</span>
-                              <span className="flex items-center gap-1 font-medium text-foreground">
-                                <span className="text-sm leading-none">{actOrigin.flag}</span>
-                                {actOrigin.locationText}
-                              </span>
-                              {actOrigin.device && (
-                                <>
-                                  <span>•</span>
-                                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-muted text-[10px] font-medium text-muted-foreground">
-                                    {actOrigin.device.includes('Mobile') ? <Smartphone className="size-2.5" /> : <Monitor className="size-2.5" />}
-                                    {actOrigin.device} {actOrigin.browser ? `• ${actOrigin.browser}` : ''}
-                                  </span>
-                                </>
-                              )}
-                              {actOrigin.ip && actOrigin.ip !== '127.0.0.1' && (
-                                <span className="px-1.5 py-0.5 rounded bg-muted/70 text-[10px] text-muted-foreground font-mono">
-                                  IP: {actOrigin.ip}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Action buttons & timestamp */}
-                        <div className="flex items-center justify-between md:justify-end gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-border/50">
-                          <span className="text-[11px] text-muted-foreground font-mono bg-muted/60 px-2.5 py-1 rounded-lg">
-                            {act.timestamp ? new Date(act.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'just now'}
-                          </span>
-
-                          <button
-                            type="button"
-                            onClick={(e) => handleOpenFlyerPreview(act, e)}
-                            className="px-3 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold text-xs border border-purple-500/20 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
-                          >
-                            <Eye className="size-3.5" />
-                            <span>View Flyer & Verse</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              promptAdjustMetrics('poetry', { id: act.poemId, title: act.title, poemId: act.poemId })
-                            }}
-                            className="p-2 rounded-xl text-indigo-500 hover:text-indigo-600 hover:bg-indigo-500/10 border border-border/70 transition-all cursor-pointer"
-                            title="Adjust metrics (likes, views, shares)"
-                          >
-                            <Sliders className="size-3.5" />
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={(e) => handleDeletePoetryActivity(act.id || act.docId, act.poemId, e)}
-                            className="p-2 rounded-xl text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border border-border/70 transition-all cursor-pointer"
-                            title="Delete this poetry event log"
-                          >
-                            <Trash2 className="size-3.5" />
-                          </button>
-                        </div>
-                      </div>
-                    )
-                  })}
-
-                  <AdminTablePagination
-                    currentPage={pagePoetryActivity}
-                    totalItems={filteredPoetryActivity.length}
-                    pageSize={pageSizePoetryActivity}
-                    onPageChange={setPagePoetryActivity}
-                    onPageSizeChange={setPageSizePoetryActivity}
-                    itemName="engagements"
-                  />
-                </div>
-              )}
             </div>
 
             {/* ── ALL POETRY CARDS & PER-CARD STATS ("ON TOP OF THAT CARD") ── */}
@@ -4883,6 +4863,41 @@ export default function AdminPortalPage() {
                 </div>
               </div>
 
+              {/* Global Free Cards Purge Banner (> 30 Days) */}
+              <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="size-8 rounded-xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-600 dark:text-rose-400 shrink-0">
+                    <Trash2 className="size-4" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-foreground flex items-center gap-2 flex-wrap">
+                      <span>Purge Expired Free Cards (&gt; 30 Days)</span>
+                      <span className="text-[10px] bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/30 px-2 py-0.5 rounded-full font-black">
+                        {oldFreeCardsCount.total} Free Cards Expired
+                      </span>
+                      <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-semibold">
+                        🛡️ Pro Accounts 100% Protected
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">
+                      Permanently delete cards older than 30 days created by Free users and guests across all categories (wishes, invites, vcards, magic links). Paid Pro accounts are permanently preserved.
+                    </p>
+                  </div>
+                </div>
+
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handlePurgeFreeUserCards()}
+                  disabled={isPurgingFreeUserCards === 'all'}
+                  className="h-8 text-xs font-bold rounded-xl border-rose-500/40 bg-rose-600 text-white hover:bg-rose-700 shrink-0 flex items-center gap-1.5 cursor-pointer shadow-sm"
+                  title="Purge all cards older than 30 days from Free accounts"
+                >
+                  <Trash2 className={cn("size-3.5", isPurgingFreeUserCards === 'all' && "animate-spin")} />
+                  <span>{isPurgingFreeUserCards === 'all' ? 'Purging All Free…' : `Purge All Free Cards (${oldFreeCardsCount.total})`}</span>
+                </Button>
+              </div>
+
               {/* Filter and Search */}
               <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
                 <div className="relative w-full sm:w-72">
@@ -4948,139 +4963,294 @@ export default function AdminPortalPage() {
                         ? Math.ceil((u.planExpiresAt - now) / (1000 * 60 * 60 * 24))
                         : null
                       const userOrigin = inferOrigin(u)
+                      const userCards = getUserCards(u)
+                      const isExpanded = expandedUserCardsUid === u.uid
+                      const hasOldCards = u.plan === 'free' && userCards.some((c) => (now - c.createdAt) >= 30 * 24 * 60 * 60 * 1000)
 
                       return (
-                        <tr key={u.uid || u.email} className="hover:bg-muted/20 transition-colors">
-                          <td className="py-4 px-4">
-                            <div className="font-bold text-foreground">{u.name || 'Jashn User'}</div>
-                            <div className="text-xs text-muted-foreground font-mono">{u.email}</div>
-                            {u.phone && <div className="text-[11px] text-muted-foreground/80">{u.phone}</div>}
-                          </td>
+                        <Fragment key={u.uid || u.email}>
+                          <tr className={cn("hover:bg-muted/20 transition-colors", isExpanded && "bg-muted/10")}>
+                            <td className="py-4 px-4">
+                              <div className="font-bold text-foreground">{u.name || 'Jashn User'}</div>
+                              <div className="text-xs text-muted-foreground font-mono">{u.email}</div>
+                              {u.phone && <div className="text-[11px] text-muted-foreground/80">{u.phone}</div>}
+                              <button
+                                type="button"
+                                onClick={() => setExpandedUserCardsUid(isExpanded ? null : u.uid)}
+                                className={cn(
+                                  "mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all cursor-pointer",
+                                  userCards.length > 0
+                                    ? isExpanded
+                                      ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
+                                      : "bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border-indigo-500/20 hover:bg-indigo-500/20"
+                                    : "bg-muted/40 text-muted-foreground border-border hover:bg-muted"
+                                )}
+                              >
+                                <span>Cards ({userCards.length})</span>
+                                <ChevronDown className={cn("size-3.5 transition-transform duration-200", isExpanded && "rotate-180")} />
+                              </button>
+                            </td>
 
-                          <td className="py-4 px-4 text-xs">
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-1.5">
-                                <Clock className="size-3.5 text-indigo-500 shrink-0" />
-                                <span className="font-bold text-foreground">
-                                  {formatDateTime(u.createdAt)}
-                                </span>
-                                {u.createdAt ? (
-                                  <span className="text-[10px] text-muted-foreground font-medium px-1.5 py-0.5 rounded bg-muted/60">
-                                    {formatRelativeTime(u.createdAt)}
+                            <td className="py-4 px-4 text-xs">
+                              <div className="space-y-1">
+                                <div className="flex items-center gap-1.5">
+                                  <Clock className="size-3.5 text-indigo-500 shrink-0" />
+                                  <span className="font-bold text-foreground">
+                                    {formatDateTime(u.createdAt)}
                                   </span>
-                                ) : null}
-                              </div>
-                              <div className="flex items-center gap-1.5">
-                                <span className="text-base shrink-0 leading-none">{userOrigin.flag}</span>
-                                <span className="font-semibold text-foreground truncate max-w-[190px]">
-                                  {userOrigin.locationText}
-                                </span>
-                              </div>
-                              {(userOrigin.device || userOrigin.ip) && (
-                                <div className="flex flex-wrap items-center gap-1 text-[10px]">
-                                  {userOrigin.device && (
-                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 font-medium">
-                                      {userOrigin.device.includes('Mobile') ? <Smartphone className="size-2.5" /> : <Monitor className="size-2.5" />}
-                                      {userOrigin.device} {userOrigin.browser ? `• ${userOrigin.browser}` : ''}
+                                  {u.createdAt ? (
+                                    <span className="text-[10px] text-muted-foreground font-medium px-1.5 py-0.5 rounded bg-muted/60">
+                                      {formatRelativeTime(u.createdAt)}
                                     </span>
-                                  )}
-                                  {userOrigin.ip && userOrigin.ip !== '127.0.0.1' && (
-                                    <span className="px-1.5 py-0.5 rounded bg-muted/70 text-muted-foreground font-mono">
-                                      IP: {userOrigin.ip}
-                                    </span>
-                                  )}
+                                  ) : null}
                                 </div>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-base shrink-0 leading-none">{userOrigin.flag}</span>
+                                  <span className="font-semibold text-foreground truncate max-w-[190px]">
+                                    {userOrigin.locationText}
+                                  </span>
+                                </div>
+                                {(userOrigin.device || userOrigin.ip) && (
+                                  <div className="flex flex-wrap items-center gap-1 text-[10px]">
+                                    {userOrigin.device && (
+                                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 font-medium">
+                                        {userOrigin.device.includes('Mobile') ? <Smartphone className="size-2.5" /> : <Monitor className="size-2.5" />}
+                                        {userOrigin.device} {userOrigin.browser ? `• ${userOrigin.browser}` : ''}
+                                      </span>
+                                    )}
+                                    {userOrigin.ip && userOrigin.ip !== '127.0.0.1' && (
+                                      <span className="px-1.5 py-0.5 rounded bg-muted/70 text-muted-foreground font-mono">
+                                        IP: {userOrigin.ip}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+
+                            <td className="py-4 px-4">
+                              {isExpired ? (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-600 border border-rose-500/20 text-xs font-bold">
+                                  <UserX className="size-3.5" /> Expired ({u.plan.toUpperCase()})
+                                </span>
+                              ) : u.plan === 'business' ? (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-600 border border-purple-500/20 text-xs font-extrabold">
+                                  <Building2 className="size-3.5" /> Business Active
+                                </span>
+                              ) : u.plan === 'pro' ? (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 border border-amber-500/20 text-xs font-bold">
+                                  <Sparkles className="size-3.5" /> Pro Active
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-500/10 text-slate-600 border border-slate-500/20 text-xs font-medium">
+                                  Free Plan
+                                </span>
                               )}
-                            </div>
-                          </td>
+                            </td>
 
-                          <td className="py-4 px-4">
-                            {isExpired ? (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-600 border border-rose-500/20 text-xs font-bold">
-                                <UserX className="size-3.5" /> Expired ({u.plan.toUpperCase()})
-                              </span>
-                            ) : u.plan === 'business' ? (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-600 border border-purple-500/20 text-xs font-extrabold">
-                                <Building2 className="size-3.5" /> Business Active
-                              </span>
-                            ) : u.plan === 'pro' ? (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 border border-amber-500/20 text-xs font-bold">
-                                <Sparkles className="size-3.5" /> Pro Active
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-500/10 text-slate-600 border border-slate-500/20 text-xs font-medium">
-                                Free Plan
-                              </span>
-                            )}
-                          </td>
+                            <td className="py-4 px-4 text-xs text-muted-foreground">
+                              {u.planActivatedAt ? (
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="size-3.5 text-muted-foreground" />
+                                  {formatDateStandard(u.planActivatedAt)}
+                                </span>
+                              ) : (
+                                '—'
+                              )}
+                            </td>
 
-                          <td className="py-4 px-4 text-xs text-muted-foreground">
-                            {u.planActivatedAt ? (
-                              <span className="flex items-center gap-1">
-                                <Calendar className="size-3.5 text-muted-foreground" />
-                                {formatDateStandard(u.planActivatedAt)}
-                              </span>
-                            ) : (
-                              '—'
-                            )}
-                          </td>
+                            <td className="py-4 px-4 text-xs">
+                              {u.plan === 'free' ? (
+                                <span className="text-muted-foreground">Lifetime Free</span>
+                              ) : isExpired ? (
+                                <span className="text-rose-600 font-bold flex items-center gap-1">
+                                  <Clock className="size-3.5" /> Expired {Math.abs(daysLeft || 0)} days ago
+                                </span>
+                              ) : u.planExpiresAt ? (
+                                <span className="text-emerald-600 font-semibold flex items-center gap-1">
+                                  <Clock className="size-3.5" /> {daysLeft} days remaining ({formatDateStandard(u.planExpiresAt)})
+                                </span>
+                              ) : (
+                                <span className="text-emerald-600 font-bold">No Expiry Limit</span>
+                              )}
+                            </td>
 
-                          <td className="py-4 px-4 text-xs">
-                            {u.plan === 'free' ? (
-                              <span className="text-muted-foreground">Lifetime Free</span>
-                            ) : isExpired ? (
-                              <span className="text-rose-600 font-bold flex items-center gap-1">
-                                <Clock className="size-3.5" /> Expired {Math.abs(daysLeft || 0)} days ago
-                              </span>
-                            ) : u.planExpiresAt ? (
-                              <span className="text-emerald-600 font-semibold flex items-center gap-1">
-                                <Clock className="size-3.5" /> {daysLeft} days remaining ({formatDateStandard(u.planExpiresAt)})
-                              </span>
-                            ) : (
-                              <span className="text-emerald-600 font-bold">No Expiry Limit</span>
-                            )}
-                          </td>
-
-                          <td className="py-4 px-4 text-right">
-                            <div className="flex items-center justify-end gap-1.5">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => handleUpdateUserPlan(u.uid, 'pro')}
-                                className="text-xs h-8 rounded-xl border-amber-500/30 text-amber-700 hover:bg-amber-500/10"
-                              >
-                                + Pro ({selectedDurationDays}d)
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => handleUpdateUserPlan(u.uid, 'business')}
-                                className="text-xs h-8 rounded-xl border-purple-500/30 text-purple-700 hover:bg-purple-500/10"
-                              >
-                                + Biz ({selectedDurationDays}d)
-                              </Button>
-                              {u.plan !== 'free' && (
+                            <td className="py-4 px-4 text-right">
+                              <div className="flex items-center justify-end gap-1.5">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => handleUpdateUserPlan(u.uid, 'pro')}
+                                  className="text-xs h-8 rounded-xl border-amber-500/30 text-amber-700 hover:bg-amber-500/10"
+                                >
+                                  + Pro ({selectedDurationDays}d)
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => handleUpdateUserPlan(u.uid, 'business')}
+                                  className="text-xs h-8 rounded-xl border-purple-500/30 text-purple-700 hover:bg-purple-500/10"
+                                >
+                                  + Biz ({selectedDurationDays}d)
+                                </Button>
+                                {u.plan !== 'free' && (
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => handleUpdateUserPlan(u.uid, 'free')}
+                                    className="text-xs h-8 rounded-xl text-rose-600 hover:bg-rose-500/10"
+                                  >
+                                    Revoke
+                                  </Button>
+                                )}
                                 <Button
                                   size="sm"
                                   variant="ghost"
-                                  onClick={() => handleUpdateUserPlan(u.uid, 'free')}
-                                  className="text-xs h-8 rounded-xl text-rose-600 hover:bg-rose-500/10"
+                                  onClick={() => setDeleteUserTarget({ uid: u.uid, name: u.name || 'Unknown', email: u.email || '' })}
+                                  className="text-xs h-8 rounded-xl text-rose-700 hover:bg-rose-500/15 hover:text-rose-800 border border-rose-500/20"
+                                  title="Delete user permanently"
                                 >
-                                  Revoke
+                                  <Trash2 className="size-3.5" />
                                 </Button>
-                              )}
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => setDeleteUserTarget({ uid: u.uid, name: u.name || 'Unknown', email: u.email || '' })}
-                                className="text-xs h-8 rounded-xl text-rose-700 hover:bg-rose-500/15 hover:text-rose-800 border border-rose-500/20"
-                                title="Delete user permanently"
-                              >
-                                <Trash2 className="size-3.5" />
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
+                              </div>
+                            </td>
+                          </tr>
+
+                          {isExpanded && (
+                            <tr className="bg-muted/20 border-b border-border">
+                              <td colSpan={6} className="p-4 sm:p-5">
+                                <div className="rounded-2xl border border-border/80 bg-background/95 p-4 shadow-sm space-y-4">
+                                  {/* Policy Banner */}
+                                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border/60">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                      <span className={cn(
+                                        "px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider border",
+                                        u.plan === 'business'
+                                          ? "bg-purple-500/15 text-purple-600 border-purple-500/30"
+                                          : u.plan === 'pro'
+                                          ? "bg-amber-500/15 text-amber-700 border-amber-500/30"
+                                          : "bg-slate-500/15 text-slate-700 dark:text-slate-300 border-slate-500/30"
+                                      )}>
+                                        {u.plan.toUpperCase()} Account
+                                      </span>
+                                      <span className="text-xs text-muted-foreground">
+                                        {u.plan === 'free'
+                                          ? 'Free account: Cards older than 30 days can be purged or deleted individually. Newer cards (< 30 days) are active.'
+                                          : 'Paid account (Pro/Business): All cards are permanently protected from deletion and purging.'}
+                                      </span>
+                                    </div>
+
+                                    {u.plan === 'free' && hasOldCards && (
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        disabled={isPurgingFreeUserCards === u.uid}
+                                        onClick={() => handlePurgeFreeUserCards(u.uid)}
+                                        className="h-8 text-xs font-bold rounded-xl border-rose-500/30 text-rose-600 hover:bg-rose-500/15 shrink-0 flex items-center gap-1.5"
+                                      >
+                                        <Trash2 className={cn("size-3.5", isPurgingFreeUserCards === u.uid && "animate-spin")} />
+                                        {isPurgingFreeUserCards === u.uid ? 'Purging…' : 'Purge Cards > 30 Days'}
+                                      </Button>
+                                    )}
+                                  </div>
+
+                                  {/* Cards List / Table */}
+                                  {userCards.length === 0 ? (
+                                    <div className="py-6 text-center text-xs text-muted-foreground font-medium">
+                                      No cards created by this user yet.
+                                    </div>
+                                  ) : (
+                                    <div className="overflow-x-auto">
+                                      <table className="w-full text-left text-xs">
+                                        <thead>
+                                          <tr className="border-b border-border/60 text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">
+                                            <th className="pb-2">Card Type</th>
+                                            <th className="pb-2">Title / Description</th>
+                                            <th className="pb-2">Created Date</th>
+                                            <th className="pb-2">Age & Status</th>
+                                            <th className="pb-2 text-right">Actions</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-border/40">
+                                          {userCards.map((card) => {
+                                            const ageDays = card.createdAt > 0 ? Math.floor((now - card.createdAt) / (1000 * 60 * 60 * 24)) : 0
+                                            const isOld = ageDays >= 30
+                                            const canDelete = u.plan === 'free' && isOld
+
+                                            return (
+                                              <tr key={`${card.cardType}-${card.id}`} className="hover:bg-muted/40 transition-colors">
+                                                <td className="py-2.5 pr-3 font-semibold">
+                                                  <span className={cn(
+                                                    "px-2 py-0.5 rounded-md text-[10px] font-bold border",
+                                                    card.cardType === 'magic' && "bg-pink-500/10 text-pink-600 border-pink-500/20",
+                                                    card.cardType === 'invitation' && "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+                                                    card.cardType === 'wish' && "bg-indigo-500/10 text-indigo-600 border-indigo-500/20",
+                                                    card.cardType === 'visiting' && "bg-purple-500/10 text-purple-600 border-purple-500/20"
+                                                  )}>
+                                                    {card.typeLabel}
+                                                  </span>
+                                                </td>
+                                                <td className="py-2.5 pr-3 font-medium text-foreground max-w-[240px] truncate">
+                                                  {card.title}
+                                                </td>
+                                                <td className="py-2.5 pr-3 text-muted-foreground whitespace-nowrap">
+                                                  {card.createdAt > 0 ? formatDateStandard(card.createdAt) : '—'}
+                                                </td>
+                                                <td className="py-2.5 pr-3 whitespace-nowrap">
+                                                  {u.plan !== 'free' ? (
+                                                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-600 dark:text-amber-400">
+                                                      <ShieldCheck className="size-3.5" /> Protected ({ageDays}d old)
+                                                    </span>
+                                                  ) : isOld ? (
+                                                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-600 dark:text-rose-400">
+                                                      <AlertCircle className="size-3.5" /> {ageDays}d old (Purgeable)
+                                                    </span>
+                                                  ) : (
+                                                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                                      <CheckCircle2 className="size-3.5" /> Active ({ageDays}d old)
+                                                    </span>
+                                                  )}
+                                                </td>
+                                                <td className="py-2.5 text-right whitespace-nowrap">
+                                                  <div className="flex items-center justify-end gap-1.5">
+                                                    <Link
+                                                      href={card.previewUrl}
+                                                      target="_blank"
+                                                      className="p-1 px-2 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 text-[11px] font-bold inline-flex items-center gap-1 transition-colors"
+                                                      title="Preview card"
+                                                    >
+                                                      <Eye className="size-3" /> Preview
+                                                    </Link>
+                                                    {canDelete ? (
+                                                      <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                          const ident = card.slug || card.id
+                                                          if (card.cardType === 'invitation') handleDeleteInv(ident)
+                                                          else if (card.cardType === 'wish') handleDeleteWishCard(ident)
+                                                          else if (card.cardType === 'visiting') handleDeleteVisitingCard(ident, card.title)
+                                                          else if (card.cardType === 'magic') handleDeleteMagicLink(ident)
+                                                        }}
+                                                        className="p-1 px-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-[11px] font-bold inline-flex items-center gap-1 cursor-pointer transition-colors"
+                                                        title="Delete this free card (> 30 days old)"
+                                                      >
+                                                        <Trash2 className="size-3" />
+                                                      </button>
+                                                    ) : null}
+                                                  </div>
+                                                </td>
+                                              </tr>
+                                            )
+                                          })}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </Fragment>
                       )
                     })
                   )}
@@ -5131,6 +5301,70 @@ export default function AdminPortalPage() {
                 >
                   <Sparkles className="size-3.5" /> Create Magic Link
                 </Link>
+              </div>
+            </div>
+
+            {/* Magic Links Guest Purge Bar */}
+            <div className="mx-6 mt-4 p-3.5 rounded-2xl bg-muted/40 border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="size-8 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-500 shrink-0">
+                  <Trash2 className="size-4" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-foreground flex items-center gap-1.5 flex-wrap">
+                    <span>Purge Old Guest Magic Links</span>
+                    <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded-md font-semibold">
+                      🛡️ Member Cards Protected
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Permanently delete unauthenticated guest magic links older than {guestPurgeDays} days.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handlePurgeFreeUserCards(undefined, 'magic_links', 'Magic Links')}
+                  disabled={isPurgingFreeUserCards === 'magic_links'}
+                  className="h-8 text-xs font-bold rounded-xl border-rose-500/40 bg-rose-600 text-white hover:bg-rose-700 shrink-0 flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  title="Purge Free and guest magic links older than 30 days"
+                >
+                  <Trash2 className={cn("size-3.5", isPurgingFreeUserCards === 'magic_links' && "animate-spin")} />
+                  <span>
+                    {isPurgingFreeUserCards === 'magic_links'
+                      ? 'Purging…'
+                      : `Purge Free (> 30d)${oldFreeCardsCount.magicLinks > 0 ? ` (${oldFreeCardsCount.magicLinks})` : ''}`}
+                  </span>
+                </Button>
+
+                <select
+                  value={guestPurgeDays}
+                  onChange={(e) => setGuestPurgeDays(Number(e.target.value))}
+                  className="bg-background border border-border rounded-xl text-xs font-medium px-2.5 py-1.5 text-foreground outline-none cursor-pointer"
+                  title="Select age threshold for guest-only purge"
+                >
+                  <option value={3}>Guests &gt; 3d</option>
+                  <option value={7}>Guests &gt; 7d</option>
+                  <option value={15}>Guests &gt; 15d</option>
+                  <option value={30}>Guests &gt; 30d</option>
+                  <option value={60}>Guests &gt; 60d</option>
+                  <option value={90}>Guests &gt; 90d</option>
+                </select>
+
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handlePurgeGuestData('magic_links', 'Magic Links')}
+                  disabled={isPurgingGuestData === 'magic_links'}
+                  className="h-8 text-xs font-bold rounded-xl border-border text-muted-foreground hover:bg-muted/30 shrink-0 flex items-center gap-1.5 cursor-pointer"
+                  title="Purge unauthenticated guest magic links only"
+                >
+                  <Trash2 className={cn("size-3.5", isPurgingGuestData === 'magic_links' && "animate-spin")} />
+                  <span>{isPurgingGuestData === 'magic_links' ? 'Purging…' : `Purge Guests (${guestPurgeDays}d)`}</span>
+                </Button>
               </div>
             </div>
 
@@ -5293,58 +5527,68 @@ export default function AdminPortalPage() {
                         <td className="py-4 px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
                             <Link
-                              href={`/m/${(m.slug || m.id)}?mode=sender`}
+                              href={`/m/${(m.slug || m.id)}?mode=sender&preview=true`}
                               target="_blank"
-                              className="p-1.5 rounded-lg bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 text-xs font-bold flex items-center gap-1"
-                              title="Host Screen Preview"
+                              className="p-1.5 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 text-xs font-bold flex items-center gap-1 transition-colors"
+                              title="Preview Card & Sender Hub (Zero View Increment)"
                             >
-                              <ExternalLink className="size-3.5" /> Preview
+                              <Eye className="size-3.5" /> Preview
                             </Link>
 
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setShareModalCard({
-                                  title: `${m.occasion.toUpperCase()} Magic Link`,
-                                  recipientOrCouple: m.recipientName,
-                                  type: 'magic',
-                                  slug: (m.slug || m.id || ""),
-                                  url: `/m/${(m.slug || m.id)}`,
-                                  viewsCount: m.viewsCount,
-                                  shares: m.shares,
-                                  occasion: `${m.occasion.toUpperCase()} Magic Celebration`,
-                                  message: m.wishContent?.secretLetter || m.inviteContent?.eventTitle,
-                                  theme: m.theme,
-                                  senderName: m.senderName,
-                                  date: m.inviteContent?.eventDate,
-                                  time: m.inviteContent?.eventTime,
-                                  venue: m.inviteContent?.venueName,
-                                  waMessage: `✨ I created an interactive surprise for you on Cardzy! Tap to unwrap:`,
-                                })
+
+                            {(() => {
+                              const cardUser = getCardUser(m)
+                              const isPro = cardUser?.plan === 'pro' || cardUser?.plan === 'business' || (m as any).creatorPlan === 'pro' || (m as any).creatorPlan === 'business'
+                              const mAgeDays = m.createdAt > 0 ? Math.floor((Date.now() - m.createdAt) / (1000 * 60 * 60 * 24)) : 0
+                              const isOldFree = !isPro && mAgeDays >= 30
+
+                              if (isPro) {
+                                return (
+                                  <span
+                                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30"
+                                    title={`Pro Account (${cardUser?.email || cardUser?.name || 'Pro'}) — Lifetime Retention`}
+                                  >
+                                    👑 PRO
+                                  </span>
+                                )
                               }
-                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                              title="Share, QR & Download Image"
-                            >
-                              <Sparkles className="size-3.5" /> Share & Image
-                            </button>
 
-                              <button
-                                type="button"
-                                onClick={() => promptAdjustMetrics('magic', m)}
-                                className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                                title="Adjust Likes, Views & Shares"
-                              >
-                                <Sliders className="size-3.5" /> Metrics
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() => handleDeleteMagicLink((m.slug || m.id || ""))}
-                                className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                                title="Delete Magic Link"
-                              >
-                                <Trash2 className="size-3.5" />
-                              </button>
+                              return (
+                                <div className="flex items-center gap-1.5">
+                                  {cardUser ? (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-500/10 text-slate-600 dark:text-slate-400 border border-slate-500/20"
+                                      title={`Free Member: ${cardUser.email || cardUser.name}`}
+                                    >
+                                      👤 Free
+                                    </span>
+                                  ) : (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-medium bg-zinc-500/10 text-zinc-500 border border-zinc-500/20"
+                                    >
+                                      Guest
+                                    </span>
+                                  )}
+                                  {isOldFree && (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30"
+                                      title={`Created ${mAgeDays} days ago — expired past 30-day Free limit`}
+                                    >
+                                      &gt;30d Expired
+                                    </span>
+                                  )}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteMagicLink((m.slug || m.id || ""))}
+                                    className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 hover:text-rose-700 flex items-center justify-center cursor-pointer transition-colors"
+                                    title={isOldFree ? `Delete expired free magic link (${mAgeDays}d old)` : "Delete Magic Link"}
+                                    aria-label="Delete"
+                                  >
+                                    <Trash2 className="size-4" />
+                                  </button>
+                                </div>
+                              )
+                            })()}
                             </div>
                         </td>
                       </tr>
@@ -6062,6 +6306,73 @@ export default function AdminPortalPage() {
               </div>
             </div>
 
+            {/* Invitations Purge Bar */}
+            <div className="mx-6 mt-4 p-3.5 rounded-2xl bg-muted/40 border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="size-8 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-500 shrink-0">
+                  <Trash2 className="size-4" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-foreground flex items-center gap-1.5 flex-wrap">
+                    <span>Purge Expired Free Invitations</span>
+                    <span className="text-[10px] bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 px-2 py-0.5 rounded-full font-bold">
+                      {oldFreeCardsCount.invitations} Expired (&gt;30d)
+                    </span>
+                    <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded-md font-semibold">
+                      🛡️ Pro Cards Protected
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Permanently delete Free user and guest invitations older than 30 days. Pro invitations are permanently preserved.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handlePurgeFreeUserCards(undefined, 'invitations', 'Invitations')}
+                  disabled={isPurgingFreeUserCards === 'invitations'}
+                  className="h-8 text-xs font-bold rounded-xl border-rose-500/40 bg-rose-600 text-white hover:bg-rose-700 shrink-0 flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  title="Purge Free and guest invitations older than 30 days"
+                >
+                  <Trash2 className={cn("size-3.5", isPurgingFreeUserCards === 'invitations' && "animate-spin")} />
+                  <span>
+                    {isPurgingFreeUserCards === 'invitations'
+                      ? 'Purging…'
+                      : `Purge Free (> 30d)${oldFreeCardsCount.invitations > 0 ? ` (${oldFreeCardsCount.invitations})` : ''}`}
+                  </span>
+                </Button>
+
+                <select
+                  value={guestPurgeDays}
+                  onChange={(e) => setGuestPurgeDays(Number(e.target.value))}
+                  className="bg-background border border-border rounded-xl text-xs font-medium px-2.5 py-1.5 text-foreground outline-none cursor-pointer"
+                  title="Select age threshold for guest-only purge"
+                >
+                  <option value={3}>Guests &gt; 3d</option>
+                  <option value={7}>Guests &gt; 7d</option>
+                  <option value={15}>Guests &gt; 15d</option>
+                  <option value={30}>Guests &gt; 30d</option>
+                  <option value={60}>Guests &gt; 60d</option>
+                  <option value={90}>Guests &gt; 90d</option>
+                </select>
+
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handlePurgeGuestData('invitations', 'Invitations')}
+                  disabled={isPurgingGuestData === 'invitations'}
+                  className="h-8 text-xs font-bold rounded-xl border-border text-muted-foreground hover:bg-muted/30 shrink-0 flex items-center gap-1.5 cursor-pointer"
+                  title="Purge unauthenticated guest cards only"
+                >
+                  <Trash2 className={cn("size-3.5", isPurgingGuestData === 'invitations' && "animate-spin")} />
+                  <span>{isPurgingGuestData === 'invitations' ? 'Purging…' : `Purge Guests (${guestPurgeDays}d)`}</span>
+                </Button>
+              </div>
+            </div>
+
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead className="bg-muted/40 border-b border-border text-xs uppercase font-semibold text-muted-foreground">
@@ -6217,74 +6528,67 @@ export default function AdminPortalPage() {
                         </td>
                         <td className="py-4 px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setShareModalCard({
-                                  title: inv.title || `${inv.groom} & ${inv.bride}`,
-                                  recipientOrCouple: (inv.groom && inv.bride) ? `${inv.groom} & ${inv.bride}` : (inv.title || 'Royal Guests'),
-                                  type: 'invite',
-                                  slug: (inv.slug || inv.id || ""),
-                                  url: `/i/${(inv.slug || inv.id)}`,
-                                  viewsCount: inv.viewCount,
-                                  shares: inv.shares,
-                                  occasion: inv.typeId || 'Royal Wedding Invitation',
-                                  date: inv.date,
-                                  time: inv.time,
-                                  venue: inv.venue || inv.city,
-                                  waMessage: `✨ You are cordially invited to celebrate with us! Tap to view our interactive digital invitation:`,
-                                })
-                              }
-                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                              title="Share, QR & Download Image"
-                            >
-                              <Sparkles className="size-3.5" /> Share
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setRsvpFilterSlug((inv.slug || inv.id))
-                                setAdminSection('rsvps')
-                                // Scroll to top so the RSVP section is visible
-                                window.scrollTo({ top: 0, behavior: 'smooth' })
-                              }}
-                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1"
-                              title={`View RSVPs for this event (${inv.rsvpCount})`}
-                            >
-                              <Users className="size-3.5" /> RSVPs ({inv.rsvpCount})
-                            </button>
                             <Link
-                              href={`/i/${(inv.slug || inv.id)}`}
+                              href={`/i/${(inv.slug || inv.id)}?mode=sender&preview=true`}
                               target="_blank"
-                              className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 text-xs font-bold flex items-center gap-1"
-                              title="View Live Card"
+                              className="p-1.5 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 text-xs font-bold flex items-center gap-1 transition-colors"
+                              title="Preview Invitation & Sender Hub (Zero View Increment)"
                             >
-                              <ExternalLink className="size-3.5" /> View
+                              <Eye className="size-3.5" /> Preview
                             </Link>
-                            <Link
-                              href={`/create-invitation?edit=${(inv.slug || inv.id)}`}
-                              rel="nofollow"
-                              className="p-1.5 rounded-lg bg-amber-500/10 text-amber-700 hover:bg-amber-500/20 text-xs font-bold flex items-center gap-1"
-                              title="Edit Invitation"
-                            >
-                              <Edit3 className="size-3.5" /> Edit
-                            </Link>
-                            <button
-                              type="button"
-                              onClick={() => promptAdjustMetrics('invite', inv)}
-                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                              title="Adjust Likes, Views & Shares"
-                            >
-                              <Sliders className="size-3.5" /> Metrics
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteInv((inv.slug || inv.id))}
-                              className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                              title="Delete Invitation"
-                            >
-                              <Trash2 className="size-3.5" />
-                            </button>
+                            {(() => {
+                              const cardUser = getCardUser(inv)
+                              const isPro = cardUser?.plan === 'pro' || cardUser?.plan === 'business' || (inv as any).creatorPlan === 'pro' || (inv as any).creatorPlan === 'business'
+                              const invAgeDays = inv.createdAt > 0 ? Math.floor((Date.now() - inv.createdAt) / (1000 * 60 * 60 * 24)) : 0
+                              const isOldFree = !isPro && invAgeDays >= 30
+
+                              if (isPro) {
+                                return (
+                                  <span
+                                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30"
+                                    title={`Pro Account (${cardUser?.email || cardUser?.name || 'Pro'}) — Lifetime Retention`}
+                                  >
+                                    👑 PRO
+                                  </span>
+                                )
+                              }
+
+                              return (
+                                <div className="flex items-center gap-1.5">
+                                  {cardUser ? (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-500/10 text-slate-600 dark:text-slate-400 border border-slate-500/20"
+                                      title={`Free Member: ${cardUser.email || cardUser.name}`}
+                                    >
+                                      👤 Free
+                                    </span>
+                                  ) : (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-medium bg-zinc-500/10 text-zinc-500 border border-zinc-500/20"
+                                    >
+                                      Guest
+                                    </span>
+                                  )}
+                                  {isOldFree && (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30"
+                                      title={`Created ${invAgeDays} days ago — expired past 30-day Free limit`}
+                                    >
+                                      &gt;30d Expired
+                                    </span>
+                                  )}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteInv((inv.slug || inv.id))}
+                                    className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 hover:text-rose-700 flex items-center justify-center cursor-pointer transition-colors"
+                                    title={isOldFree ? `Delete expired free invitation (${invAgeDays}d old)` : "Delete invitation"}
+                                    aria-label="Delete"
+                                  >
+                                    <Trash2 className="size-4" />
+                                  </button>
+                                </div>
+                              )
+                            })()}
                           </div>
                         </td>
                       </tr>
@@ -6335,6 +6639,70 @@ export default function AdminPortalPage() {
                 <Link href="/create-wish" className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-xs font-bold shadow-md">
                   + Create New Wish
                 </Link>
+              </div>
+            </div>
+
+            {/* Wishes Guest Purge Bar */}
+            <div className="mx-6 mt-4 p-3.5 rounded-2xl bg-muted/40 border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="size-8 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-500 shrink-0">
+                  <Trash2 className="size-4" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-foreground flex items-center gap-1.5 flex-wrap">
+                    <span>Purge Old Guest Wishes</span>
+                    <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded-md font-semibold">
+                      🛡️ Member Cards Protected
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Permanently delete unauthenticated guest wish cards older than {guestPurgeDays} days.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handlePurgeFreeUserCards(undefined, 'wishes', 'Wishes')}
+                  disabled={isPurgingFreeUserCards === 'wishes'}
+                  className="h-8 text-xs font-bold rounded-xl border-rose-500/40 bg-rose-600 text-white hover:bg-rose-700 shrink-0 flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  title="Purge Free and guest wishes older than 30 days"
+                >
+                  <Trash2 className={cn("size-3.5", isPurgingFreeUserCards === 'wishes' && "animate-spin")} />
+                  <span>
+                    {isPurgingFreeUserCards === 'wishes'
+                      ? 'Purging…'
+                      : `Purge Free (> 30d)${oldFreeCardsCount.wishes > 0 ? ` (${oldFreeCardsCount.wishes})` : ''}`}
+                  </span>
+                </Button>
+
+                <select
+                  value={guestPurgeDays}
+                  onChange={(e) => setGuestPurgeDays(Number(e.target.value))}
+                  className="bg-background border border-border rounded-xl text-xs font-medium px-2.5 py-1.5 text-foreground outline-none cursor-pointer"
+                  title="Select age threshold for guest-only purge"
+                >
+                  <option value={3}>Guests &gt; 3d</option>
+                  <option value={7}>Guests &gt; 7d</option>
+                  <option value={15}>Guests &gt; 15d</option>
+                  <option value={30}>Guests &gt; 30d</option>
+                  <option value={60}>Guests &gt; 60d</option>
+                  <option value={90}>Guests &gt; 90d</option>
+                </select>
+
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handlePurgeGuestData('wishes', 'Wishes')}
+                  disabled={isPurgingGuestData === 'wishes'}
+                  className="h-8 text-xs font-bold rounded-xl border-border text-muted-foreground hover:bg-muted/30 shrink-0 flex items-center gap-1.5 cursor-pointer"
+                  title="Purge unauthenticated guest wish cards only"
+                >
+                  <Trash2 className={cn("size-3.5", isPurgingGuestData === 'wishes' && "animate-spin")} />
+                  <span>{isPurgingGuestData === 'wishes' ? 'Purging…' : `Purge Guests (${guestPurgeDays}d)`}</span>
+                </Button>
               </div>
             </div>
 
@@ -6468,60 +6836,68 @@ export default function AdminPortalPage() {
                         </td>
                         <td className="py-4 px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setShareModalCard({
-                                  title: `${w.occasionId} Wish Card`,
-                                  recipientOrCouple: w.recipientName || 'Dear Friend',
-                                  type: 'wish',
-                                  slug: (w.slug || w.id || ""),
-                                  url: `/w/${(w.slug || w.id)}`,
-                                  viewsCount: w.viewCount,
-                                  shares: w.shares,
-                                  occasion: w.occasionId,
-                                  message: w.message,
-                                  senderName: w.senderName,
-                                  waMessage: `✨ A special 3D digital wish card was created for you! Tap to open:`,
-                                })
-                              }
-                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                              title="Share, QR & Download Image"
-                            >
-                              <Sparkles className="size-3.5" /> Share
-                            </button>
                             <Link
-                              href={`/w/${(w.slug || w.id)}`}
+                              href={`/w/${(w.slug || w.id)}?mode=sender&preview=true`}
                               target="_blank"
-                              className="p-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 text-xs font-bold flex items-center gap-1"
-                              title="View Live Greeting"
+                              className="p-1.5 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 text-xs font-bold flex items-center gap-1 transition-colors"
+                              title="Preview Wish & Sender Hub (Zero View Increment)"
                             >
-                              <ExternalLink className="size-3.5" /> View
+                              <Eye className="size-3.5" /> Preview
                             </Link>
-                            <Link
-                              href={`/create-wish?edit=${(w.slug || w.id)}`}
-                              rel="nofollow"
-                              className="p-1.5 rounded-lg bg-amber-500/10 text-amber-700 hover:bg-amber-500/20 text-xs font-bold flex items-center gap-1"
-                              title="Edit Wish"
-                            >
-                              <Edit3 className="size-3.5" /> Edit
-                            </Link>
-                            <button
-                              type="button"
-                              onClick={() => promptAdjustMetrics('wish', w)}
-                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                              title="Adjust Likes, Views & Shares"
-                            >
-                              <Sliders className="size-3.5" /> Metrics
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteWishCard((w.slug || w.id))}
-                              className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                              title="Delete Wish"
-                            >
-                              <Trash2 className="size-3.5" />
-                            </button>
+
+                            {(() => {
+                              const cardUser = getCardUser(w)
+                              const isPro = cardUser?.plan === 'pro' || cardUser?.plan === 'business' || (w as any).creatorPlan === 'pro' || (w as any).creatorPlan === 'business'
+                              const wAgeDays = w.createdAt > 0 ? Math.floor((Date.now() - w.createdAt) / (1000 * 60 * 60 * 24)) : 0
+                              const isOldFree = !isPro && wAgeDays >= 30
+
+                              if (isPro) {
+                                return (
+                                  <span
+                                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30"
+                                    title={`Pro Account (${cardUser?.email || cardUser?.name || 'Pro'}) — Lifetime Retention`}
+                                  >
+                                    👑 PRO
+                                  </span>
+                                )
+                              }
+
+                              return (
+                                <div className="flex items-center gap-1.5">
+                                  {cardUser ? (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-500/10 text-slate-600 dark:text-slate-400 border border-slate-500/20"
+                                      title={`Free Member: ${cardUser.email || cardUser.name}`}
+                                    >
+                                      👤 Free
+                                    </span>
+                                  ) : (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-medium bg-zinc-500/10 text-zinc-500 border border-zinc-500/20"
+                                    >
+                                      Guest
+                                    </span>
+                                  )}
+                                  {isOldFree && (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30"
+                                      title={`Created ${wAgeDays} days ago — expired past 30-day Free limit`}
+                                    >
+                                      &gt;30d Expired
+                                    </span>
+                                  )}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteWishCard((w.slug || w.id))}
+                                    className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 hover:text-rose-700 flex items-center justify-center cursor-pointer transition-colors"
+                                    title={isOldFree ? `Delete expired free wish (${wAgeDays}d old)` : "Delete Wish"}
+                                    aria-label="Delete"
+                                  >
+                                    <Trash2 className="size-4" />
+                                  </button>
+                                </div>
+                              )
+                            })()}
                           </div>
                         </td>
                       </tr>
@@ -6576,6 +6952,70 @@ export default function AdminPortalPage() {
                   <CreditCard className="size-4" />
                   <span>+ Create Visiting Card</span>
                 </Link>
+              </div>
+            </div>
+
+            {/* Visiting Cards Guest Purge Bar */}
+            <div className="mx-6 mt-4 p-3.5 rounded-2xl bg-muted/40 border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="size-8 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-500 shrink-0">
+                  <Trash2 className="size-4" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-foreground flex items-center gap-1.5 flex-wrap">
+                    <span>Purge Old Guest Visiting Cards</span>
+                    <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded-md font-semibold">
+                      🛡️ Member Cards Protected
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Permanently delete unauthenticated guest visiting cards older than {guestPurgeDays} days.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handlePurgeFreeUserCards(undefined, 'visitingCards', 'Visiting Cards')}
+                  disabled={isPurgingFreeUserCards === 'visitingCards'}
+                  className="h-8 text-xs font-bold rounded-xl border-rose-500/40 bg-rose-600 text-white hover:bg-rose-700 shrink-0 flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  title="Purge Free and guest visiting cards older than 30 days"
+                >
+                  <Trash2 className={cn("size-3.5", isPurgingFreeUserCards === 'visitingCards' && "animate-spin")} />
+                  <span>
+                    {isPurgingFreeUserCards === 'visitingCards'
+                      ? 'Purging…'
+                      : `Purge Free (> 30d)${oldFreeCardsCount.visitingCards > 0 ? ` (${oldFreeCardsCount.visitingCards})` : ''}`}
+                  </span>
+                </Button>
+
+                <select
+                  value={guestPurgeDays}
+                  onChange={(e) => setGuestPurgeDays(Number(e.target.value))}
+                  className="bg-background border border-border rounded-xl text-xs font-medium px-2.5 py-1.5 text-foreground outline-none cursor-pointer"
+                  title="Select age threshold for guest-only purge"
+                >
+                  <option value={3}>Guests &gt; 3d</option>
+                  <option value={7}>Guests &gt; 7d</option>
+                  <option value={15}>Guests &gt; 15d</option>
+                  <option value={30}>Guests &gt; 30d</option>
+                  <option value={60}>Guests &gt; 60d</option>
+                  <option value={90}>Guests &gt; 90d</option>
+                </select>
+
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handlePurgeGuestData('visitingCards', 'Visiting Cards')}
+                  disabled={isPurgingGuestData === 'visitingCards'}
+                  className="h-8 text-xs font-bold rounded-xl border-border text-muted-foreground hover:bg-muted/30 shrink-0 flex items-center gap-1.5 cursor-pointer"
+                  title="Purge unauthenticated guest visiting cards only"
+                >
+                  <Trash2 className={cn("size-3.5", isPurgingGuestData === 'visitingCards' && "animate-spin")} />
+                  <span>{isPurgingGuestData === 'visitingCards' ? 'Purging…' : `Purge Guests (${guestPurgeDays}d)`}</span>
+                </Button>
               </div>
             </div>
 
@@ -6709,52 +7149,67 @@ export default function AdminPortalPage() {
                           </td>
                         <td className="py-4 px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setShareModalCard({
-                                  title: `${vc.fullName}'s Digital vCard`,
-                                  recipientOrCouple: vc.fullName,
-                                  type: 'vcard',
-                                  slug: (vc.slug || vc.id || ""),
-                                  url: `/v/${(vc.slug || vc.id)}`,
-                                  viewsCount: vc.viewCount,
-                                  shares: vc.shares,
-                                  occasion: 'Executive Digital vCard',
-                                  subtitle: `${vc.title || 'Professional'} • ${vc.company || ''}`,
-                                  details: vc.phone || vc.email,
-                                  waMessage: `✨ Here is my executive digital business card. Tap to save contact:`,
-                                })
-                              }
-                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                              title="Share, QR & Download Image"
-                            >
-                              <Sparkles className="size-3.5" /> Share
-                            </button>
                             <Link
-                              href={`/v/${(vc.slug || vc.id)}`}
+                              href={`/v/${(vc.slug || vc.id)}?mode=sender&preview=true`}
                               target="_blank"
-                              className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 text-xs font-bold flex items-center gap-1"
-                              title="View Live Card"
+                              className="p-1.5 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20 text-xs font-bold flex items-center gap-1 transition-colors"
+                              title="Preview vCard & Sender Hub (Zero View Increment)"
                             >
-                              <ExternalLink className="size-3.5" /> View
+                              <Eye className="size-3.5" /> Preview
                             </Link>
-                            <button
-                              type="button"
-                              onClick={() => promptAdjustMetrics('vcard', vc)}
-                              className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                              title="Adjust Likes, Views & Shares"
-                            >
-                              <Sliders className="size-3.5" /> Metrics
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteVisitingCard((vc.slug || vc.id), vc.fullName)}
-                              className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold flex items-center gap-1 cursor-pointer"
-                              title="Delete Card"
-                            >
-                              <Trash2 className="size-3.5" />
-                            </button>
+                            {(() => {
+                              const cardUser = getCardUser(vc)
+                              const isPro = cardUser?.plan === 'pro' || cardUser?.plan === 'business' || (vc as any).creatorPlan === 'pro' || (vc as any).creatorPlan === 'business'
+                              const vcAgeDays = vc.createdAt > 0 ? Math.floor((Date.now() - vc.createdAt) / (1000 * 60 * 60 * 24)) : 0
+                              const isOldFree = !isPro && vcAgeDays >= 30
+
+                              if (isPro) {
+                                return (
+                                  <span
+                                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30"
+                                    title={`Pro Account (${cardUser?.email || cardUser?.name || 'Pro'}) — Lifetime Retention`}
+                                  >
+                                    👑 PRO
+                                  </span>
+                                )
+                              }
+
+                              return (
+                                <div className="flex items-center gap-1.5">
+                                  {cardUser ? (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-500/10 text-slate-600 dark:text-slate-400 border border-slate-500/20"
+                                      title={`Free Member: ${cardUser.email || cardUser.name}`}
+                                    >
+                                      👤 Free
+                                    </span>
+                                  ) : (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-lg text-[10px] font-medium bg-zinc-500/10 text-zinc-500 border border-zinc-500/20"
+                                    >
+                                      Guest
+                                    </span>
+                                  )}
+                                  {isOldFree && (
+                                    <span
+                                      className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30"
+                                      title={`Created ${vcAgeDays} days ago — expired past 30-day Free limit`}
+                                    >
+                                      &gt;30d Expired
+                                    </span>
+                                  )}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteVisitingCard((vc.slug || vc.id), vc.fullName)}
+                                    className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 hover:text-rose-700 flex items-center justify-center cursor-pointer transition-colors"
+                                    title={isOldFree ? `Delete expired free visiting card (${vcAgeDays}d old)` : "Delete Card"}
+                                    aria-label="Delete"
+                                  >
+                                    <Trash2 className="size-4" />
+                                  </button>
+                                </div>
+                              )
+                            })()}
                           </div>
                         </td>
                       </tr>
@@ -6820,6 +7275,49 @@ export default function AdminPortalPage() {
                     className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md transition-all flex items-center gap-1.5 text-xs"
                   >
                     <FileSpreadsheet className="size-4" /> Export CSV
+                  </Button>
+                </div>
+              </div>
+
+              {/* RSVPs Guest Purge Bar */}
+              <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="size-8 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-500 shrink-0">
+                    <Trash2 className="size-4" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-foreground flex items-center gap-1.5 flex-wrap">
+                      <span>Purge Old Guest RSVPs</span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground">
+                      Permanently delete guest RSVP attendance records older than {guestPurgeDays} days.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <select
+                    value={guestPurgeDays}
+                    onChange={(e) => setGuestPurgeDays(Number(e.target.value))}
+                    className="bg-background border border-border rounded-xl text-xs font-medium px-2.5 py-1.5 text-foreground outline-none cursor-pointer"
+                    title="Select age threshold for purge"
+                  >
+                    <option value={7}>&gt; 7 days old</option>
+                    <option value={15}>&gt; 15 days old</option>
+                    <option value={30}>&gt; 30 days old</option>
+                    <option value={60}>&gt; 60 days old</option>
+                    <option value={90}>&gt; 90 days old</option>
+                  </select>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handlePurgeGuestData('rsvps', 'RSVPs')}
+                    disabled={isPurgingGuestData === 'rsvps'}
+                    className="h-8 text-xs font-bold rounded-xl border-rose-500/30 text-rose-600 hover:bg-rose-500/15 shrink-0 flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Trash2 className={cn("size-3.5", isPurgingGuestData === 'rsvps' && "animate-spin")} />
+                    <span>{isPurgingGuestData === 'rsvps' ? 'Purging…' : `Purge (${guestPurgeDays}d)`}</span>
                   </Button>
                 </div>
               </div>
@@ -8172,51 +8670,6 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
     }
   }
 
-  const handleTestLocalNotification = async () => {
-    if (typeof window === 'undefined' || !('Notification' in window)) {
-      showToast('Notifications are not supported in this browser.', 'error')
-      return
-    }
-
-    if (Notification.permission === 'denied') {
-      showToast('Notifications are BLOCKED in browser or macOS settings. Click the lock icon in address bar to Allow.', 'error')
-      return
-    }
-
-    if (Notification.permission !== 'granted') {
-      const perm = await Notification.requestPermission()
-      if (perm !== 'granted') {
-        showToast('Notification permission was not granted.', 'error')
-        return
-      }
-    }
-
-    if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-      navigator.serviceWorker.ready.then((reg) => {
-        reg.showNotification('Desktop Push Test 🔔', {
-          body: 'If you see this banner, your Mac / Desktop notifications are 100% working!',
-          icon: '/android-chrome-192x192.png',
-          badge: '/favicon-32x32.png',
-          requireInteraction: true,
-          data: { url: '/admin_portal' }
-        })
-        showToast('Test notification banner fired! Check your Mac screen (top-right).', 'success')
-      }).catch((e) => {
-        showToast('Service Worker error: ' + e.message, 'error')
-      })
-    } else {
-      try {
-        new Notification('Desktop Push Test 🔔', {
-          body: 'If you see this banner, your Mac / Desktop notifications are 100% working!',
-          icon: '/android-chrome-192x192.png',
-          badge: '/favicon-32x32.png',
-        })
-        showToast('Test notification banner fired! Check your Mac screen (top-right).', 'success')
-      } catch (e: any) {
-        showToast('Error firing notification: ' + e.message, 'error')
-      }
-    }
-  }
 
   const handleDeleteNotification = async (notifId: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation()
@@ -8342,15 +8795,6 @@ function PushNotificationsSection({ showToast }: { showToast: (msg: string, type
               >
                 {isSending ? <RefreshCw className="size-4 animate-spin mr-2" /> : <Send className="size-4 mr-2" />}
                 {isSending ? 'Sending to all...' : `Send to All (${subscribersCount})`}
-              </Button>
-              <Button 
-                type="button"
-                onClick={handleTestLocalNotification}
-                variant="outline"
-                className="rounded-xl font-bold border-indigo-500/30 text-indigo-600 hover:bg-indigo-500/10"
-                title="Test native notification banner immediately on this Mac / Desktop"
-              >
-                🔔 Test Mac Banner
               </Button>
             </div>
           </div>

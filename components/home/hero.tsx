@@ -76,39 +76,112 @@ export function Hero() {
             {t('heroSubText') || 'Design, personalize, and share interactive 3D digital wish cards, royal Pakistani & global wedding invitations with automated WhatsApp RSVP tracking, and executive smart digital business cards (vCards). Zero printing costs, instant delivery in 18 languages.'}
           </p>
 
-          {/* CTA buttons */}
-          <div className="mt-6 flex flex-wrap items-center gap-3">
+          {/* 100% Free & No Sign-up Needed Trust Banner */}
+          <div className="mt-4 flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 dark:bg-emerald-950/40 px-3.5 py-1.5 text-xs font-extrabold text-emerald-900 dark:text-emerald-300 shadow-xs">
+              <Sparkles className="size-3.5 text-amber-500 animate-pulse shrink-0" />
+              <span>✨ 100% Free to Create &amp; Send • Instant WhatsApp Delivery • No Sign-up Required</span>
+            </span>
+          </div>
+
+          {/* 4 Core Card Studios Selection Grid */}
+          <div className="mt-5 grid grid-cols-2 sm:grid-cols-2 gap-2.5 sm:gap-3">
+            {/* 1. Wish Cards */}
             <Link
               href="/create-wish"
               aria-label="Start Designing 3D Digital Wish Card"
-              className={buttonVariants({ size: 'lg', className: 'h-13 sm:h-14 px-6 text-sm sm:text-base font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-950/30 hover:shadow-emerald-500/20 rounded-2xl transition-all duration-300' })}
+              className="group p-3 sm:p-3.5 rounded-2xl border border-emerald-600/30 bg-card hover:bg-emerald-500/5 hover:border-emerald-500 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
             >
-              <Sparkles className="size-4 text-amber-300" />
-              {t('createWishCard')}
+              <div className="flex items-center justify-between">
+                <span className="text-2xl group-hover:scale-110 transition-transform">💌</span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">Free</span>
+              </div>
+              <div className="mt-2 text-left">
+                <p className="font-extrabold text-foreground text-xs sm:text-sm group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                  3D Wish Cards
+                </p>
+                <p className="text-[11px] text-muted-foreground line-clamp-1">
+                  Birthdays, Eid, Milestones
+                </p>
+              </div>
             </Link>
+
+            {/* 2. Royal Wedding Invitations */}
             <Link
               href="/create-invitation"
               aria-label="Build Royal Wedding Invitation with WhatsApp RSVP"
-              className={buttonVariants({
-                size: 'lg',
-                variant: 'outline',
-                className: 'h-13 sm:h-14 px-5 text-sm sm:text-base font-extrabold border-emerald-800/30 hover:bg-emerald-900/10 hover:border-emerald-600/40 rounded-2xl transition-all duration-300',
-              })}
+              className="group p-3 sm:p-3.5 rounded-2xl border border-amber-600/30 bg-card hover:bg-amber-500/5 hover:border-amber-500 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
             >
-              <MailOpen className="size-4 text-amber-600" />
-              {t('createInvitation')}
+              <div className="flex items-center justify-between">
+                <span className="text-2xl group-hover:scale-110 transition-transform">💍</span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">RSVP</span>
+              </div>
+              <div className="mt-2 text-left">
+                <p className="font-extrabold text-foreground text-xs sm:text-sm group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
+                  Royal Invitations
+                </p>
+                <p className="text-[11px] text-muted-foreground line-clamp-1">
+                  Baraat, Nikkah &amp; WhatsApp RSVP
+                </p>
+              </div>
             </Link>
+
+            {/* 3. 3D Magic Links */}
+            <Link
+              href="/create-magic-link"
+              aria-label="Create 3D Animated Magic Link"
+              className="group p-3 sm:p-3.5 rounded-2xl border border-rose-600/30 bg-card hover:bg-rose-500/5 hover:border-rose-500 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-2xl group-hover:scale-110 transition-transform">🪄</span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-rose-700 dark:text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full">Trending</span>
+              </div>
+              <div className="mt-2 text-left">
+                <p className="font-extrabold text-foreground text-xs sm:text-sm group-hover:text-rose-700 dark:group-hover:text-rose-400 transition-colors">
+                  3D Magic Links
+                </p>
+                <p className="text-[11px] text-muted-foreground line-clamp-1">
+                  Balloons, Rings &amp; Fireworks
+                </p>
+              </div>
+            </Link>
+
+            {/* 4. Smart Digital Visiting Cards (vCards) */}
+            <Link
+              href="/create-visiting-card"
+              aria-label="Create Smart Digital Business Visiting Card"
+              className="group p-3 sm:p-3.5 rounded-2xl border border-[#D4AF37]/35 bg-card hover:bg-[#D4AF37]/5 hover:border-[#D4AF37] shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-2xl group-hover:scale-110 transition-transform">💼</span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-amber-800 dark:text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded-full">QR Save</span>
+              </div>
+              <div className="mt-2 text-left">
+                <p className="font-extrabold text-foreground text-xs sm:text-sm group-hover:text-[#D4AF37] transition-colors">
+                  Smart vCards
+                </p>
+                <p className="text-[11px] text-muted-foreground line-clamp-1">
+                  Executive 1-Click Contact Save
+                </p>
+              </div>
+            </Link>
+          </div>
+
+          {/* Secondary Discovery Row */}
+          <div className="mt-4 flex flex-wrap items-center gap-2.5">
             <Link
               href="/poetry"
               aria-label="Explore 1,000+ Classical & Modern Poetry Treasury"
-              className={buttonVariants({
-                size: 'lg',
-                variant: 'outline',
-                className: 'h-13 sm:h-14 px-5 text-sm sm:text-base font-extrabold border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-900 dark:text-purple-300 hover:border-purple-500/50 rounded-2xl transition-all duration-300 flex items-center gap-2',
-              })}
+              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-extrabold border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-900 dark:text-purple-300 hover:border-purple-500/50 shadow-2xs transition-all"
             >
-              <span className="text-base">📜</span>
-              <span>Poetry Treasury</span>
+              <span>📜 1,000+ Poetry Treasury</span>
+              <ArrowRight className="size-3 text-purple-400" />
+            </Link>
+            <Link
+              href="/calendar"
+              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-extrabold border border-border bg-card hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
+            >
+              <span>📅 Celebration Calendar</span>
             </Link>
           </div>
         </div>

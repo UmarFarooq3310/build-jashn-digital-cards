@@ -48,60 +48,72 @@ function normalizeTargetUrl(rawUrl, origin, notifId) {
   return finalUrl;
 }
 
-// Deduplication memory cache (prevents duplicate notification triggers on Android & Desktop)
+// Deduplication: prevents duplicate triggers from both FCM SDK and raw push event
 var recentNotifications = new Map();
+// Track whether FCM SDK already handled this push (set true in onBackgroundMessage)
+var fcmHandledIds = new Set();
 
-// Unified function to show native notification safely across all desktop & mobile platforms
-function displayNotification(payload) {
-  var notificationTitle = 
-    payload.notification?.title || 
-    payload.data?.title || 
-    payload.title || 
-    'Cardzy Alert 🔔';
-
-  var notificationBody = 
-    payload.notification?.body || 
-    payload.data?.body || 
-    payload.body || 
-    '';
-
-  var targetUrl = 
-    payload.fcmOptions?.link || 
-    payload.data?.url || 
-    payload.data?.link || 
-    payload.notification?.click_action || 
-    payload.url || 
-    '/';
-
-  var notifId = payload.data?.notificationId || payload.notificationId || (notificationTitle + '_' + notificationBody);
-
-  // Check deduplication cache: if seen within 5 seconds, ignore duplicate call
+function isDuplicate(notifId) {
   var now = Date.now();
   var lastSeen = recentNotifications.get(notifId);
-  if (lastSeen && (now - lastSeen < 5000)) {
-    return Promise.resolve();
+  if (lastSeen && (now - lastSeen < 8000)) {
+    return true;
   }
   recentNotifications.set(notifId, now);
-
+  // Prune old entries
   if (recentNotifications.size > 50) {
     var cutoff = now - 60000;
     recentNotifications.forEach(function(time, key) {
       if (time < cutoff) recentNotifications.delete(key);
     });
   }
+  return false;
+}
+
+// Unified function to show native OS notification safely across all platforms
+// Works on: Mac, Windows, Linux, Android (Chrome), iOS PWA
+function displayNotification(payload, source) {
+  var notificationTitle =
+    (payload.notification && payload.notification.title) ||
+    (payload.data && payload.data.title) ||
+    payload.title ||
+    'Cardzy 🔔';
+
+  var notificationBody =
+    (payload.notification && payload.notification.body) ||
+    (payload.data && payload.data.body) ||
+    payload.body ||
+    '';
+
+  var targetUrl =
+    (payload.fcmOptions && payload.fcmOptions.link) ||
+    (payload.data && (payload.data.url || payload.data.link)) ||
+    (payload.notification && payload.notification.click_action) ||
+    payload.url ||
+    '/dashboard';
+
+  var notifId =
+    (payload.data && payload.data.notificationId) ||
+    payload.notificationId ||
+    (notificationTitle + '_' + notificationBody).replace(/\s+/g, '_').slice(0, 60);
+
+  if (isDuplicate(notifId)) {
+    return Promise.resolve();
+  }
 
   var origin = (self.location && self.location.origin) ? self.location.origin : 'https://cardzy.online';
   var iconUrl = origin + '/android-chrome-192x192.png';
   var badgeUrl = origin + '/favicon-32x32.png';
-  var tag = 'cardzy-' + notifId.toString().replace(/[^a-zA-Z0-9]/g, '_');
+  var tag = 'cardzy-' + notifId.toString().replace(/[^a-zA-Z0-9]/g, '_').slice(0, 60);
 
   var notificationOptions = {
     body: notificationBody,
     icon: iconUrl,
     badge: badgeUrl,
-    tag: tag, // Guaranteed identical tag collapses into 1 notification on Android & Desktop
-    renotify: false, // Prevents buzzing multiple times for the same notification
-    requireInteraction: true,
+    tag: tag,
+    renotify: true,
+    requireInteraction: false, // false = notification auto-dismisses on Mac/Windows (less intrusive)
+    silent: false,
     vibrate: [200, 100, 200],
     data: {
       url: targetUrl,
@@ -114,12 +126,19 @@ function displayNotification(payload) {
   return self.registration.showNotification(notificationTitle, notificationOptions);
 }
 
-// 1. Firebase background messaging hook
+// ── 1. FCM SDK background message handler ────────────────────────────────────
+// Fires when browser tab is CLOSED or in background.
+// FCM SDK calls this for messages that have BOTH notification + data, OR data-only.
 messaging.onBackgroundMessage(function(payload) {
-  return displayNotification(payload || {});
+  // Mark this notification ID as FCM-handled to prevent raw push event from duping it
+  var notifId = (payload.data && payload.data.notificationId) || null;
+  if (notifId) fcmHandledIds.add(notifId);
+  return displayNotification(payload || {}, 'fcm');
 });
 
-// 2. Native Web Push background hook (guarantees Mac & Windows desktop background wake-up)
+// ── 2. Raw Web Push event (fallback for non-FCM pushes and browser-closed wake-up) ──
+// This is the critical path for Mac/Windows/Android when the browser process is closed.
+// FCM HTTP v1 API sends a raw Web Push which wakes up the SW even with the browser closed.
 self.addEventListener('push', function(event) {
   var payload = {};
   if (event.data) {
@@ -127,20 +146,34 @@ self.addEventListener('push', function(event) {
       payload = event.data.json();
     } catch (e) {
       try {
-        payload = { data: { body: event.data.text() } };
+        var text = event.data.text();
+        payload = { data: { body: text, title: 'Cardzy 🔔' } };
       } catch (e2) {
-        payload = {};
+        payload = { data: { title: 'Cardzy 🔔', body: 'You have a new notification' } };
       }
     }
   }
-  event.waitUntil(displayNotification(payload));
+
+  // If no data at all, show a generic notification so the push isn't silent
+  if (!payload || Object.keys(payload).length === 0) {
+    payload = { data: { title: 'Cardzy 🔔', body: 'You have a new notification', url: '/dashboard' } };
+  }
+
+  // Check if FCM SDK already handled this (avoid duplicate on foreground-to-background transition)
+  var notifId = (payload.data && payload.data.notificationId) || null;
+  if (notifId && fcmHandledIds.has(notifId)) {
+    fcmHandledIds.delete(notifId);
+    return; // FCM SDK already showed it
+  }
+
+  event.waitUntil(displayNotification(payload, 'push'));
 });
 
-// Notification click handler
+// ── 3. Notification click handler ────────────────────────────────────────────
 self.addEventListener('notificationclick', function(event) {
   event.notification.close();
-  var rawUrl = event.notification.data?.url || '/';
-  var notificationId = event.notification.data?.notificationId;
+  var rawUrl = (event.notification.data && event.notification.data.url) || '/';
+  var notificationId = event.notification.data && event.notification.data.notificationId;
   var origin = (self.location && self.location.origin) ? self.location.origin : 'https://cardzy.online';
   var urlToOpen = normalizeTargetUrl(rawUrl, origin, notificationId);
 
@@ -157,6 +190,7 @@ self.addEventListener('notificationclick', function(event) {
   }
 
   var navigatePromise = clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
+    // If any window of the app is already open, navigate it to the target URL
     for (var i = 0; i < clientList.length; i++) {
       var client = clientList[i];
       if (client && 'focus' in client) {
@@ -170,6 +204,7 @@ self.addEventListener('notificationclick', function(event) {
         return client.focus();
       }
     }
+    // No window open — open a new one
     if (clients.openWindow) {
       return clients.openWindow(urlToOpen);
     }

@@ -9,7 +9,7 @@ export function CreateVisitingCardProse() {
     { title: t('vcardProf1Title', 'Business Executives & Entrepreneurs'), desc: t('vcardProf1Desc', 'Share your company name, LinkedIn, and WhatsApp with prospects at networking events. A single QR code scan replaces the paper card exchange.') },
     { title: t('vcardProf2Title', 'Doctors & Medical Professionals'), desc: t('vcardProf2Desc', 'Display clinic name, specialisation, MBBS/FCPS credentials, consultation hours, and appointment WhatsApp on a clean medical-themed card.') },
     { title: t('vcardProf3Title', 'Lawyers & Legal Professionals'), desc: t('vcardProf3Desc', 'Include bar registration details, practice areas, firm name, and office address. The navy and gold legal theme projects authority and trust.') },
-    { title: t('vcardProf4Title', 'Real Estate Agents'), desc: t('vcardProf4Desc', 'Feature property listings link, office address with Google Maps, phone, and WhatsApp — everything a potential buyer needs.') },
+    { title: t('vcardProf4Title', 'Real Estate Agents'), desc: t('vcardProf4Desc', 'Feature property listings link, office address, phone, and WhatsApp — everything a potential buyer needs.') },
     { title: t('vcardProf5Title', 'IT & Tech Professionals'), desc: t('vcardProf5Desc', 'Add portfolio website link, GitHub, LinkedIn, and professional email on clean minimal tech themes.') },
     { title: t('vcardProf6Title', 'Freelancers & Creatives'), desc: t('vcardProf6Desc', 'Photographers and designers can feature their portfolio link, Instagram, and contact number on vibrant card designs.') },
   ]
@@ -37,6 +37,16 @@ export function CreateVisitingCardProse() {
     t('vcardTip4', 'Include your WhatsApp number separately from your office phone — most clients in Pakistan prefer WhatsApp for initial contact.'),
     t('vcardTip5', 'Use a professional headshot or company logo as your card avatar. Visual identity significantly increases perceived credibility.'),
     t('vcardTip6', 'Share your card link on LinkedIn as your "website" URL so your network can always access your latest contact details.'),
+  ]
+
+  const tableRows = [
+    { feature: 'Interactive Digital Card & Social Links', free: '✓', pro: '✓' },
+    { feature: '1-Tap Save to Contacts (.vcf download)', free: '✓', pro: '✓' },
+    { feature: 'Sharable QR Code & WhatsApp Sharing', free: '✓', pro: '✓' },
+    { feature: 'Profile Photo & Bio Customization', free: '✓', pro: '✓' },
+    { feature: 'Card Retention Period', free: '30 Days (Active)', pro: 'Permanent Lifetime (No Purge)' },
+    { feature: 'Max Active Visiting Cards', free: 'Up to 5 Free Cards', pro: 'Unlimited Lifetime' },
+    { feature: 'VIP Executive Themes & Watermark', free: 'Standard / Subtle Brand', pro: 'All VIP Themes + No Watermark' },
   ]
 
   return (
@@ -84,6 +94,33 @@ export function CreateVisitingCardProse() {
                 <p className={`text-xs leading-relaxed text-muted-foreground ${isUrdu ? 'font-urdu text-sm leading-relaxed' : ''}`}>{feat.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Free vs Pro Comparison */}
+        <div className="space-y-4">
+          <h2 className={`text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+            Cardzy Visiting Card Plans: Free vs Pro
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className={`py-3 text-left font-bold text-foreground ${isUrdu ? 'font-urdu text-right' : ''}`}>Feature</th>
+                  <th className="py-3 text-center font-bold text-emerald-700">Free</th>
+                  <th className="py-3 text-center font-bold text-amber-700">Pro</th>
+                </tr>
+              </thead>
+              <tbody className="text-muted-foreground">
+                {tableRows.map((row) => (
+                  <tr key={row.feature} className="border-b border-border/50">
+                    <td className={`py-2.5 ${isUrdu ? 'font-urdu text-sm text-right' : ''}`}>{row.feature}</td>
+                    <td className="py-2.5 text-center font-medium">{row.free}</td>
+                    <td className="py-2.5 text-center font-medium">{row.pro}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 

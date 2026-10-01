@@ -32,7 +32,7 @@ export function CreateVisitingCardWrapper() {
             {t('createInteractiveVisitingCardTitle') || 'Create Your Interactive Digital Business Card'}
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            {t('createInteractiveVisitingCardSubtitle') || 'Share your digital business card on WhatsApp, Email, or Social Media. Includes 1-click Save Contact (.vcf), Google Maps directions, and 18 language support!'}
+            {t('createInteractiveVisitingCardSubtitle') || 'Share your digital business card on WhatsApp, Email, or Social Media. Includes 1-click Save Contact (.vcf), office details, and 18 language support!'}
           </p>
         </div>
         <CreateVisitingCardClientTool />
