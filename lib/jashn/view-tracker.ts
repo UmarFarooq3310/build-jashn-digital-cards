@@ -9,6 +9,8 @@
  *    are counted with a debounce to prevent double-counting.
  */
 
+import { isDeviceAdmin } from './admin-presence'
+
 export function markCardAsCreatedByMe(slug: string) {
   if (typeof window === 'undefined' || !slug) return
   try {
@@ -26,9 +28,15 @@ export function isSenderOrOwner(
   slug: string,
   creatorId?: string | null,
   searchParams?: { get: (key: string) => string | null } | null,
-  currentUserId?: string | null
+  currentUserId?: string | null,
+  currentUserEmail?: string | null
 ): boolean {
   if (typeof window === 'undefined') return false
+
+  // 0. Complete Admin Device & Account Protection (Never count views for admin)
+  if (isDeviceAdmin(currentUserEmail)) {
+    return true
+  }
 
   // 1. Explicit sender, preview, or host role in query parameters (Sender Control Mode)
   if (searchParams) {
@@ -101,12 +109,18 @@ export function shouldIncrementView(
   cardType: 'wish' | 'invite' | 'vcard' | 'magic',
   creatorId?: string | null,
   searchParams?: { get: (key: string) => string | null } | null,
-  currentUserId?: string | null
+  currentUserId?: string | null,
+  currentUserEmail?: string | null
 ): boolean {
   if (typeof window === 'undefined' || !slug) return false
 
   // 1. NEVER increment if viewer is the sender, owner, creator, or admin!
-  if (isSenderOrOwner(slug, creatorId, searchParams, currentUserId)) {
+  if (isSenderOrOwner(slug, creatorId, searchParams, currentUserId, currentUserEmail)) {
+    return false
+  }
+
+  // 2. Direct Admin Check
+  if (isDeviceAdmin(currentUserEmail)) {
     return false
   }
 

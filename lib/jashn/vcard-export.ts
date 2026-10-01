@@ -72,6 +72,14 @@ export function downloadVCard(card: VCardContactData): boolean {
 
   try {
     const vcfString = generateVCardString(card)
+    
+    // For iOS Safari / WebKit devices, data URI triggers native iOS Contacts Add Contact screen directly
+    const isIOS = typeof navigator !== 'undefined' && (/iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1))
+    if (isIOS) {
+      window.location.href = `data:text/vcard;charset=utf-8,${encodeURIComponent(vcfString)}`
+      return true
+    }
+
     const blob = new Blob([vcfString], { type: 'text/vcard;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     

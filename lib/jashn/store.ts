@@ -5,6 +5,7 @@ import { persist } from 'zustand/middleware'
 import type { Invitation, JashnUser, Plan, Wish, RsvpGuest, VisitingCard } from './types'
 import { getClientTracking } from './tracking'
 import { markCardAsCreatedByMe } from './view-tracker'
+import { isDeviceAdmin } from './admin-presence'
 import { syncRecordToServer } from './server-sync'
 import { db, auth, isFirebaseConfigured, getFirebaseAuth, getFirebaseDb } from '../firebase'
 import { canCreateCard, getGuestCardCount, recordGuestCardCreated, clearGuestCardCounts } from './plan-limits'
@@ -803,6 +804,7 @@ export const useJashn = create<JashnState>()(
       getVisitingCard: (slug) => get().visitingCards.find((v) => v.slug === slug),
 
       incrementWishView: (slug) => {
+        if (isDeviceAdmin()) return
         set((s) => ({
           wishes: s.wishes.map((w) =>
             w.slug === slug ? { ...w, viewCount: (w.viewCount || 0) + 1 } : w,
@@ -839,6 +841,7 @@ export const useJashn = create<JashnState>()(
       },
 
       incrementInvitationView: (slug) => {
+        if (isDeviceAdmin()) return
         set((s) => ({
           invitations: s.invitations.map((i) =>
             i.slug === slug ? { ...i, viewCount: (i.viewCount || 0) + 1 } : i,
@@ -875,6 +878,7 @@ export const useJashn = create<JashnState>()(
       },
 
       incrementVisitingCardView: (slug) => {
+        if (isDeviceAdmin()) return
         set((s) => ({
           visitingCards: s.visitingCards.map((v) =>
             v.slug === slug ? { ...v, viewCount: (v.viewCount || 0) + 1 } : v,
@@ -977,6 +981,13 @@ export const useJashn = create<JashnState>()(
           wishes: s.wishes.filter((w) => w.slug !== slug),
         }))
 
+        // Server admin SDK cascade cleanup
+        fetch('/api/admin-card-action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'delete_card', cardType: 'wish', slug }),
+        }).catch(() => {})
+
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {
           deleteDoc(doc(activeDb, 'wishes', slug)).catch((err) => {
@@ -990,6 +1001,13 @@ export const useJashn = create<JashnState>()(
           invitations: s.invitations.filter((i) => i.slug !== slug),
         }))
 
+        // Server admin SDK cascade cleanup
+        fetch('/api/admin-card-action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'delete_card', cardType: 'invite', slug }),
+        }).catch(() => {})
+
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {
           deleteDoc(doc(activeDb, 'invitations', slug)).catch((err) => {
@@ -1002,6 +1020,13 @@ export const useJashn = create<JashnState>()(
         set((s) => ({
           visitingCards: s.visitingCards.filter((v) => v.slug !== slug),
         }))
+
+        // Server admin SDK cascade cleanup
+        fetch('/api/admin-card-action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'delete_card', cardType: 'vcard', slug }),
+        }).catch(() => {})
 
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {

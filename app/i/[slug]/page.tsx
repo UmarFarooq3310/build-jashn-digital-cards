@@ -56,12 +56,11 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   const [videoProgress, setVideoProgress] = useState(0)
   const [downloadingQr, setDownloadingQr] = useState(false)
 
-  // Sender/Creator mode: active if requested via URL OR if viewer is detected as the creator/admin
+  // Sender/Creator mode: ONLY active if explicitly requested via ?mode=sender or ?role=sender
+  // When visiting clean card URL, always show the full receiver experience (card, navbar, RSVP, wishes wall, no side box)
   const isSenderMode =
     searchParams.get('mode') === 'sender' ||
-    searchParams.get('preview') === 'true' ||
-    searchParams.get('role') === 'sender' ||
-    (isMounted && typeof window !== 'undefined' && isSenderOrOwner(slug, activeInvitation?.creatorId, searchParams, user?.uid))
+    searchParams.get('role') === 'sender'
 
   useEffect(() => {
     setIsMounted(true)
@@ -80,7 +79,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         if (viewIncrementedRef.current !== slug) {
           viewIncrementedRef.current = slug
           // Only increment view count if viewer is receiver (not sender/creator)
-          if (shouldIncrementView(slug, 'invite', existing.creatorId, searchParams, user?.uid)) {
+          if (shouldIncrementView(slug, 'invite', existing.creatorId, searchParams, user?.uid, user?.email)) {
             incrementInvitationView(slug)
             setActiveInvitation((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
           }
@@ -147,7 +146,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
             if (viewIncrementedRef.current !== slug) {
               viewIncrementedRef.current = slug
               // Only increment view count if viewer is receiver (not sender/creator)
-              if (shouldIncrementView(slug, 'invite', data.creatorId, searchParams, user?.uid)) {
+              if (shouldIncrementView(slug, 'invite', data.creatorId, searchParams, user?.uid, user?.email)) {
                 incrementInvitationView(slug)
                 setActiveInvitation((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
               }
@@ -353,9 +352,9 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         <ConfettiRain active={rainActive} />
 
         {/* ── Main Responsive Grid: Invitation Preview (Left on Desktop, Below on Mobile) + Delivery Hub (Top on Mobile, Right on Desktop) ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-5 items-center lg:h-full lg:max-h-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center lg:h-full lg:max-h-full">
           {/* Interactive Guest Preview Column */}
-          <div className="order-2 lg:order-1 lg:col-span-7 xl:col-span-7 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
+          <div className="order-2 lg:order-1 lg:col-span-8 xl:col-span-8 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
             <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10">
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Eye className="size-3.5 text-amber-400" /> Interactive Guest View
@@ -363,10 +362,11 @@ function InvitationPublicContent({ slug }: { slug: string }) {
             </div>
 
             <div className="w-full flex-1 min-h-0 pt-10 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
-              <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl">
+              <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
                 <ThreeDCardWrapper
                   eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
                   occasionIdOrCategory={activeInvitation.typeId}
+                  audioTrack={activeInvitation.audioTrack}
                   isIslamic={isIslamic}
                   autoOpen={true}
                   onOpened={() => {
@@ -422,7 +422,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
           </div>
 
           {/* Unified 1-Click Delivery Hub Column (Top on Mobile, Vertically Centered on Desktop) */}
-          <div className="order-1 lg:order-2 lg:col-span-5 xl:col-span-5 flex flex-col justify-center lg:h-full lg:max-h-full">
+          <div className="order-1 lg:order-2 lg:col-span-4 xl:col-span-4 flex flex-col justify-center lg:h-full lg:max-h-full">
             <div className="rounded-2xl xl:rounded-3xl border-2 border-amber-500/40 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 text-white p-3.5 sm:p-4 lg:p-3.5 xl:p-4 shadow-xl space-y-2 lg:space-y-2 xl:space-y-2.5 text-left lg:max-h-[calc(100dvh-5.5rem)] lg:overflow-y-auto scrollbar-none">
               {/* Ready to Deliver celebration highlight */}
               <div className="p-2 lg:p-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 via-yellow-500/15 to-amber-500/20 border border-amber-400/35 shadow-xs flex items-center gap-2">
@@ -680,9 +680,9 @@ function InvitationPublicContent({ slug }: { slug: string }) {
     )
   }
 
-  // ── 2. RECEIVER SCREEN (Clean 100dvh Full-Screen Viewport + Cardzy Make Your Own) ──
+  // ── 2. RECEIVER SCREEN (Clean Full-Screen Viewport + Cardzy Make Your Own) ──
   return (
-    <div className="flex min-h-[100dvh] flex-col justify-between items-center relative overflow-y-auto px-4 py-4 sm:py-6 w-full select-none">
+    <div className="flex min-h-[100dvh] flex-col justify-between items-center relative overflow-y-auto px-3 sm:px-6 py-3 sm:py-4 w-full select-none">
       {/* Background Ambient Glow */}
       <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 size-[32rem] rounded-full bg-amber-500/10 blur-[120px]" />
       <div className="pointer-events-none absolute -bottom-40 left-1/2 -translate-x-1/2 size-[32rem] rounded-full bg-emerald-500/10 blur-[120px]" />
@@ -691,7 +691,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
       <ConfettiRain active={rainActive} />
 
       {/* Receiver Screen Top Minimal Bar */}
-      <header className="w-full max-w-2xl flex items-center justify-between z-20 py-2 px-4 rounded-full bg-slate-900/50 backdrop-blur-xl border border-white/10 text-white shadow-xl">
+      <header className="w-full max-w-4xl flex items-center justify-between z-20 py-2 px-4 rounded-full bg-slate-900/50 backdrop-blur-xl border border-white/10 text-white shadow-xl shrink-0">
         <Link href="/" className="flex items-center gap-2 group">
           <CardzyLogo className="size-7 transition-transform group-hover:scale-105" />
           <span className="text-sm font-extrabold tracking-tight bg-gradient-to-r from-amber-400 via-yellow-200 to-emerald-300 bg-clip-text text-transparent">
@@ -708,79 +708,95 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         </Link>
       </header>
 
-      {/* Receiver Screen Main Centered 3D Card Display */}
-      <main className="w-full max-w-4xl flex-1 flex flex-col items-center justify-center my-auto py-6 sm:py-10 z-10">
-        <div className="w-full flex justify-center">
-          <ThreeDCardWrapper
-            eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
-            occasionIdOrCategory={activeInvitation.typeId}
-            isIslamic={isIslamic}
-            onOpened={() => {
-              setRainActive(true)
-            }}
-          >
-            <InvitationCard ref={cardRef} data={activeInvitation} watermark={true} showCountdown={true} />
-          </ThreeDCardWrapper>
-        </div>
+      {/* Receiver Screen Main Responsive Layout: Side-by-Side on Desktop, Stacked on Mobile */}
+      <main className="w-full max-w-7xl flex-1 flex flex-col justify-center items-center my-auto py-3 sm:py-5 z-10">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center justify-center">
+          {/* Left Column: 3D Invitation Card (Prominent & Wide on Desktop, natural aspect ratio) */}
+          <div className="lg:col-span-8 xl:col-span-8 flex flex-col items-center justify-center w-full">
+            <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl flex justify-center">
+              <ThreeDCardWrapper
+                eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
+                occasionIdOrCategory={activeInvitation.typeId}
+                audioTrack={activeInvitation.audioTrack}
+                isIslamic={isIslamic}
+                onOpened={() => {
+                  setRainActive(true)
+                }}
+              >
+                <InvitationCard ref={cardRef} data={activeInvitation} watermark={true} showCountdown={true} />
+              </ThreeDCardWrapper>
+            </div>
+          </div>
 
-        {/* Action Buttons Right Below Card */}
-        <div className="mt-6 flex flex-col items-center justify-center gap-3 w-full max-w-md px-2">
-          <Button
-            onClick={handleRsvp}
-            size="lg"
-            className="w-full bg-[#25D366] text-white hover:bg-[#1eb955] font-extrabold text-sm py-3 px-6 rounded-2xl shadow-xl hover:scale-[1.02] transition-all"
-          >
-            {rsvped ? <CheckCircle2 className="mr-2 size-5" /> : <MessageCircle className="mr-2 size-5" />}
-            {rsvped ? 'RSVP Confirmed!' : 'RSVP via WhatsApp'}
-          </Button>
+          {/* Right Column: Interaction Hub (RSVP, Live Reactions, Wishes Wall, Share) - Sleek & Compact */}
+          <div className="lg:col-span-4 xl:col-span-4 flex flex-col items-center lg:items-stretch justify-center gap-3 w-full max-w-sm mx-auto p-4 sm:p-4.5 rounded-3xl bg-slate-900/75 backdrop-blur-xl border border-white/15 shadow-2xl">
+            {/* Event Header Pill */}
+            <div className="text-center lg:text-left">
+              <span className="text-[10.5px] font-black uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/20 inline-block mb-1">
+                {type?.label || 'Special Invitation'}
+              </span>
+              <h2 className="text-base sm:text-lg font-black text-white leading-tight truncate">
+                {activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
+              </h2>
+              {activeInvitation.hostNames && (
+                <p className="text-xs text-slate-400 truncate mt-0.5">
+                  Hosted by {activeInvitation.hostNames}
+                </p>
+              )}
+            </div>
 
-          {/* Interactive Live Emoji Reactions Dock */}
-          <CardLiveReactions
-            cardSlug={slug}
-            cardType="invite"
-            isUrdu={lang === 'ur' || lang === 'ar'}
-            theme="dark"
-          />
+            {/* Big WhatsApp RSVP Button */}
+            <Button
+              onClick={handleRsvp}
+              size="lg"
+              className="w-full h-12 bg-[#25D366] text-white hover:bg-[#1eb955] font-black text-sm rounded-2xl shadow-xl hover:scale-[1.02] active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              {rsvped ? <CheckCircle2 className="size-5 shrink-0" /> : <MessageCircle className="size-5 shrink-0" />}
+              <span>{rsvped ? 'RSVP Confirmed!' : 'RSVP via WhatsApp'}</span>
+            </Button>
+
+            {/* Interactive Live Emoji Reactions Dock - RIGHT ON SCREEN! */}
+            <div className="w-full flex flex-col items-center lg:items-start gap-1.5 pt-1.5 border-t border-white/10">
+              <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <Heart className="size-3.5 text-rose-400" /> Send Live Reaction
+              </span>
+              <div className="w-full flex justify-center lg:justify-start">
+                <CardLiveReactions
+                  cardSlug={slug}
+                  cardType="invite"
+                  isUrdu={lang === 'ur' || lang === 'ar'}
+                  theme="dark"
+                />
+              </div>
+            </div>
+
+            {/* Wishes Wall & Share Action Buttons */}
+            <div className="grid grid-cols-2 gap-2.5 pt-1.5 border-t border-white/10">
+              <button
+                onClick={() => setShowGuestbookModal(true)}
+                className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 hover:from-purple-600 hover:to-indigo-600 text-white font-extrabold text-xs shadow-lg border border-purple-400/40 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-300"></span>
+                </span>
+                <span>💬 Wishes Wall</span>
+              </button>
+
+              <button
+                onClick={() => setShowShareModal(true)}
+                className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl border border-white/20 bg-slate-800 hover:bg-slate-700 text-white font-extrabold text-xs shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              >
+                <Share2 className="size-3.5 text-amber-400" />
+                <span>Share</span>
+              </button>
+            </div>
+          </div>
         </div>
       </main>
 
       {/* Receiver Screen Footer Control */}
-      <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pt-2 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] text-center shrink-0">
-        <div className="flex flex-wrap items-center justify-center gap-2">
-
-          <button
-            onClick={() => setShowShareModal((o) => !o)}
-            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-slate-900/70 hover:bg-slate-800 text-white font-extrabold py-2 px-4 text-xs shadow-lg transition-all cursor-pointer"
-          >
-            <Share2 className="size-3.5 text-amber-400" />
-            <span>Share Invitation</span>
-          </button>
-        </div>
-
-        {/* Universal Luxury Share Modal */}
-        {showShareModal && (
-          <CardShareModal
-            card={{
-              title: activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`,
-              recipientOrCouple: activeInvitation.groom && activeInvitation.bride
-                ? `${activeInvitation.groom} & ${activeInvitation.bride}`
-                : activeInvitation.title || 'Royal Guests',
-              type: 'invite',
-              slug: activeInvitation.slug,
-              url: `/i/${activeInvitation.slug}`,
-              viewsCount: activeInvitation.viewCount || 0,
-              shares: activeInvitation.shares,
-              occasion: type?.label || 'Wedding Invitation',
-              date: activeInvitation.date,
-              time: activeInvitation.time,
-              venue: activeInvitation.venue || activeInvitation.city,
-              senderName: activeInvitation.hostNames,
-              waMessage: `✨ You are cordially invited! Tap to view our interactive digital invitation:`,
-            }}
-            onClose={() => setShowShareModal(false)}
-          />
-        )}
-
+      <footer className="w-full max-w-md flex flex-col items-center gap-2 z-20 pt-1 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] text-center shrink-0">
         <Link
           href="/create-invitation"
           className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-amber-400 transition-colors font-medium"
@@ -790,8 +806,8 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         </Link>
       </footer>
 
-      {/* Floating Action Pill for Wishes Wall & Share - Visible to ALL visitors */}
-      <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2">
+      {/* Floating Action Pill for Wishes Wall & Share - Visible on mobile only, hidden on desktop to avoid duplicate share button */}
+      <div className="lg:hidden fixed bottom-4 right-4 z-40 flex items-center gap-2">
         <button
           onClick={() => setShowShareModal(true)}
           className="group flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white text-xs font-bold shadow-xl border border-white/20 backdrop-blur-md transition-all active:scale-95 cursor-pointer"
@@ -814,6 +830,31 @@ function InvitationPublicContent({ slug }: { slug: string }) {
           <span>💬 Wishes Wall</span>
         </button>
       </div>
+
+      {/* Universal Luxury Share Modal */}
+      {showShareModal && (
+        <CardShareModal
+          simpleMode={true}
+          card={{
+            title: activeInvitation.title || type?.label || 'Royal Invitation',
+            recipientOrCouple: activeInvitation.groom && activeInvitation.bride ? `${activeInvitation.groom} & ${activeInvitation.bride}` : (activeInvitation.title || 'Special Guest'),
+            type: 'invite',
+            slug: activeInvitation.slug,
+            url: `/i/${activeInvitation.slug}`,
+            viewsCount: activeInvitation.viewCount || 0,
+            shares: activeInvitation.shares,
+            occasion: type?.label || 'Special Celebration',
+            date: activeInvitation.date,
+            time: activeInvitation.time,
+            venue: activeInvitation.venue,
+            senderName: activeInvitation.hostNames,
+            theme: activeInvitation.themeId,
+            photoUrl: activeInvitation.photoUrl,
+            waMessage: `✨ You are cordially invited to ${activeInvitation.title || (activeInvitation.groom ? `${activeInvitation.groom} & ${activeInvitation.bride}` : 'our celebration')}!\nTap to view the digital invitation:`,
+          }}
+          onClose={() => setShowShareModal(false)}
+        />
+      )}
 
       {/* Event Card Guestbook / Wishes Wall Modal */}
       <CardGuestbookModal

@@ -421,6 +421,9 @@ export const EXTRA_T: Record<string, Record<LangCode, string>> = {
   calCreateInvitation: {
     en: "Create Invitation", ur: "دعوت نامہ بنائیں", ar: "إنشاء دعوة", es: "Crear invitación", fr: "Créer une invitation", hi: "निमंत्रण बनाएं", zh: "创建邀请函", pt: "Criar convite", ru: "Создать приглашение", de: "Einladung erstellen", ja: "招待状を作成", ko: "초대장 만들기", it: "Crea invito", tr: "Davetiye Oluştur", id: "Buat Undangan", bn: "আমন্ত্রণ তৈরি করুন", vi: "Tạo Thiệp Mời", sw: "Unda Mwaliko"
   },
+  calMagicLink: {
+    en: "Magic Link 🪄", ur: "جادوئی لنک 🪄", ar: "الرابط السحري 🪄", es: "Enlace Mágico 🪄", fr: "Lien Magique 🪄", hi: "जादुई लिंक 🪄", zh: "魔法链接 🪄", pt: "Link Mágico 🪄", ru: "Магическая ссылка 🪄", de: "Magischer Link 🪄", ja: "マジックリンク 🪄", ko: "매직 링크 🪄", it: "Link Magico 🪄", tr: "Sihirli Bağlantı 🪄", id: "Tautan Ajaib 🪄", bn: "ম্যাজিক লিংক 🪄", vi: "Liên kết ma thuật 🪄", sw: "Kiungo cha Kichawi 🪄"
+  },
   calHappeningToday: {
     en: "Happening Today! 🎉", ur: "آج کی تقریب! 🎉", ar: "يحدث اليوم! 🎉", es: "¡Hoy! 🎉", fr: "Aujourd'hui ! 🎉", hi: "आज है! 🎉", zh: "就在今天！🎉", pt: "Acontecendo Hoje! 🎉", ru: "Сегодня! 🎉", de: "Heute! 🎉", ja: "本日開催！🎉", ko: "오늘입니다! 🎉", it: "Oggi! 🎉", tr: "Bugün! 🎉", id: "Hari Ini! 🎉", bn: "আজকের উৎসব! 🎉", vi: "Hôm nay! 🎉", sw: "Inafanyika Leo! 🎉"
   },

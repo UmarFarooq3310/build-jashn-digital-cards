@@ -72,13 +72,16 @@ export interface ShareModalCardData {
 interface CardShareModalProps {
   card: ShareModalCardData | null
   onClose: () => void
+  simpleMode?: boolean
 }
 
-export function CardShareModal({ card, onClose }: CardShareModalProps) {
+export function CardShareModal({ card, onClose, simpleMode = false }: CardShareModalProps) {
   const [copied, setCopied] = useState(false)
   const [activeTab, setActiveTab] = useState<'link' | 'qr' | 'image' | 'stats'>('link')
   const [downloadingImage, setDownloadingImage] = useState(false)
   const [imageDownloaded, setImageDownloaded] = useState(false)
+  const [downloadingVideo, setDownloadingVideo] = useState(false)
+  const [videoProgress, setVideoProgress] = useState(0)
   const [shareStats, setShareStats] = useState({
     whatsapp: 0,
     sms: 0,
@@ -234,9 +237,6 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
     }
   }
 
-  const [downloadingVideo, setDownloadingVideo] = useState(false)
-  const [videoProgress, setVideoProgress] = useState(0)
-
   const handleDownloadCardVideo = async () => {
     if (!imageCaptureRef.current) return
     setDownloadingVideo(true)
@@ -269,7 +269,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg rounded-3xl border border-amber-500/40 bg-zinc-950 p-5 sm:p-6 shadow-2xl text-white text-left space-y-4 max-h-[92vh] overflow-y-auto">
+      <div className={`relative w-full ${simpleMode ? 'max-w-md' : 'max-w-lg'} rounded-3xl border border-amber-500/40 bg-zinc-950 p-5 sm:p-6 shadow-2xl text-white text-left space-y-4 max-h-[92vh] overflow-y-auto`}>
         
         {/* Close button */}
         <button
@@ -281,64 +281,76 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
 
         {/* Header */}
         <div className="pr-8">
+          <div className="flex items-center gap-2 mb-1">
+            <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${typeBadge.color}`}>
+              {typeBadge.label}
+            </span>
+          </div>
           <h3 className="text-base sm:text-lg font-black tracking-tight text-white truncate">
-            {card.recipientOrCouple || card.title}
+            {simpleMode ? 'Share this Card' : (card.recipientOrCouple || card.title)}
           </h3>
+          {simpleMode && (
+            <p className="text-xs text-zinc-400 mt-0.5">
+              Send this card via WhatsApp, SMS, or copy the direct link below.
+            </p>
+          )}
         </div>
 
-        {/* 4 Interactive Navigation Tabs */}
-        <div className="grid grid-cols-4 p-1 rounded-2xl bg-zinc-900/90 border border-white/10 gap-1">
-          <button
-            onClick={() => setActiveTab('link')}
-            className={`py-2 px-1 rounded-xl text-[11px] font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer text-center ${
-              activeTab === 'link'
-                ? 'bg-amber-500 text-zinc-950 shadow-md font-black'
-                : 'text-zinc-400 hover:text-white'
-            }`}
-          >
-            <MessageCircle className="size-3.5" />
-            <span>Share</span>
-          </button>
+        {/* 4 Interactive Navigation Tabs (Hidden in Simple Mode) */}
+        {!simpleMode && (
+          <div className="grid grid-cols-4 p-1 rounded-2xl bg-zinc-900/90 border border-white/10 gap-1">
+            <button
+              onClick={() => setActiveTab('link')}
+              className={`py-2 px-1 rounded-xl text-[11px] font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer text-center ${
+                activeTab === 'link'
+                  ? 'bg-amber-500 text-zinc-950 shadow-md font-black'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              <MessageCircle className="size-3.5" />
+              <span>Share</span>
+            </button>
 
-          <button
-            onClick={() => setActiveTab('qr')}
-            className={`py-2 px-1 rounded-xl text-[11px] font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer text-center ${
-              activeTab === 'qr'
-                ? 'bg-amber-500 text-zinc-950 shadow-md font-black'
-                : 'text-zinc-400 hover:text-white'
-            }`}
-          >
-            <QrCode className="size-3.5" />
-            <span>QR Code</span>
-          </button>
+            <button
+              onClick={() => setActiveTab('qr')}
+              className={`py-2 px-1 rounded-xl text-[11px] font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer text-center ${
+                activeTab === 'qr'
+                  ? 'bg-amber-500 text-zinc-950 shadow-md font-black'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              <QrCode className="size-3.5" />
+              <span>QR Code</span>
+            </button>
 
-          <button
-            onClick={() => setActiveTab('image')}
-            className={`py-2 px-1 rounded-xl text-[11px] font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer text-center ${
-              activeTab === 'image'
-                ? 'bg-amber-500 text-zinc-950 shadow-md font-black'
-                : 'text-zinc-400 hover:text-white'
-            }`}
-          >
-            <ImageIcon className="size-3.5" />
-            <span>Image / Video</span>
-          </button>
+            <button
+              onClick={() => setActiveTab('image')}
+              className={`py-2 px-1 rounded-xl text-[11px] font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer text-center ${
+                activeTab === 'image'
+                  ? 'bg-amber-500 text-zinc-950 shadow-md font-black'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              <ImageIcon className="size-3.5" />
+              <span>Image / Video</span>
+            </button>
 
-          <button
-            onClick={() => setActiveTab('stats')}
-            className={`py-2 px-1 rounded-xl text-[11px] font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer text-center ${
-              activeTab === 'stats'
-                ? 'bg-amber-500 text-zinc-950 shadow-md font-black'
-                : 'text-zinc-400 hover:text-white'
-            }`}
-          >
-            <Eye className="size-3.5" />
-            <span>Insights</span>
-          </button>
-        </div>
+            <button
+              onClick={() => setActiveTab('stats')}
+              className={`py-2 px-1 rounded-xl text-[11px] font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer text-center ${
+                activeTab === 'stats'
+                  ? 'bg-amber-500 text-zinc-950 shadow-md font-black'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              <Eye className="size-3.5" />
+              <span>Insights</span>
+            </button>
+          </div>
+        )}
 
         {/* ================= TAB 1: QUICK SHARE ================= */}
-        {activeTab === 'link' && (
+        {(simpleMode || activeTab === 'link') && (
           <div className="space-y-4 animate-in fade-in duration-150">
             {/* Share URL Box */}
             <div className="p-3 bg-zinc-900 border border-white/10 rounded-2xl text-xs font-mono break-all text-zinc-300 flex items-center justify-between gap-2 shadow-inner">
@@ -360,7 +372,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
               >
                 <MessageCircle className="size-4 shrink-0" />
                 <span>WhatsApp</span>
-                {shareStats.whatsapp > 0 && (
+                {!simpleMode && shareStats.whatsapp > 0 && (
                   <span className="px-1.5 py-0.5 rounded-full bg-black/25 text-[10px] font-mono">
                     {shareStats.whatsapp}
                   </span>
@@ -373,7 +385,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
               >
                 <Smartphone className="size-4 shrink-0" />
                 <span>SMS Text</span>
-                {shareStats.sms > 0 && (
+                {!simpleMode && shareStats.sms > 0 && (
                   <span className="px-1.5 py-0.5 rounded-full bg-black/25 text-[10px] font-mono">
                     {shareStats.sms}
                   </span>
@@ -386,7 +398,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
               >
                 {copied ? <Check className="size-4 text-emerald-400 shrink-0" /> : <Copy className="size-4 shrink-0" />}
                 <span>{copied ? 'Copied!' : 'Copy Link'}</span>
-                {shareStats.copy > 0 && (
+                {!simpleMode && shareStats.copy > 0 && (
                   <span className="px-1.5 py-0.5 rounded-full bg-white/15 text-[10px] font-mono">
                     {shareStats.copy}
                   </span>
@@ -423,7 +435,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
               >
                 <Smartphone className="size-3.5" />
                 <span>Share via Other Apps (Instagram / Messages)</span>
-                {shareStats.app > 0 && (
+                {!simpleMode && shareStats.app > 0 && (
                   <span className="px-1.5 py-0.5 rounded-full bg-white/20 text-[10px] font-mono ml-1">
                     {shareStats.app}
                   </span>
@@ -435,7 +447,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
         )}
 
         {/* ================= TAB 2: QR CODE & SCAN ================= */}
-        {activeTab === 'qr' && (
+        {!simpleMode && activeTab === 'qr' && (
           <div className="flex flex-col items-center justify-center py-2 space-y-4 animate-in fade-in duration-150">
             <CardQrCode
               shareUrl={fullUrl}
@@ -460,7 +472,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
         )}
 
         {/* ================= TAB 3: DOWNLOAD AS IMAGE FOR ALL CARDS ================= */}
-        {activeTab === 'image' && (
+        {!simpleMode && activeTab === 'image' && (
           <div className="space-y-4 animate-in fade-in duration-150">
             <p className="text-xs text-zinc-400 text-center">
               Export this gorgeous luxury digital flyer image to post on WhatsApp Status, Instagram Story, or send as a picture.
@@ -645,7 +657,7 @@ export function CardShareModal({ card, onClose }: CardShareModalProps) {
         )}
 
         {/* ================= TAB 4: CARD ANALYTICS & INSIGHTS ================= */}
-        {activeTab === 'stats' && (
+        {!simpleMode && activeTab === 'stats' && (
           <div className="space-y-4 py-1 animate-in fade-in duration-150">
             {/* Top Stat Overview */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">

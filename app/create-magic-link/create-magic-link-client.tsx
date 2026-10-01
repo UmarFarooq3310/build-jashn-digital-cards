@@ -819,66 +819,84 @@ export default function CreateMagicLinkClient() {
           if (loadedData.activeTab) setActiveTab(loadedData.activeTab as 'details' | 'design' | 'preview')
         }
       } else {
-        try {
-          const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
-          if (draftJson) {
-            const d = JSON.parse(draftJson)
-            if (d && typeof d === 'object' && !isCancelled) {
-              if (d.selectedOccasion) setSelectedOccasion(d.selectedOccasion)
-              if (d.selectedTheme) setSelectedTheme(d.selectedTheme)
-              if (d.linkType) setLinkType(d.linkType)
-              if (d.senderName !== undefined) setSenderName(d.senderName)
-              if (d.recipientName !== undefined) setRecipientName(d.recipientName)
-              if (d.recipientAge !== undefined) setRecipientAge(d.recipientAge)
-              if (d.candleCount !== undefined) setCandleCount(d.candleCount)
-              if (d.quotes) setQuotes(d.quotes)
-              if (d.secretLetter !== undefined) setSecretLetter(d.secretLetter)
-              if (d.customVerse !== undefined) setCustomVerse(d.customVerse)
-              if (d.howWeMet !== undefined) setHowWeMet(d.howWeMet)
-              if (d.specialDate !== undefined) setSpecialDate(d.specialDate)
-              if (d.whatsappNumber !== undefined) setWhatsappNumber(d.whatsappNumber)
-              if (d.photoUrl !== undefined) setPhotoUrl(d.photoUrl)
-              if (d.eventTitle !== undefined) setEventTitle(d.eventTitle)
-              if (d.eventDate !== undefined) setEventDate(d.eventDate)
-              if (d.eventTime !== undefined) setEventTime(d.eventTime)
-              if (d.venueName !== undefined) setVenueName(d.venueName)
-              if (d.venueAddress !== undefined) setVenueAddress(d.venueAddress)
-              if (d.googleMapsUrl !== undefined) setGoogleMapsUrl(d.googleMapsUrl)
-              if (d.coupleNames !== undefined) setCoupleNames(d.coupleNames)
-              if (d.step) setStep(d.step as 1 | 2)
-              if (d.activeTab) setActiveTab(d.activeTab as 'details' | 'design' | 'preview')
-            }
-          } else {
-            // Check for poetry prefill
-            let prefillText = ''
-            try {
-              prefillText = sessionStorage.getItem('cardzy_prefill_msg') || ''
-              sessionStorage.removeItem('cardzy_prefill_msg')
-            } catch {}
+        const poemP = searchParams.get('poem')
+        const msgP = searchParams.get('msg') || searchParams.get('message')
+        const hasUrlParams = Boolean(occParam || msgP || poemP)
 
-            const poemP = searchParams.get('poem')
-            const msgP = searchParams.get('msg') || searchParams.get('message')
-
-            if (!prefillText && poemP) {
-              const found = POETRY_DATABASE.find((p) => p.id === poemP)
-              if (found) prefillText = found.cardPrefillMsg
+        let hasDraft = false
+        if (!hasUrlParams) {
+          try {
+            const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
+            if (draftJson) {
+              const d = JSON.parse(draftJson)
+              if (d && typeof d === 'object' && !isCancelled) {
+                hasDraft = true
+                if (d.selectedOccasion) setSelectedOccasion(d.selectedOccasion)
+                if (d.selectedTheme) setSelectedTheme(d.selectedTheme)
+                if (d.linkType) setLinkType(d.linkType)
+                if (d.senderName !== undefined) setSenderName(d.senderName)
+                if (d.recipientName !== undefined) setRecipientName(d.recipientName)
+                if (d.recipientAge !== undefined) setRecipientAge(d.recipientAge)
+                if (d.candleCount !== undefined) setCandleCount(d.candleCount)
+                if (d.quotes) setQuotes(d.quotes)
+                if (d.secretLetter !== undefined) setSecretLetter(d.secretLetter)
+                if (d.customVerse !== undefined) setCustomVerse(d.customVerse)
+                if (d.howWeMet !== undefined) setHowWeMet(d.howWeMet)
+                if (d.specialDate !== undefined) setSpecialDate(d.specialDate)
+                if (d.whatsappNumber !== undefined) setWhatsappNumber(d.whatsappNumber)
+                if (d.photoUrl !== undefined) setPhotoUrl(d.photoUrl)
+                if (d.eventTitle !== undefined) setEventTitle(d.eventTitle)
+                if (d.eventDate !== undefined) setEventDate(d.eventDate)
+                if (d.eventTime !== undefined) setEventTime(d.eventTime)
+                if (d.venueName !== undefined) setVenueName(d.venueName)
+                if (d.venueAddress !== undefined) setVenueAddress(d.venueAddress)
+                if (d.googleMapsUrl !== undefined) setGoogleMapsUrl(d.googleMapsUrl)
+                if (d.coupleNames !== undefined) setCoupleNames(d.coupleNames)
+                if (d.step) setStep(d.step as 1 | 2)
+                if (d.activeTab) setActiveTab(d.activeTab as 'details' | 'design' | 'preview')
+              }
             }
+          } catch {}
+        }
 
-            if (prefillText || msgP) {
-              const text = prefillText || msgP || ''
-              setSecretLetter(text)
-              setCustomVerse(text)
-              setStep(2)
-            }
+        if (hasUrlParams && !isCancelled) {
+          // Check for poetry prefill
+          let prefillText = ''
+          try {
+            prefillText = sessionStorage.getItem('cardzy_prefill_msg') || ''
+            sessionStorage.removeItem('cardzy_prefill_msg')
+          } catch {}
 
-            // Clean address bar
-            if (typeof window !== 'undefined' && (poemP || msgP)) {
-              try {
-                window.history.replaceState({}, '', window.location.pathname)
-              } catch {}
-            }
+          if (!prefillText && poemP) {
+            const found = POETRY_DATABASE.find((p) => p.id === poemP)
+            if (found) prefillText = found.cardPrefillMsg
           }
-        } catch {}
+
+          if (occParam) {
+            setSelectedOccasion(occParam)
+            const pal = getPalettesForOccasion(occParam)
+            if (pal && pal.length > 0) setSelectedTheme(pal[0].id)
+          }
+
+          if (prefillText || msgP) {
+            const text = prefillText || msgP || ''
+            setSecretLetter(text)
+            setCustomVerse(text)
+          }
+          setStep(2)
+
+          // Discard previous stale draft so it won't conflict with this newly selected magic occasion
+          try {
+            sessionStorage.removeItem(draftKey)
+          } catch {}
+
+          // Clean address bar
+          if (typeof window !== 'undefined' && (poemP || msgP)) {
+            try {
+              window.history.replaceState({}, '', window.location.pathname)
+            } catch {}
+          }
+        }
       }
       if (!isCancelled) setIsInitialLoaded(true)
     }

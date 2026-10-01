@@ -18,7 +18,7 @@ import {
 export interface GuestbookWish {
   id: string
   cardSlug: string
-  cardType?: 'magic' | 'invite' | 'wish'
+  cardType?: 'magic' | 'invite' | 'wish' | 'vcard'
   cardTitle?: string
   guestName: string
   message: string
@@ -85,7 +85,7 @@ export function validateWishContent(guestName: string, message: string): { valid
  */
 export async function postGuestbookWish(params: {
   cardSlug: string
-  cardType?: 'magic' | 'invite' | 'wish'
+  cardType?: 'magic' | 'invite' | 'wish' | 'vcard'
   cardTitle?: string
   guestName: string
   message: string

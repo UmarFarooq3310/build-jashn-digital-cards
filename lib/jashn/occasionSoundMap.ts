@@ -13,54 +13,101 @@
 
 export const OCCASION_SOUND_MAP: Record<string, string | null> = {
   // ── Celebratory / Achievements → birthday-dholki ──────────────────────────
-  birthday: '/sounds/birthday-dholki.mp3',
-  'new-baby': '/sounds/birthday-dholki.mp3',
-  'new-year': '/sounds/birthday-dholki.mp3',
-  graduation: '/sounds/birthday-dholki.mp3',
-  'new-job': '/sounds/birthday-dholki.mp3',
-  promotion: '/sounds/birthday-dholki.mp3',
-  'exam-pass': '/sounds/birthday-dholki.mp3',
-  'business-launch': '/sounds/birthday-dholki.mp3',
-  congratulations: '/sounds/birthday-dholki.mp3',
+  birthday: '/sounds/birthday-dholki.m4a',
+  'new-baby': '/sounds/birthday-dholki.m4a',
+  'new-year': '/sounds/birthday-dholki.m4a',
+  graduation: '/sounds/birthday-dholki.m4a',
+  'new-job': '/sounds/birthday-dholki.m4a',
+  promotion: '/sounds/birthday-dholki.m4a',
+  'exam-pass': '/sounds/birthday-dholki.m4a',
+  'business-launch': '/sounds/birthday-dholki.m4a',
+  congratulations: '/sounds/birthday-dholki.m4a',
 
   // ── Wedding / Nikah / Anniversary / New-home → wedding-shehnai ────────────
   // (mehndi is overridden below to mehndi-dholki)
-  nikah: '/sounds/wedding-shehnai.mp3',
-  shaadi: '/sounds/wedding-shehnai.mp3',
-  anniversary: '/sounds/wedding-shehnai.mp3',
-  'new-home': '/sounds/wedding-shehnai.mp3',
+  nikah: '/sounds/wedding-shehnai.m4a',
+  shaadi: '/sounds/wedding-shehnai.m4a',
+  'wedding-gala': '/sounds/wedding-shehnai.m4a',
+  'reception-party': '/sounds/wedding-shehnai.m4a',
+  'baat-pakki': '/sounds/wedding-shehnai.m4a',
+  anniversary: '/sounds/wedding-shehnai.m4a',
+  'golden-anniversary': '/sounds/wedding-shehnai.m4a',
+  'new-home': '/sounds/wedding-shehnai.m4a',
+  'housewarming-blessings': '/sounds/wedding-shehnai.m4a',
 
-  // ── Mehndi (specifically) → mehndi-dholki ─────────────────────────────────
-  mehndi: '/sounds/mehndi-dholki.mp3',
+  // ── Punjabi / Folk / Dholki Celebrations → mehndi-dholki ─────────────────
+  mehndi: '/sounds/mehndi-dholki.m4a',
+  dholki: '/sounds/mehndi-dholki.m4a',
+  vaisakhi: '/sounds/mehndi-dholki.m4a',
+  'makar-sankranti': '/sounds/mehndi-dholki.m4a',
+  basant: '/sounds/mehndi-dholki.m4a',
+  'chand-raat': '/sounds/mehndi-dholki.m4a',
+  'chand-raat-mela': '/sounds/mehndi-dholki.m4a',
+  'kitty-party': '/sounds/mehndi-dholki.m4a',
+
+  // ── Traditional Indian Celebrations & Classical Music → wedding (sitar) ───
+  diwali: '/sounds/wedding.m4a',
+  'diwali-party': '/sounds/wedding.m4a',
+  holi: '/sounds/wedding.m4a',
+  'holi-celebration': '/sounds/wedding.m4a',
+  'raksha-bandhan': '/sounds/wedding.m4a',
+  janmashtami: '/sounds/wedding.m4a',
+  'maha-shivratri': '/sounds/wedding.m4a',
+  'buddha-purnima': '/sounds/wedding.m4a',
+  'sangeet-night': '/sounds/mehndi-dholki.m4a',
+  'qawwali-night': '/sounds/wedding.m4a',
+  'mushaira-evening': '/sounds/wedding.m4a',
 
   // ── Islamic / Religious → eid-chime ───────────────────────────────────────
-  'eid-ul-fitr': '/sounds/eid-chime.mp3',
-  'eid-ul-adha': '/sounds/eid-chime.mp3',
-  ramadan: '/sounds/eid-chime.mp3',
-  jumma: '/sounds/eid-chime.mp3',
-  hajj: '/sounds/eid-chime.mp3',
-  umrah: '/sounds/eid-chime.mp3',
-  milad: '/sounds/eid-chime.mp3',
+  'eid-ul-fitr': '/sounds/eid-chime.m4a',
+  'eid-ul-adha': '/sounds/eid-chime.m4a',
+  ramadan: '/sounds/eid-chime.m4a',
+  jumma: '/sounds/eid-chime.m4a',
+  hajj: '/sounds/eid-chime.m4a',
+  umrah: '/sounds/eid-chime.m4a',
+  milad: '/sounds/eid-chime.m4a',
+  'roza-kushai': '/sounds/eid-chime.m4a',
+  'shab-e-miraj': '/sounds/eid-chime.m4a',
+  'shab-e-barat': '/sounds/eid-chime.m4a',
+  'laylat-al-qadr': '/sounds/eid-chime.m4a',
+  'day-of-arafah': '/sounds/eid-chime.m4a',
+  'islamic-new-year': '/sounds/eid-chime.m4a',
+  'gyarvi-sharif': '/sounds/eid-chime.m4a',
+  'youm-e-ali': '/sounds/eid-chime.m4a',
+  urs: '/sounds/eid-chime.m4a',
 
   // ── Warm / Personal / Friendship → friendship-soft ────────────────────────
-  'friendship-day': '/sounds/friendship-soft.mp3',
-  'thank-you': '/sounds/friendship-soft.mp3',
-  'miss-you': '/sounds/friendship-soft.mp3',
-  valentines: '/sounds/friendship-soft.mp3',
-  'mothers-day': '/sounds/friendship-soft.mp3',
-  'fathers-day': '/sounds/friendship-soft.mp3',
-  'get-well-soon': '/sounds/friendship-soft.mp3',
-  'welcome-back': '/sounds/friendship-soft.mp3',
-  'good-luck': '/sounds/friendship-soft.mp3',
-  farewell: '/sounds/friendship-soft.mp3',
+  'friendship-day': '/sounds/friendship-soft.m4a',
+  'thank-you': '/sounds/friendship-soft.m4a',
+  'miss-you': '/sounds/friendship-soft.m4a',
+  valentines: '/sounds/friendship-soft.m4a',
+  'mothers-day': '/sounds/friendship-soft.m4a',
+  'fathers-day': '/sounds/friendship-soft.m4a',
+  'get-well-soon': '/sounds/friendship-soft.m4a',
+  'welcome-back': '/sounds/friendship-soft.m4a',
+  'good-luck': '/sounds/friendship-soft.m4a',
+  farewell: '/sounds/friendship-soft.m4a',
+  'daughters-day': '/sounds/friendship-soft.m4a',
+  'siblings-day': '/sounds/friendship-soft.m4a',
+  'parents-day': '/sounds/friendship-soft.m4a',
+  'sisters-day': '/sounds/friendship-soft.m4a',
+  'grandparents-day': '/sounds/friendship-soft.m4a',
 
   // ── National / Seasonal → general ─────────────────────────────────────────
-  'independence-day': '/sounds/general.mp3',
-  'kashmir-day': '/sounds/general.mp3',
-  basant: '/sounds/general.mp3',
+  'independence-day': '/sounds/general.m4a',
+  'kashmir-day': '/sounds/general.m4a',
+  'pakistan-day': '/sounds/general.m4a',
+  'defence-day': '/sounds/general.m4a',
+  'quaid-day': '/sounds/general.m4a',
+  'iqbal-day': '/sounds/general.m4a',
+  'india-republic-day': '/sounds/general.m4a',
+  'india-independence-day': '/sounds/general.m4a',
 
-  // ── Condolence → no sound ─────────────────────────────────────────────────
+  // ── Condolence / Mourning → no sound ──────────────────────────────────────
   condolence: null,
+  ashura: null,
+  chehlum: null,
+  sympathy: null,
 }
 
 // ---------------------------------------------------------------------------
@@ -69,34 +116,56 @@ export const OCCASION_SOUND_MAP: Record<string, string | null> = {
 // ---------------------------------------------------------------------------
 export const INVITATION_TYPE_SOUND_MAP: Record<string, string | null> = {
   // Wedding category
-  mehndi: '/sounds/mehndi-dholki.mp3',
-  dholki: '/sounds/mehndi-dholki.mp3',
-  nikkah: '/sounds/wedding-shehnai.mp3',
-  barat: '/sounds/wedding-shehnai.mp3',
-  walima: '/sounds/wedding-shehnai.mp3',
-  engagement: '/sounds/wedding-shehnai.mp3',
+  mehndi: '/sounds/mehndi-dholki.m4a',
+  dholki: '/sounds/mehndi-dholki.m4a',
+  'sangeet-night': '/sounds/mehndi-dholki.m4a',
+  'qawwali-night': '/sounds/wedding.m4a',
+  nikkah: '/sounds/wedding-shehnai.m4a',
+  barat: '/sounds/wedding-shehnai.m4a',
+  baraat: '/sounds/wedding-shehnai.m4a',
+  walima: '/sounds/wedding-shehnai.m4a',
+  engagement: '/sounds/wedding-shehnai.m4a',
+  'bridal-shower': '/sounds/wedding-shehnai.m4a',
+  'wedding-gala': '/sounds/wedding-shehnai.m4a',
+  'reception-party': '/sounds/wedding-shehnai.m4a',
+
+  // Indian Traditional & Religious Gatherings
+  'diwali-party': '/sounds/wedding.m4a',
+  'holi-celebration': '/sounds/mehndi-dholki.m4a',
+  'mushaira-evening': '/sounds/wedding.m4a',
 
   // Religious
-  'eid-party': '/sounds/eid-chime.mp3',
-  milad: '/sounds/eid-chime.mp3',
-  'quran-khatam': '/sounds/eid-chime.mp3',
-  iftaar: '/sounds/eid-chime.mp3',
+  'eid-party': '/sounds/eid-chime.m4a',
+  milad: '/sounds/eid-chime.m4a',
+  'milad-mehfil': '/sounds/eid-chime.m4a',
+  'quran-khatam': '/sounds/eid-chime.m4a',
+  'dars-quran': '/sounds/eid-chime.m4a',
+  'dua-khatam': '/sounds/eid-chime.m4a',
+  iftaar: '/sounds/eid-chime.m4a',
+  'roza-kushai': '/sounds/eid-chime.m4a',
+  'hajj-dinner': '/sounds/eid-chime.m4a',
+  'chand-raat-mela': '/sounds/mehndi-dholki.m4a',
+  'aqiqah-party': '/sounds/birthday-dholki.m4a',
   chelum: null, // mourning/condolence-adjacent — no sound
+  'majlis-aza': null,
 
   // Social
-  'birthday-party': '/sounds/birthday-dholki.mp3',
-  'graduation-party': '/sounds/birthday-dholki.mp3',
-  'family-reunion': '/sounds/friendship-soft.mp3',
-  'baby-shower': '/sounds/birthday-dholki.mp3',
-  'kids-party': '/sounds/birthday-dholki.mp3',
-  'house-warming': '/sounds/birthday-dholki.mp3',
+  'birthday-party': '/sounds/birthday-dholki.m4a',
+  'graduation-party': '/sounds/birthday-dholki.m4a',
+  'family-reunion': '/sounds/friendship-soft.m4a',
+  'baby-shower': '/sounds/birthday-dholki.m4a',
+  'kids-party': '/sounds/birthday-dholki.m4a',
+  'house-warming': '/sounds/birthday-dholki.m4a',
+  'kitty-party': '/sounds/mehndi-dholki.m4a',
+  'anniversary-party': '/sounds/wedding-shehnai.m4a',
+  'prom-farewell': '/sounds/friendship-soft.m4a',
 
   // Professional
-  'shop-opening': '/sounds/birthday-dholki.mp3',
-  'office-party': '/sounds/friendship-soft.mp3',
-  seminar: '/sounds/general.mp3',
-  'product-launch': '/sounds/birthday-dholki.mp3',
-  'school-function': '/sounds/friendship-soft.mp3',
+  'shop-opening': '/sounds/birthday-dholki.m4a',
+  'office-party': '/sounds/friendship-soft.m4a',
+  seminar: '/sounds/general.m4a',
+  'product-launch': '/sounds/birthday-dholki.m4a',
+  'school-function': '/sounds/friendship-soft.m4a',
 }
 
 // ---------------------------------------------------------------------------
@@ -112,7 +181,7 @@ export function getSoundForOccasion(occasionId: string): string | null {
     return OCCASION_SOUND_MAP[occasionId]
   }
   // Unknown occasion IDs default to general
-  return '/sounds/general.mp3'
+  return '/sounds/general.m4a'
 }
 
 /**
@@ -124,5 +193,5 @@ export function getSoundForInvitationType(typeId: string): string | null {
     return INVITATION_TYPE_SOUND_MAP[typeId]
   }
   // Unknown invitation type IDs default to general
-  return '/sounds/general.mp3'
+  return '/sounds/general.m4a'
 }

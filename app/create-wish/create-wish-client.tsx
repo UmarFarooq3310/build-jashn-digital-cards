@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, VolumeX, X, CheckCircle2, Gamepad2, Flame, Hash, Shield, Crown, Swords, Zap } from 'lucide-react'
-import { AUDIO_TRACKS } from '@/lib/jashn/audio'
+import { AUDIO_TRACKS, getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
 import { celebrationAudio } from '@/lib/jashn/audio-synth'
 import { generateAIWish, type AITone } from '@/lib/jashn/ai-generator'
 import { SiteHeader } from '@/components/site-header'
@@ -55,17 +55,47 @@ const WISH_QUICK_STARTERS = [
     recipientName: 'Best Friend',
     relation: 'BestFriend',
     message: 'Happy Birthday to my favourite person in the universe! May this year bring you endless laughter, boundless success, and all your heart desires! 🎂✨',
-    audioTrack: 'birthday_melody',
+    audioTrack: 'birthday-festive',
     themeId: 'royal-navy',
   },
   {
+    id: 'punjabi-bhangra',
+    label: '🥁 Punjabi Dhol & Bhangra',
+    occasionId: 'bhangra',
+    recipientName: 'Yaar',
+    relation: 'Friend',
+    message: 'Bhangra pao te dhol bajao! Wishing you vibrant energy, success, and endless celebration on this joyful occasion! Chak de phatte! 🥁🔥',
+    audioTrack: 'punjabi-bhangra-dhol',
+    themeId: 'warm-amber',
+  },
+  {
+    id: 'wedding-shehnai',
+    label: '💍 Royal Shaadi Mubarak',
+    occasionId: 'wedding',
+    recipientName: 'Bride & Groom',
+    relation: 'Friend',
+    message: 'Shaadi Mubarak! May your journey together be adorned with immense love, understanding, joy, and blessings of a lifetime! 💍🌸',
+    audioTrack: 'wedding-shehnai',
+    themeId: 'mehndi-red',
+  },
+  {
+    id: 'indian-sitar',
+    label: '🪕 Sitar & Raag Classical',
+    occasionId: 'diwali',
+    recipientName: 'Dearest Family',
+    relation: 'Family',
+    message: 'Sending you warmth, harmony, and festive radiance! May peace, prosperity, and melodious happiness fill your home! 🪕✨',
+    audioTrack: 'indian-sitar-classical',
+    themeId: 'gold-luxe',
+  },
+  {
     id: 'anniversary-love',
-    label: '💍 Romantic Anniversary',
+    label: '💖 Romantic Anniversary',
     occasionId: 'anniversary',
     recipientName: 'My Love',
     relation: 'Wife',
     message: 'Happy Anniversary! Every moment with you is a blessing, and I fall in love with you more each day. Forever and always. 💍💖',
-    audioTrack: 'romantic_strings',
+    audioTrack: 'romantic-strings',
     themeId: 'crimson-gold',
   },
   {
@@ -75,28 +105,8 @@ const WISH_QUICK_STARTERS = [
     recipientName: 'Dear Family',
     relation: 'Family',
     message: 'Eid Mubarak! May Allah bless you and your loved ones with peace, good health, joy, and prosperity today and always. 🌙✨',
-    audioTrack: 'shehnai_celebration',
+    audioTrack: 'islamic-oud',
     themeId: 'islamic-emerald',
-  },
-  {
-    id: 'congrats-success',
-    label: '🎉 Congratulations',
-    occasionId: 'congratulations',
-    recipientName: 'Champion',
-    relation: 'Friend',
-    message: 'Huge congratulations on your big achievement! So proud of your dedication and hard work. Wishing you many more milestones! 🌟🚀',
-    audioTrack: 'victory_anthem',
-    themeId: 'cyber-neon',
-  },
-  {
-    id: 'thank-you',
-    label: '💐 Thank You',
-    occasionId: 'thank-you',
-    recipientName: 'Dearest Friend',
-    relation: 'Friend',
-    message: 'Thank you from the bottom of my heart for your kindness, support, and friendship. You truly make a difference in my life! 💐',
-    audioTrack: 'chimes',
-    themeId: 'warm-amber',
   },
 ]
 
@@ -185,7 +195,10 @@ function CreateWishContent() {
 
   // Custom Photo, Audio & AI Generator State
   const [photoUrl, setPhotoUrl] = useState('')
-  const [audioTrack, setAudioTrack] = useState('birthday-festive')
+  const [audioTrack, setAudioTrack] = useState(() => {
+    const initOcc = occasionParam || (categoryParam ? resolveOccasionFromCategory(categoryParam) : 'birthday')
+    return getDefaultAudioTrackForOccasion(initOcc)
+  })
   const [playingTrackId, setPlayingTrackId] = useState<string | null>(null)
   const [showAiModal, setShowAiModal] = useState(false)
 
@@ -354,42 +367,46 @@ function CreateWishContent() {
           else setStep(2)
         }
       } else {
+        const occParam = searchParams.get('occasion')
+        const catParam = searchParams.get('category')
+        const msgParam = searchParams.get('message')
+        const poemP = searchParams.get('poem')
+        const recParam = searchParams.get('recipient')
+        const sndParam = searchParams.get('sender')
+        const relParam = searchParams.get('relation')
+
+        const hasUrlParams = Boolean(occParam || catParam || poemP || msgParam)
+
         let hasDraft = false
-        try {
-          const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
-          if (draftJson) {
-            const d = JSON.parse(draftJson)
-            if (d && typeof d === 'object') {
-              hasDraft = true
-              if (d.occasionId) setOccasionId(d.occasionId)
-              if (d.themeId) setThemeId(d.themeId)
-              if (d.borderId) setBorderId(d.borderId)
-              if (d.bgVariantId) setBgVariantId(d.bgVariantId)
-              if (d.message !== undefined) setMessage(d.message)
-              if (d.senderName !== undefined) setSenderName(d.senderName)
-              if (d.recipientName !== undefined) setRecipientName(d.recipientName)
-              if (d.relation) setRelation(d.relation)
-              if (d.language) setLanguage(d.language)
-              if (d.playerName) setPlayerName(d.playerName)
-              if (d.killCount) setKillCount(d.killCount)
-              if (d.rank) setRank(d.rank)
-              if (d.winningNumber) setWinningNumber(d.winningNumber)
-              if (d.photoUrl) setPhotoUrl(d.photoUrl)
-              if (d.audioTrack) setAudioTrack(d.audioTrack)
-              if (d.step) setStep(d.step as any)
+        if (!hasUrlParams) {
+          try {
+            const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
+            if (draftJson) {
+              const d = JSON.parse(draftJson)
+              if (d && typeof d === 'object') {
+                hasDraft = true
+                if (d.occasionId) setOccasionId(d.occasionId)
+                if (d.themeId) setThemeId(d.themeId)
+                if (d.borderId) setBorderId(d.borderId)
+                if (d.bgVariantId) setBgVariantId(d.bgVariantId)
+                if (d.message !== undefined) setMessage(d.message)
+                if (d.senderName !== undefined) setSenderName(d.senderName)
+                if (d.recipientName !== undefined) setRecipientName(d.recipientName)
+                if (d.relation) setRelation(d.relation)
+                if (d.language) setLanguage(d.language)
+                if (d.playerName) setPlayerName(d.playerName)
+                if (d.killCount) setKillCount(d.killCount)
+                if (d.rank) setRank(d.rank)
+                if (d.winningNumber) setWinningNumber(d.winningNumber)
+                if (d.photoUrl) setPhotoUrl(d.photoUrl)
+                if (d.audioTrack) setAudioTrack(d.audioTrack)
+                if (d.step) setStep(d.step as any)
+              }
             }
-          }
-        } catch {}
+          } catch {}
+        }
 
-        if (!hasDraft) {
-          const occParam = searchParams.get('occasion')
-          const catParam = searchParams.get('category')
-          const msgParam = searchParams.get('message')
-          const poemP = searchParams.get('poem')
-          const recParam = searchParams.get('recipient')
-          const sndParam = searchParams.get('sender')
-          const relParam = searchParams.get('relation')
-
+        if (hasUrlParams) {
           // Check for poetry prefill
           let prefillText = ''
           try {
@@ -402,32 +419,34 @@ function CreateWishContent() {
             if (found) prefillText = found.cardPrefillMsg
           }
 
-          const resolved = occParam || resolveOccasionFromCategory(catParam)
-          if (occParam || catParam || prefillText || poemP || msgParam) {
-            setOccasionId(resolved)
-            if (prefillText) {
-              setMessage(prefillText)
-              setStep(2)
-            } else if (msgParam) {
-              setMessage(msgParam)
-              setStep(2)
-            } else {
-              const tPlates = getTemplates(resolved)
-              if (tPlates.length > 0) {
-                setMessage(getLocalizedTemplateText(tPlates[0], lang))
-              }
-            }
-            if (recParam) setRecipientName(recParam)
-            if (sndParam) setSenderName(sndParam)
-            if (relParam) setRelation(relParam)
-            setStep(2)
+          const resolved = occParam || resolveOccasionFromCategory(catParam) || 'birthday'
+          setOccasionId(resolved)
 
-            // Clean cluttered URL in address bar
-            if (typeof window !== 'undefined' && (poemP || msgParam)) {
-              try {
-                window.history.replaceState({}, '', window.location.pathname)
-              } catch {}
+          if (prefillText) {
+            setMessage(prefillText)
+          } else if (msgParam) {
+            setMessage(msgParam)
+          } else {
+            const tPlates = getTemplates(resolved)
+            if (tPlates.length > 0) {
+              setMessage(getLocalizedTemplateText(tPlates[0], lang))
             }
+          }
+          if (recParam) setRecipientName(recParam)
+          if (sndParam) setSenderName(sndParam)
+          if (relParam) setRelation(relParam)
+          setStep(2)
+
+          // Discard previous stale draft so it won't conflict with this newly selected occasion
+          try {
+            sessionStorage.removeItem(draftKey)
+          } catch {}
+
+          // Clean cluttered URL in address bar
+          if (typeof window !== 'undefined' && (poemP || msgParam)) {
+            try {
+              window.history.replaceState({}, '', window.location.pathname)
+            } catch {}
           }
         }
       }
@@ -509,6 +528,7 @@ function CreateWishContent() {
 
   function handleOccasionSelect(id: string) {
     setOccasionId(id)
+    setAudioTrack(getDefaultAudioTrackForOccasion(id))
     setErrors({})
     changeStep(2)
     

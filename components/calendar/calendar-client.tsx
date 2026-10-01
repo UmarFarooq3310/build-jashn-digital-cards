@@ -332,20 +332,48 @@ export function CelebrationCalendarClient() {
 
               <div className="mt-4 pt-3 border-t border-border/50">
                 {/* Direct Action Buttons for Immediate Upcoming Occasion */}
-                <div className="flex items-center gap-2">
-                  <Link
-                    href={item.wishLink}
-                    className="flex-1 text-center rounded-xl border border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 py-1.5 text-xs font-bold text-[#D4AF37] transition-colors"
-                  >
-                    {t('calSendCard') || 'Send 3D Card'}
-                  </Link>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {item.hasWish && (
+                    <Link
+                      href={item.wishLink}
+                      className={cn(
+                        "flex-1 min-w-[90px] text-center rounded-xl py-1.5 px-2.5 text-xs font-bold transition-all shadow-xs",
+                        item.primaryAction === 'wish'
+                          ? "bg-[#D4AF37] hover:bg-[#c49f30] text-black font-extrabold"
+                          : "border border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37]"
+                      )}
+                    >
+                      {t('calSendCard') || 'Send 3D Card'}
+                    </Link>
+                  )}
 
-                  <Link
-                    href={item.invitationLink}
-                    className="flex-1 text-center rounded-xl bg-[#D4AF37] hover:bg-[#c49f30] py-1.5 text-xs font-bold text-black transition-colors shadow-xs"
-                  >
-                    {t('calInvite') || t('calCreateInvitation') || 'Invite'}
-                  </Link>
+                  {item.hasMagicLink && item.magicLink && (
+                    <Link
+                      href={item.magicLink}
+                      className={cn(
+                        "flex-1 min-w-[90px] text-center rounded-xl py-1.5 px-2.5 text-xs font-bold transition-all shadow-xs",
+                        item.primaryAction === 'magic'
+                          ? "bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-extrabold"
+                          : "border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500"
+                      )}
+                    >
+                      {t('calMagicLink') || 'Magic Link 🪄'}
+                    </Link>
+                  )}
+
+                  {item.hasInvitation && item.invitationLink && (
+                    <Link
+                      href={item.invitationLink}
+                      className={cn(
+                        "flex-1 min-w-[90px] text-center rounded-xl py-1.5 px-2.5 text-xs font-bold transition-all shadow-xs",
+                        item.primaryAction === 'invitation'
+                          ? "bg-[#D4AF37] hover:bg-[#c49f30] text-black font-extrabold"
+                          : "border border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37]"
+                      )}
+                    >
+                      {t('calInvite') || t('calCreateInvitation') || 'Invite'}
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -572,24 +600,54 @@ export function CelebrationCalendarClient() {
                     {event.daysRemaining === 0 ? (t('calHappeningToday') || 'Today! 🎉') : `${event.daysRemaining} ${t('daysRemaining') || 'days remaining'}`}
                   </span>
 
-                  <div className="flex items-center gap-2">
-                    {/* Send 3D Wish Card (Opens exact occasion + greeting) */}
-                    <Link
-                      href={event.wishLink}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-[#D4AF37]/50 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 px-3.5 py-1.5 text-xs font-bold text-[#D4AF37] transition-all"
-                    >
-                      <span>{t('calSendCard') || 'Send 3D Card'}</span>
-                      <ArrowRight className={cn('size-3', isRtl && 'rotate-180')} />
-                    </Link>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {/* Send 3D Wish Card */}
+                    {event.hasWish && (
+                      <Link
+                        href={event.wishLink}
+                        className={cn(
+                          "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all shadow-xs",
+                          event.primaryAction === 'wish'
+                            ? "bg-[#D4AF37] hover:bg-[#c49f30] text-black font-extrabold"
+                            : "border border-[#D4AF37]/50 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37]"
+                        )}
+                      >
+                        <span>{t('calSendCard') || 'Send 3D Card'}</span>
+                        <ArrowRight className={cn('size-3', isRtl && 'rotate-180')} />
+                      </Link>
+                    )}
 
-                    {/* Create Invitation (Opens exact invitation type + title) */}
-                    <Link
-                      href={event.invitationLink}
-                      className="inline-flex items-center gap-1.5 rounded-full bg-[#D4AF37] hover:bg-[#c49f30] px-4 py-1.5 text-xs font-bold text-black transition-all shadow-xs"
-                    >
-                      <span>{t('calCreateInvitation') || 'Create Invitation'}</span>
-                      <ArrowRight className={cn('size-3', isRtl && 'rotate-180')} />
-                    </Link>
+                    {/* Magic Link */}
+                    {event.hasMagicLink && event.magicLink && (
+                      <Link
+                        href={event.magicLink}
+                        className={cn(
+                          "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all shadow-xs",
+                          event.primaryAction === 'magic'
+                            ? "bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-extrabold"
+                            : "border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500"
+                        )}
+                      >
+                        <span>{t('calMagicLink') || 'Magic Link 🪄'}</span>
+                        <Sparkles className="size-3" />
+                      </Link>
+                    )}
+
+                    {/* Create Invitation */}
+                    {event.hasInvitation && event.invitationLink && (
+                      <Link
+                        href={event.invitationLink}
+                        className={cn(
+                          "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold transition-all shadow-xs",
+                          event.primaryAction === 'invitation'
+                            ? "bg-[#D4AF37] hover:bg-[#c49f30] text-black font-extrabold"
+                            : "border border-[#D4AF37]/50 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37]"
+                        )}
+                      >
+                        <span>{t('calCreateInvitation') || 'Create Invitation'}</span>
+                        <ArrowRight className={cn('size-3', isRtl && 'rotate-180')} />
+                      </Link>
+                    )}
                   </div>
                 </div>
               </article>

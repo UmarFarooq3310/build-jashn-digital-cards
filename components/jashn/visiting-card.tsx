@@ -36,6 +36,7 @@ interface VisitingCardProps {
   data: Partial<VisitingCard>
   showShareBtn?: boolean
   showQrCode?: boolean
+  className?: string
 }
 
 const LANGUAGE_LABELS: Record<string, { label: string; dir: 'ltr' | 'rtl'; fontClass?: string }> = {
@@ -61,7 +62,7 @@ export function getInitials(name?: string): string {
 }
 
 export const VisitingCardView = forwardRef<HTMLDivElement, VisitingCardProps>(function VisitingCardView(
-  { data, showShareBtn = true, showQrCode = true },
+  { data, showShareBtn = true, showQrCode = true, className },
   ref
 ) {
   const [copied, setCopied] = useState(false)
@@ -188,7 +189,7 @@ END:VCARD`
   }, { scope: wrapRef })
 
   return (
-    <div className="w-full max-w-md mx-auto space-y-4 font-sans select-none">
+    <div className={cn("w-full max-w-md mx-auto space-y-4 font-sans select-none", className)}>
       {/* Dynamic Keyframes */}
       <style jsx global>{`
         @keyframes shineSheen {

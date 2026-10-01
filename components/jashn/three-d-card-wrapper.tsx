@@ -355,7 +355,7 @@ export function ThreeDCardWrapper({
       onClick={!isOpen ? handleOpen : undefined}
       className={cn(
         "relative w-full mx-auto rounded-[2.5rem] select-none transition-all duration-500",
-        isOpen ? "max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl cursor-default" : "max-w-sm sm:max-w-md md:max-w-lg cursor-pointer hover:shadow-[0_45px_70px_-15px_rgba(0,0,0,0.65)]"
+        isOpen ? "max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl cursor-default" : "max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl cursor-pointer hover:shadow-[0_45px_70px_-15px_rgba(0,0,0,0.65)]"
       )}
       style={{
         perspective: '1100px', // Stronger 3D perspective depth (closer virtual camera)
@@ -681,16 +681,16 @@ export function ThreeDCardWrapper({
           </div>
         )}
 
-        {/* Floating Sound Toggle Button (Positioned cleanly above the card surface so it never overlaps the recipient name) */}
+        {/* Floating Sound Toggle Button (Positioned cleanly inside the top-right corner of the card so it never hides under the navbar) */}
         {isOpen && !isSensitive && (
           <button
             type="button"
             onClick={handleToggleAudio}
-            className="absolute -top-10 sm:-top-11 right-2 sm:right-4 z-30 flex items-center gap-1.5 rounded-full bg-slate-950/85 px-3 py-1.5 text-xs font-bold text-amber-300 border border-amber-500/40 shadow-xl backdrop-blur-md hover:bg-slate-900 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            className="absolute top-3 right-3 sm:top-3.5 sm:right-3.5 z-30 flex items-center gap-1.5 rounded-full bg-slate-950/85 px-2.5 py-1 text-xs font-bold text-amber-300 border border-amber-500/40 shadow-xl backdrop-blur-md hover:bg-slate-900 transition-all hover:scale-105 active:scale-95 cursor-pointer"
             title="Toggle Sound"
           >
-            {isAudioActive ? <Volume2 className="size-4 text-emerald-400 animate-pulse" /> : <VolumeX className="size-4 text-slate-400" />}
-            <span>{isAudioActive ? (t('soundOn') || 'Sound ON') : (t('soundOff') || 'Sound OFF')}</span>
+            {isAudioActive ? <Volume2 className="size-3.5 text-emerald-400 animate-pulse" /> : <VolumeX className="size-3.5 text-slate-400" />}
+            <span className="text-[11px]">{isAudioActive ? (t('soundOn') || 'Sound ON') : (t('soundOff') || 'Sound OFF')}</span>
           </button>
         )}
       </div>

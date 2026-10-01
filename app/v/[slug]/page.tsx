@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button'
 import { Sparkles, Eye, Edit3, Trash2, ShieldCheck, Cpu, Share2, X, Loader2, ArrowLeft, ExternalLink, MessageCircle, Smartphone, Copy, Check, QrCode, UserPlus, Download } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
+import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
 import { recordCardShare } from '@/lib/jashn/magic-service'
 import { downloadVCard } from '@/lib/jashn/vcard-export'
 import { downloadCardPng } from '@/lib/jashn/card-media-export'
@@ -36,16 +37,16 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
   const [card, setCard] = useState<VisitingCard | null>(null)
   const [loading, setLoading] = useState(true)
   const [showShareModal, setShowShareModal] = useState(false)
+  const [showGuestbookModal, setShowGuestbookModal] = useState(false)
   const [copiedLink, setCopiedLink] = useState(false)
   const [isDownloadingPng, setIsDownloadingPng] = useState(false)
   const [downloadingQr, setDownloadingQr] = useState(false)
 
-  // Sender/Creator mode: active if requested via URL OR if viewer is detected as the creator/admin
+  // Sender/Creator mode: ONLY active if explicitly requested via ?mode=sender or ?role=sender
+  // When visiting clean card URL, always show the full receiver experience (card, navbar, wishes wall, no side box)
   const isSenderMode =
     searchParams.get('mode') === 'sender' ||
-    searchParams.get('preview') === 'true' ||
-    searchParams.get('role') === 'sender' ||
-    (typeof window !== 'undefined' && isSenderOrOwner(slug, card?.creatorId, searchParams, user?.uid))
+    searchParams.get('role') === 'sender'
 
   useEffect(() => {
     let unsubscribe: (() => void) | null = null
@@ -57,7 +58,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
         // Only increment view count if viewer is receiver (not sender/creator)
         if (viewIncrementedRef.current !== slug) {
           viewIncrementedRef.current = slug
-          if (shouldIncrementView(slug, 'vcard', storeCard.creatorId, searchParams, user?.uid)) {
+          if (shouldIncrementView(slug, 'vcard', storeCard.creatorId, searchParams, user?.uid, user?.email)) {
             incrementVisitingCardView(slug)
             setCard((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
           }
@@ -101,7 +102,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
             // Only increment view count if viewer is receiver (not sender/creator)
             if (viewIncrementedRef.current !== slug) {
               viewIncrementedRef.current = slug
-              if (shouldIncrementView(slug, 'vcard', fetchedCard.creatorId, searchParams, user?.uid)) {
+              if (shouldIncrementView(slug, 'vcard', fetchedCard.creatorId, searchParams, user?.uid, user?.email)) {
                 incrementVisitingCardView(slug)
                 setCard((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
               }
@@ -278,9 +279,9 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
     return (
       <div className="pt-2 sm:pt-3 pb-24 sm:pb-8 lg:py-2 px-3 sm:px-5 max-w-7xl mx-auto lg:h-[calc(100dvh-4.25rem)] lg:max-h-[calc(100dvh-4.25rem)] flex flex-col justify-center">
         {/* ── Main Responsive Grid: vCard Preview (Left on Desktop, Below on Mobile) + Delivery Hub (Top on Mobile, Right on Desktop) ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-5 items-center lg:h-full lg:max-h-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center lg:h-full lg:max-h-full">
           {/* Digital Visiting Card Surface Column */}
-          <div className="order-2 lg:order-1 lg:col-span-7 xl:col-span-7 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
+          <div className="order-2 lg:order-1 lg:col-span-8 xl:col-span-8 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
             <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10">
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Eye className="size-3.5 text-[#D4AF37]" /> Interactive Client View
@@ -288,14 +289,14 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
             </div>
 
             <div className="w-full flex-1 min-h-0 pt-4 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
-              <div className="w-full max-w-md">
+              <div className="w-full max-w-lg lg:max-w-xl">
                 <VisitingCardView ref={cardRef} data={card} showShareBtn={false} showQrCode={false} />
               </div>
             </div>
           </div>
 
           {/* Unified 1-Click Delivery Hub Column (Top on Mobile, Vertically Centered on Desktop) */}
-          <div className="order-1 lg:order-2 lg:col-span-5 xl:col-span-5 flex flex-col justify-center lg:h-full lg:max-h-full">
+          <div className="order-1 lg:order-2 lg:col-span-4 xl:col-span-4 flex flex-col justify-center lg:h-full lg:max-h-full">
             <div className="rounded-2xl xl:rounded-3xl border-2 border-[#D4AF37]/40 bg-gradient-to-b from-zinc-900 via-zinc-950 to-zinc-900 text-white p-3.5 sm:p-4 lg:p-3.5 xl:p-4 shadow-xl space-y-2 lg:space-y-2 xl:space-y-2.5 text-left lg:max-h-[calc(100dvh-5.5rem)] lg:overflow-y-auto scrollbar-none">
               {/* Ready to Deliver celebration highlight */}
               <div className="p-2 lg:p-2.5 rounded-xl bg-gradient-to-r from-[#D4AF37]/20 via-[#E5C35A]/15 to-[#D4AF37]/20 border border-[#D4AF37]/35 shadow-xs flex items-center gap-2">
@@ -540,57 +541,34 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
       </header>
 
       {/* Receiver Screen Main Centered 3D Business Card */}
-      <main className="w-full max-w-md flex-1 flex flex-col items-center justify-center my-auto py-6 sm:py-10 z-10">
+      <main className="w-full max-w-xl flex-1 flex flex-col items-center justify-center my-auto py-6 sm:py-10 z-10">
         <div className="w-full py-2 flex justify-center">
-          <VisitingCardView ref={cardRef} data={card} showShareBtn={false} showQrCode={false} />
+          <VisitingCardView ref={cardRef} data={card} showShareBtn={false} showQrCode={false} className="max-w-lg lg:max-w-xl" />
         </div>
       </main>
 
       {/* Receiver Screen Footer Control */}
       <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pb-4 text-center">
-        <div className="flex items-center justify-center gap-2.5 w-full">
+        <div className="grid grid-cols-2 gap-2.5 w-full max-w-xs">
           <button
             onClick={() => {
               const ok = downloadVCard(card)
-              if (ok) showToast('Contact downloaded! Open file to save. 📇', 'success')
+              if (ok) showToast('Contact file ready! Save to your phone. 📇', 'success')
             }}
-            className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-slate-950 font-black py-3 px-4 text-xs sm:text-sm shadow-xl hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+            className="flex items-center justify-center gap-1.5 rounded-2xl bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-slate-950 font-extrabold py-2.5 px-3 text-xs shadow-lg hover:brightness-110 active:scale-95 transition-all cursor-pointer"
           >
-            <UserPlus className="size-4 shrink-0" />
-            <span>Save Contact to Phone</span>
+            <UserPlus className="size-3.5 shrink-0" />
+            <span>Save Contact</span>
           </button>
 
           <button
             onClick={() => setShowShareModal(true)}
-            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#D4AF37]/40 bg-zinc-900/90 hover:bg-zinc-800 text-[#D4AF37] font-extrabold py-3 px-4 text-xs sm:text-sm shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            className="flex items-center justify-center gap-1.5 rounded-2xl border border-[#D4AF37]/40 bg-zinc-900/90 hover:bg-zinc-800 text-[#D4AF37] font-extrabold py-2.5 px-3 text-xs shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <Share2 className="size-4 shrink-0" />
-            <span className="hidden sm:inline">{t('shareVCard') || 'Share'}</span>
+            <Share2 className="size-3.5 shrink-0" />
+            <span>{t('shareVCard') || 'Share'}</span>
           </button>
         </div>
-
-        {/* Universal Luxury Share Modal */}
-        {showShareModal && (
-          <CardShareModal
-            card={{
-              title: card.fullName || 'Digital Visiting Card',
-              recipientOrCouple: card.fullName,
-              type: 'vcard',
-              slug: card.slug,
-              url: `/v/${card.slug}`,
-              viewsCount: card.viewCount || 0,
-              shares: card.shares,
-              occasion: card.company || card.title || 'Digital Business Profile',
-              senderName: card.fullName,
-              waMessage: waMsg,
-              phone: card.phone,
-              email: card.email,
-              website: card.website,
-              address: card.address,
-            }}
-            onClose={() => setShowShareModal(false)}
-          />
-        )}
 
         <Link
           href="/create-visiting-card"
@@ -600,6 +578,55 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
           <span>Cardzy · Make Your Own</span>
         </Link>
       </footer>
+
+      {/* Floating Action Pill for Wishes Wall - Visible to ALL visitors */}
+      <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2">
+        <button
+          onClick={() => setShowGuestbookModal(true)}
+          className="group flex items-center gap-2 px-3.5 py-2 rounded-full bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 hover:from-amber-500 hover:to-yellow-500 text-slate-950 text-xs font-black shadow-2xl border border-yellow-300/40 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
+          title="Open Wishes Wall & Notes (Leave a Greeting)"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+          </span>
+          <MessageCircle className="size-3.5 text-slate-950 group-hover:scale-110 transition-transform" />
+          <span>💬 Wishes Wall</span>
+        </button>
+      </div>
+
+      {/* Universal Luxury Share Modal */}
+      {showShareModal && (
+        <CardShareModal
+          simpleMode={true}
+          card={{
+            title: card.fullName || 'Digital Visiting Card',
+            recipientOrCouple: card.fullName,
+            type: 'vcard',
+            slug: card.slug,
+            url: `/v/${card.slug}`,
+            viewsCount: card.viewCount || 0,
+            shares: card.shares,
+            occasion: card.company || card.title || 'Digital Business Profile',
+            senderName: card.fullName,
+            waMessage: waMsg,
+            phone: card.phone,
+            email: card.email,
+            website: card.website,
+            address: card.address,
+          }}
+          onClose={() => setShowShareModal(false)}
+        />
+      )}
+
+      {/* Visiting Card Guestbook / Wishes Wall Modal */}
+      <CardGuestbookModal
+        cardSlug={slug}
+        cardType="vcard"
+        recipientName={card.fullName || 'Professional'}
+        isOpen={showGuestbookModal}
+        onClose={() => setShowGuestbookModal(false)}
+      />
     </div>
   )
 }

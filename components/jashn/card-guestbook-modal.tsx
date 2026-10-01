@@ -24,7 +24,7 @@ import { useLang } from '@/lib/lang/context'
 
 interface CardGuestbookModalProps {
   cardSlug: string
-  cardType?: 'magic' | 'invite' | 'wish'
+  cardType?: 'magic' | 'invite' | 'wish' | 'vcard'
   cardTitle?: string
   recipientName: string
   isOpen: boolean

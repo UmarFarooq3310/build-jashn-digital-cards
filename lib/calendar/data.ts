@@ -48,8 +48,14 @@ export interface CalculatedEvent {
   ctaLink: string
   wishLink: string
   invitationLink: string
+  magicLink: string
+  hasWish: boolean
+  hasInvitation: boolean
+  hasMagicLink: boolean
+  primaryAction: 'wish' | 'invitation' | 'magic'
   occasionId: string
   invitationTypeId: string
+  magicOccasion?: string
   emoji: string
 }
 
@@ -1895,90 +1901,109 @@ export function formatEventDate(d: Date): string {
 }
 
 
-export const EVENT_OCCASIONS_MAP: Record<string, { occasion: string; invitationType: string; isMilestone?: boolean }> = {
-  'eid-milad-un-nabi': { occasion: 'milad', invitationType: 'milad' },
-  'gyarvi-shareef': { occasion: 'gyarvi-sharif', invitationType: 'quran-khatam' },
-  'shab-e-miraj': { occasion: 'shab-e-miraj', invitationType: 'quran-khatam' },
-  'shab-e-barat': { occasion: 'shab-e-barat', invitationType: 'quran-khatam' },
-  'ramadan-start': { occasion: 'ramadan', invitationType: 'iftaar' },
-  'roza-kushai-season': { occasion: 'roza-kushai', invitationType: 'roza-kushai' },
-  'laylat-al-qadr': { occasion: 'laylat-al-qadr', invitationType: 'quran-khatam' },
-  'chand-raat': { occasion: 'chand-raat', invitationType: 'chand-raat-mela' },
-  'eid-ul-fitr': { occasion: 'eid-ul-fitr', invitationType: 'eid-party' },
-  'hajj-season': { occasion: 'hajj', invitationType: 'hajj-dinner' },
-  'day-of-arafah': { occasion: 'day-of-arafah', invitationType: 'hajj-dinner' },
-  'eid-ul-adha': { occasion: 'eid-ul-adha', invitationType: 'eid-party' },
-  'islamic-new-year': { occasion: 'islamic-new-year', invitationType: 'quran-khatam' },
-  'day-of-ashura': { occasion: 'ashura', invitationType: 'quran-khatam' },
-  'chehlum-imam-hussain': { occasion: 'chehlum', invitationType: 'quran-khatam' },
-  'jummat-ul-wida': { occasion: 'jumma', invitationType: 'quran-khatam' },
-  'youm-e-ali': { occasion: 'youm-e-ali', invitationType: 'quran-khatam' },
-  'urs-data-ganj-bakhsh': { occasion: 'urs', invitationType: 'quran-khatam' },
-  'halloween': { occasion: 'halloween', invitationType: 'halloween-party' },
-  'all-saints-day': { occasion: 'all-saints-day', invitationType: 'dinner-party' },
-  'diwali': { occasion: 'diwali', invitationType: 'diwali-party' },
-  'hanukkah': { occasion: 'hanukkah', invitationType: 'dinner-party' },
-  'christmas-eve': { occasion: 'christmas', invitationType: 'christmas-party' },
-  'christmas-day': { occasion: 'christmas', invitationType: 'christmas-party' },
-  'boxing-day': { occasion: 'boxing-day', invitationType: 'dinner-party' },
-  'new-years-eve': { occasion: 'new-year', invitationType: 'new-year-party' },
-  'new-years-day': { occasion: 'new-year', invitationType: 'new-year-party' },
-  'orthodox-christmas': { occasion: 'orthodox-christmas', invitationType: 'christmas-party' },
-  'makar-sankranti': { occasion: 'makar-sankranti', invitationType: 'dinner-party' },
-  'chinese-new-year': { occasion: 'lunar-new-year', invitationType: 'dinner-party' },
-  'lantern-festival': { occasion: 'lantern-festival', invitationType: 'dinner-party' },
-  'maha-shivratri': { occasion: 'maha-shivratri', invitationType: 'dinner-party' },
-  'st-patricks-day': { occasion: 'st-patricks-day', invitationType: 'dinner-party' },
-  'nowruz': { occasion: 'nowruz', invitationType: 'dinner-party' },
-  'purim': { occasion: 'purim', invitationType: 'dinner-party' },
-  'holi': { occasion: 'holi', invitationType: 'holi-celebration' },
-  'good-friday': { occasion: 'good-friday', invitationType: 'dinner-party' },
-  'easter-sunday': { occasion: 'easter', invitationType: 'easter-brunch' },
-  'passover': { occasion: 'passover', invitationType: 'dinner-party' },
-  'vaisakhi': { occasion: 'vaisakhi', invitationType: 'dinner-party' },
-  'buddha-purnima': { occasion: 'buddha-purnima', invitationType: 'dinner-party' },
-  'raksha-bandhan': { occasion: 'raksha-bandhan', invitationType: 'family-reunion' },
-  'janmashtami': { occasion: 'janmashtami', invitationType: 'dinner-party' },
-  'daughters-day': { occasion: 'daughters-day', invitationType: 'family-reunion' },
-  'world-smile-day': { occasion: 'world-smile-day', invitationType: 'kids-party' },
-  'sweetest-day': { occasion: 'sweetest-day', invitationType: 'dinner-party' },
-  'international-mens-day': { occasion: 'mens-day', invitationType: 'dinner-party' },
-  'thanksgiving-day': { occasion: 'thanksgiving', invitationType: 'dinner-party' },
-  'valentines-day': { occasion: 'valentines', invitationType: 'dinner-party' },
-  'international-womens-day': { occasion: 'womens-day', invitationType: 'dinner-party' },
-  'siblings-day': { occasion: 'siblings-day', invitationType: 'family-reunion' },
-  'world-pet-day': { occasion: 'pet-day', invitationType: 'kids-party' },
-  'mothers-day': { occasion: 'mothers-day', invitationType: 'family-reunion' },
-  'global-parents-day': { occasion: 'parents-day', invitationType: 'family-reunion' },
-  'best-friends-day': { occasion: 'friendship-day', invitationType: 'dinner-party' },
-  'fathers-day': { occasion: 'fathers-day', invitationType: 'family-reunion' },
-  'international-friendship-day': { occasion: 'friendship-day', invitationType: 'dinner-party' },
-  'sisters-day': { occasion: 'sisters-day', invitationType: 'family-reunion' },
-  'grandparents-day': { occasion: 'grandparents-day', invitationType: 'family-reunion' },
-  'saudi-national-day': { occasion: 'saudi-national-day', invitationType: 'national-day-gala' },
-  'german-unity-day': { occasion: 'german-unity-day', invitationType: 'national-day-gala' },
-  'iqbal-day-pakistan': { occasion: 'iqbal-day', invitationType: 'national-day-gala' },
-  'uae-national-day': { occasion: 'uae-national-day', invitationType: 'national-day-gala' },
-  'quaid-e-azam-day': { occasion: 'quaid-day', invitationType: 'national-day-gala' },
-  'australia-day': { occasion: 'australia-day', invitationType: 'national-day-gala' },
-  'india-republic-day': { occasion: 'india-republic-day', invitationType: 'national-day-gala' },
-  'saudi-founding-day': { occasion: 'saudi-founding-day', invitationType: 'national-day-gala' },
-  'pakistan-day': { occasion: 'pakistan-day', invitationType: 'national-day-gala' },
-  'canada-day': { occasion: 'canada-day', invitationType: 'national-day-gala' },
-  'us-independence-day': { occasion: 'us-independence-day', invitationType: 'national-day-gala' },
-  'pakistan-independence-day': { occasion: 'independence-day', invitationType: 'national-day-gala' },
-  'india-independence-day': { occasion: 'india-independence-day', invitationType: 'national-day-gala' },
-  'pakistan-defense-day': { occasion: 'defence-day', invitationType: 'national-day-gala' },
-  'winter-wedding-season': { occasion: 'shaadi', invitationType: 'wedding-gala', isMilestone: true },
-  'corporate-annual-gala-season': { occasion: 'promotion', invitationType: 'office-party', isMilestone: true },
-  'spring-wedding-season': { occasion: 'nikah', invitationType: 'nikkah', isMilestone: true },
-  'school-farewell-prom-season': { occasion: 'farewell', invitationType: 'prom-farewell', isMilestone: true },
-  'graduation-season': { occasion: 'graduation', invitationType: 'graduation-party', isMilestone: true },
-  'baby-shower-aqiqah-season': { occasion: 'baby-shower', invitationType: 'aqiqah-party', isMilestone: true },
-  'summer-reunion-season': { occasion: 'friendship-day', invitationType: 'family-reunion', isMilestone: true },
-  'housewarming-season': { occasion: 'new-home', invitationType: 'house-warming', isMilestone: true },
-  'teacher-appreciation-week': { occasion: 'teachers-day', invitationType: 'teachers-day-event', isMilestone: true },
-  'silver-golden-anniversary': { occasion: 'golden-anniversary', invitationType: 'anniversary-party', isMilestone: true },
+export const EVENT_OCCASIONS_MAP: Record<
+  string,
+  {
+    occasion: string
+    invitationType?: string
+    magicOccasion?: string
+    primaryAction?: 'wish' | 'invitation' | 'magic'
+  }
+> = {
+  // Islamic & Hijri
+  'eid-milad-un-nabi': { occasion: 'milad', invitationType: 'milad-mehfil', primaryAction: 'wish' },
+  'gyarvi-shareef': { occasion: 'gyarvi-sharif', invitationType: 'dua-khatam', primaryAction: 'wish' },
+  'shab-e-miraj': { occasion: 'shab-e-miraj', primaryAction: 'wish' },
+  'shab-e-barat': { occasion: 'shab-e-barat', primaryAction: 'wish' },
+  'ramadan-start': { occasion: 'ramadan', invitationType: 'iftaar', magicOccasion: 'ramadan', primaryAction: 'wish' },
+  'roza-kushai-season': { occasion: 'roza-kushai', invitationType: 'roza-kushai', magicOccasion: 'roza-kushai', primaryAction: 'magic' },
+  'laylat-al-qadr': { occasion: 'laylat-al-qadr', primaryAction: 'wish' },
+  'chand-raat': { occasion: 'chand-raat', invitationType: 'chand-raat-mela', magicOccasion: 'eid', primaryAction: 'magic' },
+  'eid-ul-fitr': { occasion: 'eid-ul-fitr', invitationType: 'eid-party', magicOccasion: 'eid', primaryAction: 'wish' },
+  'hajj-season': { occasion: 'hajj', invitationType: 'hajj-dinner', magicOccasion: 'umrah', primaryAction: 'wish' },
+  'day-of-arafah': { occasion: 'day-of-arafah', magicOccasion: 'umrah', primaryAction: 'wish' },
+  'eid-ul-adha': { occasion: 'eid-ul-adha', invitationType: 'eid-party', magicOccasion: 'eid', primaryAction: 'wish' },
+  'islamic-new-year': { occasion: 'islamic-new-year', primaryAction: 'wish' },
+  'day-of-ashura': { occasion: 'ashura', invitationType: 'majlis-aza', primaryAction: 'wish' },
+  'chehlum-imam-hussain': { occasion: 'chehlum', invitationType: 'majlis-aza', primaryAction: 'wish' },
+  'jummat-ul-wida': { occasion: 'jumma', primaryAction: 'wish' },
+  'youm-e-ali': { occasion: 'youm-e-ali', primaryAction: 'wish' },
+  'urs-data-ganj-bakhsh': { occasion: 'urs', primaryAction: 'wish' },
+
+  // Global Faiths
+  'halloween': { occasion: 'halloween', invitationType: 'halloween-party', primaryAction: 'invitation' },
+  'all-saints-day': { occasion: 'all-saints-day', primaryAction: 'wish' },
+  'diwali': { occasion: 'diwali', invitationType: 'diwali-party', primaryAction: 'wish' },
+  'hanukkah': { occasion: 'hanukkah', primaryAction: 'wish' },
+  'christmas-eve': { occasion: 'christmas', invitationType: 'christmas-party', magicOccasion: 'party', primaryAction: 'wish' },
+  'christmas-day': { occasion: 'christmas', invitationType: 'christmas-party', magicOccasion: 'party', primaryAction: 'wish' },
+  'boxing-day': { occasion: 'boxing-day', primaryAction: 'wish' },
+  'new-years-eve': { occasion: 'new-year', invitationType: 'new-year-party', magicOccasion: 'newyear', primaryAction: 'magic' },
+  'new-years-day': { occasion: 'new-year', invitationType: 'new-year-party', magicOccasion: 'newyear', primaryAction: 'wish' },
+  'orthodox-christmas': { occasion: 'orthodox-christmas', invitationType: 'christmas-party', primaryAction: 'wish' },
+  'makar-sankranti': { occasion: 'makar-sankranti', primaryAction: 'wish' },
+  'chinese-new-year': { occasion: 'lunar-new-year', magicOccasion: 'newyear', primaryAction: 'wish' },
+  'lantern-festival': { occasion: 'lantern-festival', primaryAction: 'wish' },
+  'maha-shivratri': { occasion: 'maha-shivratri', primaryAction: 'wish' },
+  'st-patricks-day': { occasion: 'st-patricks-day', primaryAction: 'wish' },
+  'nowruz': { occasion: 'nowruz', invitationType: 'dinner-party', primaryAction: 'wish' },
+  'purim': { occasion: 'purim', primaryAction: 'wish' },
+  'holi': { occasion: 'holi', invitationType: 'holi-celebration', primaryAction: 'wish' },
+  'good-friday': { occasion: 'good-friday', primaryAction: 'wish' },
+  'easter-sunday': { occasion: 'easter', invitationType: 'easter-brunch', primaryAction: 'wish' },
+  'passover': { occasion: 'passover', primaryAction: 'wish' },
+  'vaisakhi': { occasion: 'vaisakhi', primaryAction: 'wish' },
+  'buddha-purnima': { occasion: 'buddha-purnima', primaryAction: 'wish' },
+  'raksha-bandhan': { occasion: 'raksha-bandhan', magicOccasion: 'friendship', primaryAction: 'wish' },
+  'janmashtami': { occasion: 'janmashtami', primaryAction: 'wish' },
+  'thanksgiving-day': { occasion: 'thanksgiving', invitationType: 'dinner-party', magicOccasion: 'thankyou', primaryAction: 'wish' },
+
+  // Family & Love
+  'daughters-day': { occasion: 'daughters-day', magicOccasion: 'thankyou', primaryAction: 'wish' },
+  'world-smile-day': { occasion: 'world-smile-day', primaryAction: 'wish' },
+  'sweetest-day': { occasion: 'sweetest-day', primaryAction: 'wish' },
+  'international-mens-day': { occasion: 'mens-day', primaryAction: 'wish' },
+  'valentines-day': { occasion: 'valentines', magicOccasion: 'proposal', primaryAction: 'magic' },
+  'international-womens-day': { occasion: 'womens-day', primaryAction: 'wish' },
+  'siblings-day': { occasion: 'siblings-day', magicOccasion: 'friendship', primaryAction: 'wish' },
+  'world-pet-day': { occasion: 'pet-day', primaryAction: 'wish' },
+  'mothers-day': { occasion: 'mothers-day', magicOccasion: 'thankyou', primaryAction: 'wish' },
+  'global-parents-day': { occasion: 'parents-day', magicOccasion: 'thankyou', primaryAction: 'wish' },
+  'best-friends-day': { occasion: 'friendship-day', magicOccasion: 'friendship', primaryAction: 'magic' },
+  'fathers-day': { occasion: 'fathers-day', magicOccasion: 'thankyou', primaryAction: 'wish' },
+  'international-friendship-day': { occasion: 'friendship-day', magicOccasion: 'friendship', primaryAction: 'magic' },
+  'sisters-day': { occasion: 'sisters-day', magicOccasion: 'friendship', primaryAction: 'wish' },
+  'grandparents-day': { occasion: 'grandparents-day', magicOccasion: 'thankyou', primaryAction: 'wish' },
+
+  // National & Civic
+  'saudi-national-day': { occasion: 'saudi-national-day', primaryAction: 'wish' },
+  'german-unity-day': { occasion: 'german-unity-day', primaryAction: 'wish' },
+  'iqbal-day-pakistan': { occasion: 'iqbal-day', primaryAction: 'wish' },
+  'uae-national-day': { occasion: 'uae-national-day', primaryAction: 'wish' },
+  'quaid-e-azam-day': { occasion: 'quaid-day', primaryAction: 'wish' },
+  'australia-day': { occasion: 'australia-day', primaryAction: 'wish' },
+  'india-republic-day': { occasion: 'india-republic-day', primaryAction: 'wish' },
+  'saudi-founding-day': { occasion: 'saudi-founding-day', primaryAction: 'wish' },
+  'pakistan-day': { occasion: 'pakistan-day', primaryAction: 'wish' },
+  'canada-day': { occasion: 'canada-day', primaryAction: 'wish' },
+  'us-independence-day': { occasion: 'us-independence-day', primaryAction: 'wish' },
+  'pakistan-independence-day': { occasion: 'independence-day', primaryAction: 'wish' },
+  'india-independence-day': { occasion: 'india-independence-day', primaryAction: 'wish' },
+  'pakistan-defense-day': { occasion: 'defence-day', primaryAction: 'wish' },
+  'kashmir-day': { occasion: 'kashmir-day', primaryAction: 'wish' },
+  'earth-day': { occasion: 'earth-day', primaryAction: 'wish' },
+
+  // Milestones & Seasons
+  'winter-wedding-season': { occasion: 'shaadi', invitationType: 'wedding-gala', magicOccasion: 'wedding', primaryAction: 'invitation' },
+  'corporate-annual-gala-season': { occasion: 'promotion', invitationType: 'office-party', magicOccasion: 'career', primaryAction: 'invitation' },
+  'spring-wedding-season': { occasion: 'nikah', invitationType: 'nikkah', magicOccasion: 'wedding', primaryAction: 'invitation' },
+  'school-farewell-prom-season': { occasion: 'farewell', invitationType: 'prom-farewell', magicOccasion: 'farewell', primaryAction: 'invitation' },
+  'graduation-season': { occasion: 'graduation', invitationType: 'graduation-party', magicOccasion: 'graduation', primaryAction: 'invitation' },
+  'baby-shower-aqiqah-season': { occasion: 'baby-shower', invitationType: 'baby-shower', magicOccasion: 'newborn', primaryAction: 'invitation' },
+  'summer-reunion-season': { occasion: 'friendship-day', invitationType: 'family-reunion', magicOccasion: 'party', primaryAction: 'invitation' },
+  'housewarming-season': { occasion: 'new-home', invitationType: 'house-warming', magicOccasion: 'housewarming', primaryAction: 'invitation' },
+  'teacher-appreciation-week': { occasion: 'teachers-day', invitationType: 'teachers-day-event', primaryAction: 'wish' },
+  'silver-golden-anniversary': { occasion: 'golden-anniversary', invitationType: 'anniversary-party', magicOccasion: 'anniversary', primaryAction: 'invitation' },
 }
 
 export function getEventsForRollingYear(today?: Date): CalculatedEvent[] {
@@ -2009,19 +2034,37 @@ export function getEventsForRollingYear(today?: Date): CalculatedEvent[] {
     const day = String(date.getDate()).padStart(2, "0")
     const dateStr = `${year}-${month}-${day}`
 
-    const mapping = EVENT_OCCASIONS_MAP[event.id] || { occasion: 'birthday', invitationType: 'birthday-party' }
-    const occasionId = mapping.occasion
-    const invitationTypeId = mapping.invitationType
+    const mapping = EVENT_OCCASIONS_MAP[event.id] || { occasion: 'birthday', primaryAction: 'wish' }
+    const occasionId = mapping.occasion || 'birthday'
+    const invitationTypeId = mapping.invitationType || ''
+    const magicOccasion = mapping.magicOccasion
 
     const encodedWishGreeting = encodeURIComponent(event.greetings.en)
     const encodedTitle = encodeURIComponent(event.title)
 
-    const wishLink = `/create-wish?occasion=${encodeURIComponent(occasionId)}&message=${encodedWishGreeting}`
-    const invitationLink = `/create-invitation?type=${encodeURIComponent(invitationTypeId)}&title=${encodedTitle}&date=${dateStr}`
+    const hasWish = true
+    const hasInvitation = Boolean(mapping.invitationType)
+    const hasMagicLink = Boolean(magicOccasion)
 
-    const isMilestone = mapping.isMilestone || event.category === 'milestones'
-    const ctaText = isMilestone ? 'Create Invitation' : 'Send 3D Card'
-    const ctaLink = isMilestone ? invitationLink : wishLink
+    const wishLink = `/create-wish?occasion=${encodeURIComponent(occasionId)}&message=${encodedWishGreeting}`
+    const invitationLink = hasInvitation
+      ? `/create-invitation?type=${encodeURIComponent(invitationTypeId)}&title=${encodedTitle}&date=${dateStr}`
+      : ''
+    const magicLink = hasMagicLink
+      ? `/create-magic-link?occasion=${encodeURIComponent(magicOccasion!)}&message=${encodedWishGreeting}`
+      : ''
+
+    const primaryAction: 'wish' | 'invitation' | 'magic' = mapping.primaryAction || (hasInvitation ? 'invitation' : 'wish')
+
+    let ctaText = 'Send 3D Card'
+    let ctaLink = wishLink
+    if (primaryAction === 'invitation' && hasInvitation) {
+      ctaText = 'Create Invitation'
+      ctaLink = invitationLink
+    } else if (primaryAction === 'magic' && hasMagicLink) {
+      ctaText = 'Magic Link 🪄'
+      ctaLink = magicLink
+    }
 
     return {
       id: event.id,
@@ -2040,8 +2083,14 @@ export function getEventsForRollingYear(today?: Date): CalculatedEvent[] {
       ctaLink,
       wishLink,
       invitationLink,
+      magicLink,
+      hasWish,
+      hasInvitation,
+      hasMagicLink,
+      primaryAction,
       occasionId,
       invitationTypeId,
+      magicOccasion,
       emoji: event.emoji,
     }
   })

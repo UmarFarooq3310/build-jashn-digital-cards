@@ -1,6 +1,10 @@
 'use client'
 
+import { getAudioTrack } from './audio'
+import { getSoundForOccasion, getSoundForInvitationType } from './occasionSoundMap'
+
 class CelebrationAudioPlayer {
+  private audioElement: HTMLAudioElement | null = null
   private ctx: AudioContext | null = null
   private isPlaying = false
   private currentTrack: string = ''
@@ -55,6 +59,15 @@ class CelebrationAudioPlayer {
     this.isPlaying = false
     this.currentTrack = ''
     this.clearTimers()
+    if (this.audioElement) {
+      try {
+        this.audioElement.pause()
+        this.audioElement.currentTime = 0
+        this.audioElement.removeAttribute('src')
+        this.audioElement.load()
+      } catch {}
+      this.audioElement = null
+    }
   }
 
   getIsPlaying() {
@@ -66,10 +79,63 @@ class CelebrationAudioPlayer {
   }
 
   playTrack(trackId: string = 'birthday-festive') {
-    this.initCtx()
+    if (typeof window === 'undefined') return
     this.stop()
     if (!trackId || trackId === 'none') return
 
+    this.isPlaying = true
+    this.currentTrack = trackId
+
+    // 1. Resolve audio track URL from AUDIO_TRACKS or occasionSoundMap
+    const trackObj = getAudioTrack(trackId)
+    let soundSrc = trackObj && trackObj.id !== 'none' ? trackObj.src : null
+
+    if (!soundSrc) {
+      soundSrc = getSoundForOccasion(trackId) || getSoundForInvitationType(trackId)
+    }
+
+    if (soundSrc) {
+      try {
+        const audio = new Audio(soundSrc)
+        audio.loop = true
+        audio.volume = 0.85
+        this.audioElement = audio
+
+        const playPromise = audio.play()
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              this.isPlaying = true
+            })
+            .catch(() => {
+              // Try .wav fallback if .m4a failed
+              if (soundSrc.endsWith('.m4a') || soundSrc.endsWith('.mp3')) {
+                const wavSrc = soundSrc.replace(/\.(m4a|mp3)$/, '.wav')
+                const wavAudio = new Audio(wavSrc)
+                wavAudio.loop = true
+                wavAudio.volume = 0.85
+                this.audioElement = wavAudio
+                wavAudio.play().catch(() => {
+                  this.playSynthesizerFallback(trackId)
+                })
+              } else {
+                this.playSynthesizerFallback(trackId)
+              }
+            })
+        }
+        return
+      } catch {
+        this.playSynthesizerFallback(trackId)
+        return
+      }
+    }
+
+    this.playSynthesizerFallback(trackId)
+  }
+
+  playSynthesizerFallback(trackId: string = 'birthday-festive') {
+    this.initCtx()
+    this.clearTimers()
     this.isPlaying = true
     this.currentTrack = trackId
 
@@ -91,7 +157,59 @@ class CelebrationAudioPlayer {
         { f: C6, d: 1.2, t: 1.85, type: 'sawtooth' as OscillatorType, v: 0.25 },
       ]
       notes.forEach((n) => this.playNote(n.f, n.d, n.t, n.type, n.v))
-    } else if (t === 'wedding-shehnai' || t.includes('wedding') || t.includes('shaadi') || t.includes('barat') || t.includes('walima') || t.includes('mehndi') || t.includes('nikkah') || t.includes('qawwali') || t.includes('mayun')) {
+    } else if (
+      t === 'punjabi-bhangra-dhol' ||
+      t === 'punjabi-tappe-dholki' ||
+      t.includes('bhangra') ||
+      t.includes('dholki') ||
+      t.includes('dholak') ||
+      t.includes('tappe') ||
+      t.includes('vaisakhi') ||
+      t.includes('baisakhi') ||
+      t.includes('lohri') ||
+      t.includes('sangeet') ||
+      t.includes('mehndi')
+    ) {
+      // Energetic Punjabi Bhangra & Dholki Folk Melody
+      const notes = [
+        { f: G4, d: 0.18, t: 0, type: 'sawtooth' as OscillatorType, v: 0.19 },
+        { f: G4, d: 0.16, t: 0.2, type: 'sawtooth' as OscillatorType, v: 0.19 },
+        { f: Bb4, d: 0.25, t: 0.38, type: 'sawtooth' as OscillatorType, v: 0.20 },
+        { f: C5, d: 0.32, t: 0.64, type: 'sawtooth' as OscillatorType, v: 0.21 },
+        { f: D5, d: 0.4, t: 0.98, type: 'sawtooth' as OscillatorType, v: 0.22 },
+        { f: C5, d: 0.2, t: 1.4, type: 'sawtooth' as OscillatorType, v: 0.19 },
+        { f: Bb4, d: 0.28, t: 1.62, type: 'sawtooth' as OscillatorType, v: 0.20 },
+        { f: G4, d: 0.45, t: 1.92, type: 'sawtooth' as OscillatorType, v: 0.22 },
+        { f: F4, d: 0.22, t: 2.4, type: 'sawtooth' as OscillatorType, v: 0.18 },
+        { f: G4, d: 0.75, t: 2.65, type: 'sawtooth' as OscillatorType, v: 0.24 },
+      ]
+      notes.forEach((n) => this.playNote(n.f, n.d, n.t, n.type, n.v))
+    } else if (
+      t === 'indian-sitar-classical' ||
+      t.includes('sitar') ||
+      t.includes('diwali') ||
+      t.includes('holi') ||
+      t.includes('janmashtami') ||
+      t.includes('raksha-bandhan') ||
+      t.includes('traditional') ||
+      t.includes('raag') ||
+      t.includes('classical')
+    ) {
+      // Traditional Indian Sitar & Raag Yaman / Bhairavi Motif
+      const notes = [
+        { f: C4, d: 0.4, t: 0, type: 'triangle' as OscillatorType, v: 0.18 },
+        { f: E4, d: 0.4, t: 0.35, type: 'triangle' as OscillatorType, v: 0.17 },
+        { f: Fs4, d: 0.42, t: 0.7, type: 'triangle' as OscillatorType, v: 0.18 },
+        { f: G4, d: 0.55, t: 1.1, type: 'triangle' as OscillatorType, v: 0.20 },
+        { f: B4, d: 0.45, t: 1.65, type: 'triangle' as OscillatorType, v: 0.19 },
+        { f: C5, d: 0.7, t: 2.1, type: 'triangle' as OscillatorType, v: 0.22 },
+        { f: B4, d: 0.35, t: 2.8, type: 'triangle' as OscillatorType, v: 0.17 },
+        { f: G4, d: 0.4, t: 3.15, type: 'triangle' as OscillatorType, v: 0.18 },
+        { f: E4, d: 0.45, t: 3.55, type: 'triangle' as OscillatorType, v: 0.17 },
+        { f: C4, d: 1.1, t: 4.0, type: 'triangle' as OscillatorType, v: 0.20 },
+      ]
+      notes.forEach((n) => this.playNote(n.f, n.d, n.t, n.type, n.v))
+    } else if (t === 'wedding-shehnai' || t.includes('wedding') || t.includes('shaadi') || t.includes('barat') || t.includes('walima') || t.includes('nikkah') || t.includes('nikah') || t.includes('qawwali') || t.includes('mayun')) {
       // Royal Shehnai & Dholki Wedding Melody
       const notes = [
         { f: G4, d: 0.35, t: 0, type: 'sawtooth' as OscillatorType, v: 0.13 },

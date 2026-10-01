@@ -10,7 +10,9 @@ import '@/app/invitation-themes-premium.css'
 import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Sparkles, Grid, Loader2, AlertCircle, Heart, Check, Edit3, Palette, Eye, Camera, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Sparkles, Grid, Loader2, AlertCircle, Heart, Check, Edit3, Palette, Eye, Camera, X, Music, Volume2, VolumeX, CheckCircle2 } from 'lucide-react'
+import { AUDIO_TRACKS, getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
+import { celebrationAudio } from '@/lib/jashn/audio-synth'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/ui/button'
@@ -52,6 +54,7 @@ const INVITATION_QUICK_STARTERS = [
     time: '19:00',
     dressCode: 'Traditional Royal / Formal',
     notes: 'In the name of Allah, the Most Gracious, the Most Merciful. We cordially invite you to witness and bless the union of our children.',
+    audioTrack: 'wedding-shehnai',
     themeId: 'mughal-emerald',
   },
   {
@@ -67,6 +70,39 @@ const INVITATION_QUICK_STARTERS = [
     time: '20:00',
     dressCode: 'Royal Gold & Velvet',
     notes: 'Your gracious presence and heartfelt prayers will double our joy on this memorable evening.',
+    audioTrack: 'wedding-shehnai',
+    themeId: 'royal-gold',
+  },
+  {
+    id: 'punjabi-mehndi',
+    label: '🥁 Punjabi Mehndi & Dholki',
+    typeId: 'mehndi',
+    title: 'Dholki & Mehndi Jashn',
+    hostNames: 'The Bride & Groom Squad',
+    groom: 'Bilal',
+    bride: 'Anaya',
+    venue: 'Royal Palm Golf & Country Club',
+    city: 'Lahore',
+    time: '19:30',
+    dressCode: 'Bright Yellow & Green Traditional',
+    notes: 'Bhangra, tappe, dholak beats, and endless fun! Come join us as we celebrate with henna and joyous traditional music.',
+    audioTrack: 'punjabi-bhangra-dhol',
+    themeId: 'mehndi-red',
+  },
+  {
+    id: 'indian-sangeet',
+    label: '🪕 Traditional Sangeet & Raag',
+    typeId: 'sangeet',
+    title: 'Sangeet & Musical Evening',
+    hostNames: 'Kapoor & Sharma Families',
+    groom: 'Rohan',
+    bride: 'Pooja',
+    venue: 'Heritage Courtyard Pavilion',
+    city: 'New Delhi',
+    time: '18:30',
+    dressCode: 'Traditional Festive Wear',
+    notes: 'A soulful evening of melodious sitar, classical raags, and festive celebrations as two hearts unite.',
+    audioTrack: 'indian-sitar-classical',
     themeId: 'royal-gold',
   },
   {
@@ -82,6 +118,7 @@ const INVITATION_QUICK_STARTERS = [
     time: '19:30',
     dressCode: 'Black Tie / Evening Formal',
     notes: 'Please join us for an evening of celebratory dinner and blessings for the newly wedded couple.',
+    audioTrack: 'wedding-shehnai',
     themeId: 'regal-sapphire',
   },
   {
@@ -97,6 +134,7 @@ const INVITATION_QUICK_STARTERS = [
     time: '18:00',
     dressCode: 'Festive & Fun',
     notes: 'Come celebrate another wonderful year of joy, cake, and unforgettable memories!',
+    audioTrack: 'birthday-festive',
     themeId: 'birthday-blue',
   },
 ]
@@ -164,6 +202,16 @@ function CreateInvitationContent() {
   const [bgVariantId, setBgVariantId] = useState('default')
   const [photoUrl, setPhotoUrl] = useState('')
   const [photoUrl2, setPhotoUrl2] = useState('')
+  const [audioTrack, setAudioTrack] = useState(() => getDefaultAudioTrackForOccasion(typeParam || 'nikkah'))
+  const [playingTrackId, setPlayingTrackId] = useState<string | null>(null)
+
+  // Cleanup audio playback on unmount
+  useEffect(() => {
+    return () => {
+      celebrationAudio.stop()
+    }
+  }, [])
+
   const [showAiModal, setShowAiModal] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -217,6 +265,7 @@ function CreateInvitationContent() {
     setDressCode(starter.dressCode)
     setNotes(starter.notes)
     if (starter.themeId) setThemeId(starter.themeId)
+    if (starter.audioTrack) setAudioTrack(starter.audioTrack)
     setStep(2)
     showToast(`✨ Loaded ${starter.label}! Personalize names & details.`, 'success')
   }
@@ -327,54 +376,60 @@ function CreateInvitationContent() {
           if (loadedData.bgVariantId) setBgVariantId(loadedData.bgVariantId)
           if (loadedData.photoUrl) setPhotoUrl(loadedData.photoUrl)
           if (loadedData.photoUrl2) setPhotoUrl2(loadedData.photoUrl2)
+          if (loadedData.audioTrack) setAudioTrack(loadedData.audioTrack)
           if (loadedData.step) setStep(loadedData.step as any)
           else setStep(2)
         }
       } else {
+        const typeP = searchParams.get('type')
+        const titleP = searchParams.get('title')
+        const notesP = searchParams.get('notes')
+        const poemP = searchParams.get('poem')
+        const dateP = searchParams.get('date')
+        const timeP = searchParams.get('time')
+        const venueP = searchParams.get('venue')
+        const cityP = searchParams.get('city')
+        const hostP = searchParams.get('hostNames') || searchParams.get('host')
+        const groomP = searchParams.get('groom')
+        const brideP = searchParams.get('bride')
+        const dressCodeP = searchParams.get('dressCode')
+
+        const hasUrlParams = Boolean(typeP || titleP || dateP || notesP || poemP)
+
         let hasDraft = false
-        try {
-          const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
-          if (draftJson) {
-            const d = JSON.parse(draftJson)
-            if (d && typeof d === 'object') {
-              hasDraft = true
-              if (d.typeId) setTypeId(d.typeId)
-              if (d.title !== undefined) setTitle(d.title)
-              if (d.hostNames !== undefined) setHostNames(d.hostNames)
-              if (d.groom !== undefined) setGroom(d.groom)
-              if (d.bride !== undefined) setBride(d.bride)
-              if (d.date) setDate(d.date)
-              if (d.time) setTime(d.time)
-              if (d.venue !== undefined) setVenue(d.venue)
-              if (d.city !== undefined) setCity(d.city)
-              if (d.mapsLink !== undefined) setMapsLink(d.mapsLink)
-              if (d.dressCode !== undefined) setDressCode(d.dressCode)
-              if (d.notes !== undefined) setNotes(d.notes)
-              if (d.rsvpPhone !== undefined) setRsvpPhone(d.rsvpPhone)
-              if (d.themeId) setThemeId(d.themeId)
-              if (d.borderId) setBorderId(d.borderId)
-              if (d.bgVariantId) setBgVariantId(d.bgVariantId)
-              if (d.photoUrl) setPhotoUrl(d.photoUrl)
-              if (d.photoUrl2) setPhotoUrl2(d.photoUrl2)
-              if (d.step) setStep(d.step as any)
+        if (!hasUrlParams) {
+          try {
+            const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
+            if (draftJson) {
+              const d = JSON.parse(draftJson)
+              if (d && typeof d === 'object') {
+                hasDraft = true
+                if (d.typeId) setTypeId(d.typeId)
+                if (d.title !== undefined) setTitle(d.title)
+                if (d.hostNames !== undefined) setHostNames(d.hostNames)
+                if (d.groom !== undefined) setGroom(d.groom)
+                if (d.bride !== undefined) setBride(d.bride)
+                if (d.date) setDate(d.date)
+                if (d.time) setTime(d.time)
+                if (d.venue !== undefined) setVenue(d.venue)
+                if (d.city !== undefined) setCity(d.city)
+                if (d.mapsLink !== undefined) setMapsLink(d.mapsLink)
+                if (d.dressCode !== undefined) setDressCode(d.dressCode)
+                if (d.notes !== undefined) setNotes(d.notes)
+                if (d.rsvpPhone !== undefined) setRsvpPhone(d.rsvpPhone)
+                if (d.themeId) setThemeId(d.themeId)
+                if (d.borderId) setBorderId(d.borderId)
+                if (d.bgVariantId) setBgVariantId(d.bgVariantId)
+                if (d.photoUrl) setPhotoUrl(d.photoUrl)
+                if (d.photoUrl2) setPhotoUrl2(d.photoUrl2)
+                if (d.audioTrack) setAudioTrack(d.audioTrack)
+                if (d.step) setStep(d.step as any)
+              }
             }
-          }
-        } catch {}
+          } catch {}
+        }
 
-        if (!hasDraft) {
-          const typeP = searchParams.get('type')
-          const titleP = searchParams.get('title')
-          const notesP = searchParams.get('notes')
-          const poemP = searchParams.get('poem')
-          const dateP = searchParams.get('date')
-          const timeP = searchParams.get('time')
-          const venueP = searchParams.get('venue')
-          const cityP = searchParams.get('city')
-          const hostP = searchParams.get('hostNames') || searchParams.get('host')
-          const groomP = searchParams.get('groom')
-          const brideP = searchParams.get('bride')
-          const dressCodeP = searchParams.get('dressCode')
-
+        if (hasUrlParams) {
           // Check if poetry was passed via sessionStorage or poem ID
           let prefillText = ''
           try {
@@ -389,18 +444,15 @@ function CreateInvitationContent() {
 
           if (typeP) {
             setTypeId(typeP)
-            setStep(2)
+            setAudioTrack(getDefaultAudioTrackForOccasion(typeP))
           }
           if (titleP) {
             setTitle(titleP)
-            setStep(2)
           }
           if (prefillText) {
             setNotes(prefillText)
-            setStep(2)
           } else if (notesP) {
             setNotes(notesP)
-            setStep(2)
           }
           if (dateP) setDate(dateP)
           if (timeP) setTime(timeP)
@@ -410,6 +462,12 @@ function CreateInvitationContent() {
           if (groomP) setGroom(groomP)
           if (brideP) setBride(brideP)
           if (dressCodeP) setDressCode(dressCodeP)
+          setStep(2)
+
+          // Discard previous stale draft so it won't conflict with this newly selected invitation
+          try {
+            sessionStorage.removeItem(draftKey)
+          } catch {}
 
           // Clean cluttered query params from the browser address bar
           if (typeof window !== 'undefined' && (notesP || poemP)) {
@@ -451,6 +509,7 @@ function CreateInvitationContent() {
       bgVariantId,
       photoUrl,
       photoUrl2,
+      audioTrack,
     }
     try {
       sessionStorage.setItem(draftKey, JSON.stringify(draftData))
@@ -477,6 +536,7 @@ function CreateInvitationContent() {
     bgVariantId,
     photoUrl,
     photoUrl2,
+    audioTrack,
   ])
 
   // 3. Browser Back / PopState support
@@ -543,6 +603,7 @@ function CreateInvitationContent() {
 
   function handleTypeSelect(id: string) {
     setTypeId(id)
+    setAudioTrack(getDefaultAudioTrackForOccasion(id))
     setErrors({})
     changeStep(2)
 
@@ -717,6 +778,7 @@ function CreateInvitationContent() {
         bgVariantId,
         photoUrl,
         photoUrl2,
+        audioTrack,
       }
 
       if (editSlug) {
@@ -1360,6 +1422,88 @@ function CreateInvitationContent() {
                             </label>
                           </div>
                         ) : null}
+                      </div>
+                    </div>
+
+                    {/* Background Celebration Music & Traditional Songs */}
+                    <div className="rounded-2xl border border-input bg-card p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                          <Music className="size-4 text-[#7B0D1E]" /> {t('cardMusicLabel') || 'Celebration Music & Traditional Songs'}
+                        </label>
+                        {audioTrack && audioTrack !== 'none' && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (playingTrackId) {
+                                celebrationAudio.stop()
+                                setPlayingTrackId(null)
+                              } else {
+                                celebrationAudio.playTrack(audioTrack)
+                                setPlayingTrackId(audioTrack)
+                              }
+                            }}
+                            className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#7B0D1E] hover:underline cursor-pointer"
+                          >
+                            <Volume2 className="size-3.5" />
+                            {playingTrackId ? (t('stopPreview') || 'Stop Sound ⏹️') : (t('previewSound') || 'Play Sound 🔊')}
+                          </button>
+                        )}
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        {AUDIO_TRACKS.map((trk) => {
+                          const isSelected = audioTrack === trk.id
+                          const isCurrentlyPlaying = playingTrackId === trk.id
+                          return (
+                            <button
+                              key={trk.id}
+                              type="button"
+                              onClick={() => {
+                                setAudioTrack(trk.id)
+                                if (trk.id === 'none') {
+                                  celebrationAudio.stop()
+                                  setPlayingTrackId(null)
+                                } else {
+                                  celebrationAudio.playTrack(trk.id)
+                                  setPlayingTrackId(trk.id)
+                                }
+                              }}
+                              className={cn(
+                                "flex items-center justify-between p-3 rounded-2xl border text-left transition-all cursor-pointer shadow-xs group",
+                                isSelected
+                                  ? "border-[#7B0D1E] bg-[#7B0D1E]/8 ring-2 ring-[#7B0D1E]/25 font-bold"
+                                  : "border-border bg-card hover:border-[#7B0D1E]/30"
+                              )}
+                            >
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <div className={cn(
+                                  "size-8 rounded-xl flex items-center justify-center shrink-0 transition-all",
+                                  isSelected ? "bg-[#7B0D1E] text-white" : "bg-muted text-muted-foreground group-hover:bg-[#7B0D1E]/10 group-hover:text-[#7B0D1E]",
+                                  isCurrentlyPlaying && "animate-pulse ring-2 ring-amber-400"
+                                )}>
+                                  {trk.id === 'none' ? (
+                                    <VolumeX className="size-4" />
+                                  ) : isCurrentlyPlaying ? (
+                                    <Volume2 className="size-4 text-white animate-bounce" />
+                                  ) : (
+                                    <Music className="size-4" />
+                                  )}
+                                </div>
+                                <div className="min-w-0">
+                                  <span className="text-xs font-bold text-foreground block truncate">{trk.name}</span>
+                                  <span className="text-[10px] text-muted-foreground capitalize">
+                                    {isCurrentlyPlaying ? '🎵 Playing sample...' : trk.category}
+                                  </span>
+                                </div>
+                              </div>
+                              {isSelected && (
+                                <span className="flex size-5 items-center justify-center rounded-full bg-[#7B0D1E] text-white">
+                                  <CheckCircle2 className="size-3.5" />
+                                </span>
+                              )}
+                            </button>
+                          )
+                        })}
                       </div>
                     </div>
 

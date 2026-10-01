@@ -14,10 +14,11 @@ import {
   ExternalLink,
   LogOut,
   FileText,
-  Loader2,
   Share2,
   QrCode,
   CreditCard,
+  Trash2,
+  Loader2,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
@@ -25,7 +26,7 @@ import { getOccasion } from '@/lib/jashn/occasions'
 import { getInvitationType } from '@/lib/jashn/invitations'
 import { cn } from '@/lib/utils'
 import { useLang } from '@/lib/lang/context'
-import { getUserMagicLinks } from '@/lib/jashn/magic-service'
+import { getUserMagicLinks, deleteMagicLink } from '@/lib/jashn/magic-service'
 import type { MagicLinkData } from '@/lib/jashn/magic-types'
 import { CardShareModal, type ShareModalCardData } from '@/components/dashboard/card-share-modal'
 
@@ -42,6 +43,10 @@ export default function DashboardPage() {
     isAuthLoading,
     downloadAllGuestsCsv,
     downloadAllGuestsPdf,
+    deleteInvitation,
+    deleteWish,
+    deleteVisitingCard,
+    showToast,
   } = useJashn()
 
   // Tab selector: 'all' | 'events' | 'wishes' | 'vcards' | 'magic'
@@ -73,6 +78,29 @@ export default function DashboardPage() {
         console.error('Failed to cancel plan:', e)
         alert('Failed to cancel plan. Please try again.')
       }
+    }
+  }
+
+  async function handleDeleteCard(type: 'invite' | 'wish' | 'vcard' | 'magic', slug: string, title: string) {
+    if (!slug) return
+    const ok = window.confirm(`Are you sure you want to permanently delete "${title}"? This cannot be undone.`)
+    if (!ok) return
+
+    try {
+      if (type === 'invite') {
+        deleteInvitation(slug)
+      } else if (type === 'wish') {
+        deleteWish(slug)
+      } else if (type === 'vcard') {
+        deleteVisitingCard(slug)
+      } else if (type === 'magic') {
+        await deleteMagicLink(slug)
+        setMagicLinks((prev) => prev.filter((m) => (m.slug || m.id) !== slug))
+      }
+      showToast(`"${title}" deleted successfully`, 'info')
+    } catch (e) {
+      console.error('Failed to delete card:', e)
+      showToast('Could not delete card. Please try again.', 'error')
     }
   }
 
@@ -515,7 +543,7 @@ export default function DashboardPage() {
                           </span>
                         </div>
                       </div>
-                      <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between">
+                      <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between gap-2">
                         <button
                           onClick={() =>
                             setShareModalCard({
@@ -537,9 +565,20 @@ export default function DashboardPage() {
                         >
                           <Share2 className="size-3.5" /> Share, QR & Image
                         </button>
-                        <Link href={`/i/${(inv.slug || inv.id)}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
-                          Preview <ExternalLink className="size-3" />
-                        </Link>
+                        <div className="flex items-center gap-3">
+                          <Link href={`/i/${(inv.slug || inv.id)}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
+                            Preview <ExternalLink className="size-3" />
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteCard('invite', (inv.slug || inv.id || ''), inv.title || `${inv.groom} & ${inv.bride}`)}
+                            className="inline-flex items-center gap-1 text-xs font-bold text-red-500 hover:text-red-600 hover:underline cursor-pointer"
+                            title="Delete Invitation"
+                          >
+                            <Trash2 className="size-3" />
+                            <span>Delete</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )
@@ -609,7 +648,7 @@ export default function DashboardPage() {
                           </span>
                         </div>
                       </div>
-                      <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between">
+                      <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between gap-2">
                         <button
                           onClick={() =>
                             setShareModalCard({
@@ -630,9 +669,20 @@ export default function DashboardPage() {
                         >
                           <Share2 className="size-3.5" /> Share, QR & Image
                         </button>
-                        <Link href={`/w/${(w.slug || w.id)}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
-                          Preview <ExternalLink className="size-3" />
-                        </Link>
+                        <div className="flex items-center gap-3">
+                          <Link href={`/w/${(w.slug || w.id)}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
+                            Preview <ExternalLink className="size-3" />
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteCard('wish', (w.slug || w.id || ''), `${occ?.label ?? 'Wish'} for ${w.recipientName || 'Friend'}`)}
+                            className="inline-flex items-center gap-1 text-xs font-bold text-red-500 hover:text-red-600 hover:underline cursor-pointer"
+                            title="Delete Wish Card"
+                          >
+                            <Trash2 className="size-3" />
+                            <span>Delete</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )
@@ -701,7 +751,7 @@ export default function DashboardPage() {
                         </span>
                       </div>
                     </div>
-                    <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between">
+                    <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between gap-2">
                       <button
                         onClick={() =>
                           setShareModalCard({
@@ -722,9 +772,20 @@ export default function DashboardPage() {
                       >
                         <Share2 className="size-3.5" /> Share, QR & Image
                       </button>
-                      <Link href={`/v/${(vc.slug || vc.id)}`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
-                        Preview <ExternalLink className="size-3" />
-                      </Link>
+                      <div className="flex items-center gap-3">
+                        <Link href={`/v/${(vc.slug || vc.id)}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
+                          Preview <ExternalLink className="size-3" />
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteCard('vcard', (vc.slug || vc.id || ''), vc.fullName || 'vCard')}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-red-500 hover:text-red-600 hover:underline cursor-pointer"
+                          title="Delete Visiting Card"
+                        >
+                          <Trash2 className="size-3" />
+                          <span>Delete</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -803,7 +864,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between">
+                    <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between gap-2">
                       <button
                         onClick={() =>
                           setShareModalCard({
@@ -828,13 +889,24 @@ export default function DashboardPage() {
                       >
                         <Share2 className="size-3.5" /> Share, QR & Image
                       </button>
-                      <Link
-                        href={`/m/${(m.slug || m.id)}?mode=sender`}
-                        target="_blank"
-                        className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground"
-                      >
-                        Preview <ExternalLink className="size-3" />
-                      </Link>
+                      <div className="flex items-center gap-3">
+                        <Link
+                          href={`/m/${(m.slug || m.id)}?mode=sender`}
+                          target="_blank"
+                          className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground"
+                        >
+                          Preview <ExternalLink className="size-3" />
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteCard('magic', (m.slug || m.id || ''), `Magic Link for ${m.recipientName}`)}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-red-500 hover:text-red-600 hover:underline cursor-pointer"
+                          title="Delete Magic Link"
+                        >
+                          <Trash2 className="size-3" />
+                          <span>Delete</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

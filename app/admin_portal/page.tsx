@@ -50,6 +50,7 @@ import {
   Heart,
   Plus,
   Sliders,
+  Filter,
   Minus,
   MinusCircle,
   PlusCircle,
@@ -1594,8 +1595,15 @@ export default function AdminPortalPage() {
     showToast('Admin Portal Locked', 'info')
   }
 
-  const [filterPlan, setFilterPlan] = useState<'all' | 'free' | 'pro' | 'business' | 'expired'>('all')
+  const [filterPlan, setFilterPlan] = useState<'all' | 'free' | 'pro' | 'business' | 'expired' | 'purgeable'>('all')
   const [selectedDurationDays, setSelectedDurationDays] = useState<number>(30)
+
+  // ── Card Purge Table Filters (All | Purgeable > 30d | Guests | Members | Pro) ──
+  const [invitationFilter, setInvitationFilter] = useState<'all' | 'purgeable' | 'guests' | 'members' | 'pro'>('all')
+  const [wishFilter, setWishFilter] = useState<'all' | 'purgeable' | 'guests' | 'members' | 'pro'>('all')
+  const [vcFilter, setVcFilter] = useState<'all' | 'purgeable' | 'guests' | 'members' | 'pro'>('all')
+  const [magicFilter, setMagicFilter] = useState<'all' | 'purgeable' | 'guests' | 'members' | 'pro'>('all')
+  const [rsvpAgeFilter, setRsvpAgeFilter] = useState<'all' | 'purgeable'>('all')
 
   const [firestoreUsers, setFirestoreUsers] = useState<JashnUser[]>([])
   const [firestoreInvitations, setFirestoreInvitations] = useState<Invitation[]>([])
@@ -2562,6 +2570,25 @@ export default function AdminPortalPage() {
     return list.sort((a, b) => b.createdAt - a.createdAt)
   }, [invitations, wishes, visitingCards, magicLinks])
 
+  // Count registered Free users who have cards older than 30 days
+  const usersWithOldCardsCount = useMemo(() => {
+    const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000)
+    return allUsersList.filter((u) => {
+      if (u.plan !== 'free') return false
+      const cards = getUserCards(u)
+      return cards.some(c => c.createdAt > 0 && c.createdAt <= cutoff)
+    }).length
+  }, [allUsersList, getUserCards])
+
+  // Count RSVPs older than selected purge threshold
+  const oldRsvpsCount = useMemo(() => {
+    const cutoff = Date.now() - (guestPurgeDays * 24 * 60 * 60 * 1000)
+    return rsvps.filter((r: any) => {
+      const ts = typeof r.createdAt === 'number' ? r.createdAt : (r.createdAt?.seconds ? r.createdAt.seconds * 1000 : 0)
+      return ts > 0 && ts <= cutoff
+    }).length
+  }, [rsvps, guestPurgeDays])
+
   // Stats calculation
   const stats = useMemo(() => {
     const total = allUsersList.length
@@ -2821,6 +2848,13 @@ export default function AdminPortalPage() {
       if (filterPlan === 'business' && (u.plan !== 'business' || isExpired)) return false
       if (filterPlan === 'free' && (u.plan !== 'free' || isExpired)) return false
       if (filterPlan === 'expired' && !isExpired) return false
+      if (filterPlan === 'purgeable') {
+        if (u.plan !== 'free') return false
+        const cards = getUserCards(u)
+        const cutoff = now - (30 * 24 * 60 * 60 * 1000)
+        const hasOld = cards.some(c => c.createdAt > 0 && c.createdAt <= cutoff)
+        if (!hasOld) return false
+      }
 
       if (searchTerm) {
         const query = searchTerm.toLowerCase()
@@ -2833,7 +2867,7 @@ export default function AdminPortalPage() {
       }
       return true
     })
-  }, [allUsersList, filterPlan, searchTerm])
+  }, [allUsersList, filterPlan, searchTerm, getUserCards])
 
   const paginatedUsers = useMemo(() => {
     // Server-side pagination: Firestore loads 5 at a time via loadMoreForTab.
@@ -2843,9 +2877,30 @@ export default function AdminPortalPage() {
 
   // Filtered & Paginated Invitations
   const filteredInvitations = useMemo(() => {
-    if (!invitationSearch.trim()) return invitations
+    let list = invitations
+    if (invitationFilter === 'purgeable') {
+      const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000)
+      list = list.filter((i) => {
+        const u = getCardUser(i)
+        if (u && (u.plan === 'pro' || u.plan === 'business')) return false
+        if ((i as any).creatorPlan === 'pro' || (i as any).creatorPlan === 'business') return false
+        const ts = typeof i.createdAt === 'number' ? i.createdAt : 0
+        return ts > 0 && ts <= cutoff
+      })
+    } else if (invitationFilter === 'guests') {
+      list = list.filter((i) => !isUserCard(i))
+    } else if (invitationFilter === 'members') {
+      list = list.filter((i) => isUserCard(i))
+    } else if (invitationFilter === 'pro') {
+      list = list.filter((i) => {
+        const u = getCardUser(i)
+        return (u && (u.plan === 'pro' || u.plan === 'business')) || (i as any).creatorPlan === 'pro' || (i as any).creatorPlan === 'business'
+      })
+    }
+
+    if (!invitationSearch.trim()) return list
     const q = invitationSearch.toLowerCase().trim()
-    return invitations.filter((i) =>
+    return list.filter((i) =>
       (i.title && i.title.toLowerCase().includes(q)) ||
       (i.slug && i.slug.toLowerCase().includes(q)) ||
       (i.id && i.id.toLowerCase().includes(q)) ||
@@ -2856,7 +2911,7 @@ export default function AdminPortalPage() {
       (i.city && i.city.toLowerCase().includes(q)) ||
       (i.rsvpPhone && i.rsvpPhone.toLowerCase().includes(q))
     )
-  }, [invitations, invitationSearch])
+  }, [invitations, invitationFilter, invitationSearch, getCardUser, isUserCard])
 
   const paginatedInvitations = useMemo(() => {
     const start = (pageInvitations - 1) * pageSizeInvitations
@@ -2865,9 +2920,30 @@ export default function AdminPortalPage() {
 
   // Filtered & Paginated Wishes
   const filteredWishes = useMemo(() => {
-    if (!wishSearch.trim()) return wishes
+    let list = wishes
+    if (wishFilter === 'purgeable') {
+      const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000)
+      list = list.filter((w) => {
+        const u = getCardUser(w)
+        if (u && (u.plan === 'pro' || u.plan === 'business')) return false
+        if ((w as any).creatorPlan === 'pro' || (w as any).creatorPlan === 'business') return false
+        const ts = typeof w.createdAt === 'number' ? w.createdAt : 0
+        return ts > 0 && ts <= cutoff
+      })
+    } else if (wishFilter === 'guests') {
+      list = list.filter((w) => !isUserCard(w))
+    } else if (wishFilter === 'members') {
+      list = list.filter((w) => isUserCard(w))
+    } else if (wishFilter === 'pro') {
+      list = list.filter((w) => {
+        const u = getCardUser(w)
+        return (u && (u.plan === 'pro' || u.plan === 'business')) || (w as any).creatorPlan === 'pro' || (w as any).creatorPlan === 'business'
+      })
+    }
+
+    if (!wishSearch.trim()) return list
     const q = wishSearch.toLowerCase().trim()
-    return wishes.filter((w) =>
+    return list.filter((w) =>
       (w.senderName && w.senderName.toLowerCase().includes(q)) ||
       (w.recipientName && w.recipientName.toLowerCase().includes(q)) ||
       (w.slug && w.slug.toLowerCase().includes(q)) ||
@@ -2876,7 +2952,7 @@ export default function AdminPortalPage() {
       (w.message && w.message.toLowerCase().includes(q)) ||
       (w.relation && w.relation.toLowerCase().includes(q))
     )
-  }, [wishes, wishSearch])
+  }, [wishes, wishFilter, wishSearch, getCardUser, isUserCard])
 
   const paginatedWishes = useMemo(() => {
     const start = (pageWishes - 1) * pageSizeWishes
@@ -2885,9 +2961,30 @@ export default function AdminPortalPage() {
 
   // Filtered & Paginated Visiting Cards
   const filteredVisitingCards = useMemo(() => {
-    if (!vcSearch.trim()) return visitingCards || []
+    let list = visitingCards || []
+    if (vcFilter === 'purgeable') {
+      const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000)
+      list = list.filter((vc) => {
+        const u = getCardUser(vc)
+        if (u && (u.plan === 'pro' || u.plan === 'business')) return false
+        if ((vc as any).creatorPlan === 'pro' || (vc as any).creatorPlan === 'business') return false
+        const ts = typeof vc.createdAt === 'number' ? vc.createdAt : 0
+        return ts > 0 && ts <= cutoff
+      })
+    } else if (vcFilter === 'guests') {
+      list = list.filter((vc) => !isUserCard(vc))
+    } else if (vcFilter === 'members') {
+      list = list.filter((vc) => isUserCard(vc))
+    } else if (vcFilter === 'pro') {
+      list = list.filter((vc) => {
+        const u = getCardUser(vc)
+        return (u && (u.plan === 'pro' || u.plan === 'business')) || (vc as any).creatorPlan === 'pro' || (vc as any).creatorPlan === 'business'
+      })
+    }
+
+    if (!vcSearch.trim()) return list
     const q = vcSearch.toLowerCase().trim()
-    return (visitingCards || []).filter((vc) =>
+    return list.filter((vc) =>
       (vc.fullName && vc.fullName.toLowerCase().includes(q)) ||
       (vc.title && vc.title.toLowerCase().includes(q)) ||
       (vc.company && vc.company.toLowerCase().includes(q)) ||
@@ -2897,7 +2994,7 @@ export default function AdminPortalPage() {
       (vc.phone && vc.phone.toLowerCase().includes(q)) ||
       (vc.address && vc.address.toLowerCase().includes(q))
     )
-  }, [visitingCards, vcSearch])
+  }, [visitingCards, vcFilter, vcSearch, getCardUser, isUserCard])
 
   const paginatedVisitingCards = useMemo(() => {
     const start = (pageVisitingCards - 1) * pageSizeVisitingCards
@@ -2906,9 +3003,30 @@ export default function AdminPortalPage() {
 
   // Filtered & Paginated Magic Links
   const filteredMagicLinks = useMemo(() => {
-    if (!magicSearch.trim()) return magicLinks
+    let list = magicLinks
+    if (magicFilter === 'purgeable') {
+      const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000)
+      list = list.filter((m) => {
+        const u = getCardUser(m)
+        if (u && (u.plan === 'pro' || u.plan === 'business')) return false
+        if ((m as any).creatorPlan === 'pro' || (m as any).creatorPlan === 'business') return false
+        const ts = typeof m.createdAt === 'number' ? m.createdAt : 0
+        return ts > 0 && ts <= cutoff
+      })
+    } else if (magicFilter === 'guests') {
+      list = list.filter((m) => !isUserCard(m))
+    } else if (magicFilter === 'members') {
+      list = list.filter((m) => isUserCard(m))
+    } else if (magicFilter === 'pro') {
+      list = list.filter((m) => {
+        const u = getCardUser(m)
+        return (u && (u.plan === 'pro' || u.plan === 'business')) || (m as any).creatorPlan === 'pro' || (m as any).creatorPlan === 'business'
+      })
+    }
+
+    if (!magicSearch.trim()) return list
     const q = magicSearch.toLowerCase().trim()
-    return magicLinks.filter((m) =>
+    return list.filter((m) =>
       (m.recipientName && m.recipientName.toLowerCase().includes(q)) ||
       (m.senderName && m.senderName.toLowerCase().includes(q)) ||
       (m.slug && m.slug.toLowerCase().includes(q)) ||
@@ -2916,7 +3034,7 @@ export default function AdminPortalPage() {
       (m.occasion && m.occasion.toLowerCase().includes(q)) ||
       (m.theme && m.theme.toLowerCase().includes(q))
     )
-  }, [magicLinks, magicSearch])
+  }, [magicLinks, magicFilter, magicSearch, getCardUser, isUserCard])
 
   const paginatedMagicLinks = useMemo(() => {
     const start = (pageMagicLinks - 1) * pageSizeMagicLinks
@@ -2979,6 +3097,13 @@ export default function AdminPortalPage() {
   // Filtered & Paginated RSVPs
   const filteredRsvpsWithSearch = useMemo(() => {
     let list = filteredRsvps
+    if (rsvpAgeFilter === 'purgeable') {
+      const cutoff = Date.now() - (guestPurgeDays * 24 * 60 * 60 * 1000)
+      list = list.filter((r: any) => {
+        const ts = typeof r.createdAt === 'number' ? r.createdAt : (r.createdAt?.seconds ? r.createdAt.seconds * 1000 : 0)
+        return ts > 0 && ts <= cutoff
+      })
+    }
     if (rsvpSearch.trim()) {
       const q = rsvpSearch.toLowerCase().trim()
       list = list.filter((r) =>
@@ -2989,7 +3114,7 @@ export default function AdminPortalPage() {
       )
     }
     return list
-  }, [filteredRsvps, rsvpSearch])
+  }, [filteredRsvps, rsvpAgeFilter, guestPurgeDays, rsvpSearch])
 
   const paginatedRsvps = useMemo(() => {
     const start = (pageRsvps - 1) * pageSizeRsvps
@@ -4917,14 +5042,19 @@ export default function AdminPortalPage() {
                     { id: 'pro', label: 'Pro' },
                     { id: 'business', label: 'Business' },
                     { id: 'expired', label: 'Expired' },
+                    { id: 'purgeable', label: `⚠️ Has Purgeable Cards (${usersWithOldCardsCount})`, alert: true },
                   ].map((tab) => (
                     <button
                       key={tab.id}
                       onClick={() => setFilterPlan(tab.id as any)}
                       className={cn(
-                        'px-3 py-1.5 rounded-2xl text-xs font-semibold transition-all',
+                        'px-3 py-1.5 rounded-2xl text-xs font-semibold transition-all cursor-pointer',
                         filterPlan === tab.id
-                          ? 'bg-foreground text-background font-extrabold shadow-sm'
+                          ? tab.alert
+                            ? 'bg-rose-600 text-white font-extrabold shadow-sm'
+                            : 'bg-foreground text-background font-extrabold shadow-sm'
+                          : tab.alert
+                          ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 hover:bg-rose-500/20'
                           : 'bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground'
                       )}
                     >
@@ -5365,6 +5495,49 @@ export default function AdminPortalPage() {
                   <Trash2 className={cn("size-3.5", isPurgingGuestData === 'magic_links' && "animate-spin")} />
                   <span>{isPurgingGuestData === 'magic_links' ? 'Purging…' : `Purge Guests (${guestPurgeDays}d)`}</span>
                 </Button>
+              </div>
+
+              {/* Purge & Card State Filter Row */}
+              <div className="w-full pt-2.5 mt-1 border-t border-border/60 flex items-center justify-between gap-2 flex-wrap">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[11px] font-bold text-muted-foreground mr-1 flex items-center gap-1">
+                    <Filter className="size-3 text-muted-foreground" /> Filter Table:
+                  </span>
+                  {[
+                    { id: 'all', label: `All (${magicLinks.length})` },
+                    { id: 'purgeable', label: `⚠️ Purgeable (>30d) (${oldFreeCardsCount.magicLinks})`, alert: true },
+                    { id: 'guests', label: '👤 Guests' },
+                    { id: 'members', label: '🛡️ Members' },
+                    { id: 'pro', label: '⭐ Pro Protected' },
+                  ].map((f) => (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => setMagicFilter(f.id as any)}
+                      className={cn(
+                        "px-2.5 py-1 rounded-xl text-xs font-bold transition-all border cursor-pointer",
+                        magicFilter === f.id
+                          ? f.alert
+                            ? "bg-rose-600 text-white border-rose-600 shadow-xs"
+                            : "bg-foreground text-background border-foreground shadow-xs"
+                          : f.alert
+                          ? "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 hover:bg-rose-500/20"
+                          : "bg-background/80 text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+                      )}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+                {magicFilter !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => setMagicFilter('all')}
+                    className="text-[11px] font-semibold text-muted-foreground hover:text-foreground underline cursor-pointer"
+                  >
+                    Reset Filter ({filteredMagicLinks.length} shown)
+                  </button>
+                )}
               </div>
             </div>
 
@@ -6371,6 +6544,49 @@ export default function AdminPortalPage() {
                   <span>{isPurgingGuestData === 'invitations' ? 'Purging…' : `Purge Guests (${guestPurgeDays}d)`}</span>
                 </Button>
               </div>
+
+              {/* Purge & Card State Filter Row */}
+              <div className="w-full pt-2.5 mt-1 border-t border-border/60 flex items-center justify-between gap-2 flex-wrap">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[11px] font-bold text-muted-foreground mr-1 flex items-center gap-1">
+                    <Filter className="size-3 text-muted-foreground" /> Filter Table:
+                  </span>
+                  {[
+                    { id: 'all', label: `All (${invitations.length})` },
+                    { id: 'purgeable', label: `⚠️ Purgeable (>30d) (${oldFreeCardsCount.invitations})`, alert: true },
+                    { id: 'guests', label: '👤 Guests' },
+                    { id: 'members', label: '🛡️ Members' },
+                    { id: 'pro', label: '⭐ Pro Protected' },
+                  ].map((f) => (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => setInvitationFilter(f.id as any)}
+                      className={cn(
+                        "px-2.5 py-1 rounded-xl text-xs font-bold transition-all border cursor-pointer",
+                        invitationFilter === f.id
+                          ? f.alert
+                            ? "bg-rose-600 text-white border-rose-600 shadow-xs"
+                            : "bg-foreground text-background border-foreground shadow-xs"
+                          : f.alert
+                          ? "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 hover:bg-rose-500/20"
+                          : "bg-background/80 text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+                      )}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+                {invitationFilter !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => setInvitationFilter('all')}
+                    className="text-[11px] font-semibold text-muted-foreground hover:text-foreground underline cursor-pointer"
+                  >
+                    Reset Filter ({filteredInvitations.length} shown)
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="overflow-x-auto">
@@ -6704,6 +6920,49 @@ export default function AdminPortalPage() {
                   <span>{isPurgingGuestData === 'wishes' ? 'Purging…' : `Purge Guests (${guestPurgeDays}d)`}</span>
                 </Button>
               </div>
+
+              {/* Purge & Card State Filter Row */}
+              <div className="w-full pt-2.5 mt-1 border-t border-border/60 flex items-center justify-between gap-2 flex-wrap">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[11px] font-bold text-muted-foreground mr-1 flex items-center gap-1">
+                    <Filter className="size-3 text-muted-foreground" /> Filter Table:
+                  </span>
+                  {[
+                    { id: 'all', label: `All (${wishes.length})` },
+                    { id: 'purgeable', label: `⚠️ Purgeable (>30d) (${oldFreeCardsCount.wishes})`, alert: true },
+                    { id: 'guests', label: '👤 Guests' },
+                    { id: 'members', label: '🛡️ Members' },
+                    { id: 'pro', label: '⭐ Pro Protected' },
+                  ].map((f) => (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => setWishFilter(f.id as any)}
+                      className={cn(
+                        "px-2.5 py-1 rounded-xl text-xs font-bold transition-all border cursor-pointer",
+                        wishFilter === f.id
+                          ? f.alert
+                            ? "bg-rose-600 text-white border-rose-600 shadow-xs"
+                            : "bg-foreground text-background border-foreground shadow-xs"
+                          : f.alert
+                          ? "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 hover:bg-rose-500/20"
+                          : "bg-background/80 text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+                      )}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+                {wishFilter !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => setWishFilter('all')}
+                    className="text-[11px] font-semibold text-muted-foreground hover:text-foreground underline cursor-pointer"
+                  >
+                    Reset Filter ({filteredWishes.length} shown)
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="overflow-x-auto">
@@ -7017,6 +7276,49 @@ export default function AdminPortalPage() {
                   <span>{isPurgingGuestData === 'visitingCards' ? 'Purging…' : `Purge Guests (${guestPurgeDays}d)`}</span>
                 </Button>
               </div>
+
+              {/* Purge & Card State Filter Row */}
+              <div className="w-full pt-2.5 mt-1 border-t border-border/60 flex items-center justify-between gap-2 flex-wrap">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[11px] font-bold text-muted-foreground mr-1 flex items-center gap-1">
+                    <Filter className="size-3 text-muted-foreground" /> Filter Table:
+                  </span>
+                  {[
+                    { id: 'all', label: `All (${(visitingCards || []).length})` },
+                    { id: 'purgeable', label: `⚠️ Purgeable (>30d) (${oldFreeCardsCount.visitingCards})`, alert: true },
+                    { id: 'guests', label: '👤 Guests' },
+                    { id: 'members', label: '🛡️ Members' },
+                    { id: 'pro', label: '⭐ Pro Protected' },
+                  ].map((f) => (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => setVcFilter(f.id as any)}
+                      className={cn(
+                        "px-2.5 py-1 rounded-xl text-xs font-bold transition-all border cursor-pointer",
+                        vcFilter === f.id
+                          ? f.alert
+                            ? "bg-rose-600 text-white border-rose-600 shadow-xs"
+                            : "bg-foreground text-background border-foreground shadow-xs"
+                          : f.alert
+                          ? "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 hover:bg-rose-500/20"
+                          : "bg-background/80 text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+                      )}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+                {vcFilter !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => setVcFilter('all')}
+                    className="text-[11px] font-semibold text-muted-foreground hover:text-foreground underline cursor-pointer"
+                  >
+                    Reset Filter ({filteredVisitingCards.length} shown)
+                  </button>
+                )}
+              </div>
             </div>
 
             <div className="overflow-x-auto">
@@ -7319,6 +7621,46 @@ export default function AdminPortalPage() {
                     <Trash2 className={cn("size-3.5", isPurgingGuestData === 'rsvps' && "animate-spin")} />
                     <span>{isPurgingGuestData === 'rsvps' ? 'Purging…' : `Purge (${guestPurgeDays}d)`}</span>
                   </Button>
+                </div>
+
+                {/* Purge Age Filter Row */}
+                <div className="w-full pt-2.5 mt-1 border-t border-border/60 flex items-center justify-between gap-2 flex-wrap">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[11px] font-bold text-muted-foreground mr-1 flex items-center gap-1">
+                      <Filter className="size-3 text-muted-foreground" /> Filter Table:
+                    </span>
+                    {[
+                      { id: 'all', label: `All RSVPs (${rsvps.length})` },
+                      { id: 'purgeable', label: `⚠️ Purgeable (>${guestPurgeDays}d) (${oldRsvpsCount})`, alert: true },
+                    ].map((f) => (
+                      <button
+                        key={f.id}
+                        type="button"
+                        onClick={() => setRsvpAgeFilter(f.id as any)}
+                        className={cn(
+                          "px-2.5 py-1 rounded-xl text-xs font-bold transition-all border cursor-pointer",
+                          rsvpAgeFilter === f.id
+                            ? f.alert
+                              ? "bg-rose-600 text-white border-rose-600 shadow-xs"
+                              : "bg-foreground text-background border-foreground shadow-xs"
+                            : f.alert
+                            ? "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 hover:bg-rose-500/20"
+                            : "bg-background/80 text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+                        )}
+                      >
+                        {f.label}
+                      </button>
+                    ))}
+                  </div>
+                  {rsvpAgeFilter !== 'all' && (
+                    <button
+                      type="button"
+                      onClick={() => setRsvpAgeFilter('all')}
+                      className="text-[11px] font-semibold text-muted-foreground hover:text-foreground underline cursor-pointer"
+                    >
+                      Reset Filter ({filteredRsvpsWithSearch.length} shown)
+                    </button>
+                  )}
                 </div>
               </div>
 

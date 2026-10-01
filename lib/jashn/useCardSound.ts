@@ -12,9 +12,9 @@ export function useCardSound(category?: 'dholki' | 'islamic' | 'festive' | 'somb
   const soundUrl = category === 'somber'
     ? null
     : category && ['dholki', 'islamic', 'festive', 'default'].includes(category)
-    ? `/sounds/${category}.mp3`
+    ? `/sounds/${category}.m4a`
     : category
-    ? '/sounds/default.mp3'
+    ? '/sounds/general.m4a'
     : null
 
   // ── Create / replace Audio element ONLY when the resolved URL changes ──────

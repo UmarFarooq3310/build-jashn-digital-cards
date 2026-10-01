@@ -242,12 +242,11 @@ function MagicLinkInner({ slug }: { slug: string }) {
     setTilt({ x: 0, y: 0, glareX: 50, glareY: 50 })
   }
 
-  // Sender/Creator mode: active if requested via URL OR if viewer is detected as the creator/admin
+  // Sender/Creator mode: ONLY active if explicitly requested via ?mode=sender or ?role=sender
+  // When visiting clean card URL (/m/slug), always show the full receiver experience (clean full view, top bar, wishes wall, no delivery box)
   const isSenderMode =
     searchParams.get('mode') === 'sender' ||
-    searchParams.get('preview') === 'true' ||
-    searchParams.get('role') === 'sender' ||
-    (typeof window !== 'undefined' && isSenderOrOwner(slug, (data as any)?.senderId || (data as any)?.creatorId, searchParams, user?.uid))
+    searchParams.get('role') === 'sender'
 
   useEffect(() => {
     return () => {
@@ -278,9 +277,9 @@ function MagicLinkInner({ slug }: { slug: string }) {
               setData(linkData)
               setLoading(false)
 
-              // ONLY genuine receiver increments view (never sender or editor preview)
+              // ONLY genuine receiver increments view (never sender, admin, or editor preview)
               if (!isSender && viewIncrementedRef.current !== slug) {
-                if (shouldIncrementView(slug, 'magic', linkData.senderId, searchParams, user?.uid)) {
+                if (shouldIncrementView(slug, 'magic', linkData.senderId, searchParams, user?.uid, user?.email)) {
                   viewIncrementedRef.current = slug
                   setData((prev) => (prev ? { ...prev, viewsCount: (prev.viewsCount || 0) + 1 } : null))
                   
@@ -325,7 +324,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
 
     async function fallbackLocal() {
       try {
-        const canCountView = !isSender && viewIncrementedRef.current !== slug && shouldIncrementView(slug, 'magic', null, searchParams, user?.uid)
+        const canCountView = !isSender && viewIncrementedRef.current !== slug && shouldIncrementView(slug, 'magic', null, searchParams, user?.uid, user?.email)
         if (canCountView) {
           viewIncrementedRef.current = slug
         }
@@ -602,9 +601,9 @@ function MagicLinkInner({ slug }: { slug: string }) {
         <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
         {/* ── Main Responsive Grid: Magic Scene (Left on Desktop, Below on Mobile) + Delivery Hub (Top on Mobile, Right on Desktop) ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-5 items-center lg:h-full lg:max-h-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center lg:h-full lg:max-h-full">
           {/* Interactive Magic Link Capsule Column */}
-          <div className="order-2 lg:order-1 lg:col-span-7 xl:col-span-7 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
+          <div className="order-2 lg:order-1 lg:col-span-8 xl:col-span-8 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
             <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10">
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Eye className="size-3.5 text-purple-400" /> Interactive Receiver Preview
@@ -612,14 +611,14 @@ function MagicLinkInner({ slug }: { slug: string }) {
             </div>
 
             <div ref={cardRef} className="w-full flex-1 min-h-0 pt-4 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
-              <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl">
+              <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
                 {renderScenario()}
               </div>
             </div>
           </div>
 
           {/* Unified 1-Click Delivery Hub Column (Top on Mobile, Vertically Centered on Desktop) */}
-          <div className="order-1 lg:order-2 lg:col-span-5 xl:col-span-5 flex flex-col justify-center lg:h-full lg:max-h-full">
+          <div className="order-1 lg:order-2 lg:col-span-4 xl:col-span-4 flex flex-col justify-center lg:h-full lg:max-h-full">
             <div className="rounded-2xl xl:rounded-3xl border-2 border-purple-500/40 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 text-white p-3.5 sm:p-4 lg:p-3.5 xl:p-4 shadow-xl space-y-2 lg:space-y-2 xl:space-y-2.5 text-left lg:max-h-[calc(100dvh-5.5rem)] lg:overflow-y-auto scrollbar-none">
               {/* Ready to Deliver celebration highlight */}
               <div className="p-2 lg:p-2.5 rounded-xl bg-gradient-to-r from-purple-500/20 via-pink-500/15 to-purple-500/20 border border-purple-400/35 shadow-xs flex items-center gap-2">
@@ -916,14 +915,6 @@ function MagicLinkInner({ slug }: { slug: string }) {
             <Sparkles className="size-3 text-amber-200 animate-pulse" />
             <span>Cardzy · Make Your Own</span>
           </Link>
-
-          <button
-            onClick={() => setShowShareModal(true)}
-            className="size-7 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-amber-300 transition-all cursor-pointer shadow-md"
-            title="Share Card"
-          >
-            <Share2 className="size-3.5" />
-          </button>
         </div>
       </header>
 
@@ -960,6 +951,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
 
       {/* Universal Share & Image Modal */}
       <CardShareModal
+        simpleMode={true}
         card={
           showShareModal
             ? {

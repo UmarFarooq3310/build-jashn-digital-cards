@@ -46,6 +46,16 @@ export async function POST(req: Request) {
       }
 
       if (action === 'view') {
+        const cookieHeader = req.headers.get('cookie') || ''
+        const isAdminDevice =
+          body.isAdmin === true ||
+          cookieHeader.includes('cardzy_admin_device=1') ||
+          cookieHeader.includes('cardzy_is_admin=1')
+
+        if (isAdminDevice) {
+          return NextResponse.json({ success: true, action: 'view', ignored: 'admin_device' })
+        }
+
         const viewField = cardType === 'magic' ? 'viewsCount' : 'viewCount'
         await targetRef.set(
           {

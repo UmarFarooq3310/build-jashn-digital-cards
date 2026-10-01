@@ -8,6 +8,7 @@ import {
   query,
   where,
   updateDoc,
+  deleteDoc,
   increment,
   addDoc,
   serverTimestamp,
@@ -464,4 +465,38 @@ export async function updateMagicLink(slug: string, data: Partial<MagicLinkData>
     }
   }
 }
+
+/**
+ * Permanently deletes a Magic Link from localStorage, Firestore, and Server
+ */
+export async function deleteMagicLink(slug: string): Promise<void> {
+  // 1. Remove from local storage
+  const local = getLocalLinks()
+  if (local[slug]) {
+    delete local[slug]
+    try {
+      localStorage.setItem('jashn_magic_links', JSON.stringify(local))
+    } catch {}
+  }
+
+  // 2. Sync deletion to server Admin SDK (cascading purge of responses, stats, shares)
+  try {
+    await fetch('/api/admin-card-action', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'delete_card', cardType: 'magic', slug }),
+    })
+  } catch {}
+
+  // 3. Delete directly from client Firestore SDK if available
+  const activeDb = getFirebaseDb() || db
+  if (isFirebaseConfigured && activeDb) {
+    try {
+      await deleteDoc(doc(activeDb, 'magic_links', slug))
+    } catch (err) {
+      console.warn('Client Firestore delete notice for magic link:', err)
+    }
+  }
+}
+
 
