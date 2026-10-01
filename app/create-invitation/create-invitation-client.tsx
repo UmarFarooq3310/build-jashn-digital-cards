@@ -12,6 +12,7 @@ import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Sparkles, Grid, Loader2, AlertCircle, Heart, Check, Edit3, Palette, Eye, Camera, X, Music, Volume2, VolumeX, CheckCircle2 } from 'lucide-react'
 import { AUDIO_TRACKS, getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
+import { AudioTrackPicker } from '@/components/jashn/audio-track-picker'
 import { celebrationAudio } from '@/lib/jashn/audio-synth'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
@@ -1426,85 +1427,13 @@ function CreateInvitationContent() {
                     </div>
 
                     {/* Background Celebration Music & Traditional Songs */}
-                    <div className="rounded-2xl border border-input bg-card p-4 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                          <Music className="size-4 text-[#7B0D1E]" /> {t('cardMusicLabel') || 'Celebration Music & Traditional Songs'}
-                        </label>
-                        {audioTrack && audioTrack !== 'none' && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (playingTrackId) {
-                                celebrationAudio.stop()
-                                setPlayingTrackId(null)
-                              } else {
-                                celebrationAudio.playTrack(audioTrack)
-                                setPlayingTrackId(audioTrack)
-                              }
-                            }}
-                            className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#7B0D1E] hover:underline cursor-pointer"
-                          >
-                            <Volume2 className="size-3.5" />
-                            {playingTrackId ? (t('stopPreview') || 'Stop Sound ⏹️') : (t('previewSound') || 'Play Sound 🔊')}
-                          </button>
-                        )}
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        {AUDIO_TRACKS.map((trk) => {
-                          const isSelected = audioTrack === trk.id
-                          const isCurrentlyPlaying = playingTrackId === trk.id
-                          return (
-                            <button
-                              key={trk.id}
-                              type="button"
-                              onClick={() => {
-                                setAudioTrack(trk.id)
-                                if (trk.id === 'none') {
-                                  celebrationAudio.stop()
-                                  setPlayingTrackId(null)
-                                } else {
-                                  celebrationAudio.playTrack(trk.id)
-                                  setPlayingTrackId(trk.id)
-                                }
-                              }}
-                              className={cn(
-                                "flex items-center justify-between p-3 rounded-2xl border text-left transition-all cursor-pointer shadow-xs group",
-                                isSelected
-                                  ? "border-[#7B0D1E] bg-[#7B0D1E]/8 ring-2 ring-[#7B0D1E]/25 font-bold"
-                                  : "border-border bg-card hover:border-[#7B0D1E]/30"
-                              )}
-                            >
-                              <div className="flex items-center gap-2.5 min-w-0">
-                                <div className={cn(
-                                  "size-8 rounded-xl flex items-center justify-center shrink-0 transition-all",
-                                  isSelected ? "bg-[#7B0D1E] text-white" : "bg-muted text-muted-foreground group-hover:bg-[#7B0D1E]/10 group-hover:text-[#7B0D1E]",
-                                  isCurrentlyPlaying && "animate-pulse ring-2 ring-amber-400"
-                                )}>
-                                  {trk.id === 'none' ? (
-                                    <VolumeX className="size-4" />
-                                  ) : isCurrentlyPlaying ? (
-                                    <Volume2 className="size-4 text-white animate-bounce" />
-                                  ) : (
-                                    <Music className="size-4" />
-                                  )}
-                                </div>
-                                <div className="min-w-0">
-                                  <span className="text-xs font-bold text-foreground block truncate">{trk.name}</span>
-                                  <span className="text-[10px] text-muted-foreground capitalize">
-                                    {isCurrentlyPlaying ? '🎵 Playing sample...' : trk.category}
-                                  </span>
-                                </div>
-                              </div>
-                              {isSelected && (
-                                <span className="flex size-5 items-center justify-center rounded-full bg-[#7B0D1E] text-white">
-                                  <CheckCircle2 className="size-3.5" />
-                                </span>
-                              )}
-                            </button>
-                          )
-                        })}
-                      </div>
+                    <div className="rounded-2xl border border-input bg-card p-4">
+                      <AudioTrackPicker
+                        selectedTrackId={audioTrack}
+                        onSelectTrack={setAudioTrack}
+                        occasionId={typeId}
+                        label={t('cardMusicLabel') || 'Celebration Music & Traditional Songs'}
+                      />
                     </div>
 
                     {/* Part 3 Navigation */}

@@ -22,7 +22,9 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Video,
 } from 'lucide-react'
+import { downloadCanvasAsVideo } from '@/lib/jashn/card-media-export'
 import { POET_PROFILES, POPULAR_SEARCH_KEYWORDS, POETRY_DATABASE, Poem } from '@/lib/jashn/poetry-data'
 import { useLang } from '@/lib/lang/context'
 import { useJashn } from '@/lib/jashn/store'
@@ -72,6 +74,8 @@ export function PoetryClient() {
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set())
   const [isGeneratingFlyer, setIsGeneratingFlyer] = useState<string | null>(null)
+  const [generatingVideoId, setGeneratingVideoId] = useState<string | null>(null)
+  const [videoProgress, setVideoProgress] = useState<number>(0)
   const [highlightedPoemId, setHighlightedPoemId] = useState<string | null>(null)
 
   // Load saved favorites from localStorage
@@ -478,13 +482,163 @@ export function PoetryClient() {
     window.open(`sms:?&body=${smsBody}`, '_self')
   }
 
+  // Generate Tailored, Dynamic-Height Story Flyer Canvas
+  const generatePoetryCanvas = async (poem: Poem): Promise<{
+    canvas: HTMLCanvasElement
+    sanitizedTitle: string
+    text: string
+    poetDisplayName: string
+  } | null> => {
+    const { text, lines, isRtl, poetDisplayName, poetEra } = getActiveVerseDetails(poem)
+    if (typeof document !== 'undefined' && document.fonts) {
+      try {
+        await document.fonts.ready
+      } catch (e) {}
+    }
+
+    const canvas = document.createElement('canvas')
+    canvas.width = 1080
+    const tempCtx = canvas.getContext('2d')
+    if (!tempCtx) return null
+
+    // Measure & wrap verse lines cleanly with comfortable margins
+    const maxWidth = isRtl ? 820 : 840
+    const isLongPoem = lines.length > 8
+    const fontDeclaration = isRtl
+      ? (isLongPoem
+          ? 'bold 25px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif'
+          : 'bold 32px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif')
+      : (isLongPoem
+          ? 'italic bold 22px "Georgia", "Times New Roman", serif'
+          : 'italic bold 28px "Georgia", "Times New Roman", serif')
+
+    tempCtx.font = fontDeclaration
+
+    const wrappedLines: string[] = []
+    lines.forEach((origLine) => {
+      const words = origLine.split(' ')
+      let currentLine = ''
+      for (let w = 0; w < words.length; w++) {
+        const testLine = currentLine ? currentLine + ' ' + words[w] : words[w]
+        if (tempCtx.measureText(testLine).width > maxWidth && currentLine) {
+          wrappedLines.push(currentLine)
+          currentLine = words[w]
+        } else {
+          currentLine = testLine
+        }
+      }
+      if (currentLine) {
+        wrappedLines.push(currentLine)
+      }
+    })
+
+    // Generous line height adapted for length (66px for long Urdu, 86px for standard)
+    const lineHeight = isRtl ? (isLongPoem ? 66 : 86) : (isLongPoem ? 42 : 52)
+    const verseBoxHeight = Math.max(isRtl ? 190 : 160, wrappedLines.length * lineHeight + (isRtl ? 80 : 60))
+    const headerHeight = poetEra ? 170 : 140
+    const footerHeight = 110
+    const calculatedHeight = Math.max(540, headerHeight + verseBoxHeight + footerHeight)
+
+    canvas.height = calculatedHeight
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return null
+
+    // 1. Luxury Dark Emerald & Gold Obsidian Gradient
+    const gradient = ctx.createLinearGradient(0, 0, 1080, canvas.height)
+    gradient.addColorStop(0, '#051f15')
+    gradient.addColorStop(0.4, '#02120b')
+    gradient.addColorStop(0.75, '#04161d')
+    gradient.addColorStop(1, '#080f18')
+    ctx.fillStyle = gradient
+    ctx.fillRect(0, 0, 1080, canvas.height)
+
+    // 2. Ornate Double Gold Borders
+    ctx.lineWidth = 8
+    ctx.strokeStyle = '#d97706'
+    ctx.strokeRect(28, 28, 1024, canvas.height - 56)
+
+    ctx.lineWidth = 1.5
+    ctx.strokeStyle = '#fef08a'
+    ctx.strokeRect(40, 40, 1000, canvas.height - 80)
+
+    // 3. Corner Rosettes
+    ctx.fillStyle = '#fbbf24'
+    ctx.font = '24px sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText('✦ ❖ ✦', 110, 75)
+    ctx.fillText('✦ ❖ ✦', 970, 75)
+    ctx.fillText('✦ ❖ ✦', 110, canvas.height - 55)
+    ctx.fillText('✦ ❖ ✦', 970, canvas.height - 55)
+
+    // 4. Top Header: Poet Name & Years
+    let topY = 90
+    ctx.fillStyle = '#fde68a'
+    ctx.font = isRtl
+      ? 'bold 34px "Noto Nastaliq Urdu", "Traditional Arabic", serif'
+      : 'bold 32px "Georgia", "Times New Roman", serif'
+    ctx.fillText(poetDisplayName, 540, topY)
+
+    if (poetEra) {
+      topY += 38
+      ctx.fillStyle = '#94a3b8'
+      ctx.font = 'bold 18px sans-serif'
+      ctx.fillText(`(${poetEra})`, 540, topY)
+    }
+
+    topY += 28
+    ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)'
+    ctx.lineWidth = 1.5
+    ctx.beginPath()
+    ctx.moveTo(220, topY)
+    ctx.lineTo(860, topY)
+    ctx.stroke()
+
+    // 5. Middle Section: Verse Container Box
+    const boxTop = topY + 22
+    const boxWidth = 940
+    const boxLeft = 70
+
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.75)'
+    ctx.fillRect(boxLeft, boxTop, boxWidth, verseBoxHeight)
+    ctx.strokeStyle = 'rgba(251, 191, 36, 0.35)'
+    ctx.lineWidth = 1.5
+    ctx.strokeRect(boxLeft, boxTop, boxWidth, verseBoxHeight)
+
+    ctx.fillStyle = '#ffffff'
+    ctx.font = fontDeclaration
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+
+    let verseY = boxTop + (isRtl ? 45 : 35) + (lineHeight / 2)
+    wrappedLines.forEach((line) => {
+      ctx.fillText(line.trim(), 540, verseY)
+      verseY += lineHeight
+    })
+
+    // 6. Bottom Footer: Website Attribution Line
+    const footerY = boxTop + verseBoxHeight + 35
+    ctx.strokeStyle = 'rgba(245, 158, 11, 0.35)'
+    ctx.beginPath()
+    ctx.moveTo(260, footerY)
+    ctx.lineTo(820, footerY)
+    ctx.stroke()
+
+    ctx.fillStyle = '#fef08a'
+    ctx.font = 'bold 18px sans-serif'
+    ctx.textBaseline = 'middle'
+    ctx.fillText('✦ Powered by Cardzy.online ✦', 540, footerY + 30)
+
+    const sanitizedTitle = (poem.title || 'poetry').toLowerCase().replace(/[^a-z0-9]/g, '-')
+    return { canvas, sanitizedTitle, text, poetDisplayName }
+  }
+
   // Generate Tailored, Dynamic-Height Story Flyer in the Active Card Language
   const handleDownloadFlyer = async (poem: Poem) => {
     setIsGeneratingFlyer(poem.id)
-    const { text, lines, isRtl, poetDisplayName, poetEra, currentTab } = getActiveVerseDetails(poem)
+    const { currentTab } = getActiveVerseDetails(poem)
     trackPoetryActivity(poem, 'flyer', `canvas_png_${currentTab}`)
 
-    // Show initial loading feedback for mobile and desktop users
     showToast(
       isUrdu
         ? 'کارڈ تیار کیا جا رہا ہے... برائے مہربانی ایک لمحہ انتظار فرمائیں ⏳'
@@ -493,150 +647,10 @@ export function PoetryClient() {
     )
 
     try {
-      if (typeof document !== 'undefined' && document.fonts) {
-        try {
-          await document.fonts.ready
-        } catch (e) {}
-      }
+      const result = await generatePoetryCanvas(poem)
+      if (!result) return
 
-      const canvas = document.createElement('canvas')
-      canvas.width = 1080
-      const tempCtx = canvas.getContext('2d')
-      if (!tempCtx) return
-
-      // Measure & wrap verse lines cleanly with comfortable margins
-      const maxWidth = isRtl ? 820 : 840
-      const isLongPoem = lines.length > 8
-      const fontDeclaration = isRtl
-        ? (isLongPoem
-            ? 'bold 25px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif'
-            : 'bold 32px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif')
-        : (isLongPoem
-            ? 'italic bold 22px "Georgia", "Times New Roman", serif'
-            : 'italic bold 28px "Georgia", "Times New Roman", serif')
-
-      tempCtx.font = fontDeclaration
-
-      const wrappedLines: string[] = []
-      lines.forEach((origLine) => {
-        const words = origLine.split(' ')
-        let currentLine = ''
-        for (let w = 0; w < words.length; w++) {
-          const testLine = currentLine ? currentLine + ' ' + words[w] : words[w]
-          if (tempCtx.measureText(testLine).width > maxWidth && currentLine) {
-            wrappedLines.push(currentLine)
-            currentLine = words[w]
-          } else {
-            currentLine = testLine
-          }
-        }
-        if (currentLine) {
-          wrappedLines.push(currentLine)
-        }
-      })
-
-      // Generous line height adapted for length (66px for long Urdu, 86px for standard)
-      const lineHeight = isRtl ? (isLongPoem ? 66 : 86) : (isLongPoem ? 42 : 52)
-      const verseBoxHeight = Math.max(isRtl ? 190 : 160, wrappedLines.length * lineHeight + (isRtl ? 80 : 60))
-      
-      const headerHeight = poetEra ? 170 : 140
-      const footerHeight = 110
-      const calculatedHeight = Math.max(540, headerHeight + verseBoxHeight + footerHeight)
-
-      // Set exact dynamic canvas height to eliminate unnecessary empty space
-      canvas.height = calculatedHeight
-      const ctx = canvas.getContext('2d')
-      if (!ctx) return
-
-      // 1. Luxury Dark Emerald & Gold Obsidian Gradient
-      const gradient = ctx.createLinearGradient(0, 0, 1080, canvas.height)
-      gradient.addColorStop(0, '#051f15')
-      gradient.addColorStop(0.4, '#02120b')
-      gradient.addColorStop(0.75, '#04161d')
-      gradient.addColorStop(1, '#080f18')
-      ctx.fillStyle = gradient
-      ctx.fillRect(0, 0, 1080, canvas.height)
-
-      // 2. Ornate Double Gold Borders
-      ctx.lineWidth = 8
-      ctx.strokeStyle = '#d97706'
-      ctx.strokeRect(28, 28, 1024, canvas.height - 56)
-
-      ctx.lineWidth = 1.5
-      ctx.strokeStyle = '#fef08a'
-      ctx.strokeRect(40, 40, 1000, canvas.height - 80)
-
-      // 3. Corner Rosettes
-      ctx.fillStyle = '#fbbf24'
-      ctx.font = '24px sans-serif'
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-      ctx.fillText('✦ ❖ ✦', 110, 75)
-      ctx.fillText('✦ ❖ ✦', 970, 75)
-      ctx.fillText('✦ ❖ ✦', 110, canvas.height - 55)
-      ctx.fillText('✦ ❖ ✦', 970, canvas.height - 55)
-
-      // 4. Top Header: Poet Name & Years (From - To)
-      let topY = 90
-      ctx.fillStyle = '#fde68a'
-      ctx.font = isRtl
-        ? 'bold 34px "Noto Nastaliq Urdu", "Traditional Arabic", serif'
-        : 'bold 32px "Georgia", "Times New Roman", serif'
-      ctx.fillText(poetDisplayName, 540, topY)
-
-      if (poetEra) {
-        topY += 38
-        ctx.fillStyle = '#94a3b8'
-        ctx.font = 'bold 18px sans-serif'
-        ctx.fillText(`(${poetEra})`, 540, topY)
-      }
-
-      topY += 28
-      ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)'
-      ctx.lineWidth = 1.5
-      ctx.beginPath()
-      ctx.moveTo(220, topY)
-      ctx.lineTo(860, topY)
-      ctx.stroke()
-
-      // 5. Middle Section: Verse Container Box
-      const boxTop = topY + 22
-      const boxWidth = 940
-      const boxLeft = 70
-
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.75)'
-      ctx.fillRect(boxLeft, boxTop, boxWidth, verseBoxHeight)
-      ctx.strokeStyle = 'rgba(251, 191, 36, 0.35)'
-      ctx.lineWidth = 1.5
-      ctx.strokeRect(boxLeft, boxTop, boxWidth, verseBoxHeight)
-
-      // Draw Verse Lines with middle baseline alignment to prevent glyph cutoffs
-      ctx.fillStyle = '#ffffff'
-      ctx.font = fontDeclaration
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-
-      let verseY = boxTop + (isRtl ? 45 : 35) + (lineHeight / 2)
-      wrappedLines.forEach((line) => {
-        ctx.fillText(line.trim(), 540, verseY)
-        verseY += lineHeight
-      })
-
-      // 6. Bottom Footer: Website Attribution Line
-      const footerY = boxTop + verseBoxHeight + 35
-      ctx.strokeStyle = 'rgba(245, 158, 11, 0.35)'
-      ctx.beginPath()
-      ctx.moveTo(260, footerY)
-      ctx.lineTo(820, footerY)
-      ctx.stroke()
-
-      ctx.fillStyle = '#fef08a'
-      ctx.font = 'bold 18px sans-serif'
-      ctx.textBaseline = 'middle'
-      ctx.fillText('✦ Powered by Cardzy.online ✦', 540, footerY + 30)
-
-      // Clean file naming and trigger direct image download or native mobile share
-      const sanitizedTitle = (poem.title || 'poetry').toLowerCase().replace(/[^a-z0-9]/g, '-')
+      const { canvas, sanitizedTitle, text, poetDisplayName } = result
       const fileName = `Cardzy-${sanitizedTitle}.png`
       let sharedViaNavigator = false
 
@@ -655,7 +669,6 @@ export function PoetryClient() {
             }
           }
         } catch (shareErr: any) {
-          // If user cancels the share dialog, do not show error or force download
           if (shareErr?.name === 'AbortError') {
             sharedViaNavigator = true
           }
@@ -688,6 +701,48 @@ export function PoetryClient() {
       )
     } finally {
       setIsGeneratingFlyer(null)
+    }
+  }
+
+  // Generate Animated Celebration Video (MP4 / WebM with golden sparkles & light beam)
+  const handleDownloadPoetryVideo = async (poem: Poem) => {
+    setGeneratingVideoId(poem.id)
+    setVideoProgress(0)
+    trackPoetryActivity(poem, 'download', 'video')
+
+    showToast(
+      isUrdu
+        ? 'شاعری کی ویڈیو تیار ہو رہی ہے... برائے مہربانی انتظار فرمائیں ⏳'
+        : 'Generating animated poetry video... please wait ⏳',
+      'info'
+    )
+
+    try {
+      const result = await generatePoetryCanvas(poem)
+      if (!result) return
+
+      const { canvas, sanitizedTitle } = result
+      const success = await downloadCanvasAsVideo({
+        canvas,
+        fileName: `Cardzy-${sanitizedTitle}-video`,
+        onProgress: (p) => setVideoProgress(p),
+      })
+
+      if (success) {
+        showToast(
+          isUrdu ? 'شاعری ویڈیو ڈاؤنلوڈ ہو گئی! 🎥' : 'Poetry video downloaded successfully! 🎥',
+          'success'
+        )
+      }
+    } catch (err) {
+      console.error('Video generation error:', err)
+      showToast(
+        isUrdu ? 'ویڈیو بنانے میں خرابی پیش آئی' : 'Failed to generate video',
+        'error'
+      )
+    } finally {
+      setGeneratingVideoId(null)
+      setVideoProgress(0)
     }
   }
 
@@ -1441,30 +1496,57 @@ export function PoetryClient() {
                           </button>
                         </div>
 
-                        <button
-                          type="button"
-                          onClick={() => handleDownloadFlyer(poem)}
-                          disabled={isGeneratingFlyer === poem.id}
-                          className={cn(
-                            "flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all border shrink-0",
-                            isGeneratingFlyer === poem.id
-                              ? "bg-amber-500/25 text-amber-200 border-amber-400/50 cursor-wait animate-pulse shadow-sm shadow-amber-500/20"
-                              : "bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border-amber-500/30 cursor-pointer active:scale-95"
-                          )}
-                          title={isUrdu ? 'کارڈ ڈاؤن لوڈ کریں' : 'Download High-Resolution Story Card'}
-                        >
-                          {isGeneratingFlyer === poem.id ? (
-                            <>
-                              <Loader2 className="size-3.5 animate-spin text-amber-300" />
-                              <span>{isUrdu ? 'کارڈ بن رہا ہے...' : 'Generating Card...'}</span>
-                            </>
-                          ) : (
-                            <>
-                              <Download className="size-3.5" />
-                              <span>{isUrdu ? 'کارڈ ڈاؤنلوڈ' : 'Story Card'}</span>
-                            </>
-                          )}
-                        </button>
+                        <div className="flex items-center gap-1.5 shrink-0 flex-wrap">
+                          <button
+                            type="button"
+                            onClick={() => handleDownloadFlyer(poem)}
+                            disabled={isGeneratingFlyer === poem.id || generatingVideoId === poem.id}
+                            className={cn(
+                              "flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all border shrink-0",
+                              isGeneratingFlyer === poem.id
+                                ? "bg-amber-500/25 text-amber-200 border-amber-400/50 cursor-wait animate-pulse shadow-sm shadow-amber-500/20"
+                                : "bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border-amber-500/30 cursor-pointer active:scale-95"
+                            )}
+                            title={isUrdu ? 'کارڈ ڈاؤن لوڈ کریں (تصویر)' : 'Download High-Resolution Story Card (Image)'}
+                          >
+                            {isGeneratingFlyer === poem.id ? (
+                              <>
+                                <Loader2 className="size-3.5 animate-spin text-amber-300" />
+                                <span>{isUrdu ? 'کارڈ بن رہا ہے...' : 'Generating...'}</span>
+                              </>
+                            ) : (
+                              <>
+                                <Download className="size-3.5" />
+                                <span>{isUrdu ? 'تصویر' : 'Image'}</span>
+                              </>
+                            )}
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDownloadPoetryVideo(poem)}
+                            disabled={generatingVideoId === poem.id || isGeneratingFlyer === poem.id}
+                            className={cn(
+                              "flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all border shrink-0",
+                              generatingVideoId === poem.id
+                                ? "bg-rose-500/25 text-rose-200 border-rose-400/50 cursor-wait animate-pulse shadow-sm shadow-rose-500/20"
+                                : "bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border-rose-500/30 cursor-pointer active:scale-95"
+                            )}
+                            title={isUrdu ? 'شاعری کی متحرک ویڈیو ڈاؤنلوڈ کریں' : 'Download Animated Video (MP4 for WhatsApp Status / Reels)'}
+                          >
+                            {generatingVideoId === poem.id ? (
+                              <>
+                                <Loader2 className="size-3.5 animate-spin text-rose-300" />
+                                <span>{videoProgress > 0 ? `${videoProgress}%` : (isUrdu ? 'ویڈیو بن رہی ہے...' : 'Making...')}</span>
+                              </>
+                            ) : (
+                              <>
+                                <Video className="size-3.5 text-rose-400" />
+                                <span>{isUrdu ? 'ویڈیو' : 'Video (MP4)'}</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
                       </div>
 
                       {/* 1-Click Cardzy Bridge Buttons */}

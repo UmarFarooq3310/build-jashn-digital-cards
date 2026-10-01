@@ -147,6 +147,7 @@ export interface Wish {
   killCount?: string
   rank?: string
   winningNumber?: string
+  developerName?: string
   // Custom Photo & Audio Features
   photoUrl?: string
   audioTrack?: string

@@ -14,13 +14,13 @@ import { ShareBar } from '@/components/jashn/share-bar'
 import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
 import { Button } from '@/components/ui/button'
-import { Sparkles, Eye, Edit3, Trash2, ShieldCheck, Cpu, Share2, X, Loader2, ArrowLeft, ExternalLink, MessageCircle, Smartphone, Copy, Check, QrCode, UserPlus, Download } from 'lucide-react'
+import { Sparkles, Eye, Edit3, Trash2, ShieldCheck, Cpu, Share2, X, Loader2, ArrowLeft, ExternalLink, MessageCircle, Smartphone, Copy, Check, QrCode, UserPlus, Download, Video } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
 import { recordCardShare } from '@/lib/jashn/magic-service'
 import { downloadVCard } from '@/lib/jashn/vcard-export'
-import { downloadCardPng } from '@/lib/jashn/card-media-export'
+import { downloadCardPng, downloadCardVideo } from '@/lib/jashn/card-media-export'
 import { cn } from '@/lib/utils'
 
 export default function VisitingCardPublicPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -40,6 +40,8 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
   const [showGuestbookModal, setShowGuestbookModal] = useState(false)
   const [copiedLink, setCopiedLink] = useState(false)
   const [isDownloadingPng, setIsDownloadingPng] = useState(false)
+  const [isGeneratingVideo, setIsGeneratingVideo] = useState(false)
+  const [videoProgress, setVideoProgress] = useState(0)
   const [downloadingQr, setDownloadingQr] = useState(false)
 
   // Sender/Creator mode: ONLY active if explicitly requested via ?mode=sender or ?role=sender
@@ -227,6 +229,23 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
     }
   }
 
+  const handleDownloadVideo = async () => {
+    if (!cardRef.current || !card) return
+    setIsGeneratingVideo(true)
+    setVideoProgress(0)
+    try {
+      await downloadCardVideo({
+        element: cardRef.current,
+        fileName: `vcard-${card.slug}`,
+        cardType: 'vcard',
+        cardSlug: card.slug,
+        onProgress: (p) => setVideoProgress(p),
+      })
+    } finally {
+      setIsGeneratingVideo(false)
+    }
+  }
+
   const handleDirectNativeShare = async () => {
     const fullReceiverUrl = typeof window !== 'undefined' ? `${window.location.origin}${receiverUrl}` : receiverUrl
     if (typeof navigator !== 'undefined' && navigator.share) {
@@ -376,27 +395,13 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
                 </div>
               </div>
 
-              {/* Direct 1-Click Media Exports & Share Apps */}
+              {/* Direct 1-Click Media Exports: Download Image (PNG) & Animated Video (MP4) */}
               <div className="grid grid-cols-2 gap-2 pt-0.5">
-                {typeof navigator !== 'undefined' && 'share' in navigator ? (
-                  <Button
-                    onClick={handleDirectNativeShare}
-                    variant="outline"
-                    className="h-8.5 rounded-lg border-white/20 bg-white/5 hover:bg-white/10 text-white font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
-                  >
-                    <Share2 className="size-3" />
-                    <span>Share Apps</span>
-                  </Button>
-                ) : null}
-
                 <Button
                   onClick={handleDownloadPng}
-                  disabled={isDownloadingPng}
+                  disabled={isDownloadingPng || isGeneratingVideo}
                   variant="outline"
-                  className={cn(
-                    "h-8.5 rounded-lg border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer disabled:opacity-50",
-                    !(typeof navigator !== 'undefined' && 'share' in navigator) && "col-span-2"
-                  )}
+                  className="h-8.5 rounded-lg border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer disabled:opacity-50"
                 >
                   {isDownloadingPng ? (
                     <Loader2 className="size-3 animate-spin text-[#D4AF37]" />
@@ -404,6 +409,25 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
                     <Download className="size-3 text-[#D4AF37]" />
                   )}
                   <span>{isDownloadingPng ? 'Saving...' : 'Download Image'}</span>
+                </Button>
+
+                <Button
+                  onClick={handleDownloadVideo}
+                  disabled={isDownloadingPng || isGeneratingVideo}
+                  variant="outline"
+                  className="h-8.5 rounded-lg border-rose-500/30 bg-[#7A1E2B]/20 hover:bg-[#7A1E2B]/30 text-rose-200 font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer disabled:opacity-50"
+                >
+                  {isGeneratingVideo ? (
+                    <>
+                      <Loader2 className="size-3 animate-spin text-rose-300" />
+                      <span>{videoProgress > 0 ? `${videoProgress}%` : 'Making...'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Video className="size-3 text-rose-400" />
+                      <span>Download Video</span>
+                    </>
+                  )}
                 </Button>
               </div>
 

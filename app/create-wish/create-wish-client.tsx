@@ -4,8 +4,9 @@ import '@/app/invitation-themes-animations.css'
 import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, VolumeX, X, CheckCircle2, Gamepad2, Flame, Hash, Shield, Crown, Swords, Zap } from 'lucide-react'
+import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, VolumeX, X, CheckCircle2, Gamepad2, Flame, Hash, Shield, Crown, Swords, Zap, Code2 } from 'lucide-react'
 import { AUDIO_TRACKS, getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
+import { AudioTrackPicker } from '@/components/jashn/audio-track-picker'
 import { celebrationAudio } from '@/lib/jashn/audio-synth'
 import { generateAIWish, type AITone } from '@/lib/jashn/ai-generator'
 import { SiteHeader } from '@/components/site-header'
@@ -192,6 +193,7 @@ function CreateWishContent() {
   const [killCount, setKillCount] = useState('')
   const [rank, setRank] = useState('')
   const [winningNumber, setWinningNumber] = useState('')
+  const [developerName, setDeveloperName] = useState('')
 
   // Custom Photo, Audio & AI Generator State
   const [photoUrl, setPhotoUrl] = useState('')
@@ -361,6 +363,7 @@ function CreateWishContent() {
           if (loadedData.killCount) setKillCount(loadedData.killCount)
           if (loadedData.rank) setRank(loadedData.rank)
           if (loadedData.winningNumber) setWinningNumber(loadedData.winningNumber)
+          if (loadedData.developerName) setDeveloperName(loadedData.developerName)
           if (loadedData.photoUrl) setPhotoUrl(loadedData.photoUrl)
           if (loadedData.audioTrack) setAudioTrack(loadedData.audioTrack)
           if (loadedData.step) setStep(loadedData.step as any)
@@ -398,6 +401,7 @@ function CreateWishContent() {
                 if (d.killCount) setKillCount(d.killCount)
                 if (d.rank) setRank(d.rank)
                 if (d.winningNumber) setWinningNumber(d.winningNumber)
+                if (d.developerName) setDeveloperName(d.developerName)
                 if (d.photoUrl) setPhotoUrl(d.photoUrl)
                 if (d.audioTrack) setAudioTrack(d.audioTrack)
                 if (d.step) setStep(d.step as any)
@@ -477,6 +481,7 @@ function CreateWishContent() {
       killCount,
       rank,
       winningNumber,
+      developerName,
       photoUrl,
       audioTrack,
     }
@@ -500,6 +505,7 @@ function CreateWishContent() {
     killCount,
     rank,
     winningNumber,
+    developerName,
     photoUrl,
     audioTrack,
   ])
@@ -670,6 +676,7 @@ function CreateWishContent() {
         killCount: killCount.trim(),
         rank: rank.trim(),
         winningNumber: winningNumber.trim(),
+        developerName: developerName.trim(),
         photoUrl,
         audioTrack,
       }
@@ -1068,7 +1075,23 @@ function CreateWishContent() {
                             value={senderName}
                             onChange={(e) => setSenderName(e.target.value)}
                             placeholder="e.g. Victory Squad / Clan Alpha"
-                            className="w-full rounded-2xl border border-slate-700 p-3 text-sm bg-slate-950 text-white focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all"
+                            className="w-full rounded-2xl border border-slate-700 p-3 text-sm bg-slate-950 text-white focus:outline-none focus:ring-2 focus:ring-sky-400 transition-all font-medium"
+                          />
+                        </div>
+
+                        {/* Game Developer / Studio Name */}
+                        <div className="sm:col-span-2">
+                          <label className={cn("mb-1.5 flex items-center gap-1.5 text-xs font-bold text-cyan-300 uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            <Code2 className="size-3.5 text-cyan-400" />
+                            <span>Game Developer / Studio Name <span className="text-slate-500 font-normal lowercase">(optional - e.g. Krafton, Tencent, Epic Games, Solo Dev)</span></span>
+                          </label>
+                          <input
+                            id="field-developerName"
+                            type="text"
+                            value={developerName}
+                            onChange={(e) => setDeveloperName(e.target.value)}
+                            placeholder="e.g. Krafton / Tencent Games / Epic Games / Solo Developer"
+                            className="w-full rounded-2xl border border-slate-700 p-3 text-sm bg-slate-950 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all font-medium"
                           />
                         </div>
                       </div>
@@ -1313,85 +1336,13 @@ function CreateWishContent() {
                 </div>
 
                 {/* Audio Track Selector */}
-                <div className="space-y-3 pt-3 border-t border-border/60">
-                  <div className={cn("flex items-center justify-between", (lang === 'ur' || lang === 'ar') && "flex-row-reverse")}>
-                    <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                      <Music className="size-4 text-[#7B0D1E]" /> {t('backgroundMusicTrackLabel') || 'Background Music Track (Plays on Open)'}
-                    </label>
-                    {audioTrack !== 'none' && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (playingTrackId) {
-                            celebrationAudio.stop()
-                            setPlayingTrackId(null)
-                          } else {
-                            celebrationAudio.playTrack(audioTrack)
-                            setPlayingTrackId(audioTrack)
-                          }
-                        }}
-                        className="text-[11px] font-semibold text-[#7B0D1E] hover:underline flex items-center gap-1 cursor-pointer"
-                      >
-                        <Volume2 className="size-3.5" />
-                        {playingTrackId ? (t('stopPreview') || 'Stop Sound ⏹️') : (t('previewSound') || 'Play Sound 🔊')}
-                      </button>
-                    )}
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {AUDIO_TRACKS.map((trk) => {
-                      const isSelected = audioTrack === trk.id
-                      const isCurrentlyPlaying = playingTrackId === trk.id
-                      return (
-                        <button
-                          key={trk.id}
-                          type="button"
-                          onClick={() => {
-                            setAudioTrack(trk.id)
-                            if (trk.id === 'none') {
-                              celebrationAudio.stop()
-                              setPlayingTrackId(null)
-                            } else {
-                              celebrationAudio.playTrack(trk.id)
-                              setPlayingTrackId(trk.id)
-                            }
-                          }}
-                          className={cn(
-                            "flex items-center justify-between p-3 rounded-2xl border text-left transition-all cursor-pointer shadow-xs group",
-                            isSelected
-                              ? "border-[#7B0D1E] bg-[#7B0D1E]/8 ring-2 ring-[#7B0D1E]/25 font-bold"
-                              : "border-border bg-card hover:border-[#7B0D1E]/30"
-                          )}
-                        >
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <div className={cn(
-                              "size-8 rounded-xl flex items-center justify-center shrink-0 transition-all",
-                              isSelected ? "bg-[#7B0D1E] text-white" : "bg-muted text-muted-foreground group-hover:bg-[#7B0D1E]/10 group-hover:text-[#7B0D1E]",
-                              isCurrentlyPlaying && "animate-pulse ring-2 ring-amber-400"
-                            )}>
-                              {trk.id === 'none' ? (
-                                <VolumeX className="size-4" />
-                              ) : isCurrentlyPlaying ? (
-                                <Volume2 className="size-4 text-white animate-bounce" />
-                              ) : (
-                                <Music className="size-4" />
-                              )}
-                            </div>
-                            <div className="min-w-0">
-                              <span className="text-xs font-bold text-foreground block truncate">{trk.name}</span>
-                              <span className="text-[10px] text-muted-foreground capitalize">
-                                {isCurrentlyPlaying ? '🎵 Playing sample...' : trk.category}
-                              </span>
-                            </div>
-                          </div>
-                          {isSelected && (
-                            <span className="flex size-5 items-center justify-center rounded-full bg-[#7B0D1E] text-white">
-                              <CheckCircle2 className="size-3.5" />
-                            </span>
-                          )}
-                        </button>
-                      )
-                    })}
-                  </div>
+                <div className="pt-3 border-t border-border/60">
+                  <AudioTrackPicker
+                    selectedTrackId={audioTrack}
+                    onSelectTrack={setAudioTrack}
+                    occasionId={occasionId}
+                    label={t('backgroundMusicTrackLabel') || 'Background Music Track'}
+                  />
                 </div>
 
                 {/* Bottom Navigation Buttons for Part 3 */}
@@ -1528,6 +1479,7 @@ function CreateWishContent() {
                     killCount,
                     rank,
                     winningNumber,
+                    developerName,
                     photoUrl,
                   }}
                 />

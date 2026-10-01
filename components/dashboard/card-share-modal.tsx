@@ -67,6 +67,7 @@ export interface ShareModalCardData {
   address?: string
   avatarUrl?: string
   photoUrl?: string
+  developerName?: string
 }
 
 interface CardShareModalProps {
@@ -579,6 +580,11 @@ export function CardShareModal({ card, onClose, simpleMode = false }: CardShareM
                   {card.senderName && (
                     <p className="text-[10px] text-zinc-400">
                       With love & regards: <span className="text-amber-200 font-bold">{card.senderName}</span>
+                    </p>
+                  )}
+                  {card.developerName && (
+                    <p className="text-[10px] text-cyan-300 font-mono">
+                      Game Studio: <span className="font-bold text-white uppercase">{card.developerName}</span>
                     </p>
                   )}
                 </div>

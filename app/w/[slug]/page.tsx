@@ -791,6 +791,7 @@ function WishPublicContent({ slug }: { slug: string }) {
             occasion: occasion?.label || activeWish.occasionId,
             message: activeWish.message,
             senderName: activeWish.senderName,
+            developerName: activeWish.developerName,
             theme: activeWish.themeId,
             photoUrl: activeWish.photoUrl,
             waMessage: `✨ Hey ${activeWish.recipientName}! I created a digital greeting card for you on Cardzy. Tap to open:`,

@@ -31,6 +31,7 @@ export interface WishCardData {
   killCount?: string
   rank?: string
   winningNumber?: string
+  developerName?: string
   photoUrl?: string
   audioTrack?: string
 }
@@ -160,6 +161,7 @@ function GamingScorecardHUD({ data, lang, isPublicCard }: { data: WishCardData; 
   const winningNo = data.winningNumber || ''
   const localizedMsg = data.message ? getLocalizedMessageText(data.message, data.occasionId, lang) : ''
   const senderOrSquad = data.senderName || '---'
+  const developerName = data.developerName?.trim() || ''
 
   const formattedRank = (() => {
     if (!rank || rank === '---') return '---'
@@ -196,9 +198,9 @@ function GamingScorecardHUD({ data, lang, isPublicCard }: { data: WishCardData; 
       {/* ── Top Tournament Banner with Pulsating Neon Border ── */}
       <div className={cn("relative z-10 mx-auto max-w-lg p-0.5 rounded-2xl shadow-2xl bg-gradient-to-r", tStyles.bannerGradient)}>
         <div className="bg-slate-950/95 backdrop-blur-md px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-[14px] text-center border border-white/15 relative overflow-hidden">
-          {/* Subtle tech crosshair watermark */}
-          <div className="absolute top-1 right-2 text-[8px] sm:text-[9px] font-mono tracking-widest text-slate-500 opacity-40">
-            [SYS_LIVE_VICTORY]
+          {/* Subtle tech crosshair watermark / Developer tag */}
+          <div className="absolute top-1 right-2 text-[8px] sm:text-[9px] font-mono tracking-widest text-slate-400 opacity-60">
+            {developerName ? `[DEV: ${developerName.toUpperCase()}]` : '[SYS_LIVE_VICTORY]'}
           </div>
           <span className={cn("text-xs sm:text-sm md:text-base font-black uppercase tracking-wider italic drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] block", tStyles.titleColor)}>
             {bannerTitle}
@@ -311,31 +313,42 @@ function GamingScorecardHUD({ data, lang, isPublicCard }: { data: WishCardData; 
         )}
       </div>
 
-      {/* ── Victory Combat Debrief Message ── */}
-      {(localizedMsg || !isPublicCard) && (
-        <div className="relative z-10 max-w-md mx-auto rounded-2xl border border-white/20 bg-slate-950/85 p-3.5 sm:p-4 text-center backdrop-blur-md shadow-lg relative overflow-hidden">
-          <div className="text-[8.5px] font-mono font-bold tracking-widest text-slate-400 uppercase mb-1.5 flex items-center justify-center gap-1.5">
-            <span className="size-1.5 rounded-full bg-emerald-400 animate-ping" />
-            <span>MISSION DEBRIEF // VICTORY REPORT</span>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-200 italic leading-relaxed font-medium">
-            &ldquo;{localizedMsg || 'Dominated the battleground with elite precision, unmatched tactics, and supreme firepower!'}&rdquo;
-          </p>
+      {/* ── Victory Combat Debrief Message (Guaranteed Always Rendered) ── */}
+      <div className="relative z-10 max-w-md mx-auto w-full rounded-2xl border border-white/20 bg-slate-950/85 p-3.5 sm:p-4 text-center backdrop-blur-md shadow-lg overflow-visible">
+        <div className="text-[8.5px] sm:text-[9.5px] font-mono font-bold tracking-widest text-slate-400 uppercase mb-1.5 flex items-center justify-center gap-1.5">
+          <span className="size-1.5 rounded-full bg-emerald-400 animate-ping" />
+          <span>MISSION DEBRIEF // VICTORY REPORT</span>
         </div>
-      )}
+        <p className="text-xs sm:text-sm text-slate-200 italic leading-relaxed font-medium break-words">
+          &ldquo;{localizedMsg || data.message || 'Dominated the battleground with elite precision, unmatched tactics, and supreme firepower!'}&rdquo;
+        </p>
+      </div>
 
-      {/* ── Footer Squad Signature ── */}
-      {(senderOrSquad || !isPublicCard) && (
-        <div className="relative z-10 flex items-center justify-between border-t border-white/15 pt-3 max-w-md mx-auto text-xs text-slate-400 px-2">
-          <span className="text-[10px] font-mono font-black uppercase tracking-widest text-slate-400 flex items-center gap-1">
-            <span>🎮</span>
-            <span>DEPLOYED BY SQUAD</span>
-          </span>
-          <span className="font-extrabold text-amber-400 tracking-wide text-xs sm:text-sm drop-shadow-sm">
-            {senderOrSquad}
-          </span>
-        </div>
-      )}
+      {/* ── Footer Squad & Developer Attribution ── */}
+      <div className="relative z-10 flex flex-col gap-1.5 border-t border-white/15 pt-2.5 max-w-md mx-auto text-xs text-slate-400 px-2 w-full">
+        {(senderOrSquad || !isPublicCard) && (
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono font-black uppercase tracking-widest text-slate-400 flex items-center gap-1">
+              <span>🎮</span>
+              <span>DEPLOYED BY SQUAD</span>
+            </span>
+            <span className="font-extrabold text-amber-400 tracking-wide text-xs sm:text-sm drop-shadow-sm">
+              {senderOrSquad}
+            </span>
+          </div>
+        )}
+        {developerName && (
+          <div className="flex items-center justify-between text-[9.5px] sm:text-[10px] font-mono text-slate-300 pt-1 border-t border-white/10">
+            <span className="uppercase tracking-wider flex items-center gap-1 text-slate-400 font-bold">
+              <span>🛠️</span>
+              <span>DEVELOPER / STUDIO</span>
+            </span>
+            <span className="font-black text-cyan-300 tracking-wide uppercase">
+              {developerName}
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

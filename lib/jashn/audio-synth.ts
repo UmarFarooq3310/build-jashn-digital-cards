@@ -108,19 +108,7 @@ class CelebrationAudioPlayer {
               this.isPlaying = true
             })
             .catch(() => {
-              // Try .wav fallback if .m4a failed
-              if (soundSrc.endsWith('.m4a') || soundSrc.endsWith('.mp3')) {
-                const wavSrc = soundSrc.replace(/\.(m4a|mp3)$/, '.wav')
-                const wavAudio = new Audio(wavSrc)
-                wavAudio.loop = true
-                wavAudio.volume = 0.85
-                this.audioElement = wavAudio
-                wavAudio.play().catch(() => {
-                  this.playSynthesizerFallback(trackId)
-                })
-              } else {
-                this.playSynthesizerFallback(trackId)
-              }
+              this.playSynthesizerFallback(trackId)
             })
         }
         return
@@ -247,6 +235,61 @@ class CelebrationAudioPlayer {
         { f: C5, d: 0.7, t: 0.88, type: 'sine' as OscillatorType, v: 0.18 },
         { f: E5, d: 0.7, t: 1.15, type: 'sine' as OscillatorType, v: 0.18 },
         { f: G5, d: 1.2, t: 1.45, type: 'sine' as OscillatorType, v: 0.20 },
+      ]
+      notes.forEach((n) => this.playNote(n.f, n.d, n.t, n.type, n.v))
+    } else if (t === 'baby-lullaby' || t.includes('baby') || t.includes('lullaby')) {
+      // Sweet Music Box Lullaby (Brahms)
+      const notes = [
+        { f: E4, d: 0.5, t: 0, type: 'sine' as OscillatorType, v: 0.16 },
+        { f: E4, d: 0.5, t: 0.5, type: 'sine' as OscillatorType, v: 0.16 },
+        { f: G4, d: 0.9, t: 1.0, type: 'sine' as OscillatorType, v: 0.18 },
+        { f: E4, d: 0.5, t: 2.0, type: 'sine' as OscillatorType, v: 0.16 },
+        { f: E4, d: 0.5, t: 2.5, type: 'sine' as OscillatorType, v: 0.16 },
+        { f: G4, d: 0.9, t: 3.0, type: 'sine' as OscillatorType, v: 0.18 },
+        { f: E4, d: 0.4, t: 4.0, type: 'sine' as OscillatorType, v: 0.16 },
+        { f: G4, d: 0.4, t: 4.4, type: 'sine' as OscillatorType, v: 0.17 },
+        { f: C5, d: 0.8, t: 4.8, type: 'sine' as OscillatorType, v: 0.20 },
+        { f: B4, d: 0.8, t: 5.6, type: 'sine' as OscillatorType, v: 0.18 },
+        { f: A4, d: 1.1, t: 6.4, type: 'sine' as OscillatorType, v: 0.19 },
+      ]
+      notes.forEach((n) => this.playNote(n.f, n.d, n.t, n.type, n.v))
+    } else if (t === 'holiday-bells' || t.includes('christmas') || t.includes('bell')) {
+      // Sparkling Holiday Bells
+      const notes = [
+        { f: E4, d: 0.35, t: 0, type: 'sine' as OscillatorType, v: 0.18 },
+        { f: E4, d: 0.35, t: 0.38, type: 'sine' as OscillatorType, v: 0.18 },
+        { f: E4, d: 0.6, t: 0.76, type: 'sine' as OscillatorType, v: 0.20 },
+        { f: E4, d: 0.35, t: 1.45, type: 'sine' as OscillatorType, v: 0.18 },
+        { f: E4, d: 0.35, t: 1.83, type: 'sine' as OscillatorType, v: 0.18 },
+        { f: E4, d: 0.6, t: 2.21, type: 'sine' as OscillatorType, v: 0.20 },
+        { f: E4, d: 0.35, t: 2.9, type: 'sine' as OscillatorType, v: 0.18 },
+        { f: G4, d: 0.35, t: 3.28, type: 'sine' as OscillatorType, v: 0.19 },
+        { f: C4, d: 0.35, t: 3.66, type: 'sine' as OscillatorType, v: 0.17 },
+        { f: D4, d: 0.35, t: 4.04, type: 'sine' as OscillatorType, v: 0.18 },
+        { f: E4, d: 1.0, t: 4.42, type: 'sine' as OscillatorType, v: 0.22 },
+      ]
+      notes.forEach((n) => this.playNote(n.f, n.d, n.t, n.type, n.v))
+    } else if (t === 'corporate-ambient' || t.includes('corporate') || t.includes('business') || t.includes('vcard')) {
+      // Modern Lo-Fi Executive Chords
+      const notes = [
+        { f: D4, d: 1.8, t: 0, type: 'sine' as OscillatorType, v: 0.14 },
+        { f: Fs4, d: 1.8, t: 0.05, type: 'sine' as OscillatorType, v: 0.13 },
+        { f: A4, d: 1.8, t: 0.1, type: 'sine' as OscillatorType, v: 0.13 },
+        { f: C5, d: 1.8, t: 0.15, type: 'sine' as OscillatorType, v: 0.14 },
+        { f: B4, d: 2.0, t: 2.2, type: 'sine' as OscillatorType, v: 0.15 },
+        { f: D5, d: 2.0, t: 2.25, type: 'sine' as OscillatorType, v: 0.14 },
+        { f: G4, d: 2.2, t: 4.5, type: 'sine' as OscillatorType, v: 0.15 },
+      ]
+      notes.forEach((n) => this.playNote(n.f, n.d, n.t, n.type, n.v))
+    } else if (t === 'achievement-brass' || t === 'celebration-party' || t.includes('fanfare') || t.includes('graduation')) {
+      // Triumphant Fanfare
+      const notes = [
+        { f: C4, d: 0.25, t: 0, type: 'triangle' as OscillatorType, v: 0.18 },
+        { f: C4, d: 0.25, t: 0.3, type: 'triangle' as OscillatorType, v: 0.18 },
+        { f: C4, d: 0.25, t: 0.6, type: 'triangle' as OscillatorType, v: 0.18 },
+        { f: F4, d: 0.7, t: 0.9, type: 'sawtooth' as OscillatorType, v: 0.20 },
+        { f: G4, d: 0.4, t: 1.7, type: 'sawtooth' as OscillatorType, v: 0.20 },
+        { f: C5, d: 1.2, t: 2.2, type: 'sawtooth' as OscillatorType, v: 0.24 },
       ]
       notes.forEach((n) => this.playNote(n.f, n.d, n.t, n.type, n.v))
     } else {
