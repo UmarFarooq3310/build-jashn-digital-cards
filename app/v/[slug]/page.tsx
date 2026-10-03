@@ -7,7 +7,7 @@ import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc, updateDoc, increment, onSnapshot } from 'firebase/firestore'
 import { useJashn } from '@/lib/jashn/store'
 import type { VisitingCard } from '@/lib/jashn/types'
-import { shouldIncrementView, isSenderOrOwner } from '@/lib/jashn/view-tracker'
+import { shouldIncrementView, isSenderOrOwner, recordCardView, getCardViews } from '@/lib/jashn/view-tracker'
 import { isCardExpired } from '@/lib/jashn/plan-limits'
 import { VisitingCardView } from '@/components/jashn/visiting-card'
 import { ShareBar } from '@/components/jashn/share-bar'
@@ -44,11 +44,12 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
   const [videoProgress, setVideoProgress] = useState(0)
   const [downloadingQr, setDownloadingQr] = useState(false)
 
-  // Sender/Creator mode: ONLY active if explicitly requested via ?mode=sender or ?role=sender
-  // When visiting clean card URL, always show the full receiver experience (card, navbar, wishes wall, no side box)
+  // Sender/Creator mode: active if explicitly requested via ?mode=sender or ?role=sender, or if viewer is verified creator/owner
   const isSenderMode =
     searchParams.get('mode') === 'sender' ||
     searchParams.get('role') === 'sender'
+
+  const isSender = isSenderMode || (card ? isSenderOrOwner(card.slug, card.creatorId, searchParams, user?.uid, user?.email) : false)
 
   useEffect(() => {
     let unsubscribe: (() => void) | null = null
@@ -62,7 +63,8 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
           viewIncrementedRef.current = slug
           if (shouldIncrementView(slug, 'vcard', storeCard.creatorId, searchParams, user?.uid, user?.email)) {
             incrementVisitingCardView(slug)
-            setCard((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+            recordCardView('vcard', slug, storeCard.creatorId, searchParams, user?.uid, user?.email)
+            setCard((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
           }
         }
         setLoading(false)
@@ -106,7 +108,8 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
               viewIncrementedRef.current = slug
               if (shouldIncrementView(slug, 'vcard', fetchedCard.creatorId, searchParams, user?.uid, user?.email)) {
                 incrementVisitingCardView(slug)
-                setCard((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+                recordCardView('vcard', slug, fetchedCard.creatorId, searchParams, user?.uid, user?.email)
+                setCard((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
               }
             }
             setLoading(false)
@@ -305,6 +308,15 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Eye className="size-3.5 text-[#D4AF37]" /> Interactive Client View
               </span>
+              <Button
+                onClick={handleEdit}
+                variant="outline"
+                size="sm"
+                className="h-7 px-2.5 rounded-lg border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-xs flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer shadow-xs"
+              >
+                <Edit3 className="size-3" />
+                <span>Edit vCard</span>
+              </Button>
             </div>
 
             <div className="w-full flex-1 min-h-0 pt-4 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
@@ -334,7 +346,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
                     <Sparkles className="size-2.5 text-amber-400" /> 1-Click Share Hub
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-zinc-800/90 border border-white/10 px-2 py-0.5 text-[9.5px] font-bold text-zinc-300">
-                    <Eye className="size-2.5 text-emerald-400" /> {card.viewCount || 0} views
+                    <Eye className="size-2.5 text-emerald-400" /> {getCardViews(card)} views
                   </span>
                 </div>
                 <h2 className="text-base sm:text-lg font-black text-white leading-tight">
@@ -430,6 +442,16 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
                   )}
                 </Button>
               </div>
+
+              {/* Edit vCard Details */}
+              <Button
+                onClick={handleEdit}
+                variant="outline"
+                className="w-full h-8.5 rounded-lg border-[#D4AF37]/40 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37] font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer shadow-xs"
+              >
+                <Edit3 className="size-3.5" />
+                <span>Edit vCard Details</span>
+              </Button>
 
               {/* Integrated vCard QR Code (Compact Horizontal Row with Download Icon) */}
               <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2.5">

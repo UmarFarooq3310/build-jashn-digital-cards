@@ -136,3 +136,56 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error?.message || 'Server error' }, { status: 500 })
   }
 }
+
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url)
+    const idsParam = searchParams.get('ids')
+    const db = getAdminDb()
+
+    const statsMap: Record<string, { views: number; copies: number; shares: number; flyers: number; likes: number }> = {}
+
+    if (idsParam) {
+      const ids = idsParam
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .slice(0, 50)
+
+      if (ids.length > 0) {
+        const docRefs = ids.map((id) => db.collection('poetry_stats').doc(id))
+        const docSnaps = await db.getAll(...docRefs).catch(() => [])
+        docSnaps.forEach((docSnap) => {
+          if (docSnap && docSnap.exists) {
+            const data = docSnap.data() || {}
+            statsMap[docSnap.id] = {
+              views: Number(data.views) || 0,
+              copies: Number(data.copies) || 0,
+              shares: Number(data.shares) || 0,
+              flyers: Number(data.flyers) || 0,
+              likes: Number(data.likes) || 0,
+            }
+          }
+        })
+      }
+    } else {
+      const snapshot = await db.collection('poetry_stats').limit(250).get().catch(() => ({ docs: [] } as any))
+      snapshot.docs.forEach((d: any) => {
+        if (d.id === 'summary') return
+        const data = d.data() || {}
+        statsMap[d.id] = {
+          views: Number(data.views) || 0,
+          copies: Number(data.copies) || 0,
+          shares: Number(data.shares) || 0,
+          flyers: Number(data.flyers) || 0,
+          likes: Number(data.likes) || 0,
+        }
+      })
+    }
+
+    return NextResponse.json({ success: true, stats: statsMap })
+  } catch (err: any) {
+    console.warn('Error fetching poetry stats:', err?.message || err)
+    return NextResponse.json({ success: true, stats: {} })
+  }
+}

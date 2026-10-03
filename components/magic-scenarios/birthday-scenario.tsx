@@ -29,6 +29,7 @@ interface ScenarioProps {
   triggerConfetti: () => void
   onSendLove: () => void
   loveSent: boolean
+  isSenderView?: boolean
 }
 
 const BIRTHDAY_SCENES = [
@@ -45,6 +46,7 @@ export function BirthdayScenario({
   triggerConfetti,
   onSendLove,
   loveSent,
+  isSenderView = false,
 }: ScenarioProps) {
   const { t } = useLang()
 
@@ -174,6 +176,11 @@ export function BirthdayScenario({
     setSelectedReaction(emoji)
     spawnBurst([emoji], 12)
     magicAudio.playPop()
+
+    if (isSenderView) {
+      return
+    }
+
     onSendLove()
 
     try {
@@ -514,8 +521,18 @@ export function BirthdayScenario({
 
             {/* Reaction Emojis */}
             <div className="mt-3">
+              {isSenderView && (
+                <div className="mb-2.5 p-2 rounded-xl bg-amber-500/15 border border-amber-400/30 text-center">
+                  <span className="text-[11px] font-bold text-amber-300 flex items-center justify-center gap-1">
+                    🛡️ Sender Preview Mode
+                  </span>
+                  <p className="text-[10px] text-amber-200/80 leading-tight mt-0.5">
+                    Response & RSVP are disabled in preview. Only your recipient can reply.
+                  </p>
+                </div>
+              )}
               <p className="text-[11px] text-[#bbf7d0] mb-1.5">
-                Send a reaction to {data.senderName}:
+                {isSenderView ? `Recipient reaction options for ${data.senderName}:` : `Send a reaction to ${data.senderName}:`}
               </p>
               <div className="flex justify-center gap-2">
                 {['🎂', '💖', '🎉', '🌟', '🥳'].map((emoji) => (
@@ -537,14 +554,20 @@ export function BirthdayScenario({
             </div>
 
             {/* Direct WhatsApp Response Button */}
-            <a
-              href={whatsAppHref}
-              target="_blank"
-              rel="noreferrer"
-              className="w-full mt-3 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md cursor-pointer transition-transform active:scale-95"
-            >
-              <span>Say Thank You on WhatsApp 💬</span>
-            </a>
+            {isSenderView ? (
+              <div className="w-full mt-3 py-2.5 rounded-xl bg-white/10 border border-white/15 text-slate-300 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 opacity-80 cursor-not-allowed select-none">
+                <span>Recipient WhatsApp Reply Button (Preview)</span>
+              </div>
+            ) : (
+              <a
+                href={whatsAppHref}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full mt-3 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md cursor-pointer transition-transform active:scale-95"
+              >
+                <span>Say Thank You on WhatsApp 💬</span>
+              </a>
+            )}
 
             {/* CTA to studio */}
             <Link

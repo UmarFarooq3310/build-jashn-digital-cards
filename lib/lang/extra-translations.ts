@@ -5460,5 +5460,166 @@ export const EXTRA_T: Record<string, Record<LangCode, string>> = {
   },
   livePreviewCapsule: {
     en: "Live Interactive Capsule Preview", ur: "لائیو انٹرایکٹو کیپسول پیش نظارہ", ar: "معاينة حية تفاعلية للكبسولة", es: "Vista Previa Interactiva en Vivo", fr: "Aperçu Interactif en Direct", hi: "लाइव इंटरैक्टिव पूर्वावलोकन", zh: "实时交互微端胶囊预览", pt: "Prévia Interativa ao Vivo", ru: "Живой интерактивный предпросмотр", de: "Interaktive Live-Vorschau", ja: "リアルタイム対話型プレビュー", ko: "실시간 인터랙티브 미리보기", it: "Anteprima Interattiva dal Vivo", tr: "Canlı İnteraktif Önizleme", id: "Pratinjau Interaktif Langsung", bn: "লাইভ ইন্টারেক্টিভ প্রিভিউ", vi: "Xem Trước Tương Tác Trực Tiếp", sw: "Uhakiki wa Moja kwa Moja wa Mwingiliano"
+  },
+
+  // ── Missing UI & Interactive Translation Keys ─────────────────────────────
+  linkCopied: {
+    en: "Link copied to clipboard! 📋", ur: "لنک کاپی ہو گیا! 📋", ar: "تم نسخ الرابط إلى الحافظة! 📋", es: "¡Enlace copiado al portapapeles! 📋", fr: "Lien copié dans le presse-papiers ! 📋", hi: "लिंक क्लिपबोर्ड पर कॉपी हो गया! 📋", zh: "链接已成功复制到剪贴板！📋", pt: "Link copiado! 📋", ru: "Ссылка скопирована! 📋", de: "Link kopiert! 📋", ja: "リンクをコピーしました！📋", ko: "링크가 복사되었습니다! 📋", it: "Link copiato! 📋", tr: "Bağlantı kopyalandı! 📋", id: "Tautan disalin! 📋", bn: "লিঙ্ক কপি হয়েছে! 📋", vi: "Đã sao chép liên kết! 📋", sw: "Kiungo kimenakiliwa! 📋"
+  },
+  dedicatedTo: {
+    en: "Dedicated to", ur: "برائے", ar: "إهداء إلى", es: "Dedicado a", fr: "Dédié à", hi: "समर्पित", zh: "致", pt: "Dedicado a", ru: "Посвящается", de: "Gewidmet für", ja: "宛先：", ko: "받는 분:", it: "Dedicato a", tr: "İthaf:", id: "Didedikasikan untuk", bn: "উৎসর্গ", vi: "Dành tặng", sw: "Imetolewa kwa"
+  },
+  dashboardNav: {
+    en: "Dashboard", ur: "ڈیش بورڈ", ar: "لوحة التحكم", es: "Panel", fr: "Tableau de bord", hi: "डैशबोर्ड", zh: "控制台", pt: "Painel", ru: "Панель", de: "Dashboard", ja: "ダッシュボード", ko: "대시보드", it: "Dashboard", tr: "Panel", id: "Dasbor", bn: "ড্যাশবোর্ড", vi: "Bảng Điều Khiển", sw: "Dashibodi"
+  },
+  navMore: {
+    en: "More", ur: "مزید", ar: "المزيد", es: "Más", fr: "Plus", hi: "अधिक", zh: "更多", pt: "Mais", ru: "Еще", de: "Mehr", ja: "その他", ko: "더보기", it: "Altro", tr: "Daha Fazla", id: "Lainnya", bn: "আরও", vi: "Thêm", sw: "Zaidi"
+  },
+  optional: {
+    en: "(Optional)", ur: "(اختیاری)", ar: "(اختياري)", es: "(Opcional)", fr: "(Optionnel)", hi: "(वैकल्पिक)", zh: "(选填)", pt: "(Opcional)", ru: "(Необязательно)", de: "(Optional)", ja: "(任意)", ko: "(선택 사항)", it: "(Opzionale)", tr: "(İsteğe bağlı)", id: "(Opsional)", bn: "(ঐচ্ছিক)", vi: "(Không bắt buộc)", sw: "(Hiari)"
+  },
+  generateWithAi: {
+    en: "Generate with AI ✨", ur: "AI سے تیار کریں ✨", ar: "إنشاء بالذكاء الاصطناعي ✨", es: "Generar con IA ✨", fr: "Générer avec l'IA ✨", hi: "AI से बनाएं ✨", zh: "AI 智能生成 ✨", pt: "Gerar com IA ✨", ru: "Создать с ИИ ✨", de: "Mit KI generieren ✨", ja: "AIで生成 ✨", ko: "AI로 생성 ✨", it: "Genera con IA ✨", tr: "Yapay Zeka ile Oluştur ✨", id: "Buat dengan AI ✨", bn: "AI দিয়ে তৈরি করুন ✨", vi: "Tạo bằng AI ✨", sw: "Tengeneza kwa AI ✨"
+  },
+  searchOccasions: {
+    en: "Search occasions...", ur: "مناسبت تلاش کریں...", ar: "ابحث عن المناسبة...", es: "Buscar ocasiones...", fr: "Rechercher des occasions...", hi: "अवसर खोजें...", zh: "搜索场合...", pt: "Buscar ocasiões...", ru: "Поиск поводов...", de: "Anlässe suchen...", ja: "機会を検索...", ko: "행사 검색...", it: "Cerca occasioni...", tr: "Etkinlik ara...", id: "Cari acara...", bn: "উপলক্ষ খুঁজুন...", vi: "Tìm kiếm dịp...", sw: "Tafuta matukio..."
+  },
+  businessAddress: {
+    en: "Office / Business Address", ur: "دفتری پتہ", ar: "عنوان المكتب / الشركة", es: "Dirección de la Oficina", fr: "Adresse du Bureau", hi: "कार्यालय का पता", zh: "办公 / 公司地址", pt: "Endereço Comercial", ru: "Адрес офиса", de: "Büroadresse", ja: "オフィス住所", ko: "사무실 주소", it: "Indirizzo Ufficio", tr: "İş Adresi", id: "Alamat Kantor", bn: "অফিসের ঠিকানা", vi: "Địa chỉ văn phòng", sw: "Anwani ya Ofisi"
+  },
+  cardUpdatedSuccess: {
+    en: "Card updated successfully!", ur: "کارڈ کامیابی سے اپ ڈیٹ ہو گیا!", ar: "تم تحديث البطاقة بنجاح!", es: "¡Tarjeta actualizada con éxito!", fr: "Carte mise à jour avec succès !", hi: "कार्ड सफलतापूर्वक अपडेट हो गया!", zh: "名片更新成功！", pt: "Cartão atualizado com sucesso!", ru: "Карта успешно обновлена!", de: "Karte erfolgreich aktualisiert!", ja: "カードが更新されました！", ko: "카드가 성공적으로 업데이트되었습니다!", it: "Biglietto aggiornato!", tr: "Kart başarıyla güncellendi!", id: "Kartu berhasil diperbarui!", bn: "কার্ড সফলভাবে আপডেট হয়েছে!", vi: "Đã cập nhật thiệp thành công!", sw: "Kadi imesasishwa!"
+  },
+  cardMusicLabel: {
+    en: "Background Music", ur: "پس منظر موسیقی", ar: "الموسيقى الخلفية", es: "Música de Fondo", fr: "Musique de Fond", hi: "पृष्ठभूमि संगीत", zh: "背景音乐", pt: "Música de Fundo", ru: "Фоновая музыка", de: "Hintergrundmusik", ja: "BGM（音楽）", ko: "배경 음악", it: "Musica di Sottofondo", tr: "Arka Plan Müziği", id: "Musik Latar", bn: "ব্যাকগ্রাউন্ড মিউজিক", vi: "Nhạc Nền", sw: "Muziki wa Chini"
+  },
+  executiveProfileBack: {
+    en: "Back Side", ur: "پشت پر جائیں", ar: "الجهة الخلفية", es: "Reverso", fr: "Verso", hi: "पिछला भाग", zh: "名片背面", pt: "Verso", ru: "Оборотная сторона", de: "Rückseite", ja: "裏面", ko: "뒷면", it: "Retro", tr: "Arka Yüz", id: "Bagian Belakang", bn: "পেছনের অংশ", vi: "Mặt sau", sw: "Upande wa Nyuma"
+  },
+  flipToFront: {
+    en: "Flip to Front", ur: "سامنے والا رخ دیکھیں", ar: "الوجه الأمامي", es: "Voltear al Frente", fr: "Tourner vers l'avant", hi: "सामने पलटें", zh: "翻至正面", pt: "Frente", ru: "На лицевую сторону", de: "Zur Vorderseite", ja: "前面へ戻る", ko: "앞면으로 돌리기", it: "Gira sul fronte", tr: "Ön Yüze Dön", id: "Balik ke Depan", bn: "সামনে দেখুন", vi: "Lật ra mặt trước", sw: "Pindua Mbele"
+  },
+  front: {
+    en: "Front", ur: "سامنے", ar: "الجهة الأمامية", es: "Frente", fr: "Recto", hi: "सामने", zh: "正面", pt: "Frente", ru: "Лицевая", de: "Vorderseite", ja: "前面", ko: "앞면", it: "Fronte", tr: "Ön", id: "Depan", bn: "সামনে", vi: "Mặt trước", sw: "Mbele"
+  },
+  saveContactToPhone: {
+    en: "Save Contact to Phone (.vcf)", ur: "رابطہ فون میں محفوظ کریں (.vcf)", ar: "حفظ جهة الاتصال في الهاتف (.vcf)", es: "Guardar Contacto en el Teléfono (.vcf)", fr: "Enregistrer le Contact (.vcf)", hi: "फोन में संपर्क सहेजें (.vcf)", zh: "保存联系人至手机通讯录 (.vcf)", pt: "Salvar Contato no Telefone (.vcf)", ru: "Сохранить контакт в телефон (.vcf)", de: "Kontakt im Telefon speichern (.vcf)", ja: "連絡先を保存 (.vcf)", ko: "연락처 휴대폰에 저장 (.vcf)", it: "Salva Contatto (.vcf)", tr: "Kişiyi Telefona Kaydet (.vcf)", id: "Simpan Kontak ke HP (.vcf)", bn: "ফোনে সেভ করুন (.vcf)", vi: "Lưu Liên Hệ Vào Điện Thoại (.vcf)", sw: "Hifadhi Mawasiliano (.vcf)"
+  },
+  scanQrCameraTip: {
+    en: "Scan with camera to view & save contact", ur: "کیمرے سے کیو آر اسکین کر کے رابطہ محفوظ کریں", ar: "امسح بالكاميرا لحفظ جهة الاتصال", es: "Escanea con la cámara para ver y guardar", fr: "Scannez avec la caméra pour enregistrer", hi: "संपर्क सहेजने के लिए कैमरा से स्कैन करें", zh: "使用手机相机扫码一键保存联系人", pt: "Escaneie com a câmera para salvar", ru: "Сканируйте камерой для сохранения", de: "Mit Kamera scannen zum Speichern", ja: "カメラでQRを読み取って連絡先を保存", ko: "카메라로 스캔하여 연락처를 저장하세요", it: "Scansiona con la fotocamera", tr: "Kişiyi kaydetmek için kamerayla tara", id: "Pindai dengan kamera untuk simpan kontak", bn: "যোগাযোগ সংরক্ষণ করতে স্ক্যান করুন", vi: "Quét bằng máy ảnh để lưu liên hệ", sw: "Skeni kwa kamera ili kuhifadhi"
+  },
+  scanQrDigitalProfile: {
+    en: "Scan Digital Profile", ur: "ڈیجیٹل پروفائل اسکین کریں", ar: "امسح الملف الرقمي", es: "Escanear Perfil Digital", fr: "Scanner le Profil Numérique", hi: "डिजिटल प्रोफाइल स्कैन करें", zh: "扫描数字名片", pt: "Escanear Perfil Digital", ru: "Сканировать цифровой профиль", de: "Digitales Profil scannen", ja: "デジタルプロフィールをスキャン", ko: "디지털 프로필 스캔", it: "Scansiona Profilo Digitale", tr: "Dijital Profili Tara", id: "Pindai Profil Digital", bn: "ডিজিটাল প্রোফাইল স্ক্যান", vi: "Quét Hồ Sơ Kỹ Thuật Số", sw: "Skeni Wasifu wa Dijitali"
+  },
+  viewQr: {
+    en: "View QR", ur: "کیو آر دیکھیں", ar: "عرض رمز QR", es: "Ver QR", fr: "Voir le QR", hi: "QR देखें", zh: "查看二维码", pt: "Ver QR", ru: "Смотреть QR", de: "QR ansehen", ja: "QRを表示", ko: "QR 보기", it: "Vedi QR", tr: "QR Görüntüle", id: "Lihat QR", bn: "QR দেখুন", vi: "Xem QR", sw: "Tazama QR"
+  },
+  shareViaApps: {
+    en: "Share via Other Apps", ur: "دیگر ایپس پر شیئر کریں", ar: "مشاركة عبر تطبيقات أخرى", es: "Compartir vía otras apps", fr: "Partager via d'autres applications", hi: "अन्य ऐप्स के जरिए साझा करें", zh: "通过其他应用分享", pt: "Compartilhar por outros apps", ru: "Поделиться через другие приложения", de: "Über andere Apps teilen", ja: "他のアプリでシェア", ko: "다른 앱으로 공유", it: "Condividi su altre app", tr: "Diğer Uygulamalarla Paylaş", id: "Bagikan via Aplikasi Lain", bn: "অন্যান্য অ্যাপে শেয়ার করুন", vi: "Chia sẻ qua các ứng dụng khác", sw: "Shiriki kupitia Programu Nyingine"
+  },
+  btnClose: {
+    en: "Close", ur: "بند کریں", ar: "إغلاق", es: "Cerrar", fr: "Fermer", hi: "बंद करें", zh: "关闭", pt: "Fechar", ru: "Закрыть", de: "Schließen", ja: "閉じる", ko: "닫기", it: "Chiudi", tr: "Kapat", id: "Tutup", bn: "বন্ধ করুন", vi: "Đóng", sw: "Funga"
+  },
+  loginSuccessToast: {
+    en: "Logged in successfully! Welcome back", ur: "کامیابی کے ساتھ لاگ ان ہو گئے! خوش آمدید", ar: "تم تسجيل الدخول بنجاح! مرحباً بعودتك", es: "¡Sesión iniciada con éxito! Bienvenido", fr: "Connexion réussie ! Bon retour", hi: "सफलतापूर्वक लॉगिन हो गया!", zh: "登录成功！欢迎回来", pt: "Login realizado com sucesso!", ru: "Вход выполнен успешно!", de: "Erfolgreich angemeldet! Willkommen zurück", ja: "ログインに成功しました！おかえりなさい", ko: "로그인 성공! 환영합니다", it: "Accesso effettuato con successo!", tr: "Giriş başarılı! Hoş geldiniz", id: "Berhasil masuk! Selamat datang kembali", bn: "সফলভাবে লগইন হয়েছে!", vi: "Đăng nhập thành công!", sw: "Umeingia kwa mafanikio!"
+  },
+  accountCreatedSuccessToast: {
+    en: "Account created successfully! Welcome", ur: "اکاؤنٹ کامیابی سے بن گیا! خوش آمدید", ar: "تم إنشاء الحساب بنجاح! مرحباً بك", es: "¡Cuenta creada con éxito! Bienvenido", fr: "Compte créé avec succès ! Bienvenue", hi: "खाता सफलतापूर्वक बन गया!", zh: "账号创建成功！欢迎使用", pt: "Conta criada com sucesso!", ru: "Аккаунт успешно создан!", de: "Konto erfolgreich erstellt! Willkommen", ja: "アカウントが作成されました！", ko: "계정이 생성되었습니다! 환영합니다", it: "Account creato con successo!", tr: "Hesap başarıyla oluşturuldu!", id: "Akun berhasil dibuat!", bn: "অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!", vi: "Đã tạo tài khoản thành công!", sw: "Akaunti imeundwa kwa mafanikio!"
+  },
+  googleSuccessToast: {
+    en: "Signed in with Google successfully!", ur: "گوگل کے ذریعے کامیابی سے لاگ ان ہو گئے!", ar: "تم تسجيل الدخول عبر Google بنجاح!", es: "¡Sesión iniciada con Google!", fr: "Connecté avec Google avec succès !", hi: "Google से सफलतापूर्वक साइन इन हुआ!", zh: "Google 快捷登录成功！", pt: "Login com Google realizado!", ru: "Вход через Google успешен!", de: "Erfolgreich mit Google angemeldet!", ja: "Googleでログインしました！", ko: "Google 로그인 성공!", it: "Accesso con Google riuscito!", tr: "Google ile giriş başarılı!", id: "Berhasil masuk dengan Google!", bn: "Google দিয়ে সফলভাবে সাইন ইন হয়েছে!", vi: "Đăng nhập bằng Google thành công!", sw: "Umeingia kwa Google kwa mafanikio!"
+  },
+  invalidEmailOrPassword: {
+    en: "Invalid email or password.", ur: "غلط ای میل یا پاس ورڈ درج کیا گیا ہے۔", ar: "البريد الإلكتروني أو كلمة المرور غير صحيحة.", es: "Correo o contraseña no válidos.", fr: "E-mail ou mot de passe invalide.", hi: "अमान्य ईमेल या पासवर्ड।", zh: "邮箱或密码错误。", pt: "E-mail ou senha inválidos.", ru: "Неверный email или пароль.", de: "Ungültige E-Mail-Adresse oder Passwort.", ja: "メールアドレスまたはパスワードが無効です。", ko: "이메일 또는 비밀번호가 올바르지 않습니다.", it: "Email o password non validi.", tr: "Geçersiz e-posta veya şifre.", id: "Email atau kata sandi tidak valid.", bn: "ভুল ইমেল বা পাসওয়ার্ড।", vi: "Email hoặc mật khẩu không hợp lệ.", sw: "Barua pepe au nenosiri si sahihi."
+  },
+  poetryVersesRequired: {
+    en: "Please enter poetry verses.", ur: "براہ کرم شاعری کے اشعار درج کریں۔", ar: "يرجى إدخال أبيات الشعر.", es: "Por favor, ingresa los versos de poesía.", fr: "Veuillez saisir les vers de poésie.", hi: "कृपया शायरी की पंक्तियाँ दर्ज करें।", zh: "请输入诗歌诗句。", pt: "Por favor, insira os versos de poesia.", ru: "Пожалуйста, введите стихи.", de: "Bitte geben Sie Gedichtverse ein.", ja: "詩句を入力してください。", ko: "시 구절을 입력해 주세요.", it: "Inserisci i versi della poesia.", tr: "Lütfen şiir dizelerini girin.", id: "Silakan masukkan bait puisi.", bn: "দয়া করে কবিতার শের লিখুন।", vi: "Vui lòng nhập các câu thơ.", sw: "Tafadhali ingiza mistari ya mashairi."
+  },
+  recipientOrDedicationRequired: {
+    en: "Please enter recipient name or dedication.", ur: "براہ کرم وصول کنندہ یا انتساب کا نام درج کریں۔", ar: "يرجى إدخال اسم المستلم أو الإهداء.", es: "Por favor, ingresa el destinatario o dedicación.", fr: "Veuillez entrer le destinataire ou la dédicace.", hi: "कृपया प्राप्तकर्ता या समर्पण का नाम दर्ज करें।", zh: "请输入收件人或献词。", pt: "Por favor, insira o destinatário ou dedicação.", ru: "Укажите имя получателя или посвящение.", de: "Bitte Empfänger oder Widmung eingeben.", ja: "受取人名または献辞を入力してください。", ko: "수신인 이름 또는 헌사를 입력해 주세요.", it: "Inserisci il destinatario o la dedica.", tr: "Lütfen alıcı adı veya ithaf girin.", id: "Masukkan nama penerima atau dedikasi.", bn: "দয়া করে প্রাপকের নাম বা উৎসর্গ লিখুন।", vi: "Vui lòng nhập tên người nhận hoặc lời đề tặng.", sw: "Tafadhali ingiza jina la mpokeaji au maelezo."
+  },
+  magicLinkCreatedSuccess: {
+    en: "Magic Link created successfully!", ur: "میجک لنک کامیابی سے بن گیا!", ar: "تم إنشاء الرابط السحري بنجاح!", es: "¡Enlace Mágico creado con éxito!", fr: "Lien Magique créé avec succès !", hi: "मैजिक लिंक सफलतापूर्वक बनाया गया!", zh: "魔法链接创建成功！", pt: "Link Mágico criado com sucesso!", ru: "Волшебная ссылка создана!", de: "Magic Link erfolgreich erstellt!", ja: "マジックリンクが作成されました！", ko: "매직 링크가 생성되었습니다!", it: "Link Magico creato!", tr: "Sihirli Bağlantı oluşturuldu!", id: "Tautan Ajaib berhasil dibuat!", bn: "ম্যাজিক লিঙ্ক তৈরি হয়েছে!", vi: "Đã tạo Liên Kết Kỳ Diệu thành công!", sw: "Kiungo cha Kichawi kimeundwa!"
+  },
+  magicLinkUpdatedSuccess: {
+    en: "Magic Link updated successfully!", ur: "میجک لنک کامیابی سے اپ ڈیٹ ہو گیا!", ar: "تم تحديث الرابط السحري بنجاح!", es: "¡Enlace Mágico actualizado con éxito!", fr: "Lien Magique mis à jour !", hi: "मैजिक लिंक सफलतापूर्वक अपडेट हुआ!", zh: "魔法链接更新成功！", pt: "Link Mágico atualizado!", ru: "Волшебная ссылка обновлена!", de: "Magic Link erfolgreich aktualisiert!", ja: "マジックリンクが更新されました！", ko: "매직 링크가 업데이트되었습니다!", it: "Link Magico aggiornato!", tr: "Sihirli Bağlantı güncellendi!", id: "Tautan Ajaib berhasil diperbarui!", bn: "ম্যাজিক লিঙ্ক আপডেট হয়েছে!", vi: "Đã cập nhật Liên Kết Kỳ Diệu!", sw: "Kiungo cha Kichawi kimesasishwa!"
+  },
+  magicLinkCreateError: {
+    en: "Failed to create Magic Link. Please try again.", ur: "میجک لنک بنانے میں خرابی۔ دوبارہ کوشش کریں۔", ar: "فشل إنشاء الرابط السحري. حاول مجدداً.", es: "Error al crear el Enlace Mágico.", fr: "Échec de création du Lien Magique.", hi: "मैजिक लिंक बनाने में विफल।", zh: "创建魔法链接失败，请重试。", pt: "Falha ao criar o Link Mágico.", ru: "Ошибка создания волшебной ссылки.", de: "Fehler beim Erstellen des Magic Links.", ja: "マジックリンクの作成に失敗しました。", ko: "매직 링크 생성 실패. 다시 시도해 주세요.", it: "Errore durante la creazione del Link Magico.", tr: "Sihirli Bağlantı oluşturulamadı.", id: "Gagal membuat Tautan Ajaib.", bn: "ম্যাজিক লিঙ্ক তৈরিতে ব্যর্থ হয়েছে।", vi: "Tạo Liên Kết Kỳ Diệu thất bại.", sw: "Imeshindwa kuunda Kiungo cha Kichawi."
+  },
+  magicLinkNotFoundTitle: {
+    en: "Magic Link Not Found", ur: "میجک لنک دستیاب نہیں", ar: "الرابط السحري غير موجود", es: "Enlace Mágico No Encontrado", fr: "Lien Magique Introuvable", hi: "मैजिक लिंक नहीं मिला", zh: "魔法链接未找到", pt: "Link Mágico Não Encontrado", ru: "Волшебная ссылка не найдена", de: "Magic Link nicht gefunden", ja: "マジックリンクが見つかりません", ko: "매직 링크를 찾을 수 없습니다", it: "Link Magico Non Trovato", tr: "Sihirli Bağlantı Bulunamadı", id: "Tautan Ajaib Tidak Ditemukan", bn: "ম্যাজিক লিঙ্ক পাওয়া যায়নি", vi: "Không Tìm Thấy Liên Kết Kỳ Diệu", sw: "Kiungo cha Kichawi Hakikupatikana"
+  },
+  magicLinkNotFoundDesc: {
+    en: "This surprise link has expired or is invalid.", ur: "یہ سرپرائز لنک ختم ہو چکا ہے یا لنک درست نہیں ہے۔", ar: "هذا الرابط منتهي الصلاحية أو غير صالح.", es: "Este enlace ha caducado o no es válido.", fr: "Ce lien a expiré ou est invalide.", hi: "यह लिंक समाप्त हो गया है या अमान्य है।", zh: "该惊喜链接已过期或无效。", pt: "Este link expirou ou é inválido.", ru: "Срок действия ссылки истек или она недействительна.", de: "Dieser Link ist abgelaufen oder ungültig.", ja: "このサプライズリンクは期限切れか無効です。", ko: "이 링크는 만료되었거나 올바르지 않습니다.", it: "Questo link è scaduto o non è valido.", tr: "Bu bağlantının süresi dolmuş veya geçersiz.", id: "Tautan kejutan ini telah kedaluwarsa atau tidak valid.", bn: "এই সারপ্রাইজ লিঙ্কটির মেয়াদ শেষ বা ভুল।", vi: "Liên kết này đã hết hạn hoặc không hợp lệ.", sw: "Kiungo hiki kimeisha muda wake au si sahihi."
+  },
+  magicWhatsAppLabel: {
+    en: "WhatsApp Number", ur: "واٹس ایپ نمبر", ar: "رقم الواتساب", es: "Número de WhatsApp", fr: "Numéro WhatsApp", hi: "व्हाट्सएप नंबर", zh: "WhatsApp 号码", pt: "Número do WhatsApp", ru: "Номер WhatsApp", de: "WhatsApp-Nummer", ja: "WhatsApp番号", ko: "WhatsApp 번호", it: "Numero WhatsApp", tr: "WhatsApp Numarası", id: "Nomor WhatsApp", bn: "হোয়াটসঅ্যাপ নম্বর", vi: "Số WhatsApp", sw: "Nambari ya WhatsApp"
+  },
+  magicWhatsAppHelp: {
+    en: "Enter WhatsApp number for view notifications", ur: "ویو نوٹیفکیشن کے لیے اپنا واٹس ایپ نمبر درج کریں", ar: "أدخل رقم الواتساب لإشعارات المشاهدة", es: "Ingresa tu WhatsApp para notificaciones de vista", fr: "Entrez votre numéro pour les notifications", hi: "व्यू सूचनाओं के लिए व्हाट्सएप नंबर दर्ज करें", zh: "输入 WhatsApp 号码以接收被查阅通知", pt: "Insira o WhatsApp para notificações", ru: "Введите WhatsApp для уведомлений о просмотре", de: "WhatsApp für Benachrichtigungen eingeben", ja: "閲覧通知を受け取るWhatsApp番号を入力", ko: "열람 알림을 받을 WhatsApp 번호 입력", it: "Inserisci WhatsApp per le notifiche", tr: "Görüntüleme bildirimi için WhatsApp girin", id: "Masukkan nomor WhatsApp untuk notifikasi", bn: "ভিউ নোটিফিকেশনের জন্য নম্বর লিখুন", vi: "Nhập số WhatsApp để nhận thông báo đã xem", sw: "Ingiza nambari kwa arifa za kutazamwa"
+  },
+  whatsappNumberInvalid: {
+    en: "Please enter a valid WhatsApp number.", ur: "درست واٹس ایپ نمبر درج کریں۔", ar: "يرجى إدخال رقم واتساب صحيح.", es: "Por favor, ingresa un WhatsApp válido.", fr: "Veuillez entrer un numéro WhatsApp valide.", hi: "कृपया एक वैध व्हाट्सएप नंबर दर्ज करें।", zh: "请输入有效的 WhatsApp 号码。", pt: "Insira um número válido.", ru: "Введите корректный номер WhatsApp.", de: "Bitte gültige WhatsApp-Nummer eingeben.", ja: "有効なWhatsApp番号を入力してください。", ko: "유효한 WhatsApp 번호를 입력하세요.", it: "Inserisci un numero WhatsApp valido.", tr: "Lütfen geçerli bir WhatsApp numarası girin.", id: "Masukkan nomor WhatsApp yang valid.", bn: "সঠিক হোয়াটসঅ্যাপ নম্বর লিখুন।", vi: "Vui lòng nhập số WhatsApp hợp lệ.", sw: "Tafadhali ingiza nambari halali ya WhatsApp."
+  },
+  liveCountdownTitle: {
+    en: "Live Countdown Timer", ur: "لائیو کاؤنٹ ڈاؤن ٹائمر", ar: "عداد تنازلي مباشر", es: "Temporizador de Cuenta Regresiva", fr: "Compte à Rebours en Direct", hi: "लाइव उलटी गिनती घड़ी", zh: "实时倒计时计时器", pt: "Contagem Regressiva ao Vivo", ru: "Обратный отсчет в реальном времени", de: "Live-Countdown-Timer", ja: "リアルタイム・カウントダウン", ko: "실시간 카운트다운 타이머", it: "Conto alla Rovescia dal Vivo", tr: "Canlı Geri Sayım Sayacı", id: "Penghitung Waktu Mundur Langsung", bn: "লাইভ কাউন্টডাউন টাইমার", vi: "Đồng Hồ Đếm Ngược Trực Tiếp", sw: "Kipima Muda cha Moja kwa Moja"
+  },
+  liveCountdownDesc: {
+    en: "Real-time countdown to your special event", ur: "تقریب کے دن اور گھنٹوں کا لائیو کاؤنٹ ڈاؤن", ar: "عد تنازلي مباشر حتى موعد مناسبتك الخاصة", es: "Cuenta regresiva en vivo para tu evento especial", fr: "Compte à rebours en temps réel pour votre événement", hi: "आपके विशेष आयोजन के लिए लाइव उलटी गिनती", zh: "为您重大活动准备的实时倒计时", pt: "Contagem regressiva em tempo real para seu evento", ru: "Таймер обратного отсчета до вашего праздника", de: "Echtzeit-Countdown zu Ihrem Event", ja: "特別なイベントまでのリアルタイムカウントダウン", ko: "특별한 행사까지의 실시간 카운트다운", it: "Conto alla rovescia in tempo reale per il tuo evento", tr: "Özel etkinliğinize canlı geri sayım", id: "Hitung mundur langsung ke acara spesial Anda", bn: "আপনার বিশেষ অনুষ্ঠানের লাইভ কাউন্টডাউন", vi: "Đếm ngược thời gian thực đến sự kiện đặc biệt của bạn", sw: "Muda uliosalia wa tukio lako maalum"
+  },
+  liveRsvpsCountdown: {
+    en: "Live RSVPs & Countdown", ur: "لائیو آر ایس وی پی اور کاؤنٹ ڈاؤن", ar: "تأكيد الحضور والعد التنازلي", es: "RSVP en Vivo y Cuenta Regresiva", fr: "RSVP en Direct & Compte à Rebours", hi: "लाइव RSVP और उलटी गिनती", zh: "实时 RSVP 回执与倒计时", pt: "RSVP e Contagem Regressiva", ru: "RSVP и обратный отсчет", de: "Live-RSVP & Countdown", ja: "リアルタイムRSVP＆カウントダウン", ko: "실시간 RSVP 및 카운트다운", it: "RSVP dal vivo e conto alla rovescia", tr: "Canlı RSVP ve Geri Sayım", id: "RSVP Langsung & Hitung Mundur", bn: "লাইভ RSVP ও কাউন্টডাউন", vi: "RSVP & Đếm Ngược Trực Tiếp", sw: "RSVP ya Moja kwa Moja na Muda"
+  },
+  featLiveReactions: {
+    en: "Live Guest Reactions & Love", ur: "لائیو ردعمل اور مبارکبادیں", ar: "تفاعلات وتهاني الضيوف المباشرة", es: "Reacciones y Amor de los Invitados en Vivo", fr: "Réactions et Vœux en Direct", hi: "मेहमानों की लाइव प्रतिक्रियाएं", zh: "来宾实时点赞互动与真情祝福", pt: "Reações dos Convidados ao Vivo", ru: "Живые реакции и поздравления гостей", de: "Live-Gästereaktionen & Glückwünsche", ja: "ゲストのリアルタイムな反応とお祝い", ko: "하객 실시간 반응 및 축하 메시지", it: "Reazioni e auguri degli ospiti in tempo reale", tr: "Canlı Misafir Tepkileri ve Sevgi", id: "Reaksi & Ucapan Tamu Langsung", bn: "অতিথিদের লাইভ প্রতিক্রিয়া ও ভালোবাসা", vi: "Phản Hồi & Lời Chúc Của Khách Trực Tiếp", sw: "Majibu na Upendo wa Wageni wa Moja kwa Moja"
+  },
+  rsvpPlusCountdownBadge: {
+    en: "RSVP + Countdown", ur: "آر ایس وی پی + کاؤنٹ ڈاؤن", ar: "تأكيد الحضور + العد التنازلي", es: "RSVP + Cuenta Regresiva", fr: "RSVP + Compte à Rebours", hi: "RSVP + उलटी गिनती", zh: "回执确认 + 倒计时", pt: "RSVP + Contagem", ru: "RSVP + Отсчет", de: "RSVP + Countdown", ja: "RSVP＋カウントダウン", ko: "RSVP + 카운트다운", it: "RSVP + Conto alla Rovescia", tr: "RSVP + Geri Sayım", id: "RSVP + Hitung Mundur", bn: "RSVP + কাউন্টডাউন", vi: "RSVP + Đếm Ngược", sw: "RSVP + Muda"
+  },
+  tableHeaderTitle: {
+    en: "Plan Feature Comparison", ur: "پلانز کا تفصیلی موازنہ", ar: "مقارنة مميزات الباقات", es: "Comparación de Planes", fr: "Comparatif des Formules", hi: "योजनाओं की तुलना", zh: "版本功能对比", pt: "Comparação de Recursos", ru: "Сравнение возможностей тарифов", de: "Vergleich der Tarif-Funktionen", ja: "プラン機能の比較", ko: "플랜 기능 비교", it: "Confronto Funzionalità", tr: "Plan Özellik Karşılaştırması", id: "Perbandingan Fitur Paket", bn: "প্ল্যান ফিচারের তুলনা", vi: "So Sánh Tính Năng Gói", sw: "Ulinganisho wa Vipengele vya Mpango"
+  },
+  rowFreeRetention: {
+    en: "30 Days Active", ur: "30 دن فعال", ar: "نشط لمدة 30 يوماً", es: "30 días activo", fr: "Actif pendant 30 jours", hi: "30 दिन सक्रिय", zh: "链接有效期 30 天", pt: "Ativo por 30 dias", ru: "Активно 30 дней", de: "30 Tage aktiv", ja: "30日間有効", ko: "30일간 활성", it: "Attivo per 30 giorni", tr: "30 Gün Aktif", id: "Aktif 30 Hari", bn: "৩০ দিন সক্রিয়", vi: "Hoạt động trong 30 ngày", sw: "Inafanya kazi siku 30"
+  },
+  rowProRetention: {
+    en: "Keep Forever (Lifetime)", ur: "ہمیشہ کے لیے محفوظ (لائف ٹائم)", ar: "دائم مدى الحياة", es: "Para siempre (de por vida)", fr: "À vie (permanent)", hi: "आजीवन सुरक्षित", zh: "永久保存（终身有效）", pt: "Para sempre (vitalício)", ru: "Навсегда (бессрочно)", de: "Für immer behalten (lebenslang)", ja: "無期限保存（永久）", ko: "평생 영구 보관", it: "Per sempre (a vita)", tr: "Sonsuza Kadar Sakla (Ömür Boyu)", id: "Simpan Selamanya (Seumur Hidup)", bn: "চিরতরে সংরক্ষিত (আজীবন)", vi: "Lưu giữ mãi mãi (Trọn đời)", sw: "Baki Milele (Maisha)"
+  },
+  rowFreeLimit: {
+    en: "5 Free Cards Each", ur: "5 کارڈز فی کیٹیگری مفت", ar: "5 بطاقات مجانية لكل فئة", es: "5 tarjetas gratis de cada una", fr: "5 cartes gratuites par catégorie", hi: "प्रत्येक श्रेणी में 5 मुफ्त कार्ड", zh: "每个类别各含 5 张免费卡", pt: "5 cartões gratuitos de cada", ru: "По 5 бесплатных карт в категории", de: "Je 5 kostenlose Karten", ja: "各カテゴリ5枚まで無料", ko: "각 카테고리별 5장 무료", it: "5 biglietti gratuiti ciascuno", tr: "Her kategori için 5 ücretsiz kart", id: "Masing-masing 5 kartu gratis", bn: "প্রতি ক্যাটাগরিতে ৫টি ফ্রি কার্ড", vi: "5 thiệp miễn phí mỗi loại", sw: "Kadi 5 za bure kila aina"
+  },
+  rowProLimit: {
+    en: "Unlimited Everything", ur: "لامحدود کارڈز اور لنکس", ar: "غير محدود بالكامل", es: "Todo ilimitado", fr: "Tout illimité", hi: "सब कुछ असीमित", zh: "尊享无限量制作与发送", pt: "Tudo ilimitado", ru: "Полный безлимит", de: "Alles unbegrenzt", ja: "すべて無制限", ko: "모든 기능 무제한", it: "Tutto illimitato", tr: "Her Şey Sınırsız", id: "Semua Tanpa Batas", bn: "সবকিছু আনলিমিটেড", vi: "Không giới hạn mọi thứ", sw: "Kila Kitu Bila Kikomo"
+  },
+  rowFreeWatermark: {
+    en: "With Cardzy Watermark", ur: "کارڈزی واٹر مارک کے ساتھ", ar: "مع العلامة المائية", es: "Con marca de agua de Cardzy", fr: "Avec filigrane Cardzy", hi: "Cardzy वॉटरमार्क के साथ", zh: "带有 Cardzy 水印", pt: "Com marca d'água", ru: "С водяным знаком Cardzy", de: "Mit Cardzy-Wasserzeichen", ja: "Cardzy透かし入り", ko: "Cardzy 워터마크 포함", it: "Con filigrana Cardzy", tr: "Cardzy Filigranlı", id: "Dengan Watermark Cardzy", bn: "Cardzy ওয়াটারমার্ক সহ", vi: "Có hình mờ Cardzy", sw: "Na Watermark ya Cardzy"
+  },
+  rowProWatermark: {
+    en: "Zero Watermark (100% White-Label)", ur: "واٹر مارک کے بغیر (100% اپنا برانڈ)", ar: "بدون علامة مائية (100% خاص بك)", es: "Sin marca de agua (100% marca blanca)", fr: "Zéro filigrane (100% marque blanche)", hi: "बिना वॉटरमार्क (100% अपना)", zh: "完全去除水印（100% 纯净白标）", pt: "Zero marca d'água (100% personalizado)", ru: "Без водяных знаков (100% чистый)", de: "Ohne Wasserzeichen (100% White-Label)", ja: "透かしなし（完全オリジナル）", ko: "워터마크 완전 제거 (100% 화이트라벨)", it: "Nessuna filigrana (100% White-Label)", tr: "Filigransız (100% Özel)", id: "Tanpa Watermark (100% Murni)", bn: "ওয়াটারমার্ক ছাড়া (১০০% নিজস্ব)", vi: "Không hình mờ (100% Nhãn trắng)", sw: "Bila Watermark (100% Yako)"
+  },
+  rowInviteFeat1: {
+    en: "WhatsApp RSVP Tracking", ur: "واٹس ایپ آر ایس وی پی ٹریکنگ", ar: "تتبع تأكيد الحضور عبر واتساب", es: "Seguimiento de RSVP por WhatsApp", fr: "Suivi RSVP via WhatsApp", hi: "व्हाट्सएप RSVP ट्रैकिंग", zh: "WhatsApp 实时 RSVP 签到回执", pt: "Rastreamento RSVP no WhatsApp", ru: "Отслеживание RSVP через WhatsApp", de: "WhatsApp-RSVP-Tracking", ja: "WhatsApp RSVP追跡", ko: "WhatsApp RSVP 참석 여부 확인", it: "Tracciamento RSVP WhatsApp", tr: "WhatsApp RSVP Takibi", id: "Pelacakan RSVP WhatsApp", bn: "হোয়াটসঅ্যাপ RSVP ট্র্যাকিং", vi: "Theo dõi RSVP qua WhatsApp", sw: "Ufuatiliaji wa RSVP wa WhatsApp"
+  },
+  rowInviteFeat2: {
+    en: "Google Maps Venue Location Pin", ur: "گوگل میپس لوکیشن پن", ar: "دبوس موقع القاعة على خرائط جوجل", es: "Ubicación con Google Maps", fr: "Lien de localisation Google Maps", hi: "गूगल मैप्स लोकेशन पिन", zh: "谷歌地图导航定位与到达指引", pt: "Localização no Google Maps", ru: "Метка места на Google Maps", de: "Google Maps Veranstaltungsort", ja: "Googleマップ会場ピン", ko: "Google 지도 행사장 위치 안내", it: "Posizione su Google Maps", tr: "Google Haritalar Konum İğnesi", id: "Pin Lokasi Acara Google Maps", bn: "গুগল ম্যাপস লোকেশন পিন", vi: "Ghim vị trí Google Maps", sw: "Pini ya Mahali ya Google Maps"
+  },
+  rowInviteFeat3: {
+    en: "Live Event Countdown", ur: "تقریب کا لائیو کاؤنٹ ڈاؤن", ar: "عد تنازلي مباشر للحدث", es: "Cuenta regresiva en vivo", fr: "Compte à rebours en direct", hi: "लाइव कार्यक्रम उलटी गिनती", zh: "现场动态倒计时挂件", pt: "Contagem regressiva ao vivo", ru: "Таймер обратного отсчета", de: "Live-Event-Countdown", ja: "イベント・カウントダウン", ko: "행사 실시간 카운트다운", it: "Conto alla rovescia evento", tr: "Canlı Etkinlik Geri Sayımı", id: "Hitung Mundur Acara Langsung", bn: "লাইভ ইভেন্ট কাউন্টডাউন", vi: "Đếm ngược sự kiện trực tiếp", sw: "Muda uliosalia wa tukio"
+  },
+  rowInviteFeat4: {
+    en: "Celebration Background Audio", ur: "پس منظر موسیقی اور ساؤنڈ ٹریکس", ar: "موسيقى احتفالية في الخلفية", es: "Audio festivo de fondo", fr: "Musique festive de fond", hi: "उत्सव पृष्ठभूमि ऑडियो", zh: "喜庆庆祝背景音乐与音效", pt: "Música de fundo festiva", ru: "Праздничная фоновая музыка", de: "Festliche Hintergrundmusik", ja: "祝祭BGM＆オーディオ", ko: "축하 배경 음악 및 음향", it: "Musica di sottofondo per feste", tr: "Kutlama Arka Plan Müziği", id: "Audio Latar Perayaan", bn: "উৎসবের ব্যাকগ্রাউন্ড অডিও", vi: "Âm thanh nền chúc mừng", sw: "Muziki wa Sherehe"
+  },
+  rowInviteFeat5: {
+    en: "Mughal Royal & Gold Themes", ur: "شاہانہ کلاسک اور گولڈ تھیمز", ar: "مظاهر مغولية ملكية وذهبية", es: "Temas reales y dorados", fr: "Thèmes royaux et dorés", hi: "शाही और स्वर्ण थीम", zh: "皇家莫卧儿与奢金华美主题", pt: "Temas Reais e Dourados", ru: "Королевские золотые темы", de: "Königliche Gold-Designs", ja: "ムガール宮廷風ロイヤルゴールドテーマ", ko: "로열 골드 테마", it: "Temi Reali e Dorati", tr: "Kraliyet ve Altın Temalar", id: "Tema Emas & Kerajaan", bn: "মুঘল রয়্যাল ও গোল্ড থিম", vi: "Chủ đề Hoàng Gia & Vàng", sw: "Mandhari ya Kifalme na Dhahabu"
+  },
+  rowInviteFeat6: {
+    en: "Guest List CSV & PDF Export", ur: "مہمانوں کی لسٹ CSV اور PDF رپورٹ ڈاؤن لوڈ", ar: "تصدير قائمة الضيوف بصيغة CSV و PDF", es: "Exportar lista de invitados en CSV y PDF", fr: "Export liste d'invités CSV et PDF", hi: "अतिथि सूची CSV और PDF निर्यात", zh: "导出宾客名单为 CSV / PDF 表格", pt: "Exportação de lista em CSV e PDF", ru: "Экспорт списка гостей в CSV и PDF", de: "Gästeliste als CSV und PDF exportieren", ja: "招待客リストのCSV/PDF書き出し", ko: "하객 명단 CSV 및 PDF 다운로드", it: "Esporta lista invitati in CSV e PDF", tr: "Davetli Listesini CSV ve PDF Olarak İndir", id: "Ekspor Daftar Tamu CSV & PDF", bn: "অতিথি তালিকা CSV ও PDF ডাউনলোড", vi: "Xuất danh sách khách ra CSV & PDF", sw: "Pakua Orodha ya Wageni kwa CSV na PDF"
+  },
+  rowInviteFeat7: {
+    en: "18 Global Languages", ur: "18 عالمی زبانوں کی سپورٹ", ar: "18 لغة عالمية", es: "18 idiomas globales", fr: "18 langues mondiales", hi: "18 वैश्विक भाषाएं", zh: "支持全球 18 种主流语言", pt: "18 idiomas globais", ru: "18 мировых языков", de: "18 globale Sprachen", ja: "世界18言語に対応", ko: "전 세계 18개 언어 지원", it: "18 lingue globali", tr: "18 Küresel Dil", id: "18 Bahasa Global", bn: "১৮টি আন্তর্জাতিক ভাষা", vi: "18 ngôn ngữ toàn cầu", sw: "Lugha 18 za Ulimwengu"
+  },
+  finishingCardBtn: {
+    en: "Finishing Card...", ur: "کارڈ تیار ہو رہا ہے...", ar: "جاري إنهاء البطاقة...", es: "Finalizando tarjeta...", fr: "Finalisation de la carte...", hi: "कार्ड तैयार हो रहा है...", zh: "正在生成卡片...", pt: "Finalizando cartão...", ru: "Завершение оформления карты...", de: "Karte wird fertiggestellt...", ja: "カードを仕上げています...", ko: "카드를 완성하는 중입니다...", it: "Completamento in corso...", tr: "Kart hazırlanıyor...", id: "Menyelesaikan kartu...", bn: "কার্ড সম্পন্ন হচ্ছে...", vi: "Đang hoàn tất thiệp...", sw: "Kadi inakamilishwa..."
   }
 };

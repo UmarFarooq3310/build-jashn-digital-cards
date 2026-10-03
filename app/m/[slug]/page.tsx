@@ -20,7 +20,6 @@ import {
   Edit3,
   Download,
 } from 'lucide-react'
-import { downloadCardPng } from '@/lib/jashn/card-media-export'
 import { getMagicLink, submitMagicResponse, recordCardShare, getMagicWhatsAppUrl } from '@/lib/jashn/magic-service'
 import type { MagicLinkData, MagicThemeId } from '@/lib/jashn/magic-types'
 import { isCardExpired } from '@/lib/jashn/plan-limits'
@@ -35,7 +34,7 @@ import { useJashn } from '@/lib/jashn/store'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, onSnapshot, setDoc, increment } from 'firebase/firestore'
 import { useLang } from '@/lib/lang/context'
-import { shouldIncrementView, isSenderOrOwner } from '@/lib/jashn/view-tracker'
+import { shouldIncrementView, isSenderOrOwner, recordCardView, getCardViews } from '@/lib/jashn/view-tracker'
 import { cn } from '@/lib/utils'
 
 // Specialized Occasion Scenarios
@@ -200,7 +199,6 @@ function MagicLinkInner({ slug }: { slug: string }) {
   const [showShareModal, setShowShareModal] = useState(false)
   const [showGuestbookModal, setShowGuestbookModal] = useState(false)
   const [copiedLink, setCopiedLink] = useState(false)
-  const [isDownloadingPng, setIsDownloadingPng] = useState(false)
   const [downloadingQr, setDownloadingQr] = useState(false)
   const viewIncrementedRef = useRef<string | null>(null)
   // --- Holographic 3D Tilt Effect ---
@@ -263,8 +261,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
     let unsubscribe: (() => void) | undefined
 
     const activeDb = getFirebaseDb() || db
-    // Determine if viewer is sender, owner, or in preview mode
-    const isSender = isSenderMode || isSenderOrOwner(slug, null, searchParams, user?.uid)
+    const isSender = isSenderMode || isSenderOrOwner(slug, null, searchParams, user?.uid, user?.email)
 
     if (isFirebaseConfigured && activeDb) {
       try {
@@ -274,37 +271,20 @@ function MagicLinkInner({ slug }: { slug: string }) {
           (docSnap) => {
             if (docSnap.exists()) {
               const linkData = { id: docSnap.id, ...(docSnap.data() as MagicLinkData) }
+              linkData.viewsCount = getCardViews(linkData)
               setData(linkData)
               setLoading(false)
 
+              const isOwnerOrSender = isSenderMode || isSenderOrOwner(slug, linkData.senderId || linkData.creatorId, searchParams, user?.uid, user?.email)
+
               // ONLY genuine receiver increments view (never sender, admin, or editor preview)
-              if (!isSender && viewIncrementedRef.current !== slug) {
-                if (shouldIncrementView(slug, 'magic', linkData.senderId, searchParams, user?.uid, user?.email)) {
-                  viewIncrementedRef.current = slug
-                  setData((prev) => (prev ? { ...prev, viewsCount: (prev.viewsCount || 0) + 1 } : null))
-                  
-                  // Direct Client Firestore Increment (with server fallback if direct write fails)
-                  if (activeDb) {
-                    setDoc(
-                      docRef,
-                      { viewsCount: increment(1), lastViewedAt: Date.now() },
-                      { merge: true }
-                    ).catch(() => {
-                      // Fallback to server API only if direct client write fails
-                      fetch('/api/card-activity', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ cardType: 'magic', slug, action: 'view' }),
-                      }).catch(() => {})
-                    })
-                  } else {
-                    fetch('/api/card-activity', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ cardType: 'magic', slug, action: 'view' }),
-                    }).catch(() => {})
+              if (!isOwnerOrSender && viewIncrementedRef.current !== slug) {
+                viewIncrementedRef.current = slug
+                recordCardView('magic', slug, linkData.senderId || linkData.creatorId, searchParams, user?.uid, user?.email).then((counted) => {
+                  if (counted) {
+                    setData((prev) => (prev ? { ...prev, viewsCount: getCardViews(prev) + 1 } : null))
                   }
-                }
+                })
               }
             } else {
               fallbackLocal()
@@ -327,8 +307,12 @@ function MagicLinkInner({ slug }: { slug: string }) {
         const canCountView = !isSender && viewIncrementedRef.current !== slug && shouldIncrementView(slug, 'magic', null, searchParams, user?.uid, user?.email)
         if (canCountView) {
           viewIncrementedRef.current = slug
+          recordCardView('magic', slug, null, searchParams, user?.uid, user?.email).catch(() => {})
         }
-        const result = await getMagicLink(slug, canCountView)
+        const result = await getMagicLink(slug, false)
+        if (result) {
+          result.viewsCount = getCardViews(result) + (canCountView ? 1 : 0)
+        }
         setData(result)
       } catch (err) {
         console.error('Error loading magic link:', err)
@@ -341,7 +325,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
     return () => {
       if (unsubscribe) unsubscribe()
     }
-  }, [slug, isSenderMode, searchParams, user?.uid, showToast])
+  }, [slug, isSenderMode, searchParams, user?.uid, user?.email, showToast])
 
   const triggerConfetti = () => {
     setConfettiActive(true)
@@ -350,6 +334,16 @@ function MagicLinkInner({ slug }: { slug: string }) {
 
   const handleSendLove = async () => {
     if (loveSent || !data) return
+    const isSender = isSenderMode || isSenderOrOwner(slug, data.senderId || (data as any)?.creatorId, searchParams, user?.uid, user?.email)
+    if (isSender) {
+      showToast('Sender Preview: Response submission disabled in preview mode.', 'info')
+      if (soundEnabled) audio.playFanfare()
+      triggerConfetti()
+      setHeartFountain(Array.from({ length: 16 }, (_, i) => i))
+      setTimeout(() => setHeartFountain([]), 3500)
+      return
+    }
+
     if (soundEnabled) audio.playFanfare()
     triggerConfetti()
     setLoveSent(true)
@@ -385,21 +379,6 @@ function MagicLinkInner({ slug }: { slug: string }) {
     recordCardShare('magic', slug, 'whatsapp').catch(() => {})
     const text = encodeURIComponent(waMsg)
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank')
-  }
-
-  const handleDownloadPng = async () => {
-    if (!cardRef.current) return
-    setIsDownloadingPng(true)
-    try {
-      await downloadCardPng({
-        element: cardRef.current,
-        fileName: `magic-${data?.occasion || 'card'}-${slug}`,
-        cardType: 'magic',
-        cardSlug: slug,
-      })
-    } finally {
-      setIsDownloadingPng(false)
-    }
   }
 
   const handleDirectNativeShare = async () => {
@@ -522,6 +501,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
     THEME_STYLES['romantic-rose']
 
   const renderScenario = () => {
+    const isSender = isSenderMode || isSenderOrOwner(slug, data.senderId || (data as any)?.creatorId, searchParams, user?.uid, user?.email)
     const commonProps = {
       data,
       slug,
@@ -530,6 +510,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
       triggerConfetti,
       onSendLove: handleSendLove,
       loveSent,
+      isSenderView: isSender,
     }
 
     switch (data.occasion) {
@@ -608,6 +589,13 @@ function MagicLinkInner({ slug }: { slug: string }) {
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Eye className="size-3.5 text-purple-400" /> Interactive Receiver Preview
               </span>
+              <Link
+                href={`/create-magic-link?edit=${slug}`}
+                className="h-7 px-2.5 rounded-lg border border-purple-500/40 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-bold text-xs flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer shadow-xs"
+              >
+                <Edit3 className="size-3" />
+                <span>Edit Magic Link</span>
+              </Link>
             </div>
 
             <div ref={cardRef} className="w-full flex-1 min-h-0 pt-4 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
@@ -637,7 +625,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
                     <Sparkles className="size-2.5 text-amber-400" /> 1-Click Delivery Hub
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-slate-800/90 border border-white/10 px-2 py-0.5 text-[9.5px] font-bold text-slate-300">
-                    <Eye className="size-2.5 text-emerald-400" /> {data.viewsCount || 0} visits
+                    <Eye className="size-2.5 text-emerald-400" /> {getCardViews(data)} visits
                   </span>
                 </div>
                 <h2 className="text-base sm:text-lg font-black text-white leading-tight">
@@ -685,22 +673,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
                 </div>
               </div>
 
-              {/* Direct 1-Click Media Export: Download Image (PNG) */}
-              <div className="pt-0.5">
-                <Button
-                  onClick={handleDownloadPng}
-                  disabled={isDownloadingPng}
-                  variant="outline"
-                  className="w-full h-8.5 rounded-lg border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer disabled:opacity-50"
-                >
-                  {isDownloadingPng ? (
-                    <Loader2 className="size-3 animate-spin text-purple-400" />
-                  ) : (
-                    <Download className="size-3 text-purple-400" />
-                  )}
-                  <span>{isDownloadingPng ? 'Saving...' : 'Download Card Image (PNG)'}</span>
-                </Button>
-              </div>
+
 
               {canNativeShare ? (
                 <Button
@@ -712,6 +685,15 @@ function MagicLinkInner({ slug }: { slug: string }) {
                   <span>Share via Other Apps</span>
                 </Button>
               ) : null}
+
+              {/* Edit Magic Link Details */}
+              <Link
+                href={`/create-magic-link?edit=${slug}`}
+                className="w-full h-8.5 rounded-lg border border-purple-500/40 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer shadow-xs"
+              >
+                <Edit3 className="size-3.5" />
+                <span>Edit Magic Link Details</span>
+              </Link>
 
               {/* Integrated Receiver QR Code (Compact Horizontal Row with Download Icon) */}
               <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2.5">
@@ -797,7 +779,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
             {copiedLink ? <Check className="size-4 text-emerald-400" /> : <Copy className="size-4" />}
             <span>{copiedLink ? 'Copied' : 'Copy'}</span>
           </Button>
-          {canNativeShare ? (
+          {canNativeShare && (
             <Button
               onClick={handleDirectNativeShare}
               variant="outline"
@@ -805,16 +787,6 @@ function MagicLinkInner({ slug }: { slug: string }) {
             >
               <Share2 className="size-4" />
               <span>Share</span>
-            </Button>
-          ) : (
-            <Button
-              onClick={handleDownloadPng}
-              disabled={isDownloadingPng}
-              variant="outline"
-              className="h-11 px-3.5 rounded-xl border-white/20 bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all"
-            >
-              <Download className="size-4" />
-              <span>Image</span>
             </Button>
           )}
         </div>
@@ -929,7 +901,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
         <button
           onClick={() => setShowShareModal(true)}
           className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-slate-900/80 hover:bg-slate-800 text-amber-300 hover:text-amber-200 text-xs font-bold shadow-xl shadow-black/50 border border-amber-400/30 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md"
-          title="Share Celebration · QR Code · Download PNG"
+          title="Share Celebration · QR Code"
         >
           <Share2 className="size-3.5 text-amber-400" />
           <span className="hidden sm:inline">Share</span>

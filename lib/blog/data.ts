@@ -73,9 +73,9 @@ export const BLOG_POSTS: BlogPost[] = [
         },
         {
           "id": "instant-story-cards",
-          "title": "3. Instant 1080px Luxury Story Cards (No Design Tools Needed)",
-          "body": "Sharing poetry on social media often means taking messy screenshots or battling with complex graphic editing apps. Cardzy solves this with a 1-click Story Card engine. Beneath every single verse in the treasury, simply tap 'Story Card'. The system immediately renders an ornate, high-resolution 1080px graphic featuring a luxury dark emerald and obsidian gradient, double gold filigree borders, corner rosettes, authentic centered Nastaliq typography, and poet dates.",
-          "highlight": "The graphic downloads straight to your device storage in seconds, perfectly sized and ready for WhatsApp Status, Instagram Stories, and Facebook."
+          "title": "3. Instant 1080px Luxury Story Cards & Animated Videos",
+          "body": "Sharing poetry on social media often means taking messy screenshots or battling with complex graphic editing apps. Cardzy solves this with direct 1-click export engines. Beneath every verse in the treasury, simply tap 'Image' for a crystal-clear 1080px HD graphic or 'Video' for an animated MP4 status reel with subtle particle chimes. You can also craft custom poetry posts in the Self-Creation Studio by entering any poet name, verses, and personal dedication, choosing from 5 luxury themes, and downloading immediately.",
+          "highlight": "The graphic or MP4 video downloads straight to your device storage in seconds, perfectly sized and ready for WhatsApp Status, Instagram Stories, and Facebook."
         },
         {
           "id": "clean-sharing-etiquette",
@@ -96,8 +96,8 @@ export const BLOG_POSTS: BlogPost[] = [
       ],
       "faq": [
         {
-          "question": "How do I download a Story Card on mobile?",
-          "answer": "Simply navigate to any poem in the Treasury and tap 'Story Card'. You will see an immediate loading spinner ('Generating Card...'), and within a second, the high-resolution PNG is saved directly to your phone's downloads folder or photo gallery."
+          "question": "How do I download a Story Card or Video on mobile?",
+          "answer": "Simply navigate to any poem in the Treasury and tap 'Image' for an HD PNG or 'Video' for an animated MP4. You can also use the Custom Poetry Studio at the top of the page to add your own verses and personal dedication, then tap download."
         },
         {
           "question": "Are all 1,000+ verses completely free to explore and download?",
@@ -752,7 +752,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "title": "3. Key Features Every High-Converting Digital Business Card Must Have",
           "body": "When setting up your digital business card on Cardzy, make sure to enable these essential modules:",
           "bulletPoints": [
-            "One-Tap \"Add to Contacts\" Button: Downloads your complete .vcf contact file directly into the client䏭 phone address book, saving your name, mobile, work email, designation, and company name in 1 second.",
+            "One-Tap \"Add to Contacts\" Button: Downloads your complete .vcf contact file directly into the client's phone address book, saving your name, mobile, work email, designation, and company name in 1 second.",
             "Interactive Social & Web Portfolios: Direct clickable links to your LinkedIn profile, WhatsApp chat, Instagram, YouTube channel, and company website.",
             "Google Maps Office Pin: One-click GPS navigation guiding clients straight to your office entrance.",
             "Executive Headshot & Company Logo: Build instant personal brand credibility with high-resolution imagery."
@@ -784,7 +784,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     "slug": "how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly",
-    "title": "How to Manage Large Wedding Guest Lists and WhatsApp RSVPs Effortlessly (Host䏭 Survival Guide)",
+    "title": "How to Manage Large Wedding Guest Lists and WhatsApp RSVPs Effortlessly (Host's Survival Guide)",
     "subtitle": "Master guest attendance tracking, eliminate phone call chaos, calculate accurate catering headcounts, and distribute venue GPS pins with ease.",
     "seoTitle": "Manage Wedding Guest Lists & WhatsApp RSVP | Cardzy",
     "metaDescription": "Manage wedding guest lists with automated WhatsApp RSVPs. Calculate catering headcounts, track attendance live, and eliminate guest calling stress.",
@@ -825,7 +825,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "body": "When you share your Cardzy digital wedding card on WhatsApp, your guests see a prominent, elegant \"Confirm Attendance / RSVP\" button directly on the card interface. Here is how it works:",
           "bulletPoints": [
             "1-Tap Guest Confirmation: The guest taps \"RSVP\", selects whether they are attending with 1, 2, or 5 family members, and submits in 5 seconds.",
-            "Direct WhatsApp Notification: Confirmations automatically generate a pre-formatted message sent directly to the host䏭 WhatsApp (e.g., \"Assalam-o-Alaikum! Mr. & Mrs. Kamran Khan confirm attendance for 4 guests at Barat Reception\").",
+            "Direct WhatsApp Notification: Confirmations automatically generate a pre-formatted message sent directly to the host's WhatsApp (e.g., \"Assalam-o-Alaikum! Mr. & Mrs. Kamran Khan confirm attendance for 4 guests at Barat Reception\").",
             "Real-Time Headcount Dashboard: Hosts view live attendance totals categorized by Nikkah, Mehndi, Barat, and Walima functions."
           ],
           "highlight": "Pro Tip: Send out your Cardzy digital invitation links 3 to 4 weeks before the event date to give guests ample time to confirm RSVPs before finalizing caterer agreements!"

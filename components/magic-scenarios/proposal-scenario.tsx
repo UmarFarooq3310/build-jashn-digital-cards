@@ -31,6 +31,7 @@ interface ScenarioProps {
   triggerConfetti: () => void
   onSendLove: () => void
   loveSent: boolean
+  isSenderView?: boolean
 }
 
 const PROPOSAL_SCENES = [
@@ -56,6 +57,7 @@ export function ProposalScenario({
   triggerConfetti,
   onSendLove,
   loveSent,
+  isSenderView = false,
 }: ScenarioProps) {
   const { t, lang } = useLang()
   const isUrdu = lang === 'ur' || lang === 'ar'
@@ -231,6 +233,11 @@ export function ProposalScenario({
     setTimeout(() => triggerConfetti(), 400)
     setTimeout(() => triggerConfetti(), 800)
     spawnBurst(['💖', '💍', '✨', '🎉', '🥂'], 36)
+
+    if (isSenderView) {
+      return
+    }
+
     onSendLove()
 
     try {
@@ -260,6 +267,10 @@ export function ProposalScenario({
     setSelectedReaction(emoji)
     spawnBurst([emoji], 12)
     magicAudio.playPop()
+
+    if (isSenderView) {
+      return
+    }
 
     try {
       await submitMagicResponse({
@@ -519,6 +530,17 @@ export function ProposalScenario({
         {/* ================= SCENE 4: WILL YOU MARRY ME? & DODGING NO ================= */}
         {activeScene === 3 && (
           <div className="animate-in fade-in duration-300">
+            {isSenderView && (
+              <div className="mb-2.5 p-2 rounded-xl bg-amber-500/15 border border-amber-400/30 text-center">
+                <span className="text-[11px] font-bold text-amber-300 flex items-center justify-center gap-1">
+                  🛡️ Sender Preview Mode
+                </span>
+                <p className="text-[10px] text-amber-200/80 leading-tight mt-0.5">
+                  Proposal answer & reactions are disabled in preview mode. Only your partner can accept or respond.
+                </p>
+              </div>
+            )}
+
             {!hasSaidYes ? (
               <>
                 <div className="flex justify-start mb-1">
@@ -589,14 +611,20 @@ export function ProposalScenario({
                 </div>
 
                 <div className="flex flex-col gap-2 max-w-xs mx-auto">
-                  <a
-                    href={whatsAppHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="magic-btn w-full block text-center"
-                  >
-                    Send on WhatsApp 💌
-                  </a>
+                  {isSenderView ? (
+                    <div className="magic-btn w-full block text-center opacity-75 cursor-not-allowed select-none">
+                      Partner WhatsApp Reply Button (Preview)
+                    </div>
+                  ) : (
+                    <a
+                      href={whatsAppHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="magic-btn w-full block text-center"
+                    >
+                      Send on WhatsApp 💌
+                    </a>
+                  )}
 
                   <Link
                     href="/create-magic-link?occasion=proposal"

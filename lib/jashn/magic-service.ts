@@ -14,7 +14,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore'
 import type { MagicLinkData, MagicResponseData } from './magic-types'
-import { markCardAsCreatedByMe } from './view-tracker'
+import { markCardAsCreatedByMe, isSenderOrOwner, getCardViews } from './view-tracker'
 import { getClientTracking } from './tracking'
 import { syncRecordToServer } from './server-sync'
 import { canCreateCard, getGuestCardCount, recordGuestCardCreated } from './plan-limits'
@@ -358,9 +358,16 @@ export function getMagicWhatsAppUrl(data: MagicLinkData, responseText: string, r
  * Submits a recipient reaction (e.g. "Sent Love Back") or RSVP to Firestore
  */
 export async function submitMagicResponse(response: Omit<MagicResponseData, 'timestamp'>): Promise<boolean> {
+  const cleanSlug = String(response.linkId || '').replace(/^\/?m\//, '').trim()
+
+  // Guard: If viewer is sender, owner, creator, or in preview mode, DO NOT record a response as recipient!
+  if (isSenderOrOwner(cleanSlug)) {
+    console.info('[submitMagicResponse] Skipped response submission: viewer is sender/owner/preview.')
+    return false
+  }
+
   const tracking = await getClientTracking().catch(() => ({} as any))
   const respId = response.id || `mresp_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`
-  const cleanSlug = String(response.linkId || '').replace(/^\/?m\//, '').trim()
 
   const fullResp: MagicResponseData = {
     ...response,
@@ -422,7 +429,9 @@ export async function getUserMagicLinks(userId?: string): Promise<MagicLinkData[
       const q = query(colRef, where('senderId', '==', userId))
       const querySnap = await getDocs(q)
       querySnap.forEach((d) => {
-        links.push({ id: d.id, ...(d.data() as MagicLinkData) })
+        const raw = d.data() as MagicLinkData
+        const vCount = getCardViews(raw)
+        links.push({ id: d.id, ...raw, viewsCount: vCount })
       })
     } catch (err) {
       console.warn('Error querying user magic links from Firestore:', err)

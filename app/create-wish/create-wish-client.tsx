@@ -4,7 +4,7 @@ import '@/app/invitation-themes-animations.css'
 import Link from 'next/link'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, VolumeX, X, CheckCircle2, Gamepad2, Flame, Hash, Shield, Crown, Swords, Zap, Code2 } from 'lucide-react'
+import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, VolumeX, X, CheckCircle2, Gamepad2, Flame, Hash, Shield, Crown, Swords, Zap, Code2, Feather, BookOpen } from 'lucide-react'
 import { AUDIO_TRACKS, getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
 import { AudioTrackPicker } from '@/components/jashn/audio-track-picker'
 import { celebrationAudio } from '@/lib/jashn/audio-synth'
@@ -109,6 +109,18 @@ const WISH_QUICK_STARTERS = [
     audioTrack: 'islamic-oud',
     themeId: 'islamic-emerald',
   },
+  {
+    id: 'poetry-ghalib',
+    label: '📜 Poetry & Shayari',
+    occasionId: 'poetry',
+    recipientName: 'Beloved',
+    relation: 'Friend',
+    poetName: 'Mirza Ghalib',
+    dedication: 'To Someone Special',
+    message: 'ہزاروں خواہشیں ایسی کہ ہر خواہش پہ دم نکلے\nبہت نکلے مرے ارمان لیکن پھر بھی کم نکلے',
+    audioTrack: 'romantic-strings',
+    themeId: 'royal-navy',
+  },
 ]
 
 function CreateWishContent() {
@@ -122,6 +134,8 @@ function CreateWishContent() {
   const categoryParam = searchParams.get('category')
   const messageParam = searchParams.get('message')
   const poemParam = searchParams.get('poem')
+  const poetParam = searchParams.get('poet')
+  const dedicationParam = searchParams.get('dedication')
   const recipientParam = searchParams.get('recipient')
   const senderParam = searchParams.get('sender')
   const relationParam = searchParams.get('relation')
@@ -151,6 +165,9 @@ function CreateWishContent() {
       holiday: 'new-year',
       achievement: 'graduation',
       national: 'pakistan-day',
+      poetry: 'poetry',
+      shayari: 'poetry',
+      ghazal: 'poetry',
     }
     return map[c] || 'birthday'
   }
@@ -195,6 +212,11 @@ function CreateWishContent() {
   const [winningNumber, setWinningNumber] = useState('')
   const [developerName, setDeveloperName] = useState('')
 
+  // Poetry & Shayari Fields
+  const [poetName, setPoetName] = useState(() => poetParam || '')
+  const [dedication, setDedication] = useState(() => dedicationParam || '')
+  const [poetryFormat, setPoetryFormat] = useState('sher')
+
   // Custom Photo, Audio & AI Generator State
   const [photoUrl, setPhotoUrl] = useState('')
   const [audioTrack, setAudioTrack] = useState(() => {
@@ -222,6 +244,8 @@ function CreateWishContent() {
     'bingo-winner',
     'esports-winner',
   ].includes(occasionId)
+
+  const isPoetryOccasion = occasionId === 'poetry' || Boolean(poetName || dedication)
 
   const isNumberDrawOrBingo = ['number-draw-winner', 'bingo-winner'].includes(occasionId)
 
@@ -263,6 +287,8 @@ function CreateWishContent() {
     setRecipientName(starter.recipientName)
     setRelation(starter.relation)
     setMessage(starter.message)
+    if ((starter as any).poetName) setPoetName((starter as any).poetName)
+    if ((starter as any).dedication) setDedication((starter as any).dedication)
     if (starter.audioTrack) setAudioTrack(starter.audioTrack)
     if (starter.themeId) setThemeId(starter.themeId)
     setStep(2)
@@ -316,6 +342,9 @@ function CreateWishContent() {
           setKillCount('')
           setRank('')
           setWinningNumber('')
+          setDeveloperName('')
+          setPoetName('')
+          setDedication('')
           setPhotoUrl('')
           setStep(1)
           setIsInitialLoaded(true)
@@ -364,6 +393,9 @@ function CreateWishContent() {
           if (loadedData.rank) setRank(loadedData.rank)
           if (loadedData.winningNumber) setWinningNumber(loadedData.winningNumber)
           if (loadedData.developerName) setDeveloperName(loadedData.developerName)
+          if (loadedData.poetName !== undefined) setPoetName(loadedData.poetName)
+          if (loadedData.dedication !== undefined) setDedication(loadedData.dedication)
+          if (loadedData.poetryFormat !== undefined) setPoetryFormat(loadedData.poetryFormat)
           if (loadedData.photoUrl) setPhotoUrl(loadedData.photoUrl)
           if (loadedData.audioTrack) setAudioTrack(loadedData.audioTrack)
           if (loadedData.step) setStep(loadedData.step as any)
@@ -374,11 +406,13 @@ function CreateWishContent() {
         const catParam = searchParams.get('category')
         const msgParam = searchParams.get('message')
         const poemP = searchParams.get('poem')
+        const poetP = searchParams.get('poet')
+        const dedP = searchParams.get('dedication')
         const recParam = searchParams.get('recipient')
         const sndParam = searchParams.get('sender')
         const relParam = searchParams.get('relation')
 
-        const hasUrlParams = Boolean(occParam || catParam || poemP || msgParam)
+        const hasUrlParams = Boolean(occParam || catParam || poemP || msgParam || poetP || dedP)
 
         let hasDraft = false
         if (!hasUrlParams) {
@@ -402,6 +436,9 @@ function CreateWishContent() {
                 if (d.rank) setRank(d.rank)
                 if (d.winningNumber) setWinningNumber(d.winningNumber)
                 if (d.developerName) setDeveloperName(d.developerName)
+                if (d.poetName !== undefined) setPoetName(d.poetName)
+                if (d.dedication !== undefined) setDedication(d.dedication)
+                if (d.poetryFormat !== undefined) setPoetryFormat(d.poetryFormat)
                 if (d.photoUrl) setPhotoUrl(d.photoUrl)
                 if (d.audioTrack) setAudioTrack(d.audioTrack)
                 if (d.step) setStep(d.step as any)
@@ -413,17 +450,33 @@ function CreateWishContent() {
         if (hasUrlParams) {
           // Check for poetry prefill
           let prefillText = ''
+          let prefillPoet = ''
           try {
             prefillText = sessionStorage.getItem('cardzy_prefill_msg') || ''
+            prefillPoet = sessionStorage.getItem('cardzy_prefill_poet') || ''
             sessionStorage.removeItem('cardzy_prefill_msg')
+            sessionStorage.removeItem('cardzy_prefill_poet')
           } catch {}
 
-          if (!prefillText && poemP) {
+          if (poemP) {
             const found = POETRY_DATABASE.find((p) => p.id === poemP)
-            if (found) prefillText = found.cardPrefillMsg
+            if (found) {
+              if (!prefillText) prefillText = found.cardPrefillMsg
+              if (!prefillPoet) prefillPoet = found.poet
+            }
           }
 
-          const resolved = occParam || resolveOccasionFromCategory(catParam) || 'birthday'
+          if (prefillPoet) {
+            setPoetName(prefillPoet)
+          } else if (poetP) {
+            setPoetName(poetP)
+          }
+
+          if (dedP) {
+            setDedication(dedP)
+          }
+
+          const resolved = occParam || (catParam ? resolveOccasionFromCategory(catParam) : (poemP || poetP || dedP ? 'poetry' : 'birthday'))
           setOccasionId(resolved)
 
           if (prefillText) {
@@ -482,6 +535,9 @@ function CreateWishContent() {
       rank,
       winningNumber,
       developerName,
+      poetName,
+      dedication,
+      poetryFormat,
       photoUrl,
       audioTrack,
     }
@@ -506,6 +562,9 @@ function CreateWishContent() {
     rank,
     winningNumber,
     developerName,
+    poetName,
+    dedication,
+    poetryFormat,
     photoUrl,
     audioTrack,
   ])
@@ -572,6 +631,13 @@ function CreateWishContent() {
       if (rank.trim() && !/\d+/.test(rank.trim())) {
         errs.rank = t('rankNumber', 'Rank must contain a number (e.g. 1 or #1)')
       }
+    } else if (isPoetryOccasion) {
+      if (!recipientName.trim() && !dedication.trim()) {
+        errs.recipientName = t('recipientOrDedicationRequired', 'Recipient Name or Dedication is required')
+      }
+      if (!senderName.trim()) {
+        errs.senderName = t('senderNameRequired', 'Your Name (Sender) is required')
+      }
     } else {
       if (!relation.trim()) {
         errs.relation = t('relationRequired', 'Please select a relation')
@@ -584,7 +650,7 @@ function CreateWishContent() {
       }
     }
     if (!message.trim()) {
-      errs.message = t('wishMessageRequired', 'Wish message is required')
+      errs.message = isPoetryOccasion ? (t('poetryVersesRequired') || 'Poetry verses / Sher is required') : t('wishMessageRequired', 'Wish message is required')
     }
 
     return errs
@@ -670,8 +736,13 @@ function CreateWishContent() {
         borderId: finalBorderId,
         bgVariantId,
         senderName: senderName.trim() || user?.name || (isGamingOccasion ? 'Victory Squad' : 'A Well Wisher'),
-        recipientName: (isGamingOccasion && playerName.trim()) ? playerName.trim() : (recipientName.trim() || 'Winner'),
-        relation,
+        recipientName: (isGamingOccasion && playerName.trim())
+          ? playerName.trim()
+          : (recipientName.trim() || (dedication.trim() || 'Beloved')),
+        relation: relation || (isPoetryOccasion ? 'Friend' : ''),
+        poetName: poetName.trim(),
+        dedication: dedication.trim(),
+        poetryFormat,
         playerName: playerName.trim(),
         killCount: killCount.trim(),
         rank: rank.trim(),
@@ -1096,6 +1167,151 @@ function CreateWishContent() {
                         </div>
                       </div>
                     </div>
+                  ) : isPoetryOccasion ? (
+                    <div className="space-y-4 rounded-2xl border border-amber-600/40 bg-gradient-to-b from-amber-950/20 via-background to-background p-4 sm:p-5 shadow-lg relative overflow-hidden">
+                      <div className="flex items-center justify-between border-b border-amber-600/20 pb-2.5">
+                        <h3 className={cn("text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-2", (lang === 'ur' || lang === 'ar') && "flex-row-reverse")}>
+                          <Feather className="size-4 text-amber-600 dark:text-amber-400" />
+                          <span>{lang === 'ur' ? 'شاعری و نذرانہ عقیدت' : '1. POETRY DEDICATION & ATTRIBUTION'}</span>
+                        </h3>
+                        <span className="text-[10px] font-serif uppercase tracking-widest text-amber-700 dark:text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2.5 py-0.5 rounded-full">
+                          {lang === 'ur' ? 'کلام کارڈ' : 'POETRY CARD'}
+                        </span>
+                      </div>
+
+                      <div className="grid gap-4 sm:grid-cols-2 pt-1">
+                        {/* Dedication Input */}
+                        <div className="sm:col-span-2">
+                          <label className={cn("mb-1.5 flex items-center gap-1.5 text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                            <Heart className="size-3.5 text-rose-500" />
+                            <span>{lang === 'ur' ? 'کس کے نام؟ (منسوب بہ)' : 'Dedication (منسوب بہ)'}</span>
+                          </label>
+                          <input
+                            id="field-dedication"
+                            type="text"
+                            value={dedication}
+                            onChange={(e) => handleFieldChange('dedication', e.target.value, setDedication)}
+                            placeholder={lang === 'ur' ? 'مثال: منسوب بہ میری پیاری بیگم / منسوب بہ دوست' : 'e.g. Dedicated to: My Beloved Ayesha / To My Best Friend'}
+                            dir={lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(dedication) ? 'rtl' : 'ltr'}
+                            className={cn(
+                              "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-500 transition-all font-medium",
+                              (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(dedication)) && "font-urdu text-base"
+                            )}
+                          />
+                          {/* Quick Dedication Chips */}
+                          <div className={cn("flex flex-wrap gap-1.5 mt-2", (lang === 'ur' || lang === 'ar') && "justify-end")}>
+                            {[
+                              { en: 'To My Love', ur: 'منسوب بہ جانِ جاں' },
+                              { en: 'To My Best Friend', ur: 'منسوب بہ بہترین دوست' },
+                              { en: 'To Dearest Mother', ur: 'منسوب بہ پیاری امی' },
+                              { en: 'To My Respected Father', ur: 'منسوب بہ محترم ابو' },
+                              { en: 'To A Special Soul', ur: 'منسوب بہ خاص ہستی' },
+                            ].map((d) => (
+                              <button
+                                key={d.en}
+                                type="button"
+                                onClick={() => handleFieldChange('dedication', (lang === 'ur' || lang === 'ar') ? d.ur : d.en, setDedication)}
+                                className="text-[10px] font-bold px-2.5 py-1 rounded-lg border border-amber-600/20 bg-amber-500/5 hover:bg-amber-500/15 text-amber-700 dark:text-amber-300 transition-all cursor-pointer"
+                              >
+                                💌 {(lang === 'ur' || lang === 'ar') ? d.ur : d.en}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Recipient Name */}
+                        <div>
+                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            {t('recipientNameLabel') || 'Recipient Name (Optional if Dedication set)'}
+                          </label>
+                          <input
+                            id="field-recipientName"
+                            type="text"
+                            value={recipientName}
+                            onChange={(e) => handleFieldChange('recipientName', e.target.value, setRecipientName)}
+                            placeholder={t('placeholderRecipient') || 'e.g. Ayesha'}
+                            dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
+                            className={cn(
+                              "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                              errors.recipientName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
+                              (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
+                            )}
+                          />
+                          {errors.recipientName && (
+                            <p className={cn("mt-1 text-xs font-semibold text-red-500 flex items-center gap-1", (lang === 'ur' || lang === 'ar') && "flex-row-reverse text-right font-urdu")}>
+                              <AlertCircle className="size-3 shrink-0" /> {errors.recipientName}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Sender Name */}
+                        <div>
+                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                            {t('senderNameLabel') || 'Your Name (Sender) *'}
+                          </label>
+                          <input
+                            id="field-senderName"
+                            type="text"
+                            value={senderName}
+                            onChange={(e) => handleFieldChange('senderName', e.target.value, setSenderName)}
+                            placeholder={t('placeholderSender') || 'e.g. Tariq & Family'}
+                            dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
+                            className={cn(
+                              "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all",
+                              errors.senderName ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]",
+                              (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left"
+                            )}
+                          />
+                          {errors.senderName && (
+                            <p className={cn("mt-1 text-xs font-semibold text-red-500 flex items-center gap-1", (lang === 'ur' || lang === 'ar') && "flex-row-reverse text-right font-urdu")}>
+                              <AlertCircle className="size-3 shrink-0" /> {errors.senderName}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Poet's Name Input */}
+                        <div className="sm:col-span-2">
+                          <label className={cn("mb-1.5 flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-300 uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
+                            <Feather className="size-3.5 text-amber-600" />
+                            <span>{lang === 'ur' ? 'شاعر کا نام / تخلیق کار' : "Poet's Name (e.g. Mirza Ghalib, Allama Iqbal, Self)"}</span>
+                          </label>
+                          <input
+                            id="field-poetName"
+                            type="text"
+                            value={poetName}
+                            onChange={(e) => setPoetName(e.target.value)}
+                            placeholder={lang === 'ur' ? 'مثال: مرزا غالب / علامہ اقبال / فیض / خود لکھا ہوا' : 'e.g. Mirza Ghalib / Allama Iqbal / Faiz / Written by Me / Anonymous'}
+                            dir={lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(poetName) ? 'rtl' : 'ltr'}
+                            className={cn(
+                              "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-500 transition-all font-medium",
+                              (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(poetName)) && "font-urdu text-base"
+                            )}
+                          />
+                          {/* Quick Poet Selector Chips */}
+                          <div className={cn("flex flex-wrap gap-1.5 mt-2", (lang === 'ur' || lang === 'ar') && "justify-end")}>
+                            {[
+                              { en: 'Mirza Ghalib', ur: 'مرزا غالب' },
+                              { en: 'Allama Iqbal', ur: 'علامہ اقبال' },
+                              { en: 'Faiz Ahmad Faiz', ur: 'فیض احمد فیض' },
+                              { en: 'Jaun Elia', ur: 'جون ایلیا' },
+                              { en: 'Parveen Shakir', ur: 'پروین شاکر' },
+                              { en: 'Ahmad Faraz', ur: 'احمد فراز' },
+                              { en: 'Written by Me (Self)', ur: 'خود لکھا ہوا (میری طرف سے)' },
+                              { en: 'Anonymous', ur: 'نامعلوم' },
+                            ].map((p) => (
+                              <button
+                                key={p.en}
+                                type="button"
+                                onClick={() => setPoetName((lang === 'ur' || lang === 'ar') ? p.ur : p.en)}
+                                className="text-[10px] font-bold px-2 py-0.5 rounded-lg border border-amber-600/20 bg-amber-500/5 hover:bg-amber-500/15 text-amber-700 dark:text-amber-300 transition-all cursor-pointer"
+                              >
+                                🖋️ {(lang === 'ur' || lang === 'ar') ? p.ur : p.en}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   ) : (
                     <>
                       {/* Relation Pills */}
@@ -1202,6 +1418,11 @@ function CreateWishContent() {
                             <Swords className="size-4 text-amber-500" />
                             <span className="text-amber-500 dark:text-amber-400">2. VICTORY MISSION DEBRIEF / MESSAGE</span>
                           </>
+                        ) : isPoetryOccasion ? (
+                          <>
+                            <Feather className="size-4 text-amber-600 dark:text-amber-400" />
+                            <span className="text-amber-700 dark:text-amber-400">{lang === 'ur' ? '2. اشعار یا غزل (مصرعے برائے کارڈ)' : '2. POETRY & SHAYARI VERSES'}</span>
+                          </>
                         ) : (
                           <>
                             <Heart className="size-4" />
@@ -1222,7 +1443,9 @@ function CreateWishContent() {
                     {templates.length > 0 && (
                       <div>
                         <label className={cn("mb-2 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                          {t('choosePrewrittenWishTemplate') || 'CHOOSE PRE-WRITTEN WISH TEMPLATE'}
+                          {isPoetryOccasion
+                            ? (lang === 'ur' ? 'مشہور اشعار منتخب کریں' : 'CHOOSE FAMOUS POETIC COUPLET')
+                            : (t('choosePrewrittenWishTemplate') || 'CHOOSE PRE-WRITTEN WISH TEMPLATE')}
                         </label>
                         <div className="flex flex-wrap gap-2">
                           {templates.map((tmpl, idx) => (
@@ -1232,7 +1455,10 @@ function CreateWishContent() {
                               onClick={() => applyTemplate(idx)}
                               className="flex items-center gap-1.5 rounded-xl border border-[#7B0D1E]/20 bg-[#7B0D1E]/5 px-3 py-1.5 text-xs font-bold text-[#7B0D1E] hover:bg-[#7B0D1E]/15 transition-all"
                             >
-                              🎁 {t('templatePrefix') || 'Template'} {idx + 1}
+                              {isPoetryOccasion ? '📜 ' : '🎁 '}
+                              {isPoetryOccasion
+                                ? (lang === 'ur' ? `شعر ${idx + 1}` : `Couplet ${idx + 1}`)
+                                : `${t('templatePrefix') || 'Template'} ${idx + 1}`}
                             </button>
                           ))}
                         </div>
@@ -1252,16 +1478,32 @@ function CreateWishContent() {
                     )}
 
                     <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-[11px] font-semibold text-muted-foreground">
+                          {isPoetryOccasion
+                            ? (lang === 'ur' ? 'اشعار یہاں چسپاں کریں (لائن بریک برقرار رہیں گے)' : 'Paste verses here (line breaks are preserved on the 3D card)')
+                            : ''}
+                        </label>
+                        {isPoetryOccasion && message.trim() && (
+                          <span className="text-[10px] font-mono text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">
+                            ✍️ {message.split('\n').filter(Boolean).length} {lang === 'ur' ? 'مصرعے' : 'verses / lines'}
+                          </span>
+                        )}
+                      </div>
                       <textarea
                         id="field-message"
-                        rows={3}
+                        rows={isPoetryOccasion ? 5 : 3}
                         dir={lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(message) ? 'rtl' : 'ltr'}
                         value={message}
                         onChange={(e) => handleFieldChange('message', e.target.value, setMessage)}
-                        placeholder={t('writeMsgPlaceholder')}
+                        placeholder={isPoetryOccasion
+                          ? (lang === 'ur'
+                            ? "یہاں اپنے اشعار، غزل یا نظم چسپاں کریں...\nمثال:\nہزاروں خواہشیں ایسی کہ ہر خواہش پہ دم نکلے\nبہت نکلے مرے ارمان لیکن پھر بھی کم نکلے"
+                            : "Paste your poem, couplet (sher) or ghazal here...\nExample:\nHazaron khwahishen aisi ke har khwahish pe dam nikle\nBohat niklay mere armaan lekin phir bhi kam nikle")
+                          : t('writeMsgPlaceholder')}
                         className={cn(
                           "w-full rounded-2xl border p-3 text-sm bg-background focus:outline-none focus:ring-2 transition-all leading-relaxed",
-                          (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(message)) && "font-urdu text-base",
+                          (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(message)) && "font-urdu text-base leading-[2.2]",
                           errors.message ? "border-red-500 focus:ring-red-500" : "border-input focus:ring-[#7B0D1E]"
                         )}
                       />
@@ -1480,6 +1722,9 @@ function CreateWishContent() {
                     rank,
                     winningNumber,
                     developerName,
+                    poetName,
+                    dedication,
+                    poetryFormat,
                     photoUrl,
                   }}
                 />

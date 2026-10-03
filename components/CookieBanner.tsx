@@ -3,9 +3,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Cookie, X, Check, Lock, BarChart3, Sparkles, ShieldCheck, Settings2, RotateCcw } from 'lucide-react'
 import { useLang, type LangCode } from '@/lib/lang/context'
 import { COOKIE_TRANSLATIONS } from '@/lib/lang/cookie-translations'
+import { cn } from '@/lib/utils'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -81,6 +83,19 @@ export function CookieBanner() {
   const { lang } = useLang()
   const activeLang: LangCode = (lang as LangCode) || 'en'
   const isRtl = activeLang === 'ur' || activeLang === 'ar'
+
+  const pathname = usePathname()
+  const isCardRoute =
+    pathname?.startsWith('/w/') ||
+    pathname?.startsWith('/i/') ||
+    pathname?.startsWith('/v/') ||
+    pathname?.startsWith('/m/')
+  const isCreationRoute =
+    pathname === '/create-wish' ||
+    pathname === '/create-invitation' ||
+    pathname === '/create-magic-link' ||
+    pathname === '/create-visiting-card'
+  const hasBottomDock = !isCardRoute && !isCreationRoute
 
   const tr = useCallback((key: string): string => {
     return COOKIE_TRANSLATIONS[key]?.[activeLang] || COOKIE_TRANSLATIONS[key]?.en || ''
@@ -281,7 +296,6 @@ export function CookieBanner() {
           dir={isRtl ? 'rtl' : 'ltr'}
           style={{
             position: 'fixed',
-            bottom: '20px',
             left: '50%',
             transform: 'translateX(-50%)',
             zIndex: 2147483647,
@@ -292,7 +306,13 @@ export function CookieBanner() {
             visibility: 'visible',
             opacity: 1,
           }}
-          className={`pointer-events-auto transition-all animate-in slide-in-from-bottom-5 fade-in duration-300 ${isRtl ? 'font-urdu text-right' : ''}`}
+          className={cn(
+            'pointer-events-auto transition-all animate-in slide-in-from-bottom-5 fade-in duration-300',
+            hasBottomDock
+              ? 'bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] lg:bottom-5'
+              : 'bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] lg:bottom-5',
+            isRtl ? 'font-urdu text-right' : ''
+          )}
         >
           <div className="rounded-3xl border border-amber-500/50 bg-[#090b10]/95 p-4 sm:p-5 text-slate-100 shadow-[0_24px_70px_rgba(0,0,0,0.85)] backdrop-blur-2xl ring-1 ring-white/10">
             {/* Header row */}
@@ -362,30 +382,34 @@ export function CookieBanner() {
       )}
 
       {/* ── Persistent Floating Cookie Settings Badge (when consent has been saved) ── */}
-      {consent !== null && !showModal && createPortal(
+      {consent !== null && !showModal && !isCardRoute && createPortal(
         <div
           id="cookie-settings-persistent-badge"
           data-cookie-root="true"
           dir={isRtl ? 'rtl' : 'ltr'}
           style={{
             position: 'fixed',
-            bottom: '16px',
-            left: isRtl ? 'auto' : '16px',
-            right: isRtl ? '16px' : 'auto',
             zIndex: 2147483640,
             pointerEvents: 'auto',
           }}
-          className={`pointer-events-auto ${isRtl ? 'font-urdu' : ''}`}
+          className={cn(
+            'pointer-events-auto transition-all duration-200',
+            isRtl ? 'font-urdu right-3 sm:right-4' : 'left-3 sm:left-4',
+            hasBottomDock
+              ? 'bottom-[calc(4.5rem+env(safe-area-inset-bottom,0px))] lg:bottom-4'
+              : 'bottom-[calc(1rem+env(safe-area-inset-bottom,0px))] lg:bottom-4'
+          )}
         >
           <button
             type="button"
             onClick={openModal}
             data-cookie-root="true"
             aria-label={tr('cookieSettings')}
-            className="group flex items-center gap-2 rounded-full border border-amber-500/50 bg-[#0b0d13]/95 px-3.5 py-2 text-xs font-bold text-amber-300 shadow-2xl backdrop-blur-md hover:bg-slate-900 hover:text-white hover:border-amber-400 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            title={tr('cookieSettings')}
+            className="group flex items-center justify-center gap-1.5 rounded-full border border-amber-500/50 bg-[#0b0d13]/95 p-2 sm:px-3.5 sm:py-2 text-xs font-bold text-amber-300 shadow-2xl backdrop-blur-md hover:bg-slate-900 hover:text-white hover:border-amber-400 transition-all hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <Cookie className="size-4 text-amber-400 group-hover:rotate-12 transition-transform" />
-            <span>{tr('cookieSettings')}</span>
+            <Cookie className="size-4.5 sm:size-4 text-amber-400 group-hover:rotate-12 transition-transform shrink-0" />
+            <span className="hidden sm:inline">{tr('cookieSettings')}</span>
           </button>
         </div>,
         document.body

@@ -17,6 +17,7 @@ const RAW_OCCASIONS: any[] = [
   { id: 'good-luck', label: 'Good Luck & Best Wishes', tagline: 'Best of Luck in Everything', urdu: 'نیک خواہشات و دعا', category: 'Personal', icon: 'Sparkles', bgImage: '/occasions/good-luck.jpg', bgGradient: 'linear-gradient(160deg,#f9a825,#ef6c00)' },
   { id: 'welcome-back', label: 'Welcome Back', tagline: 'So Happy to Have You Back', urdu: 'خوش آمدید', category: 'Personal', icon: 'Sparkles', bgImage: '/occasions/welcome-back.jpg', bgGradient: 'linear-gradient(160deg,#00695c,#1565c0)' },
   { id: 'retirement', label: 'Happy Retirement', tagline: 'Cheers to Your Golden Years', urdu: 'ریٹائرمنٹ مبارک', category: 'Personal', icon: 'Award', bgGradient: 'linear-gradient(160deg,#0c4a6e,#f59e0b)' },
+  { id: 'poetry', label: 'Poetry & Shayari', tagline: 'Kalaam & Heartfelt Dedication', urdu: 'شاعری و نذرانۂ عقیدت', category: 'Personal', icon: 'Feather', bgGradient: 'linear-gradient(160deg,#20130b,#4a2511,#78350f)' },
 
   // GLOBAL CELEBRATIONS & HOLIDAYS
   { id: 'christmas', label: 'Christmas', tagline: 'Merry Christmas & Happy Holidays', urdu: 'کرسمس مبارک', category: 'Universal', icon: 'TreePine', bgImage: '/occasions/birthday.jpg', bgGradient: 'linear-gradient(160deg,#b71c1c,#2e7d32)' },
@@ -208,6 +209,7 @@ export const OCCASIONS: Occasion[] = RAW_OCCASIONS.map(occ => {
     nikah:           'linear-gradient(150deg,#3d2800 0%,#bf8600 50%,#5d4037 100%)',
     shaadi:          'linear-gradient(150deg,#3a0008 0%,#8e0f24 50%,#4a0510 100%)',
     mehndi:          'linear-gradient(150deg,#0f3010 0%,#2e7d32 50%,#c07800 100%)',
+    poetry:          'linear-gradient(150deg,#1c1007 0%,#3d1e0a 50%,#68320a 100%)',
   }
 
   const defaultGradient = OCCASION_DEFAULTS[occ.id] || occ.bgGradient || 'linear-gradient(150deg,#1a237e,#7b1fa2)'
@@ -274,6 +276,17 @@ export const OCCASIONS: Occasion[] = RAW_OCCASIONS.map(occ => {
     )
   }
 
+  if (occ.id === 'poetry') {
+    bgVariants = [
+      baseVariant,
+      { id: 'poetry-vintage-parchment', name: 'Vintage Parchment', bgGradient: 'linear-gradient(150deg,#24140b 0%,#452312 50%,#783c18 100%)' },
+      { id: 'poetry-royal-velvet', name: 'Royal Velvet Plum', bgGradient: 'linear-gradient(150deg,#1a051d 0%,#380b3d 50%,#63126e 100%)' },
+      { id: 'poetry-dusk-indigo', name: 'Mushaira Night Indigo', bgGradient: 'linear-gradient(150deg,#0a0f24 0%,#151f47 50%,#283570 100%)' },
+      { id: 'poetry-emerald-calligraphy', name: 'Emerald Kalaam', bgGradient: 'linear-gradient(150deg,#041f16 0%,#093d2c 50%,#136348 100%)' },
+      { id: 'poetry-crimson-ghazal', name: 'Crimson Ghazal', bgGradient: 'linear-gradient(150deg,#24040a 0%,#4a0a16 50%,#7d1225 100%)' },
+    ]
+  }
+
   return {
     ...occ,
     soundCategory,
@@ -299,6 +312,24 @@ export function getOccasion(id: string | undefined): Occasion | undefined {
 
 /** Pre-written templates per occasion. Falls back to a generic set. */
 export const MESSAGE_TEMPLATES: Record<string, MessageTemplate[]> = {
+  'poetry': [
+    {
+      en: "Hazaron khwahishen aisi ke har khwahish pe dam nikle\nBohat niklay mere armaan lekin phir bhi kam nikle",
+      ur: "ہزاروں خواہشیں ایسی کہ ہر خواہش پہ دم نکلے\nبہت نکلے مرے ارمان لیکن پھر بھی کم نکلے",
+    },
+    {
+      en: "Sitaron se aage jahan aur bhi hain\nAbhi ishq ke imtihan aur bhi hain",
+      ur: "ستاروں سے آگے جہاں اور بھی ہیں\nابھی عشق کے امتحاں اور بھی ہیں",
+    },
+    {
+      en: "Gulon mein rang bhare baad-e-naubahar chale\nChale bhi aao ki gulshan ka karobaar chale",
+      ur: "گلوں میں رنگ بھرے بادِ نوبہار چلے\nچلے بھی آؤ کہ گلشن کا کاروبار چلے",
+    },
+    {
+      en: "Wo aye bazm mein itna to mir ne dekha\nPhir us ke baad charaghon mein roshni na rahi",
+      ur: "وہ آئے بزم میں اتنا تو میرؔ نے دیکھا\nپھر اس کے بعد چراغوں میں روشنی نہ رہی",
+    },
+  ],
   'birthday': [
     { en: "Wishing you a day full of love, laughter and cake. May Allah bless you with health and happiness always!", ur: "آپ کو سالگرہ بہت بہت مبارک ہو۔ اللہ آپ کو لمبی عمر، صحت اور خوشیاں عطا فرمائے۔ آمین", es: "¡Te deseo un día lleno de amor, risas y pastel! ¡Que Dios te bendiga siempre con salud y felicidad!", fr: "Je vous souhaite une journée pleine d'amour, de rires et de gâteau. Que Dieu vous bénisse toujours !", ar: "أتمنى لك يوماً مليئاً بالحب والضحك والسعادة. بارك الله فيك بالصحة والعافية دائماً!", hi: "आपको प्यार, हंसी और केक से भरे दिन की शुभकामनाएं। ईश्वर आपको हमेशा स्वास्थ्य और खुशी प्रदान करे!", zh: "祝您度过充满爱、欢笑和蛋糕的一天。愿上天永远赐予您健康与幸福！", pt: "Desejo a você um dia cheio de amor, risadas e bolo. Que Deus te abençoe com saúde e felicidade sempre!", ru: "Желаю дня, полного любви, смеха и торта! Пусть Бог всегда дарует вам здоровье и счастье!", de: "Ich wünsche dir einen Tag voller Liebe, Lachen und Kuchen. Möge Gott dich immer segnen!", ja: "愛と笑顔とケーキに満ちた素晴らしい一日になりますように。素晴らしい健康と幸せをお祈りします！", ko: "사랑과 웃음, 케이크로 가득한 하루가 되기를 바랍니다. 항상 건강과 행복이 가득하기를 기원합니다!", it: "Ti auguro una giornata piena d'amore, risate e torta. Che Dio ti benedica sempre con salute e felicità!", tr: "Sevgi, kahkaha ve pasta dolu bir gün dilerim. Allah sana her zaman sağlık ve mutluluk versin!", id: "Semoga hari Anda penuh dengan cinta, tawa, dan kue. Semoga Tuhan selalu memberkati Anda dengan kesehatan dan kebahagiaan!", bn: "ভালোবাসা, হাসি এবং কেক ভরা একটি দিনের শুভেচ্ছা। আল্লাহ সর্বদা আপনাকে স্বাস্থ্য ও সুখ দান করুন!", vi: "Chúc bạn một ngày tràn ngập tình yêu, tiếng cười và bánh ngọt. Chúc bạn luôn khỏe mạnh và hạnh phúc!", sw: "Nakutakia siku iliyojaa upendo, kicheko na keki. Mungu akubariki na afya na furaha siku zote!" },
     { en: "Another year wiser and brighter! May all your dreams come true this year. Happy Birthday!", ur: "سالگرہ مبارک ہو! اللہ کرے آپ کی ہر خواہش پوری ہو اور زندگی خوشیوں سے بھری رہے۔", es: "¡Un año más sabio y brillante! Que todos tus sueños se hagan realidad este año. ¡Feliz Cumpleaños!", fr: "Une année de plus, plus sage et plus brillante ! Que tous vos rêves se réalisent cette année. Joyeux anniversaire !", ar: "عام آخر أكثر حكمة وإشراقاً! أتمنى أن تتحقق كل أحلامك هذا العام. عيد ميلاد سعيد!", hi: "एक और नया साल, अधिक समझदार और उज्ज्वल! इस साल आपके सभी सपने सच हों। जन्मदिन मुबारक!", zh: "新的一年，更加睿智与光彩照人！愿您今年的梦想成真。生日快乐！", pt: "Mais um ano mais sábio e brilhante! Que todos os seus sonhos se realizem este ano. Feliz Aniversário!", ru: "Еще один год мудрости и радости! Пусть все ваши мечты сбудутся в этом году. С днем рождения!", de: "Ein weiteres Jahr weiser und strahlender! Mögen all deine Träume dieses Jahr in Erfüllung gehen. Alles Gute zum Geburtstag!", ja: "知恵と輝きに満ちた新しい一年！あなたのすべての夢が今年叶いますように。お誕生日おめでとうございます！", ko: "지혜롭고 빛나는 또 한 해! 올해 당신의 모든 꿈이 이루어지기를 바랍니다. 생일 축하합니다!", it: "Un altro anno più saggio e luminoso! Che tutti i tuoi sogni si avverino quest'anno. Buon compleanno!", tr: "Daha bilge ve parlak bir yıl daha! Bu yıl tüm hayallerin gerçek olsun. Doğum Günün Kutlu Olsun!", id: "Satu tahun lagi lebih bijak dan bersinar! Semoga semua impian Anda terwujud tahun ini. Selamat Ulang Tahun!", bn: "আরেকটি নতুন ও উজ্জ্বল বছর! এই বছর আপনার সমস্ত স্বপ্ন সত্যি হোক। শুভ জন্মদিন!", vi: "Một năm mới trí tuệ và tỏa sáng hơn! Chúc mọi ước mơ của bạn thành hiện thực trong năm nay. Chúc mừng sinh nhật!", sw: "Mwaka mwingine mwenye busara na angavu zaidi! Hata ndoto zako zote zitimie mwaka huu. Heri ya Siku ya Kuzaliwa!" },

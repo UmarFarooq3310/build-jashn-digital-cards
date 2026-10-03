@@ -32,7 +32,7 @@ import type { Invitation } from '@/lib/jashn/types'
 import { cn } from '@/lib/utils'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc, onSnapshot } from 'firebase/firestore'
-import { shouldIncrementView, isSenderOrOwner } from '@/lib/jashn/view-tracker'
+import { shouldIncrementView, isSenderOrOwner, recordCardView, getCardViews } from '@/lib/jashn/view-tracker'
 import { isCardExpired } from '@/lib/jashn/plan-limits'
 
 function InvitationPublicContent({ slug }: { slug: string }) {
@@ -56,11 +56,12 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   const [videoProgress, setVideoProgress] = useState(0)
   const [downloadingQr, setDownloadingQr] = useState(false)
 
-  // Sender/Creator mode: ONLY active if explicitly requested via ?mode=sender or ?role=sender
-  // When visiting clean card URL, always show the full receiver experience (card, navbar, RSVP, wishes wall, no side box)
+  // Sender/Creator mode: active if explicitly requested via ?mode=sender or ?role=sender, or if viewer is verified creator/owner
   const isSenderMode =
     searchParams.get('mode') === 'sender' ||
     searchParams.get('role') === 'sender'
+
+  const isSender = isSenderMode || (activeInvitation ? isSenderOrOwner(activeInvitation.slug, activeInvitation.creatorId, searchParams, user?.uid, user?.email) : false)
 
   useEffect(() => {
     setIsMounted(true)
@@ -81,7 +82,8 @@ function InvitationPublicContent({ slug }: { slug: string }) {
           // Only increment view count if viewer is receiver (not sender/creator)
           if (shouldIncrementView(slug, 'invite', existing.creatorId, searchParams, user?.uid, user?.email)) {
             incrementInvitationView(slug)
-            setActiveInvitation((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+            recordCardView('invite', slug, existing.creatorId, searchParams, user?.uid, user?.email)
+            setActiveInvitation((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
           }
         }
         setIsLoading(false)
@@ -148,7 +150,8 @@ function InvitationPublicContent({ slug }: { slug: string }) {
               // Only increment view count if viewer is receiver (not sender/creator)
               if (shouldIncrementView(slug, 'invite', data.creatorId, searchParams, user?.uid, user?.email)) {
                 incrementInvitationView(slug)
-                setActiveInvitation((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : null))
+                recordCardView('invite', slug, data.creatorId, searchParams, user?.uid, user?.email)
+                setActiveInvitation((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
               }
             }
             setIsLoading(false)
@@ -173,6 +176,10 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   }, [slug, invitations, searchParams, isMounted, incrementInvitationView, user?.uid])
 
   function handleRsvp() {
+    if (isSender) {
+      showToast("👀 Preview Mode: RSVP confirmation is disabled for the card host/sender.", "info")
+      return
+    }
     if (!rsvped) {
       incrementRsvp(slug)
       setRsvped(true)
@@ -290,6 +297,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         fileName: `invitation-${slug}`,
         cardType: 'invite',
         cardSlug: slug,
+        audioTrack: activeInvitation.audioTrack,
         onProgress: (p) => setVideoProgress(p),
       })
     } finally {
@@ -359,6 +367,15 @@ function InvitationPublicContent({ slug }: { slug: string }) {
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Eye className="size-3.5 text-amber-400" /> Interactive Guest View
               </span>
+              <Button
+                onClick={handleEdit}
+                variant="outline"
+                size="sm"
+                className="h-7 px-2.5 rounded-lg border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold text-xs flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer shadow-xs"
+              >
+                <Edit3 className="size-3" />
+                <span>Edit Invitation</span>
+              </Button>
             </div>
 
             <div className="w-full flex-1 min-h-0 pt-10 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
@@ -445,7 +462,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                       <Heart className="size-2.5 text-pink-400 animate-pulse" /> {activeInvitation.rsvpCount + (rsvped ? 1 : 0)} RSVPs
                     </span>
                     <span className="inline-flex items-center gap-1 rounded-full bg-slate-800/90 border border-white/10 px-2 py-0.5 text-[9.5px] font-bold text-slate-300">
-                      <Eye className="size-2.5 text-emerald-400" /> {activeInvitation.viewCount || 0} visits
+                      <Eye className="size-2.5 text-emerald-400" /> {getCardViews(activeInvitation)} visits
                     </span>
                   </div>
                 </div>
@@ -540,6 +557,16 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                   <span>Share via Other Apps</span>
                 </Button>
               ) : null}
+
+              {/* Edit Invitation Details */}
+              <Button
+                onClick={handleEdit}
+                variant="outline"
+                className="w-full h-8.5 rounded-lg border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer shadow-xs"
+              >
+                <Edit3 className="size-3.5" />
+                <span>Edit Invitation Details</span>
+              </Button>
 
               {/* Integrated Guest QR Code (Compact Horizontal Row with Download Icon) */}
               <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2.5">
@@ -745,14 +772,41 @@ function InvitationPublicContent({ slug }: { slug: string }) {
               )}
             </div>
 
+            {/* Host Preview Notice */}
+            {isSender && (
+              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs text-center font-medium">
+                👀 <strong>Preview Mode:</strong> You are viewing your invitation as the host. RSVP & reaction counting are disabled.
+              </div>
+            )}
+
             {/* Big WhatsApp RSVP Button */}
             <Button
               onClick={handleRsvp}
               size="lg"
-              className="w-full h-12 bg-[#25D366] text-white hover:bg-[#1eb955] font-black text-sm rounded-2xl shadow-xl hover:scale-[1.02] active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              disabled={isSender}
+              className={cn(
+                "w-full h-12 font-black text-sm rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2",
+                isSender
+                  ? "bg-slate-750 text-slate-400 border border-white/10 cursor-not-allowed opacity-80"
+                  : "bg-[#25D366] text-white hover:bg-[#1eb955] hover:scale-[1.02] active:scale-98 cursor-pointer"
+              )}
             >
-              {rsvped ? <CheckCircle2 className="size-5 shrink-0" /> : <MessageCircle className="size-5 shrink-0" />}
-              <span>{rsvped ? 'RSVP Confirmed!' : 'RSVP via WhatsApp'}</span>
+              {isSender ? (
+                <>
+                  <MessageCircle className="size-5 shrink-0 opacity-50" />
+                  <span>RSVP via WhatsApp (Host Preview)</span>
+                </>
+              ) : rsvped ? (
+                <>
+                  <CheckCircle2 className="size-5 shrink-0" />
+                  <span>RSVP Confirmed!</span>
+                </>
+              ) : (
+                <>
+                  <MessageCircle className="size-5 shrink-0" />
+                  <span>RSVP via WhatsApp</span>
+                </>
+              )}
             </Button>
 
             {/* Interactive Live Emoji Reactions Dock - RIGHT ON SCREEN! */}
@@ -766,6 +820,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                   cardType="invite"
                   isUrdu={lang === 'ur' || lang === 'ar'}
                   theme="dark"
+                  disabled={isSender}
                 />
               </div>
             </div>

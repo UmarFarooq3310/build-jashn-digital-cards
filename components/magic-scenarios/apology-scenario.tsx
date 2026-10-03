@@ -27,6 +27,7 @@ interface ScenarioProps {
   triggerConfetti: () => void
   onSendLove: () => void
   loveSent: boolean
+  isSenderView?: boolean
 }
 
 const APOLOGY_SCENES = [
@@ -43,6 +44,7 @@ export function ApologyScenario({
   triggerConfetti,
   onSendLove,
   loveSent,
+  isSenderView = false,
 }: ScenarioProps) {
   const { t } = useLang()
 
@@ -151,6 +153,11 @@ export function ApologyScenario({
     magicAudio.playFanfare()
     spawnBurst(choice ? ['💖', '🕊️', '✨', '🌸'] : ['🕊️', '🤍'], 16)
     triggerConfetti()
+
+    if (isSenderView) {
+      return
+    }
+
     onSendLove()
 
     try {
@@ -462,15 +469,28 @@ export function ApologyScenario({
               </button>
             </div>
 
+            {/* Preview Banner */}
+            {isSenderView && (
+              <div className="p-3 mb-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs text-center font-medium">
+                👀 <strong>Preview Mode:</strong> You are viewing your own card as sender. Responses & WhatsApp replies are disabled.
+              </div>
+            )}
+
             {/* Direct WhatsApp Response Button */}
-            <a
-              href={whatsAppHref}
-              target="_blank"
-              rel="noreferrer"
-              className="w-full mt-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md cursor-pointer transition-transform active:scale-95"
-            >
-              <span>Reply on WhatsApp 💬</span>
-            </a>
+            {isSenderView ? (
+              <div className="w-full mt-2 py-2.5 rounded-xl bg-emerald-600/50 text-white/70 font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-not-allowed">
+                <span>Reply on WhatsApp (Disabled in Preview)</span>
+              </div>
+            ) : (
+              <a
+                href={whatsAppHref}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full mt-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md cursor-pointer transition-transform active:scale-95"
+              >
+                <span>Reply on WhatsApp 💬</span>
+              </a>
+            )}
 
             {/* CTA to studio */}
             <Link

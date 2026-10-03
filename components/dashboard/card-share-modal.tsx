@@ -249,6 +249,7 @@ export function CardShareModal({ card, onClose, simpleMode = false }: CardShareM
         fileName: `cardzy-${card.type}-${card.slug}`,
         cardType: card.type,
         cardSlug: card.slug,
+        audioTrack: (card as any).audioTrack,
         onProgress: (p) => setVideoProgress(p),
       })
     } catch (err) {
@@ -615,50 +616,52 @@ export function CardShareModal({ card, onClose, simpleMode = false }: CardShareM
             </div>
 
             {/* 1-Click Download Buttons (PNG & MP4 Video) */}
-            <div className={cn("pt-2 gap-2", (card.type === 'vcard' || card.type === 'magic') ? "flex" : "grid grid-cols-1 sm:grid-cols-2")}>
-              <button
-                onClick={handleDownloadCardImage}
-                disabled={downloadingImage || downloadingVideo}
-                className="w-full py-3 px-3 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-zinc-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer disabled:opacity-50"
-              >
-                {downloadingImage ? (
-                  <>
-                    <Loader2 className="size-4 animate-spin text-zinc-950" />
-                    <span>Rendering PNG...</span>
-                  </>
-                ) : imageDownloaded ? (
-                  <>
-                    <CheckCircle2 className="size-4 text-emerald-950" />
-                    <span>Card Image Saved! 🎉</span>
-                  </>
-                ) : (
-                  <>
-                    <Download className="size-4 text-zinc-950" />
-                    <span>Download Image (PNG)</span>
-                  </>
-                )}
-              </button>
-
-              {card.type !== 'vcard' && card.type !== 'magic' && (
+            {card.type !== 'magic' && (
+              <div className={cn("pt-2 gap-2", card.type === 'vcard' ? "flex" : "grid grid-cols-1 sm:grid-cols-2")}>
                 <button
-                  onClick={handleDownloadCardVideo}
+                  onClick={handleDownloadCardImage}
                   disabled={downloadingImage || downloadingVideo}
-                  className="w-full py-3 px-3 rounded-xl bg-gradient-to-r from-[#7A1E2B] via-[#922333] to-[#7A1E2B] hover:brightness-110 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer disabled:opacity-50"
+                  className="w-full py-3 px-3 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-zinc-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer disabled:opacity-50"
                 >
-                  {downloadingVideo ? (
+                  {downloadingImage ? (
                     <>
-                      <Loader2 className="size-4 animate-spin text-white" />
-                      <span>{videoProgress > 0 ? `Making Video ${videoProgress}%` : 'Making Video...'}</span>
+                      <Loader2 className="size-4 animate-spin text-zinc-950" />
+                      <span>Rendering PNG...</span>
+                    </>
+                  ) : imageDownloaded ? (
+                    <>
+                      <CheckCircle2 className="size-4 text-emerald-950" />
+                      <span>Card Image Saved! 🎉</span>
                     </>
                   ) : (
                     <>
-                      <Video className="size-4 text-white" />
-                      <span>Download Video (MP4)</span>
+                      <Download className="size-4 text-zinc-950" />
+                      <span>Download Image (PNG)</span>
                     </>
                   )}
                 </button>
-              )}
-            </div>
+
+                {card.type !== 'vcard' && (
+                  <button
+                    onClick={handleDownloadCardVideo}
+                    disabled={downloadingImage || downloadingVideo}
+                    className="w-full py-3 px-3 rounded-xl bg-gradient-to-r from-[#7A1E2B] via-[#922333] to-[#7A1E2B] hover:brightness-110 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    {downloadingVideo ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin text-white" />
+                        <span>{videoProgress > 0 ? `Making Video ${videoProgress}%` : 'Making Video...'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Video className="size-4 text-white" />
+                        <span>Download Video (MP4)</span>
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         )}
 

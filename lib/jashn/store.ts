@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Invitation, JashnUser, Plan, Wish, RsvpGuest, VisitingCard } from './types'
 import { getClientTracking } from './tracking'
-import { markCardAsCreatedByMe } from './view-tracker'
+import { markCardAsCreatedByMe, getCardViews, recordCardView } from './view-tracker'
 import { isDeviceAdmin } from './admin-presence'
 import { syncRecordToServer } from './server-sync'
 import { db, auth, isFirebaseConfigured, getFirebaseAuth, getFirebaseDb } from '../firebase'
@@ -606,16 +606,25 @@ export const useJashn = create<JashnState>()(
               if (!d.typeId || (d.typeId === 'iftaar' && (d.groom || d.bride))) {
                 d.typeId = 'nikkah'
               }
+              d.viewCount = getCardViews(d)
               return d
             })
 
             const wishQ = query(collection(activeDb, 'wishes'), where('creatorId', '==', currentUser.uid))
             const wishSnap = await getDocs(wishQ)
-            const fetchedWishes = wishSnap.docs.map((doc) => doc.data() as Wish)
+            const fetchedWishes = wishSnap.docs.map((doc) => {
+              const d = doc.data() as Wish
+              d.viewCount = getCardViews(d)
+              return d
+            })
 
             const vcQ = query(collection(activeDb, 'visitingCards'), where('creatorId', '==', currentUser.uid))
             const vcSnap = await getDocs(vcQ)
-            const fetchedVcs = vcSnap.docs.map((doc) => doc.data() as VisitingCard)
+            const fetchedVcs = vcSnap.docs.map((doc) => {
+              const d = doc.data() as VisitingCard
+              d.viewCount = getCardViews(d)
+              return d
+            })
 
             set((s) => {
               const otherInvs = s.invitations.filter((li) => li.creatorId !== currentUser.uid && li.creatorId !== 'guest')
@@ -805,9 +814,10 @@ export const useJashn = create<JashnState>()(
 
       incrementWishView: (slug) => {
         if (isDeviceAdmin()) return
+        const cleanSlug = String(slug).replace(/^\/?w\//, '').trim()
         set((s) => ({
           wishes: s.wishes.map((w) =>
-            w.slug === slug ? { ...w, viewCount: (w.viewCount || 0) + 1 } : w,
+            w.slug === cleanSlug || w.slug === slug ? { ...w, viewCount: getCardViews(w) + 1 } : w,
           ),
         }))
 
@@ -818,33 +828,23 @@ export const useJashn = create<JashnState>()(
             const parsed = JSON.parse(raw)
             if (parsed?.state?.wishes) {
               parsed.state.wishes = parsed.state.wishes.map((w: any) =>
-                w.slug === slug ? { ...w, viewCount: (w.viewCount || 0) + 1 } : w
+                w.slug === cleanSlug || w.slug === slug ? { ...w, viewCount: getCardViews(w) + 1 } : w
               )
               localStorage.setItem('jashn_store_v1', JSON.stringify(parsed))
             }
           }
         } catch {}
 
-        // Direct Client Firestore Increment
-        const activeDb = getFirebaseDb() || db
-        if (isFirebaseConfigured && activeDb) {
-          setDoc(
-            doc(activeDb, 'wishes', slug),
-            { viewCount: increment(1), lastViewedAt: Date.now() },
-            { merge: true }
-          ).catch((err) => {
-            console.error('Failed to increment wish view in Firestore:', err)
-          })
-        }
-
-        // Server API activity logging removed to prevent double-increment with Client SDK
+        // Guaranteed dual increment (Server Admin API + Client fallback)
+        recordCardView('wish', cleanSlug).catch(() => {})
       },
 
       incrementInvitationView: (slug) => {
         if (isDeviceAdmin()) return
+        const cleanSlug = String(slug).replace(/^\/?i\//, '').trim()
         set((s) => ({
           invitations: s.invitations.map((i) =>
-            i.slug === slug ? { ...i, viewCount: (i.viewCount || 0) + 1 } : i,
+            i.slug === cleanSlug || i.slug === slug ? { ...i, viewCount: getCardViews(i) + 1 } : i,
           ),
         }))
 
@@ -855,33 +855,23 @@ export const useJashn = create<JashnState>()(
             const parsed = JSON.parse(raw)
             if (parsed?.state?.invitations) {
               parsed.state.invitations = parsed.state.invitations.map((i: any) =>
-                i.slug === slug ? { ...i, viewCount: (i.viewCount || 0) + 1 } : i
+                i.slug === cleanSlug || i.slug === slug ? { ...i, viewCount: getCardViews(i) + 1 } : i
               )
               localStorage.setItem('jashn_store_v1', JSON.stringify(parsed))
             }
           }
         } catch {}
 
-        // Direct Client Firestore Increment
-        const activeDb = getFirebaseDb() || db
-        if (isFirebaseConfigured && activeDb) {
-          setDoc(
-            doc(activeDb, 'invitations', slug),
-            { viewCount: increment(1), lastViewedAt: Date.now() },
-            { merge: true }
-          ).catch((err) => {
-            console.error('Failed to increment invitation view in Firestore:', err)
-          })
-        }
-
-        // Server API activity logging removed to prevent double-increment with Client SDK
+        // Guaranteed dual increment (Server Admin API + Client fallback)
+        recordCardView('invite', cleanSlug).catch(() => {})
       },
 
       incrementVisitingCardView: (slug) => {
         if (isDeviceAdmin()) return
+        const cleanSlug = String(slug).replace(/^\/?v\//, '').trim()
         set((s) => ({
           visitingCards: s.visitingCards.map((v) =>
-            v.slug === slug ? { ...v, viewCount: (v.viewCount || 0) + 1 } : v,
+            v.slug === cleanSlug || v.slug === slug ? { ...v, viewCount: getCardViews(v) + 1 } : v,
           ),
         }))
 
@@ -892,26 +882,15 @@ export const useJashn = create<JashnState>()(
             const parsed = JSON.parse(raw)
             if (parsed?.state?.visitingCards) {
               parsed.state.visitingCards = parsed.state.visitingCards.map((v: any) =>
-                v.slug === slug ? { ...v, viewCount: (v.viewCount || 0) + 1 } : v
+                v.slug === cleanSlug || v.slug === slug ? { ...v, viewCount: getCardViews(v) + 1 } : v
               )
               localStorage.setItem('jashn_store_v1', JSON.stringify(parsed))
             }
           }
         } catch {}
 
-        // Direct Client Firestore Increment
-        const activeDb = getFirebaseDb() || db
-        if (isFirebaseConfigured && activeDb) {
-          setDoc(
-            doc(activeDb, 'visitingCards', slug),
-            { viewCount: increment(1), lastViewedAt: Date.now() },
-            { merge: true }
-          ).catch((err) => {
-            console.error('Failed to increment visiting card view in Firestore:', err)
-          })
-        }
-
-        // Server API activity logging removed to prevent double-increment with Client SDK
+        // Guaranteed dual increment (Server Admin API + Client fallback)
+        recordCardView('vcard', cleanSlug).catch(() => {})
       },
 
       incrementRsvp: (slug) => {

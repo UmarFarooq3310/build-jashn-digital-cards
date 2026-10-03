@@ -310,7 +310,9 @@ export function getOccasionGroup(id: string | undefined): 'islamic' | 'wedding' 
     cleanId.includes('anniversary') ||
     cleanId.includes('valentine') ||
     cleanId.includes('proposal') ||
-    cleanId.includes('love')
+    cleanId.includes('love') ||
+    cleanId.includes('poetry') ||
+    cleanId.includes('shayari')
   ) {
     return 'romantic'
   }
@@ -490,7 +492,7 @@ export function getDefaultAudioTrackForOccasion(id: string | undefined): string 
     return 'romantic-piano'
   }
 
-  if (cleanId.includes('valentine') || cleanId.includes('proposal') || cleanId.includes('love')) {
+  if (cleanId.includes('valentine') || cleanId.includes('proposal') || cleanId.includes('love') || cleanId.includes('poetry') || cleanId.includes('shayari')) {
     return 'romantic-strings'
   }
 

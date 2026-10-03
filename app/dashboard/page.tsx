@@ -19,6 +19,7 @@ import {
   CreditCard,
   Trash2,
   Loader2,
+  Edit3,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
@@ -29,6 +30,7 @@ import { useLang } from '@/lib/lang/context'
 import { getUserMagicLinks, deleteMagicLink } from '@/lib/jashn/magic-service'
 import type { MagicLinkData } from '@/lib/jashn/magic-types'
 import { CardShareModal, type ShareModalCardData } from '@/components/dashboard/card-share-modal'
+import { getCardViews } from '@/lib/jashn/view-tracker'
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -110,10 +112,10 @@ export default function DashboardPage() {
   const hostVisitingCards = user ? (visitingCards || []).filter((v) => v.creatorId === user.uid) : []
 
   // Grand Total Views & Metrics Calculation
-  const wishViews = hostWishes.reduce((sum, w) => sum + (w.viewCount || 0), 0)
-  const invViews = hostInvitations.reduce((sum, i) => sum + (i.viewCount || 0), 0)
-  const vcViews = hostVisitingCards.reduce((sum, v) => sum + (v.viewCount || 0), 0)
-  const magicViews = magicLinks.reduce((sum, m) => sum + (m.viewsCount || 0), 0)
+  const wishViews = hostWishes.reduce((sum, w) => sum + getCardViews(w), 0)
+  const invViews = hostInvitations.reduce((sum, i) => sum + getCardViews(i), 0)
+  const vcViews = hostVisitingCards.reduce((sum, v) => sum + getCardViews(v), 0)
+  const magicViews = magicLinks.reduce((sum, m) => sum + getCardViews(m), 0)
   const grandTotalViews = wishViews + invViews + vcViews + magicViews
 
   const grandTotalCards =
@@ -508,7 +510,7 @@ export default function DashboardPage() {
                         <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
                           <span className="font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">{type?.label ?? 'Event'}</span>
                           <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/80 text-foreground shadow-2xs">
-                            <Eye className="size-3 text-emerald-500" /> {inv.viewCount || 0} views
+                            <Eye className="size-3 text-emerald-500" /> {getCardViews(inv)} views
                           </span>
                         </div>
                         <h4 className="text-base font-bold text-foreground leading-tight">{inv.title || `${inv.groom} & ${inv.bride}`}</h4>
@@ -552,7 +554,7 @@ export default function DashboardPage() {
                               type: 'invite',
                               slug: (inv.slug || inv.id || ""),
                               url: `/i/${(inv.slug || inv.id)}`,
-                              viewsCount: inv.viewCount,
+                              viewsCount: getCardViews(inv),
                               shares: inv.shares,
                               occasion: type?.label || 'Royal Wedding Invitation',
                               date: inv.date,
@@ -566,6 +568,9 @@ export default function DashboardPage() {
                           <Share2 className="size-3.5" /> Share, QR & Image
                         </button>
                         <div className="flex items-center gap-3">
+                          <Link href={`/create-invitation?edit=${(inv.slug || inv.id)}`} className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 hover:text-emerald-700 hover:underline">
+                            <Edit3 className="size-3" /> Edit
+                          </Link>
                           <Link href={`/i/${(inv.slug || inv.id)}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
                             Preview <ExternalLink className="size-3" />
                           </Link>
@@ -614,7 +619,7 @@ export default function DashboardPage() {
                         <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
                           <span className="font-extrabold text-primary uppercase tracking-wider text-[11px] px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20">{occ?.label ?? 'Wish'}</span>
                           <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/80 text-foreground shadow-2xs">
-                            <Eye className="size-3 text-primary" /> {w.viewCount || 0} views
+                            <Eye className="size-3 text-primary" /> {getCardViews(w)} views
                           </span>
                         </div>
                         <p className="text-sm font-semibold text-foreground max-h-24 overflow-y-auto pr-1 leading-relaxed break-words break-all [overflow-wrap:anywhere] [word-break:break-word]">{w.message}</p>
@@ -657,7 +662,7 @@ export default function DashboardPage() {
                               type: 'wish',
                               slug: (w.slug || w.id || ""),
                               url: `/w/${(w.slug || w.id)}`,
-                              viewsCount: w.viewCount,
+                              viewsCount: getCardViews(w),
                               shares: w.shares,
                               occasion: occ?.label || 'Celebration Wish',
                               message: w.message,
@@ -670,6 +675,9 @@ export default function DashboardPage() {
                           <Share2 className="size-3.5" /> Share, QR & Image
                         </button>
                         <div className="flex items-center gap-3">
+                          <Link href={`/create-wish?edit=${(w.slug || w.id)}`} className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline">
+                            <Edit3 className="size-3" /> Edit
+                          </Link>
                           <Link href={`/w/${(w.slug || w.id)}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
                             Preview <ExternalLink className="size-3" />
                           </Link>
@@ -719,7 +727,7 @@ export default function DashboardPage() {
                       <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
                         <span className="font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider text-[11px] px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20">Digital vCard</span>
                         <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/80 text-foreground shadow-2xs">
-                          <Eye className="size-3 text-indigo-500" /> {vc.viewCount || 0} views
+                          <Eye className="size-3 text-indigo-500" /> {getCardViews(vc)} views
                         </span>
                       </div>
                       <h4 className="text-base font-bold text-foreground">{vc.fullName}</h4>
@@ -760,7 +768,7 @@ export default function DashboardPage() {
                             type: 'vcard',
                             slug: (vc.slug || vc.id || ""),
                             url: `/v/${(vc.slug || vc.id)}`,
-                            viewsCount: vc.viewCount,
+                            viewsCount: getCardViews(vc),
                             shares: vc.shares,
                             occasion: 'Executive Digital vCard',
                             subtitle: `${vc.title || 'Professional'} • ${vc.company || ''}`,
@@ -773,6 +781,9 @@ export default function DashboardPage() {
                         <Share2 className="size-3.5" /> Share, QR & Image
                       </button>
                       <div className="flex items-center gap-3">
+                        <Link href={`/create-visiting-card?edit=${(vc.slug || vc.id)}`} className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
+                          <Edit3 className="size-3" /> Edit
+                        </Link>
                         <Link href={`/v/${(vc.slug || vc.id)}?mode=sender`} target="_blank" className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground hover:text-foreground">
                           Preview <ExternalLink className="size-3" />
                         </Link>
@@ -826,7 +837,7 @@ export default function DashboardPage() {
                           {m.occasion} · {m.type}
                         </span>
                         <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/80 text-foreground shadow-2xs">
-                          <Eye className="size-3 text-amber-500" /> {m.viewsCount || 0} views
+                          <Eye className="size-3 text-amber-500" /> {getCardViews(m)} views
                         </span>
                       </div>
                       <h4 className="text-base font-bold text-foreground break-words break-all [overflow-wrap:anywhere]">{m.recipientName}</h4>
@@ -873,7 +884,7 @@ export default function DashboardPage() {
                             type: 'magic',
                             slug: (m.slug || m.id || ""),
                             url: `/m/${(m.slug || m.id)}`,
-                            viewsCount: m.viewsCount,
+                            viewsCount: getCardViews(m),
                             shares: m.shares,
                             occasion: `${m.occasion.toUpperCase()} Magic Celebration`,
                             message: m.wishContent?.secretLetter || m.inviteContent?.eventTitle || 'Interactive 3D celebration capsule',
@@ -890,6 +901,12 @@ export default function DashboardPage() {
                         <Share2 className="size-3.5" /> Share, QR & Image
                       </button>
                       <div className="flex items-center gap-3">
+                        <Link
+                          href={`/create-magic-link?edit=${(m.slug || m.id)}`}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline"
+                        >
+                          <Edit3 className="size-3" /> Edit
+                        </Link>
                         <Link
                           href={`/m/${(m.slug || m.id)}?mode=sender`}
                           target="_blank"

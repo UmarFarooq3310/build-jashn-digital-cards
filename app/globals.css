@@ -1244,6 +1244,13 @@ body > .skiptranslate:not(#cookie-consent-banner):not(#cardzy-cookie-modal-root)
   pointer-events: auto !important;
 }
 
+/* Ensure mobile bottom dock (height ~56-64px) is never obscured by cookie settings badge */
+@media (max-width: 1023px) {
+  #cookie-settings-persistent-badge {
+    bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
 font {
   background-color: transparent !important;
   box-shadow: none !important;

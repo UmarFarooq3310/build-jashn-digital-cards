@@ -11,6 +11,16 @@ export function encodeShortWish(w: Partial<Wish>): string {
   if (w.recipientName) params.set('r', w.recipientName)
   if (w.relation) params.set('rel', w.relation)
   if (w.language) params.set('l', w.language)
+  if (w.poetName) params.set('pn', w.poetName)
+  if (w.dedication) params.set('dd', w.dedication)
+  if (w.poetryFormat) params.set('pf', w.poetryFormat)
+  if (w.playerName) params.set('pln', w.playerName)
+  if (w.killCount) params.set('kc', w.killCount)
+  if (w.rank) params.set('rnk', w.rank)
+  if (w.winningNumber) params.set('wn', w.winningNumber)
+  if (w.developerName) params.set('dev', w.developerName)
+  if (w.photoUrl) params.set('pu', w.photoUrl)
+  if (w.audioTrack) params.set('at', w.audioTrack)
 
   // Optimization: check if message matches a predefined template
   const templates = w.occasionId ? getTemplates(w.occasionId) : []
@@ -48,6 +58,16 @@ export function decodeShortWish(params: URLSearchParams, slug: string): Wish | n
     relation: params.get('rel') || '',
     language: (params.get('l') as any) || 'en',
     message: matchedTemplate ? matchedTemplate.en : (params.get('m') || ''),
+    poetName: params.get('pn') || undefined,
+    dedication: params.get('dd') || undefined,
+    poetryFormat: params.get('pf') || undefined,
+    playerName: params.get('pln') || undefined,
+    killCount: params.get('kc') || undefined,
+    rank: params.get('rnk') || undefined,
+    winningNumber: params.get('wn') || undefined,
+    developerName: params.get('dev') || undefined,
+    photoUrl: params.get('pu') || undefined,
+    audioTrack: params.get('at') || undefined,
     viewCount: 1,
     createdAt: Date.now(),
   }

@@ -10,17 +10,29 @@
  */
 
 import { isDeviceAdmin } from './admin-presence'
+import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
+import { doc, setDoc, increment } from 'firebase/firestore'
+
+export function getCardViews(card: any): number {
+  if (!card) return 0
+  return Math.max(
+    Number(card.viewCount || 0),
+    Number(card.viewsCount || 0),
+    Number(card.views || 0)
+  )
+}
 
 export function markCardAsCreatedByMe(slug: string) {
   if (typeof window === 'undefined' || !slug) return
+  const cleanSlug = String(slug).replace(/^\/?(i|w|v|m)\//, '').trim()
   try {
     const raw = localStorage.getItem('cardzy_my_cards') || '[]'
     const list: string[] = JSON.parse(raw)
-    if (!list.includes(slug)) {
-      list.push(slug)
+    if (!list.includes(cleanSlug)) {
+      list.push(cleanSlug)
       localStorage.setItem('cardzy_my_cards', JSON.stringify(list))
     }
-    localStorage.setItem(`cardzy_owner_${slug}`, '1')
+    localStorage.setItem(`cardzy_owner_${cleanSlug}`, '1')
   } catch {}
 }
 
@@ -32,6 +44,7 @@ export function isSenderOrOwner(
   currentUserEmail?: string | null
 ): boolean {
   if (typeof window === 'undefined') return false
+  const cleanSlug = String(slug || '').replace(/^\/?(i|w|v|m)\//, '').trim()
 
   // 0. Complete Admin Device & Account Protection (Never count views for admin)
   if (isDeviceAdmin(currentUserEmail)) {
@@ -83,19 +96,25 @@ export function isSenderOrOwner(
   } catch {}
 
   // 4. Authenticated creator check: If current logged-in user is the creator of this card
-  if (currentUserId && creatorId && currentUserId === creatorId) {
+  if (
+    currentUserId &&
+    creatorId &&
+    currentUserId !== 'guest' &&
+    creatorId !== 'guest' &&
+    currentUserId === creatorId
+  ) {
     return true
   }
 
   // 5. Local storage ownership check: Browser that created this card
   try {
-    if (localStorage.getItem(`cardzy_owner_${slug}`) === '1') {
+    if (localStorage.getItem(`cardzy_owner_${cleanSlug}`) === '1') {
       return true
     }
     const rawMyCards = localStorage.getItem('cardzy_my_cards')
     if (rawMyCards) {
       const myCards: string[] = JSON.parse(rawMyCards)
-      if (Array.isArray(myCards) && myCards.includes(slug)) {
+      if (Array.isArray(myCards) && myCards.includes(cleanSlug)) {
         return true
       }
     }
@@ -113,9 +132,10 @@ export function shouldIncrementView(
   currentUserEmail?: string | null
 ): boolean {
   if (typeof window === 'undefined' || !slug) return false
+  const cleanSlug = String(slug).replace(/^\/?(i|w|v|m)\//, '').trim()
 
   // 1. NEVER increment if viewer is the sender, owner, creator, or admin!
-  if (isSenderOrOwner(slug, creatorId, searchParams, currentUserId, currentUserEmail)) {
+  if (isSenderOrOwner(cleanSlug, creatorId, searchParams, currentUserId, currentUserEmail)) {
     return false
   }
 
@@ -124,9 +144,9 @@ export function shouldIncrementView(
     return false
   }
 
-  // 2. Debounce by 5 seconds per browser tab to avoid double-counting on refresh
+  // 3. Debounce by 5 seconds per browser tab to avoid double-counting on refresh
   try {
-    const sessionKey = `cardzy_last_view_${cardType}_${slug}`
+    const sessionKey = `cardzy_last_view_${cardType}_${cleanSlug}`
     const lastViewed = Number(sessionStorage.getItem(sessionKey) || '0')
     const now = Date.now()
     if (now - lastViewed < 5000) {
@@ -137,4 +157,81 @@ export function shouldIncrementView(
   } catch {
     return true
   }
+}
+
+/**
+ * Universal, guaranteed view tracker for V, W, M, I cards:
+ * 1. Verifies viewer is an authentic recipient (not sender, admin, or preview).
+ * 2. Primary: Posts to internal /api/card-activity (uses Server Firebase Admin SDK with master permissions, works without client auth or adblockers).
+ * 3. Fallback: Directly increments in client Firestore if server endpoint is unreachable.
+ * 4. Dispatches local custom event 'cardzy_views_updated' so all listening UI components update immediately.
+ */
+export async function recordCardView(
+  cardType: 'wish' | 'invite' | 'vcard' | 'magic',
+  slug: string,
+  creatorId?: string | null,
+  searchParams?: { get: (key: string) => string | null } | null,
+  currentUserId?: string | null,
+  currentUserEmail?: string | null
+): Promise<boolean> {
+  if (typeof window === 'undefined' || !slug) return false
+  const cleanSlug = String(slug).replace(/^\/?(i|w|v|m)\//, '').trim()
+
+  if (!shouldIncrementView(cleanSlug, cardType, creatorId, searchParams, currentUserId, currentUserEmail)) {
+    return false
+  }
+
+  // 1. Primary: Server API activity increment via Firebase Admin SDK
+  let serverOk = false
+  try {
+    const res = await fetch('/api/card-activity', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cardType, slug: cleanSlug, action: 'view' }),
+      keepalive: true,
+    })
+    if (res.ok) {
+      serverOk = true
+    }
+  } catch (err) {
+    console.warn('[recordCardView] Server increment notice:', err)
+  }
+
+  // 2. Direct Client Firestore Increment fallback if server endpoint was unreachable
+  if (!serverOk) {
+    try {
+      const activeDb = getFirebaseDb() || db
+      if (isFirebaseConfigured && activeDb) {
+        const collectionName =
+          cardType === 'invite'
+            ? 'invitations'
+            : cardType === 'wish'
+            ? 'wishes'
+            : cardType === 'vcard'
+            ? 'visitingCards'
+            : 'magic_links'
+        const docRef = doc(activeDb, collectionName, cleanSlug)
+        setDoc(
+          docRef,
+          {
+            viewCount: increment(1),
+            viewsCount: increment(1),
+            lastViewedAt: Date.now(),
+          },
+          { merge: true }
+        ).catch(() => {})
+      }
+    } catch {}
+  }
+
+  // 3. Dispatch client event for real-time local UI updates
+  try {
+    window.dispatchEvent(
+      new CustomEvent('cardzy_views_updated', {
+        detail: { cardType, slug: cleanSlug },
+      })
+    )
+  } catch {}
+
+  return true
 }

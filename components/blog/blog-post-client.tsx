@@ -333,7 +333,18 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       es: 'Estilista Sénior de Eventos y Bodas en Cardzy, especializado en tradiciones de boda islámicas y gestión de RSVP.',
       fr: 'Styliste Événementiel et Mariage Senior chez Cardzy, expert des traditions de mariage islamiques et du suivi RSVP.',
       hi: 'कार्डज़ी में वरिष्ठ सांस्कृतिक कार्यक्रम व वेडिंग स्टाइलिस्ट, इस्लामिक व एशियाई विवाह परंपराओं और व्हाट्सएप आरएसवीपी के विशेषज्ञ।',
-      zh: 'Cardzy 资深文化婚礼策划师，专注伊斯兰与南亚婚礼传统、双语请柬礼仪与 WhatsApp RSVP 智能管理。'
+      zh: 'Cardzy 资深文化婚礼策划师，专注伊斯兰与南亚婚礼传统、双语请柬礼仪与 WhatsApp RSVP 智能管理。',
+      pt: 'Estilista Sênior de Eventos e Casamentos no Cardzy, especialista em tradições de casamento islâmicas e gestão de RSVP.',
+      ru: 'Ведущий стилист свадебных и культурных событий в Cardzy, эксперт по исламским традициям и управлению RSVP в WhatsApp.',
+      de: 'Senior-Stylist für Kultur- und Hochzeitsevents bei Cardzy, spezialisiert auf islamische Hochzeitstraditionen und WhatsApp-RSVP.',
+      ja: 'Cardzyのシニアウェディング＆カルチャースタイリスト。イスラムの結婚伝統とWhatsAppでのRSVP管理の専門家。',
+      ko: 'Cardzy의 시니어 웨딩 & 문화 이벤트 스타일리스트. 이슬람 결혼 전통과 WhatsApp RSVP 관리 전문가.',
+      it: 'Senior Stylist di Eventi Culturali e Matrimoni presso Cardzy, specializzato in tradizioni nuziali islamiche e gestione RSVP su WhatsApp.',
+      tr: 'Cardzy Kıdemli Kültür ve Düğün Stilisti. İslami düğün gelenekleri ve WhatsApp LCV yönetimi uzmanı.',
+      id: 'Penata Gaya Acara & Pernikahan Senior di Cardzy, berspesialisasi dalam tradisi pernikahan Islam dan manajemen RSVP WhatsApp.',
+      bn: 'কার্ডজিতে সিনিয়র ওয়েডিং ও কালচারাল ইভেন্ট স্টাইলিস্ট, ইসলামিক বিয়ের ঐতিহ্য ও হোয়াটসঅ্যাপ আরএসভিপির বিশেষজ্ঞ।',
+      vi: 'Chuyên gia phong cách sự kiện văn hóa và đám cưới cấp cao tại Cardzy, chuyên về nghi thức cưới truyền thống và quản lý RSVP WhatsApp.',
+      sw: 'Mbunifu Mwandamizi wa Harusi na Matukio ya Kitamaduni katika Cardzy, mtaalamu wa mila za harusi za Kiislamu na usimamizi wa RSVP WhatsApp.'
     },
     location: 'Islamabad / Rawalpindi, Pakistan',
     credentials: {
@@ -343,7 +354,18 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       es: 'Estilista Principal de Bodas y Eventos',
       fr: 'Styliste Principal Mariages & Culture',
       hi: 'प्रमुख वेडिंग व सांस्कृतिक स्टाइलिस्ट',
-      zh: '首席婚礼与文化造型专家'
+      zh: '首席婚礼与文化造型专家',
+      pt: 'Estilista Principal de Casamentos e Cultura',
+      ru: 'Главный свадебный и культурный стилист',
+      de: 'Leitender Hochzeits- & Kulturstylist',
+      ja: '主任ウェディング＆カルチャースタイリスト',
+      ko: '수석 웨딩 & 문화 스타일리스트',
+      it: 'Capo Stylist Matrimoni e Cultura',
+      tr: 'Baş Düğün ve Kültür Stilisti',
+      id: 'Kepala Penata Pernikahan & Budaya',
+      bn: 'প্রধান বিবাহ ও সাংস্কৃতিক স্টাইলিস্ট',
+      vi: 'Chuyên Gia Phong Cách Cưới & Văn Hóa Trưởng',
+      sw: 'Mbunifu Mkuu wa Harusi na Utamaduni'
     },
     instagram: 'https://www.instagram.com/cardzyonline',
     tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
@@ -356,7 +378,18 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       es: 'Estratega de Producto y Tecnología en Cardzy, liderando investigaciones sobre tarjetas de visita digitales y vCards inteligentes.',
       fr: 'Stratège Produit et Technologie chez Cardzy, responsable des solutions de cartes de visite digitales et vCards pour professionnels.',
       hi: 'कार्डज़ी में टेक व प्रोडक्ट रणनीतिकार, डिजिटल बिजनेस कार्ड और स्मार्ट वी-कार्ड नवाचारों की प्रमुख शोधकर्ता।',
-      zh: 'Cardzy 技术与产品战略专家，主导智能 NFC 电子名片、高管 vCard 协议及数字化商务方案研发。'
+      zh: 'Cardzy 技术与产品战略专家，主导智能 NFC 电子名片、高管 vCard 协议及数字化商务方案研发。',
+      pt: 'Estrategista de Tecnologia e Produto no Cardzy, liderando pesquisas sobre cartões de visita digitais e protocolos vCard.',
+      ru: 'Стратег по технологиям и продуктам в Cardzy, ведущий исследования цифровых визиток и протоколов vCard для бизнеса.',
+      de: 'Tech- & Produktstrategin bei Cardzy, leitend in der Forschung zu digitalen Visitenkarten und vCard-Lösungen.',
+      ja: 'Cardzyの技術・製品ストラテジスト。デジタル名刺、エグゼクティブvCardプロトコルの研究をリード。',
+      ko: 'Cardzy의 테크 & 프로덕트 전략가. 디지털 명함, 비즈니스 vCard 프로토콜 및 솔루션 연구 총괄.',
+      it: 'Stratega di Tecnologia e Prodotto presso Cardzy, alla guida della ricerca su biglietti da visita digitali e protocolli vCard.',
+      tr: 'Cardzy Teknoloji ve Ürün Stratejisti. Dijital kartvizitler ve kurumsal vCard protokolleri üzerine araştırmalar yürütmektedir.',
+      id: 'Ahli Strategi Teknologi & Produk di Cardzy, memimpin riset kartu nama digital cerdas dan protokol vCard korporat.',
+      bn: 'কার্ডজিতে টেক ও প্রোডাক্ট স্ট্র্যাটেজিস্ট, স্মার্ট ডিজিটাল ভিজিটিং কার্ড ও এক্সিকিউটিভ ভিকার্ড প্রটোকলের প্রধান গবেষক।',
+      vi: 'Chuyên gia chiến lược công nghệ & sản phẩm tại Cardzy, phụ trách nghiên cứu danh thiếp kỹ thuật số và giải pháp vCard doanh nghiệp.',
+      sw: 'Mtaalamu wa Teknolojia na Mikakati ya Bidhaa katika Cardzy, anayeongoza utafiti wa kadi za biashara za kidijitali na itifaki za vCard.'
     },
     location: 'Lahore / Islamabad, Pakistan',
     credentials: {
@@ -366,7 +399,18 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       es: 'Estratega Líder de Producto y Tecnología',
       fr: 'Stratège Principal Produit & Tech',
       hi: 'प्रमुख प्रोडक्ट व टेक रणनीतिकार',
-      zh: '首席产品与技术战略专家'
+      zh: '首席产品与技术战略专家',
+      pt: 'Estrategista Principal de Produto e Tecnologia',
+      ru: 'Главный продуктовый и технический стратег',
+      de: 'Leitende Produkt- & Tech-Strategin',
+      ja: '主任プロダクト＆テクノロジーストラテジスト',
+      ko: '수석 프로덕트 & 테크 전략가',
+      it: 'Capo Stratega di Prodotto e Tecnologia',
+      tr: 'Baş Ürün ve Teknoloji Stratejisti',
+      id: 'Kepala Strategi Produk & Teknologi',
+      bn: 'প্রধান প্রোডাক্ট ও টেক স্ট্র্যাটেজিস্ট',
+      vi: 'Chuyên Gia Chiến Lược Sản Phẩm & Công Nghệ Trưởng',
+      sw: 'Mkuu wa Mikakati ya Bidhaa na Teknolojia'
     },
     instagram: 'https://www.instagram.com/cardzyonline',
     tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
@@ -379,7 +423,18 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       es: 'Editor Creativo Global en Cardzy, redactor de guías de tarjetas electrónicas 3D animadas e invitaciones de cumpleaños en 18 idiomas.',
       fr: 'Rédacteur Créatif Global chez Cardzy, auteur de guides sur les cartes de vœux animées 3D et les invitations d\'anniversaire en 18 langues.',
       hi: 'कार्डज़ी में वैश्विक रचनात्मक संपादक, 3D एनिमेटेड उत्सव ई-कार्ड और जन्मदिन आमंत्रणों पर 18 भाषाओं में मार्गदर्शक।',
-      zh: 'Cardzy 全球创意活动主编，倾力撰写 3D 动态节日电子贺卡、生日请柬及覆盖 18 种语言的分享礼仪指南。'
+      zh: 'Cardzy 全球创意活动主编，倾力撰写 3D 动态节日电子贺卡、生日请柬及覆盖 18 种语言的分享礼仪指南。',
+      pt: 'Editor Criativo Global no Cardzy, elaborando guias de cartões 3D animados e convites de aniversário em 18 idiomas.',
+      ru: 'Главный креативный редактор Cardzy, автор руководств по 3D-анимированным открыткам и приглашениям на 18 языках.',
+      de: 'Globaler Kreativ-Editor bei Cardzy, Verfasser von Leitfäden zu 3D-animierten E-Cards und Geburtstagseinladungen in 18 Sprachen.',
+      ja: 'Cardzyのグローバルクリエイティブエディター。3Dアニメーションカードや誕生日招待状のガイドを18言語で執筆。',
+      ko: 'Cardzy의 글로벌 크리에이티브 에디터. 18개 언어로 제공되는 3D 애니메이션 축하 카드 및 생일 초대장 가이드 집필.',
+      it: 'Editor Creativo Globale presso Cardzy, autore di guide per e-card animate 3D e inviti di compleanno in 18 lingue.',
+      tr: 'Cardzy Küresel Yaratıcı Editörü. 18 dilde 3D animasyonlu tebrik kartları ve doğum günü davetiyeleri rehberleri hazırlamaktadır.',
+      id: 'Editor Kreatif Global di Cardzy, menyusun panduan kartu ucapan animasi 3D dan undangan ulang tahun dalam 18 bahasa.',
+      bn: 'কার্ডজিতে গ্লোবাল ক্রিয়েটিভ এডিটর, ১৮টি ভাষায় ৩ডি অ্যানিমেটেড ই-কার্ড ও জন্মদিনের আমন্ত্রণ নির্দেশিকার রচয়িতা।',
+      vi: 'Biên tập viên sáng tạo toàn cầu tại Cardzy, tác giả của các bài viết hướng dẫn thiệp 3D và thiệp mời sinh nhật trên 18 ngôn ngữ.',
+      sw: 'Mhariri wa Ubunifu wa Kimataifa katika Cardzy, mtunzi wa miongozo ya kadi za 3D na mialiko ya siku ya kuzaliwa katika lugha 18.'
     },
     location: 'Karachi / Islamabad, Pakistan',
     credentials: {
@@ -389,61 +444,237 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       es: 'Editor Global de Eventos y Cultura',
       fr: 'Rédacteur Principal Événements & Culture',
       hi: 'वैश्विक कार्यक्रम व संस्कृति संपादक',
-      zh: '全球活动与文化主编'
+      zh: '全球活动与文化主编',
+      pt: 'Editor Global de Eventos e Cultura',
+      ru: 'Редактор международных событий и культуры',
+      de: 'Editor für globale Events & Kultur',
+      ja: 'グローバルイベント＆カルチャーエディター',
+      ko: '글로벌 이벤트 & 컬처 에디터',
+      it: 'Editor Globale di Eventi e Cultura',
+      tr: 'Küresel Etkinlikler ve Kültür Editörü',
+      id: 'Editor Acara & Budaya Global',
+      bn: 'আন্তর্জাতিক ইভেন্ট ও সংস্কৃতি সম্পাদক',
+      vi: 'Biên Tập Viên Văn Hóa & Sự Kiện Toàn Cầu',
+      sw: 'Mhariri wa Matukio na Utamaduni wa Kimataifa'
     },
     instagram: 'https://www.instagram.com/cardzyonline',
     tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
   },
 }
 
-// ─── Contextual CTA config — maps category → core page link ─────────────────
+// ─── Contextual CTA config ─────────────────────────────────────────────────
 type BlogCategory = 'Wedding & Nikkah' | 'Eid & Holidays' | 'Business & vCards' | 'Event Planning'
 
 const CATEGORY_CTA: Record<BlogCategory, {
   href: string
-  labelEn: string
-  labelUr: string
-  labelAr: string
-  descEn: string
+  label: Record<string, string>
+  desc: Record<string, string>
   emoji: string
 }> = {
   'Wedding & Nikkah': {
     href: '/create-invitation',
-    labelEn: 'Create Your Wedding Invitation',
-    labelUr: 'اپنی شادی کا دعوت نامہ بنائیں',
-    labelAr: 'أنشئ دعوة زفافك الآن',
-    descEn: 'Design a stunning digital Nikkah or Walima invite with WhatsApp RSVP in minutes.',
+    label: {
+      en: 'Create Your Wedding Invitation',
+      ur: 'اپنی شادی کا دعوت نامہ بنائیں',
+      ar: 'أنشئ دعوة زفافك الآن',
+      es: 'Crea tu Invitación de Boda',
+      fr: 'Créez votre Invitation de Mariage',
+      hi: 'अपना वेडिंग इनविटेशन बनाएं',
+      zh: '制作专属婚礼请柬',
+      pt: 'Crie seu Convite de Casamento',
+      ru: 'Создайте свадебное приглашение',
+      de: 'Erstellen Sie Ihre Hochzeitseinladung',
+      ja: '結婚式の招待状を作成する',
+      ko: '청첩장 만들기',
+      it: 'Crea il Tuo Invito di Nozze',
+      tr: 'Düğün Davetiyenizi Oluşturun',
+      id: 'Buat Undangan Pernikahan Anda',
+      bn: 'আপনার বিয়ের আমন্ত্রণ তৈরি করুন',
+      vi: 'Tạo Thiệp Mời Đám Cưới Của Bạn',
+      sw: 'Unda Mwaliko Wako wa Harusi'
+    },
+    desc: {
+      en: 'Design a stunning digital Nikkah or Walima invite with WhatsApp RSVP in minutes.',
+      ur: 'واٹس ایپ آر ایس وی پی کے ساتھ نکاح یا ولیمہ کا دلکش ڈیجیٹل کارڈ منٹوں میں بنائیں۔',
+      ar: 'صمم دعوة رقمية مذهلة لعقد القران أو حفل الزفاف مع تأكيد الحضور عبر واتساب في دقائق.',
+      es: 'Diseña una invitación digital para Nikkah o Walima con RSVP por WhatsApp en minutos.',
+      fr: 'Concevez une splendide invitation numérique avec RSVP WhatsApp en quelques minutes.',
+      hi: 'व्हाट्सएप आरएसवीपी के साथ शानदार डिजिटल निकाह या वलीमा इनविटेशन मिनटों में तैयार करें।',
+      zh: '几分钟内打造支持 WhatsApp RSVP 实时回执的唯美数字婚礼请柬。',
+      pt: 'Crie um convite digital incrível com confirmação de presença via WhatsApp em minutos.',
+      ru: 'Создайте великолепное цифровое приглашение с RSVP в WhatsApp за считанные минуты.',
+      de: 'Gestalten Sie eine atemberaubende digitale Einladung mit WhatsApp-RSVP in wenigen Minuten.',
+      ja: 'WhatsApp RSVP対応の美しいデジタル結婚式招待状を数分で作成。',
+      ko: 'WhatsApp RSVP 기능이 탑재된 감각적인 디지털 청첩장을 몇 분 만에 완성하세요.',
+      it: 'Crea uno splendido invito digitale con RSVP su WhatsApp in pochi minuti.',
+      tr: 'WhatsApp LCV özellikli göz alıcı dijital düğün davetiyenizi dakikalar içinde hazırlayın.',
+      id: 'Rancang undangan digital memukau dengan RSVP WhatsApp dalam hitungan menit.',
+      bn: 'হোয়াটসঅ্যাপ আরএসভিপিসহ চমৎকার ডিজিটাল বিয়ের কার্ড কয়েক মিনিটে তৈরি করুন।',
+      vi: 'Thiết kế thiệp cưới kỹ thuật số tuyệt đẹp kèm RSVP WhatsApp chỉ trong vài phút.',
+      sw: 'Tengeneza mwaliko maridadi wa harusi wenye RSVP ya WhatsApp kwa dakika chache.'
+    },
     emoji: '💍',
   },
   'Eid & Holidays': {
     href: '/create-wish',
-    labelEn: 'Send a Free Eid Wish Card',
-    labelUr: 'مفت عید مبارک کارڈ بھیجیں',
-    labelAr: 'أرسل بطاقة عيد مجانية الآن',
-    descEn: 'Create animated Eid, Ramadan, and holiday wish cards with your photo — free.',
+    label: {
+      en: 'Send a Free Eid Wish Card',
+      ur: 'مفت عید مبارک کارڈ بھیجیں',
+      ar: 'أرسل بطاقة تهنئة بالعيد مجاناً',
+      es: 'Envía una Tarjeta de Eid Gratis',
+      fr: 'Envoyez une Carte de l’Aïd Gratuite',
+      hi: 'मुफ़्त ईद मुबारक कार्ड भेजें',
+      zh: '免费发送开斋节祝福卡',
+      pt: 'Envie um Cartão de Eid Grátis',
+      ru: 'Отправьте бесплатную открытку на Ид',
+      de: 'Kostenlose Eid-Glückwunschkarte senden',
+      ja: '無料のイードお祝いカードを贈る',
+      ko: '무료 이드 축하 카드 보내기',
+      it: 'Invia un Biglietto di Auguri per l’Eid Gratis',
+      tr: 'Ücretsiz Bayram Tebrik Kartı Gönderin',
+      id: 'Kirim Kartu Ucapan Idul Fitri Gratis',
+      bn: 'বিনামূল্যে ঈদ মোবারক কার্ড পাঠান',
+      vi: 'Gửi Thiệp Chúc Mừng Lễ Eid Miễn Phí',
+      sw: 'Tuma Kadi ya Bure ya Heri za Eid'
+    },
+    desc: {
+      en: 'Create animated Eid, Ramadan, and holiday wish cards with your photo — free.',
+      ur: 'اپنی تصویر کے ساتھ متحرک عید، رمضان اور تہواروں کے مبارکبادی کارڈز مفت بنائیں۔',
+      ar: 'أنشئ بطاقات تهنئة متحركة لعيد الفطر والأضحى ورمضان مع صورتك مجاناً.',
+      es: 'Crea tarjetas animadas de Eid y Ramadán con tu foto de forma gratuita.',
+      fr: 'Créez des cartes animées pour l’Aïd et le Ramadan avec votre photo, gratuitement.',
+      hi: 'अपनी फोटो के साथ एनिमेटेड ईद और त्योहारों के बधाई कार्ड मुफ्त में बनाएं।',
+      zh: '免费制作包含个人照片的开斋节与节日动效祝福贺卡。',
+      pt: 'Crie cartões animados de Eid e datas festivas com sua foto gratuitamente.',
+      ru: 'Создавайте анимированные открытки на Ид и Рамадан со своим фото бесплатно.',
+      de: 'Erstellen Sie animierte Eid- und Festtags-Karten mit Ihrem Foto – kostenlos.',
+      ja: '写真入りの動くイードやラマダンのお祝いカードを無料で作成。',
+      ko: '나만의 사진을 넣은 애니메이션 이드 & 명절 카드를 무료로 만들어보세요.',
+      it: 'Crea gratuitamente cartoline animate per l’Eid e il Ramadan con la tua foto.',
+      tr: 'Fotoğrafınızla birlikte animasyonlu Bayram tebrik kartlarını ücretsiz oluşturun.',
+      id: 'Buat kartu ucapan Idul Fitri dan Ramadan beranimasi dengan foto Anda — gratis.',
+      bn: 'আপনার ছবি দিয়ে অ্যানিমেটেড ঈদ ও উৎসবের শুভেচ্ছা কার্ড বিনামূল্যে তৈরি করুন।',
+      vi: 'Tạo thiệp chuyển động cho lễ Eid và ngày lễ kèm ảnh của bạn hoàn toàn miễn phí.',
+      sw: 'Tengeneza kadi zenye uhuishaji za Eid na likizo ukiwa na picha yako — bure.'
+    },
     emoji: '🌙',
   },
   'Business & vCards': {
     href: '/create-visiting-card',
-    labelEn: 'Create Your Smart Digital Business Card',
-    labelUr: 'اپنا ڈیجیٹل وزٹنگ کارڈ بنائیں',
-    labelAr: 'أنشئ بطاقة أعمالك الرقمية الذكية',
-    descEn: 'Generate a shareable vCard with QR code, NFC link, and all your contact details.',
+    label: {
+      en: 'Create Your Smart Digital Business Card',
+      ur: 'اپنا ڈیجیٹل وزٹنگ کارڈ بنائیں',
+      ar: 'أنشئ بطاقة أعمالك الرقمية الذكية',
+      es: 'Crea tu Tarjeta de Presentación Digital',
+      fr: 'Créez votre Carte de Visite Digitale',
+      hi: 'अपना स्मार्ट डिजिटल बिजनेस कार्ड बनाएं',
+      zh: '制作专属智能数字名片',
+      pt: 'Crie seu Cartão de Visita Digital Inteligente',
+      ru: 'Создайте умную цифровую визитку',
+      de: 'Erstellen Sie Ihre smarte digitale Visitenkarte',
+      ja: 'スマートデジタル名刺を作成する',
+      ko: '스마트 디지털 비즈니스 명함 만들기',
+      it: 'Crea il Tuo Biglietto da Visita Digitale Smart',
+      tr: 'Akıllı Dijital Kartvizitinizi Oluşturun',
+      id: 'Buat Kartu Bisnis Digital Pintar Anda',
+      bn: 'আপনার স্মার্ট ডিজিটাল ভিজিটিং কার্ড তৈরি করুন',
+      vi: 'Tạo Danh Thiếp Kỹ Thuật Số Thông Minh Của Bạn',
+      sw: 'Unda Kadi Yako Mahiri ya Biashara ya Kidijitali'
+    },
+    desc: {
+      en: 'Generate a shareable vCard with QR code, NFC link, and all your contact details.',
+      ur: 'کیو آر کوڈ، این ایف سی اور تمام رابطوں کے ساتھ شیئر کے قابل vCard بنائیں۔',
+      ar: 'أنشئ بطاقة vCard قابلة للمشاركة مع رمز QR ورابط NFC وجميع تفاصيل الاتصال بك.',
+      es: 'Genera una vCard con código QR, enlace NFC y todos tus datos de contacto.',
+      fr: 'Générez une vCard partageable avec code QR, lien NFC et toutes vos coordonnées.',
+      hi: 'क्यूआर कोड, एनएफसी लिंक और पूरी संपर्क जानकारी के साथ साझा करने योग्य vCard बनाएं।',
+      zh: '生成集二维码、NFC 链接及全套联系方式于一体的高效电子名片。',
+      pt: 'Gere um vCard compartilhável com QR code, link NFC e todos os seus contatos.',
+      ru: 'Создайте цифровую vCard с QR-кодом, NFC и полными контактными данными.',
+      de: 'Generieren Sie eine teilbare vCard mit QR-Code, NFC-Link und Kontaktdaten.',
+      ja: 'QRコード、NFCリンク、連絡先情報を網羅した共有用vCardを生成。',
+      ko: 'QR 코드, NFC 링크, 연락처 정보를 담은 공유형 vCard를 생성하세요.',
+      it: 'Genera una vCard condivisibile con codice QR, link NFC e tutti i tuoi recapiti.',
+      tr: 'QR kod, NFC bağlantısı ve tüm iletişim bilgilerinizi içeren paylaşılabilir bir vCard oluşturun.',
+      id: 'Hasilkan vCard dengan kode QR, tautan NFC, dan seluruh detail kontak Anda.',
+      bn: 'কিউআর কোড, এনএফসি লিংক এবং সমস্ত যোগাযোগ বিবরণীসহ শেয়ারযোগ্য vCard তৈরি করুন।',
+      vi: 'Tạo vCard có thể chia sẻ với mã QR, liên kết NFC và đầy đủ thông tin liên hệ.',
+      sw: 'Tengeneza vCard inayoweza kushirikiwa yenye msimbo wa QR, kiungo cha NFC na anwani zako zote.'
+    },
     emoji: '💼',
   },
   'Event Planning': {
     href: '/create-magic-link',
-    labelEn: 'Create a Magic Link Card',
-    labelUr: 'میجک لنک کارڈ بنائیں',
-    labelAr: 'أنشئ بطاقة رابط سحري',
-    descEn: 'Share your event with a real-time view tracker and live RSVP — all in one link.',
+    label: {
+      en: 'Create a Magic Link Card',
+      ur: 'میجک لنک کارڈ بنائیں',
+      ar: 'أنشئ بطاقة رابط سحري',
+      es: 'Crea una Tarjeta con Enlace Mágico',
+      fr: 'Créez une Carte à Lien Magique',
+      hi: 'मैजिक लिंक कार्ड बनाएं',
+      zh: '制作魔法链接互动贺卡',
+      pt: 'Crie um Cartão com Link Mágico',
+      ru: 'Создайте открытку с волшебной ссылкой',
+      de: 'Erstellen Sie eine Magic-Link-Karte',
+      ja: 'マジックリンクカードを作成する',
+      ko: '매직 링크 카드 만들기',
+      it: 'Crea un Biglietto con Link Magico',
+      tr: 'Sihirli Bağlantılı Kart Oluşturun',
+      id: 'Buat Kartu Tautan Ajaib',
+      bn: 'ম্যাজিক লিঙ্ক কার্ড তৈরি করুন',
+      vi: 'Tạo Thiệp Liên Kết Kỳ Diệu',
+      sw: 'Unda Kadi ya Kiungo cha Kichawi'
+    },
+    desc: {
+      en: 'Share your event with a real-time view tracker and live RSVP — all in one link.',
+      ur: 'ریئل ٹائم ویو ٹریکر اور لائیو آر ایس وی پی کے ساتھ اپنی تقریب کا کارڈ شیئر کریں۔',
+      ar: 'شارك مناسبتك مع تتبع المشاهدات في الوقت الفعلي والردود المباشرة في رابط واحد.',
+      es: 'Comparte tu evento con seguimiento en tiempo real y confirmación en vivo.',
+      fr: 'Partagez votre événement avec suivi des vues en temps réel et RSVP direct.',
+      hi: 'रियल-टाइम व्यू ट्रैकर और लाइव आरएसवीपी के साथ अपने कार्यक्रम का कार्ड शेयर करें।',
+      zh: '通过单一链接集成实时拆卡查看追踪与活动来宾 RSVP 回执。',
+      pt: 'Compartilhe seu evento com rastreamento em tempo real e confirmação em um só link.',
+      ru: 'Отправьте карточку события с отслеживанием просмотров и живым RSVP в одной ссылке.',
+      de: 'Teilen Sie Ihr Event mit Live-View-Tracking und RSVP – alles in einem Link.',
+      ja: 'リアルタイムの閲覧追跡と出欠確認（RSVP）を一つのリンクで実現。',
+      ko: '실시간 개봉 확인과 라이브 RSVP가 결합된 특별한 링크를 공유하세요.',
+      it: 'Condividi il tuo evento con monitoraggio in tempo reale e RSVP in un solo link.',
+      tr: 'Tek bir bağlantıda canlı görüntüleme takibi ve anlık LCV ile etkinliğinizi paylaşın.',
+      id: 'Bagikan acara Anda dengan pelacak penayangan langsung dan RSVP dalam satu tautan.',
+      bn: 'রিয়েল-টাইম ভিউ ট্র্যাকার এবং লাইভ আরএসভিপিসহ আপনার অনুষ্ঠানের কার্ড শেয়ার করুন।',
+      vi: 'Chia sẻ sự kiện của bạn với tính năng theo dõi lượt xem và RSVP trực tiếp.',
+      sw: 'Shiriki tukio lako ukiwa na ufuatiliaji wa kutazamwa na RSVP katika kiungo kimoja.'
+    },
     emoji: '✨',
   },
 }
 
+const TRY_FREE_TEXT: Record<string, string> = {
+  en: 'Try Free',
+  ur: 'مفت آزمائیں',
+  ar: 'جرب مجاناً',
+  es: 'Probar Gratis',
+  fr: 'Essai Gratuit',
+  hi: 'मुफ़्त आज़माएं',
+  zh: '免费体验',
+  pt: 'Testar Grátis',
+  ru: 'Попробовать бесплатно',
+  de: 'Kostenlos testen',
+  ja: '無料で試す',
+  ko: '무료 체험',
+  it: 'Prova Gratis',
+  tr: 'Ücretsiz Dene',
+  id: 'Coba Gratis',
+  bn: 'বিনামূল্যে ব্যবহার করুন',
+  vi: 'Thử Miễn Phí',
+  sw: 'Jaribu Bure',
+}
+
 function CtaBanner({ category, lang }: { category: BlogCategory; lang: string }) {
   const cta = CATEGORY_CTA[category] || CATEGORY_CTA['Event Planning']
-  const label = lang === 'ur' ? cta.labelUr : lang === 'ar' ? cta.labelAr : cta.labelEn
+  const label = cta.label[lang] || cta.label['en']
+  const desc = cta.desc[lang] || cta.desc['en']
+  const tryFree = TRY_FREE_TEXT[lang] || TRY_FREE_TEXT['en']
   return (
     <Link
       href={cta.href}
@@ -453,11 +684,11 @@ function CtaBanner({ category, lang }: { category: BlogCategory; lang: string })
         <span className="text-2xl shrink-0">{cta.emoji}</span>
         <div className="min-w-0">
           <p className="text-sm font-extrabold text-[#D4AF37] leading-snug">{label}</p>
-          <p className="text-xs text-zinc-400 mt-0.5 line-clamp-1">{cta.descEn}</p>
+          <p className="text-xs text-zinc-400 mt-0.5 line-clamp-1">{desc}</p>
         </div>
       </div>
       <span className="shrink-0 inline-flex items-center gap-1 text-xs font-black text-slate-950 bg-[#D4AF37] px-3 py-1.5 rounded-xl group-hover:bg-amber-400 transition-colors whitespace-nowrap">
-        Try Free <ArrowLeft className="w-3 h-3 rotate-180" />
+        {tryFree} <ArrowLeft className="w-3 h-3 rotate-180" />
       </span>
     </Link>
   )

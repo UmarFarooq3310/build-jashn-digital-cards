@@ -148,6 +148,10 @@ export interface Wish {
   rank?: string
   winningNumber?: string
   developerName?: string
+  // Poetry & Shayari Fields
+  poetName?: string
+  dedication?: string
+  poetryFormat?: string
   // Custom Photo & Audio Features
   photoUrl?: string
   audioTrack?: string

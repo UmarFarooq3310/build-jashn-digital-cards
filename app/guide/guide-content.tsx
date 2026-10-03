@@ -251,16 +251,50 @@ const GUIDE_HUB_TEXT: Record<string, Record<string, string>> = {
     en: "July 15, 2026", ur: "15 جولائی 2026", es: "15 de julio de 2026", fr: "15 juillet 2026", ar: "15 يوليو 2026", hi: "15 जुलाई 2026", zh: "2026年7月15日", pt: "15 de julho de 2026", ru: "15 июля 2026 г.", de: "15. Juli 2026", ja: "2026年7月15日", ko: "2026년 7월 15일", it: "15 luglio 2026", tr: "15 Temmuz 2026", id: "15 Juli 2026", bn: "১৫ জুলাই, ২০২৬", vi: "15 tháng 7 năm 2026", sw: "15 Julai 2026"
   },
   birthdayGuideTitle: {
-    en: "Birthday Wish Wording Ideas: Heartfelt, Funny & Formal Messages"
+    en: "Birthday Wish Wording Ideas: Heartfelt, Funny & Formal Messages",
+    ur: "سالگرہ کی مبارکباد کے بہترین اور خوبصورت پیغامات اور الفاظ",
+    es: "Ideas de Mensajes de Cumpleaños: Frases Emotivas, Divertidas y Formales",
+    fr: "Idées de Textes d'Anniversaire : Messages Émouvants, Drôles et Formels",
+    ar: "أفكار ورسائل تهنئة بعيد الميلاد: عبارات مؤثرة ومرحة ورسمية",
+    hi: "जन्मदिन की बधाई के विचार: दिल को छू लेने वाले, मजेदार और औपचारिक संदेश",
+    zh: "生日祝福文案灵感：走心、幽默与正式的精选祝福语",
+    pt: "Ideias de Mensagens de Aniversário: Frases Emocionantes, Divertidas e Formais",
+    ru: "Идеи поздравлений с днем рождения: душевные, веселые и официальные",
+    de: "Geburtstagsgrüße Textideen: Herzliche, lustige & formelle Botschaften",
+    ja: "誕生日のメッセージ文面アイデア：心温まる言葉からユニークなメッセージまで",
+    ko: "생일 축하 문구 아이디어: 감동적이고 유쾌하며 격식 있는 메시지",
+    it: "Idee di Testi per Auguri di Compleanno: Messaggi Affettuosi, Divertenti e Formali",
+    tr: "Doğum Günü Kutlama Mesajı Fikirleri: Samimi, Eğlenceli ve Resmi İfadeler",
+    id: "Ide Kata-kata Ucapan Ulang Tahun: Pesan Menyentuh, Lucu, & Formal",
+    bn: "জন্মদিনের শুভেচ্ছা বার্তার আইডিয়া: মন ছুঁয়ে যাওয়া, মজার ও মার্জিত বার্তা",
+    vi: "Ý Tưởng Lời Chúc Mừng Sinh Nhật: Chân Thành, Hài Hước & Trang Trọng",
+    sw: "Mawazo ya Ujumbe wa Heri ya Siku ya Kuzaliwa: Ya Dhati, ya Kuchekesha na Rasmi"
   },
   birthdayGuideDesc: {
-    en: "Copy-ready birthday messages sorted by tone and relationship — sweet, funny, formal, and messages just for kids."
+    en: "Copy-ready birthday messages sorted by tone and relationship — sweet, funny, formal, and messages just for kids.",
+    ur: "سالگرہ کے لیے تیار پیغامات — محبت بھرے، مزاحیہ، دفتری اور بچوں کے لیے خاص پیغامات۔",
+    es: "Mensajes de cumpleaños listos para copiar ordenados por tono y relación: tiernos, divertidos, formales y para niños.",
+    fr: "Modèles de vœux d'anniversaire prêts à copier, classés par ton : doux, amusants, formels et pour enfants.",
+    ar: "رسائل تهنئة جاهزة للنسخ حسب العلاقة والأسلوب — عاطفية، فكاهية، رسمية وللأطفال.",
+    hi: "रिश्तों और अंदाज़ के अनुसार जन्मदिन के संदेश — प्यारे, मज़ेदार, औपचारिक और बच्चों के लिए।",
+    zh: "即选即用的生日祝福语，按语气与对象分类——温馨、幽默、正式及儿童专属。",
+    pt: "Mensagens de aniversário prontas para copiar organizadas por tom e relação: carinhosas, engraçadas e formais.",
+    ru: "Готовые поздравления с днем рождения по тону и категориям — теплые, с юмором, официальные и детские.",
+    de: "Kopierfertige Geburtstagsgrüße nach Tonfall sortiert — herzlich, humorvoll, geschäftlich und für Kinder.",
+    ja: "相手やトーンに合わせたコピペで使える誕生日メッセージ集 — 親しい人、面白い文面、ビジネス、お子様向け。",
+    ko: "상대방과 분위기에 맞춘 생일 축하 메시지 — 감동, 유머, 비즈니스 및 어린이용.",
+    it: "Messaggi di compleanno pronti all'uso divisi per tono: affettuosi, divertenti, formali e per bambini.",
+    tr: "Kopyalamaya hazır doğum günü mesajları — duygusal, esprili, resmi ve çocuklara özel.",
+    id: "Pesan ulang tahun siap pakai berdasarkan nada dan hubungan — hangat, lucu, formal, dan untuk anak-anak.",
+    bn: "সম্পর্ক ও ভাব অনুযায়ী কপি করার মতো জন্মদিনের বার্তা — মিষ্টি, মজার, ফর্মাল ও বাচ্চাদের জন্য।",
+    vi: "Mẫu lời chúc sinh nhật sẵn sàng sử dụng — ngọt ngào, hài hước, trang trọng và dành cho trẻ em.",
+    sw: "Ujumbe wa heri ya kuzaliwa tayari kunakiliwa kulingana na uhusiano — wa kupendeza, wa kuchekesha na rasmi."
   },
   readTime5min: {
-    en: "5 min read"
+    en: "5 min read", ur: "5 منٹ مطالعہ", es: "5 min de lectura", fr: "5 min de lecture", ar: "5 دقائق قراءة", hi: "5 मिनट का पाठ", zh: "5 分钟阅读", pt: "5 min de leitura", ru: "5 мин чтения", de: "5 Min. Lesezeit", ja: "5分で読める", ko: "5분 소요", it: "5 min di lettura", tr: "5 dk okuma", id: "5 menit baca", bn: "৫ মিনিট পাঠ", vi: "5 phút đọc", sw: "dakika 5 za kusoma"
   },
   dateAug6: {
-    en: "August 6, 2026"
+    en: "August 6, 2026", ur: "6 اگست 2026", es: "6 de agosto de 2026", fr: "6 août 2026", ar: "٦ أغسطس ٢٠٢٦", hi: "६ अगस्त २०२६", zh: "2026年8月6日", pt: "6 de agosto de 2026", ru: "6 августа 2026 г.", de: "6. August 2026", ja: "2026年8月6日", ko: "2026년 8월 6일", it: "6 agosto 2026", tr: "6 Ağustos 2026", id: "6 Agustus 2026", bn: "৬ আগস্ট, ২০২৬", vi: "6 tháng 8 năm 2026", sw: "6 Agosti 2026"
   },
   magicGuideTitle: {
     en: "How to Use Magic Links for Digital Cards",

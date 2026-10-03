@@ -3,26 +3,29 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, Sparkles, MailOpen, Wand2, CreditCard } from 'lucide-react'
+import { useLang } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
 
 interface DockItem {
   href: string
-  label: string
+  labelKey: string
+  defaultLabel: string
   icon: React.ComponentType<{ className?: string }>
   badge?: string
   color: string
 }
 
 const DOCK_ITEMS: DockItem[] = [
-  { href: '/', label: 'Home', icon: Home, color: 'text-emerald-500' },
-  { href: '/create-wish', label: 'Wishes', icon: Sparkles, color: 'text-rose-500' },
-  { href: '/create-invitation', label: 'Invites', icon: MailOpen, badge: 'RSVP', color: 'text-amber-500' },
-  { href: '/create-magic-link', label: 'Magic', icon: Wand2, badge: 'NEW', color: 'text-purple-500' },
-  { href: '/create-visiting-card', label: 'vCards', icon: CreditCard, color: 'text-[#D4AF37]' },
+  { href: '/', labelKey: 'home', defaultLabel: 'Home', icon: Home, color: 'text-emerald-500' },
+  { href: '/create-wish', labelKey: 'wishes', defaultLabel: 'Wishes', icon: Sparkles, color: 'text-rose-500' },
+  { href: '/create-invitation', labelKey: 'invitations', defaultLabel: 'Invites', icon: MailOpen, badge: 'RSVP', color: 'text-amber-500' },
+  { href: '/create-magic-link', labelKey: 'navMagicLink', defaultLabel: 'Magic', icon: Wand2, badge: 'NEW', color: 'text-purple-500' },
+  { href: '/create-visiting-card', labelKey: 'visitingCards', defaultLabel: 'vCards', icon: CreditCard, color: 'text-[#D4AF37]' },
 ]
 
 export function MobileBottomDock() {
   const pathname = usePathname()
+  const { t } = useLang()
 
   // Hide on public card receiver / sender screens
   const isCardRoute =
@@ -43,12 +46,13 @@ export function MobileBottomDock() {
   return (
     <nav
       aria-label="Mobile Navigation Dock"
-      className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-background/90 backdrop-blur-xl border-t border-border/80 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]"
+      className="fixed bottom-0 inset-x-0 z-50 lg:hidden bg-background/90 backdrop-blur-xl border-t border-border/80 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]"
     >
       <div className="flex items-center justify-around max-w-md mx-auto">
         {DOCK_ITEMS.map((item) => {
           const Icon = item.icon
           const isActive = pathname === item.href
+          const label = t(item.labelKey, item.defaultLabel)
 
           return (
             <Link
@@ -75,7 +79,7 @@ export function MobileBottomDock() {
                 )}
               </div>
               <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">
-                {item.label}
+                {label}
               </span>
               {isActive && (
                 <span className="absolute -bottom-1 size-1 rounded-full bg-emerald-500" />

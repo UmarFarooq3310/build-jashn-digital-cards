@@ -32,6 +32,9 @@ export interface WishCardData {
   rank?: string
   winningNumber?: string
   developerName?: string
+  poetName?: string
+  dedication?: string
+  poetryFormat?: string
   photoUrl?: string
   audioTrack?: string
 }
@@ -378,7 +381,9 @@ export const WishCard = forwardRef<HTMLDivElement, {
     'esports-winner',
   ].includes(data.occasionId)
 
-  const defaultBorderId = isIslamic ? 'mughal-arch' : (isGamingWinner ? 'cyber-hud' : 'mehndi')
+  const isPoetry = data.occasionId === 'poetry' || Boolean(data.poetName || data.dedication)
+
+  const defaultBorderId = isIslamic ? 'mughal-arch' : (isGamingWinner ? 'cyber-hud' : (isPoetry ? 'mughal-arch' : 'mehndi'))
 
   const isPublicCard = !!data.slug
   const categoryPatternClass = getCategoryPatternClass(occasion?.category)
@@ -578,7 +583,14 @@ export const WishCard = forwardRef<HTMLDivElement, {
             <GamingScorecardHUD data={data} lang={lang} isPublicCard={isPublicCard} />
           ) : (
             <>
-              {recipientLabel ? (
+              {data.dedication ? (
+                <div className="wc-stagger inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-[var(--c-accent)]/40 bg-[var(--c-accent)]/15 text-[var(--c-accent)] text-xs font-serif tracking-wide shadow-sm mb-1 parallax-near">
+                  <span className="opacity-90">💌</span>
+                  <span className="font-semibold">
+                    {/[\u0600-\u06FF]/.test(data.dedication) ? data.dedication : `${t('dedicatedTo') || 'Dedicated to'}: ${data.dedication}`}
+                  </span>
+                </div>
+              ) : recipientLabel ? (
                 <p
                   className={cn(
                     "wc-stagger font-semibold opacity-85 parallax-near",
@@ -658,7 +670,9 @@ export const WishCard = forwardRef<HTMLDivElement, {
                     (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose py-1" : "text-xl sm:text-2xl md:text-3xl lg:text-4xl"
                   )}
                 >
-                  {t(`occ_${occasion.id.replace(/-/g, '_')}`) || occasion.tagline || occasion.label}
+                  {isPoetry && data.occasionId === 'poetry'
+                    ? (lang === 'ur' ? 'شاعری و نذرانہ' : (occasion.tagline || 'Poetry & Heartfelt Dedication'))
+                    : (t(`occ_${occasion.id.replace(/-/g, '_')}`) || occasion.tagline || occasion.label)}
                 </h2>
               )}
 
@@ -671,6 +685,50 @@ export const WishCard = forwardRef<HTMLDivElement, {
               {(data.message || !isPublicCard) ? (() => {
                 const localizedMsg = data.message ? getLocalizedMessageText(data.message, data.occasionId, lang) : '---'
                 const isRtlScript = (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(localizedMsg)) && localizedMsg !== '---'
+                
+                if (isPoetry) {
+                  return (
+                    <div
+                      className="wc-stagger w-full px-4 sm:px-6 parallax-near transition-all max-h-72 sm:max-h-96 overflow-y-auto overscroll-contain text-center [overflow-wrap:anywhere] [word-break:break-word]"
+                    >
+                      <div
+                        className={cn(
+                          "whitespace-pre-line tracking-wide transition-all",
+                          isRtlScript
+                            ? "font-urdu text-lg sm:text-xl md:text-2xl leading-[2.3] text-center"
+                            : "font-serif italic text-base sm:text-lg md:text-xl leading-relaxed text-center"
+                        )}
+                        style={{ color: 'var(--c-ink)' }}
+                      >
+                        {localizedMsg}
+                      </div>
+
+                      {/* Ornamental Poetry Couplet Divider */}
+                      <div className="flex items-center justify-center gap-2.5 my-2.5 opacity-75" aria-hidden="true">
+                        <span className="h-px w-8 sm:w-12 bg-gradient-to-r from-transparent to-[var(--c-accent)]" />
+                        <span className="text-[var(--c-accent)] text-xs font-serif">❦ ❦ ❦</span>
+                        <span className="h-px w-8 sm:w-12 bg-gradient-to-l from-transparent to-[var(--c-accent)]" />
+                      </div>
+
+                      {/* Poet Attribution */}
+                      {data.poetName && (
+                        <div className="mt-1 flex items-center justify-center gap-2">
+                          <span className="h-px w-4 bg-[var(--c-accent)]/50" />
+                          <span
+                            className={cn(
+                              "text-xs sm:text-sm font-bold tracking-wider text-[var(--c-accent)]",
+                              /[\u0600-\u06FF]/.test(data.poetName) ? "font-urdu text-base sm:text-lg" : "font-serif italic"
+                            )}
+                          >
+                            — {data.poetName}
+                          </span>
+                          <span className="h-px w-4 bg-[var(--c-accent)]/50" />
+                        </div>
+                      )}
+                    </div>
+                  )
+                }
+
                 return (
                   <div
                     className={cn(
@@ -694,7 +752,11 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
               {(data.senderName || !isPublicCard) ? (
                 <p className="wc-stagger text-sm sm:text-base parallax-near">
-                  <span className="opacity-70">{t('withLove')} </span>
+                  <span className="opacity-70">
+                    {isPoetry
+                      ? (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(data.senderName || '') ? 'پیشکش: ' : 'Presented by: ')
+                      : `${t('withLove')} `}
+                  </span>
                   <span
                     className={cn(
                       "font-bold",

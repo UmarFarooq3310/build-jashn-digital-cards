@@ -28,6 +28,7 @@ interface ScenarioProps {
   triggerConfetti: () => void
   onSendLove: () => void
   loveSent: boolean
+  isSenderView?: boolean
 }
 
 const GETWELL_SCENES = [
@@ -44,6 +45,7 @@ export function GetWellScenario({
   triggerConfetti,
   onSendLove,
   loveSent,
+  isSenderView = false,
 }: ScenarioProps) {
   const { t } = useLang()
 
@@ -150,6 +152,11 @@ export function GetWellScenario({
     setSelectedReaction(emoji)
     spawnBurst([emoji, '✨', '💖'], 15)
     triggerConfetti()
+
+    if (isSenderView) {
+      return
+    }
+
     try {
       await submitMagicResponse({
         linkId: slug,
@@ -429,6 +436,13 @@ export function GetWellScenario({
               ))}
             </div>
 
+            {/* Preview Banner */}
+            {isSenderView && (
+              <div className="p-3 mb-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-200 text-xs text-center font-medium">
+                👀 <strong>Preview Mode:</strong> You are viewing your own get well card as sender. Reactions & WhatsApp replies are disabled.
+              </div>
+            )}
+
             {loveSent && (
               <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-400 text-emerald-300 text-xs font-bold mb-4 animate-in zoom-in-95">
                 ✨ Response recorded! Tap below to send on WhatsApp:
@@ -436,14 +450,20 @@ export function GetWellScenario({
             )}
 
             <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
-              <a
-                href={whatsAppHref}
-                target="_blank"
-                rel="noreferrer"
-                className="w-full py-3 rounded-2xl font-black text-xs uppercase tracking-wider text-white bg-emerald-600 hover:bg-emerald-500 flex items-center justify-center gap-2 shadow-md cursor-pointer transition-transform active:scale-95"
-              >
-                <span>Send Reply on WhatsApp 💬</span>
-              </a>
+              {isSenderView ? (
+                <div className="w-full py-3 rounded-2xl font-black text-xs uppercase tracking-wider text-white/70 bg-emerald-600/50 flex items-center justify-center gap-2 cursor-not-allowed">
+                  <span>Send Reply on WhatsApp (Disabled in Preview)</span>
+                </div>
+              ) : (
+                <a
+                  href={whatsAppHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full py-3 rounded-2xl font-black text-xs uppercase tracking-wider text-white bg-emerald-600 hover:bg-emerald-500 flex items-center justify-center gap-2 shadow-md cursor-pointer transition-transform active:scale-95"
+                >
+                  <span>Send Reply on WhatsApp 💬</span>
+                </a>
+              )}
 
               <Link
                 href="/create-magic-link?occasion=getwell"

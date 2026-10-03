@@ -72,11 +72,13 @@ export function CardLiveReactions({
   cardType,
   isUrdu = false,
   theme = 'dark',
+  disabled = false,
 }: {
   cardSlug: string
   cardType: 'wish' | 'invite' | 'magic' | 'vcard'
   isUrdu?: boolean
   theme?: 'dark' | 'light'
+  disabled?: boolean
 }) {
   const [counts, setCounts] = useState<Record<string, number>>({})
   const [activeParticleList, setActiveParticleList] = useState<FloatingParticle[]>([])
@@ -100,37 +102,46 @@ export function CardLiveReactions({
     setTappedId(reaction.id)
     setTimeout(() => setTappedId(null), 400)
 
-    setFeedbackText(
-      isUrdu
-        ? `${reaction.emoji} ${reaction.labelUr} بھیج دی گئی!`
-        : `${reaction.emoji} ${reaction.labelEn} reaction sent!`
-    )
-    setTimeout(() => setFeedbackText(null), 2400)
+    if (disabled) {
+      setFeedbackText(
+        isUrdu
+          ? 'پیش منظر: ردعمل محفوظ نہیں ہوگا'
+          : 'Preview: reactions not saved'
+      )
+      setTimeout(() => setFeedbackText(null), 1800)
+    } else {
+      setFeedbackText(
+        isUrdu
+          ? `${reaction.emoji} ${reaction.labelUr} بھیج دی گئی!`
+          : `${reaction.emoji} ${reaction.labelEn} reaction sent!`
+      )
+      setTimeout(() => setFeedbackText(null), 2400)
 
-    // Update count
-    setCounts((prev) => {
-      const updated = { ...prev, [reaction.id]: (prev[reaction.id] || 0) + 1 }
+      // Update count
+      setCounts((prev) => {
+        const updated = { ...prev, [reaction.id]: (prev[reaction.id] || 0) + 1 }
+        try {
+          localStorage.setItem(`cardzy_reactions_${cardType}_${cardSlug}`, JSON.stringify(updated))
+        } catch {}
+        return updated
+      })
+
+      // Sync reaction to Firestore backend and notify card creator
       try {
-        localStorage.setItem(`cardzy_reactions_${cardType}_${cardSlug}`, JSON.stringify(updated))
+        fetch('/api/card-activity', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            cardType,
+            slug: cardSlug,
+            action: 'reaction',
+            channel: reaction.id,
+            reactionEmoji: reaction.emoji,
+            reactionLabel: reaction.labelEn,
+          }),
+        }).catch(() => {})
       } catch {}
-      return updated
-    })
-
-    // Sync reaction to Firestore backend and notify card creator
-    try {
-      fetch('/api/card-activity', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cardType,
-          slug: cardSlug,
-          action: 'reaction',
-          channel: reaction.id,
-          reactionEmoji: reaction.emoji,
-          reactionLabel: reaction.labelEn,
-        }),
-      }).catch(() => {})
-    } catch {}
+    }
 
     // Spawn floating emoji particles
     const rect = e.currentTarget.getBoundingClientRect()

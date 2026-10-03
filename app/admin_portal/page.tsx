@@ -651,7 +651,8 @@ export default function AdminPortalPage() {
   const [selectedSessions, setSelectedSessions] = useState<string[]>([])
   const [liveActiveSessions, setLiveActiveSessions] = useState<any[]>([])
   const [expandedDevices, setExpandedDevices] = useState<Record<string, boolean>>({})
-  const [groupByDevice, setGroupByDevice] = useState<boolean>(true)
+  const [groupByMode, setGroupByMode] = useState<'ip' | 'device' | 'flat'>('ip')
+  const groupByDevice = groupByMode !== 'flat'
   /** Cumulative total unique visitors since day 1 (persisted in Firestore site_stats doc) */
   const [totalUniqueVisitors, setTotalUniqueVisitors] = useState<number>(0)
 
@@ -677,6 +678,7 @@ export default function AdminPortalPage() {
   interface DeviceSessionGroup {
     deviceKey: string
     deviceId?: string
+    deviceIds: string[]
     userName: string
     userEmail: string
     userId?: string | null
@@ -705,18 +707,39 @@ export default function AdminPortalPage() {
     const threshold = Date.now() - 120000 // Active within last 2 minutes (matches 35s pulse)
 
     allSessions.forEach((s) => {
-      // Group by persistent device ID, or location + IP + device category
-      const key = (s.deviceId && typeof s.deviceId === 'string' && s.deviceId.length > 3)
-        ? s.deviceId
-        : `${s.city || s.location || 'location'}_${s.ip || 'ip'}_${s.device || 'device'}`
+      const cleanIp = (
+        s.ip &&
+        typeof s.ip === 'string' &&
+        s.ip.trim() !== '' &&
+        s.ip !== 'unknown' &&
+        s.ip !== '127.0.0.1' &&
+        s.ip !== '::1' &&
+        !s.ip.includes('127.0.0.1')
+      ) ? s.ip.trim() : null
+
+      let key: string
+      if (groupByMode === 'ip') {
+        key = cleanIp 
+          ? `ip_${cleanIp}` 
+          : (s.deviceId && typeof s.deviceId === 'string' && s.deviceId.length > 3)
+            ? `dev_${s.deviceId}`
+            : `loc_${s.city || s.location || 'location'}_${s.device || 'device'}_${s.id || 'sess'}`
+      } else {
+        // Group by persistent device ID, or location + IP + device category
+        key = (s.deviceId && typeof s.deviceId === 'string' && s.deviceId.length > 3)
+          ? s.deviceId
+          : `${s.city || s.location || 'location'}_${s.ip || 'ip'}_${s.device || 'device'}`
+      }
 
       const isDocActive = (s.lastSeen || 0) >= threshold
       const sessionTime = s.lastSeen || s.createdAt || Date.now()
+      const sDeviceId = (s.deviceId && typeof s.deviceId === 'string' && s.deviceId.length > 3) ? s.deviceId : undefined
 
       if (!groupsMap.has(key)) {
         groupsMap.set(key, {
           deviceKey: key,
           deviceId: s.deviceId,
+          deviceIds: sDeviceId ? [sDeviceId] : [],
           userName: s.userName || 'Guest Visitor',
           userEmail: s.userEmail || 'Guest',
           userId: s.userId,
@@ -744,6 +767,10 @@ export default function AdminPortalPage() {
         g.sessions.push(s)
         g.firstSeen = Math.min(g.firstSeen || sessionTime, sessionTime)
 
+        if (sDeviceId && !g.deviceIds.includes(sDeviceId)) {
+          g.deviceIds.push(sDeviceId)
+        }
+
         if (sessionTime > g.latestLastSeen) {
           g.latestLastSeen = sessionTime
           g.latestPage = s.page || g.latestPage
@@ -756,10 +783,14 @@ export default function AdminPortalPage() {
           }
           if (s.userId) g.userId = s.userId
           if (s.device) g.device = s.device
-          if (s.ip && (!g.ip || g.ip === '127.0.0.1')) g.ip = s.ip
+          if (s.ip && (!g.ip || g.ip === '127.0.0.1' || g.ip === 'unknown')) g.ip = s.ip
           if (s.location) g.location = s.location
           if (s.country) g.country = s.country
           if (s.city) g.city = s.city
+          if (s.browser) g.browser = s.browser
+          if (s.os) g.os = s.os
+          if (s.language) g.language = s.language
+          if (s.deviceId) g.deviceId = s.deviceId
         }
         if (isDocActive) {
           g.isActive = true
@@ -776,7 +807,7 @@ export default function AdminPortalPage() {
     })
 
     return Array.from(groupsMap.values()).sort((a, b) => b.latestLastSeen - a.latestLastSeen)
-  }, [allSessions])
+  }, [allSessions, groupByMode])
 
   // ── Guest Cards Purge State (Strictly preserves member cards) ─────────────
   const [guestPurgeDays, setGuestPurgeDays] = useState(30)
@@ -3988,22 +4019,36 @@ export default function AdminPortalPage() {
                 <div className="inline-flex rounded-xl bg-muted/60 p-1 border border-border/80">
                   <button
                     type="button"
-                    onClick={() => setGroupByDevice(true)}
+                    onClick={() => setGroupByMode('ip')}
                     className={cn(
                       "px-3 py-1 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5",
-                      groupByDevice ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                      groupByMode === 'ip' ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
                     )}
+                    title="Consolidate all sessions and flows from the same IP address together"
                   >
-                    <Layers className="size-3.5" />
-                    <span>Group by Device ({groupedSessions.length})</span>
+                    <Globe className="size-3.5" />
+                    <span>Group by IP {groupByMode === 'ip' ? `(${groupedSessions.length})` : ''}</span>
                   </button>
                   <button
                     type="button"
-                    onClick={() => setGroupByDevice(false)}
+                    onClick={() => setGroupByMode('device')}
                     className={cn(
                       "px-3 py-1 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5",
-                      !groupByDevice ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                      groupByMode === 'device' ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
                     )}
+                    title="Group strictly by device ID"
+                  >
+                    <Layers className="size-3.5" />
+                    <span>Group by Device {groupByMode === 'device' ? `(${groupedSessions.length})` : ''}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGroupByMode('flat')}
+                    className={cn(
+                      "px-3 py-1 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5",
+                      groupByMode === 'flat' ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                    )}
+                    title="View individual session events ungrouped"
                   >
                     <Activity className="size-3.5" />
                     <span>Flat Events ({allSessions.length})</span>
@@ -4073,7 +4118,7 @@ export default function AdminPortalPage() {
                   )}
 
                   {groupByDevice ? (
-                    /* ── GROUPED BY DEVICE VIEW ──────────────────────────────── */
+                    /* ── GROUPED BY DEVICE OR IP VIEW ─────────────────────────── */
                     <table className="w-full text-sm text-left border-collapse">
                       <thead className="text-xs text-muted-foreground uppercase bg-muted/30">
                         <tr>
@@ -4088,7 +4133,7 @@ export default function AdminPortalPage() {
                               }}
                             />
                           </th>
-                          <th className="px-4 py-3">Device / User</th>
+                          <th className="px-4 py-3">{groupByMode === 'ip' ? 'Device / IP Visitor' : 'Device / User'}</th>
                           <th className="px-4 py-3">Latest Active Flow & Events</th>
                           <th className="px-4 py-3">Hardware & OS</th>
                           <th className="px-4 py-3">Location & IP</th>
@@ -4152,11 +4197,16 @@ export default function AdminPortalPage() {
                                           <span className="text-[10px] bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 rounded font-bold border border-indigo-500/20">Member</span>
                                         )}
                                       </div>
-                                      <div className="text-xs text-muted-foreground flex items-center gap-2 mt-0.5">
+                                      <div className="text-xs text-muted-foreground flex items-center gap-2 mt-0.5 flex-wrap">
                                         <span>{group.userEmail || 'Guest'}</span>
                                         {group.deviceId && (
                                           <span className="text-[9px] font-mono text-muted-foreground/70 bg-muted/60 px-1 rounded">
                                             {group.deviceId.slice(0, 10)}...
+                                          </span>
+                                        )}
+                                        {group.deviceIds && group.deviceIds.length > 1 && (
+                                          <span className="text-[9px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-1.5 py-0.2 rounded-full">
+                                            {group.deviceIds.length} device sessions
                                           </span>
                                         )}
                                       </div>
@@ -4224,7 +4274,14 @@ export default function AdminPortalPage() {
                                         <div className="flex flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground/80 mt-0.5">
                                           <span>Lang: {group.language || 'en'}</span>
                                           {group.ip && group.ip !== '127.0.0.1' && (
-                                            <span className="font-mono bg-muted/60 px-1 rounded text-[9px]">IP: {group.ip}</span>
+                                            <span className={cn(
+                                              "font-mono px-1.5 py-0.2 rounded text-[9px] font-bold border",
+                                              groupByMode === 'ip'
+                                                ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/25"
+                                                : "bg-muted/60 text-muted-foreground border-border/60"
+                                            )}>
+                                              IP: {group.ip}
+                                            </span>
                                           )}
                                         </div>
                                       </div>
@@ -4262,7 +4319,7 @@ export default function AdminPortalPage() {
                                       type="button"
                                       onClick={async (e) => {
                                         e.stopPropagation()
-                                        if (!confirm(`Delete all ${group.sessions.length} session records for this device?`)) return
+                                        if (!confirm(`Delete all ${group.sessions.length} session records for this device / IP group?`)) return
                                         const firestoreDb = getFirebaseDb()
                                         if (firestoreDb) {
                                           try {
@@ -4273,7 +4330,7 @@ export default function AdminPortalPage() {
                                         }
                                       }}
                                       className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 transition-colors inline-flex cursor-pointer"
-                                      title="Delete Device & All Events"
+                                      title="Delete Group & All Events"
                                     >
                                       <Trash2 className="size-4" />
                                     </button>
@@ -4286,15 +4343,15 @@ export default function AdminPortalPage() {
                                 <tr key={`${group.deviceKey}-expanded`} className="bg-muted/20 border-b border-border/60">
                                   <td colSpan={7} className="p-4 sm:p-5">
                                     <div className="rounded-2xl border border-border/70 bg-card p-4 shadow-sm space-y-3">
-                                      <div className="flex items-center justify-between border-b border-border/60 pb-2.5">
+                                      <div className="flex items-center justify-between border-b border-border/60 pb-2.5 flex-wrap gap-2">
                                         <div className="flex items-center gap-2">
                                           <Sparkles className="size-4 text-amber-500" />
                                           <h4 className="text-xs font-extrabold uppercase tracking-wider text-foreground">
-                                            Device Event History & Open Tabs ({group.sessions.length} total events • {group.uniquePages.length} unique URLs)
+                                            {groupByMode === 'ip' ? 'IP Event History & Recorded Flows' : 'Device Event History & Open Tabs'} ({group.sessions.length} total events • {group.uniquePages.length} unique URLs)
                                           </h4>
                                         </div>
                                         <span className="text-[10px] text-muted-foreground font-mono">
-                                          Device: {group.device} • {group.country || 'Pakistan'}
+                                          {group.ip && group.ip !== '127.0.0.1' ? `IP: ${group.ip} • ` : ''}Device: {group.device} • {group.country || 'Pakistan'}
                                         </span>
                                       </div>
 
@@ -4329,7 +4386,17 @@ export default function AdminPortalPage() {
                                                       </span>
                                                     )}
                                                   </div>
-                                                  <div className="text-[10px] text-muted-foreground flex items-center gap-2 font-mono">
+                                                  <div className="text-[10px] text-muted-foreground flex items-center gap-2 font-mono flex-wrap">
+                                                    {sess.deviceId && (
+                                                      <span className="bg-muted/70 px-1.5 py-0.5 rounded text-foreground/80 font-mono text-[9px]">
+                                                        Dev: {sess.deviceId.slice(0, 12)}...
+                                                      </span>
+                                                    )}
+                                                    {sess.ip && sess.ip !== '127.0.0.1' && sess.ip !== group.ip && (
+                                                      <span className="bg-muted/70 px-1.5 py-0.5 rounded text-muted-foreground font-mono text-[9px]">
+                                                        IP: {sess.ip}
+                                                      </span>
+                                                    )}
                                                     <span>Ref: {sess.referrer || 'Direct'}</span>
                                                     <span>•</span>
                                                     <span>ID: {sess.sessionId || sess.id}</span>

@@ -29,6 +29,7 @@ interface ScenarioProps {
   triggerConfetti: () => void
   onSendLove: () => void
   loveSent: boolean
+  isSenderView?: boolean
 }
 
 const PARTY_SCENES = [
@@ -45,6 +46,7 @@ export function PartyScenario({
   triggerConfetti,
   onSendLove,
   loveSent,
+  isSenderView = false,
 }: ScenarioProps) {
   const { t } = useLang()
 
@@ -127,6 +129,10 @@ export function PartyScenario({
     triggerConfetti()
     spawnBurst(['🎉', '🔥', '⚡', '🥂'], 20)
     setRsvpSent(true)
+
+    if (isSenderView) {
+      return
+    }
 
     try {
       await submitMagicResponse({
@@ -460,25 +466,42 @@ export function PartyScenario({
               )}
             </div>
 
+            {isSenderView && (
+              <div className="mb-2.5 p-2 rounded-xl bg-amber-500/15 border border-amber-400/30 text-center">
+                <span className="text-[11px] font-bold text-amber-300 flex items-center justify-center gap-1">
+                  🛡️ Sender Preview Mode
+                </span>
+                <p className="text-[10px] text-amber-200/80 leading-tight mt-0.5">
+                  RSVP submission is disabled in preview mode. Only your guests can submit RSVPs.
+                </p>
+              </div>
+            )}
+
             <div className="flex gap-2 mt-2">
               <button
                 type="button"
                 onClick={handleSubmitRsvp}
                 className="w-full py-2.5 rounded-xl bg-[#f5c451] hover:bg-yellow-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1 shadow-md cursor-pointer transition-transform active:scale-95"
               >
-                <span>{rsvpSent ? 'RSVP Confirmed! ✓' : 'Save RSVP'}</span>
+                <span>{isSenderView ? 'Test RSVP (Preview)' : rsvpSent ? 'RSVP Confirmed! ✓' : 'Save RSVP'}</span>
               </button>
             </div>
 
             {/* Direct WhatsApp RSVP */}
-            <a
-              href={whatsAppHref}
-              target="_blank"
-              rel="noreferrer"
-              className="w-full mt-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md cursor-pointer transition-transform active:scale-95"
-            >
-              <span>Send RSVP on WhatsApp 💬</span>
-            </a>
+            {isSenderView ? (
+              <div className="w-full mt-2 py-2.5 rounded-xl bg-white/10 border border-white/15 text-slate-300 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 opacity-80 cursor-not-allowed select-none">
+                <span>Guest WhatsApp RSVP Button (Preview)</span>
+              </div>
+            ) : (
+              <a
+                href={whatsAppHref}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full mt-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md cursor-pointer transition-transform active:scale-95"
+              >
+                <span>Send RSVP on WhatsApp 💬</span>
+              </a>
+            )}
 
             {/* CTA to studio */}
             <Link

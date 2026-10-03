@@ -83,7 +83,7 @@ export function SiteFooter() {
                 <span className="text-xl">📜</span>
                 <div>
                   <div className="font-extrabold text-amber-300">1,000+ Poetry Treasury</div>
-                  <div className="text-[11px] text-emerald-200/80">Iqbal, Ghalib, Faiz, Rumi &amp; Sufi Masters — Create 3D Cards</div>
+                  <div className="text-[11px] text-emerald-200/80">Iqbal, Ghalib, Faiz, Rumi &amp; Sufi Masters — Download Royal Cards</div>
                 </div>
               </div>
               <Link
