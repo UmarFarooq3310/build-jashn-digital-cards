@@ -171,6 +171,13 @@ export function SiteFooter() {
               />
             </a>
           </div>
+
+            <div className="flex items-center gap-3">
+           <a href="https://launchnest.io/p/cardzy" target="_blank">
+  <img src="https://launchnest.io/badge/cardzy.svg?variant=featured" alt="Cardzy on LaunchNest" width="220" height="56" />
+</a>
+          </div>
+
         </div>
       </div>
     </footer>
