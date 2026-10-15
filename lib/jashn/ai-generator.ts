@@ -42,6 +42,22 @@ export function generateAIWish({
   const isFriendship = occId.includes('friend') || occLabel.toLowerCase().includes('friend')
   const isBaby = occId.includes('baby') || occId.includes('newborn') || occId.includes('aqiqah')
   const isGaming = occId.includes('pubg') || occId.includes('game') || occId.includes('winner')
+  const isCondolence =
+    occId.includes('sympathy') ||
+    occId.includes('condolence') ||
+    occId.includes('majlis') ||
+    occId.includes('chehlum') ||
+    occId.includes('ashura') ||
+    occLabel.toLowerCase().includes('sympathy') ||
+    occLabel.toLowerCase().includes('condolence') ||
+    occLabel.includes('تعزیت') ||
+    occLabel.includes('سوگ')
+  const isGetWell =
+    occId.includes('get-well') ||
+    occId.includes('health') ||
+    occId.includes('recovery') ||
+    occLabel.toLowerCase().includes('get well') ||
+    occLabel.includes('صحت')
 
   if (isGaming || tone === 'gamer_hype') {
     return `🏆 WINNER WINNER CHICKEN DINNER! Huge shoutout to ${name} on dominating the battleground! 👑 Squad MVP status with 100% clutch energy. Keep reigning supreme!`
@@ -49,6 +65,25 @@ export function generateAIWish({
 
   // --- URDU GENERATION ---
   if (isUrdu) {
+    if (isCondolence) {
+      switch (tone) {
+        case 'religious':
+          return `إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ\nمحترم ${name}، اس انتہائی غم ناک گھڑی میں ہم دل کی گہرائیوں سے تعزیت پیش کرتے ہیں۔ دعا گو ہیں کہ اللہ تعالیٰ مرحوم کو جنت الفردوس میں اعلیٰ مقام اور آپ سب کو صبرِ جمیل عطا فرمائے۔ آمین۔ 🤲🕊️`
+        case 'warm':
+        case 'emotional':
+          return `پیارے ${name}، اس گہرے صدمے پر دلی تعزیت قبول فرمائیں۔ آپ اور آپ کے اہل خانہ ہمارے دل اور دعاؤں میں ہیں۔ اللہ پاک آپ کے دل کو سکون اور ہمت عطا فرمائے۔`
+        case 'short':
+          return `إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ۔ محترم ${name}، دلی تعزیت و ہمدردی۔ اللہ تعالیٰ آپ سب کو صبر عطا فرمائے۔ 🤲`
+        case 'formal':
+        default:
+          return `محترم ${name}، اس غم کی گھڑی میں ہم آپ کے دکھ میں برابر کے شریک ہیں اور دلی تعزیت پیش کرتے ہیں۔ اللہ پاک مرحوم کی مغفرت فرمائے اور لواحقین کو صبرِ جمیل دے۔ آمین۔`
+      }
+    }
+
+    if (isGetWell) {
+      return `پیارے ${name}، اللہ تعالیٰ آپ کو شفائے کاملہ اور عاجلہ عطا فرمائے۔ دعا گو ہیں کہ آپ جلد از جلد صحت یاب ہو کر دوبارہ مسکرائیں۔ آمین۔ 🤲🌸`
+    }
+
     if (isBirthday) {
       switch (tone) {
         case 'religious':
@@ -101,6 +136,16 @@ export function generateAIWish({
     }
 
     // Default Urdu
+    const isJoyful =
+      !occLabel.toLowerCase().includes('sympathy') &&
+      !occLabel.toLowerCase().includes('condolence') &&
+      !occLabel.includes('تعزیت') &&
+      !occLabel.includes('عاشورہ') &&
+      !occLabel.includes('چہلم') &&
+      !occLabel.includes('سوگ')
+    if (!isJoyful) {
+      return `محترم ${name}، اس موقع پر دلی ہمدردی اور دعائیں پیش کرتے ہیں۔ اللہ تعالیٰ آپ کا حامی و ناصر ہو۔`
+    }
     return `محترم ${name}، ${occLabel} کے پرمسرت موقع پر دلی مبارکباد اور نیک تمنائیں! اللہ تعالیٰ آپ کے دامن کو ہمیشہ خوشیوں سے بھرپور رکھے۔ ✨`
   }
 
@@ -178,6 +223,25 @@ export function generateAIWish({
 
   if (isBaby) {
     return `Welcome to the world, precious little one! 👶🍼 Sending warmest congratulations and heartfelt blessings to ${name} and the proud parents on this joyous new arrival!`
+  }
+
+  if (isCondolence) {
+    switch (tone) {
+      case 'religious':
+        return `Inna Lillahi wa inna ilayhi raji'un. Dearest ${name}, please accept our deepest condolences and heartfelt prayers. May Almighty Allah grant the departed soul highest rank in Jannat-ul-Firdaus and bless your family with comfort, peace, and patience during this difficult time. Ameen. 🤲🕊️`
+      case 'warm':
+      case 'emotional':
+        return `Dearest ${name}, my heart aches for you and your family during this time of deep sorrow. Please accept my heartfelt sympathy. Wishing you peace, comfort, and strength to get through the days ahead. Holding you close in my thoughts and prayers.`
+      case 'short':
+        return `Deepest condolences, ${name}. Holding you and your family close in my thoughts and prayers during this difficult time. 🕊️`
+      case 'formal':
+      default:
+        return `Please accept our deepest condolences and heartfelt sympathy on this profound loss, ${name}. Wishing you and your family strength, peace, and solace in the days ahead.`
+    }
+  }
+
+  if (isGetWell) {
+    return `Dearest ${name}, sending you my warmest thoughts and wishing you a full and speedy recovery! Praying for your health, comfort, and renewed strength. Get well soon! 🌸✨`
   }
 
   // Generic fallback for any other occasion

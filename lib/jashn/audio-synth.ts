@@ -83,6 +83,11 @@ class CelebrationAudioPlayer {
     this.stop()
     if (!trackId || trackId === 'none') return
 
+    const t = trackId.toLowerCase().trim()
+    if (t === 'condolence' || t === 'sympathy' || t.includes('sympathy') || t.includes('condolence') || t.includes('majlis') || t.includes('taazia')) {
+      return
+    }
+
     this.isPlaying = true
     this.currentTrack = trackId
 

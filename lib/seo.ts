@@ -10,33 +10,92 @@ export const SUPPORTED_LANGS = [
 export type SupportedLang = (typeof SUPPORTED_LANGS)[number]
 
 export const DEFAULT_KEYWORDS = [
-  'Urdu Eid wishes',
-  'Eid Mubarak card free',
-  'wedding card wording',
-  'Pakistani wedding card text',
-  'digital wish cards',
+  // High-Intent Global English Keywords (US, UK, CA, AU, Worldwide)
   '3D animated greeting cards',
-  'digital wedding invitations',
-  'Pakistani wedding cards',
-  'WhatsApp RSVP invitations',
+  'digital wedding invitation maker',
+  'interactive birthday card online',
+  'blow out candles virtual birthday card',
+  'online birthday cards with photo and music',
+  'free interactive e-cards',
+  'wedding invitation with whatsapp rsvp',
+  'digital envelope opening animation',
+  '3D ring box unboxing proposal link',
   'smart digital business cards',
-  'vCard generator',
-  'Eid Mubarak digital cards',
-  'Nikkah invitations online',
-  'Mehndi invitations',
-  'Walima invitation website',
-  'online birthday cards with photo',
+  'vCard generator with qr code',
   'multilingual digital cards',
-  'animated Eid card with photo',
-  'birthday card with music',
-  'QR code business card Pakistan',
+  'virtual greeting card maker free',
+  'custom music greeting card online',
+
+  // Regional & Islamic Keywords (Middle East, South Asia, Global Diaspora)
+  'pakistani wedding cards text',
+  'nikkah invitation online',
+  'walima invitation card online',
+  'eid mubarak wishes in urdu',
+  'whatsapp rsvp wedding card',
+  'candle blowing card online',
+  'ring box unboxing invitation',
+  'pakistani wedding card wording',
+  'qr code business card pakistan',
   'digital visiting card maker',
-  'Islamic occasion cards',
-  'Ramadan Mubarak cards',
-  'online greeting card maker',
-  'wedding invitation with map',
+  'islamic occasion cards online',
+  'ramadan mubarak cards with music',
+  'hajj and umrah congratulation cards',
+  'shadi card text in urdu',
+  'eid wishes card banayein',
+  'dholki invitation wording in urdu',
+  'mehndi card design online',
+  'nikkah card maker online',
+  'shadi mubarak card online',
+  'salgirah mubarak wish card',
+  'urdu poetry greeting cards',
+  'eid card design free maker',
+  'urdu eid wishes',
+
+  // Multilingual High-Intent Intent Terms (Spanish, Arabic, French)
+  'tarjetas de invitacion digitales 3d',
+  'tarjetas de cumpleanos interactivas',
+  'بطاقات دعوة زفاف إلكترونية 3D',
+  'بطاقات تهنئة رقمية متحركة',
+  'invitations de mariage numeriques interactives',
+  'carte de voeux 3d animee en ligne',
   'Cardzy',
 ]
+
+/**
+ * Open Graph & Twitter metadata preset specifically formatted for WhatsApp and social crawlers.
+ * WhatsApp requires absolute URLs, image dimensions, proper content types, and under 300KB images.
+ */
+export function getWhatsAppOpenGraph({
+  title = 'Cardzy — 3D Digital Wedding Invitations, Wish Cards & vCards',
+  description = 'Open interactive 3D animated greeting cards, Pakistani digital wedding invitation maker with WhatsApp RSVP, and smart vCards.',
+  path = '/',
+  imageUrl = `${SITE_URL}/og-image.jpg`,
+  imageAlt = 'Cardzy Interactive 3D Digital Cards and Invitations',
+}: {
+  title?: string
+  description?: string
+  path?: string
+  imageUrl?: string
+  imageAlt?: string
+}) {
+  const url = getCanonicalUrl(path)
+  return {
+    title,
+    description,
+    url,
+    siteName: 'Cardzy',
+    type: 'website' as const,
+    images: [
+      {
+        url: imageUrl.startsWith('http') ? imageUrl : `${SITE_URL}${imageUrl}`,
+        width: 1200,
+        height: 630,
+        type: 'image/jpeg',
+        alt: imageAlt,
+      },
+    ],
+  }
+}
 
 
 /**

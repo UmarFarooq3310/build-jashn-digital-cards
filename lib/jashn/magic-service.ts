@@ -193,6 +193,8 @@ export async function recordCardShare(
         const docRef = doc(activeDb, collectionName, cleanSlug)
         await updateDoc(docRef, {
           [`shares.${channel}`]: increment(1),
+          sharesCount: increment(1),
+          totalShares: increment(1),
           lastSharedAt: Date.now(),
         }).catch(async () => {
           await setDoc(
@@ -201,6 +203,8 @@ export async function recordCardShare(
               shares: {
                 [channel]: increment(1),
               },
+              sharesCount: increment(1),
+              totalShares: increment(1),
               lastSharedAt: Date.now(),
             },
             { merge: true }

@@ -57,7 +57,7 @@ export function decodeShortWish(params: URLSearchParams, slug: string): Wish | n
     recipientName: params.get('r') || '',
     relation: params.get('rel') || '',
     language: (params.get('l') as any) || 'en',
-    message: matchedTemplate ? matchedTemplate.en : (params.get('m') || ''),
+    message: matchedTemplate ? ((matchedTemplate as any)[params.get('l') || 'en'] || matchedTemplate.en) : (params.get('m') || ''),
     poetName: params.get('pn') || undefined,
     dedication: params.get('dd') || undefined,
     poetryFormat: params.get('pf') || undefined,

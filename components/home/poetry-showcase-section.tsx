@@ -309,6 +309,17 @@ export function PoetryShowcaseSection() {
                 </Link>
               </div>
 
+              {/* 1-Click Poetry to 3D Wish Card Conversion CTA */}
+              <Link
+                href={`/create-wish?poem=${item.id}&occasion=poetry&message=${encodeURIComponent(item.originalText)}&poet=${encodeURIComponent(item.poet)}`}
+                onClick={() => trackPoetryAction(item, 'click')}
+                className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500/20 via-emerald-500/20 to-amber-500/20 hover:from-amber-500/30 hover:to-emerald-500/30 border border-amber-500/40 text-amber-300 hover:text-amber-200 text-xs font-bold transition-all active:scale-95 group mb-2 shadow-sm"
+                title="Turn this poem into an interactive 3D Wish Card"
+              >
+                <Sparkles className="size-3.5 text-amber-400 group-hover:rotate-12 transition-transform" />
+                <span>Turn into 3D Wish Card ✨</span>
+              </Link>
+
               {/* Action Buttons: Pure Icons (Copy, Share, View in Treasury) */}
               <div className="pt-2 border-t border-slate-800/70 grid grid-cols-3 gap-2">
                 {/* Copy Verse Button */}

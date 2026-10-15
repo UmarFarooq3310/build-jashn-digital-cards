@@ -113,6 +113,8 @@ export async function POST(req: Request) {
         try {
           await targetRef.update({
             [`shares.${ch}`]: FieldValue.increment(1),
+            sharesCount: FieldValue.increment(1),
+            totalShares: FieldValue.increment(1),
             lastSharedAt: Date.now(),
           })
         } catch {
@@ -121,6 +123,8 @@ export async function POST(req: Request) {
               shares: {
                 [ch]: FieldValue.increment(1),
               },
+              sharesCount: FieldValue.increment(1),
+              totalShares: FieldValue.increment(1),
               lastSharedAt: Date.now(),
             },
             { merge: true }

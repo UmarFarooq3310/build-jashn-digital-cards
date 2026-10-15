@@ -24,6 +24,7 @@ import { getMagicLink, submitMagicResponse, recordCardShare, getMagicWhatsAppUrl
 import type { MagicLinkData, MagicThemeId } from '@/lib/jashn/magic-types'
 import { isCardExpired } from '@/lib/jashn/plan-limits'
 import { ConfettiRain } from '@/components/jashn/confetti-rain'
+import { ViralFooterBadge } from '@/components/viral/viral-footer-badge'
 import { CardzyLogo } from '@/components/ui/logo'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
@@ -892,9 +893,14 @@ function MagicLinkInner({ slug }: { slug: string }) {
 
       {/* Bespoke Occasion Experience Container (Always Centered & Zero Scroll) */}
       {/* Bespoke Occasion Experience Container (Interactive 3D Holographic Card) */}
-          <main className="w-full max-w-2xl z-10 flex flex-col items-center justify-center my-auto animate-float-slow">
+      <main className="w-full max-w-2xl z-10 flex flex-col items-center justify-center my-auto animate-float-slow">
         {renderScenario()}
       </main>
+
+      {/* Receiver Screen Viral Footer Badge */}
+      <div className="w-full max-w-md flex justify-center items-center pb-2 z-20 shrink-0">
+        <ViralFooterBadge variant="magic" />
+      </div>
 
       {/* Luxury Floating Glass Capsule: Share & Wishes Wall - VISIBLE TO BOTH SENDER & RECEIVER */}
       <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-40 flex items-center gap-1.5">

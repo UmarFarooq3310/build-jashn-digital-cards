@@ -154,12 +154,30 @@ export function SiteFooter() {
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3.5">
+            <a
+              href="https://launchnest.io/p/cardzy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center transition-opacity hover:opacity-90"
+              title="Cardzy on LaunchNest"
+            >
+              <img
+                src="https://launchnest.io/badge/cardzy.svg?variant=featured"
+                alt="Cardzy on LaunchNest"
+                width={220}
+                height={56}
+                loading="lazy"
+                style={{ height: '40px', width: 'auto' }}
+              />
+            </a>
+
             <a
               href="https://sellwithboost.com"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center transition-opacity hover:opacity-90"
+              title="Listed on Sell With boost"
             >
               <img
                 src="https://sellwithboost.com/badge/listing.svg"
@@ -170,12 +188,6 @@ export function SiteFooter() {
                 style={{ height: '40px', width: 'auto' }}
               />
             </a>
-          </div>
-
-            <div className="flex items-center gap-3">
-           <a href="https://launchnest.io/p/cardzy" target="_blank">
-  <img src="https://launchnest.io/badge/cardzy.svg?variant=featured" alt="Cardzy on LaunchNest" width="220" height="56" />
-</a>
           </div>
 
         </div>

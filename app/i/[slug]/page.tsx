@@ -22,6 +22,7 @@ import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
 import { CardLiveReactions } from '@/components/jashn/card-reactions'
 import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
+import { ViralFooterBadge } from '@/components/viral/viral-footer-badge'
 import { Button } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
@@ -850,15 +851,9 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         </div>
       </main>
 
-      {/* Receiver Screen Footer Control */}
-      <footer className="w-full max-w-md flex flex-col items-center gap-2 z-20 pt-1 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] text-center shrink-0">
-        <Link
-          href="/create-invitation"
-          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-amber-400 transition-colors font-medium"
-        >
-          <Sparkles className="size-3 text-amber-400" />
-          <span>Cardzy · Make Your Own</span>
-        </Link>
+      {/* Receiver Screen Viral Footer Badge */}
+      <footer className="w-full max-w-md flex flex-col items-center justify-center z-20 pt-1 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] shrink-0">
+        <ViralFooterBadge variant="invitation" />
       </footer>
 
       {/* Floating Action Pill for Wishes Wall & Share - Visible on mobile only, hidden on desktop to avoid duplicate share button */}

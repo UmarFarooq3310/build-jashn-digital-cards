@@ -13,7 +13,8 @@ export function AnimatedBackgroundDecor({ category, occasionId }: AnimatedBackgr
   const isWedding = cat === 'family' || cat === 'wedding'
   const isFestive = cat === 'personal' || cat === 'social' || cat === 'national'
   const isAchievement = cat === 'achievements' || cat === 'professional'
-  const isCondolence = occasionId === 'condolence' || occasionId === 'chelum'
+  const occ = occasionId?.toLowerCase().trim() || ''
+  const isCondolence = occ === 'condolence' || occ === 'sympathy' || occ === 'chelum' || occ.includes('sympathy') || occ.includes('condolence') || occ.includes('majlis') || occ.includes('taazia')
 
   if (isCondolence) return null
 

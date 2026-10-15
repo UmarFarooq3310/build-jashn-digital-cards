@@ -281,6 +281,24 @@ const ALL_WORDING_ITEMS: WordingItem[] = [
     urdu: 'شاندار کامیابی اور ڈگری کی تکمیل پر دلی مبارکباد! آپ کی محنت رنگ لائی، مستقبل میں مزید کامیابیوں کے لیے دعا گو۔',
     english: 'Heartiest congratulations on your outstanding achievement and graduation! Wishing you a brilliant and prosperous career ahead.',
   },
+  {
+    id: 'g-condolence-inna-lillah',
+    group: 'general',
+    subCategory: 'sympathy',
+    scope: 'all',
+    label: '🕊️ Deepest Sympathy & Dua (دلی تعزیت و مغفرت کی دعا)',
+    urdu: 'إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ\n\nاس غم کی گھڑی میں ہم آپ اور آپ کے تمام اہل خانہ کے دکھ میں برابر کے شریک ہیں۔ اللہ تعالیٰ مرحوم کو جوارِ رحمت میں اعلیٰ مقام اور تمام پسماندگان کو صبرِ جمیل عطا فرمائے۔ آمین۔',
+    english: 'Inna Lillahi wa inna ilayhi raji\'un. Sending our deepest condolences and heartfelt prayers to you and your family. May Allah grant the departed soul highest rank in Jannah and bless you with patience and comfort. Ameen.',
+  },
+  {
+    id: 'g-condolence-patience',
+    group: 'general',
+    subCategory: 'sympathy',
+    scope: 'all',
+    label: '🕊️ Prayers for Comfort & Strength (صبر و حوصلہ کی دعا)',
+    urdu: 'دلی تعزیت و ہمدردی۔ اللہ پاک آپ کو اور آپ کے خاندان کو اس گہرے صدمے پر صبر و حوصلہ عطا فرمائے اور غم کو اپنی رحمتوں سے ہلکا فرمائے۔ آمین۔',
+    english: 'Please accept our heartfelt condolences and deepest sympathy during this difficult time. Wishing you peace, comfort, and strength in the days ahead. Our prayers are with you.',
+  },
 ]
 
 export function resolveWordingGroup(eventType?: string, occasionId?: string): 'wedding' | 'birthday' | 'eid' | 'anniversary' | 'friendship' | 'general' {

@@ -5,6 +5,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Check, Crown, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ProComparisonMatrix } from '@/components/pricing/pro-comparison-matrix'
+import { PakistanPaymentModal } from '@/components/pricing/pakistan-payment-modal'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
 import type { Plan } from '@/lib/jashn/types'
@@ -271,191 +273,36 @@ export default function PricingPage() {
             </div>
           </div>
 
-          {/* Detailed Feature Comparison Table & FAQs */}
-          <section className="mt-16 rounded-3xl border border-border/80 bg-card p-6 sm:p-10 shadow-sm text-left space-y-6 max-w-4xl mx-auto">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                <Sparkles className="size-3.5" /> {t('planComparisonBadge')}
-              </span>
-            </div>
-            <h2 className={`text-xl sm:text-2xl font-extrabold text-foreground tracking-tight ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
-              {t('planComparisonH2')}
-            </h2>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              {isUrdu
-                ? 'فری اور پرو پلانز کا تفصیلی موازنہ کریں اور اپنی شادی یا تقریب کے لیے بہترین آپشن منتخب کریں۔'
-                : 'Compare features between Free and Pro to choose the best option for your wedding, birthday, or milestone celebration.'}
-            </p>
-
-            <div className="overflow-x-auto rounded-2xl border border-border">
-              <table className="min-w-full text-left text-xs sm:text-sm">
-                <thead>
-                  <tr className="bg-muted/60 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                    <th className="py-3 px-4">{t('tblFeature')}</th>
-                    <th className="py-3 px-4">{t('tblFreePlan')}</th>
-                    <th className="py-3 px-4 text-primary font-bold">Pro ($1.99 / Rs 499)</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/60">
-                  <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">{t('tblRowWish')}</td>
-                    <td className="py-3 px-4 text-muted-foreground">{t('tblRowWishFree')}</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowWishPro')}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">{t('tblRowRsvp')}</td>
-                    <td className="py-3 px-4 text-muted-foreground">{t('tblRowRsvpFree')}</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowRsvpPro')}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">{t('tblRowWatermark')}</td>
-                    <td className="py-3 px-4 text-muted-foreground">{t('tblRowWatermarkFree')}</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowWatermarkPro')}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">{isUrdu ? 'کارڈ محفوظ رکھنے کی مدت' : 'Card Link Retention'}</td>
-                    <td className="py-3 px-4 text-muted-foreground">{isUrdu ? '30 دن فعال' : '30 Days Active'}</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">{isUrdu ? 'ہمیشہ کے لیے محفوظ (لائف ٹائم)' : 'Permanent (Keep Forever)'}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">{isUrdu ? 'ہر کیٹیگری کے کارڈز کی حد' : 'Card Limit per Category'}</td>
-                    <td className="py-3 px-4 text-muted-foreground">{isUrdu ? '5 کارڈز فی کیٹیگری' : '5 Free Cards Each'}</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">{isUrdu ? 'لامحدود کارڈز' : 'Unlimited Everything'}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">{isUrdu ? 'کلاسک تھیمز' : 'Classic Themes'}</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">{isUrdu ? '5 کلاسک تھیمز' : '5 Classic Themes'}</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">{isUrdu ? 'تمام 12+ پریمیم تھیمز' : 'All 12+ Themes'}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">{isUrdu ? 'مہمانوں کی رپورٹ ایکسپورٹ' : 'Guest List Report Export'}</td>
-                    <td className="py-3 px-4 text-muted-foreground">❌</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">✅ CSV & PDF Export</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">{t('tblRowLangs')}</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowLangsFree')}</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowLangsPro')}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-4 font-semibold text-foreground">{t('tblRowSupport')}</td>
-                    <td className="py-3 px-4 text-muted-foreground">{t('tblRowSupportFree')}</td>
-                    <td className="py-3 px-4 text-emerald-600 font-bold">{t('tblRowSupportPro')}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          {/* Detailed Feature Comparison Table & Pro Highlights */}
+          <section className="mt-16 max-w-4xl mx-auto text-left space-y-6">
+            <ProComparisonMatrix onUpgradeClick={openModal} isUrdu={isUrdu} />
 
             {/* Pricing FAQ */}
-            <div className="pt-4 space-y-3">
-              <h3 className="font-bold text-base text-foreground">{t('pricingFaqH3')}</h3>
+            <div className="pt-8 space-y-4">
+              <h3 className="font-bold text-lg text-foreground">{t('pricingFaqH3')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm text-muted-foreground">
-                <div className="rounded-xl border border-border/80 bg-background/60 p-4 space-y-1.5">
-                  <h4 className="font-bold text-foreground">{t('pricingFaqQ1')}</h4>
-                  <p>{t('pricingFaqA1')}</p>
+                <div className="rounded-2xl border border-border/80 bg-background/60 p-5 space-y-1.5 shadow-xs">
+                  <h4 className="font-bold text-foreground text-sm">{t('pricingFaqQ1')}</h4>
+                  <p className="leading-relaxed">{t('pricingFaqA1')}</p>
                 </div>
-                <div className="rounded-xl border border-border/80 bg-background/60 p-4 space-y-1.5">
-                  <h4 className="font-bold text-foreground">{t('pricingFaqQ2')}</h4>
-                  <p>{t('pricingFaqA2')}</p>
+                <div className="rounded-2xl border border-border/80 bg-background/60 p-5 space-y-1.5 shadow-xs">
+                  <h4 className="font-bold text-foreground text-sm">{t('pricingFaqQ2')}</h4>
+                  <p className="leading-relaxed">{t('pricingFaqA2')}</p>
                 </div>
               </div>
             </div>
           </section>
         </div>
 
-        {/* ── Payment Modal ───────────────────────────────────────────────── */}
-        {/* ── Payment Modal ───────────────────────────────────────────────── */}
-        {paymentModalOpen && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-            onClick={(e) => { if (e.target === e.currentTarget) closeModal() }}
-          >
-            <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-2xl text-left">
-              {/* Modal Header */}
-              <div className="flex items-center justify-between mb-1">
-                <h3 className="text-xl font-bold text-foreground">
-                  {lang === 'ur' ? 'PRO پلان پر اپ گریڈ کریں' : 'Upgrade to Pro Plan'}
-                </h3>
-                {billingCycle === 'annual' && (
-                  <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400">
-                    {lang === 'ur' ? '15% رعایت' : '15% OFF'}
-                  </span>
-                )}
-              </div>
-              <p className="text-xs text-muted-foreground mb-4">
-                {lang === 'ur' ? 'منتخب شدہ رقم:' : 'Selected Plan:'}{' '}
-                <span className="font-bold text-primary">
-                  {activeProPrice.label} {isUrdu ? activeProPrice.periodUr : activeProPrice.periodEn}
-                </span>
-              </p>
-
-              {/* Billing Cycle Switcher inside modal */}
-              <div className="mb-4 flex items-center rounded-xl bg-muted/60 p-1 border border-border">
-                <button
-                  type="button"
-                  onClick={() => setBillingCycle('monthly')}
-                  className={`flex-1 rounded-lg py-1.5 text-xs font-bold transition-all ${
-                    billingCycle === 'monthly'
-                      ? 'bg-background text-foreground shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  {isUrdu ? 'ماہانہ ($1.99 / Rs 499)' : 'Monthly ($1.99 / Rs 499)'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setBillingCycle('annual')}
-                  className={`flex-1 rounded-lg py-1.5 text-xs font-bold transition-all ${
-                    billingCycle === 'annual'
-                      ? 'bg-background text-foreground shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  {isUrdu ? 'سالانہ - 15% بچت' : 'Annual - 15% OFF'}
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                <div className="rounded-xl bg-muted/60 border border-border p-4 text-sm text-foreground leading-relaxed">
-                  <p className="font-semibold mb-2">{t('upgradeInstructions')}</p>
-                  <ol className="list-decimal pl-4 space-y-1.5 text-muted-foreground text-xs">
-                    <li>{t('upgradeStep1')}</li>
-                    <li>{t('upgradeStep2')}</li>
-                    <li>{t('upgradeStep3')}</li>
-                  </ol>
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  <a
-                    href={`https://wa.me/923093518796?text=${encodeURIComponent(`Hi! I would like to upgrade to the Pro (${billingCycle === 'annual' ? 'Annual 15% OFF' : 'Monthly'}) plan on Cardzy for ${activeProPrice.label}. My account email is: ${user?.email || ''}`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 transition-colors p-3 font-bold text-sm text-white"
-                  >
-                    <span>💬 WhatsApp (+92 309 3518796)</span>
-                  </a>
-
-                  <a
-                    href={`mailto:cardzyonline@gmail.com?subject=${encodeURIComponent(`Upgrade to Pro (${billingCycle.toUpperCase()}) Plan — Cardzy`)}&body=${encodeURIComponent(`Hi,\n\nI want to upgrade to the Pro (${billingCycle} - ${activeProPrice.label}) plan on Cardzy.\nMy account email is: ${user?.email || ''}\n\nI have attached my payment proof.\n\nThank you.`)}`}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-border hover:bg-muted/50 transition-colors p-3 font-bold text-sm text-foreground"
-                  >
-                    <span>✉️ Email: cardzyonline@gmail.com</span>
-                  </a>
-                </div>
-
-                <p className="text-[11px] text-muted-foreground text-center">
-                  {t('intlNote')}
-                </p>
-
-                <div className="pt-2 flex justify-end">
-                  <Button variant="ghost" onClick={closeModal}>
-                    {t('closeBtn')}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* ── Comprehensive Pakistan (JazzCash / EasyPaisa / Raast) & International Payment Modal ───────────────────────────────────────────────── */}
+        <PakistanPaymentModal
+          isOpen={paymentModalOpen}
+          onClose={closeModal}
+          userEmail={user?.email || ''}
+          billingCycle={billingCycle}
+          onBillingCycleChange={setBillingCycle}
+          isUrdu={isUrdu}
+        />
     </div>
   )
 }

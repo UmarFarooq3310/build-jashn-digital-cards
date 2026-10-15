@@ -17,6 +17,7 @@ import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
 import { CardLiveReactions } from '@/components/jashn/card-reactions'
 import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
+import { ViralFooterBadge } from '@/components/viral/viral-footer-badge'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
 import { getOccasion } from '@/lib/jashn/occasions'
@@ -102,10 +103,41 @@ function WishPublicContent({ slug }: { slug: string }) {
         }
       }
 
-      if (slug === 'sample' || slug === 'demo') {
+      // Check session or local draft in preview / sender mode
+      if (typeof window !== 'undefined') {
+        try {
+          const draft = sessionStorage.getItem('cardzy_draft_wish') || localStorage.getItem('cardzy_draft_wish')
+          if (draft) {
+            const parsed = JSON.parse(draft)
+            if (parsed && typeof parsed === 'object') {
+              setActiveWish({
+                id: slug,
+                slug,
+                creatorId: parsed.creatorId || 'anonymous',
+                occasionId: parsed.occasionId || 'birthday',
+                message: parsed.message || 'Best wishes!',
+                language: parsed.language || 'en',
+                themeId: parsed.themeId || 'classic-gold',
+                borderId: parsed.borderId || 'classic',
+                senderName: parsed.senderName || 'Sender',
+                recipientName: parsed.recipientName || 'Recipient',
+                viewCount: 0,
+                createdAt: parsed.createdAt || Date.now(),
+                photoUrl: parsed.photoUrl,
+                audioTrack: parsed.audioTrack,
+                ...parsed,
+              })
+              setIsLoading(false)
+              return
+            }
+          }
+        } catch {}
+      }
+
+      if (slug === 'sample' || slug === 'demo' || searchParams.get('preview') === 'true') {
         setActiveWish({
-          id: 'sample',
-          slug: 'sample',
+          id: slug,
+          slug,
           creatorId: 'demo',
           occasionId: 'birthday',
           message: 'Wishing you a day filled with joy, laughter, and immense blessings!',
@@ -216,9 +248,10 @@ function WishPublicContent({ slug }: { slug: string }) {
     )
   }
 
-  const occasion = getOccasion(activeWish.occasionId)
-  const isIslamic = occasion?.category === 'Islamic'
-  const isSensitive = activeWish.occasionId === 'condolence'
+  const cleanOccasionId = (activeWish.occasionId && activeWish.occasionId !== 'undefined') ? activeWish.occasionId : 'birthday'
+  const occasion = getOccasion(cleanOccasionId) || getOccasion('birthday')
+  const isIslamic = occasion?.category === 'Islamic' || cleanOccasionId.includes('islamic') || cleanOccasionId.includes('eid') || cleanOccasionId.includes('roza')
+  const isSensitive = cleanOccasionId === 'condolence' || cleanOccasionId === 'sympathy' || cleanOccasionId.includes('sympathy') || cleanOccasionId.includes('condolence') || cleanOccasionId.includes('majlis') || cleanOccasionId.includes('taazia')
   const waMsg = `${activeWish.senderName} sent you a special digital card`
 
   // Always share the CLEAN receiver URL without ?mode=sender
@@ -349,8 +382,12 @@ function WishPublicContent({ slug }: { slug: string }) {
               <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
                 <ThreeDCardWrapper
                   recipientName={activeWish.recipientName}
-                  eventTitle={lang === 'ur' ? (occasion?.urdu || occasion?.label || 'مبارک ہو') : (t(`occ_${occasion?.id?.replace(/-/g, '_')}`) || occasion?.label || 'Greetings')}
-                  occasionIdOrCategory={activeWish.occasionId}
+                  eventTitle={
+                    lang === 'ur'
+                      ? (occasion?.urdu || occasion?.label || (isSensitive ? 'دلی تعزیت' : 'مبارک ہو'))
+                      : (occasion?.id ? (t(`occ_${occasion.id.replace(/-/g, '_')}`, occasion.label) || occasion.label) : (isSensitive ? t('badgeCondolences', 'Condolences') : t('mubarakHo', 'Greetings')))
+                  }
+                  occasionIdOrCategory={cleanOccasionId}
                   isIslamic={isIslamic}
                   isSensitive={isSensitive}
                   audioTrack={activeWish.audioTrack}
@@ -688,8 +725,12 @@ function WishPublicContent({ slug }: { slug: string }) {
             <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl flex justify-center">
               <ThreeDCardWrapper
                 recipientName={activeWish.recipientName}
-                eventTitle={lang === 'ur' ? (occasion?.urdu || occasion?.label || 'مبارک ہو') : (t(`occ_${occasion?.id?.replace(/-/g, '_')}`) || occasion?.label || 'Greetings')}
-                occasionIdOrCategory={activeWish.occasionId}
+                eventTitle={
+                  lang === 'ur'
+                    ? (occasion?.urdu || occasion?.label || (isSensitive ? 'دلی تعزیت' : 'مبارک ہو'))
+                    : (occasion?.id ? (t(`occ_${occasion.id.replace(/-/g, '_')}`, occasion.label) || occasion.label) : (isSensitive ? t('badgeCondolences', 'Condolences') : t('mubarakHo', 'Greetings')))
+                }
+                occasionIdOrCategory={cleanOccasionId}
                 isIslamic={isIslamic}
                 isSensitive={isSensitive}
                 audioTrack={activeWish.audioTrack}
@@ -769,15 +810,9 @@ function WishPublicContent({ slug }: { slug: string }) {
         </div>
       </main>
 
-      {/* Receiver Screen Footer Control */}
-      <footer className="w-full max-w-md flex flex-col items-center gap-2 z-20 pt-1 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] text-center shrink-0">
-        <Link
-          href="/create-wish"
-          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-emerald-400 transition-colors font-medium"
-        >
-          <Sparkles className="size-3 text-amber-400" />
-          <span>Cardzy · Make Your Own</span>
-        </Link>
+      {/* Receiver Screen Viral Footer Badge */}
+      <footer className="w-full max-w-md flex flex-col items-center justify-center z-20 pt-1 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] shrink-0">
+        <ViralFooterBadge variant="wish" />
       </footer>
 
       {/* Floating Action Pill for Wishes Wall & Share - Visible on mobile only, hidden on desktop to avoid duplicate share button */}
@@ -863,7 +898,8 @@ export default function WishPublicPage({ params }: { params: Promise<{ slug: str
     }
   }, [slug, wishes, searchParams])
 
-  const isSensitive = activeWish?.occasionId === 'condolence'
+  const activeOccId = (activeWish?.occasionId || '').toLowerCase()
+  const isSensitive = activeOccId === 'condolence' || activeOccId === 'sympathy' || activeOccId.includes('sympathy') || activeOccId.includes('condolence') || activeOccId.includes('majlis') || activeOccId.includes('taazia')
 
   return (
     <div className={cn(

@@ -2,7 +2,7 @@
 
 import '@/app/invitation-themes-animations.css'
 import Link from 'next/link'
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Edit3, Palette, Eye, Sparkles, Trophy, Camera, Music, Volume2, VolumeX, X, CheckCircle2, Gamepad2, Flame, Hash, Shield, Crown, Swords, Zap, Code2, Feather, BookOpen } from 'lucide-react'
 import { AUDIO_TRACKS, getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
@@ -21,7 +21,7 @@ import { WishCard } from '@/components/jashn/wish-card'
 import CardAnimationPreview from '@/components/jashn/CardAnimationPreview'
 import { PreviewCardFit } from '@/components/jashn/preview-card-fit'
 import { useJashn } from '@/lib/jashn/store'
-import { getOccasion, getTemplates, getLocalizedTemplateText } from '@/lib/jashn/occasions'
+import { getOccasion, getTemplates, getLocalizedTemplateText, isTemplateMessage } from '@/lib/jashn/occasions'
 import type { Language } from '@/lib/jashn/types'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
@@ -225,6 +225,21 @@ function CreateWishContent() {
   })
   const [playingTrackId, setPlayingTrackId] = useState<string | null>(null)
   const [showAiModal, setShowAiModal] = useState(false)
+  const isUserCustomEditedMessage = useRef(Boolean(messageParam))
+  const prevLangRef = useRef(lang)
+
+  // Sync template text when user switches language if message wasn't custom-typed
+  useEffect(() => {
+    if (prevLangRef.current !== lang) {
+      prevLangRef.current = lang
+      if (!isUserCustomEditedMessage.current && message) {
+        const tPlates = getTemplates(occasionId)
+        if (tPlates.length > 0) {
+          setMessage(getLocalizedTemplateText(tPlates[0], lang))
+        }
+      }
+    }
+  }, [lang, occasionId, message])
 
   // Cleanup audio playback on unmount
   useEffect(() => {
@@ -278,6 +293,7 @@ function CreateWishContent() {
       lang,
     })
     setMessage(aiText)
+    isUserCustomEditedMessage.current = true
     setShowAiModal(false)
     showToast('AI Wish Generated! ✨', 'info')
   }
@@ -287,6 +303,7 @@ function CreateWishContent() {
     setRecipientName(starter.recipientName)
     setRelation(starter.relation)
     setMessage(starter.message)
+    isUserCustomEditedMessage.current = true
     if ((starter as any).poetName) setPoetName((starter as any).poetName)
     if ((starter as any).dedication) setDedication((starter as any).dedication)
     if (starter.audioTrack) setAudioTrack(starter.audioTrack)
@@ -597,11 +614,20 @@ function CreateWishContent() {
     setErrors({})
     changeStep(2)
     
-    // Automatically set default template for the newly selected occasion if message is empty
-    if (!message) {
-      const tPlates = getTemplates(id)
-      if (tPlates.length > 0) {
-        setMessage(getLocalizedTemplateText(tPlates[0], lang))
+    const newTemplates = getTemplates(id)
+    const isSensitiveOccasion = id === 'sympathy' || id === 'condolence' || id.includes('sympathy') || id.includes('condolence') || id.includes('majlis') || id.includes('taazia') || id.includes('chelum') || id.includes('chehlum') || id.includes('ashura')
+    const hasCelebratoryKeywords = /مبارک|سالگرہ|شادی|birthday|congratulat|happy|celebrat|party|mubarak|wedding|anniversary/i.test(message)
+    const isMsgTemplate = isTemplateMessage(message)
+
+    // Overwrite with newly selected occasion's template if:
+    // 1. Message is empty
+    // 2. User has never manually typed custom text (!isUserCustomEditedMessage.current)
+    // 3. Current message is one of the predefined templates from previous occasion
+    // 4. Switching to a sensitive condolence occasion and message contains celebratory text!
+    if (!message.trim() || !isUserCustomEditedMessage.current || isMsgTemplate || (isSensitiveOccasion && hasCelebratoryKeywords)) {
+      if (newTemplates.length > 0) {
+        setMessage(getLocalizedTemplateText(newTemplates[0], lang))
+        isUserCustomEditedMessage.current = false
       }
     }
   }
@@ -610,6 +636,7 @@ function CreateWishContent() {
     const tmpl = templates[index]
     if (tmpl) {
       setMessage(getLocalizedTemplateText(tmpl, lang))
+      isUserCustomEditedMessage.current = false
     }
     setErrors((prev) => {
       const copy = { ...prev }
@@ -686,6 +713,9 @@ function CreateWishContent() {
   }
 
   function handleFieldChange(field: string, value: string, setter: (v: string) => void) {
+    if (field === 'message') {
+      isUserCustomEditedMessage.current = true
+    }
     setter(value)
     const tempErrors = { ...errors }
     if (value.trim()) {
@@ -1707,7 +1737,9 @@ function CreateWishContent() {
                     borderId,
                     bgVariantId,
                     message: step === 1
-                      ? (message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : t('defaultWishDefaultMessage', 'Wishing you a day filled with happiness, laughter and immense blessings!')))
+                      ? ((!isUserCustomEditedMessage.current && templates.length > 0)
+                          ? getLocalizedTemplateText(templates[0], lang)
+                          : (message || (templates.length > 0 ? getLocalizedTemplateText(templates[0], lang) : '')))
                       : (message || ''),
                     senderName: step === 1
                       ? (senderName || user?.name || (isGamingOccasion ? 'Victory Squad' : t('defaultWishSender', 'Tariq & Family')))

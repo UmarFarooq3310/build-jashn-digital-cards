@@ -9,6 +9,7 @@ export interface CardMediaExportOptions {
   cardSlug?: string
   audioTrack?: string
   audioUrl?: string
+  targetAspectRatio?: 'auto' | '9:16' | 'original'
   onProgress?: (percent: number) => void
 }
 
@@ -214,6 +215,7 @@ export async function recordImageAsVideo({
   cardType,
   audioTrack,
   audioUrl,
+  targetAspectRatio = "auto",
   onProgress,
 }: {
   img: HTMLImageElement
@@ -221,21 +223,32 @@ export async function recordImageAsVideo({
   cardType?: "invite" | "wish" | "vcard" | "magic" | "poetry"
   audioTrack?: string
   audioUrl?: string
+  targetAspectRatio?: "auto" | "9:16" | "original"
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
-  // Constrain width to 720p maximum for fast, buttery smooth 30fps recording
-  const MAX_VIDEO_WIDTH = 720
-  let targetWidth = img.naturalWidth || img.width || 720
-  let targetHeight = img.naturalHeight || img.height || 1280
+  const isMobileScreen = typeof window !== "undefined" && window.innerWidth < 768
+  const shouldForce9x16 = targetAspectRatio === "9:16" || (isMobileScreen && targetAspectRatio !== "original")
 
-  if (targetWidth > MAX_VIDEO_WIDTH) {
-    const scale = MAX_VIDEO_WIDTH / targetWidth
-    targetWidth = MAX_VIDEO_WIDTH
-    targetHeight = Math.round(targetHeight * scale)
-  } else if (targetWidth < 540) {
-    const scale = 540 / targetWidth
-    targetWidth = 540
-    targetHeight = Math.round(targetHeight * scale)
+  let targetWidth = 720
+  let targetHeight = 1280
+
+  if (shouldForce9x16) {
+    targetWidth = 720
+    targetHeight = 1280
+  } else {
+    const MAX_VIDEO_WIDTH = 720
+    targetWidth = img.naturalWidth || img.width || 720
+    targetHeight = img.naturalHeight || img.height || 1280
+
+    if (targetWidth > MAX_VIDEO_WIDTH) {
+      const scale = MAX_VIDEO_WIDTH / targetWidth
+      targetWidth = MAX_VIDEO_WIDTH
+      targetHeight = Math.round(targetHeight * scale)
+    } else if (targetWidth < 540) {
+      const scale = 540 / targetWidth
+      targetWidth = 540
+      targetHeight = Math.round(targetHeight * scale)
+    }
   }
 
   // Ensure width and height are even integers (hardware h264 encoder requirement)
@@ -460,9 +473,35 @@ export async function recordImageAsVideo({
 
       ctx.clearRect(0, 0, targetWidth, targetHeight)
 
-      // 1. Draw the exact full card image with 100% edge-to-edge fidelity (never clipped)
+      // 1. Draw card image with aspect-ratio awareness
       ctx.save()
-      ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
+      const imgW = img.naturalWidth || img.width || targetWidth
+      const imgH = img.naturalHeight || img.height || targetHeight
+      const imgRatio = imgW / imgH
+      const targetRatio = targetWidth / targetHeight
+
+      if (Math.abs(imgRatio - targetRatio) < 0.05) {
+        // Direct edge-to-edge draw
+        ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
+      } else {
+        // Draw ambient blurred background to fill 9:16 mobile canvas seamlessly
+        ctx.save()
+        ctx.filter = "blur(18px) brightness(0.65)"
+        ctx.drawImage(img, -20, -20, targetWidth + 40, targetHeight + 40)
+        ctx.restore()
+
+        // Soft dark overlay
+        ctx.fillStyle = "rgba(0, 0, 0, 0.4)"
+        ctx.fillRect(0, 0, targetWidth, targetHeight)
+
+        // Draw crisp card centered inside vertical 9:16 canvas
+        const scale = Math.min((targetWidth - 32) / imgW, (targetHeight - 80) / imgH)
+        const drawW = Math.round(imgW * scale)
+        const drawH = Math.round(imgH * scale)
+        const drawX = Math.round((targetWidth - drawW) / 2)
+        const drawY = Math.round((targetHeight - drawH) / 2)
+        ctx.drawImage(img, drawX, drawY, drawW, drawH)
+      }
       ctx.restore()
 
       // 2. Luxury Shimmer Gleam: sweeps diagonally across the card with bright glossy highlights
@@ -552,12 +591,14 @@ export async function downloadCanvasAsVideo({
   fileName = "cardzy-card",
   audioTrack = "friendship-soft",
   audioUrl,
+  targetAspectRatio,
   onProgress,
 }: {
   canvas: HTMLCanvasElement
   fileName?: string
   audioTrack?: string
   audioUrl?: string
+  targetAspectRatio?: "auto" | "9:16" | "original"
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
   const dataUrl = canvas.toDataURL("image/png")
@@ -573,6 +614,7 @@ export async function downloadCanvasAsVideo({
     cardType: "poetry",
     audioTrack: audioTrack || "friendship-soft",
     audioUrl,
+    targetAspectRatio,
     onProgress,
   })
 }
@@ -587,6 +629,7 @@ export async function downloadCardVideo({
   cardSlug,
   audioTrack,
   audioUrl,
+  targetAspectRatio,
   onProgress,
 }: CardMediaExportOptions): Promise<boolean> {
   if (!element) return false
@@ -611,6 +654,7 @@ export async function downloadCardVideo({
       cardType,
       audioTrack,
       audioUrl,
+      targetAspectRatio,
       onProgress,
     })
   } catch (e: unknown) {

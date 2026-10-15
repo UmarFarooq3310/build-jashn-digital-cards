@@ -41,6 +41,19 @@ export function ThreeDCardWrapper({
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, px: 50, py: 50 })
   const [isAudioActive, setIsAudioActive] = useState(false)
 
+  const rawOcc = (occasionIdOrCategory || '').toLowerCase().trim()
+  const cleanOcc = (occasionIdOrCategory && occasionIdOrCategory !== 'undefined')
+    ? occasionIdOrCategory.replace(/-/g, '_')
+    : ''
+  const isActuallySensitive = isSensitive ||
+    rawOcc === 'sympathy' ||
+    rawOcc === 'condolence' ||
+    rawOcc.includes('majlis') ||
+    rawOcc.includes('taazia') ||
+    cleanOcc === 'sympathy' ||
+    cleanOcc === 'condolence' ||
+    cleanOcc.includes('majlis_aza')
+
   // Auto-open the card after 3 seconds if user doesn't tap it first
   useEffect(() => {
     if (!autoOpen || isOpen || hasOpened) return
@@ -51,7 +64,7 @@ export function ThreeDCardWrapper({
         setHasOpened(true)
         setTilt({ rx: 0, ry: 0, px: 50, py: 50 })
 
-        if (!isSensitive) {
+        if (!isActuallySensitive) {
           if (audioTrack && audioTrack !== 'none') {
             celebrationAudio.playTrack(audioTrack)
             setIsAudioActive(true)
@@ -75,7 +88,7 @@ export function ThreeDCardWrapper({
         clearTimeout(autoOpenTimerRef.current)
       }
     }
-  }, [autoOpen, isOpen, hasOpened, isSensitive, occasionIdOrCategory, onOpened])
+  }, [autoOpen, isOpen, hasOpened, isActuallySensitive, occasionIdOrCategory, onOpened])
 
   useGSAP(() => {
     if (!isOpen) return
@@ -304,7 +317,7 @@ export function ThreeDCardWrapper({
     setHasOpened(true)
     setTilt({ rx: 0, ry: 0, px: 50, py: 50 }) // Reset tilt immediately on open
 
-    if (!isSensitive) {
+    if (!isActuallySensitive) {
       if (audioTrack && audioTrack !== 'none') {
         celebrationAudio.playTrack(audioTrack)
         setIsAudioActive(true)
@@ -326,26 +339,41 @@ export function ThreeDCardWrapper({
   let coverBg = 'linear-gradient(145deg, #8e0f24 0%, #4a0510 100%)' // Wedding Red
   let coverBorderColor = '#e6b54a' // Gold
   let coverTextColor = '#fff4e6'
-  let badgeLabel = t(`type_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t(`occ_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t('mubarakHo')
 
-  if (isSensitive) {
+  let badgeLabel = ''
+  if (isActuallySensitive) {
+    badgeLabel = t('badgeCondolences', 'Condolences')
+  } else if (cleanOcc) {
+    badgeLabel = t(`type_${cleanOcc}`) || t(`occ_${cleanOcc}`) || ''
+  }
+  if (!badgeLabel) {
+    badgeLabel = isActuallySensitive
+      ? t('badgeCondolences', 'Condolences')
+      : isIslamic
+      ? (t('tag_eid_ul_fitr', 'Eid Mubarak') || t('mubarakHo', 'Mubarak'))
+      : t('mubarakHo', 'Mubarak')
+  }
+
+  if (isActuallySensitive) {
     coverBg = 'linear-gradient(145deg, #27272a 0%, #18181b 100%)' // Muted Zinc
     coverBorderColor = '#52525b'
     coverTextColor = '#e4e4e7'
-    badgeLabel = t('badgeCondolences')
+    badgeLabel = t('badgeCondolences', 'Condolences')
   } else if (isIslamic) {
     coverBg = 'linear-gradient(145deg, #1B5E20 0%, #08300c 100%)' // Islamic Emerald
     coverBorderColor = '#e6c45a'
     coverTextColor = '#f1fff0'
-    badgeLabel = t(`type_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t(`occ_${occasionIdOrCategory?.replace(/-/g, '_')}`) || t('tag_eid_ul_fitr')
-  } else if (occasionIdOrCategory === 'birthday' || occasionIdOrCategory === 'birthday-party') {
+    if (!badgeLabel || badgeLabel === t('mubarakHo', 'Mubarak')) {
+      badgeLabel = (cleanOcc && (t(`type_${cleanOcc}`) || t(`occ_${cleanOcc}`))) || t('tag_eid_ul_fitr', 'Eid Mubarak') || t('mubarakHo', 'Mubarak')
+    }
+  } else if (cleanOcc === 'birthday' || cleanOcc === 'birthday_party') {
     coverBg = 'linear-gradient(145deg, #1a237e 0%, #0a0e3d 100%)' // Birthday Royal Blue
     coverBorderColor = '#aab4ff'
     coverTextColor = '#eef1ff'
-    badgeLabel = t('occ_birthday') || t('type_birthday_party')
+    badgeLabel = t('occ_birthday', 'Birthday') || t('type_birthday_party', 'Birthday Party')
   }
 
-  const SealIcon = isSensitive ? BookOpen : Sparkles
+  const SealIcon = isActuallySensitive ? BookOpen : Sparkles
 
   return (
     <div
@@ -682,7 +710,7 @@ export function ThreeDCardWrapper({
         )}
 
         {/* Floating Sound Toggle Button (Positioned cleanly inside the top-right corner of the card so it never hides under the navbar) */}
-        {isOpen && !isSensitive && (
+        {isOpen && !isActuallySensitive && (
           <button
             type="button"
             onClick={handleToggleAudio}
