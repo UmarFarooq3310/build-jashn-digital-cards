@@ -249,6 +249,7 @@ export function CardShareModal({ card, onClose, simpleMode = false }: CardShareM
         fileName: `cardzy-${card.type}-${card.slug}`,
         cardType: card.type,
         cardSlug: card.slug,
+        occasionId: (card as any).occasionId || (card as any).typeId,
         audioTrack: (card as any).audioTrack,
         onProgress: (p) => setVideoProgress(p),
       })

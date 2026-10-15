@@ -298,6 +298,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         fileName: `invitation-${slug}`,
         cardType: 'invite',
         cardSlug: slug,
+        occasionId: activeInvitation.typeId,
         audioTrack: activeInvitation.audioTrack,
         onProgress: (p) => setVideoProgress(p),
       })

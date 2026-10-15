@@ -271,11 +271,13 @@ END:VCARD`
 
                 <button
                   type="button"
+                  data-export-ignore="true"
+                  data-no-download="true"
                   onClick={() => setIsFlipped(true)}
                   title={t('viewQr') || 'View QR Code'}
                   aria-label={t('viewQr') || 'View QR Code'}
                   className={cn(
-                    "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border backdrop-blur-md transition-all active:scale-95 cursor-pointer shadow-sm ml-auto",
+                    "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border backdrop-blur-md transition-all active:scale-95 cursor-pointer shadow-sm ml-auto no-export no-download",
                     isLight
                       ? "bg-white/90 hover:bg-white text-slate-800 border-slate-300"
                       : "bg-slate-950/80 hover:bg-slate-900 text-[#D4AF37] border-[#D4AF37]/40"
@@ -387,18 +389,24 @@ END:VCARD`
                       <a
                         href={`tel:${cleanPhone}`}
                         title={t('callNow') || 'Call'}
+                        data-export-ignore="true"
+                        data-no-download="true"
                         className={cn(
-                          "text-[10px] font-bold px-2 py-0.5 rounded-md border shrink-0 hidden sm:inline-block",
+                          "text-[10px] font-bold px-2 py-0.5 rounded-md border shrink-0 hidden sm:inline-block no-export no-download",
                           isLight ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-emerald-950/60 text-emerald-300 border-emerald-500/30"
                         )}
                       >
                         {t('callNow') || 'Call'}
                       </a>
                     ) : (
-                      <span className={cn(
-                        "text-[10px] font-bold px-2 py-0.5 rounded-md border shrink-0 hidden sm:inline-block opacity-40",
-                        isLight ? "bg-slate-100 text-slate-500 border-slate-200" : "bg-slate-900 text-slate-400 border-slate-800"
-                      )}>
+                      <span
+                        data-export-ignore="true"
+                        data-no-download="true"
+                        className={cn(
+                          "text-[10px] font-bold px-2 py-0.5 rounded-md border shrink-0 hidden sm:inline-block opacity-40 no-export no-download",
+                          isLight ? "bg-slate-100 text-slate-500 border-slate-200" : "bg-slate-900 text-slate-400 border-slate-800"
+                        )}
+                      >
                         {t('phoneLabel') || 'Phone'}
                       </span>
                     )}
@@ -435,15 +443,21 @@ END:VCARD`
                         target="_blank"
                         rel="noopener noreferrer"
                         title={t('whatsAppChat') || 'WhatsApp'}
-                        className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#25D366]/15 text-[#25D366] border border-[#25D366]/30 shrink-0 hidden sm:inline-block"
+                        data-export-ignore="true"
+                        data-no-download="true"
+                        className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#25D366]/15 text-[#25D366] border border-[#25D366]/30 shrink-0 hidden sm:inline-block no-export no-download"
                       >
                         {t('whatsAppChat') || 'Chat'}
                       </a>
                     ) : (
-                      <span className={cn(
-                        "text-[10px] font-bold px-2 py-0.5 rounded-md border shrink-0 hidden sm:inline-block opacity-40",
-                        isLight ? "bg-slate-100 text-slate-500 border-slate-200" : "bg-slate-900 text-slate-400 border-slate-800"
-                      )}>
+                      <span
+                        data-export-ignore="true"
+                        data-no-download="true"
+                        className={cn(
+                          "text-[10px] font-bold px-2 py-0.5 rounded-md border shrink-0 hidden sm:inline-block opacity-40 no-export no-download",
+                          isLight ? "bg-slate-100 text-slate-500 border-slate-200" : "bg-slate-900 text-slate-400 border-slate-800"
+                        )}
+                      >
                         Chat
                       </span>
                     )}
@@ -527,6 +541,9 @@ END:VCARD`
                         target="_blank"
                         rel="noopener noreferrer"
                         title="Website"
+                        data-export-ignore="true"
+                        data-no-download="true"
+                        className="no-export no-download"
                       >
                         <ExternalLink className="size-3.5 text-zinc-400 shrink-0 mr-1 hover:text-white" />
                       </a>
@@ -569,12 +586,14 @@ END:VCARD`
               {isPublicCard && (
                 <button
                   type="button"
+                  data-export-ignore="true"
+                  data-no-download="true"
                   onClick={(e) => {
                     e.stopPropagation()
                     downloadVCard()
                   }}
                   className={cn(
-                    "w-full py-2.5 px-4 rounded-xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer mt-1",
+                    "w-full py-2.5 px-4 rounded-xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer mt-1 no-export no-download",
                     isLight
                       ? "bg-slate-900 hover:bg-slate-800 text-white"
                       : "bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-slate-950 hover:brightness-110"
@@ -594,11 +613,13 @@ END:VCARD`
                 </span>
                 <button
                   type="button"
+                  data-export-ignore="true"
+                  data-no-download="true"
                   onClick={() => setIsFlipped(false)}
                   title={t('flipToFront') || 'Flip to Front'}
                   aria-label={t('flipToFront') || 'Flip to Front'}
                   className={cn(
-                    "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border backdrop-blur-md transition-all active:scale-95 cursor-pointer",
+                    "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border backdrop-blur-md transition-all active:scale-95 cursor-pointer no-export no-download",
                     isLight
                       ? "bg-white/90 hover:bg-white text-slate-800 border-slate-300"
                       : "bg-white/10 hover:bg-white/20 text-[#D4AF37] border-[#D4AF37]/30"
@@ -630,8 +651,10 @@ END:VCARD`
 
               <button
                 type="button"
+                data-export-ignore="true"
+                data-no-download="true"
                 onClick={downloadVCard}
-                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#D4AF37] via-[#FFF8DC] to-[#E5C35A] text-slate-950 font-black text-xs uppercase tracking-wider shadow-md hover:brightness-105 active:scale-98 transition-all border border-[#D4AF37]"
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#D4AF37] via-[#FFF8DC] to-[#E5C35A] text-slate-950 font-black text-xs uppercase tracking-wider shadow-md hover:brightness-105 active:scale-98 transition-all border border-[#D4AF37] no-export no-download"
               >
                 {t('saveContactVcf') || 'Save Contact (.vcf)'}
               </button>

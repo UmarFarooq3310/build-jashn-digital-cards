@@ -299,6 +299,7 @@ function WishPublicContent({ slug }: { slug: string }) {
         fileName: `wish-${slug}`,
         cardType: 'wish',
         cardSlug: slug,
+        occasionId: activeWish?.occasionId,
         audioTrack: activeWish?.audioTrack,
         onProgress: (p) => setVideoProgress(p),
       })

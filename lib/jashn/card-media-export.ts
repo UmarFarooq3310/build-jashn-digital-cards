@@ -1,12 +1,14 @@
 'use client'
 
 import { recordCardShare } from '@/lib/jashn/magic-service'
+import { getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
 
 export interface CardMediaExportOptions {
   element: HTMLElement | null
   fileName?: string
   cardType?: 'invite' | 'wish' | 'vcard' | 'magic' | 'poetry'
   cardSlug?: string
+  occasionId?: string
   audioTrack?: string
   audioUrl?: string
   targetAspectRatio?: 'auto' | '9:16' | 'original'
@@ -37,7 +39,24 @@ export function primeAudioContext(): AudioContext | null {
   }
 }
 
-function resolveSoundUrl(audioTrack?: string, cardType?: string): string {
+function resolveSoundUrl(audioTrack?: string, cardType?: string, occasionId?: string): string {
+  // If occasion is solemn / condolence / sympathy, always default to silence unless explicitly overridden
+  if (occasionId) {
+    const cleanOccasion = occasionId.toLowerCase().trim()
+    if (
+      cleanOccasion.includes('condolence') ||
+      cleanOccasion.includes('sympathy') ||
+      cleanOccasion.includes('ashura') ||
+      cleanOccasion.includes('chehlum') ||
+      cleanOccasion.includes('chelum') ||
+      cleanOccasion.includes('majlis')
+    ) {
+      if (!audioTrack || audioTrack === 'none' || audioTrack === 'birthday-dholki' || audioTrack === 'birthday-festive') {
+        return ''
+      }
+    }
+  }
+
   if (audioTrack && audioTrack !== 'none') {
     if (audioTrack.startsWith('/')) return audioTrack
     const trackMap: Record<string, string> = {
@@ -46,22 +65,57 @@ function resolveSoundUrl(audioTrack?: string, cardType?: string): string {
       'soft': '/sounds/friendship-soft.m4a',
       'poetry': '/sounds/friendship-soft.m4a',
       'wedding-shehnai': '/sounds/wedding-shehnai.m4a',
+      'wedding': '/sounds/wedding.m4a',
       'punjabi-bhangra': '/sounds/mehndi-dholki.m4a',
       'punjabi-bhangra-dhol': '/sounds/mehndi-dholki.m4a',
+      'dholak-tappe': '/sounds/mehndi-dholki.m4a',
       'birthday-festive': '/sounds/birthday-dholki.m4a',
       'birthday-dholki': '/sounds/birthday-dholki.m4a',
+      'birthday': '/sounds/birthday.m4a',
       'indian-sitar': '/sounds/wedding.m4a',
       'indian-sitar-classical': '/sounds/wedding.m4a',
       'romantic-strings': '/sounds/romantic-strings.m4a',
       'romantic-piano': '/sounds/romantic-piano.m4a',
       'islamic-oud': '/sounds/islamic.m4a',
+      'islamic-chime': '/sounds/eid-chime.m4a',
       'sufi-harmonium': '/sounds/sufi-harmonium.m4a',
       'corporate-ambient': '/sounds/corporate-ambient.m4a',
       'celebration-party': '/sounds/celebration-party.m4a',
+      'festive-garba': '/sounds/festive.m4a',
+      'baby-lullaby': '/sounds/baby-lullaby.m4a',
+      'holiday-bells': '/sounds/holiday-bells.m4a',
       'festive': '/sounds/festive.m4a',
       'general': '/sounds/general.m4a',
     }
     if (trackMap[audioTrack]) return trackMap[audioTrack]
+  }
+
+  if (occasionId) {
+    const defaultOccasionTrack = getDefaultAudioTrackForOccasion(occasionId)
+    if (defaultOccasionTrack === 'none') return ''
+    if (defaultOccasionTrack) {
+      const trackMap: Record<string, string> = {
+        'wedding-shehnai': '/sounds/wedding-shehnai.m4a',
+        'punjabi-bhangra': '/sounds/mehndi-dholki.m4a',
+        'dholak-tappe': '/sounds/mehndi-dholki.m4a',
+        'birthday-festive': '/sounds/birthday-dholki.m4a',
+        'birthday-dholki': '/sounds/birthday-dholki.m4a',
+        'indian-sitar': '/sounds/wedding.m4a',
+        'romantic-strings': '/sounds/romantic-strings.m4a',
+        'romantic-piano': '/sounds/romantic-piano.m4a',
+        'islamic-oud': '/sounds/islamic.m4a',
+        'islamic-chime': '/sounds/eid-chime.m4a',
+        'sufi-harmonium': '/sounds/sufi-harmonium.m4a',
+        'corporate-ambient': '/sounds/corporate-ambient.m4a',
+        'celebration-party': '/sounds/celebration-party.m4a',
+        'festive-garba': '/sounds/festive.m4a',
+        'baby-lullaby': '/sounds/baby-lullaby.m4a',
+        'holiday-bells': '/sounds/holiday-bells.m4a',
+        'festive': '/sounds/festive.m4a',
+        'general': '/sounds/general.m4a',
+      }
+      if (trackMap[defaultOccasionTrack]) return trackMap[defaultOccasionTrack]
+    }
   }
 
   if (cardType === 'poetry') return '/sounds/friendship-soft.m4a'
@@ -205,14 +259,88 @@ export async function downloadCardPng({
   }
 }
 
+function drawRoundRectPath(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number
+) {
+  const radius = Math.max(0, Math.min(r, w / 2, h / 2))
+  ctx.beginPath()
+  if (typeof (ctx as any).roundRect === 'function') {
+    ;(ctx as any).roundRect(x, y, w, h, radius)
+  } else {
+    ctx.moveTo(x + radius, y)
+    ctx.lineTo(x + w - radius, y)
+    ctx.quadraticCurveTo(x + w, y, x + w, y + radius)
+    ctx.lineTo(x + w, y + h - radius)
+    ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h)
+    ctx.lineTo(x + radius, y + h)
+    ctx.quadraticCurveTo(x, y + h, x, y + h - radius)
+    ctx.lineTo(x, y + radius)
+    ctx.quadraticCurveTo(x, y, x + radius, y)
+  }
+  ctx.closePath()
+}
+
+function drawDiamondStar(
+  c: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  size: number,
+  opacity: number,
+  rotation: number
+) {
+  if (opacity <= 0.01) return
+  c.save()
+  c.translate(cx, cy)
+  c.rotate(rotation)
+
+  // Soft ambient star halo
+  c.beginPath()
+  c.arc(0, 0, size * 0.8, 0, Math.PI * 2)
+  c.fillStyle = `rgba(255, 230, 150, ${opacity * 0.22})`
+  c.fill()
+
+  // 4-point diamond star
+  c.beginPath()
+  for (let i = 0; i < 4; i++) {
+    c.lineTo(Math.cos((i * Math.PI) / 2) * size, Math.sin((i * Math.PI) / 2) * size)
+    c.lineTo(
+      Math.cos((i * Math.PI) / 2 + Math.PI / 4) * (size * 0.22),
+      Math.sin((i * Math.PI) / 2 + Math.PI / 4) * (size * 0.22)
+    )
+  }
+  c.closePath()
+  c.fillStyle = `rgba(255, 250, 220, ${opacity * 0.95})`
+  c.fill()
+
+  // Bright core pin
+  c.beginPath()
+  c.arc(0, 0, size * 0.22, 0, Math.PI * 2)
+  c.fillStyle = `rgba(255, 255, 255, ${opacity})`
+  c.fill()
+  c.restore()
+}
+
 /**
- * Animates a card image with a high-end luxury light sheen (strictly matching the card's exact pixels),
- * records it into an MP4/WebM video of ~3.8 seconds, and triggers a direct browser download.
+ * Animates a card into a breathtaking 5-second cinematic 3D floating showcase video.
+ * Features:
+ * - Smooth entrance zoom & reveal
+ * - Living 3D floating & gyroscopic perspective tilt
+ * - Dynamic 3D multi-layered contact & ambient drop shadow
+ * - Card-bounded luxury specular foil sheen sweep
+ * - Metallic edge glow pulse
+ * - 3D tumbling celebration confetti ribbons, bokeh orbs, and twinkling diamond stars (or serene stardust for solemn cards)
+ * - Deterministic 30 FPS rendering loop with synchronized background audio
  */
 export async function recordImageAsVideo({
   img,
   fileName = "cardzy-card",
   cardType,
+  occasionId,
   audioTrack,
   audioUrl,
   targetAspectRatio = "auto",
@@ -221,34 +349,25 @@ export async function recordImageAsVideo({
   img: HTMLImageElement
   fileName?: string
   cardType?: "invite" | "wish" | "vcard" | "magic" | "poetry"
+  occasionId?: string
   audioTrack?: string
   audioUrl?: string
   targetAspectRatio?: "auto" | "9:16" | "original"
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
-  const isMobileScreen = typeof window !== "undefined" && window.innerWidth < 768
-  const shouldForce9x16 = targetAspectRatio === "9:16" || (isMobileScreen && targetAspectRatio !== "original")
+  // Constrain width to 720p maximum for fast, buttery smooth 30fps recording
+  const MAX_VIDEO_WIDTH = 720
+  let targetWidth = img.naturalWidth || img.width || 720
+  let targetHeight = img.naturalHeight || img.height || 1280
 
-  let targetWidth = 720
-  let targetHeight = 1280
-
-  if (shouldForce9x16) {
-    targetWidth = 720
-    targetHeight = 1280
-  } else {
-    const MAX_VIDEO_WIDTH = 720
-    targetWidth = img.naturalWidth || img.width || 720
-    targetHeight = img.naturalHeight || img.height || 1280
-
-    if (targetWidth > MAX_VIDEO_WIDTH) {
-      const scale = MAX_VIDEO_WIDTH / targetWidth
-      targetWidth = MAX_VIDEO_WIDTH
-      targetHeight = Math.round(targetHeight * scale)
-    } else if (targetWidth < 540) {
-      const scale = 540 / targetWidth
-      targetWidth = 540
-      targetHeight = Math.round(targetHeight * scale)
-    }
+  if (targetWidth > MAX_VIDEO_WIDTH) {
+    const scale = MAX_VIDEO_WIDTH / targetWidth
+    targetWidth = MAX_VIDEO_WIDTH
+    targetHeight = Math.round(targetHeight * scale)
+  } else if (targetWidth < 480) {
+    const scale = 480 / targetWidth
+    targetWidth = 480
+    targetHeight = Math.round(targetHeight * scale)
   }
 
   // Ensure width and height are even integers (hardware h264 encoder requirement)
@@ -283,7 +402,7 @@ export async function recordImageAsVideo({
           await audioContext.resume().catch(() => {})
         }
 
-        const soundSrc = resolveSoundUrl(audioTrack || audioUrl, cardType)
+        const soundSrc = resolveSoundUrl(audioTrack || audioUrl, cardType, occasionId)
         if (soundSrc) {
           try {
             const res = await fetch(soundSrc)
@@ -295,10 +414,12 @@ export async function recordImageAsVideo({
               srcNode.loop = true
 
               const gain = audioContext.createGain()
-              gain.gain.setValueAtTime(0.7, audioContext.currentTime)
-              // Smooth fade-out in final 0.5s of the 5.0-second video
-              gain.gain.setValueAtTime(0.7, audioContext.currentTime + 4.5)
-              gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 5.0)
+              // Soft fade in over 0.35s
+              gain.gain.setValueAtTime(0.001, audioContext.currentTime)
+              gain.gain.exponentialRampToValueAtTime(0.75, audioContext.currentTime + 0.35)
+              // Sustain audio until 5.4s of the 6.0-second video
+              gain.gain.setValueAtTime(0.75, audioContext.currentTime + 5.4)
+              gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 6.0)
 
               const dest = audioContext.createMediaStreamDestination()
               srcNode.connect(gain)
@@ -367,6 +488,15 @@ export async function recordImageAsVideo({
     }
   }
 
+  let animId: number | null = null
+
+  const cleanupTimers = () => {
+    if (animId && typeof cancelAnimationFrame !== "undefined") {
+      cancelAnimationFrame(animId)
+      animId = null
+    }
+  }
+
   const cleanupAudio = () => {
     if (audioContext && audioContext.state !== "closed") {
       try { audioContext.close() } catch {}
@@ -378,11 +508,13 @@ export async function recordImageAsVideo({
 
   const recordingPromise = new Promise<void>((resolve, reject) => {
     recorder.onerror = (ev) => {
+      cleanupTimers()
       cleanupAudio()
       const detail = (ev as any)?.error?.message || "recorder error event"
       reject(new Error(`MediaRecorder error: ${detail}`))
     }
     recorder.onstop = () => {
+      cleanupTimers()
       cleanupAudio()
       try {
         const blob = new Blob(chunks, { type: actualMime })
@@ -403,169 +535,243 @@ export async function recordImageAsVideo({
     }
   })
 
-  recorder.start(100)
+  // Start recording cleanly without timeslice for an uncorrupted, solid video container
+  recorder.start()
 
-  // ── Exact 5.0 Seconds Timing Control ──
-  const DURATION_MS = 5000 // Exactly 5.0 seconds
-  const TARGET_FPS = 30
-  const TOTAL_FRAMES = 150 // 150 frames @ 30fps = 5.0 seconds
-  let frame = 0
+  // ── Exact 6.0 Seconds Real-Time Animation Control ──
+  // Driven strictly by performance.now() elapsed time so particles and motion
+  // animate continuously until the very last second without stopping early!
+  const DURATION_MS = 6000
+  const DURATION_SEC = 6.0
   const startTime = performance.now()
+  let lastFrameTime = startTime
 
-  // 24 Celebration particles: ambient golden dust and twinkling diamond stars
-  const particles = Array.from({ length: 24 }).map((_, i) => ({
+  // Occasion awareness for particles & audio
+  const isSolemn = Boolean(
+    occasionId &&
+    (occasionId.includes("condolence") ||
+      occasionId.includes("sympathy") ||
+      occasionId.includes("ashura") ||
+      occasionId.includes("chehlum") ||
+      occasionId.includes("chelum") ||
+      occasionId.includes("majlis"))
+  )
+
+  // 3D Tumbling Confetti Ribbons: 50 rich festive confetti ribbons
+  const CONFETTI_COLORS = [
+    "#FFD700", // Bright Gold
+    "#F59E0B", // Amber Gold
+    "#EF4444", // Ruby Red
+    "#10B981", // Emerald Green
+    "#3B82F6", // Sapphire Blue
+    "#EC4899", // Party Pink
+    "#8B5CF6", // Velvet Purple
+    "#FFFFFF", // Pearl White
+  ]
+
+  const ribbons = Array.from({ length: 50 }).map(() => ({
     x: Math.random() * targetWidth,
-    y: Math.random() * targetHeight,
-    radius: Math.random() * 2.5 + 1.2,
-    speedY: Math.random() * 1.6 + 0.8,
-    wobbleSpeed: Math.random() * 2 + 1,
+    y: Math.random() * targetHeight * 1.5 - targetHeight * 0.5,
+    w: Math.random() * 8 + 10, // 10px to 18px wide (highly visible!)
+    h: Math.random() * 10 + 12, // 12px to 22px high
+    vx: (Math.random() - 0.5) * 1.5,
+    vy: Math.random() * 2.5 + 3.0, // active continuous celebration fall
+    rotX: Math.random() * Math.PI * 2,
+    rotY: Math.random() * Math.PI * 2,
+    rotZ: Math.random() * Math.PI * 2,
+    speedX: Math.random() * 0.08 + 0.04,
+    speedY: Math.random() * 0.09 + 0.05,
+    speedZ: (Math.random() - 0.5) * 0.05,
+    wobbleSpeed: Math.random() * 2.5 + 1.5,
     wobbleOffset: Math.random() * Math.PI * 2,
-    isStar: i % 3 === 0,
-    starSize: Math.random() * 7 + 4,
-    twinkleSpeed: Math.random() * 3 + 1.5,
-    twinkleOffset: Math.random() * Math.PI * 2,
-    rotationSpeed: (Math.random() - 0.5) * 0.06,
-    color: i % 4 === 0 ? "rgba(255, 255, 255," : "rgba(255, 225, 140,",
+    color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
   }))
 
-  const drawDiamondStar = (
-    c: CanvasRenderingContext2D,
-    cx: number,
-    cy: number,
-    size: number,
-    opacity: number,
-    rotation: number
-  ) => {
-    c.save()
-    c.translate(cx, cy)
-    c.rotate(rotation)
+  // Diamond Stars
+  const stars = Array.from({ length: 18 }).map(() => ({
+    x: Math.random() * targetWidth,
+    y: Math.random() * targetHeight,
+    size: Math.random() * 8 + 5,
+    twinkleSpeed: Math.random() * 3 + 2,
+    twinkleOffset: Math.random() * Math.PI * 2,
+    speedY: Math.random() * 0.5 + 0.2,
+    rotSpeed: (Math.random() - 0.5) * 0.05,
+    wobbleOffset: Math.random() * Math.PI * 2,
+  }))
 
-    // Soft outer glow without slow shadowBlur
-    c.beginPath()
-    c.arc(0, 0, size * 0.7, 0, Math.PI * 2)
-    c.fillStyle = `rgba(255, 220, 120, ${opacity * 0.25})`
-    c.fill()
+  // Ambient Bokeh Orbs
+  const bokehOrbs = Array.from({ length: 10 }).map(() => ({
+    x: Math.random() * targetWidth,
+    y: Math.random() * targetHeight,
+    radius: Math.random() * 45 + 35,
+    speedY: Math.random() * 0.4 + 0.15,
+    pulseSpeed: Math.random() * 1.5 + 1,
+    pulseOffset: Math.random() * Math.PI * 2,
+  }))
 
-    c.beginPath()
-    for (let i = 0; i < 4; i++) {
-      c.lineTo(Math.cos((i * Math.PI) / 2) * size, Math.sin((i * Math.PI) / 2) * size)
-      c.lineTo(
-        Math.cos((i * Math.PI) / 2 + Math.PI / 4) * (size * 0.24),
-        Math.sin((i * Math.PI) / 2 + Math.PI / 4) * (size * 0.24)
-      )
-    }
-    c.closePath()
-    c.fillStyle = `rgba(255, 245, 195, ${opacity})`
-    c.fill()
-
-    c.beginPath()
-    c.arc(0, 0, size * 0.28, 0, Math.PI * 2)
-    c.fillStyle = `rgba(255, 255, 255, ${opacity})`
-    c.fill()
-    c.restore()
-  }
+  // Solemn Stardust Particles
+  const stardust = Array.from({ length: 28 }).map(() => ({
+    x: Math.random() * targetWidth,
+    y: Math.random() * targetHeight,
+    radius: Math.random() * 2.2 + 1,
+    speedY: Math.random() * 0.8 + 0.3,
+    driftSpeed: Math.random() * 1.4 + 0.7,
+    driftOffset: Math.random() * Math.PI * 2,
+    alphaBase: Math.random() * 0.4 + 0.25,
+  }))
 
   return await new Promise<boolean>((resolve) => {
     const drawFrame = () => {
       const now = performance.now()
       const elapsed = now - startTime
-      const p = Math.min(1, elapsed / DURATION_MS)
+      const t = Math.min(DURATION_SEC, elapsed / 1000)
+      const dt = Math.min(0.05, Math.max(0.001, (now - lastFrameTime) / 1000))
+      lastFrameTime = now
+      const dtFactor = dt * 60
 
       ctx.clearRect(0, 0, targetWidth, targetHeight)
 
-      // 1. Draw card image with aspect-ratio awareness
-      ctx.save()
-      const imgW = img.naturalWidth || img.width || targetWidth
-      const imgH = img.naturalHeight || img.height || targetHeight
-      const imgRatio = imgW / imgH
-      const targetRatio = targetWidth / targetHeight
+      // 1. Draw the exact full card image with 100% edge-to-edge fidelity (no extra space around card)
+      ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
 
-      if (Math.abs(imgRatio - targetRatio) < 0.05) {
-        // Direct edge-to-edge draw
-        ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
-      } else {
-        // Draw ambient blurred background to fill 9:16 mobile canvas seamlessly
-        ctx.save()
-        ctx.filter = "blur(18px) brightness(0.65)"
-        ctx.drawImage(img, -20, -20, targetWidth + 40, targetHeight + 40)
-        ctx.restore()
+      // 2. Luxury Specular Foil Sheen (Continuous rhythmic light waves sweeping across the full card every 2.0 seconds)
+      const sheenPeriod = 2.0 // sweeps every 2.0 seconds continuously till the very end!
+      const cycleProgress = (t % sheenPeriod) / sheenPeriod // 0.0 to 1.0
+      const sheenAlpha = Math.sin(cycleProgress * Math.PI) * 0.85
+      const sheenPos = -targetWidth * 0.45 + cycleProgress * (targetWidth * 1.9)
 
-        // Soft dark overlay
-        ctx.fillStyle = "rgba(0, 0, 0, 0.4)"
-        ctx.fillRect(0, 0, targetWidth, targetHeight)
-
-        // Draw crisp card centered inside vertical 9:16 canvas
-        const scale = Math.min((targetWidth - 32) / imgW, (targetHeight - 80) / imgH)
-        const drawW = Math.round(imgW * scale)
-        const drawH = Math.round(imgH * scale)
-        const drawX = Math.round((targetWidth - drawW) / 2)
-        const drawY = Math.round((targetHeight - drawH) / 2)
-        ctx.drawImage(img, drawX, drawY, drawW, drawH)
-      }
-      ctx.restore()
-
-      // 2. Luxury Shimmer Gleam: sweeps diagonally across the card with bright glossy highlights
       ctx.save()
       ctx.globalCompositeOperation = "screen"
-      const sweepProgress = (p * 2.2) % 1.0
-      const rayX = sweepProgress * (targetWidth * 2.6) - targetWidth * 0.8
+      const beamGrad = ctx.createLinearGradient(
+        sheenPos,
+        0,
+        sheenPos + targetWidth * 0.35,
+        targetHeight
+      )
+      beamGrad.addColorStop(0, "rgba(255, 255, 255, 0)")
+      beamGrad.addColorStop(0.32, `rgba(255, 245, 215, ${0.18 * sheenAlpha})`)
+      beamGrad.addColorStop(0.5, `rgba(255, 255, 255, ${0.85 * sheenAlpha})`)
+      beamGrad.addColorStop(0.68, `rgba(255, 245, 215, ${0.18 * sheenAlpha})`)
+      beamGrad.addColorStop(1, "rgba(255, 255, 255, 0)")
 
-      const beamGradient = ctx.createLinearGradient(rayX, 0, rayX + targetWidth * 0.35, targetHeight)
-      beamGradient.addColorStop(0, "rgba(255, 255, 255, 0)")
-      beamGradient.addColorStop(0.3, "rgba(255, 240, 200, 0.12)")
-      beamGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.55)")
-      beamGradient.addColorStop(0.7, "rgba(255, 240, 200, 0.12)")
-      beamGradient.addColorStop(1, "rgba(255, 255, 255, 0)")
-
-      ctx.fillStyle = beamGradient
-      ctx.transform(1, 0, -0.3, 1, 0, 0)
-      ctx.fillRect(rayX, -targetHeight * 0.2, targetWidth * 0.45, targetHeight * 1.4)
+      ctx.fillStyle = beamGrad
+      ctx.fillRect(0, 0, targetWidth, targetHeight)
       ctx.restore()
 
-      // 3. Floating Celebration Particles & Twinkling Diamond Stars
+      // 3. Floating Ambient Bokeh Orbs
       ctx.save()
       ctx.globalCompositeOperation = "screen"
-      particles.forEach((pt) => {
-        pt.y -= pt.speedY
-        if (pt.y < -20) {
-          pt.y = targetHeight + Math.random() * 20
-          pt.x = Math.random() * targetWidth
+      bokehOrbs.forEach((b) => {
+        b.y -= b.speedY * dtFactor
+        if (b.y < -b.radius) {
+          b.y = targetHeight + b.radius
+          b.x = Math.random() * targetWidth
         }
-        const x = pt.x + Math.sin(frame * 0.05 + pt.wobbleOffset) * 12
-        const baseAlpha = Math.max(0, 1 - pt.y / targetHeight)
-        const twinkle = 0.5 + 0.5 * Math.sin(frame * 0.1 + pt.twinkleOffset)
-        const alpha = Math.min(1, Math.max(0.15, baseAlpha * twinkle))
-
-        if (pt.isStar) {
-          const rot = frame * pt.rotationSpeed + pt.wobbleOffset
-          drawDiamondStar(ctx, x, pt.y, pt.starSize, alpha, rot)
+        const pulse = 0.5 + 0.5 * Math.sin(t * b.pulseSpeed + b.pulseOffset)
+        const alpha = 0.08 + pulse * 0.12
+        const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.radius)
+        if (isSolemn) {
+          grad.addColorStop(0, `rgba(226, 232, 240, ${alpha * 0.8})`)
+          grad.addColorStop(1, "rgba(226, 232, 240, 0)")
         } else {
-          // Soft outer halo without shadowBlur (lightning fast)
-          ctx.beginPath()
-          ctx.arc(x, pt.y, pt.radius * 2, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(255, 215, 120, ${alpha * 0.2})`
-          ctx.fill()
-
-          ctx.beginPath()
-          ctx.arc(x, pt.y, pt.radius, 0, Math.PI * 2)
-          ctx.fillStyle = `${pt.color}${alpha * 0.85})`
-          ctx.fill()
+          grad.addColorStop(0, `rgba(251, 191, 36, ${alpha})`)
+          grad.addColorStop(1, "rgba(251, 191, 36, 0)")
         }
+        ctx.fillStyle = grad
+        ctx.beginPath()
+        ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2)
+        ctx.fill()
       })
       ctx.restore()
 
-      frame++
-      const progressPercent = Math.min(99, Math.round((frame / TOTAL_FRAMES) * 100))
+      // 4. Foreground Celebratory Confetti & Twinkling Stars (Continuously animated till the last second)
+      if (isSolemn) {
+        ctx.save()
+        ctx.globalCompositeOperation = "screen"
+        stardust.forEach((m) => {
+          m.y -= m.speedY * dtFactor
+          if (m.y < -15) {
+            m.y = targetHeight + 15
+            m.x = Math.random() * targetWidth
+          }
+          const driftX = m.x + Math.sin(t * m.driftSpeed + m.driftOffset) * 14
+          const alpha = m.alphaBase * (0.6 + 0.4 * Math.sin(t * 2 + m.driftOffset))
+          ctx.beginPath()
+          ctx.arc(driftX, m.y, m.radius, 0, Math.PI * 2)
+          ctx.fillStyle = `rgba(226, 232, 240, ${alpha})`
+          ctx.fill()
+        })
+        ctx.restore()
+      } else {
+        // Tumbling 3D Confetti Ribbons: continuously tumbling & recycling across all 6 seconds
+        ctx.save()
+        ribbons.forEach((r) => {
+          r.y += r.vy * dtFactor
+          r.x += (r.vx + Math.sin(t * r.wobbleSpeed + r.wobbleOffset) * 0.9) * dtFactor
+          r.rotX += r.speedX * dtFactor
+          r.rotY += r.speedY * dtFactor
+          r.rotZ += r.speedZ * dtFactor
+          if (r.y > targetHeight + 35) {
+            r.y = -35
+            r.x = Math.random() * targetWidth
+          }
+
+          ctx.save()
+          ctx.translate(r.x, r.y)
+          ctx.rotate(r.rotZ)
+          const scaleX = Math.cos(r.rotY)
+          const scaleY = Math.sin(r.rotX)
+          ctx.scale(scaleX, scaleY)
+          ctx.fillStyle = r.color
+          ctx.fillRect(-r.w / 2, -r.h / 2, r.w, r.h)
+          if (Math.abs(scaleX * scaleY) > 0.65) {
+            ctx.fillStyle = "rgba(255, 255, 255, 0.45)"
+            ctx.fillRect(-r.w / 2, -r.h / 2, r.w, r.h)
+          }
+          ctx.restore()
+        })
+        ctx.restore()
+
+        // Twinkling Diamond Stars (Continuous twinkling till the very last millisecond)
+        ctx.save()
+        ctx.globalCompositeOperation = "screen"
+        stars.forEach((s) => {
+          s.y -= s.speedY * dtFactor
+          if (s.y < -25) {
+            s.y = targetHeight + 20
+            s.x = Math.random() * targetWidth
+          }
+          const posX = s.x + Math.sin(t * 1.5 + s.wobbleOffset) * 8
+          const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed + s.twinkleOffset)
+          drawDiamondStar(ctx, posX, s.y, s.size, twinkle, t * s.rotSpeed + s.wobbleOffset)
+        })
+        ctx.restore()
+      }
+
+      // 5. Living Metallic Foil Border Glow
+      ctx.save()
+      ctx.lineWidth = 3
+      const borderPulse = 0.35 + 0.25 * Math.sin(t * 2.5)
+      ctx.strokeStyle = isSolemn
+        ? `rgba(228, 228, 231, ${borderPulse * 0.65})`
+        : `rgba(250, 204, 21, ${borderPulse * 0.95})`
+      ctx.strokeRect(1.5, 1.5, targetWidth - 3, targetHeight - 3)
+      ctx.restore()
+
+      const progressPercent = Math.min(99, Math.round((elapsed / DURATION_MS) * 100))
       if (onProgress) onProgress(progressPercent)
 
-      if (frame < TOTAL_FRAMES && elapsed < DURATION_MS + 200) {
-        const targetNext = startTime + (frame * 1000) / TARGET_FPS
-        const delay = Math.max(0, Math.round(targetNext - performance.now()))
-        setTimeout(drawFrame, delay)
+      if (elapsed < DURATION_MS) {
+        animId = requestAnimationFrame(drawFrame)
       } else {
         if (onProgress) onProgress(100)
         setTimeout(() => {
-          if (recorder.state !== "inactive") {
+          if (recorder.state === "recording") {
+            try {
+              recorder.requestData()
+            } catch {}
+            recorder.stop()
+          } else if (recorder.state !== "inactive") {
             recorder.stop()
           }
         }, 150)
@@ -576,6 +782,7 @@ export async function recordImageAsVideo({
     recordingPromise
       .then(() => resolve(true))
       .catch((err) => {
+        cleanupTimers()
         cleanupAudio()
         console.error("Video generation failed:", extractErrorMessage(err))
         resolve(false)
@@ -591,6 +798,7 @@ export async function downloadCanvasAsVideo({
   fileName = "cardzy-card",
   audioTrack = "friendship-soft",
   audioUrl,
+  occasionId,
   targetAspectRatio,
   onProgress,
 }: {
@@ -598,6 +806,7 @@ export async function downloadCanvasAsVideo({
   fileName?: string
   audioTrack?: string
   audioUrl?: string
+  occasionId?: string
   targetAspectRatio?: "auto" | "9:16" | "original"
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
@@ -612,6 +821,7 @@ export async function downloadCanvasAsVideo({
     img,
     fileName,
     cardType: "poetry",
+    occasionId,
     audioTrack: audioTrack || "friendship-soft",
     audioUrl,
     targetAspectRatio,
@@ -620,13 +830,14 @@ export async function downloadCanvasAsVideo({
 }
 
 /**
- * Records an animated 5-second video from a DOM card element with background sound.
+ * Records an animated 5-second cinematic 3D video from a DOM card element with background sound.
  */
 export async function downloadCardVideo({
   element,
   fileName = "cardzy-card",
   cardType,
   cardSlug,
+  occasionId,
   audioTrack,
   audioUrl,
   targetAspectRatio,
@@ -652,6 +863,7 @@ export async function downloadCardVideo({
       img,
       fileName,
       cardType,
+      occasionId,
       audioTrack,
       audioUrl,
       targetAspectRatio,

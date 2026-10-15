@@ -12,11 +12,15 @@ export function ShareBar({
   waMessage,
   captureRef,
   fileName = 'cardzy-card',
+  occasionId,
+  audioTrack,
 }: {
   url: string
   waMessage: string
   captureRef?: RefObject<HTMLElement | null>
   fileName?: string
+  occasionId?: string
+  audioTrack?: string
 }) {
   const { t } = useLang()
   const [copied, setCopied] = useState(false)
@@ -90,6 +94,8 @@ export function ShareBar({
         fileName,
         cardType: inferredType,
         cardSlug: inferredSlug,
+        occasionId,
+        audioTrack,
         onProgress: (percent) => setVideoProgress(percent),
       })
     } finally {
