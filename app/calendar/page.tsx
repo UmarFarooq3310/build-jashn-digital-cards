@@ -3,9 +3,9 @@ import { CelebrationCalendarClient } from '@/components/calendar/calendar-client
 import { getPageAlternates, PUBLIC_ROBOTS, SITE_URL, SITE_PUBLISHER } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Worldwide Celebration & Islamic Calendar 2026–2027 | Cardzy',
+  title: 'Celebration & Islamic Calendar 2026–2027 | Cardzy',
   description:
-    'Explore 80+ upcoming Islamic dates (Hijri 1448–1449), global religious festivals, national days, and family milestones with dynamic rolling countdowns and 1-click 3D cards.',
+    'Explore 80+ Islamic dates, global festivals, national days, and family milestones with dynamic countdowns and 1-click 3D cards.',
   keywords: [
     'Islamic calendar 2026',
     'Hijri calendar 1448',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   alternates: getPageAlternates('/calendar'),
   robots: PUBLIC_ROBOTS,
   openGraph: {
-    title: 'Worldwide Celebration & Islamic Calendar 2026–2027 | Cardzy',
+    title: 'Celebration & Islamic Calendar 2026–2027 | Cardzy',
     description:
       'Comprehensive 365-day rolling calendar covering 80+ Islamic, Christian, Hindu, family, and national celebrations with 1-click card creation.',
     url: `${SITE_URL}/calendar`,
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.jpg',
+        url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: 'Worldwide Celebration & Islamic Calendar — Cardzy',

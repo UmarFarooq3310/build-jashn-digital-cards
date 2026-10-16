@@ -7,17 +7,17 @@ import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS, SITE_PUBLISHER } fr
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Cardzy — 3D Digital Wedding Invitations, Wish Cards & vCards | Shadi & Eid Card Maker',
+  title: 'Cardzy — 3D Digital Wedding Invitations & Wish Cards',
   description:
-    'Free interactive 3D animated greeting cards, Pakistani digital wedding invitation maker with WhatsApp RSVP, and smart vCards. Shadi card text in Urdu & Roman Urdu, Eid wishes card banayein, candle blowing & ring unboxing in 18 languages.',
+    'Create interactive 3D animated greeting cards, Pakistani wedding invitations with WhatsApp RSVP, and smart vCards. Free online card maker in 18 languages.',
   keywords: DEFAULT_KEYWORDS,
   publisher: SITE_PUBLISHER,
   alternates: getPageAlternates('/'),
   robots: PUBLIC_ROBOTS,
   openGraph: {
-    title: 'Cardzy — 3D Digital Wedding Invitations, Wish Cards & vCards',
+    title: 'Cardzy — 3D Digital Wedding Invitations & Wish Cards',
     description:
-      'Tap to open interactive 3D animated greeting cards, wedding invitations with automated WhatsApp RSVP tracking, and smart vCards. Shadi card text in Urdu & Roman Urdu.',
+      'Tap to open interactive 3D animated greeting cards, wedding invitations with automated WhatsApp RSVP tracking, and smart vCards.',
     url: 'https://cardzy.online',
     siteName: 'Cardzy',
     type: 'website',

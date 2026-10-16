@@ -44,8 +44,8 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     alternates: getPageAlternates(`/blog/${post.slug}`),
     robots: PUBLIC_ROBOTS,
     openGraph: {
-      title: post.title,
-      description: post.metaDescription,
+      title,
+      description,
       url: `https://cardzy.online/blog/${post.slug}`,
       siteName: 'Cardzy Digital Cards',
       images: [{ url: post.featuredImage, width: 1200, height: 630 }],
@@ -56,8 +56,8 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: post.metaDescription,
+      title,
+      description,
       images: [post.featuredImage],
     },
   }

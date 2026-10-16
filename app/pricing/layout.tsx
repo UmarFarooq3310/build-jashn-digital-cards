@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Pricing — Free & Premium Digital Card Plans | Cardzy',
   description:
-    'Create stunning digital cards for free. Upgrade for 4K animated wedding invitations, WhatsApp RSVP tracking, smart vCards, and priority custom design. See all plans.',
+    'Create digital cards for free. Upgrade for 4K animated wedding invitations, WhatsApp RSVP tracking, smart vCards, and custom design. See all plans.',
   keywords: [
     'Cardzy pricing',
     'free digital invitation',
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
     url: 'https://cardzy.online/pricing',
     siteName: 'Cardzy',
     type: 'website',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Cardzy Pricing Plans' }],
+    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Cardzy Pricing Plans' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Pricing — Free & Premium Digital Card Plans | Cardzy',
     description: 'Free animated cards + premium plans with RSVP tracking, 4K invitations & smart vCards.',
-    images: ['/og-image.jpg'],
+    images: ['https://cardzy.online/og-image.jpg'],
   },
 }
 

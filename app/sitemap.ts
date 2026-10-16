@@ -156,12 +156,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
-    {
-      url: `${SITE_URL}/campaign`,
-      lastModified: monthlyUpdateDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
     // Legal pages
     {
       url: `${SITE_URL}/cookies`,

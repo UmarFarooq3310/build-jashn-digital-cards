@@ -105,6 +105,7 @@ export function SiteFooter() {
                 { href: '/create-wish', label: t('sendWish') },
                 { href: '/create-invitation', label: t('createInvitation') },
                 { href: '/create-visiting-card', label: t('createVCardFooter', 'Create vCard') },
+                { href: '/eid-mubarak-cards', label: 'Eid Mubarak 3D Cards 🌙' },
               ]}
             />
             <FooterCol
@@ -159,17 +160,11 @@ export function SiteFooter() {
               href="https://launchnest.io/p/cardzy"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center transition-opacity hover:opacity-90"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-900/60 border border-emerald-800/40 text-xs font-semibold text-emerald-200 hover:text-amber-300 transition-colors"
               title="Cardzy on LaunchNest"
             >
-              <img
-                src="https://launchnest.io/badge/cardzy.svg?variant=featured"
-                alt="Cardzy on LaunchNest"
-                width={220}
-                height={56}
-                loading="lazy"
-                style={{ height: '40px', width: 'auto' }}
-              />
+              <span>🚀</span>
+              <span>Featured on LaunchNest</span>
             </a>
 
             <a

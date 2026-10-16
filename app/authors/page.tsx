@@ -9,6 +9,22 @@ export const metadata: Metadata = {
     "Meet Cardzy's editorial team and cultural stylists. Experts in wedding invitation styling, event tech, and digital card wording.",
   alternates: { canonical: 'https://cardzy.online/authors' },
   robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Editorial Team & Authors | Cardzy',
+    description:
+      "Meet Cardzy's editorial team and cultural stylists. Experts in wedding invitation styling, event tech, and digital card wording.",
+    url: 'https://cardzy.online/authors',
+    siteName: 'Cardzy',
+    type: 'website',
+    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Cardzy Authors' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Editorial Team & Authors | Cardzy',
+    description:
+      "Meet Cardzy's editorial team and cultural stylists. Experts in wedding invitation styling, event tech, and digital card wording.",
+    images: ['https://cardzy.online/og-image.jpg'],
+  },
 }
 
 const authorsJsonLd = {

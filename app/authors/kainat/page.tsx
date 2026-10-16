@@ -20,6 +20,22 @@ export const metadata: Metadata = {
   ],
   alternates: getPageAlternates('/authors/kainat'),
   robots: PUBLIC_ROBOTS,
+  openGraph: {
+    title: 'Kainat — Tech & Digital Product Strategist | Cardzy',
+    description:
+      'Kainat is Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards) and paperless event technology.',
+    url: 'https://cardzy.online/authors/kainat',
+    siteName: 'Cardzy',
+    type: 'profile',
+    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Kainat' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Kainat — Tech & Digital Product Strategist | Cardzy',
+    description:
+      'Kainat is Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards) and paperless event technology.',
+    images: ['https://cardzy.online/og-image.jpg'],
+  },
 }
 
 // ── Person Structured Data (Schema.org E-E-A-T) ──────────────────────────────

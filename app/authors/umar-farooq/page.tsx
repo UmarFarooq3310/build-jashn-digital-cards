@@ -8,7 +8,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs'
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Umar Farooq — Senior Cultural Event & Wedding Stylist | Cardzy',
+  title: 'Umar Farooq — Cultural Event & Wedding Stylist | Cardzy',
   description:
     'Umar Farooq is Senior Wedding Stylist at Cardzy, authoring guides on Pakistani wedding cards, Urdu calligraphy, and WhatsApp RSVP tech.',
   keywords: [
@@ -20,6 +20,22 @@ export const metadata: Metadata = {
   ],
   alternates: getPageAlternates('/authors/umar-farooq'),
   robots: PUBLIC_ROBOTS,
+  openGraph: {
+    title: 'Umar Farooq — Cultural Event & Wedding Stylist | Cardzy',
+    description:
+      'Umar Farooq is Senior Wedding Stylist at Cardzy, authoring guides on Pakistani wedding cards, Urdu calligraphy, and WhatsApp RSVP tech.',
+    url: 'https://cardzy.online/authors/umar-farooq',
+    siteName: 'Cardzy',
+    type: 'profile',
+    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Umar Farooq' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Umar Farooq — Cultural Event & Wedding Stylist | Cardzy',
+    description:
+      'Umar Farooq is Senior Wedding Stylist at Cardzy, authoring guides on Pakistani wedding cards, Urdu calligraphy, and WhatsApp RSVP tech.',
+    images: ['https://cardzy.online/og-image.jpg'],
+  },
 }
 
 // ── Person Structured Data (Schema.org E-E-A-T) ──────────────────────────────

@@ -12,6 +12,8 @@ const DISALLOWED_PATHS = [
   '/m/',
   '/login',
   '/signup',
+  '/campaign',
+  '/campaign/',
 ]
 
 const AI_AGENTS = [

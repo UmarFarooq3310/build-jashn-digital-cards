@@ -2,9 +2,9 @@ import { Metadata } from 'next'
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Free Digital Wedding Invitation Maker with WhatsApp RSVP | Cardzy',
+  title: 'Free Digital Wedding Invitations with WhatsApp RSVP | Cardzy',
   description:
-    'Design free luxury animated wedding invitations with Urdu wording, venue details, background music & 1-click WhatsApp RSVP tracking. Build your dream invite in minutes!',
+    'Design luxury animated wedding invitations with Urdu wording, venue details, background music & 1-click WhatsApp RSVP tracking. Build invites in minutes!',
   keywords: [
     'wedding card wording',
     'Pakistani wedding card maker',
@@ -22,19 +22,19 @@ export const metadata: Metadata = {
   alternates: getPageAlternates('/create-invitation'),
   robots: PUBLIC_ROBOTS,
   openGraph: {
-    title: 'Free Digital Wedding Invitation Maker with WhatsApp RSVP | Cardzy',
+    title: 'Free Digital Wedding Invitations with WhatsApp RSVP | Cardzy',
     description:
       'Animated wedding invitations with Urdu wording, schedule details, music & WhatsApp RSVP. Nikkah, Mehndi, Barat & Walima — all in one free tool.',
     url: 'https://cardzy.online/create-invitation',
     siteName: 'Cardzy',
     type: 'website',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Free Digital Wedding Invitation Maker — Cardzy' }],
+    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Free Digital Wedding Invitation Maker — Cardzy' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Digital Wedding Invitation Maker with WhatsApp RSVP | Cardzy',
+    title: 'Free Digital Wedding Invitations with WhatsApp RSVP | Cardzy',
     description: 'Animated Urdu wedding invitations with schedule details, music & WhatsApp RSVP tracking. Free!',
-    images: ['/og-image.jpg'],
+    images: ['https://cardzy.online/og-image.jpg'],
   },
 }
 

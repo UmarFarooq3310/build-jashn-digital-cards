@@ -20,6 +20,13 @@ export const metadata: Metadata = {
     url: 'https://cardzy.online/contact',
     siteName: 'Cardzy Digital Cards',
     type: 'website',
+    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Contact Cardzy' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact Cardzy — Digital Cards & Invitations Support',
+    description: 'Need help with a digital wish card, wedding invitation, or visiting card? Contact Cardzy via WhatsApp or email.',
+    images: ['https://cardzy.online/og-image.jpg'],
   },
 }
 

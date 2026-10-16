@@ -10,6 +10,22 @@ export const metadata: Metadata = {
     'Learn how Cardzy uses essential, analytics, and Google AdSense advertising cookies, plus how to manage your cookie preferences.',
   alternates: getPageAlternates('/cookies'),
   robots: PUBLIC_ROBOTS,
+  openGraph: {
+    title: 'Cookie Policy | Cardzy',
+    description:
+      'Learn how Cardzy uses essential, analytics, and Google AdSense advertising cookies, plus how to manage your cookie preferences.',
+    url: 'https://cardzy.online/cookies',
+    siteName: 'Cardzy',
+    type: 'website',
+    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Cookie Policy' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cookie Policy | Cardzy',
+    description:
+      'Learn how Cardzy uses essential, analytics, and Google AdSense advertising cookies, plus how to manage your cookie preferences.',
+    images: ['https://cardzy.online/og-image.jpg'],
+  },
 }
 
 const cookieJsonLd = {

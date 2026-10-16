@@ -4,7 +4,7 @@ import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 export const metadata: Metadata = {
   title: 'Custom 3D Card Design Order — Concierge Service | Cardzy',
   description:
-    'Order a fully custom 3D animated wish card or wedding invitation crafted by the Cardzy design team. Fast turnaround, shareable WhatsApp link, and unique designs just for you.',
+    'Order a custom 3D animated wish card or wedding invitation crafted by Cardzy designers. Fast turnaround, WhatsApp link, and unique bespoke designs.',
   keywords: [
     'custom card design',
     'bespoke wedding invitation',
@@ -23,13 +23,13 @@ export const metadata: Metadata = {
     url: 'https://cardzy.online/custom-order',
     siteName: 'Cardzy',
     type: 'website',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Cardzy Custom Card Design Order' }],
+    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Cardzy Custom Card Design Order' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Custom 3D Card Design Order — Concierge Service | Cardzy',
     description: 'Bespoke 3D animated cards and wedding invitations crafted by the Cardzy team.',
-    images: ['/og-image.jpg'],
+    images: ['https://cardzy.online/og-image.jpg'],
   },
 }
 

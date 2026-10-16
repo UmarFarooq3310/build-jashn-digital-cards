@@ -4,9 +4,9 @@ import { POETRY_DATABASE, POET_PROFILES } from '@/lib/jashn/poetry-data'
 import { SITE_URL } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Poetry & Shayari Explorer — Urdu Ghazals, Translations & Card Wording | Cardzy',
+  title: 'Poetry Treasury & Urdu Shayari — 1,000+ Verses | Cardzy',
   description:
-    'Explore verified Urdu & classical poetry by Allama Iqbal, Mirza Ghalib, Faiz Ahmad Faiz, Jaun Elia, Ahmad Faraz, Parveen Shakir & Rumi. Includes Nastaliq Urdu, Roman transliterations, English translations, and 1-click 3D Card creation.',
+    'Explore 1,000+ verified Urdu & Sufi poems by Iqbal, Ghalib, Faiz & Rumi with English translations, Roman Urdu, and instant 1-click 3D Card creation.',
   keywords: [
     'urdu poetry',
     'shayari',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     canonical: `${SITE_URL}/poetry`,
   },
   openGraph: {
-    title: 'Poetry & Shayari Explorer — Urdu Ghazals, Translations & Card Wording | Cardzy',
+    title: 'Poetry Treasury & Urdu Shayari — 1,000+ Verses | Cardzy',
     description:
       'Curated public-domain poetry treasury with authentic Nastaliq Urdu, Roman Urdu, English translations, and instant 1-click 3D card generator.',
     url: `${SITE_URL}/poetry`,
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${SITE_URL}/og-image.png`,
+        url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: 'Cardzy Poetry & Shayari Treasury',

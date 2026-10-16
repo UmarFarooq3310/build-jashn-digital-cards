@@ -20,6 +20,22 @@ export const metadata: Metadata = {
   ],
   alternates: getPageAlternates('/authors/hasnain'),
   robots: PUBLIC_ROBOTS,
+  openGraph: {
+    title: 'Hasnain — Creative & Cultural Events Editor | Cardzy',
+    description:
+      'Hasnain is Creative Events Editor at Cardzy, crafting guides on 3D animated holiday e-cards, party invites, and digital card etiquette.',
+    url: 'https://cardzy.online/authors/hasnain',
+    siteName: 'Cardzy',
+    type: 'profile',
+    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Hasnain' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Hasnain — Creative & Cultural Events Editor | Cardzy',
+    description:
+      'Hasnain is Creative Events Editor at Cardzy, crafting guides on 3D animated holiday e-cards, party invites, and digital card etiquette.',
+    images: ['https://cardzy.online/og-image.jpg'],
+  },
 }
 
 // ── Person Structured Data (Schema.org E-E-A-T) ──────────────────────────────

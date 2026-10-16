@@ -6,7 +6,7 @@ import { getPageAlternates, PUBLIC_ROBOTS, SITE_PUBLISHER } from '@/lib/seo'
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Create 3D Animated Magic Links & Love Proposal Cards | Cardzy',
+  title: 'Create 3D Animated Magic Links & Proposal Cards | Cardzy',
   description:
     'Create interactive 3D magic links with velvet ring box proposal, blowable birthday candles, popping balloons & love confessions. Free 1-click WhatsApp sharing!',
   keywords: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   alternates: getPageAlternates('/create-magic-link'),
   robots: PUBLIC_ROBOTS,
   openGraph: {
-    title: 'Create 3D Animated Magic Links & Love Proposal Cards | Cardzy',
+    title: 'Create 3D Animated Magic Links & Proposal Cards | Cardzy',
     description:
       'Create interactive 3D magic links with velvet ring box proposal, blowable birthday candles, popping balloons & love confessions. Free 1-click WhatsApp sharing!',
     url: 'https://cardzy.online/create-magic-link',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.jpg',
+        url: 'https://cardzy.online/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Create 3D Animated Magic Links — Cardzy',

@@ -73,9 +73,9 @@ import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS, SITE_PUBLISHER, SIT
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
-  title: 'Cardzy — 3D Digital Wedding Invitations, Wish Cards & vCards | Shadi & Eid Card Maker',
+  title: 'Cardzy — 3D Digital Wedding Invitations & Wish Cards',
   description:
-    'Free interactive 3D animated greeting cards, Pakistani digital wedding invitation maker with WhatsApp RSVP, and smart vCards. Shadi card text in Urdu & Roman Urdu, Eid wishes card banayein, candle blowing & ring unboxing in 18 languages.',
+    'Create interactive 3D animated greeting cards, Pakistani wedding invitations with WhatsApp RSVP, and smart vCards. Free online card maker in 18 languages.',
   keywords: DEFAULT_KEYWORDS,
   authors: [
     { name: 'Umar Farooq', url: 'https://cardzy.online/authors/umar-farooq' },
@@ -107,9 +107,9 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: 'Cardzy — 3D Digital Wedding Invitations, Wish Cards & vCards',
+    title: 'Cardzy — 3D Digital Wedding Invitations & Wish Cards',
     description:
-      'Tap to open interactive 3D animated greeting cards, wedding invitations with automated WhatsApp RSVP tracking, and smart vCards. Shadi card text in Urdu & Roman Urdu.',
+      'Tap to open interactive 3D animated greeting cards, wedding invitations with automated WhatsApp RSVP tracking, and smart vCards.',
     url: 'https://cardzy.online',
     siteName: 'Cardzy',
     images: [
@@ -163,8 +163,14 @@ const jsonLd = [
     email: 'cardzyonline@gmail.com',
     telephone: '+923093518796',
     areaServed: 'Worldwide',
-    availableLanguage: [
-      'en', 'ur', 'ar', 'hi', 'es', 'fr', 'zh', 'pt', 'ru', 'de', 'ja', 'ko', 'it', 'tr', 'id', 'bn', 'vi', 'sw'
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'Customer Support',
+        email: 'cardzyonline@gmail.com',
+        telephone: '+923093518796',
+        availableLanguage: ['English', 'Urdu'],
+      },
     ],
     sameAs: [
       'https://www.tiktok.com/@cardzyonline',
@@ -216,10 +222,10 @@ const jsonLd = [
     ],
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '1350',
-      bestRating: '5',
-      worstRating: '1',
+      ratingValue: 4.9,
+      reviewCount: 1350,
+      bestRating: 5,
+      worstRating: 1,
     },
     offers: [
       {
@@ -238,7 +244,12 @@ const jsonLd = [
           '@type': 'UnitPriceSpecification',
           price: '499',
           priceCurrency: 'PKR',
-          unitText: 'MONTH',
+          unitCode: 'MON',
+          referenceQuantity: {
+            '@type': 'QuantitativeValue',
+            value: 1,
+            unitCode: 'MON',
+          },
         },
         description: 'Unlimited 3D cards, permanent lifetime links, no watermarks, automated WhatsApp RSVP tracker',
       },
@@ -251,24 +262,16 @@ const jsonLd = [
           '@type': 'UnitPriceSpecification',
           price: '1.99',
           priceCurrency: 'USD',
-          unitText: 'MONTH',
+          unitCode: 'MON',
+          referenceQuantity: {
+            '@type': 'QuantitativeValue',
+            value: 1,
+            unitCode: 'MON',
+          },
         },
         description: 'Cardzy Pro global plan: unlimited cards, lifetime links, no watermark, real-time RSVP',
       },
     ],
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Cardzy 3D Card Studio',
-    url: 'https://cardzy.online',
-    applicationCategory: 'DesignApplication',
-    operatingSystem: 'Web',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
   },
 ]
 

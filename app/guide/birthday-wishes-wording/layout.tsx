@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Birthday Wishes Wording: 50+ Copy-Ready Messages & Card Texts | Cardzy',
+  title: 'Birthday Wishes Wording: 50+ Copy-Ready Messages | Cardzy',
   description:
-    'Find the perfect birthday card wording — heartfelt, funny, or formal messages for friends, family & coworkers. 50+ copy-ready templates + 1-click 3D card creator.',
+    'Find the perfect birthday card wording — heartfelt, funny, or formal messages for family & friends. 50+ copy-ready templates and 1-click 3D card creator.',
   keywords: [
     'birthday wishes wording',
     'birthday card messages',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   alternates: getPageAlternates('/guide/birthday-wishes-wording'),
   robots: PUBLIC_ROBOTS,
   openGraph: {
-    title: 'Birthday Wishes Wording: 50+ Copy-Ready Messages & Card Texts | Cardzy',
+    title: 'Birthday Wishes Wording: 50+ Copy-Ready Messages | Cardzy',
     description:
       'Heartfelt, funny, and formal birthday card messages for friends, family & coworkers. Copy-ready + instant 3D card maker.',
     url: 'https://cardzy.online/guide/birthday-wishes-wording',
