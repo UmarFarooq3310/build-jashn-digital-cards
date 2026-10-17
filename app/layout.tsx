@@ -283,8 +283,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} ${notoNastaliq.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head suppressHydrationWarning>
-        <link rel="preconnect" href="https://jashn-app-e3888.firebaseapp.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://jashn-app-e3888.firebaseapp.com" />
+        <link rel="preconnect" href="https://firestore.googleapis.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <script
           src="https://analytics.ahrefs.com/analytics.js"

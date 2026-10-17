@@ -119,12 +119,12 @@ export default function PrivacyPolicyPage() {
                   </a>{' '}
                   or by visiting{' '}
                   <a
-                    href="https://www.aboutads.info/choices/"
+                    href="https://optout.aboutads.info/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-emerald-700 dark:text-emerald-400 font-bold underline inline-flex items-center gap-1"
                   >
-                    aboutads.info choices <ExternalLink className="size-3.5" />
+                    optout.aboutads.info <ExternalLink className="size-3.5" />
                   </a>.
                 </li>
                 <li>

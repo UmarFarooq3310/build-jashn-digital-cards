@@ -11,25 +11,30 @@ const jsonLd = {
   url: 'https://cardzy.online/contact',
   description:
     'Contact Cardzy for support with digital wish cards, wedding invitations, smart visiting cards, and WhatsApp RSVP. Fast 24-48h response.',
-  contactPoint: [
-    {
-      '@type': 'ContactPoint',
-      contactType: 'Customer Support',
-      email: 'cardzyonline@gmail.com',
-      availableLanguage: ['English', 'Urdu'],
-      hoursAvailable: {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '09:00',
-        closes: '18:00',
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'Cardzy Digital Solutions',
+    url: 'https://cardzy.online',
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'Customer Support',
+        email: 'cardzyonline@gmail.com',
+        availableLanguage: ['English', 'Urdu'],
+        hoursAvailable: {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+          opens: '09:00',
+          closes: '18:00',
+        },
       },
-    },
-    {
-      '@type': 'ContactPoint',
-      contactType: 'WhatsApp Support',
-      telephone: '+923093518796',
-    },
-  ],
+      {
+        '@type': 'ContactPoint',
+        contactType: 'WhatsApp Support',
+        telephone: '+923093518796',
+      },
+    ],
+  },
   publisher: {
     '@type': 'Organization',
     name: 'Cardzy Digital Solutions',

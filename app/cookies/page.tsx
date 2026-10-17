@@ -470,7 +470,7 @@ export default function CookiesPage() {
                         vendor: 'Vercel',
                         category: 'Infrastructure',
                         purpose: 'Hosting, edge delivery, and performance analytics',
-                        link: 'https://vercel.com/legal/privacy-policy',
+                        link: 'https://vercel.com/legal/privacy-notice',
                       },
                     ].map((row) => (
                       <tr key={row.vendor} className="border-b border-border/50 last:border-0">
