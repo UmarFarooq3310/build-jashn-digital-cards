@@ -75,52 +75,9 @@ const FloatingCTA = nextDynamic(
   () => import('@/components/home/floating-cta').then((mod) => mod.FloatingCTA)
 )
 
-const homepageJsonLd = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Cardzy',
-    url: 'https://cardzy.online',
-    applicationCategory: 'DesignApplication',
-    operatingSystem: 'Web',
-    description:
-      'Create 3D animated digital wish cards, wedding invitations with WhatsApp RSVP, and smart digital business cards in 18 languages.',
-    offers: [
-      {
-        '@type': 'Offer',
-        price: '0',
-        priceCurrency: 'USD',
-        description: 'Free — 5 cards per category, 30-day active links, background music & 5 free themes',
-      },
-      {
-        '@type': 'Offer',
-        price: '1.99',
-        priceCurrency: 'USD',
-        description: 'Pro — Unlimited cards, permanent lifetime links, all 12+ themes, no watermark, WhatsApp RSVP',
-      },
-    ],
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://cardzy.online',
-      },
-    ],
-  },
-]
-
 export default function Page() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageJsonLd) }}
-      />
       <Hero />
       
       {/* How it works right below Hero */}

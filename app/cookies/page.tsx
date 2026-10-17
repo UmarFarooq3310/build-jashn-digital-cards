@@ -547,7 +547,7 @@ export default function CookiesPage() {
                       ['Google Chrome', 'https://support.google.com/chrome/answer/95647'],
                       ['Mozilla Firefox', 'https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer'],
                       ['Safari (macOS / iOS)', 'https://support.apple.com/guide/safari/manage-cookies-sfri11471/mac'],
-                      ['Microsoft Edge', 'https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge-63947406'],
+                      ['Microsoft Edge', 'https://support.microsoft.com/en-us/edge/manage-cookies-in-microsoft-edge-view-allow-block-delete-and-use'],
                       ['Opera', 'https://help.opera.com/en/latest/web-preferences/#cookies'],
                     ].map(([browser, link]) => (
                       <li key={browser}>
@@ -596,12 +596,12 @@ export default function CookiesPage() {
                   <p>
                     You can opt out of interest-based advertising from NAI member companies at{' '}
                     <a
-                      href="https://optout.networkadvertising.org"
+                      href="https://thenai.org/how-to-opt-out/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-0.5"
                     >
-                      optout.networkadvertising.org <ExternalLink className="size-3" />
+                      thenai.org/how-to-opt-out <ExternalLink className="size-3" />
                     </a>
                     .
                   </p>

@@ -837,9 +837,9 @@ function CreateWishContent() {
 
         {/* Hero Title & Subtitle */}
         <div className="max-w-2xl mx-auto space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
             Create & Send a Digital Greeting Card ✨
-          </h1>
+          </h2>
           <p className="text-xs sm:text-sm text-muted-foreground">
             Personalize in 60 seconds with live preview. 100% Free to create and send directly via WhatsApp.
           </p>

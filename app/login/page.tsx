@@ -407,7 +407,7 @@ function LoginPageContent() {
 
           <div className="text-center">
             <CardzyLogo className="mx-auto size-12 mb-3 shadow-md" />
-            <h1 className="text-2xl font-extrabold text-foreground">{t('loginToCardzyTitle') || 'Log In to Cardzy'}</h1>
+            <h2 className="text-2xl font-extrabold text-foreground">{t('loginToCardzyTitle') || 'Log In to Cardzy'}</h2>
             <p className="text-xs text-muted-foreground mt-1">{t('signInToContinue')}</p>
           </div>
 

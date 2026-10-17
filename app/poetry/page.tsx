@@ -119,7 +119,16 @@ export default function PoetryPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Suspense fallback={<div className="min-h-screen bg-slate-950 flex items-center justify-center text-amber-300 text-sm">Loading Poetry Treasury...</div>}>
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-center px-4 py-16">
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500 bg-clip-text text-transparent mb-3">
+              Poetry &amp; Shayari Treasury
+            </h1>
+            <p className="text-sm text-slate-400">Loading verified classical &amp; modern verses...</p>
+          </div>
+        }
+      >
         <PoetryClient />
       </Suspense>
     </>

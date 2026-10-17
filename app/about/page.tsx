@@ -38,7 +38,7 @@ const jsonLd = {
   sameAs: [
     'https://www.instagram.com/cardzyonline',
     'https://www.tiktok.com/@cardzyonline',
-    'https://www.facebook.com/share/1bPTaFnxDz/',
+    'https://www.facebook.com/people/Cardzyonline/61591756277026/',
   ],
   contactPoint: [
     {

@@ -1240,9 +1240,9 @@ export default function CreateMagicLinkClient() {
         {/* Hero Title & Subtitle */}
         {!createdSlug && (
           <div className="max-w-2xl mx-auto space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
               Craft 3D Interactive Surprise Links 🪄
-            </h1>
+            </h2>
             <p className="text-xs sm:text-sm text-muted-foreground">
               Create an unforgettable 3D unboxing experience with personalized letters, music & animations. 100% Free!
             </p>

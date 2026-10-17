@@ -175,7 +175,7 @@ const jsonLd = [
     sameAs: [
       'https://www.tiktok.com/@cardzyonline',
       'https://www.instagram.com/cardzyonline',
-      'https://www.facebook.com/cardzyonline',
+      'https://www.facebook.com/people/Cardzyonline/61591756277026/',
     ],
   },
   {

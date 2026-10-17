@@ -837,9 +837,9 @@ function CreateInvitationContent() {
 
         {/* Hero Title & Subtitle */}
         <div className="max-w-2xl mx-auto space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
             Design & Deliver Royal Digital Invitations 👑
-          </h1>
+          </h2>
           <p className="text-xs sm:text-sm text-muted-foreground">
             Bilingual Nikkah, Barat, Walima, and Birthday invites with interactive RSVP & live countdown.
           </p>

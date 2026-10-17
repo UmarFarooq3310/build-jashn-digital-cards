@@ -368,7 +368,7 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       sw: 'Mbunifu Mkuu wa Harusi na Utamaduni'
     },
     instagram: 'https://www.instagram.com/cardzyonline',
-    tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
+    tiktok: 'https://www.tiktok.com/@cardzyonline',
   },
   Kainat: {
     bio: {
@@ -413,7 +413,7 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       sw: 'Mkuu wa Mikakati ya Bidhaa na Teknolojia'
     },
     instagram: 'https://www.instagram.com/cardzyonline',
-    tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
+    tiktok: 'https://www.tiktok.com/@cardzyonline',
   },
   Hasnain: {
     bio: {
@@ -458,7 +458,7 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       sw: 'Mhariri wa Matukio na Utamaduni wa Kimataifa'
     },
     instagram: 'https://www.instagram.com/cardzyonline',
-    tiktok: 'https://www.tiktok.com/@cardzyonline?_r=1&_t=ZS-98C2zxEx30S',
+    tiktok: 'https://www.tiktok.com/@cardzyonline',
   },
 }
 
