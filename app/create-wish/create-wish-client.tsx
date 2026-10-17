@@ -308,8 +308,20 @@ function CreateWishContent() {
     if ((starter as any).dedication) setDedication((starter as any).dedication)
     if (starter.audioTrack) setAudioTrack(starter.audioTrack)
     if (starter.themeId) setThemeId(starter.themeId)
+    if (!senderName.trim()) {
+      setSenderName(user?.name?.trim() || 'A Friend')
+    }
+    setErrors({})
     setStep(2)
-    showToast(`✨ Loaded ${starter.label}! Personalize names & send.`, 'success')
+    showToast(`✨ Loaded ${starter.label}! Ready to personalize or send.`, 'success')
+  }
+
+  const handleFillSampleNames = () => {
+    setRecipientName(recipientName.trim() || 'Sarah')
+    setSenderName(senderName.trim() || user?.name?.trim() || 'Alex')
+    if (!relation) setRelation('Friend')
+    setErrors({})
+    showToast('✨ Sample names filled! Customize or continue.', 'success')
   }
 
   const draftKey = editSlug ? `cardzy_draft_wish_edit_${editSlug}` : 'cardzy_draft_wish'
@@ -1251,9 +1263,19 @@ function CreateWishContent() {
 
                         {/* Recipient Name */}
                         <div>
-                          <label className={cn("mb-1.5 block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
-                            {t('recipientNameLabel') || 'Recipient Name (Optional if Dedication set)'}
-                          </label>
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className={cn("block text-xs font-bold text-foreground uppercase tracking-wider", (lang === 'ur' || lang === 'ar') ? "text-right font-urdu" : "text-left")}>
+                              {t('recipientNameLabel') || 'Recipient Name (Optional if Dedication set)'}
+                            </label>
+                            <button
+                              type="button"
+                              onClick={handleFillSampleNames}
+                              className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-600 dark:text-amber-400 hover:underline cursor-pointer"
+                            >
+                              <Sparkles className="size-3" />
+                              <span>Sample Names</span>
+                            </button>
+                          </div>
                           <input
                             id="field-recipientName"
                             type="text"

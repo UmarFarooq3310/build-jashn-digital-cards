@@ -636,6 +636,54 @@ export const OCCASION_PALETTES: Record<string, { id: MagicThemeId; name: string;
   ],
 }
 
+export const MAGIC_QUICK_STARTERS = [
+  {
+    id: 'birthday',
+    emoji: '🎂',
+    label: 'Birthday Surprise',
+    occasion: 'birthday' as MagicOccasion,
+    recipient: 'Sarah',
+    sender: 'Alex',
+    hint: '3D cake & candles',
+  },
+  {
+    id: 'proposal',
+    emoji: '💍',
+    label: 'Romantic Proposal',
+    occasion: 'proposal' as MagicOccasion,
+    recipient: 'My Forever',
+    sender: 'Always Yours',
+    hint: 'Animated ring unbox',
+  },
+  {
+    id: 'eid',
+    emoji: '🌙',
+    label: 'Eid Mubarak',
+    occasion: 'eid' as MagicOccasion,
+    recipient: 'Dearest Family',
+    sender: 'With Love',
+    hint: 'Crescent & lantern',
+  },
+  {
+    id: 'anniversary',
+    emoji: '🥂',
+    label: 'Happy Anniversary',
+    occasion: 'anniversary' as MagicOccasion,
+    recipient: 'Honey',
+    sender: 'Forever Yours',
+    hint: 'Champagne toast',
+  },
+  {
+    id: 'graduation',
+    emoji: '🎓',
+    label: 'Graduation Star',
+    occasion: 'graduation' as MagicOccasion,
+    recipient: 'Champ',
+    sender: 'Proud Bestie',
+    hint: 'Trophy & cap burst',
+  },
+]
+
 export function getPalettesForOccasion(occ: string) {
   return OCCASION_PALETTES[occ] || OCCASION_PALETTES.birthday
 }
@@ -649,6 +697,7 @@ export default function CreateMagicLinkClient() {
   const isUrdu = lang === 'ur' || lang === 'ar'
 
   const occParam = searchParams.get('occasion') as MagicOccasion | null
+  const demoParam = searchParams.get('demo')
 
   // 2-Step Progression State
   const [step, setStep] = useState<1 | 2>(occParam ? 2 : 1)
@@ -658,6 +707,14 @@ export default function CreateMagicLinkClient() {
   const [activeCategory, setActiveCategory] = useState<'all' | 'love' | 'birthday' | 'islamic' | 'milestones'>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [previewDemoOccasion, setPreviewDemoOccasion] = useState<OccasionMeta | null>(null)
+
+  // Auto-trigger demo modal if ?demo=1 in URL
+  useEffect(() => {
+    if (demoParam) {
+      const demoOcc = OCCASIONS.find((o) => o.id === (occParam || 'birthday')) || OCCASIONS[1]
+      setPreviewDemoOccasion(demoOcc)
+    }
+  }, [demoParam, occParam])
 
   // Chosen occasion
   const [selectedOccasion, setSelectedOccasion] = useState<MagicOccasion>(occParam || 'proposal')
@@ -1009,6 +1066,38 @@ export default function CreateMagicLinkClient() {
     setActiveTab('details')
     setErrors({})
     changeStep(2, 'details')
+  }
+
+  const handleApplyMagicQuickStarter = (starter: typeof MAGIC_QUICK_STARTERS[0]) => {
+    handleSelectOccasion(starter.occasion)
+    setRecipientName(starter.recipient)
+    setSenderName(senderName.trim() || user?.name?.trim() || starter.sender)
+    setErrors({})
+    showToast(`✨ Loaded ${starter.label}! Ready to personalize or send.`, 'success')
+  }
+
+  const handleAutoFillSample = () => {
+    const sampleRecipients: Partial<Record<MagicOccasion, string>> = {
+      birthday: 'Sarah',
+      proposal: 'My Forever',
+      anniversary: 'Honey',
+      wedding: 'Happy Couple',
+      eid: 'Dearest Family',
+      graduation: 'Alex',
+      party: 'Bestie',
+      newborn: 'Little Angel',
+      ramadan: 'Beloved Friends',
+      apology: 'Dearest Friend',
+      friendship: 'My Best Friend',
+      thankyou: 'Kind Mentor',
+      getwell: 'Dear Friend',
+      newyear: 'Everyone',
+    }
+    const sampleSender = user?.name?.trim() || 'Alex'
+    setRecipientName(sampleRecipients[selectedOccasion] || 'Sarah')
+    setSenderName(senderName.trim() || sampleSender)
+    setErrors({})
+    showToast('✨ Sample data filled! Click Finish or Preview.', 'success')
   }
 
   const handleQuoteChange = (idx: number, text: string) => {
@@ -1448,6 +1537,50 @@ export default function CreateMagicLinkClient() {
             </p>
           </div>
 
+          {/* Quick Demo CTA & Instant 1-Tap Starters Banner */}
+          <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-amber-500/10 p-3.5 sm:p-4 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">✨</span>
+                <div className="text-left">
+                  <div className="font-extrabold text-foreground text-xs sm:text-sm">
+                    {t('instantStartersTitle', 'New to 3D Magic Links? See how it works:')}
+                  </div>
+                  <div className="text-[11px] text-muted-foreground">
+                    {t('instantStartersSubtitle', 'Watch a 5-second 3D gift unbox or tap a pre-filled card below to create in 1 tap.')}
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setPreviewDemoOccasion(OCCASIONS[1] || OCCASIONS[0])}
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black bg-[#7B0D1E] hover:bg-[#630A18] text-white shadow-md transition-all cursor-pointer hover:scale-102 shrink-0"
+              >
+                <Play className="size-3.5 fill-white text-white" />
+                <span>{t('watchDemoBtn', '▶ Watch 3D Demo')}</span>
+              </button>
+            </div>
+
+            {/* 1-Tap Quick Starters */}
+            <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-amber-500/20">
+              <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 mr-1 flex items-center gap-1">
+                <Sparkles className="size-3" />
+                <span>1-Tap Starters:</span>
+              </span>
+              {MAGIC_QUICK_STARTERS.map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => handleApplyMagicQuickStarter(s)}
+                  className="px-3 py-1.5 rounded-xl text-xs font-bold bg-card border border-border hover:border-amber-500 hover:bg-amber-500/10 text-foreground transition-all shadow-2xs hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-1.5"
+                >
+                  <span>{s.emoji}</span>
+                  <span>{s.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Category Tabs & Search Bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pb-2">
             <div className="flex items-center gap-1 overflow-x-auto w-full sm:w-auto p-1.5 rounded-2xl bg-muted/70 border border-border/80 shadow-xs">
@@ -1797,6 +1930,14 @@ export default function CreateMagicLinkClient() {
                   </span>
                   <span>{activeOccMeta.label}</span>
                 </span>
+                <button
+                  type="button"
+                  onClick={handleAutoFillSample}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-300 hover:bg-amber-500/20 transition-all cursor-pointer shadow-2xs hover:scale-102"
+                >
+                  <Sparkles className="size-3.5 text-amber-500 animate-pulse" />
+                  <span>{t('autoFillSample', 'Auto-Fill Sample')}</span>
+                </button>
               </div>
             </div>
             
@@ -2314,6 +2455,15 @@ export default function CreateMagicLinkClient() {
                             </>
                           )}
                         </button>
+                      </div>
+
+                      {/* Trust Guarantee */}
+                      <div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-[11px] text-muted-foreground font-semibold">
+                        <span>🔒 100% Free Forever</span>
+                        <span>•</span>
+                        <span>Instant WhatsApp Delivery</span>
+                        <span>•</span>
+                        <span>No Signup Needed</span>
                       </div>
                     </div>
                   </form>
