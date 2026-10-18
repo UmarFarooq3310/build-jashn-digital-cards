@@ -110,21 +110,21 @@ export default function PrivacyPolicyPage() {
                 <li>
                   <strong className="text-foreground">Opting Out:</strong> You may opt out of personalized advertising at any time by visiting{' '}
                   <a
-                    href="https://adssettings.google.com"
+                    href="https://policies.google.com/technologies/ads"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-emerald-700 dark:text-emerald-400 font-bold underline inline-flex items-center gap-1"
                   >
-                    Google Ad Settings <ExternalLink className="size-3.5" />
+                    Google Ad Technology &amp; Personalization <ExternalLink className="size-3.5" />
                   </a>{' '}
                   or by visiting{' '}
                   <a
-                    href="https://optout.aboutads.info/"
+                    href="https://youradchoices.com/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-emerald-700 dark:text-emerald-400 font-bold underline inline-flex items-center gap-1"
                   >
-                    optout.aboutads.info <ExternalLink className="size-3.5" />
+                    youradchoices.com <ExternalLink className="size-3.5" />
                   </a>.
                 </li>
                 <li>
@@ -172,7 +172,7 @@ export default function PrivacyPolicyPage() {
                 </li>
                 <li>
                   <strong className="text-foreground">Ad Personalization:</strong> Manage your ad preferences directly via{' '}
-                  <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="text-emerald-700 dark:text-emerald-400 underline">
+                  <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-emerald-700 dark:text-emerald-400 underline">
                     Google Ad Personalization Controls
                   </a>.
                 </li>

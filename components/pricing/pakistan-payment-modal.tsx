@@ -83,7 +83,7 @@ export function PakistanPaymentModal({
     )
   }
 
-  const whatsappUrl = `https://wa.me/923093518796?text=${generateWhatsAppMessage()}`
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=923093518796&text=${generateWhatsAppMessage()}`
 
   return (
     <div

@@ -77,7 +77,7 @@ export default function FaqPage() {
               <h2 className="text-xl font-bold text-foreground">{t('faqStillQuestion')}</h2>
               <p className="text-sm text-muted-foreground mt-1">{t('faqRespondNote')}</p>
               <div className="mt-4 flex flex-col sm:flex-row gap-3">
-                <a href="https://wa.me/923093518796" target="_blank" rel="noopener noreferrer"
+                <a href="https://api.whatsapp.com/send?phone=923093518796" target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors shadow-sm">
                   <MessageSquare className="size-4" />{t('faqWhatsappUs')}
                 </a>

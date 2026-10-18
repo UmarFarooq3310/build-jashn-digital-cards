@@ -121,7 +121,7 @@ export default function DisclaimerPage() {
             <a href="mailto:cardzyonline@gmail.com" className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-card px-4 py-2.5 text-foreground hover:bg-emerald-500/10 transition-colors shadow-2xs">
               ✉️ cardzyonline@gmail.com
             </a>
-            <a href="https://wa.me/923093518796" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-600 text-white px-4 py-2.5 hover:bg-emerald-700 transition-colors shadow-2xs">
+            <a href="https://api.whatsapp.com/send?phone=923093518796" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-600 text-white px-4 py-2.5 hover:bg-emerald-700 transition-colors shadow-2xs">
               💬 WhatsApp Support: +92 309 3518796
             </a>
             <Link href="/privacy-policy" className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-4 py-2.5 text-foreground hover:bg-secondary transition-colors shadow-2xs">

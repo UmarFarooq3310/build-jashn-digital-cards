@@ -353,7 +353,7 @@ export default function CookiesPage() {
                 non-personalized (contextual only). You can opt out of personalized advertising at
                 any time via{' '}
                 <a
-                  href="https://adssettings.google.com"
+                  href="https://policies.google.com/technologies/ads"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-0.5"
@@ -569,7 +569,7 @@ export default function CookiesPage() {
                   <p>
                     To opt out of personalized ads from Google across all websites, visit{' '}
                     <a
-                      href="https://adssettings.google.com"
+                      href="https://policies.google.com/technologies/ads"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-0.5"

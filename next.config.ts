@@ -8,12 +8,12 @@ const CSP_POLICY = [
   "font-src 'self' https://fonts.gstatic.com https://*.gstatic.com data:",
   "img-src 'self' data: blob: https: http: https://*.google.com https://*.gstatic.com https://*.google-analytics.com https://*.googlesyndication.com https://*.doubleclick.net https://*.googleadservices.com https://pagead2.googlesyndication.com",
   "media-src 'self' data: blob: https:",
-  "connect-src 'self' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.googleapis.com https://*.gstatic.com https://www.gstatic.com https://*.doubleclick.net https://googleads.g.doubleclick.net https://*.adtrafficquality.google https://adtrafficquality.google https://*.googleadservices.com https://www.googleadservices.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://va.vercel-scripts.com https://vitals.vercel-insights.com https://api.qrserver.com https://wa.me",
+  "connect-src 'self' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.googleapis.com https://*.gstatic.com https://www.gstatic.com https://*.doubleclick.net https://googleads.g.doubleclick.net https://*.adtrafficquality.google https://adtrafficquality.google https://*.googleadservices.com https://www.googleadservices.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://va.vercel-scripts.com https://vitals.vercel-insights.com https://api.qrserver.com https://wa.me https://api.whatsapp.com",
   "frame-src 'self' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://googleads.g.doubleclick.net https://*.googleadservices.com https://*.adtrafficquality.google https://adtrafficquality.google https://accounts.google.com https://*.firebaseapp.com https://*.firebaseio.com",
   "frame-ancestors 'self'",
   "object-src 'none'",
   "base-uri 'self'",
-  "form-action 'self' https://wa.me",
+  "form-action 'self' https://wa.me https://api.whatsapp.com",
 ].join('; ')
 
 const GLOBAL_SECURITY_HEADERS = [

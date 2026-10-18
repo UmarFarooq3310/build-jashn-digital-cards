@@ -50,7 +50,7 @@ export function ConciergeService() {
       "*Special Message:* \n" +
       "*My WhatsApp / Contact:* "
     )
-    return `https://wa.me/923093518796?text=${encodeURIComponent(text)}`
+    return `https://api.whatsapp.com/send?phone=923093518796&text=${encodeURIComponent(text)}`
   }
 
   const getEmailUrl = () => {

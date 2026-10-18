@@ -65,7 +65,7 @@ export function ContactClientContent() {
                 {pt(CONTACT_T.liveChatSupport, lang)}
               </p>
               <a
-                href="https://wa.me/923093518796"
+                href="https://api.whatsapp.com/send?phone=923093518796"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-base font-bold text-emerald-700 dark:text-emerald-400 hover:underline min-h-[48px] flex items-center"

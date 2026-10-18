@@ -257,7 +257,7 @@ export default function PricingPage() {
             </div>
             <div className="flex items-center gap-3 flex-wrap">
               <a
-                href="https://wa.me/923093518796"
+                href="https://api.whatsapp.com/send?phone=923093518796"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-lg bg-emerald-600 hover:bg-emerald-700 transition-colors px-4 py-2 text-xs font-bold text-white shadow-sm"
