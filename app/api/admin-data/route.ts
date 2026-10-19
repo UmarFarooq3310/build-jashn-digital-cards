@@ -45,6 +45,18 @@ function normalizeFirestoreData(data: any): any {
   result.likes = result.likesCount
   result.reactionsCount = result.likesCount
 
+  const views = Math.max(
+    Number(result.viewCount || 0),
+    Number(result.viewsCount || 0),
+    Number(result.views || 0),
+    Number((data as any)?.viewCount || 0),
+    Number((data as any)?.viewsCount || 0),
+    Number((data as any)?.views || 0)
+  )
+  result.viewCount = views
+  result.viewsCount = views
+  result.views = views
+
   return result
 }
 

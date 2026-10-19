@@ -82,6 +82,7 @@ import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 import { purgeAdminPresence, markDeviceAsAdmin, ADMIN_EMAILS } from '@/lib/jashn/admin-presence'
 import { getClientTracking } from '@/lib/jashn/tracking'
 import { SiteHeader } from '@/components/site-header'
+import { getCardViews } from '@/lib/jashn/view-tracker'
 
 // ── Module-level caches ───────────────────────────────────────────────────────
 // These survive tab switches and section changes, preventing Firestore re-reads.
@@ -1088,7 +1089,7 @@ export default function AdminPortalPage() {
     const slug = card.slug || card.id || card.poemId || ''
     const title = card.title || card.hostNames || card.fullName || card.recipientName || slug
     const owner = card.userEmail || card.userPhone || card.ownerEmail || card.creator || (card.isGuest ? 'Guest User' : 'Authenticated User')
-    const views = Number(card.viewsCount ?? card.viewCount ?? card.views ?? 0)
+    const views = getCardViews(card)
     const sharesBreakdown = typeof card.shares === 'object' && card.shares ? card.shares : {}
     const totalShares = Object.values(sharesBreakdown).reduce((a: number, b: any) => a + Number(b || 0), 0)
     const likes = Number(card.likesCount ?? card.likes ?? card.reactionsCount ?? 0)
@@ -1120,7 +1121,7 @@ export default function AdminPortalPage() {
   function promptAdjustMetrics(cardType: 'invite' | 'wish' | 'vcard' | 'magic' | 'poetry', card: any) {
     const slug = card.slug || card.id || card.poemId || ''
     const title = card.title || card.hostNames || card.fullName || card.recipientName || slug
-    const views = Number(card.viewsCount ?? card.viewCount ?? card.views ?? 0)
+    const views = getCardViews(card)
     const sharesBreakdown = typeof card.shares === 'object' && card.shares ? card.shares : {}
     const totalShares = typeof card.shares === 'number' ? card.shares : Object.values(sharesBreakdown).reduce((a: number, b: any) => a + Number(b || 0), 0)
     const likes = Number(card.likesCount ?? card.likes ?? card.reactionsCount ?? 0)
@@ -3492,7 +3493,7 @@ export default function AdminPortalPage() {
             <td>${i.date || 'TBD'} ${i.time || ''}<br/><span style="font-size: 11px; color: #64748b;">${i.venue || i.city || '—'}</span></td>
             <td><strong>${formatDateTime(i.createdAt)}</strong><br/><span style="font-size: 11px; color: #059669;">${origin.flag} ${origin.locationText}</span></td>
             <td><strong>${i.rsvpPhone || '—'}</strong></td>
-            <td><strong>${i.rsvpCount} RSVPs</strong><br/><span style="font-size: 11px; color: #64748b;">${i.viewCount || 1} views</span></td>
+            <td><strong>${i.rsvpCount} RSVPs</strong><br/><span style="font-size: 11px; color: #64748b;">${getCardViews(i)} views</span></td>
           </tr>
         `}).join('')
 
@@ -3526,7 +3527,7 @@ export default function AdminPortalPage() {
             <td><span style="padding: 2px 8px; border-radius: 10px; background: #fef3c7; color: #92400e; font-weight: 700; font-size: 10px;">${(w.occasionId || 'wish').toUpperCase()}</span></td>
             <td><strong>${formatDateTime(w.createdAt)}</strong><br/><span style="font-size: 11px; color: #d97706;">${origin.flag} ${origin.locationText}</span></td>
             <td style="max-width: 250px; font-size: 11px; color: #475569;">${w.message}</td>
-            <td><strong>${w.viewCount} views</strong></td>
+            <td><strong>${getCardViews(w)} views</strong></td>
           </tr>
         `}).join('')
 
@@ -3535,7 +3536,7 @@ export default function AdminPortalPage() {
       'Sent Wish Cards Audit',
       [
         { label: 'Total Wishes Created', value: `${wishes.length} Cards` },
-        { label: 'Total Views Tracked', value: `${wishes.reduce((a, b) => a + (b.viewCount || 0), 0)} Views` },
+        { label: 'Total Views Tracked', value: `${wishes.reduce((a, b) => a + getCardViews(b), 0)} Views` },
       ],
       ['#', 'Sender (Who Sent)', 'Recipient (Who Received)', 'Occasion', 'Created When & Where', 'Wish Message Text', 'Views'],
       rowsHtml
@@ -5712,7 +5713,7 @@ export default function AdminPortalPage() {
                           <div className="flex items-center gap-1.5 mb-1.5">
                             <Eye className="size-3.5 text-amber-500" />
                             <span className="px-2 py-0.5 rounded-md bg-muted font-mono font-bold text-foreground text-xs">
-                              {m.viewsCount || 0} visits
+                              {getCardViews(m)} visits
                             </span>
                           </div>
                           {(() => {
@@ -6784,7 +6785,7 @@ export default function AdminPortalPage() {
                         </td>
                         <td className="py-4 px-4 text-xs">
                           <div className="font-bold text-emerald-600">{inv.rsvpCount} RSVPs</div>
-                          <div className="text-muted-foreground font-semibold mb-1.5">{inv.viewCount || 0} views</div>
+                          <div className="text-muted-foreground font-semibold mb-1.5">{getCardViews(inv)} views</div>
                           <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="SMS">
                               📱 {inv.shares?.sms || 0}
@@ -7135,7 +7136,7 @@ export default function AdminPortalPage() {
                           </div>
                         </td>
                         <td className="py-4 px-4 text-xs font-bold text-foreground">
-                          <div className="font-bold text-foreground mb-1.5">{w.viewCount || 0} views</div>
+                          <div className="font-bold text-foreground mb-1.5">{getCardViews(w)} views</div>
                           <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="SMS">
                               📱 {w.shares?.sms || 0}
@@ -7491,7 +7492,7 @@ export default function AdminPortalPage() {
                             </div>
                           </td>
                           <td className="py-4 px-4 text-xs font-bold text-foreground">
-                            <div className="font-bold text-foreground mb-1.5">{vc.viewCount || 0} views</div>
+                            <div className="font-bold text-foreground mb-1.5">{getCardViews(vc)} views</div>
                             <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-extrabold border border-blue-500/20 shadow-2xs" title="SMS">
                                 📱 {vc.shares?.sms || 0}

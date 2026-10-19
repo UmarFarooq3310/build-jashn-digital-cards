@@ -61,11 +61,12 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
         // Only increment view count if viewer is receiver (not sender/creator)
         if (viewIncrementedRef.current !== slug) {
           viewIncrementedRef.current = slug
-          if (shouldIncrementView(slug, 'vcard', storeCard.creatorId, searchParams, user?.uid, user?.email)) {
-            incrementVisitingCardView(slug)
-            recordCardView('vcard', slug, storeCard.creatorId, searchParams, user?.uid, user?.email)
-            setCard((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
-          }
+          recordCardView('vcard', slug, storeCard.creatorId, searchParams, user?.uid, user?.email).then((counted) => {
+            if (counted) {
+              incrementVisitingCardView(slug)
+              setCard((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
+            }
+          })
         }
         setLoading(false)
         return
@@ -106,11 +107,12 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
             // Only increment view count if viewer is receiver (not sender/creator)
             if (viewIncrementedRef.current !== slug) {
               viewIncrementedRef.current = slug
-              if (shouldIncrementView(slug, 'vcard', fetchedCard.creatorId, searchParams, user?.uid, user?.email)) {
-                incrementVisitingCardView(slug)
-                recordCardView('vcard', slug, fetchedCard.creatorId, searchParams, user?.uid, user?.email)
-                setCard((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
-              }
+              recordCardView('vcard', slug, fetchedCard.creatorId, searchParams, user?.uid, user?.email).then((counted) => {
+                if (counted) {
+                  incrementVisitingCardView(slug)
+                  setCard((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
+                }
+              })
             }
             setLoading(false)
           } else {

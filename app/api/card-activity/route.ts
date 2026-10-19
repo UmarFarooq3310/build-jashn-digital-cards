@@ -46,14 +46,9 @@ export async function POST(req: Request) {
       }
 
       if (action === 'view') {
-        const cookieHeader = req.headers.get('cookie') || ''
-        const isAdminDevice =
-          body.isAdmin === true ||
-          cookieHeader.includes('cardzy_admin_device=1') ||
-          cookieHeader.includes('cardzy_is_admin=1')
-
-        if (isAdminDevice) {
-          return NextResponse.json({ success: true, action: 'view', ignored: 'admin_device' })
+        // Only ignore if explicitly in sender mode or editor preview
+        if (body.mode === 'sender' || body.preview === true || body.role === 'sender' || body.isSender === true) {
+          return NextResponse.json({ success: true, action: 'view', ignored: 'sender_mode' })
         }
 
         const viewField = cardType === 'magic' ? 'viewsCount' : 'viewCount'
@@ -62,6 +57,7 @@ export async function POST(req: Request) {
             [viewField]: FieldValue.increment(1),
             viewCount: FieldValue.increment(1),
             viewsCount: FieldValue.increment(1),
+            views: FieldValue.increment(1),
             lastViewedAt: Date.now(),
           },
           { merge: true }

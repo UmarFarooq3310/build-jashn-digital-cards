@@ -74,11 +74,12 @@ function WishPublicContent({ slug }: { slug: string }) {
         if (viewIncrementedRef.current !== slug) {
           viewIncrementedRef.current = slug
           // Only increment view count if viewer is receiver (not sender/creator)
-          if (shouldIncrementView(slug, 'wish', existing.creatorId, searchParams, user?.uid, user?.email)) {
-            incrementWishView(slug)
-            recordCardView('wish', slug, existing.creatorId, searchParams, user?.uid, user?.email)
-            setActiveWish((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
-          }
+          recordCardView('wish', slug, existing.creatorId, searchParams, user?.uid, user?.email).then((counted) => {
+            if (counted) {
+              incrementWishView(slug)
+              setActiveWish((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
+            }
+          })
         }
         setIsLoading(false)
         return
@@ -165,11 +166,12 @@ function WishPublicContent({ slug }: { slug: string }) {
             if (viewIncrementedRef.current !== slug) {
               viewIncrementedRef.current = slug
               // Only increment view count if viewer is receiver (not sender/creator)
-              if (shouldIncrementView(slug, 'wish', data.creatorId, searchParams, user?.uid, user?.email)) {
-                incrementWishView(slug)
-                recordCardView('wish', slug, data.creatorId, searchParams, user?.uid, user?.email)
-                setActiveWish((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
-              }
+              recordCardView('wish', slug, data.creatorId, searchParams, user?.uid, user?.email).then((counted) => {
+                if (counted) {
+                  incrementWishView(slug)
+                  setActiveWish((prev) => (prev ? { ...prev, viewCount: getCardViews(prev) + 1 } : null))
+                }
+              })
             }
             setIsLoading(false)
           } else {

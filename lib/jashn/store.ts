@@ -834,13 +834,9 @@ export const useJashn = create<JashnState>()(
             }
           }
         } catch {}
-
-        // Guaranteed dual increment (Server Admin API + Client fallback)
-        recordCardView('wish', cleanSlug).catch(() => {})
       },
 
       incrementInvitationView: (slug) => {
-        if (isDeviceAdmin()) return
         const cleanSlug = String(slug).replace(/^\/?i\//, '').trim()
         set((s) => ({
           invitations: s.invitations.map((i) =>
@@ -861,13 +857,9 @@ export const useJashn = create<JashnState>()(
             }
           }
         } catch {}
-
-        // Guaranteed dual increment (Server Admin API + Client fallback)
-        recordCardView('invite', cleanSlug).catch(() => {})
       },
 
       incrementVisitingCardView: (slug) => {
-        if (isDeviceAdmin()) return
         const cleanSlug = String(slug).replace(/^\/?v\//, '').trim()
         set((s) => ({
           visitingCards: s.visitingCards.map((v) =>
@@ -888,9 +880,6 @@ export const useJashn = create<JashnState>()(
             }
           }
         } catch {}
-
-        // Guaranteed dual increment (Server Admin API + Client fallback)
-        recordCardView('vcard', cleanSlug).catch(() => {})
       },
 
       incrementRsvp: (slug) => {

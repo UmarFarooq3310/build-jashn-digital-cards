@@ -305,14 +305,17 @@ function MagicLinkInner({ slug }: { slug: string }) {
 
     async function fallbackLocal() {
       try {
-        const canCountView = !isSender && viewIncrementedRef.current !== slug && shouldIncrementView(slug, 'magic', null, searchParams, user?.uid, user?.email)
-        if (canCountView) {
+        if (!isSender && viewIncrementedRef.current !== slug) {
           viewIncrementedRef.current = slug
-          recordCardView('magic', slug, null, searchParams, user?.uid, user?.email).catch(() => {})
+          recordCardView('magic', slug, null, searchParams, user?.uid, user?.email).then((counted) => {
+            if (counted) {
+              setData((prev) => (prev ? { ...prev, viewsCount: getCardViews(prev) + 1 } : null))
+            }
+          })
         }
         const result = await getMagicLink(slug, false)
         if (result) {
-          result.viewsCount = getCardViews(result) + (canCountView ? 1 : 0)
+          result.viewsCount = getCardViews(result)
         }
         setData(result)
       } catch (err) {

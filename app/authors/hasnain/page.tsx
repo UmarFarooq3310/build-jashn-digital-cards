@@ -64,7 +64,7 @@ const personJsonLd = {
     'Mobile Social Sharing Optimization',
   ],
   sameAs: [
-    'https://www.instagram.com/cardzyonline',
+    'https://www.instagram.com/cardzyonline/',
     'https://www.tiktok.com/@cardzyonline',
     'https://www.facebook.com/people/Cardzyonline/61591756277026/',
   ],
@@ -180,7 +180,7 @@ export default function HasnainAuthorPage() {
             </h2>
             <div className="flex flex-wrap items-center gap-3 text-xs font-bold">
               <a
-                href="https://www.instagram.com/cardzyonline"
+                href="https://www.instagram.com/cardzyonline/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-[48px] items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 hover:bg-muted transition-colors text-foreground"

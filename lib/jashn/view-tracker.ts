@@ -9,7 +9,6 @@
  *    are counted with a debounce to prevent double-counting.
  */
 
-import { isDeviceAdmin } from './admin-presence'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, setDoc, increment } from 'firebase/firestore'
 
@@ -46,11 +45,6 @@ export function isSenderOrOwner(
   if (typeof window === 'undefined') return false
   const cleanSlug = String(slug || '').replace(/^\/?(i|w|v|m)\//, '').trim()
 
-  // 0. Complete Admin Device & Account Protection (Never count views for admin)
-  if (isDeviceAdmin(currentUserEmail)) {
-    return true
-  }
-
   // 1. Explicit sender, preview, or host role in query parameters (Sender Control Mode)
   if (searchParams) {
     const mode = searchParams.get('mode')
@@ -84,17 +78,6 @@ export function isSenderOrOwner(
     }
   } catch {}
 
-  // 3. Admin Check: Admin previews and visits NEVER count as views
-  try {
-    if (
-      localStorage.getItem('cardzy_is_admin') === '1' ||
-      sessionStorage.getItem('cardzy_is_admin') === '1' ||
-      sessionStorage.getItem('cardzy_admin_session')
-    ) {
-      return true
-    }
-  } catch {}
-
   // 4. Authenticated creator check: If current logged-in user is the creator of this card
   if (
     currentUserId &&
@@ -123,6 +106,27 @@ export function isSenderOrOwner(
   return false
 }
 
+export function checkAndSetViewDebounce(
+  slug: string,
+  cardType: 'wish' | 'invite' | 'vcard' | 'magic',
+  debounceMs: number = 6000
+): boolean {
+  if (typeof window === 'undefined' || !slug) return false
+  const cleanSlug = String(slug).replace(/^\/?(i|w|v|m)\//, '').trim()
+  try {
+    const sessionKey = `cardzy_last_view_${cardType}_${cleanSlug}`
+    const lastViewed = Number(sessionStorage.getItem(sessionKey) || '0')
+    const now = Date.now()
+    if (now - lastViewed < debounceMs) {
+      return false
+    }
+    sessionStorage.setItem(sessionKey, String(now))
+    return true
+  } catch {
+    return true
+  }
+}
+
 export function shouldIncrementView(
   slug: string,
   cardType: 'wish' | 'invite' | 'vcard' | 'magic',
@@ -134,29 +138,12 @@ export function shouldIncrementView(
   if (typeof window === 'undefined' || !slug) return false
   const cleanSlug = String(slug).replace(/^\/?(i|w|v|m)\//, '').trim()
 
-  // 1. NEVER increment if viewer is the sender, owner, creator, or admin!
+  // 1. NEVER increment if viewer is in sender mode, preview mode, or creator of this card
   if (isSenderOrOwner(cleanSlug, creatorId, searchParams, currentUserId, currentUserEmail)) {
     return false
   }
 
-  // 2. Direct Admin Check
-  if (isDeviceAdmin(currentUserEmail)) {
-    return false
-  }
-
-  // 3. Debounce by 5 seconds per browser tab to avoid double-counting on refresh
-  try {
-    const sessionKey = `cardzy_last_view_${cardType}_${cleanSlug}`
-    const lastViewed = Number(sessionStorage.getItem(sessionKey) || '0')
-    const now = Date.now()
-    if (now - lastViewed < 5000) {
-      return false
-    }
-    sessionStorage.setItem(sessionKey, String(now))
-    return true
-  } catch {
-    return true
-  }
+  return true
 }
 
 /**
@@ -178,6 +165,11 @@ export async function recordCardView(
   const cleanSlug = String(slug).replace(/^\/?(i|w|v|m)\//, '').trim()
 
   if (!shouldIncrementView(cleanSlug, cardType, creatorId, searchParams, currentUserId, currentUserEmail)) {
+    return false
+  }
+
+  // 2. Tab debounce check to prevent spamming on rapid reload
+  if (!checkAndSetViewDebounce(cleanSlug, cardType)) {
     return false
   }
 
@@ -216,6 +208,7 @@ export async function recordCardView(
           {
             viewCount: increment(1),
             viewsCount: increment(1),
+            views: increment(1),
             lastViewedAt: Date.now(),
           },
           { merge: true }

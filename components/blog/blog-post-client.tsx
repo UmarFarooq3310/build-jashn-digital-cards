@@ -367,7 +367,7 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       vi: 'Chuyên Gia Phong Cách Cưới & Văn Hóa Trưởng',
       sw: 'Mbunifu Mkuu wa Harusi na Utamaduni'
     },
-    instagram: 'https://www.instagram.com/cardzyonline',
+    instagram: 'https://www.instagram.com/cardzyonline/',
     tiktok: 'https://www.tiktok.com/@cardzyonline',
   },
   Kainat: {
@@ -412,7 +412,7 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       vi: 'Chuyên Gia Chiến Lược Sản Phẩm & Công Nghệ Trưởng',
       sw: 'Mkuu wa Mikakati ya Bidhaa na Teknolojia'
     },
-    instagram: 'https://www.instagram.com/cardzyonline',
+    instagram: 'https://www.instagram.com/cardzyonline/',
     tiktok: 'https://www.tiktok.com/@cardzyonline',
   },
   Hasnain: {
@@ -457,7 +457,7 @@ const AUTHOR_BIOS: Record<string, { bio: Record<string, string>; location: strin
       vi: 'Biên Tập Viên Văn Hóa & Sự Kiện Toàn Cầu',
       sw: 'Mhariri wa Matukio na Utamaduni wa Kimataifa'
     },
-    instagram: 'https://www.instagram.com/cardzyonline',
+    instagram: 'https://www.instagram.com/cardzyonline/',
     tiktok: 'https://www.tiktok.com/@cardzyonline',
   },
 }
