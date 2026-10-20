@@ -656,7 +656,7 @@ export function CardShareModal({ card, onClose, simpleMode = false }: CardShareM
                     ) : (
                       <>
                         <Video className="size-4 text-white" />
-                        <span>Download Video (MP4)</span>
+                        <span>Download Video (15s Reel/Story)</span>
                       </>
                     )}
                   </button>

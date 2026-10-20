@@ -146,15 +146,37 @@ export function canCreateCard(
 
   return { allowed: true, limit }
 }
+export function toEpochMs(val?: any): number {
+  if (!val) return 0
+  if (typeof val === 'number') {
+    return val < 10000000000 ? val * 1000 : val
+  }
+  if (typeof val === 'string') {
+    const num = Number(val)
+    if (!isNaN(num) && num > 0) {
+      return num < 10000000000 ? num * 1000 : num
+    }
+    const parsed = Date.parse(val)
+    return isNaN(parsed) ? 0 : parsed
+  }
+  if (typeof val === 'object') {
+    if (typeof val.toMillis === 'function') return val.toMillis()
+    if (typeof val.toDate === 'function') return val.toDate().getTime()
+    if (typeof val._seconds === 'number') return val._seconds * 1000 + Math.floor((val._nanoseconds || 0) / 1000000)
+    if (typeof val.seconds === 'number') return val.seconds * 1000 + Math.floor((val.nanoseconds || 0) / 1000000)
+  }
+  return 0
+}
 
 /**
  * Check if a card has expired (free cards expire after 30 days unless creator is Pro/Business)
  */
-export function isCardExpired(createdAt?: number, creatorPlan?: Plan): boolean {
-  if (!createdAt) return false
+export function isCardExpired(createdAt?: any, creatorPlan?: Plan): boolean {
+  const ts = toEpochMs(createdAt)
+  if (!ts) return false
   if (creatorPlan === 'pro' || creatorPlan === 'business') return false
   const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000
-  return Date.now() - createdAt > THIRTY_DAYS_MS
+  return Date.now() - ts > THIRTY_DAYS_MS
 }
 
 // ── Pricing recommendation ────────────────────────────────────────────────────

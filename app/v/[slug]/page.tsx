@@ -175,8 +175,9 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
   }
 
   // ── 30-Day Expiration for Free Visiting Cards ──
+  const isPreview = searchParams.get('preview') === 'true'
   const isExpiredCard = isCardExpired(card.createdAt, (card as any).plan || (card.creatorId === user?.uid ? user?.plan : undefined))
-  if (isExpiredCard) {
+  if (isExpiredCard && !isPreview) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#050507] p-6 text-center space-y-4 text-white">
         <div className="size-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400 text-2xl">

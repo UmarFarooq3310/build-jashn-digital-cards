@@ -157,7 +157,7 @@ export function ShareBar({
                 ? videoProgress > 0
                 ? `Making Video ${videoProgress}%`
                   : 'Making Video…'
-                : 'Download Video'}
+                : 'Download Video (15s)'}
             </span>
           </Button>
         </>

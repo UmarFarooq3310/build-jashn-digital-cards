@@ -12,6 +12,7 @@ export interface CardMediaExportOptions {
   audioTrack?: string
   audioUrl?: string
   targetAspectRatio?: 'auto' | '9:16' | 'original'
+  durationSeconds?: number
   onProgress?: (percent: number) => void
 }
 
@@ -344,6 +345,7 @@ export async function recordImageAsVideo({
   audioTrack,
   audioUrl,
   targetAspectRatio = "auto",
+  durationSeconds = 15,
   onProgress,
 }: {
   img: HTMLImageElement
@@ -353,8 +355,12 @@ export async function recordImageAsVideo({
   audioTrack?: string
   audioUrl?: string
   targetAspectRatio?: "auto" | "9:16" | "original"
+  durationSeconds?: number
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
+  const DURATION_SEC = Math.max(3, durationSeconds || 15)
+  const DURATION_MS = DURATION_SEC * 1000
+
   // Constrain width to 720p maximum for fast, buttery smooth 30fps recording
   const MAX_VIDEO_WIDTH = 720
   let targetWidth = img.naturalWidth || img.width || 720
@@ -417,9 +423,10 @@ export async function recordImageAsVideo({
               // Soft fade in over 0.35s
               gain.gain.setValueAtTime(0.001, audioContext.currentTime)
               gain.gain.exponentialRampToValueAtTime(0.75, audioContext.currentTime + 0.35)
-              // Sustain audio until 5.4s of the 6.0-second video
-              gain.gain.setValueAtTime(0.75, audioContext.currentTime + 5.4)
-              gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 6.0)
+              // Sustain audio until near the end of video with soft 0.8s fade out
+              const fadeOutStart = Math.max(0.5, DURATION_SEC - 0.8)
+              gain.gain.setValueAtTime(0.75, audioContext.currentTime + fadeOutStart)
+              gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + DURATION_SEC)
 
               const dest = audioContext.createMediaStreamDestination()
               srcNode.connect(gain)
@@ -513,21 +520,37 @@ export async function recordImageAsVideo({
       const detail = (ev as any)?.error?.message || "recorder error event"
       reject(new Error(`MediaRecorder error: ${detail}`))
     }
-    recorder.onstop = () => {
+    recorder.onstop = async () => {
       cleanupTimers()
       cleanupAudio()
       try {
-        const blob = new Blob(chunks, { type: actualMime })
+        let blob = new Blob(chunks, { type: actualMime })
         if (blob.size === 0) {
           reject(new Error("Video recording produced empty file"))
           return
         }
+
+        // If WebM, patch the missing duration metadata in EBML header so Instagram & mobile players recognize full duration!
+        if (actualMime.includes("webm")) {
+          try {
+            const fixWebmDurationModule = await import("fix-webm-duration")
+            const fixWebmDuration = (fixWebmDurationModule as any).default || fixWebmDurationModule
+            if (typeof fixWebmDuration === "function") {
+              blob = await new Promise<Blob>((res) => {
+                fixWebmDuration(blob, DURATION_MS, (fixed: Blob) => res(fixed))
+              })
+            }
+          } catch (fixErr) {
+            console.warn("Could not patch WebM duration header:", fixErr)
+          }
+        }
+
         const blobUrl = URL.createObjectURL(blob)
         const link = document.createElement("a")
         link.download = `${fileName}.${ext}`
         link.href = blobUrl
         link.click()
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 6000)
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 10000)
         resolve()
       } catch (err) {
         reject(err)
@@ -535,14 +558,16 @@ export async function recordImageAsVideo({
     }
   })
 
-  // Start recording cleanly without timeslice for an uncorrupted, solid video container
-  recorder.start()
+  // Start recording with 1000ms timeslices so data chunks flush reliably throughout recording
+  try {
+    recorder.start(1000)
+  } catch {
+    recorder.start()
+  }
 
-  // ── Exact 6.0 Seconds Real-Time Animation Control ──
+  // ── Real-Time Animation Control ──
   // Driven strictly by performance.now() elapsed time so particles and motion
   // animate continuously until the very last second without stopping early!
-  const DURATION_MS = 6000
-  const DURATION_SEC = 6.0
   const startTime = performance.now()
   let lastFrameTime = startTime
 
@@ -800,6 +825,7 @@ export async function downloadCanvasAsVideo({
   audioUrl,
   occasionId,
   targetAspectRatio,
+  durationSeconds = 15,
   onProgress,
 }: {
   canvas: HTMLCanvasElement
@@ -808,6 +834,7 @@ export async function downloadCanvasAsVideo({
   audioUrl?: string
   occasionId?: string
   targetAspectRatio?: "auto" | "9:16" | "original"
+  durationSeconds?: number
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
   const dataUrl = canvas.toDataURL("image/png")
@@ -825,12 +852,13 @@ export async function downloadCanvasAsVideo({
     audioTrack: audioTrack || "friendship-soft",
     audioUrl,
     targetAspectRatio,
+    durationSeconds,
     onProgress,
   })
 }
 
 /**
- * Records an animated 5-second cinematic 3D video from a DOM card element with background sound.
+ * Records an animated 15-second cinematic 3D video from a DOM card element with background sound.
  */
 export async function downloadCardVideo({
   element,
@@ -841,6 +869,7 @@ export async function downloadCardVideo({
   audioTrack,
   audioUrl,
   targetAspectRatio,
+  durationSeconds = 15,
   onProgress,
 }: CardMediaExportOptions): Promise<boolean> {
   if (!element) return false
@@ -867,6 +896,7 @@ export async function downloadCardVideo({
       audioTrack,
       audioUrl,
       targetAspectRatio,
+      durationSeconds,
       onProgress,
     })
   } catch (e: unknown) {

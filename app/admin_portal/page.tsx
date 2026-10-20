@@ -108,10 +108,15 @@ function formatDateStandard(timestamp?: number): string {
 
 function toEpochMs(val?: any): number {
   if (!val) return 0
-  if (typeof val === 'number') return val
-  if (typeof val === 'string') return Number(val) || Date.parse(val) || 0
+  if (typeof val === 'number') return val < 10000000000 ? val * 1000 : val
+  if (typeof val === 'string') {
+    const num = Number(val)
+    if (!isNaN(num) && num > 0) return num < 10000000000 ? num * 1000 : num
+    return Date.parse(val) || 0
+  }
   if (typeof val === 'object') {
     if (typeof val.toMillis === 'function') return val.toMillis()
+    if (typeof val.toDate === 'function') return val.toDate().getTime()
     if (typeof val._seconds === 'number') return val._seconds * 1000 + Math.floor((val._nanoseconds || 0) / 1000000)
     if (typeof val.seconds === 'number') return val.seconds * 1000 + Math.floor((val.nanoseconds || 0) / 1000000)
   }
@@ -2085,14 +2090,7 @@ export default function AdminPortalPage() {
     setIsLoadingActivity(true)
     try {
       const { collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')
-      const toMs = (val: any): number => {
-        if (!val) return 0
-        if (typeof val === 'number') return val
-        if (val?.toMillis) return val.toMillis()
-        if (val?._seconds) return val._seconds * 1000
-        if (val?.seconds) return val.seconds * 1000
-        return 0
-      }
+      const toMs = (val: any): number => toEpochMs(val)
 
       const [invSnap, wishSnap, vcSnap, magicSnap] = await Promise.all([
         getDocs(query(collection(activeDb, 'invitations'), orderBy('createdAt', 'desc'), limit(3))).catch(() => ({ docs: [] } as any)),
@@ -2111,7 +2109,7 @@ export default function AdminPortalPage() {
           subtitle: `By ${data.hostNames || 'Host'} • ${data.city || data.venue || 'Event'}`,
           time: toMs(data.createdAt),
           origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
-          link: `/i/${data.slug || d.id}`,
+          link: `/i/${data.slug || d.id}?mode=sender&preview=true`,
         })
       })
       wishSnap.docs.forEach((d: any) => {
@@ -2123,7 +2121,7 @@ export default function AdminPortalPage() {
           subtitle: `Occasion: ${data.occasionId || 'wish'} • "${(data.message || '').slice(0, 40)}..."`,
           time: toMs(data.createdAt),
           origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
-          link: `/w/${data.slug || d.id}`,
+          link: `/w/${data.slug || d.id}?mode=sender&preview=true`,
         })
       })
       vcSnap.docs.forEach((d: any) => {
@@ -2135,7 +2133,7 @@ export default function AdminPortalPage() {
           subtitle: `${data.title || 'Professional'} • ${data.company || 'Company'}`,
           time: toMs(data.createdAt),
           origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
-          link: `/v/${data.slug || d.id}`,
+          link: `/v/${data.slug || d.id}?mode=sender&preview=true`,
         })
       })
       magicSnap.docs.forEach((d: any) => {
@@ -2147,7 +2145,7 @@ export default function AdminPortalPage() {
           subtitle: `Type: ${data.type || 'magic'} • Occasion: ${data.occasion || 'event'}`,
           time: toMs(data.createdAt),
           origin: { locationText: data.createdLocation || data.country || 'Pakistan', flag: '🌐', country: data.country || 'Pakistan', city: data.city || '' },
-          link: `/m/${data.slug || d.id}`,
+          link: `/m/${data.slug || d.id}?mode=sender&preview=true`,
         })
       })
 
@@ -2501,7 +2499,7 @@ export default function AdminPortalPage() {
       const u = getCardUser(card)
       if (u && (u.plan === 'pro' || u.plan === 'business')) return false
       if (card.creatorPlan === 'pro' || card.creatorPlan === 'business') return false
-      const ts = typeof card.createdAt === 'number' ? card.createdAt : 0
+      const ts = toEpochMs(card.createdAt)
       return ts > 0 && ts <= cutoff
     }
     const invCount = firestoreInvitations.filter(isOldFree).length
@@ -2593,7 +2591,7 @@ export default function AdminPortalPage() {
           cardType: 'magic',
           typeLabel: 'Magic Link',
           title: m.senderName ? `From ${m.senderName}` : 'Magic Link Card',
-          createdAt: typeof m.createdAt === 'number' ? m.createdAt : (m.createdAt?.seconds ? m.createdAt.seconds * 1000 : 0),
+          createdAt: toEpochMs(m.createdAt),
           previewUrl: `/m/${m.slug || m.id}?mode=sender&preview=true`,
         })
       }
@@ -2608,7 +2606,10 @@ export default function AdminPortalPage() {
     return allUsersList.filter((u) => {
       if (u.plan !== 'free') return false
       const cards = getUserCards(u)
-      return cards.some(c => c.createdAt > 0 && c.createdAt <= cutoff)
+      return cards.some(c => {
+        const ts = toEpochMs(c.createdAt)
+        return ts > 0 && ts <= cutoff
+      })
     }).length
   }, [allUsersList, getUserCards])
 
@@ -2616,7 +2617,7 @@ export default function AdminPortalPage() {
   const oldRsvpsCount = useMemo(() => {
     const cutoff = Date.now() - (guestPurgeDays * 24 * 60 * 60 * 1000)
     return rsvps.filter((r: any) => {
-      const ts = typeof r.createdAt === 'number' ? r.createdAt : (r.createdAt?.seconds ? r.createdAt.seconds * 1000 : 0)
+      const ts = toEpochMs(r.createdAt)
       return ts > 0 && ts <= cutoff
     }).length
   }, [rsvps, guestPurgeDays])
@@ -3042,7 +3043,7 @@ export default function AdminPortalPage() {
         const u = getCardUser(m)
         if (u && (u.plan === 'pro' || u.plan === 'business')) return false
         if ((m as any).creatorPlan === 'pro' || (m as any).creatorPlan === 'business') return false
-        const ts = typeof m.createdAt === 'number' ? m.createdAt : 0
+        const ts = toEpochMs(m.createdAt)
         return ts > 0 && ts <= cutoff
       })
     } else if (magicFilter === 'guests') {
@@ -3258,7 +3259,7 @@ export default function AdminPortalPage() {
             phone: inv.rsvpPhone,
             venue: inv.venue,
           }),
-          link: `/i/${(inv.slug || inv.id)}`,
+          link: `/i/${(inv.slug || inv.id)}?mode=sender&preview=true`,
         })
       }
     })
@@ -3270,14 +3271,14 @@ export default function AdminPortalPage() {
           typeLabel: 'Wish Card Created',
           title: `${w.senderName || 'Sender'} → ${w.recipientName || 'Recipient'}`,
           subtitle: `Occasion: ${w.occasionId} • "${(w.message || '').slice(0, 45)}..."`,
-          time: w.createdAt,
+          time: toEpochMs(w.createdAt),
           origin: inferOrigin({
             country: w.country,
             countryCode: w.countryCode,
             city: w.city,
             createdLocation: w.createdLocation,
           }),
-          link: `/w/${(w.slug || w.id)}`,
+          link: `/w/${(w.slug || w.id)}?mode=sender&preview=true`,
         })
       }
     })
@@ -3289,7 +3290,7 @@ export default function AdminPortalPage() {
           typeLabel: 'Visiting Card',
           title: vc.fullName || 'Digital Card',
           subtitle: `${vc.title || 'Professional'} • ${vc.company || 'Company'}`,
-          time: vc.createdAt,
+          time: toEpochMs(vc.createdAt),
           origin: inferOrigin({
             country: vc.country,
             countryCode: vc.countryCode,
@@ -3297,13 +3298,13 @@ export default function AdminPortalPage() {
             createdLocation: vc.createdLocation,
             phone: vc.phone,
           }),
-          link: `/v/${(vc.slug || vc.id)}`,
+          link: `/v/${(vc.slug || vc.id)}?mode=sender&preview=true`,
         })
       }
     })
 
     magicLinks.forEach((m) => {
-      const createdAt = typeof m.createdAt === 'number' ? m.createdAt : m.createdAt?.toMillis ? m.createdAt.toMillis() : (m.createdAt as any)?.seconds ? (m.createdAt as any).seconds * 1000 : 0
+      const createdAt = toEpochMs(m.createdAt)
       if (createdAt) {
         items.push({
           type: 'magic_link',
@@ -3312,7 +3313,7 @@ export default function AdminPortalPage() {
           subtitle: `Type: ${m.type || 'magic'} • Occasion: ${m.occasion || 'event'}`,
           time: createdAt,
           origin: inferOrigin({}),
-          link: `/m/${(m.slug || m.id)}`,
+          link: `/m/${(m.slug || m.id)}?mode=sender&preview=true`,
         })
       }
     })
@@ -3966,10 +3967,11 @@ export default function AdminPortalPage() {
                         <Link
                           href={act.link}
                           target="_blank"
-                          className="p-1.5 rounded-lg bg-muted hover:bg-muted/80 text-foreground transition-colors shrink-0"
-                          title="Open Link"
+                          className="p-1.5 px-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 text-xs font-bold flex items-center gap-1 transition-colors shrink-0"
+                          title="Preview Card & Sender Hub (Zero View Increment)"
                         >
-                          <ExternalLink className="size-3.5" />
+                          <Eye className="size-3.5" />
+                          <span>Preview</span>
                         </Link>
                       )}
                     </div>
@@ -5780,7 +5782,8 @@ export default function AdminPortalPage() {
                             {(() => {
                               const cardUser = getCardUser(m)
                               const isPro = cardUser?.plan === 'pro' || cardUser?.plan === 'business' || (m as any).creatorPlan === 'pro' || (m as any).creatorPlan === 'business'
-                              const mAgeDays = m.createdAt > 0 ? Math.floor((Date.now() - m.createdAt) / (1000 * 60 * 60 * 24)) : 0
+                              const mTs = toEpochMs(m.createdAt)
+                              const mAgeDays = mTs > 0 ? Math.floor((Date.now() - mTs) / (1000 * 60 * 60 * 24)) : 0
                               const isOldFree = !isPro && mAgeDays >= 30
 
                               if (isPro) {
@@ -6823,7 +6826,8 @@ export default function AdminPortalPage() {
                             {(() => {
                               const cardUser = getCardUser(inv)
                               const isPro = cardUser?.plan === 'pro' || cardUser?.plan === 'business' || (inv as any).creatorPlan === 'pro' || (inv as any).creatorPlan === 'business'
-                              const invAgeDays = inv.createdAt > 0 ? Math.floor((Date.now() - inv.createdAt) / (1000 * 60 * 60 * 24)) : 0
+                              const invTs = toEpochMs(inv.createdAt)
+                              const invAgeDays = invTs > 0 ? Math.floor((Date.now() - invTs) / (1000 * 60 * 60 * 24)) : 0
                               const isOldFree = !isPro && invAgeDays >= 30
 
                               if (isPro) {
@@ -7175,7 +7179,8 @@ export default function AdminPortalPage() {
                             {(() => {
                               const cardUser = getCardUser(w)
                               const isPro = cardUser?.plan === 'pro' || cardUser?.plan === 'business' || (w as any).creatorPlan === 'pro' || (w as any).creatorPlan === 'business'
-                              const wAgeDays = w.createdAt > 0 ? Math.floor((Date.now() - w.createdAt) / (1000 * 60 * 60 * 24)) : 0
+                              const wTs = toEpochMs(w.createdAt)
+                              const wAgeDays = wTs > 0 ? Math.floor((Date.now() - wTs) / (1000 * 60 * 60 * 24)) : 0
                               const isOldFree = !isPro && wAgeDays >= 30
 
                               if (isPro) {
@@ -7530,7 +7535,8 @@ export default function AdminPortalPage() {
                             {(() => {
                               const cardUser = getCardUser(vc)
                               const isPro = cardUser?.plan === 'pro' || cardUser?.plan === 'business' || (vc as any).creatorPlan === 'pro' || (vc as any).creatorPlan === 'business'
-                              const vcAgeDays = vc.createdAt > 0 ? Math.floor((Date.now() - vc.createdAt) / (1000 * 60 * 60 * 24)) : 0
+                              const vcTs = toEpochMs(vc.createdAt)
+                              const vcAgeDays = vcTs > 0 ? Math.floor((Date.now() - vcTs) / (1000 * 60 * 60 * 24)) : 0
                               const isOldFree = !isPro && vcAgeDays >= 30
 
                               if (isPro) {

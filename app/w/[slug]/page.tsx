@@ -227,8 +227,9 @@ function WishPublicContent({ slug }: { slug: string }) {
   }
 
   // ── 30-Day Expiration for Free Cards ──
+  const isPreview = searchParams.get('preview') === 'true'
   const isExpiredCard = isCardExpired(activeWish.createdAt, (activeWish as any).plan || (activeWish.creatorId === user?.uid ? user?.plan : undefined))
-  if (isExpiredCard) {
+  if (isExpiredCard && !isPreview) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center bg-slate-950 text-white space-y-4">
         <div className="size-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400 text-2xl">

@@ -476,8 +476,9 @@ function MagicLinkInner({ slug }: { slug: string }) {
   }
 
   // ── 30-Day Expiration for Free Magic Links ──
+  const isPreview = searchParams.get('preview') === 'true'
   const isExpiredCard = isCardExpired((data as any).createdAt, (data as any).plan || (data.senderId === user?.uid ? user?.plan : undefined))
-  if (isExpiredCard) {
+  if (isExpiredCard && !isPreview) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center bg-slate-950 text-white space-y-4">
         <div className="size-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400 text-2xl">
@@ -568,6 +569,11 @@ function MagicLinkInner({ slug }: { slug: string }) {
 
     return (
       <div className="pt-2 sm:pt-3 pb-24 sm:pb-8 lg:py-2 px-3 sm:px-5 max-w-7xl mx-auto lg:h-[calc(100dvh-4.25rem)] lg:max-h-[calc(100dvh-4.25rem)] flex flex-col justify-center">
+        {isExpiredCard && (
+          <div className="mb-3 px-4 py-2 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold text-center">
+            ⚠️ Notice: This Free card has expired (&gt;30 days). Public viewers see an expiration notice; you are viewing it in Admin / Preview mode.
+          </div>
+        )}
         <ConfettiRain active={confettiActive} />
         <style>{`
           @keyframes float {
@@ -828,6 +834,11 @@ function MagicLinkInner({ slug }: { slug: string }) {
     <div
       className={`h-screen max-h-screen sm:h-dvh sm:max-h-dvh w-full overflow-hidden bg-gradient-to-b ${themeStyle.bg} text-white flex flex-col items-center justify-between p-1 sm:p-3 relative font-sans select-none`}
     >
+      {isExpiredCard && (
+        <div className="w-full mb-1 px-3 py-1.5 rounded-lg bg-amber-500/25 border border-amber-500/40 text-amber-300 text-[11px] font-bold text-center z-50">
+          ⚠️ Notice: This Free card has expired (&gt;30 days). Public viewers see an expiration notice; you are viewing it in Admin / Preview mode.
+        </div>
+      )}
       <ConfettiRain active={confettiActive} />
       <style>{`
         @keyframes float {

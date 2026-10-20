@@ -29,6 +29,9 @@ importers:
       firebase-admin:
         specifier: ^14.4.0
         version: 14.4.0
+      fix-webm-duration:
+        specifier: ^1.0.6
+        version: 1.0.6
       gsap:
         specifier: ^3.15.0
         version: 3.15.0
@@ -1455,6 +1458,9 @@ packages:
 
   firebase@12.15.0:
     resolution: {integrity: sha512-p0YTLcRSTiBXMx9sGr4ZNSfLjc/RVBEw4C/TXjVMtw65+6E1Pbm47UY3F4/AqRoDobEcNX3gsbPGy7jPjxbgSQ==}
+
+  fix-webm-duration@1.0.6:
+    resolution: {integrity: sha512-zVAqi4gE+8ywxJuAyV/rlJVX6CMtvyapEbQx6jyoeX9TMjdqAlt/FdG5d7rXSSkDVzTvS0H7CtwzHcH/vh4FPA==}
 
   foreground-child@3.3.1:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
@@ -4228,6 +4234,8 @@ snapshots:
       '@firebase/util': 1.15.1
     transitivePeerDependencies:
       - '@react-native-async-storage/async-storage'
+
+  fix-webm-duration@1.0.6: {}
 
   foreground-child@3.3.1:
     dependencies:
