@@ -651,7 +651,7 @@ export function CardShareModal({ card, onClose, simpleMode = false }: CardShareM
                     {downloadingVideo ? (
                       <>
                         <Loader2 className="size-4 animate-spin text-white" />
-                        <span>{videoProgress > 0 ? `Making Video ${videoProgress}%` : 'Making Video...'}</span>
+                        <span>{videoProgress > 84 ? `Converting to MP4 ${videoProgress}%` : videoProgress > 0 ? `Recording ${videoProgress}%` : 'Making Video...'}</span>
                       </>
                     ) : (
                       <>

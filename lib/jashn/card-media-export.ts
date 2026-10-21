@@ -2,6 +2,8 @@
 
 import { recordCardShare } from '@/lib/jashn/magic-service'
 import { getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
+import { FFmpeg } from '@ffmpeg/ffmpeg'
+import { toBlobURL, fetchFile } from '@ffmpeg/util'
 
 export interface CardMediaExportOptions {
   element: HTMLElement | null
@@ -37,6 +39,105 @@ export function primeAudioContext(): AudioContext | null {
   } catch (e) {
     console.warn('primeAudioContext note:', e)
     return null
+  }
+}
+
+// ── FFmpeg WASM singleton for WebM→MP4 conversion ──
+// Lazily loaded only on browsers that don't natively support MP4 recording (Android Chrome).
+// The ~31 MB ffmpeg-core WASM binary is fetched from unpkg CDN and cached by the browser.
+let ffmpegInstance: FFmpeg | null = null
+let ffmpegLoadPromise: Promise<FFmpeg | null> | null = null
+
+async function getFFmpeg(): Promise<FFmpeg | null> {
+  if (ffmpegInstance) return ffmpegInstance
+  if (ffmpegLoadPromise) return ffmpegLoadPromise
+
+  ffmpegLoadPromise = (async () => {
+    try {
+      const ffmpeg = new FFmpeg()
+      // Use unpkg CDN for the single-threaded WASM core (no special CORS headers required)
+      const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
+      await ffmpeg.load({
+        coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+        wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+      })
+      ffmpegInstance = ffmpeg
+      return ffmpeg
+    } catch (err) {
+      console.warn('FFmpeg WASM load failed (will fallback to WebM):', err)
+      ffmpegLoadPromise = null // Allow retry on next call
+      return null
+    }
+  })()
+
+  return ffmpegLoadPromise
+}
+
+/**
+ * Converts a WebM video blob to MP4 (H.264 + AAC) using FFmpeg WASM.
+ * Returns the converted MP4 blob, or the original blob if conversion fails.
+ */
+async function convertWebmToMp4(
+  webmBlob: Blob,
+  onConversionProgress?: (percent: number) => void
+): Promise<{ blob: Blob; ext: string }> {
+  try {
+    const ffmpeg = await getFFmpeg()
+    if (!ffmpeg) {
+      console.warn('FFmpeg not available, downloading as WebM')
+      return { blob: webmBlob, ext: 'webm' }
+    }
+
+    // Set up progress tracking
+    if (onConversionProgress) {
+      ffmpeg.on('progress', ({ progress }) => {
+        // progress is 0-1
+        onConversionProgress(Math.min(99, Math.round(progress * 100)))
+      })
+    }
+
+    // Write WebM to FFmpeg virtual filesystem
+    const webmData = await fetchFile(webmBlob)
+    await ffmpeg.writeFile('input.webm', webmData)
+
+    // Convert WebM → MP4 with H.264 video + AAC audio
+    // -preset ultrafast: maximize speed on mobile devices
+    // -pix_fmt yuv420p: maximum compatibility with Instagram/Facebook/WhatsApp
+    // -movflags +faststart: move moov atom to front for instant playback
+    // -crf 23: good quality without excessive file size
+    await ffmpeg.exec([
+      '-i', 'input.webm',
+      '-c:v', 'libx264',
+      '-preset', 'ultrafast',
+      '-pix_fmt', 'yuv420p',
+      '-crf', '23',
+      '-c:a', 'aac',
+      '-b:a', '128k',
+      '-movflags', '+faststart',
+      '-y',
+      'output.mp4',
+    ])
+
+    // Read the converted MP4
+    const mp4Data = await ffmpeg.readFile('output.mp4')
+    if (mp4Data instanceof Uint8Array && mp4Data.length > 0) {
+      const mp4Blob = new Blob([mp4Data], { type: 'video/mp4' })
+
+      // Cleanup virtual filesystem
+      try {
+        await ffmpeg.deleteFile('input.webm')
+        await ffmpeg.deleteFile('output.mp4')
+      } catch {}
+
+      if (onConversionProgress) onConversionProgress(100)
+      return { blob: mp4Blob, ext: 'mp4' }
+    }
+
+    console.warn('FFmpeg produced empty output, falling back to WebM')
+    return { blob: webmBlob, ext: 'webm' }
+  } catch (err) {
+    console.warn('WebM→MP4 conversion failed, downloading as WebM:', err)
+    return { blob: webmBlob, ext: 'webm' }
   }
 }
 
@@ -530,7 +631,9 @@ export async function recordImageAsVideo({
           return
         }
 
-        // If WebM, patch the missing duration metadata in EBML header so Instagram & mobile players recognize full duration!
+        let finalExt = ext
+
+        // If WebM, patch the missing duration metadata in EBML header first
         if (actualMime.includes("webm")) {
           try {
             const fixWebmDurationModule = await import("fix-webm-duration")
@@ -543,11 +646,22 @@ export async function recordImageAsVideo({
           } catch (fixErr) {
             console.warn("Could not patch WebM duration header:", fixErr)
           }
+
+          // Convert WebM → MP4 so the video works on Instagram, Facebook, WhatsApp etc.
+          if (onProgress) onProgress(85) // Signal: recording done, conversion starting
+          const converted = await convertWebmToMp4(blob, (convPercent) => {
+            // Map conversion 0-100% into the overall 85-99% range
+            if (onProgress) onProgress(85 + Math.round(convPercent * 0.14))
+          })
+          blob = converted.blob
+          finalExt = converted.ext
         }
+
+        if (onProgress) onProgress(100)
 
         const blobUrl = URL.createObjectURL(blob)
         const link = document.createElement("a")
-        link.download = `${fileName}.${ext}`
+        link.download = `${fileName}.${finalExt}`
         link.href = blobUrl
         link.click()
         setTimeout(() => URL.revokeObjectURL(blobUrl), 10000)
@@ -783,13 +897,14 @@ export async function recordImageAsVideo({
       ctx.strokeRect(1.5, 1.5, targetWidth - 3, targetHeight - 3)
       ctx.restore()
 
-      const progressPercent = Math.min(99, Math.round((elapsed / DURATION_MS) * 100))
+      // Recording phase: 0–84%, conversion phase (in onstop): 85–100%
+      const progressPercent = Math.min(84, Math.round((elapsed / DURATION_MS) * 84))
       if (onProgress) onProgress(progressPercent)
 
       if (elapsed < DURATION_MS) {
         animId = requestAnimationFrame(drawFrame)
       } else {
-        if (onProgress) onProgress(100)
+        if (onProgress) onProgress(85) // Recording complete, conversion will follow in onstop
         setTimeout(() => {
           if (recorder.state === "recording") {
             try {

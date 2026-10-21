@@ -4827,49 +4827,51 @@ export default function AdminPortalPage() {
                         className="rounded-3xl border border-border bg-card shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col justify-between"
                       >
                         {/* ── TOP STATS BAR ("ON TOP OF THAT CARD") ── */}
-                        <div className="px-4 py-2.5 bg-gradient-to-r from-rose-500/10 via-amber-500/10 to-blue-500/10 border-b border-border/80 flex items-center justify-between gap-1.5 flex-wrap">
-                          <div className="flex items-center gap-1.5 text-xs font-black font-mono">
+                        <div className="px-4 py-2.5 bg-gradient-to-r from-rose-500/10 via-amber-500/10 to-blue-500/10 border-b border-border/80 space-y-1.5">
+                          {/* Row 1: All 5 primary metrics always visible */}
+                          <div className="grid grid-cols-5 gap-1 text-xs font-black font-mono">
                             <span
-                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/25"
+                              className="inline-flex items-center justify-center gap-1 px-1.5 py-0.5 rounded-lg bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/25"
                               title="Likes count"
                             >
-                              <Heart className="size-3 fill-rose-500 text-rose-500" />
+                              <Heart className="size-3 fill-rose-500 text-rose-500 shrink-0" />
                               <span>{p.likes || 0}</span>
                             </span>
                             <span
-                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25"
+                              className="inline-flex items-center justify-center gap-1 px-1.5 py-0.5 rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25"
                               title="WhatsApp & social shares"
                             >
-                              <Share2 className="size-3" />
+                              <Share2 className="size-3 shrink-0" />
                               <span>{p.shares || 0}</span>
                             </span>
                             <span
-                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/25"
+                              className="inline-flex items-center justify-center gap-1 px-1.5 py-0.5 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/25"
                               title="Verses copied"
                             >
-                              <FileText className="size-3" />
+                              <FileText className="size-3 shrink-0" />
                               <span>{p.copies || 0}</span>
                             </span>
                             <span
-                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/25"
+                              className="inline-flex items-center justify-center gap-1 px-1.5 py-0.5 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/25"
                               title="Card views"
                             >
-                              <Eye className="size-3" />
+                              <Eye className="size-3 shrink-0" />
                               <span>{p.views || 0}</span>
                             </span>
                             <span
-                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/25"
+                              className="inline-flex items-center justify-center gap-1 px-1.5 py-0.5 rounded-lg bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/25"
                               title="Story flyers downloaded"
                             >
-                              <Download className="size-3" />
+                              <Download className="size-3 shrink-0" />
                               <span>{p.flyers || 0}</span>
                             </span>
                           </div>
 
+                          {/* Row 2: Last interaction timestamp */}
                           {p.lastInteractedAt && (
-                            <span className="text-[10px] text-muted-foreground font-mono">
+                            <div className="text-[10px] text-muted-foreground font-mono text-right">
                               {formatRelativeTime(p.lastInteractedAt)}
-                            </span>
+                            </div>
                           )}
                         </div>
 

@@ -291,11 +291,14 @@ export default function RootLayout({
           data-key="cKRdWrDWn4jrJ4Btb4eAfg"
           async
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          suppressHydrationWarning
-        />
+        {jsonLd.map((item, idx) => (
+          <script
+            key={`ld-json-${idx}`}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(item) }}
+            suppressHydrationWarning
+          />
+        ))}
         <style
           dangerouslySetInnerHTML={{
             __html: `

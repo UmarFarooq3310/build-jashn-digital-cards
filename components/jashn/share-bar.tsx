@@ -154,9 +154,11 @@ export function ShareBar({
             <Video className="size-4" />
             <span className="font-extrabold">
               {videoGenerating
-                ? videoProgress > 0
-                ? `Making Video ${videoProgress}%`
-                  : 'Making Video…'
+                ? videoProgress > 84
+                  ? `Converting to MP4 ${videoProgress}%`
+                  : videoProgress > 0
+                    ? `Recording ${videoProgress}%`
+                    : 'Making Video…'
                 : 'Download Video (15s)'}
             </span>
           </Button>
