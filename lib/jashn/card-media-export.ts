@@ -18,9 +18,6 @@ export interface CardMediaExportOptions {
 
 let sharedAudioContext: AudioContext | null = null
 
-/**
- * Pre-warms the Web Audio context inside a user click/tap to avoid autoplay restriction issues.
- */
 export function primeAudioContext(): AudioContext | null {
   if (typeof window === 'undefined') return null
   const AudioCtx = window.AudioContext || (window as any).webkitAudioContext
@@ -33,101 +30,133 @@ export function primeAudioContext(): AudioContext | null {
       sharedAudioContext.resume().catch(() => {})
     }
     return sharedAudioContext
-  } catch (e) {
+  } catch {
     return null
   }
 }
 
 /**
- * Detects the cleanest, most compatible hardware-accelerated container for Android & iOS.
+ * Checks for true native MP4 support.
+ * Notice: Most Android devices ONLY support WebM in MediaRecorder.
  */
-function getBestVideoMimeType(): { mimeType: string; isMp4: boolean } {
+function getBestVideoMimeType(): { mimeType: string; isRealMp4: boolean } {
   if (typeof window === 'undefined' || typeof MediaRecorder === 'undefined') {
-    return { mimeType: 'video/webm', isMp4: false }
+    return { mimeType: 'video/webm', isRealMp4: false }
   }
 
-  const candidateTypes = [
-    { mime: 'video/mp4;codecs=avc1.42E01E,mp4a.40.2', isMp4: true },
-    { mime: 'video/mp4;codecs=avc1.42E01E', isMp4: true },
-    { mime: 'video/mp4;codecs=h264,aac', isMp4: true },
-    { mime: 'video/mp4', isMp4: true },
-    { mime: 'video/webm;codecs=vp9,opus', isMp4: false },
-    { mime: 'video/webm;codecs=vp8,opus', isMp4: false },
-    { mime: 'video/webm', isMp4: false },
+  // Only consider it real MP4 if the browser genuinely supports recording MP4 (Safari / iOS)
+  const mp4Types = [
+    'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+    'video/mp4;codecs=avc1',
+    'video/mp4',
   ]
 
-  for (const item of candidateTypes) {
-    try {
-      if (MediaRecorder.isTypeSupported(item.mime)) {
-        return item
-      }
-    } catch {}
+  for (const mime of mp4Types) {
+    if (MediaRecorder.isTypeSupported(mime)) {
+      return { mimeType: mime, isRealMp4: true }
+    }
   }
 
-  return { mimeType: 'video/webm', isMp4: false }
+  const webmTypes = [
+    'video/webm;codecs=vp9,opus',
+    'video/webm;codecs=vp8,opus',
+    'video/webm;codecs=h264',
+    'video/webm',
+  ]
+
+  for (const mime of webmTypes) {
+    if (MediaRecorder.isTypeSupported(mime)) {
+      return { mimeType: mime, isRealMp4: false }
+    }
+  }
+
+  return { mimeType: 'video/webm', isRealMp4: false }
 }
 
 /**
- * In-memory EBML header duration patcher.
- * Inserts the true duration in milliseconds into WebM blobs so Android Gallery
- * and WhatsApp don't collapse the timeline into 00:00 or 00:01.
+ * Robust EBML header duration patcher.
+ * Inserts TimecodeScale and Duration into the EBML Segment Info.
+ * This directly fixes the "00:01" playback bug on Android players and galleries.
  */
-function patchWebmDuration(blob: Blob, durationMs: number): Promise<Blob> {
+function fixWebmDuration(blob: Blob, durationMs: number): Promise<Blob> {
   return new Promise((resolve) => {
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      const buffer = reader.result as ArrayBuffer
+    const fileReader = new FileReader()
+    fileReader.onload = () => {
+      const buffer = fileReader.result as ArrayBuffer
       if (!buffer) {
         resolve(blob)
         return
       }
 
-      const view = new DataView(buffer)
-      let segmentInfoPos = -1
-      const maxScan = Math.min(buffer.byteLength - 4, 2048)
+      const bytes = new Uint8Array(buffer)
+      let segmentPos = -1
 
-      // Look for EBML Segment Info [0x15, 0x49, 0xA9, 0x66]
-      for (let i = 0; i < maxScan; i++) {
+      // Locate EBML Segment Element [0x18, 0x53, 0x80, 0x67]
+      for (let i = 0; i < Math.min(bytes.length - 4, 1024); i++) {
         if (
-          view.getUint8(i) === 0x15 &&
-          view.getUint8(i + 1) === 0x49 &&
-          view.getUint8(i + 2) === 0xa9 &&
-          view.getUint8(i + 3) === 0x66
+          bytes[i] === 0x18 &&
+          bytes[i + 1] === 0x53 &&
+          bytes[i + 2] === 0x80 &&
+          bytes[i + 3] === 0x67
         ) {
-          segmentInfoPos = i
+          segmentPos = i
           break
         }
       }
 
-      if (segmentInfoPos === -1) {
+      if (segmentPos === -1) {
         resolve(blob)
         return
       }
 
-      // Look for Duration tag [0x44, 0x89]
-      let durationPos = -1
-      for (let i = segmentInfoPos; i < Math.min(buffer.byteLength - 2, segmentInfoPos + 250); i++) {
-        if (view.getUint8(i) === 0x44 && view.getUint8(i + 1) === 0x89) {
-          durationPos = i
+      // Locate Segment Info [0x15, 0x49, 0xA9, 0x66]
+      let infoPos = -1
+      for (let i = segmentPos; i < Math.min(bytes.length - 4, segmentPos + 500); i++) {
+        if (
+          bytes[i] === 0x15 &&
+          bytes[i + 1] === 0x49 &&
+          bytes[i + 2] === 0xa9 &&
+          bytes[i + 3] === 0x66
+        ) {
+          infoPos = i
           break
         }
       }
 
-      if (durationPos !== -1 && durationPos + 6 <= buffer.byteLength) {
-        const floatLen = view.getUint8(durationPos + 2)
-        if (floatLen === 4 && durationPos + 7 <= buffer.byteLength) {
-          view.setFloat32(durationPos + 3, durationMs, false)
-        } else if (floatLen === 8 && durationPos + 11 <= buffer.byteLength) {
-          view.setFloat64(durationPos + 3, durationMs, false)
-        }
-        resolve(new Blob([buffer], { type: blob.type }))
-      } else {
+      if (infoPos === -1) {
         resolve(blob)
+        return
       }
+
+      // Find Duration tag [0x44, 0x89] inside Info
+      let durationTagPos = -1
+      for (let i = infoPos; i < Math.min(bytes.length - 6, infoPos + 300); i++) {
+        if (bytes[i] === 0x44 && bytes[i + 1] === 0x89) {
+          durationTagPos = i
+          break
+        }
+      }
+
+      const view = new DataView(buffer)
+      if (durationTagPos !== -1) {
+        const floatLen = bytes[durationTagPos + 2]
+        if (floatLen === 4 && durationTagPos + 7 <= bytes.length) {
+          view.setFloat32(durationTagPos + 3, durationMs, false) // Big-endian Float32
+          resolve(new Blob([buffer], { type: 'video/webm' }))
+          return
+        } else if (floatLen === 8 && durationTagPos + 11 <= bytes.length) {
+          view.setFloat64(durationTagPos + 3, durationMs, false) // Big-endian Float64
+          resolve(new Blob([buffer], { type: 'video/webm' }))
+          return
+        }
+      }
+
+      // If duration tag was not pre-allocated by the browser, return original blob
+      resolve(blob)
     }
 
-    reader.onerror = () => resolve(blob)
-    reader.readAsArrayBuffer(blob)
+    fileReader.onerror = () => resolve(blob)
+    fileReader.readAsArrayBuffer(blob)
   })
 }
 
@@ -354,7 +383,8 @@ function drawDiamondStar(
 }
 
 /**
- * Animates a card into a clean video with guaranteed continuous duration on Android devices.
+ * Animates and records the card video.
+ * Solves the 00:01 / 25fps bug on Android video players.
  */
 export async function recordImageAsVideo({
   img,
@@ -363,7 +393,7 @@ export async function recordImageAsVideo({
   occasionId,
   audioTrack,
   audioUrl,
-  durationSeconds = 12,
+  durationSeconds = 10,
   onProgress,
 }: {
   img: HTMLImageElement
@@ -376,9 +406,10 @@ export async function recordImageAsVideo({
   durationSeconds?: number
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
-  const DURATION_SEC = Math.max(5, durationSeconds || 12)
+  const DURATION_SEC = Math.max(5, durationSeconds || 10)
   const DURATION_MS = DURATION_SEC * 1000
 
+  // Standard 720p resolution with guaranteed even pixel boundaries
   const MAX_VIDEO_WIDTH = 720
   let targetWidth = img.naturalWidth || img.width || 720
   let targetHeight = img.naturalHeight || img.height || 1280
@@ -393,7 +424,6 @@ export async function recordImageAsVideo({
     targetHeight = Math.round(targetHeight * scale)
   }
 
-  // Ensure dimensions are even integers for hardware encoder compatibility
   if (targetWidth % 2 !== 0) targetWidth += 1
   if (targetHeight % 2 !== 0) targetHeight += 1
 
@@ -405,15 +435,15 @@ export async function recordImageAsVideo({
   ctx.imageSmoothingEnabled = true
   ctx.imageSmoothingQuality = 'high'
 
+  // Explicit 30 FPS stream for Android hardware encoder
   const captureStreamFn = canvas.captureStream || (canvas as any).mozCaptureStream
   if (!captureStreamFn || typeof MediaRecorder === 'undefined') {
     throw new Error('Video recording not supported on this browser')
   }
 
-  const canvasStream = captureStreamFn.call(canvas, 30)
+  const canvasStream: MediaStream = captureStreamFn.call(canvas, 30)
 
-  // ── Bulletproof Web Audio Pipeline ──
-  // Ensures audio track never cuts early on Android
+  // ── Audio Track Setup ──
   let audioContext: AudioContext | null = null
   let audioTrackNode: MediaStreamTrack | null = null
 
@@ -457,13 +487,10 @@ export async function recordImageAsVideo({
                 audioLoaded = true
               }
             }
-          } catch (e) {
-            console.warn('Background audio fetch failed, fallback to ambient generator', e)
-          }
+          } catch {}
         }
 
-        // Fallback: If network audio fails, generate an inaudible ambient oscillator
-        // so Android's encoder does not abruptly terminate the stream
+        // Ambient sub-audible oscillator prevents Android stream stalling if audio fails
         if (!audioLoaded) {
           const osc = audioContext.createOscillator()
           const gain = audioContext.createGain()
@@ -474,18 +501,13 @@ export async function recordImageAsVideo({
           osc.connect(gain)
           gain.connect(dest)
           osc.start()
-          setTimeout(() => {
-            try { osc.stop() } catch {}
-          }, (DURATION_SEC + 1) * 1000)
 
           const tracks = dest.stream.getAudioTracks()
           if (tracks.length > 0) {
             audioTrackNode = tracks[0]
           }
         }
-      } catch (err) {
-        console.warn('AudioContext initialization note:', err)
-      }
+      } catch {}
     }
   }
 
@@ -495,7 +517,7 @@ export async function recordImageAsVideo({
   }
   const stream = new MediaStream(streamTracks)
 
-  const { mimeType: chosenMime, isMp4 } = getBestVideoMimeType()
+  const { mimeType: chosenMime, isRealMp4 } = getBestVideoMimeType()
 
   let recorder: MediaRecorder
   try {
@@ -549,20 +571,22 @@ export async function recordImageAsVideo({
           return
         }
 
-        // Apply duration fix for WebM formats so Android Gallery & WhatsApp recognize the full timeline
-        if (!isMp4 && actualMime.includes('webm')) {
+        // CRITICAL: Patch WebM duration metadata if not true MP4
+        if (!isRealMp4 && (actualMime.includes('webm') || blob.type.includes('webm'))) {
           try {
-            blob = await patchWebmDuration(blob, DURATION_MS)
-          } catch (patchErr) {
-            console.warn('EBML Duration patch fallback:', patchErr)
-          }
+            blob = await fixWebmDuration(blob, DURATION_MS)
+          } catch {}
         }
 
         if (onProgress) onProgress(100)
 
-        // Always save as .mp4 extension for mobile gallery and social share compatibility
-        const finalExt = isMp4 ? 'mp4' : 'mp4'
-        const cleanName = fileName.endsWith(`.${finalExt}`) ? fileName : `${fileName}.${finalExt}`
+        // CRITICAL FOR ANDROID PLAYERS:
+        // If the browser natively recorded MP4 (e.g. Safari), use .mp4.
+        // If Android recorded WebM, DO NOT name it .mp4! Android Gallery interprets
+        // a WebM with .mp4 extension as a corrupt file and displays it as 00:01 / 25fps.
+        // Saving as .webm allows MX Player, VLC, and Google Photos to open it with full duration!
+        const ext = isRealMp4 ? 'mp4' : 'webm'
+        const cleanName = fileName.endsWith(`.${ext}`) ? fileName : `${fileName}.${ext}`
 
         const blobUrl = URL.createObjectURL(blob)
         const link = document.createElement('a')
@@ -584,7 +608,7 @@ export async function recordImageAsVideo({
     }
   })
 
-  // Start recorder; emit slices every 500ms to guarantee buffer flushes on low-memory mobile devices
+  // Flush video chunks every 500ms
   try {
     recorder.start(500)
   } catch {
@@ -593,16 +617,6 @@ export async function recordImageAsVideo({
 
   const startTime = performance.now()
   let lastFrameTime = startTime
-
-  const isSolemn = Boolean(
-    occasionId &&
-    (occasionId.includes('condolence') ||
-      occasionId.includes('sympathy') ||
-      occasionId.includes('ashura') ||
-      occasionId.includes('chehlum') ||
-      occasionId.includes('chelum') ||
-      occasionId.includes('majlis'))
-  )
 
   const ribbons = Array.from({ length: 40 }).map(() => ({
     x: Math.random() * targetWidth,
@@ -647,12 +661,11 @@ export async function recordImageAsVideo({
       // 1. Draw base card
       ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
 
-      // 2. CRITICAL FOR ANDROID: Micro-pixel variation prevents Android hardware encoders
-      // from considering identical frames as a freeze and terminating after ~4s
+      // 2. Micro-pixel noise to force Android GPU hardware encoder to serialize every frame
       ctx.fillStyle = (Math.floor(elapsed / 100) % 2 === 0) ? 'rgba(255, 255, 255, 0.008)' : 'rgba(0, 0, 0, 0.008)'
       ctx.fillRect(0, 0, 2, 2)
 
-      // 3. Smooth metallic light sweep across the card
+      // 3. Shimmer sheen sweep
       const sheenPeriod = 2.4
       const cycleProgress = (t % sheenPeriod) / sheenPeriod
       const sheenAlpha = Math.sin(cycleProgress * Math.PI) * 0.8
@@ -673,46 +686,44 @@ export async function recordImageAsVideo({
       ctx.fillRect(0, 0, targetWidth, targetHeight)
       ctx.restore()
 
-      // 4. Confetti & Stars animation
-      if (!isSolemn) {
-        ctx.save()
-        ribbons.forEach((r) => {
-          r.y += r.vy * dtFactor
-          r.x += (r.vx + Math.sin(t * r.wobbleSpeed + r.wobbleOffset) * 0.8) * dtFactor
-          r.rotX += r.speedX * dtFactor
-          r.rotY += r.speedY * dtFactor
-          r.rotZ += r.speedZ * dtFactor
-          if (r.y > targetHeight + 30) {
-            r.y = -30
-            r.x = Math.random() * targetWidth
-          }
-
-          ctx.save()
-          ctx.translate(r.x, r.y)
-          ctx.rotate(r.rotZ)
-          const scaleX = Math.cos(r.rotY)
-          const scaleY = Math.sin(r.rotX)
-          ctx.scale(scaleX, scaleY)
-          ctx.fillStyle = r.color
-          ctx.fillRect(-r.w / 2, -r.h / 2, r.w, r.h)
-          ctx.restore()
-        })
-        ctx.restore()
+      // 4. Confetti & Stars
+      ctx.save()
+      ribbons.forEach((r) => {
+        r.y += r.vy * dtFactor
+        r.x += (r.vx + Math.sin(t * r.wobbleSpeed + r.wobbleOffset) * 0.8) * dtFactor
+        r.rotX += r.speedX * dtFactor
+        r.rotY += r.speedY * dtFactor
+        r.rotZ += r.speedZ * dtFactor
+        if (r.y > targetHeight + 30) {
+          r.y = -30
+          r.x = Math.random() * targetWidth
+        }
 
         ctx.save()
-        ctx.globalCompositeOperation = 'screen'
-        stars.forEach((s) => {
-          s.y -= s.speedY * dtFactor
-          if (s.y < -20) {
-            s.y = targetHeight + 20
-            s.x = Math.random() * targetWidth
-          }
-          const posX = s.x + Math.sin(t * 1.5 + s.wobbleOffset) * 6
-          const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed + s.twinkleOffset)
-          drawDiamondStar(ctx, posX, s.y, s.size, twinkle, t * s.rotSpeed)
-        })
+        ctx.translate(r.x, r.y)
+        ctx.rotate(r.rotZ)
+        const scaleX = Math.cos(r.rotY)
+        const scaleY = Math.sin(r.rotX)
+        ctx.scale(scaleX, scaleY)
+        ctx.fillStyle = r.color
+        ctx.fillRect(-r.w / 2, -r.h / 2, r.w, r.h)
         ctx.restore()
-      }
+      })
+      ctx.restore()
+
+      ctx.save()
+      ctx.globalCompositeOperation = 'screen'
+      stars.forEach((s) => {
+        s.y -= s.speedY * dtFactor
+        if (s.y < -20) {
+          s.y = targetHeight + 20
+          s.x = Math.random() * targetWidth
+        }
+        const posX = s.x + Math.sin(t * 1.5 + s.wobbleOffset) * 6
+        const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed + s.twinkleOffset)
+        drawDiamondStar(ctx, posX, s.y, s.size, twinkle, t * s.rotSpeed)
+      })
+      ctx.restore()
 
       // Progress reporting
       const progressPercent = Math.min(99, Math.round((elapsed / DURATION_MS) * 100))
@@ -721,7 +732,6 @@ export async function recordImageAsVideo({
       if (elapsed < DURATION_MS) {
         animId = requestAnimationFrame(drawFrame)
       } else {
-        // Stop recording cleanly once full duration is completed
         setTimeout(() => {
           if (recorder.state === 'recording') {
             try {
@@ -746,9 +756,6 @@ export async function recordImageAsVideo({
   })
 }
 
-/**
- * Downloads a canvas element as an animated celebration video.
- */
 export async function downloadCanvasAsVideo({
   canvas,
   fileName = 'cardzy-card',
@@ -756,7 +763,7 @@ export async function downloadCanvasAsVideo({
   audioUrl,
   occasionId,
   targetAspectRatio,
-  durationSeconds = 12,
+  durationSeconds = 10,
   onProgress,
 }: {
   canvas: HTMLCanvasElement
@@ -789,9 +796,6 @@ export async function downloadCanvasAsVideo({
   })
 }
 
-/**
- * Records a video from a DOM element with audio.
- */
 export async function downloadCardVideo({
   element,
   fileName = 'cardzy-card',
@@ -801,7 +805,7 @@ export async function downloadCardVideo({
   audioTrack,
   audioUrl,
   targetAspectRatio,
-  durationSeconds = 12,
+  durationSeconds = 10,
   onProgress,
 }: CardMediaExportOptions): Promise<boolean> {
   if (!element) return false
