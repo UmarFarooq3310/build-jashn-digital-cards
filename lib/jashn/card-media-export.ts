@@ -393,6 +393,340 @@ function drawDiamondStar(
 }
 
 /**
+ * Records the card video using WebCodecs API + mp4-muxer.
+ * Produces a true H.264/AAC MP4 directly — no WebM, no ffmpeg.wasm, no CDN download.
+ * Works on Chrome 94+ (including Android Chrome) and Safari 16.4+.
+ */
+async function recordImageAsMp4WebCodecs({
+  img,
+  fileName = 'cardzy-card',
+  cardType,
+  occasionId,
+  audioTrack,
+  audioUrl,
+  durationSeconds = 10,
+  onProgress,
+}: {
+  img: HTMLImageElement
+  fileName?: string
+  cardType?: 'invite' | 'wish' | 'vcard' | 'magic' | 'poetry'
+  occasionId?: string
+  audioTrack?: string
+  audioUrl?: string
+  durationSeconds?: number
+  onProgress?: (percent: number) => void
+}): Promise<boolean> {
+  const DURATION_SEC = Math.max(5, durationSeconds || 10)
+  const DURATION_MS = DURATION_SEC * 1000
+
+  // ── Canvas setup ──
+  const MAX_VIDEO_WIDTH = 720
+  let targetWidth = img.naturalWidth || img.width || 720
+  let targetHeight = img.naturalHeight || img.height || 1280
+
+  if (targetWidth > MAX_VIDEO_WIDTH) {
+    const scale = MAX_VIDEO_WIDTH / targetWidth
+    targetWidth = MAX_VIDEO_WIDTH
+    targetHeight = Math.round(targetHeight * scale)
+  } else if (targetWidth < 480) {
+    const scale = 480 / targetWidth
+    targetWidth = 480
+    targetHeight = Math.round(targetHeight * scale)
+  }
+  if (targetWidth % 2 !== 0) targetWidth += 1
+  if (targetHeight % 2 !== 0) targetHeight += 1
+
+  const canvas = document.createElement('canvas')
+  canvas.width = targetWidth
+  canvas.height = targetHeight
+  const ctx = canvas.getContext('2d', { alpha: false })
+  if (!ctx) throw new Error('Canvas 2D context not supported')
+  ctx.imageSmoothingEnabled = true
+  ctx.imageSmoothingQuality = 'high'
+
+  // ── Check WebCodecs + H.264 support ──
+  if (typeof VideoEncoder === 'undefined' || typeof AudioEncoder === 'undefined') {
+    throw new Error('WebCodecs not supported')
+  }
+
+  const codecCandidates = ['avc1.4D401F', 'avc1.42E01F', 'avc1.64001F']
+  let videoConfig: VideoEncoderConfig | null = null
+  for (const codec of codecCandidates) {
+    const cfg: VideoEncoderConfig = {
+      codec,
+      width: targetWidth,
+      height: targetHeight,
+      bitrate: 4_500_000,
+      framerate: 30,
+      avc: { format: 'avc' },
+    }
+    try {
+      const support = await VideoEncoder.isConfigSupported(cfg)
+      if (support.supported) {
+        videoConfig = cfg
+        break
+      }
+    } catch {}
+  }
+  if (!videoConfig) throw new Error('No H.264 codec supported')
+
+  // ── Render audio offline ──
+  const SAMPLE_RATE = 44100
+  const NUM_CHANNELS = 2
+  const totalAudioSamples = Math.ceil(SAMPLE_RATE * DURATION_SEC)
+  const offlineCtx = new OfflineAudioContext(NUM_CHANNELS, totalAudioSamples, SAMPLE_RATE)
+
+  const soundSrc = resolveSoundUrl(audioTrack || audioUrl, cardType, occasionId)
+  if (soundSrc) {
+    try {
+      const res = await fetch(soundSrc)
+      if (res.ok) {
+        const arr = await res.arrayBuffer()
+        const audioBuf = await offlineCtx.decodeAudioData(arr)
+        const srcNode = offlineCtx.createBufferSource()
+        srcNode.buffer = audioBuf
+        srcNode.loop = true
+
+        const gain = offlineCtx.createGain()
+        gain.gain.setValueAtTime(0.001, 0)
+        gain.gain.exponentialRampToValueAtTime(0.75, 0.35)
+        const fadeOutStart = Math.max(0.5, DURATION_SEC - 0.8)
+        gain.gain.setValueAtTime(0.75, fadeOutStart)
+        gain.gain.exponentialRampToValueAtTime(0.001, DURATION_SEC)
+
+        srcNode.connect(gain)
+        gain.connect(offlineCtx.destination)
+        srcNode.start(0)
+      }
+    } catch {}
+  }
+
+  const renderedAudio = await offlineCtx.startRendering()
+  const audioChannels = Math.min(renderedAudio.numberOfChannels, NUM_CHANNELS)
+
+  // ── Set up mp4-muxer ──
+  const { Muxer, ArrayBufferTarget } = await import('mp4-muxer')
+  const muxer = new Muxer({
+    target: new ArrayBufferTarget(),
+    video: {
+      codec: 'avc',
+      width: targetWidth,
+      height: targetHeight,
+      frameRate: 30,
+    },
+    audio: {
+      codec: 'aac',
+      sampleRate: SAMPLE_RATE,
+      numberOfChannels: NUM_CHANNELS,
+    },
+    fastStart: 'in-memory',
+    firstTimestampBehavior: 'offset',
+  })
+
+  // ── Set up video encoder ──
+  let videoError: Error | null = null
+  const videoEncoder = new VideoEncoder({
+    output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
+    error: (e) => { videoError = e instanceof Error ? e : new Error(String(e)) },
+  })
+  videoEncoder.configure(videoConfig)
+
+  // ── Set up audio encoder ──
+  let audioError: Error | null = null
+  const audioEncoder = new AudioEncoder({
+    output: (chunk, meta) => muxer.addAudioChunk(chunk, meta),
+    error: (e) => { audioError = e instanceof Error ? e : new Error(String(e)) },
+  })
+  audioEncoder.configure({
+    codec: 'mp4a.40.2',
+    sampleRate: SAMPLE_RATE,
+    numberOfChannels: NUM_CHANNELS,
+    bitrate: 128000,
+  })
+
+  // ── Encode audio in 1024-sample chunks ──
+  const channelData: Float32Array[] = []
+  for (let ch = 0; ch < audioChannels; ch++) {
+    channelData.push(renderedAudio.getChannelData(ch))
+  }
+
+  for (let offset = 0; offset < totalAudioSamples; offset += 1024) {
+    const frameCount = Math.min(1024, totalAudioSamples - offset)
+    const planar = new Float32Array(frameCount * NUM_CHANNELS)
+    for (let ch = 0; ch < NUM_CHANNELS; ch++) {
+      const src = ch < audioChannels ? channelData[ch] : channelData[0]
+      planar.set(src.subarray(offset, offset + frameCount), ch * frameCount)
+    }
+
+    const audioData = new AudioData({
+      format: 'f32-planar',
+      sampleRate: SAMPLE_RATE,
+      numberOfFrames: frameCount,
+      numberOfChannels: NUM_CHANNELS,
+      data: planar,
+      timestamp: Math.round((offset / SAMPLE_RATE) * 1_000_000),
+    })
+    audioEncoder.encode(audioData)
+    audioData.close()
+
+    if (audioEncoder.encodeQueueSize > 10) {
+      await new Promise((r) => setTimeout(r, 0))
+    }
+  }
+
+  // ── Animation setup ──
+  const FPS = 30
+  const FRAME_DURATION_US = Math.round(1_000_000 / FPS)
+  const TOTAL_FRAMES = Math.round(DURATION_SEC * FPS)
+  const dt = 1 / FPS
+  const dtFactor = dt * 60
+
+  const ribbons = Array.from({ length: 40 }).map(() => ({
+    x: Math.random() * targetWidth,
+    y: Math.random() * targetHeight * 1.5 - targetHeight * 0.5,
+    w: Math.random() * 6 + 8,
+    h: Math.random() * 8 + 10,
+    vx: (Math.random() - 0.5) * 1.2,
+    vy: Math.random() * 2 + 2.5,
+    rotX: Math.random() * Math.PI * 2,
+    rotY: Math.random() * Math.PI * 2,
+    rotZ: Math.random() * Math.PI * 2,
+    speedX: Math.random() * 0.08 + 0.04,
+    speedY: Math.random() * 0.09 + 0.05,
+    speedZ: (Math.random() - 0.5) * 0.05,
+    wobbleSpeed: Math.random() * 2.5 + 1.5,
+    wobbleOffset: Math.random() * Math.PI * 2,
+    color: ['#FFD700', '#F59E0B', '#EF4444', '#10B981', '#3B82F6', '#EC4899'][Math.floor(Math.random() * 6)],
+  }))
+
+  const stars = Array.from({ length: 14 }).map(() => ({
+    x: Math.random() * targetWidth,
+    y: Math.random() * targetHeight,
+    size: Math.random() * 6 + 4,
+    twinkleSpeed: Math.random() * 3 + 2,
+    twinkleOffset: Math.random() * Math.PI * 2,
+    speedY: Math.random() * 0.4 + 0.2,
+    rotSpeed: (Math.random() - 0.5) * 0.04,
+    wobbleOffset: Math.random() * Math.PI * 2,
+  }))
+
+  // ── Encode video frames ──
+  for (let frameIdx = 0; frameIdx < TOTAL_FRAMES; frameIdx++) {
+    const t = frameIdx / FPS
+
+    // Draw frame (same animation as MediaRecorder path)
+    ctx.clearRect(0, 0, targetWidth, targetHeight)
+    ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
+
+    // Micro-pixel noise
+    ctx.fillStyle = (frameIdx % 2 === 0) ? 'rgba(255,255,255,0.008)' : 'rgba(0,0,0,0.008)'
+    ctx.fillRect(0, 0, 2, 2)
+
+    // Shimmer sheen sweep
+    const sheenPeriod = 2.4
+    const cycleProgress = (t % sheenPeriod) / sheenPeriod
+    const sheenAlpha = Math.sin(cycleProgress * Math.PI) * 0.8
+    const sheenPos = -targetWidth * 0.4 + cycleProgress * (targetWidth * 1.8)
+    ctx.save()
+    ctx.globalCompositeOperation = 'screen'
+    const beamGrad = ctx.createLinearGradient(sheenPos, 0, sheenPos + targetWidth * 0.35, targetHeight)
+    beamGrad.addColorStop(0, 'rgba(255,255,255,0)')
+    beamGrad.addColorStop(0.5, `rgba(255,255,255,${0.75 * sheenAlpha})`)
+    beamGrad.addColorStop(1, 'rgba(255,255,255,0)')
+    ctx.fillStyle = beamGrad
+    ctx.fillRect(0, 0, targetWidth, targetHeight)
+    ctx.restore()
+
+    // Confetti ribbons
+    ctx.save()
+    ribbons.forEach((r) => {
+      r.y += r.vy * dtFactor
+      r.x += (r.vx + Math.sin(t * r.wobbleSpeed + r.wobbleOffset) * 0.8) * dtFactor
+      r.rotX += r.speedX * dtFactor
+      r.rotY += r.speedY * dtFactor
+      r.rotZ += r.speedZ * dtFactor
+      if (r.y > targetHeight + 30) { r.y = -30; r.x = Math.random() * targetWidth }
+      ctx.save()
+      ctx.translate(r.x, r.y)
+      ctx.rotate(r.rotZ)
+      ctx.scale(Math.cos(r.rotY), Math.sin(r.rotX))
+      ctx.fillStyle = r.color
+      ctx.fillRect(-r.w / 2, -r.h / 2, r.w, r.h)
+      ctx.restore()
+    })
+    ctx.restore()
+
+    // Diamond stars
+    ctx.save()
+    ctx.globalCompositeOperation = 'screen'
+    stars.forEach((s) => {
+      s.y -= s.speedY * dtFactor
+      if (s.y < -20) { s.y = targetHeight + 20; s.x = Math.random() * targetWidth }
+      const posX = s.x + Math.sin(t * 1.5 + s.wobbleOffset) * 6
+      const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed + s.twinkleOffset)
+      drawDiamondStar(ctx, posX, s.y, s.size, twinkle, t * s.rotSpeed)
+    })
+    ctx.restore()
+
+    // Create and encode video frame
+    const videoFrame = new VideoFrame(canvas, {
+      timestamp: frameIdx * FRAME_DURATION_US,
+      duration: FRAME_DURATION_US,
+    })
+    videoEncoder.encode(videoFrame, {
+      keyFrame: frameIdx === 0 || frameIdx % (FPS * 2) === 0,
+    })
+    videoFrame.close()
+
+    // Progress (0-84% for encoding phase)
+    if (onProgress) onProgress(Math.min(84, Math.round((frameIdx / TOTAL_FRAMES) * 84)))
+
+    // Backpressure: if encoder queue is too deep, wait
+    if (videoEncoder.encodeQueueSize > 10) {
+      while (videoEncoder.encodeQueueSize > 5) {
+        await new Promise((r) => setTimeout(r, 1))
+      }
+    }
+
+    if (videoError) throw videoError
+  }
+
+  // ── Flush encoders ──
+  if (onProgress) onProgress(88)
+  await videoEncoder.flush()
+  if (onProgress) onProgress(94)
+  await audioEncoder.flush()
+  videoEncoder.close()
+  audioEncoder.close()
+
+  if (videoError) throw videoError
+
+  // ── Finalize muxer ──
+  muxer.finalize()
+  if (onProgress) onProgress(100)
+
+  // ── Create and download MP4 ──
+  const { buffer } = muxer.target as InstanceType<typeof ArrayBufferTarget>
+  if (!buffer || buffer.byteLength === 0) throw new Error('MP4 encoding produced empty file')
+
+  const mp4Blob = new Blob([buffer], { type: 'video/mp4' })
+  const cleanName = fileName.endsWith('.mp4') ? fileName : `${fileName}.mp4`
+  const blobUrl = URL.createObjectURL(mp4Blob)
+  const link = document.createElement('a')
+  link.download = cleanName
+  link.href = blobUrl
+  link.style.display = 'none'
+  document.body.appendChild(link)
+  link.click()
+  setTimeout(() => {
+    document.body.removeChild(link)
+    URL.revokeObjectURL(blobUrl)
+  }, 8000)
+
+  return true
+}
+
+/**
  * Animates and records the card video.
  * Solves the 00:01 / 25fps bug on Android video players.
  */
@@ -416,6 +750,28 @@ export async function recordImageAsVideo({
   durationSeconds?: number
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
+  // ── Try WebCodecs first (native H.264 → MP4, no downloads needed) ──
+  if (typeof window !== 'undefined' &&
+      typeof VideoEncoder !== 'undefined' &&
+      typeof AudioEncoder !== 'undefined') {
+    try {
+      const result = await recordImageAsMp4WebCodecs({
+        img,
+        fileName,
+        cardType,
+        occasionId,
+        audioTrack,
+        audioUrl,
+        durationSeconds,
+        onProgress,
+      })
+      if (result) return result
+    } catch (e) {
+      console.error('WebCodecs MP4 recording failed, falling back to MediaRecorder:', extractErrorMessage(e))
+    }
+  }
+
+  // ── Fallback: MediaRecorder → WebM → fix duration → ffmpeg.wasm → MP4 ──
   const DURATION_SEC = Math.max(5, durationSeconds || 10)
   const DURATION_MS = DURATION_SEC * 1000
 
