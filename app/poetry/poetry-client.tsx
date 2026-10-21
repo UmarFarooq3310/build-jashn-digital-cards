@@ -24,18 +24,13 @@ import {
   ChevronsRight,
   Video,
   Eye,
-  ExternalLink,
   MessageCircle,
-  X,
-  Send,
 } from 'lucide-react'
 import { downloadCanvasAsVideo } from '@/lib/jashn/card-media-export'
 import { POET_PROFILES, POPULAR_SEARCH_KEYWORDS, POETRY_DATABASE, Poem } from '@/lib/jashn/poetry-data'
 import { useLang } from '@/lib/lang/context'
 import { useJashn } from '@/lib/jashn/store'
 import { getClientTracking } from '@/lib/jashn/tracking'
-import { isDeviceAdmin } from '@/lib/jashn/admin-presence'
-import { encodeShortWish } from '@/lib/jashn/codec'
 import { cn } from '@/lib/utils'
 
 export interface PoetryThemeConfig {
@@ -158,37 +153,15 @@ export function formatMetricCount(n: number): string {
 }
 
 export function PoetryClient() {
-  const { lang, t } = useLang()
+  const { lang } = useLang()
   const isUrdu = lang === 'ur'
   const showToast = useJashn((s) => s.showToast)
   const user = useJashn((s) => s.user)
   const searchParams = useSearchParams()
 
-  const LANGUAGE_OPTIONS = useMemo(() => [
-    { id: 'all', label: isUrdu ? '🌐 تمام کلام (1,000+)' : '🌐 All (1,000+)' },
-    { id: 'ur', label: isUrdu ? '🇵🇰 اردو غزلیں (710+)' : '🇵🇰 Urdu Ghazals (710+)' },
-    { id: 'pa', label: isUrdu ? '🌾 پنجابی صوفی (120+)' : '🌾 Punjabi Sufi (120+)' },
-    { id: 'fa', label: isUrdu ? '🇮🇷 فارسی حکمت (50+)' : '🇮🇷 Persian Wisdom (50+)' },
-    { id: 'ar', label: isUrdu ? '🇸🇦 عربی کلاسیک (50+)' : '🇸🇦 Arabic Classics (50+)' },
-    { id: 'en', label: isUrdu ? '🇬🇧 انگلش (70+)' : '🇬🇧 English (70+)' },
-  ], [isUrdu])
-
-  const handleSelectLanguage = (langId: string) => {
-    setSelectedLanguage(langId)
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href)
-      if (langId === 'all') {
-        url.searchParams.delete('lang')
-      } else {
-        url.searchParams.set('lang', langId)
-      }
-      window.history.replaceState({}, '', url.toString())
-    }
-  }
-
   const router = useRouter()
-  const [poems, setPoems] = useState<Poem[]>(() => POETRY_DATABASE)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [poems] = useState<Poem[]>(() => POETRY_DATABASE)
+  const [isLoading] = useState<boolean>(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [selectedPoet, setSelectedPoet] = useState<string>('all')
@@ -196,22 +169,25 @@ export function PoetryClient() {
   const [selectedFormat, setSelectedFormat] = useState<'all' | 'two_liner' | 'full_poem'>('all')
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(30)
-  const [activeTabMap, setActiveTabMap] = useState<Record<string, 'original' | 'roman' | 'english' | 'urdu' | 'meaning'>>({})
+  const [activeTabMap, setActiveTabMap] = useState<
+    Record<string, 'original' | 'roman' | 'english' | 'urdu' | 'meaning'>
+  >({})
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set())
   const [isGeneratingFlyer, setIsGeneratingFlyer] = useState<string | null>(null)
   const [generatingVideoId, setGeneratingVideoId] = useState<string | null>(null)
   const [videoProgress, setVideoProgress] = useState<number>(0)
   const [highlightedPoemId, setHighlightedPoemId] = useState<string | null>(null)
-  const [statsMap, setStatsMap] = useState<Record<string, { views?: number; copies?: number; shares?: number; likes?: number; flyers?: number }>>({})
-  
-  // Export Aspect Ratio format: 'banner' (laptop landscape in width) vs 'story' (mobile 9:16 portrait in height)
+  const [statsMap, setStatsMap] = useState<
+    Record<string, { views?: number; copies?: number; shares?: number; likes?: number; flyers?: number }>
+  >({})
+
+  const [isMounted, setIsMounted] = useState<boolean>(false)
   const [exportAspectFormat, setExportAspectFormat] = useState<'story' | 'banner'>('banner')
   const userManuallySetFormatRef = useRef<boolean>(false)
 
-  // Auto-detect format: on laptop/desktop -> landscape banner; on mobile devices/screens -> 9:16 mobile story
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    setIsMounted(true)
     const detectDeviceFormat = () => {
       if (userManuallySetFormatRef.current) return
       const isMobile = window.innerWidth < 768 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
@@ -221,8 +197,7 @@ export function PoetryClient() {
     window.addEventListener('resize', detectDeviceFormat)
     return () => window.removeEventListener('resize', detectDeviceFormat)
   }, [])
-  
-  // Custom Poetry Post Creator State (By Self: poet name, poetry, dedication, download)
+
   const [customPoet, setCustomPoet] = useState<string>('مرزا اسد اللہ خاں غالب')
   const [customDedication, setCustomDedication] = useState<string>('برائے جانِ جاں')
   const [customVerse, setCustomVerse] = useState<string>(
@@ -234,7 +209,6 @@ export function PoetryClient() {
   const [customVideoProgress, setCustomVideoProgress] = useState<number>(0)
   const [customCopied, setCustomCopied] = useState<boolean>(false)
 
-  // Load saved favorites from localStorage
   useEffect(() => {
     try {
       const saved = localStorage.getItem('cardzy_poetry_favorites')
@@ -244,39 +218,74 @@ export function PoetryClient() {
     } catch {}
   }, [])
 
+  const searchFilteredBase = useMemo(() => {
+    if (!searchQuery.trim()) return poems
+    const q = searchQuery.toLowerCase().trim()
+    return poems.filter((poem) => {
+      return (
+        poem.originalText.toLowerCase().includes(q) ||
+        poem.romanText.toLowerCase().includes(q) ||
+        poem.englishTranslation.toLowerCase().includes(q) ||
+        (poem.urduTranslation && poem.urduTranslation.toLowerCase().includes(q)) ||
+        poem.title.toLowerCase().includes(q) ||
+        poem.poet.toLowerCase().includes(q) ||
+        (poem.poetUrdu && poem.poetUrdu.includes(q)) ||
+        (poem.tags && poem.tags.some((tag) => tag.toLowerCase().includes(q)))
+      )
+    })
+  }, [poems, searchQuery])
 
-  // Language counts across entire 1,000 poem library
   const languageCounts = useMemo(() => {
     const counts: Record<string, number> = {}
-    poems.forEach((p) => {
+    searchFilteredBase.forEach((p) => {
       if (p.originalLanguage) {
         counts[p.originalLanguage] = (counts[p.originalLanguage] || 0) + 1
       }
     })
     return counts
-  }, [poems])
+  }, [searchFilteredBase])
 
-  // Category counts based on active language filter (or all)
+  const LANGUAGE_OPTIONS = useMemo(
+    () => [
+      { id: 'all', label: isUrdu ? `🌐 تمام کلام (${searchFilteredBase.length})` : `🌐 All (${searchFilteredBase.length})` },
+      { id: 'ur', label: isUrdu ? `🇵🇰 اردو (${languageCounts['ur'] || 0})` : `🇵🇰 Urdu (${languageCounts['ur'] || 0})` },
+      { id: 'pa', label: isUrdu ? `🌾 پنجابی (${languageCounts['pa'] || 0})` : `🌾 Punjabi (${languageCounts['pa'] || 0})` },
+      { id: 'fa', label: isUrdu ? `🇮🇷 فارسی (${languageCounts['fa'] || 0})` : `🇮🇷 Persian (${languageCounts['fa'] || 0})` },
+      { id: 'ar', label: isUrdu ? `🇸🇦 عربی (${languageCounts['ar'] || 0})` : `🇸🇦 Arabic (${languageCounts['ar'] || 0})` },
+      { id: 'en', label: isUrdu ? `🇬🇧 انگلش (${languageCounts['en'] || 0})` : `🇬🇧 English (${languageCounts['en'] || 0})` },
+    ],
+    [isUrdu, searchFilteredBase.length, languageCounts]
+  )
+
+  // Language filter strictly confined to React State (no URL side-effects)
+  const handleSelectLanguage = (langId: string) => {
+    setSelectedLanguage(langId)
+  }
+
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = {}
-    const base = selectedLanguage === 'all'
-      ? poems
-      : poems.filter((p) => p.originalLanguage === selectedLanguage)
+    const pool = selectedLanguage === 'all'
+      ? searchFilteredBase
+      : searchFilteredBase.filter((p) => p.originalLanguage === selectedLanguage)
 
-    base.forEach((p) => {
+    pool.forEach((p) => {
       if (p.category) {
         counts[p.category] = (counts[p.category] || 0) + 1
       }
     })
     return counts
-  }, [poems, selectedLanguage])
+  }, [searchFilteredBase, selectedLanguage])
 
-  // Cascading Poet list: shows ONLY poets who wrote in the currently selected language
   const poetList = useMemo(() => {
     const map = new Map<string, number>()
-    const pool = selectedLanguage === 'all'
-      ? poems
-      : poems.filter((p) => p.originalLanguage === selectedLanguage)
+    let pool = searchFilteredBase
+
+    if (selectedLanguage !== 'all') {
+      pool = pool.filter((p) => p.originalLanguage === selectedLanguage)
+    }
+    if (selectedCategory !== 'all') {
+      pool = pool.filter((p) => p.category === selectedCategory)
+    }
 
     pool.forEach((p) => {
       if (p.poet) {
@@ -284,13 +293,15 @@ export function PoetryClient() {
         map.set(poet, (map.get(poet) || 0) + 1)
       }
     })
+
     const sorted = Array.from(map.entries())
+      .filter(([_, count]) => count > 0)
       .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
       .map(([name, count]) => ({ name, count }))
-    return [{ name: 'all', count: pool.length }, ...sorted]
-  }, [poems, selectedLanguage])
 
-  // Find active poet profile for spotlight
+    return [{ name: 'all', count: pool.length }, ...sorted]
+  }, [searchFilteredBase, selectedLanguage, selectedCategory])
+
   const activePoetProfile = useMemo(() => {
     if (selectedPoet === 'all') return null
     return (
@@ -311,9 +322,8 @@ export function PoetryClient() {
     )
   }, [selectedPoet, poems])
 
-  // Filter poems across the entire 1,000 dataset based on search, category, poet, language, and format
   const filteredPoems = useMemo(() => {
-    return poems.filter((poem) => {
+    return searchFilteredBase.filter((poem) => {
       const poetNorm = poem.poet.toLowerCase().trim()
       const poetUrduNorm = (poem.poetUrdu || '').trim()
 
@@ -339,41 +349,23 @@ export function PoetryClient() {
         if (poem.format !== selectedFormat) return false
       }
 
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim()
-        const textMatch =
-          poem.originalText.toLowerCase().includes(q) ||
-          poem.romanText.toLowerCase().includes(q) ||
-          poem.englishTranslation.toLowerCase().includes(q) ||
-          (poem.urduTranslation && poem.urduTranslation.toLowerCase().includes(q)) ||
-          poem.title.toLowerCase().includes(q) ||
-          poem.poet.toLowerCase().includes(q) ||
-          (poem.poetUrdu && poem.poetUrdu.includes(q)) ||
-          (poem.tags && poem.tags.some((tag) => tag.toLowerCase().includes(q)))
-
-        if (!textMatch) return false
-      }
-
       return true
     })
-  }, [poems, searchQuery, selectedCategory, selectedPoet, selectedLanguage, selectedFormat])
+  }, [searchFilteredBase, selectedCategory, selectedPoet, selectedLanguage, selectedFormat])
 
-  // Automatically reset currentPage to 1 whenever any filter or search changes
   useEffect(() => {
     setCurrentPage(1)
   }, [searchQuery, selectedCategory, selectedPoet, selectedLanguage, selectedFormat, pageSize])
 
-  // Cascading Filter: If selected poet does not exist in the active language, reset poet to 'all'
   useEffect(() => {
     if (selectedPoet !== 'all') {
-      const isAvailableInLang = poetList.some((p) => p.name === selectedPoet)
-      if (!isAvailableInLang) {
+      const isAvailable = poetList.some((p) => p.name === selectedPoet)
+      if (!isAvailable) {
         setSelectedPoet('all')
       }
     }
-  }, [selectedLanguage, poetList, selectedPoet])
+  }, [selectedLanguage, selectedCategory, poetList, selectedPoet])
 
-  // Pagination calculations: 30 items per page by default, ensuring users can reach footer and page bottom easily
   const totalPages = Math.max(1, Math.ceil(filteredPoems.length / pageSize))
   const startIndex = (currentPage - 1) * pageSize
   const endIndex = Math.min(filteredPoems.length, currentPage * pageSize)
@@ -381,7 +373,6 @@ export function PoetryClient() {
     return filteredPoems.slice(startIndex, endIndex)
   }, [filteredPoems, startIndex, endIndex])
 
-  // Fetch real-time view & activity stats for displayed poems
   useEffect(() => {
     if (displayedPoems.length === 0) return
     const ids = displayedPoems.map((p) => p.id).join(',')
@@ -395,7 +386,6 @@ export function PoetryClient() {
       .catch(() => {})
   }, [displayedPoems])
 
-  // Get authentic base + live metrics for a poem
   const getPoemMetrics = (poemId: string) => {
     let hash = 0
     for (let i = 0; i < poemId.length; i++) {
@@ -414,7 +404,7 @@ export function PoetryClient() {
     return { views, likes, shares }
   }
 
-  // Generate Tailored Canvas for Custom User Poetry Card (supports 9:16 Mobile Story in height or Laptop Banner)
+  // --- CUSTOM POETRY CANVAS GENERATOR ---
   const generateCustomPoetryCanvas = async (
     verseText: string,
     poetName: string,
@@ -443,16 +433,45 @@ export function PoetryClient() {
 
     const isRtl = /[\u0600-\u06FF]/.test(verseText)
     const maxWidth = isRtl ? 820 : 840
-    const isLongPoem = cleanLines.length > 8
     const isStory = format === 'story'
+    const lineCount = cleanLines.length
+
+    let fontSize: number
+    let lineHeight: number
+
+    if (isRtl) {
+      if (lineCount > 18) {
+        fontSize = isStory ? 18 : 17
+        lineHeight = isStory ? 44 : 40
+      } else if (lineCount > 10) {
+        fontSize = isStory ? 22 : 20
+        lineHeight = isStory ? 54 : 48
+      } else if (lineCount > 5) {
+        fontSize = isStory ? 28 : 25
+        lineHeight = isStory ? 68 : 62
+      } else {
+        fontSize = isStory ? 36 : 32
+        lineHeight = isStory ? 92 : 82
+      }
+    } else {
+      if (lineCount > 24) {
+        fontSize = isStory ? 15 : 15
+        lineHeight = isStory ? 28 : 26
+      } else if (lineCount > 14) {
+        fontSize = isStory ? 19 : 18
+        lineHeight = isStory ? 36 : 32
+      } else if (lineCount > 7) {
+        fontSize = isStory ? 24 : 22
+        lineHeight = isStory ? 46 : 40
+      } else {
+        fontSize = isStory ? 32 : 28
+        lineHeight = isStory ? 64 : 54
+      }
+    }
 
     const fontDeclaration = isRtl
-      ? (isLongPoem
-          ? (isStory ? 'bold 28px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", serif' : 'bold 26px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", serif')
-          : (isStory ? 'bold 36px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", serif' : 'bold 33px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", serif'))
-      : (isLongPoem
-          ? (isStory ? 'italic bold 25px "Georgia", "Times New Roman", serif' : 'italic bold 22px "Georgia", "Times New Roman", serif')
-          : (isStory ? 'italic bold 32px "Georgia", "Times New Roman", serif' : 'italic bold 28px "Georgia", "Times New Roman", serif'))
+      ? `bold ${fontSize}px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", serif`
+      : `italic bold ${fontSize}px "Georgia", "Times New Roman", serif`
 
     tempCtx.font = fontDeclaration
 
@@ -472,23 +491,22 @@ export function PoetryClient() {
       if (currentLine) wrappedLines.push(currentLine)
     })
 
-    const lineHeight = isRtl ? (isLongPoem ? (isStory ? 74 : 68) : (isStory ? 95 : 88)) : (isLongPoem ? (isStory ? 52 : 44) : (isStory ? 68 : 54))
-    const verseBoxHeight = isStory
-      ? Math.min(1100, Math.max(340, wrappedLines.length * lineHeight + 120))
-      : Math.max(isRtl ? 200 : 170, wrappedLines.length * lineHeight + (isRtl ? 80 : 60))
+    const contentHeight = wrappedLines.length * lineHeight
+    const boxPadding = isStory ? (lineCount > 18 ? 40 : 80) : 50
+    const verseBoxHeight = contentHeight + boxPadding
 
     if (isStory) {
-      canvas.height = 1920 // Standard 9:16 vertical mobile story / reels height
+      canvas.height = 1920
     } else {
-      const headerHeight = dedication && dedication.trim() ? 190 : 140
-      const footerHeight = 110
-      canvas.height = Math.max(540, headerHeight + verseBoxHeight + footerHeight)
+      const hasDedication = Boolean(dedication && dedication.trim())
+      const headerHeight = hasDedication ? 340 : 190
+      const footerHeight = 120
+      canvas.height = Math.max(620, headerHeight + verseBoxHeight + footerHeight)
     }
 
     const ctx = canvas.getContext('2d')
     if (!ctx) return null
 
-    // 1. Theme Gradient
     const gradient = ctx.createLinearGradient(0, 0, 1080, canvas.height)
     gradient.addColorStop(0, activeTheme.flyerGradients[0])
     gradient.addColorStop(0.4, activeTheme.flyerGradients[1])
@@ -496,7 +514,6 @@ export function PoetryClient() {
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, 1080, canvas.height)
 
-    // Soft ambient lighting for story format
     if (isStory) {
       const radialGlow = ctx.createRadialGradient(540, 960, 120, 540, 960, 960)
       radialGlow.addColorStop(0, 'rgba(255, 215, 0, 0.08)')
@@ -505,7 +522,6 @@ export function PoetryClient() {
       ctx.fillRect(0, 0, 1080, 1920)
     }
 
-    // 2. Ornate Double Gold & Theme Accent Borders
     const borderPad = isStory ? 36 : 28
     const innerPad = isStory ? 52 : 40
     ctx.lineWidth = 8
@@ -516,42 +532,68 @@ export function PoetryClient() {
     ctx.strokeStyle = activeTheme.flyerAccent || '#fef08a'
     ctx.strokeRect(innerPad, innerPad, 1080 - innerPad * 2, canvas.height - innerPad * 2)
 
-    // 3. Corner Rosettes
     ctx.fillStyle = '#fbbf24'
     ctx.font = '24px sans-serif'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
-    const rosetteTop = isStory ? 100 : 75
+    const rosetteTop = isStory ? 90 : 75
     const rosetteBottom = isStory ? canvas.height - 90 : canvas.height - 55
     ctx.fillText('✦ ❖ ✦', 110, rosetteTop)
     ctx.fillText('✦ ❖ ✦', 970, rosetteTop)
     ctx.fillText('✦ ❖ ✦', 110, rosetteBottom)
     ctx.fillText('✦ ❖ ✦', 970, rosetteBottom)
 
-    // 4. Header Section: Dedication Ribbon & Poet Name
-    let currentY = isStory ? 200 : 80
+    let currentY = isStory ? 170 : 80
 
     if (isStory) {
       ctx.fillStyle = '#fbbf24'
       ctx.font = 'bold 20px sans-serif'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
       ctx.fillText('✨ CARDZY CUSTOM POETRY STUDIO ✨', 540, currentY)
-      currentY += 50
+      currentY += 56
     }
 
     if (dedication && dedication.trim()) {
-      ctx.fillStyle = activeTheme.flyerAccent || '#38bdf8'
+      const cleanDedication = dedication.trim()
       ctx.font = isStory ? 'bold 24px sans-serif' : 'bold 21px sans-serif'
-      ctx.fillText(`✨ ${dedication.trim()} ✨`, 540, currentY)
-      currentY += isStory ? 56 : 46
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      const dedText = `✨ ${cleanDedication} ✨`
+
+      const dedWidth = Math.min(840, ctx.measureText(dedText).width + 54)
+      const dedBoxHeight = isStory ? 48 : 42
+      const dedBoxY = currentY - dedBoxHeight / 2
+
+      ctx.fillStyle = 'rgba(245, 158, 11, 0.15)'
+      ctx.beginPath()
+      ctx.roundRect(540 - dedWidth / 2, dedBoxY, dedWidth, dedBoxHeight, 24)
+      ctx.fill()
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)'
+      ctx.lineWidth = 1.5
+      ctx.stroke()
+
+      ctx.fillStyle = activeTheme.flyerAccent || '#38bdf8'
+      ctx.fillText(dedText, 540, currentY)
+
+      currentY += isStory ? 130 : 110
+    } else {
+      currentY += isStory ? 35 : 25
     }
 
     ctx.fillStyle = '#fde68a'
+    const poetFontSize = isRtl
+      ? (isStory ? 42 : 34)
+      : (isStory ? 36 : 30)
+
     ctx.font = isRtl
-      ? (isStory ? 'bold 42px "Noto Nastaliq Urdu", "Traditional Arabic", serif' : 'bold 34px "Noto Nastaliq Urdu", "Traditional Arabic", serif')
-      : (isStory ? 'bold 38px "Georgia", "Times New Roman", serif' : 'bold 32px "Georgia", "Times New Roman", serif')
+      ? `bold ${poetFontSize}px "Noto Nastaliq Urdu", "Traditional Arabic", serif`
+      : `bold ${poetFontSize}px "Georgia", "Times New Roman", serif`
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
     ctx.fillText(poetName || (isRtl ? 'شاعر' : 'Poet'), 540, currentY)
 
-    currentY += isStory ? 36 : 30
+    currentY += isStory ? 54 : 44
     ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)'
     ctx.lineWidth = 1.5
     ctx.beginPath()
@@ -564,10 +606,15 @@ export function PoetryClient() {
       ctx.fillText('✦', 540, currentY)
     }
 
-    // 5. Verse Box Container (Centered in 9:16 story format)
+    const headerEndY = currentY + 16
+    const footerY = isStory ? 1760 : canvas.height - 70
+    const availableArea = footerY - 50 - headerEndY
+
     const boxWidth = 940
     const boxLeft = 70
-    const boxTop = isStory ? Math.round(1060 - (verseBoxHeight / 2)) : currentY + 22
+    const boxTop = isStory
+      ? Math.max(headerEndY + 15, Math.round(headerEndY + (availableArea - verseBoxHeight) / 2))
+      : headerEndY + 20
 
     ctx.fillStyle = 'rgba(0, 0, 0, 0.68)'
     ctx.fillRect(boxLeft, boxTop, boxWidth, verseBoxHeight)
@@ -580,35 +627,32 @@ export function PoetryClient() {
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
 
-    let verseY = boxTop + (isRtl ? (isStory ? 55 : 45) : (isStory ? 45 : 35)) + (lineHeight / 2)
+    let verseY = boxTop + (verseBoxHeight - contentHeight) / 2 + lineHeight / 2
     wrappedLines.forEach((line) => {
       ctx.fillText(line.trim(), 540, verseY)
       verseY += lineHeight
     })
 
-    // 6. Footer Line
-    const footerY = isStory ? 1750 : boxTop + verseBoxHeight + 35
     ctx.strokeStyle = 'rgba(245, 158, 11, 0.35)'
     ctx.beginPath()
-    ctx.moveTo(260, footerY)
-    ctx.lineTo(820, footerY)
+    ctx.moveTo(260, footerY - 30)
+    ctx.lineTo(820, footerY - 30)
     ctx.stroke()
 
     ctx.fillStyle = '#fef08a'
     ctx.font = isStory ? 'bold 22px sans-serif' : 'bold 18px sans-serif'
     ctx.textBaseline = 'middle'
-    ctx.fillText('✦ Created with Cardzy.online ✦', 540, footerY + (isStory ? 36 : 30))
+    ctx.fillText('✦ Created with Cardzy.online ✦', 540, footerY)
 
     if (isStory) {
       ctx.fillStyle = '#94a3b8'
       ctx.font = '16px sans-serif'
-      ctx.fillText('📱 Cardzy Story Edition • Instagram & WhatsApp Ready', 540, footerY + 68)
+      ctx.fillText('📱 Cardzy Story Edition • Instagram & WhatsApp Ready', 540, footerY + 36)
     }
 
     return canvas
   }
 
-  // Handle Download Custom Image Card
   const handleDownloadCustomImage = async () => {
     if (!customVerse.trim()) {
       showToast(isUrdu ? 'براہ کرم پہلے کچھ اشعار درج کریں' : 'Please enter some poetry verses first', 'error')
@@ -619,20 +663,29 @@ export function PoetryClient() {
     const isStory = exportAspectFormat === 'story'
     showToast(
       isUrdu
-        ? (isStory ? 'انسٹاگرام/واٹس ایپ کے لیے 9:16 کارڈ تیار کیا جا رہا ہے... ⏳' : 'شاعری کارڈ تیار کیا جا رہا ہے... ⏳')
-        : (isStory ? 'Generating 9:16 Mobile Story Card for Instagram & WhatsApp... ⏳' : 'Generating custom poetry card... ⏳'),
+        ? isStory
+          ? 'انسٹاگرام/واٹس ایپ کے لیے 9:16 کارڈ تیار کیا جا رہا ہے... ⏳'
+          : 'شاعری کارڈ تیار کیا جا رہا ہے... ⏳'
+        : isStory
+        ? 'Generating 9:16 Mobile Story Card for Instagram & WhatsApp... ⏳'
+        : 'Generating custom poetry card... ⏳',
       'info'
     )
 
     try {
       const selectedTheme = POETRY_THEMES.find((t) => t.id === customThemeId) || POETRY_THEMES[0]
-      const canvas = await generateCustomPoetryCanvas(customVerse, customPoet, customDedication, selectedTheme, exportAspectFormat)
+      const canvas = await generateCustomPoetryCanvas(
+        customVerse,
+        customPoet,
+        customDedication,
+        selectedTheme,
+        exportAspectFormat
+      )
       if (!canvas) throw new Error('Failed to generate canvas')
 
       const sanitizedPoet = (customPoet || 'verse').toLowerCase().replace(/[^a-z0-9]/g, '-')
       const fileName = isStory ? `Cardzy-Custom-Story-${sanitizedPoet}.png` : `Cardzy-Custom-Poetry-${sanitizedPoet}.png`
 
-      // Direct file download to user device (bypass system share dialog)
       const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'))
       if (blob) {
         const objectUrl = URL.createObjectURL(blob)
@@ -661,8 +714,12 @@ export function PoetryClient() {
 
       showToast(
         isUrdu
-          ? (isStory ? '9:16 موبائل سٹوری کارڈ ڈاؤنلوڈ ہو گیا! 🎨' : 'شاعری کارڈ ڈاؤنلوڈ ہو گیا! 🎨')
-          : (isStory ? '9:16 Mobile Story Card downloaded! 🎨' : 'Custom poetry card downloaded! 🎨'),
+          ? isStory
+            ? '9:16 موبائل سٹوری کارڈ ڈاؤنلوڈ ہو گیا! 🎨'
+            : 'شاعری کارڈ ڈاؤنلوڈ ہو گیا! 🎨'
+          : isStory
+          ? '9:16 Mobile Story Card downloaded! 🎨'
+          : 'Custom poetry card downloaded! 🎨',
         'success'
       )
     } catch (err) {
@@ -673,7 +730,6 @@ export function PoetryClient() {
     }
   }
 
-  // Handle Download Custom Animated Video
   const handleDownloadCustomVideo = async () => {
     if (!customVerse.trim()) {
       showToast(isUrdu ? 'براہ کرم پہلے کچھ اشعار درج کریں' : 'Please enter some poetry verses first', 'error')
@@ -685,14 +741,24 @@ export function PoetryClient() {
     const isStory = exportAspectFormat === 'story'
     showToast(
       isUrdu
-        ? (isStory ? 'انسٹاگرام ریل اور واٹس ایپ سٹیٹس کے لیے 9:16 ویڈیو بن رہی ہے... ⏳' : 'ویڈیو تیار ہو رہی ہے... ⏳')
-        : (isStory ? 'Generating 9:16 Animated Reel Video for Instagram & WhatsApp... ⏳' : 'Generating animated video... ⏳'),
+        ? isStory
+          ? 'انسٹاگرام ریل اور واٹس ایپ سٹیٹس کے لیے 9:16 ویڈیو بن رہی ہے... ⏳'
+          : 'ویڈیو تیار ہو رہی ہے... ⏳'
+        : isStory
+        ? 'Generating 9:16 Animated Reel Video for Instagram & WhatsApp... ⏳'
+        : 'Generating animated video... ⏳',
       'info'
     )
 
     try {
       const selectedTheme = POETRY_THEMES.find((t) => t.id === customThemeId) || POETRY_THEMES[0]
-      const canvas = await generateCustomPoetryCanvas(customVerse, customPoet, customDedication, selectedTheme, exportAspectFormat)
+      const canvas = await generateCustomPoetryCanvas(
+        customVerse,
+        customPoet,
+        customDedication,
+        selectedTheme,
+        exportAspectFormat
+      )
       if (!canvas) throw new Error('Failed to generate canvas')
 
       const sanitizedPoet = (customPoet || 'verse').toLowerCase().replace(/[^a-z0-9]/g, '-')
@@ -708,8 +774,12 @@ export function PoetryClient() {
       if (success) {
         showToast(
           isUrdu
-            ? (isStory ? '9:16 موبائل ویڈیو ڈاؤنلوڈ ہو گئی! 🎥' : 'شاعری ویڈیو ڈاؤنلوڈ ہو گئی! 🎥')
-            : (isStory ? '9:16 Mobile Reel Video downloaded! 🎥' : 'Poetry video downloaded! 🎥'),
+            ? isStory
+              ? '9:16 موبائل ویڈیو ڈاؤنلوڈ ہو گئی! 🎥'
+              : 'شاعری ویڈیو ڈاؤنلوڈ ہو گئی! 🎥'
+            : isStory
+            ? '9:16 Mobile Reel Video downloaded! 🎥'
+            : 'Poetry video downloaded! 🎥',
           'success'
         )
       }
@@ -722,7 +792,6 @@ export function PoetryClient() {
     }
   }
 
-  // Handle Custom WhatsApp Share
   const handleCustomWhatsAppShare = () => {
     if (!customVerse.trim()) return
     const shareText = encodeURIComponent(
@@ -731,7 +800,6 @@ export function PoetryClient() {
     window.open(`https://api.whatsapp.com/send?text=${shareText}`, '_blank')
   }
 
-  // Handle Custom Copy Text
   const handleCustomCopy = () => {
     if (!customVerse.trim()) return
     const textToCopy = `${customVerse}\n\n— ${customPoet || 'شاعر'}${customDedication ? `\n(نذرانہ: ${customDedication})` : ''}\n\nhttps://cardzy.online/poetry`
@@ -774,38 +842,24 @@ export function PoetryClient() {
     return pages
   }
 
-  // Handle URL deep link query params (?poem=... or ?poet=... or ?lang=... or ?category=...)
   useEffect(() => {
     if (!searchParams) return
     const poemParam = searchParams.get('poem')
     const poetParam = searchParams.get('poet')
     const categoryParam = searchParams.get('category')
-    const langParam = searchParams.get('lang')
 
-    if (langParam) {
-      setSelectedLanguage(langParam)
-    }
-    if (categoryParam) {
-      setSelectedCategory(categoryParam)
-    }
-    if (poetParam) {
-      setSelectedPoet(poetParam)
-    }
+    if (categoryParam) setSelectedCategory(categoryParam)
+    if (poetParam) setSelectedPoet(poetParam)
 
     if (poemParam) {
       setHighlightedPoemId(poemParam)
       const foundPoem = poems.find((p) => p.id === poemParam)
       if (foundPoem) {
         trackPoetryActivity(foundPoem, 'view', 'direct_link')
-        // Automatically switch language filter to match the poem if no explicit lang was provided
-        if (!langParam && foundPoem.originalLanguage) {
-          setSelectedLanguage(foundPoem.originalLanguage)
-        }
       }
     }
   }, [searchParams, poems])
 
-  // Pagination & auto-scroll to highlighted poem when filters/page are updated
   useEffect(() => {
     if (!highlightedPoemId) return
     const poemIndex = filteredPoems.findIndex((p) => p.id === highlightedPoemId)
@@ -821,7 +875,6 @@ export function PoetryClient() {
     }
   }, [highlightedPoemId, filteredPoems, pageSize])
 
-  // Track poetry activity (views, clicks, copies, shares, flyers, likes)
   const trackPoetryActivity = (
     poem: Poem,
     action: 'view' | 'click' | 'share' | 'copy' | 'flyer' | 'download' | 'card_bridge' | 'like' | 'unlike',
@@ -853,31 +906,12 @@ export function PoetryClient() {
             }),
           }).catch(() => {})
         })
-        .catch(() => {
-          fetch('/api/poetry-activity', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              poemId: poem.id,
-              poet: poem.poet,
-              title: poem.title,
-              action,
-              channel: channel || 'web',
-              userName: user?.name || '',
-              userEmail: user?.email || '',
-              userId: user?.uid || '',
-            }),
-          }).catch(() => {})
-        })
+        .catch(() => {})
     } catch (e) {}
   }
 
-  // Helper to extract active language text, poet metadata, and years
   const getActiveVerseDetails = (poem: Poem, tabOverride?: 'original' | 'roman' | 'english' | 'urdu' | 'meaning') => {
-    const currentTab =
-      tabOverride ||
-      activeTabMap[poem.id] ||
-      'original'
+    const currentTab = tabOverride || activeTabMap[poem.id] || 'original'
 
     let text = ''
     let isRtl = false
@@ -921,10 +955,7 @@ export function PoetryClient() {
       )
 
     const poetEra = poem.poetEra || poetProfile?.era || ''
-
-    const poetDisplayName = isRtl
-      ? (poem.poetUrdu || poem.poet)
-      : poem.poet
+    const poetDisplayName = isRtl ? poem.poetUrdu || poem.poet : poem.poet
 
     return {
       currentTab,
@@ -938,7 +969,6 @@ export function PoetryClient() {
     }
   }
 
-  // Copy Verse: Copies active selected language text, poet name, and website line till /poetry
   const handleCopy = (poem: Poem) => {
     const { text, poetDisplayName, currentTab } = getActiveVerseDetails(poem)
     const textToCopy = `${text}\n\n— ${poetDisplayName}\n\nhttps://cardzy.online/poetry`
@@ -959,7 +989,6 @@ export function PoetryClient() {
     setTimeout(() => setCopiedId(null), 2500)
   }
 
-  // 1-Click Poetry to 3D Wish Card Conversion Handler
   const handleTurnPoemIntoCard = (poem: Poem) => {
     const { text, poetDisplayName } = getActiveVerseDetails(poem)
     const cardMessage = poem.cardPrefillMsg || text || poem.originalText
@@ -1003,11 +1032,9 @@ export function PoetryClient() {
       }
     })
 
-    // Sync to Firestore backend with visitor metadata
     trackPoetryActivity(poem, isCurrentlyLiked ? 'unlike' : 'like', 'heart_button')
   }
 
-  // WhatsApp Share: Shares active selected language text, poet name, and website link exactly once
   const handleWhatsAppShare = (poem: Poem) => {
     const { text, poetDisplayName, currentTab } = getActiveVerseDetails(poem)
     setStatsMap((prev) => {
@@ -1021,13 +1048,10 @@ export function PoetryClient() {
       }
     })
     trackPoetryActivity(poem, 'share', `whatsapp_${currentTab}`)
-    const shareText = encodeURIComponent(
-      `${text}\n\n— ${poetDisplayName}\n\nhttps://cardzy.online/poetry`
-    )
+    const shareText = encodeURIComponent(`${text}\n\n— ${poetDisplayName}\n\nhttps://cardzy.online/poetry`)
     window.open(`https://api.whatsapp.com/send?text=${shareText}`, '_blank')
   }
 
-  // SMS / Native Share: For native Web Share API (mobile), provide clean verse text so WhatsApp/apps do not duplicate url
   const handleSmsOrNativeShare = async (poem: Poem) => {
     const { text, poetDisplayName, currentTab } = getActiveVerseDetails(poem)
     setStatsMap((prev) => {
@@ -1045,7 +1069,6 @@ export function PoetryClient() {
 
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
-        // Passing the URL only in 'url' (not repeated in text) prevents WhatsApp and Android/iOS share sheet from showing the link twice
         await navigator.share({
           title: `${poem.title} — ${poetDisplayName}`,
           text: `${text}\n\n— ${poetDisplayName}`,
@@ -1055,12 +1078,11 @@ export function PoetryClient() {
       } catch (e) {}
     }
 
-    // Fallback to SMS protocol (SMS does not take separate url, so single link in body)
     const smsBody = encodeURIComponent(`${text}\n\n— ${poetDisplayName}\n\n${poetryUrl}`)
     window.open(`sms:?&body=${smsBody}`, '_self')
   }
 
-  // Generate Tailored, Dynamic-Height or 9:16 Mobile Story Canvas
+  // --- DATABASE POEMS CANVAS GENERATOR ---
   const generatePoetryCanvas = async (
     poem: Poem,
     format: 'story' | 'banner' = exportAspectFormat
@@ -1082,18 +1104,46 @@ export function PoetryClient() {
     const tempCtx = canvas.getContext('2d')
     if (!tempCtx) return null
 
-    // Measure & wrap verse lines cleanly with comfortable margins
     const maxWidth = isRtl ? 820 : 840
-    const isLongPoem = lines.length > 8
     const isStory = format === 'story'
+    const lineCount = lines.length
+
+    let fontSize: number
+    let lineHeight: number
+
+    if (isRtl) {
+      if (lineCount > 18) {
+        fontSize = isStory ? 18 : 17
+        lineHeight = isStory ? 44 : 40
+      } else if (lineCount > 10) {
+        fontSize = isStory ? 22 : 20
+        lineHeight = isStory ? 54 : 48
+      } else if (lineCount > 5) {
+        fontSize = isStory ? 28 : 25
+        lineHeight = isStory ? 68 : 62
+      } else {
+        fontSize = isStory ? 36 : 32
+        lineHeight = isStory ? 92 : 82
+      }
+    } else {
+      if (lineCount > 24) {
+        fontSize = isStory ? 15 : 15
+        lineHeight = isStory ? 28 : 26
+      } else if (lineCount > 14) {
+        fontSize = isStory ? 19 : 18
+        lineHeight = isStory ? 36 : 32
+      } else if (lineCount > 7) {
+        fontSize = isStory ? 24 : 22
+        lineHeight = isStory ? 46 : 40
+      } else {
+        fontSize = isStory ? 32 : 28
+        lineHeight = isStory ? 64 : 54
+      }
+    }
 
     const fontDeclaration = isRtl
-      ? (isLongPoem
-          ? (isStory ? 'bold 28px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif' : 'bold 25px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif')
-          : (isStory ? 'bold 36px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif' : 'bold 32px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif'))
-      : (isLongPoem
-          ? (isStory ? 'italic bold 25px "Georgia", "Times New Roman", serif' : 'italic bold 22px "Georgia", "Times New Roman", serif')
-          : (isStory ? 'italic bold 32px "Georgia", "Times New Roman", serif' : 'italic bold 28px "Georgia", "Times New Roman", serif'))
+      ? `bold ${fontSize}px "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", "Scheherazade New", "Traditional Arabic", serif`
+      : `italic bold ${fontSize}px "Georgia", "Times New Roman", serif`
 
     tempCtx.font = fontDeclaration
 
@@ -1115,17 +1165,15 @@ export function PoetryClient() {
       }
     })
 
-    // Generous line height adapted for length
-    const lineHeight = isRtl ? (isLongPoem ? (isStory ? 74 : 66) : (isStory ? 95 : 86)) : (isLongPoem ? (isStory ? 52 : 42) : (isStory ? 68 : 52))
-    const verseBoxHeight = isStory
-      ? Math.min(1100, Math.max(340, wrappedLines.length * lineHeight + 120))
-      : Math.max(isRtl ? 190 : 160, wrappedLines.length * lineHeight + (isRtl ? 80 : 60))
+    const contentHeight = wrappedLines.length * lineHeight
+    const boxPadding = isStory ? (lineCount > 18 ? 40 : 80) : 50
+    const verseBoxHeight = contentHeight + boxPadding
 
     if (isStory) {
-      canvas.height = 1920 // Native 9:16 vertical mobile story / reels format in HEIGHT
+      canvas.height = 1920
     } else {
-      const headerHeight = poetEra ? 170 : 140
-      const footerHeight = 110
+      const headerHeight = poetEra ? 190 : 150
+      const footerHeight = 120
       canvas.height = Math.max(540, headerHeight + verseBoxHeight + footerHeight)
     }
 
@@ -1134,7 +1182,6 @@ export function PoetryClient() {
 
     const poemTheme = getPoemTheme(poem)
 
-    // 1. Luxury Theme Background Gradient
     const gradient = ctx.createLinearGradient(0, 0, 1080, canvas.height)
     gradient.addColorStop(0, poemTheme.flyerGradients[0])
     gradient.addColorStop(0.4, poemTheme.flyerGradients[1])
@@ -1142,7 +1189,6 @@ export function PoetryClient() {
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, 1080, canvas.height)
 
-    // Soft ambient lighting for 9:16 vertical mobile format
     if (isStory) {
       const centerGlow = ctx.createRadialGradient(540, 960, 120, 540, 960, 960)
       centerGlow.addColorStop(0, 'rgba(255, 215, 0, 0.08)')
@@ -1151,7 +1197,6 @@ export function PoetryClient() {
       ctx.fillRect(0, 0, 1080, 1920)
     }
 
-    // 2. Ornate Double Gold & Theme Accent Borders
     const borderPad = isStory ? 36 : 28
     const innerPad = isStory ? 52 : 40
     ctx.lineWidth = 8
@@ -1162,42 +1207,44 @@ export function PoetryClient() {
     ctx.strokeStyle = poemTheme.flyerAccent || '#fef08a'
     ctx.strokeRect(innerPad, innerPad, 1080 - innerPad * 2, canvas.height - innerPad * 2)
 
-    // 3. Corner Rosettes
     ctx.fillStyle = '#fbbf24'
     ctx.font = '24px sans-serif'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
-    const rosetteTop = isStory ? 100 : 75
+    const rosetteTop = isStory ? 90 : 75
     const rosetteBottom = isStory ? canvas.height - 90 : canvas.height - 55
     ctx.fillText('✦ ❖ ✦', 110, rosetteTop)
     ctx.fillText('✦ ❖ ✦', 970, rosetteTop)
     ctx.fillText('✦ ❖ ✦', 110, rosetteBottom)
     ctx.fillText('✦ ❖ ✦', 970, rosetteBottom)
 
-    // 4. Top Header: Poet Name & Years
-    let topY = isStory ? 200 : 90
+    let topY = isStory ? 170 : 80
 
     if (isStory) {
       ctx.fillStyle = '#fbbf24'
       ctx.font = 'bold 20px sans-serif'
       ctx.fillText('✨ CARDZY DIGITAL POETRY STUDIO ✨', 540, topY)
-      topY += 60
+      topY += 46
     }
 
     ctx.fillStyle = '#fde68a'
     ctx.font = isRtl
-      ? (isStory ? 'bold 44px "Noto Nastaliq Urdu", "Traditional Arabic", serif' : 'bold 34px "Noto Nastaliq Urdu", "Traditional Arabic", serif')
-      : (isStory ? 'bold 40px "Georgia", "Times New Roman", serif' : 'bold 32px "Georgia", "Times New Roman", serif')
+      ? isStory
+        ? 'bold 42px "Noto Nastaliq Urdu", "Traditional Arabic", serif'
+        : 'bold 34px "Noto Nastaliq Urdu", "Traditional Arabic", serif'
+      : isStory
+      ? 'bold 38px "Georgia", "Times New Roman", serif'
+      : 'bold 32px "Georgia", "Times New Roman", serif'
     ctx.fillText(poetDisplayName, 540, topY)
 
     if (poetEra) {
-      topY += isStory ? 44 : 38
+      topY += isStory ? 38 : 32
       ctx.fillStyle = '#cbd5e1'
       ctx.font = isStory ? 'bold 20px sans-serif' : 'bold 18px sans-serif'
       ctx.fillText(`(${poetEra})`, 540, topY)
     }
 
-    topY += isStory ? 36 : 28
+    topY += isStory ? 32 : 26
     ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)'
     ctx.lineWidth = 1.5
     ctx.beginPath()
@@ -1210,10 +1257,15 @@ export function PoetryClient() {
       ctx.fillText('✦', 540, topY)
     }
 
-    // 5. Middle Section: Verse Container Box (Centered in 9:16 mobile story format)
+    const headerEndY = topY + 14
+    const footerY = isStory ? 1760 : canvas.height - 70
+    const availableArea = footerY - 50 - headerEndY
+
     const boxWidth = 940
     const boxLeft = 70
-    const boxTop = isStory ? Math.round(1060 - (verseBoxHeight / 2)) : topY + 22
+    const boxTop = isStory
+      ? Math.max(headerEndY + 15, Math.round(headerEndY + (availableArea - verseBoxHeight) / 2))
+      : headerEndY + 20
 
     ctx.fillStyle = 'rgba(15, 23, 42, 0.78)'
     ctx.fillRect(boxLeft, boxTop, boxWidth, verseBoxHeight)
@@ -1226,46 +1278,42 @@ export function PoetryClient() {
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
 
-    let verseY = boxTop + (isRtl ? (isStory ? 55 : 45) : (isStory ? 45 : 35)) + (lineHeight / 2)
+    let verseY = boxTop + (verseBoxHeight - contentHeight) / 2 + lineHeight / 2
     wrappedLines.forEach((line) => {
       ctx.fillText(line.trim(), 540, verseY)
       verseY += lineHeight
     })
 
-    // Ornamental flourish below verse box in story mode
     if (isStory) {
-      const flourishY = boxTop + verseBoxHeight + 50
-      if (flourishY < 1720) {
+      const flourishY = boxTop + verseBoxHeight + 35
+      if (flourishY < footerY - 60) {
         ctx.fillStyle = 'rgba(251, 191, 36, 0.45)'
         ctx.font = '20px sans-serif'
         ctx.fillText('❧ ✦ ❧', 540, flourishY)
       }
     }
 
-    // 6. Bottom Footer: Website Attribution Line
-    const footerY = isStory ? 1750 : boxTop + verseBoxHeight + 35
     ctx.strokeStyle = 'rgba(245, 158, 11, 0.35)'
     ctx.beginPath()
-    ctx.moveTo(260, footerY)
-    ctx.lineTo(820, footerY)
+    ctx.moveTo(260, footerY - 30)
+    ctx.lineTo(820, footerY - 30)
     ctx.stroke()
 
     ctx.fillStyle = '#fef08a'
     ctx.font = isStory ? 'bold 22px sans-serif' : 'bold 18px sans-serif'
     ctx.textBaseline = 'middle'
-    ctx.fillText('✦ Powered by Cardzy.online ✦', 540, footerY + (isStory ? 36 : 30))
+    ctx.fillText('✦ Powered by Cardzy.online ✦', 540, footerY)
 
     if (isStory) {
       ctx.fillStyle = '#94a3b8'
       ctx.font = '16px sans-serif'
-      ctx.fillText('📱 Cardzy Story Edition • Instagram & WhatsApp Ready', 540, footerY + 68)
+      ctx.fillText('📱 Cardzy Story Edition • Instagram & WhatsApp Ready', 540, footerY + 36)
     }
 
     const sanitizedTitle = (poem.title || 'poetry').toLowerCase().replace(/[^a-z0-9]/g, '-')
     return { canvas, sanitizedTitle, text, poetDisplayName }
   }
 
-  // Generate Tailored, Dynamic-Height Story Flyer in the Active Card Language
   const handleDownloadFlyer = async (poem: Poem) => {
     setIsGeneratingFlyer(poem.id)
     const { currentTab } = getActiveVerseDetails(poem)
@@ -1274,8 +1322,12 @@ export function PoetryClient() {
     const isStory = exportAspectFormat === 'story'
     showToast(
       isUrdu
-        ? (isStory ? 'انسٹاگرام/واٹس ایپ کے لیے 9:16 کارڈ تیار کیا جا رہا ہے... ⏳' : 'کارڈ تیار کیا جا رہا ہے... برائے مہربانی ایک لمحہ انتظار فرمائیں ⏳')
-        : (isStory ? 'Generating 9:16 Mobile Story Card for Instagram & WhatsApp... ⏳' : 'Generating high-resolution card... please wait a moment ⏳'),
+        ? isStory
+          ? 'انسٹاگرام/واٹس ایپ کے لیے 9:16 کارڈ تیار کیا جا رہا ہے... ⏳'
+          : 'کارڈ تیار کیا جا رہا ہے... برائے مہربانی ایک لمحہ انتظار فرمائیں ⏳'
+        : isStory
+        ? 'Generating 9:16 Mobile Story Card for Instagram & WhatsApp... ⏳'
+        : 'Generating high-resolution card... please wait a moment ⏳',
       'info'
     )
 
@@ -1286,7 +1338,6 @@ export function PoetryClient() {
       const { canvas, sanitizedTitle } = result
       const fileName = isStory ? `Cardzy-Story-${sanitizedTitle}.png` : `Cardzy-${sanitizedTitle}.png`
 
-      // Direct file download to user device (bypass system share dialog)
       const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'))
       if (blob) {
         const objectUrl = URL.createObjectURL(blob)
@@ -1315,8 +1366,12 @@ export function PoetryClient() {
 
       showToast(
         isUrdu
-          ? (isStory ? '9:16 موبائل سٹوری کارڈ ڈاؤنلوڈ ہو گیا! 🎨' : 'کارڈ کامیابی کے ساتھ ڈاؤنلوڈ ہو گیا! 🎨')
-          : (isStory ? '9:16 Mobile Story Card downloaded! 🎨' : 'Card downloaded successfully! 🎨'),
+          ? isStory
+            ? '9:16 موبائل سٹوری کارڈ ڈاؤنلوڈ ہو گیا! 🎨'
+            : 'کارڈ کامیابی کے ساتھ ڈاؤنلوڈ ہو گیا! 🎨'
+          : isStory
+          ? '9:16 Mobile Story Card downloaded! 🎨'
+          : 'Card downloaded successfully! 🎨',
         'success'
       )
     } catch (err) {
@@ -1332,7 +1387,6 @@ export function PoetryClient() {
     }
   }
 
-  // Generate Animated Celebration Video (MP4 / WebM with golden sparkles & light beam)
   const handleDownloadPoetryVideo = async (poem: Poem) => {
     setGeneratingVideoId(poem.id)
     setVideoProgress(0)
@@ -1341,8 +1395,12 @@ export function PoetryClient() {
     const isStory = exportAspectFormat === 'story'
     showToast(
       isUrdu
-        ? (isStory ? 'انسٹاگرام ریل اور واٹس ایپ سٹیٹس کے لیے 9:16 ویڈیو بن رہی ہے... ⏳' : 'شاعری کی ویڈیو تیار ہو رہی ہے... برائے مہربانی انتظار فرمائیں ⏳')
-        : (isStory ? 'Generating 9:16 Animated Reel Video for Instagram & WhatsApp... ⏳' : 'Generating animated poetry video... please wait ⏳'),
+        ? isStory
+          ? 'انسٹاگرام ریل اور واٹس ایپ سٹیٹس کے لیے 9:16 ویڈیو بن رہی ہے... ⏳'
+          : 'شاعری کی ویڈیو تیار ہو رہی ہے... برائے مہربانی انتظار فرمائیں ⏳'
+        : isStory
+        ? 'Generating 9:16 Animated Reel Video for Instagram & WhatsApp... ⏳'
+        : 'Generating animated poetry video... please wait ⏳',
       'info'
     )
 
@@ -1363,36 +1421,39 @@ export function PoetryClient() {
       if (success) {
         showToast(
           isUrdu
-            ? (isStory ? '9:16 موبائل ویڈیو ڈاؤنلوڈ ہو گئی! 🎥' : 'شاعری ویڈیو ڈاؤنلوڈ ہو گئی! 🎥')
-            : (isStory ? '9:16 Mobile Reel Video downloaded successfully! 🎥' : 'Poetry video downloaded successfully! 🎥'),
+            ? isStory
+              ? '9:16 موبائل ویڈیو ڈاؤنلوڈ ہو گئی! 🎥'
+              : 'شاعری ویڈیو ڈاؤنلوڈ ہو گئی! 🎥'
+            : isStory
+            ? '9:16 Mobile Reel Video downloaded successfully! 🎥'
+            : 'Poetry video downloaded successfully! 🎥',
           'success'
         )
       }
     } catch (err) {
       console.error('Video generation error:', err)
-      showToast(
-        isUrdu ? 'ویڈیو بنانے میں خرابی پیش آئی' : 'Failed to generate video',
-        'error'
-      )
+      showToast(isUrdu ? 'ویڈیو بنانے میں خرابی پیش آئی' : 'Failed to generate video', 'error')
     } finally {
       setGeneratingVideoId(null)
       setVideoProgress(0)
     }
   }
 
-  // Category list localized with exact library counts
-  const categoriesList = useMemo(() => [
-    { id: 'all', label: isUrdu ? `تمام موضوعات (${poems.length})` : `All Themes (${poems.length})`, icon: '✨' },
-    { id: 'ishq', label: isUrdu ? `عشق و محبت (${categoryCounts['ishq'] || 0})` : `Love & Romance (${categoryCounts['ishq'] || 0})`, icon: '💖' },
-    { id: 'wedding', label: isUrdu ? `شادی و نکاح (${categoryCounts['wedding'] || 0})` : `Wedding & Nikkah (${categoryCounts['wedding'] || 0})`, icon: '💍' },
-    { id: 'khudi', label: isUrdu ? `خودی و حوصلہ (${categoryCounts['khudi'] || 0})` : `Motivation & Khudi (${categoryCounts['khudi'] || 0})`, icon: '🦅' },
-    { id: 'sufi', label: isUrdu ? `تصوف و روحانیت (${categoryCounts['sufi'] || 0})` : `Sufi & Spiritual (${categoryCounts['sufi'] || 0})`, icon: '🕊️' },
-    { id: 'birthday', label: isUrdu ? `سالگرہ و سنگ میل (${categoryCounts['birthday'] || 0})` : `Birthday & Milestones (${categoryCounts['birthday'] || 0})`, icon: '🎂' },
-    { id: 'dosti', label: isUrdu ? `دوستی و وفا (${categoryCounts['dosti'] || 0})` : `Friendship & Dosti (${categoryCounts['dosti'] || 0})`, icon: '🤝' },
-    { id: 'dua', label: isUrdu ? `دعائیں و برکت (${categoryCounts['dua'] || 0})` : `Dua & Blessings (${categoryCounts['dua'] || 0})`, icon: '🤲' },
-    { id: 'wisdom', label: isUrdu ? `حکمت و دانائی (${categoryCounts['wisdom'] || 0})` : `Wisdom & Life (${categoryCounts['wisdom'] || 0})`, icon: '📜' },
-    { id: 'gham', label: isUrdu ? `اداسی و درد (${categoryCounts['gham'] || 0})` : `Sad & Melancholy (${categoryCounts['gham'] || 0})`, icon: '🥀' },
-  ], [isUrdu, poems.length, categoryCounts])
+  const categoriesList = useMemo(
+    () => [
+      { id: 'all', label: isUrdu ? `تمام موضوعات (${searchFilteredBase.length})` : `All Themes (${searchFilteredBase.length})`, icon: '✨' },
+      { id: 'ishq', label: isUrdu ? `عشق و محبت (${categoryCounts['ishq'] || 0})` : `Love & Romance (${categoryCounts['ishq'] || 0})`, icon: '💖' },
+      { id: 'wedding', label: isUrdu ? `شادی و نکاح (${categoryCounts['wedding'] || 0})` : `Wedding & Nikkah (${categoryCounts['wedding'] || 0})`, icon: '💍' },
+      { id: 'khudi', label: isUrdu ? `خودی و حوصلہ (${categoryCounts['khudi'] || 0})` : `Motivation & Khudi (${categoryCounts['khudi'] || 0})`, icon: '🦅' },
+      { id: 'sufi', label: isUrdu ? `تصوف و روحانیت (${categoryCounts['sufi'] || 0})` : `Sufi & Spiritual (${categoryCounts['sufi'] || 0})`, icon: '🕊️' },
+      { id: 'birthday', label: isUrdu ? `سالگرہ و سنگ میل (${categoryCounts['birthday'] || 0})` : `Birthday & Milestones (${categoryCounts['birthday'] || 0})`, icon: '🎂' },
+      { id: 'dosti', label: isUrdu ? `دوستی و وفا (${categoryCounts['dosti'] || 0})` : `Friendship & Dosti (${categoryCounts['dosti'] || 0})`, icon: '🤝' },
+      { id: 'dua', label: isUrdu ? `دعائیں و برکت (${categoryCounts['dua'] || 0})` : `Dua & Blessings (${categoryCounts['dua'] || 0})`, icon: '🤲' },
+      { id: 'wisdom', label: isUrdu ? `حکمت و دانائی (${categoryCounts['wisdom'] || 0})` : `Wisdom & Life (${categoryCounts['wisdom'] || 0})`, icon: '📜' },
+      { id: 'gham', label: isUrdu ? `اداسی و درد (${categoryCounts['gham'] || 0})` : `Sad & Melancholy (${categoryCounts['gham'] || 0})`, icon: '🥀' },
+    ],
+    [isUrdu, searchFilteredBase.length, categoryCounts]
+  )
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-emerald-950/20 to-slate-950 text-slate-100 selection:bg-amber-500 selection:text-black">
@@ -1407,16 +1468,16 @@ export function PoetryClient() {
             <Feather className="size-4 animate-pulse text-amber-400" />
             <span>
               {isUrdu
-                ? 'گنجینۂ کلاسیکی و جدید شاعری'
+                ? 'گنجینۂ کلاسیکی و جدید شاعری'
                 : 'Treasury of Classical & Modern World Poetry'}
             </span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
             <span className="block bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500 bg-clip-text text-transparent">
-              {isUrdu ? 'گنجینۂ شاعری و کلام' : 'Poetry & Shayari Treasury'}
+              {isUrdu ? 'گنجینۂ شاعری و کلام' : 'Poetry & Shayari Treasury'}
             </span>
-            <span className={cn("mt-2 block text-xl sm:text-3xl text-emerald-300 tracking-normal", isUrdu ? "font-urdu" : "")}>
+            <span className={cn('mt-2 block text-xl sm:text-3xl text-emerald-300 tracking-normal', isUrdu ? 'font-urdu' : '')}>
               {isUrdu
                 ? 'منتخب کلام، اشعار و خوبصورت پیغامات'
                 : 'Timeless Masterpieces from Legendary World Poets'}
@@ -1429,7 +1490,6 @@ export function PoetryClient() {
               : 'Discover verified verses from Allama Iqbal, Mirza Ghalib, Faiz, Jaun Elia, Rumi, Shakespeare, Mahmoud Darwish, and more. Use in 1-click on your 3D Wish Cards & Wedding Invitations!'}
           </p>
 
-          {/* Quick Statistics Bar */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-2 sm:gap-6 text-xs text-slate-400">
             <div className="flex items-center gap-1.5 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800">
               <Sparkles className="size-3.5 text-amber-400" />
@@ -1445,7 +1505,6 @@ export function PoetryClient() {
             </div>
           </div>
 
-          {/* Quick Jump to Custom Card Creator */}
           <div className="mt-4 flex items-center justify-center">
             <a
               href="#create-custom-poetry"
@@ -1456,7 +1515,6 @@ export function PoetryClient() {
             </a>
           </div>
 
-          {/* --- SEARCH BAR --- */}
           <div className="mt-6 max-w-3xl mx-auto">
             <div className="relative flex items-center">
               <Search className="absolute left-4 size-4 sm:size-5 text-amber-400/70" />
@@ -1482,7 +1540,6 @@ export function PoetryClient() {
               )}
             </div>
 
-            {/* Popular 1-Tap Search Keywords */}
             <div className="mt-3 flex items-center gap-1.5 flex-wrap justify-center text-xs">
               <span className="text-slate-400 font-medium mr-1 flex items-center gap-1 text-[11px]">
                 <Tag className="size-3 text-amber-400" /> {isUrdu ? 'فوری تلاش:' : 'Quick Search:'}
@@ -1493,10 +1550,10 @@ export function PoetryClient() {
                   type="button"
                   onClick={() => setSearchQuery(kw.query)}
                   className={cn(
-                    "px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer",
+                    'px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer',
                     searchQuery.toLowerCase() === kw.query.toLowerCase()
-                      ? "bg-amber-500 text-slate-950 font-bold"
-                      : "bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-amber-300 border border-slate-800"
+                      ? 'bg-amber-500 text-slate-950 font-bold'
+                      : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-amber-300 border border-slate-800'
                   )}
                 >
                   {kw.label}
@@ -1504,7 +1561,6 @@ export function PoetryClient() {
               ))}
             </div>
 
-            {/* Quick Language Filter Pills in Hero */}
             <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
               {LANGUAGE_OPTIONS.map((pill) => (
                 <button
@@ -1512,10 +1568,10 @@ export function PoetryClient() {
                   type="button"
                   onClick={() => handleSelectLanguage(pill.id)}
                   className={cn(
-                    "px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 border",
+                    'px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 border',
                     selectedLanguage === pill.id
-                      ? "bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 border-amber-400 shadow-amber-500/25 ring-2 ring-amber-400/80 scale-105 font-black"
-                      : "bg-slate-900/90 text-slate-300 hover:text-white hover:bg-slate-800 border-slate-700/80 hover:border-amber-400/40"
+                      ? 'bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 border-amber-400 shadow-amber-500/25 ring-2 ring-amber-400/80 scale-105 font-black'
+                      : 'bg-slate-900/90 text-slate-300 hover:text-white hover:bg-slate-800 border-slate-700/80 hover:border-amber-400/40'
                   )}
                 >
                   {pill.label}
@@ -1526,10 +1582,9 @@ export function PoetryClient() {
         </div>
       </section>
 
-      {/* --- FILTER CONTROLS (Sticky 4-Dropdown Clean Grid, Mobile-Optimized Text) --- */}
+      {/* --- FILTER CONTROLS --- */}
       <section className="sticky top-16 z-30 bg-slate-950/95 backdrop-blur-md border-b border-slate-800/80 py-1.5 sm:py-3 px-2 sm:px-6 lg:px-8 shadow-md">
         <div className="max-w-7xl mx-auto space-y-1.5 sm:space-y-2.5">
-          {/* Quick Language Pills Bar inside Sticky Header */}
           <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar pb-0.5">
             {LANGUAGE_OPTIONS.map((pill) => (
               <button
@@ -1549,7 +1604,6 @@ export function PoetryClient() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 sm:gap-3">
-            {/* 1. Language Dropdown */}
             <div className="flex flex-col gap-0.5">
               <label className="text-[9.5px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-0.5 sm:gap-1 leading-none tracking-tight">
                 <span>🌐</span> <span>{isUrdu ? 'زبان' : 'Language'}</span>
@@ -1560,30 +1614,26 @@ export function PoetryClient() {
                 className="w-full text-[9.5px] sm:text-xs font-semibold rounded-lg sm:rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-1 sm:px-2.5 py-1 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
               >
                 <option value="all">
-                  {isUrdu ? '🌐 تمام کلام (1,000+)' : '🌐 All (1,000+)'}
+                  {isUrdu ? `🌐 تمام کلام (${searchFilteredBase.length})` : `🌐 All (${searchFilteredBase.length})`}
                 </option>
                 <option value="ur">
-                  {isUrdu ? '🇵🇰 اردو (710+)' : '🇵🇰 Urdu (710+)'}
+                  {isUrdu ? `🇵🇰 اردو (${languageCounts['ur'] || 0})` : `🇵🇰 Urdu (${languageCounts['ur'] || 0})`}
                 </option>
                 <option value="pa">
-                  {isUrdu ? '🌾 پنجابی (120+)' : '🌾 Punjabi (120+)'}
+                  {isUrdu ? `🌾 پنجابی (${languageCounts['pa'] || 0})` : `🌾 Punjabi (${languageCounts['pa'] || 0})`}
                 </option>
                 <option value="fa">
-                  {isUrdu ? '🇮🇷 فارسی (50+)' : '🇮🇷 Persian (50+)'}
+                  {isUrdu ? `🇮🇷 فارسی (${languageCounts['fa'] || 0})` : `🇮🇷 Persian (${languageCounts['fa'] || 0})`}
                 </option>
                 <option value="ar">
-                  {isUrdu ? '🇸🇦 عربی (50+)' : '🇸🇦 Arabic (50+)'}
+                  {isUrdu ? `🇸🇦 عربی (${languageCounts['ar'] || 0})` : `🇸🇦 Arabic (${languageCounts['ar'] || 0})`}
                 </option>
                 <option value="en">
-                  {isUrdu ? '🇬🇧 انگلش (70+)' : '🇬🇧 English (70+)'}
-                </option>
-                <option value="es">
-                  {isUrdu ? '🇪🇸 ہسپانوی (5+)' : '🇪🇸 Spanish (5+)'}
+                  {isUrdu ? `🇬🇧 انگلش (${languageCounts['en'] || 0})` : `🇬🇧 English (${languageCounts['en'] || 0})`}
                 </option>
               </select>
             </div>
 
-            {/* 2. Poet Dropdown (Cascading: Filters based on active language) */}
             <div className="flex flex-col gap-0.5">
               <label className="text-[9.5px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-0.5 sm:gap-1 leading-none tracking-tight">
                 <Feather className="size-2.5 sm:size-3 text-amber-400" /> <span>{isUrdu ? 'شاعر' : 'Poet'}</span>
@@ -1594,19 +1644,9 @@ export function PoetryClient() {
                 className="w-full text-[9.5px] sm:text-xs font-semibold rounded-lg sm:rounded-xl bg-slate-900/95 border border-amber-500/35 text-slate-100 px-1 sm:px-2.5 py-1 sm:py-2 focus:outline-none focus:ring-1.5 focus:ring-amber-400 shadow-xs cursor-pointer truncate"
               >
                 <option value="all">
-                  {selectedLanguage === 'all'
-                    ? (isUrdu ? `⭐ تمام شعراء (${poetList[0]?.count || poems.length})` : `⭐ All Poets (${poetList[0]?.count || poems.length})`)
-                    : selectedLanguage === 'pa'
-                    ? (isUrdu ? `⭐ پنجابی شعراء (${poetList[0]?.count || 0})` : `⭐ Punjabi Poets (${poetList[0]?.count || 0})`)
-                    : selectedLanguage === 'ur'
-                    ? (isUrdu ? `⭐ اردو شعراء (${poetList[0]?.count || 0})` : `⭐ Urdu Poets (${poetList[0]?.count || 0})`)
-                    : selectedLanguage === 'fa'
-                    ? (isUrdu ? `⭐ فارسی شعراء (${poetList[0]?.count || 0})` : `⭐ Persian Poets (${poetList[0]?.count || 0})`)
-                    : selectedLanguage === 'ar'
-                    ? (isUrdu ? `⭐ عربی شعراء (${poetList[0]?.count || 0})` : `⭐ Arabic Poets (${poetList[0]?.count || 0})`)
-                    : selectedLanguage === 'en'
-                    ? `⭐ English Poets (${poetList[0]?.count || 0})`
-                    : (isUrdu ? `⭐ ہسپانوی شعراء (${poetList[0]?.count || 0})` : `⭐ Spanish Poets (${poetList[0]?.count || 0})`)}
+                  {isUrdu
+                    ? `⭐ تمام شعراء (${poetList[0]?.count || 0})`
+                    : `⭐ All Poets (${poetList[0]?.count || 0})`}
                 </option>
                 {poetList
                   .filter((p) => p.name !== 'all')
@@ -1618,7 +1658,6 @@ export function PoetryClient() {
               </select>
             </div>
 
-            {/* 3. Theme / Category Dropdown */}
             <div className="flex flex-col gap-0.5">
               <label className="text-[9.5px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-0.5 sm:gap-1 leading-none tracking-tight">
                 <Filter className="size-2.5 sm:size-3 text-amber-400" /> <span>{isUrdu ? 'موضوع' : 'Theme'}</span>
@@ -1636,7 +1675,6 @@ export function PoetryClient() {
               </select>
             </div>
 
-            {/* 4. Format Dropdown */}
             <div className="flex flex-col gap-0.5">
               <label className="text-[9.5px] sm:text-xs font-bold text-amber-300/90 flex items-center gap-0.5 sm:gap-1 leading-none tracking-tight">
                 <Layers className="size-2.5 sm:size-3 text-amber-400" /> <span>{isUrdu ? 'طرز' : 'Format'}</span>
@@ -1653,14 +1691,17 @@ export function PoetryClient() {
             </div>
           </div>
 
-          {/* 5. Mobile 9:16 Height vs Laptop Banner Export Ratio Bar */}
           <div className="mt-3 pt-2.5 border-t border-amber-500/20 flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-1.5 text-xs text-amber-200/90 font-bold">
               <span>📐 {isUrdu ? 'ڈاؤنلوڈ کارڈ سائز:' : 'Export Format:'}</span>
               <span className="text-[11px] text-slate-400 font-normal hidden sm:inline">
                 {exportAspectFormat === 'story'
-                  ? (isUrdu ? '(انسٹاگرام سٹوری، ریلز اور واٹس ایپ سٹیٹس کے لیے عمودی 9:16 سائز)' : '(Vertical 9:16 portrait in height for Instagram Stories, Reels & WhatsApp Status)')
-                  : (isUrdu ? '(لیپ ٹاپ کے لیے چوڑا بینر سائز)' : '(Landscape banner in width for Laptop & PC)')}
+                  ? isUrdu
+                    ? '(انسٹاگرام سٹوری، ریلز اور واٹس ایپ سٹیٹس کے لیے عمودی 9:16 سائز)'
+                    : '(Vertical 9:16 portrait in height for Instagram Stories, Reels & WhatsApp Status)'
+                  : isUrdu
+                  ? '(لیپ ٹاپ کے لیے چوڑا بینر سائز)'
+                  : '(Landscape banner in width for Laptop & PC)'}
               </span>
             </div>
             <div className="inline-flex rounded-xl bg-slate-900 border border-amber-500/40 p-1 shadow-md">
@@ -1671,10 +1712,10 @@ export function PoetryClient() {
                   setExportAspectFormat('story')
                 }}
                 className={cn(
-                  "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer",
+                  'px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer',
                   exportAspectFormat === 'story'
-                    ? "bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-md font-black"
-                    : "text-slate-300 hover:text-amber-300"
+                    ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-md font-black'
+                    : 'text-slate-300 hover:text-amber-300'
                 )}
                 title="Mobile Portrait (9:16 Height) - Instagram Stories, Reels, TikTok, WhatsApp Status"
               >
@@ -1690,10 +1731,10 @@ export function PoetryClient() {
                   setExportAspectFormat('banner')
                 }}
                 className={cn(
-                  "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer",
+                  'px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer',
                   exportAspectFormat === 'banner'
-                    ? "bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-md font-black"
-                    : "text-slate-300 hover:text-amber-300"
+                    ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-md font-black'
+                    : 'text-slate-300 hover:text-amber-300'
                 )}
                 title="Laptop Landscape Banner (Width)"
               >
@@ -1713,9 +1754,7 @@ export function PoetryClient() {
           <div className="p-4 sm:p-6 rounded-3xl bg-slate-900/95 border border-amber-500/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
             <div className="space-y-1.5">
               <div className="flex items-center gap-2.5 flex-wrap">
-                <h2 className="text-xl sm:text-2xl font-black text-amber-300">
-                  {activePoetProfile.name}
-                </h2>
+                <h2 className="text-xl sm:text-2xl font-black text-amber-300">{activePoetProfile.name}</h2>
                 {activePoetProfile.nameUrdu && (
                   <span className="text-lg sm:text-xl font-urdu font-black text-emerald-400">
                     {activePoetProfile.nameUrdu}
@@ -1731,7 +1770,10 @@ export function PoetryClient() {
             </div>
             <div className="flex flex-wrap gap-1.5 shrink-0">
               {activePoetProfile.popularThemes?.map((theme) => (
-                <span key={theme} className="text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                <span
+                  key={theme}
+                  className="text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                >
                   #{theme}
                 </span>
               ))}
@@ -1743,12 +1785,10 @@ export function PoetryClient() {
       {/* --- CUSTOM POETRY POST CREATOR SECTION --- */}
       <section id="create-custom-poetry" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
         <div className="rounded-3xl border border-amber-500/40 bg-gradient-to-br from-slate-950 via-[#0e1628] to-slate-950 p-5 sm:p-8 shadow-2xl relative overflow-hidden backdrop-blur-md">
-          {/* Ambient Lighting & Top Hairline */}
           <div className="absolute -top-32 -right-32 size-80 rounded-full pointer-events-none blur-3xl opacity-30 bg-amber-500/25" />
           <div className="absolute -bottom-32 -left-32 size-80 rounded-full pointer-events-none blur-3xl opacity-20 bg-emerald-500/25" />
           <div className="absolute top-0 inset-x-12 h-[1.5px] bg-gradient-to-r from-transparent via-amber-400 to-transparent pointer-events-none" />
 
-          {/* Section Header */}
           <div className="relative z-10 max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold mb-3 shadow-2xs">
               <Sparkles className="size-3.5 text-amber-400" />
@@ -1766,11 +1806,9 @@ export function PoetryClient() {
             </p>
           </div>
 
-          {/* 2-Column Studio Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6 items-start relative z-10">
-            {/* Form Inputs (Left: 7 Cols) */}
+            {/* Form Inputs */}
             <div className="lg:col-span-7 space-y-4">
-              {/* 1. Poet Name */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-amber-300 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
@@ -1788,7 +1826,6 @@ export function PoetryClient() {
                   placeholder={isUrdu ? 'مثلاً: علامہ اقبال، مرزا غالب، یا اپنا نام' : 'e.g. Mirza Ghalib, Allama Iqbal, or Your Name'}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-amber-500/35 text-white placeholder:text-slate-500 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 shadow-inner"
                 />
-                {/* Quick Poet Chips */}
                 <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
                   {['مرزا اسد اللہ خاں غالب', 'علامہ محمد اقبال', 'فیض احمد فیض', 'جون ایلیا', 'احمد فراز'].map((name) => (
                     <button
@@ -1796,10 +1833,10 @@ export function PoetryClient() {
                       type="button"
                       onClick={() => setCustomPoet(name)}
                       className={cn(
-                        "text-[10.5px] px-2 py-0.5 rounded-md transition-all cursor-pointer border",
+                        'text-[10.5px] px-2 py-0.5 rounded-md transition-all cursor-pointer border',
                         customPoet === name
-                          ? "bg-amber-500/25 border-amber-400 text-amber-200 font-bold"
-                          : "bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200"
+                          ? 'bg-amber-500/25 border-amber-400 text-amber-200 font-bold'
+                          : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200'
                       )}
                     >
                       {name}
@@ -1808,16 +1845,13 @@ export function PoetryClient() {
                 </div>
               </div>
 
-              {/* 2. Dedication To Someone */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-amber-300 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <Heart className="size-3.5 text-rose-400" />
                     <span>{isUrdu ? 'نذرانہ / انتساب (کس کے نام؟)' : 'Dedication (To Someone)'}</span>
                   </span>
-                  <span className="text-[11px] text-slate-400 font-normal">
-                    {isUrdu ? '(اختیاری)' : '(Optional)'}
-                  </span>
+                  <span className="text-[11px] text-slate-400 font-normal">{isUrdu ? '(اختیاری)' : '(Optional)'}</span>
                 </label>
                 <input
                   type="text"
@@ -1826,7 +1860,6 @@ export function PoetryClient() {
                   placeholder={isUrdu ? 'مثلاً: برائے جانِ جاں، والدین کے نام، دوست کے نام' : 'e.g. Dedicated to Farhan, For My Soulmate, To Mom'}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-amber-500/35 text-white placeholder:text-slate-500 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 shadow-inner"
                 />
-                {/* Quick Dedication Chips */}
                 <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
                   {['برائے جانِ جاں', 'Dedicated to My Love', 'والدین کے نام', 'دوستِ عزیز کے نام', 'For My Best Friend'].map((d) => (
                     <button
@@ -1834,10 +1867,10 @@ export function PoetryClient() {
                       type="button"
                       onClick={() => setCustomDedication(d)}
                       className={cn(
-                        "text-[10.5px] px-2 py-0.5 rounded-md transition-all cursor-pointer border",
+                        'text-[10.5px] px-2 py-0.5 rounded-md transition-all cursor-pointer border',
                         customDedication === d
-                          ? "bg-rose-500/25 border-rose-400 text-rose-200 font-bold"
-                          : "bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200"
+                          ? 'bg-rose-500/25 border-rose-400 text-rose-200 font-bold'
+                          : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-slate-200'
                       )}
                     >
                       {d}
@@ -1855,7 +1888,6 @@ export function PoetryClient() {
                 </div>
               </div>
 
-              {/* 3. Poetry Verses (Textarea) */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-amber-300 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
@@ -1877,11 +1909,10 @@ export function PoetryClient() {
                       : 'Type or paste your verses here...\nWrite each line on a new line'
                   }
                   className={cn(
-                    "w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-amber-500/35 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 shadow-inner leading-relaxed",
-                    /[\u0600-\u06FF]/.test(customVerse) ? "font-urdu text-base text-right" : "font-serif"
+                    'w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-amber-500/35 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 shadow-inner leading-relaxed',
+                    /[\u0600-\u06FF]/.test(customVerse) ? 'font-urdu text-base text-right' : 'font-serif'
                   )}
                 />
-                {/* Sample Verses Quick Starters */}
                 <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
                   <span className="text-[10.5px] text-slate-400 font-medium">
                     {isUrdu ? 'نمونہ کلام:' : 'Sample verses:'}
@@ -1933,7 +1964,6 @@ export function PoetryClient() {
                 </div>
               </div>
 
-              {/* 4. Luxury Aesthetic Theme Picker */}
               <div className="space-y-1.5 pt-1">
                 <label className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
                   <Sparkles className="size-3.5 text-amber-400" />
@@ -1948,17 +1978,17 @@ export function PoetryClient() {
                         type="button"
                         onClick={() => setCustomThemeId(th.id)}
                         className={cn(
-                          "flex items-center gap-2 p-2 rounded-xl text-left transition-all border cursor-pointer",
+                          'flex items-center gap-2 p-2 rounded-xl text-left transition-all border cursor-pointer',
                           isSelected
-                            ? "bg-slate-900 border-amber-400 ring-2 ring-amber-400/50 shadow-md"
-                            : "bg-slate-950/80 border-slate-800 hover:border-slate-700 text-slate-300"
+                            ? 'bg-slate-900 border-amber-400 ring-2 ring-amber-400/50 shadow-md'
+                            : 'bg-slate-950/80 border-slate-800 hover:border-slate-700 text-slate-300'
                         )}
                       >
                         <span
                           className="size-4 rounded-full shrink-0 border border-white/20 shadow-xs"
                           style={{ background: th.flyerAccent }}
                         />
-                        <span className={cn("text-xs font-bold truncate", isSelected ? "text-amber-300 font-extrabold" : "text-slate-300")}>
+                        <span className={cn('text-xs font-bold truncate', isSelected ? 'text-amber-300 font-extrabold' : 'text-slate-300')}>
                           {th.name}
                         </span>
                         {isSelected && <Check className="size-3 text-amber-400 ml-auto shrink-0" />}
@@ -1969,7 +1999,7 @@ export function PoetryClient() {
               </div>
             </div>
 
-            {/* Real-Time Live Card Preview & Download Studio (Right: 5 Cols) */}
+            {/* Live Card Preview */}
             <div className="lg:col-span-5 space-y-4">
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
@@ -1984,12 +2014,12 @@ export function PoetryClient() {
                       setExportAspectFormat('story')
                     }}
                     className={cn(
-                      "px-2 py-1 text-[11px] font-bold rounded-md transition-all flex items-center gap-1 cursor-pointer",
+                      'px-2 py-1 text-[11px] font-bold rounded-md transition-all flex items-center gap-1 cursor-pointer',
                       exportAspectFormat === 'story'
-                        ? "bg-amber-500 text-slate-950 shadow-xs font-black"
-                        : "text-slate-400 hover:text-amber-200"
+                        ? 'bg-amber-500 text-slate-950 shadow-xs font-black'
+                        : 'text-slate-400 hover:text-amber-200'
                     )}
-                    title="Mobile Portrait 9:16 in Height (Instagram Stories, Reels, TikTok, WhatsApp Status)"
+                    title="Mobile Portrait 9:16 in Height"
                   >
                     <span>📱 9:16 Story</span>
                   </button>
@@ -2000,10 +2030,10 @@ export function PoetryClient() {
                       setExportAspectFormat('banner')
                     }}
                     className={cn(
-                      "px-2 py-1 text-[11px] font-bold rounded-md transition-all flex items-center gap-1 cursor-pointer",
+                      'px-2 py-1 text-[11px] font-bold rounded-md transition-all flex items-center gap-1 cursor-pointer',
                       exportAspectFormat === 'banner'
-                        ? "bg-amber-500 text-slate-950 shadow-xs font-black"
-                        : "text-slate-400 hover:text-amber-200"
+                        ? 'bg-amber-500 text-slate-950 shadow-xs font-black'
+                        : 'text-slate-400 hover:text-amber-200'
                     )}
                     title="Laptop Landscape Banner"
                   >
@@ -2012,7 +2042,6 @@ export function PoetryClient() {
                 </div>
               </div>
 
-              {/* The Live Rendered Card Container */}
               {(() => {
                 const activeTheme = POETRY_THEMES.find((t) => t.id === customThemeId) || POETRY_THEMES[0]
                 const isRtl = /[\u0600-\u06FF]/.test(customVerse)
@@ -2024,50 +2053,59 @@ export function PoetryClient() {
                 return (
                   <div
                     className={cn(
-                      "rounded-3xl p-5 sm:p-6 border shadow-2xl relative overflow-hidden transition-all duration-300 bg-gradient-to-br flex flex-col justify-between",
-                      exportAspectFormat === 'story' ? "aspect-[9/16] min-h-[460px] max-w-[320px] mx-auto w-full" : "min-h-[300px]",
+                      'rounded-3xl p-5 sm:p-6 border shadow-2xl relative overflow-hidden transition-all duration-300 bg-gradient-to-br flex flex-col justify-between',
+                      isMounted && exportAspectFormat === 'story'
+                        ? 'aspect-[9/16] min-h-[460px] max-w-[320px] mx-auto w-full'
+                        : 'min-h-[300px]',
                       activeTheme.bgClass,
                       activeTheme.borderClass
                     )}
                   >
-                    {/* Atmospheric Glow */}
                     <div
                       className="absolute -top-20 -right-20 size-48 rounded-full pointer-events-none blur-3xl opacity-40"
                       style={{ background: activeTheme.glowColor }}
                     />
                     <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-amber-400/40 to-transparent pointer-events-none" />
-                    <div className={cn("absolute top-2.5 left-3 text-xs select-none pointer-events-none font-serif opacity-40", activeTheme.filigreeClass)}>╔═</div>
-                    <div className={cn("absolute top-2.5 right-3 text-xs select-none pointer-events-none font-serif opacity-40", activeTheme.filigreeClass)}>═╗</div>
+                    <div className={cn('absolute top-2.5 left-3 text-xs select-none pointer-events-none font-serif opacity-40', activeTheme.filigreeClass)}>╔═</div>
+                    <div className={cn('absolute top-2.5 right-3 text-xs select-none pointer-events-none font-serif opacity-40', activeTheme.filigreeClass)}>═╗</div>
 
-                    {/* Dedication Banner */}
-                    {customDedication && customDedication.trim() ? (
-                      <div className="text-center mb-3 relative z-10">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-xs">
+                    {/* Dedicated Header Zone with Wide Nastaliq Breathing Room */}
+                    <div className="text-center mb-5 relative z-10 flex flex-col items-center gap-4">
+                      {customDedication && customDedication.trim() ? (
+                        <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-xs max-w-full truncate">
                           <span>✨</span>
-                          <span>{customDedication.trim()}</span>
+                          <span className="truncate">{customDedication.trim()}</span>
                           <span>✨</span>
                         </span>
-                      </div>
-                    ) : (
-                      <div className="text-center mb-3 text-[10.5px] uppercase font-bold text-amber-400/80 tracking-wider">
-                        ✦ Cardzy Poetry ✦
-                      </div>
-                    )}
+                      ) : (
+                        <div className="text-[10.5px] uppercase font-bold text-amber-400/80 tracking-wider">
+                          ✦ Cardzy Poetry ✦
+                        </div>
+                      )}
 
-                    {/* Inner Verse Container */}
-                    <div className={cn("p-4 sm:p-5 rounded-2xl border relative overflow-hidden backdrop-blur-md shadow-inner text-center my-auto", activeTheme.innerBoxClass)}>
-                      <div className={cn("absolute right-2 bottom-1 opacity-10 text-4xl select-none font-serif pointer-events-none", activeTheme.accentColor)}>❦</div>
+                      <h3
+                        className={cn(
+                          'text-amber-200 font-bold tracking-wide truncate pt-1',
+                          isRtl ? 'font-urdu text-base sm:text-lg leading-loose' : 'font-serif text-sm sm:text-base'
+                        )}
+                      >
+                        — {customPoet || (isRtl ? 'شاعر' : 'Poet')}
+                      </h3>
+                    </div>
+
+                    <div className={cn('p-4 sm:p-5 rounded-2xl border relative overflow-hidden backdrop-blur-md shadow-inner text-center my-auto', activeTheme.innerBoxClass)}>
+                      <div className={cn('absolute right-2 bottom-1 opacity-10 text-4xl select-none font-serif pointer-events-none', activeTheme.accentColor)}>❦</div>
                       
-                      <div className={cn("space-y-2 py-1", isRtl ? "text-right" : "text-center")} dir={isRtl ? 'rtl' : 'ltr'}>
+                      <div className={cn('space-y-2 py-1 max-h-[280px] overflow-y-auto scrollbar-thin scrollbar-thumb-amber-500/30', isRtl ? 'text-right' : 'text-center')} dir={isRtl ? 'rtl' : 'ltr'}>
                         {verseLines.length > 0 ? (
                           verseLines.map((line, idx) => (
                             <p
                               key={idx}
                               className={cn(
-                                "leading-relaxed break-words",
+                                'leading-relaxed break-words',
                                 isRtl
-                                  ? "font-urdu text-base sm:text-lg text-amber-100 font-bold"
-                                  : "font-serif italic text-sm sm:text-base text-slate-100"
+                                  ? 'font-urdu text-base sm:text-lg text-amber-100 font-bold'
+                                  : 'font-serif italic text-sm sm:text-base text-slate-100'
                               )}
                             >
                               {line}
@@ -2080,19 +2118,17 @@ export function PoetryClient() {
                         )}
                       </div>
 
-                      {/* Couplet Separator */}
                       <div className="flex items-center justify-center gap-2 my-2.5 opacity-60" aria-hidden="true">
                         <span className="h-[1px] w-8 bg-gradient-to-r from-transparent to-amber-400/50" />
                         <span className="text-amber-300 text-xs font-serif">{activeTheme.dividerSymbol}</span>
                         <span className="h-[1px] w-8 bg-gradient-to-l from-transparent to-amber-400/50" />
                       </div>
 
-                      {/* Poet Attribution */}
                       <div className="mt-2 text-center">
                         <span
                           className={cn(
-                            "text-xs sm:text-sm font-black tracking-wider text-amber-300",
-                            isRtl ? "font-urdu text-sm sm:text-base" : "font-serif italic"
+                            'text-xs sm:text-sm font-black tracking-wider text-amber-300',
+                            isRtl ? 'font-urdu text-sm sm:text-base' : 'font-serif italic'
                           )}
                         >
                           — {customPoet || (isRtl ? 'نامعلوم شاعر' : 'Anonymous Poet')}
@@ -2100,7 +2136,6 @@ export function PoetryClient() {
                       </div>
                     </div>
 
-                    {/* Cardzy Footer Line */}
                     <div className="text-center mt-3 pt-2 border-t border-white/5 text-[10px] text-slate-400 font-medium">
                       ✦ Cardzy.online Digital Studio ✦
                     </div>
@@ -2108,21 +2143,19 @@ export function PoetryClient() {
                 )
               })()}
 
-              {/* Action & Download Buttons */}
               <div className="space-y-2 pt-1">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {/* Download Image Card */}
                   <button
                     type="button"
                     onClick={handleDownloadCustomImage}
                     disabled={isDownloadingCustomFlyer || isGeneratingCustomVideo}
                     className={cn(
-                      "flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-black transition-all border shadow-lg cursor-pointer",
+                      'flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-black transition-all border shadow-lg cursor-pointer',
                       isDownloadingCustomFlyer
-                        ? "bg-amber-500/25 text-amber-200 border-amber-400/50 cursor-wait animate-pulse"
-                        : "bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-slate-950 border-amber-400/40 shadow-amber-500/20 active:scale-95"
+                        ? 'bg-amber-500/25 text-amber-200 border-amber-400/50 cursor-wait animate-pulse'
+                        : 'bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-slate-950 border-amber-400/40 shadow-amber-500/20 active:scale-95'
                     )}
-                    title={exportAspectFormat === 'story' ? 'Download 9:16 Vertical Story Image for Instagram / WhatsApp' : 'Download Landscape Image Card'}
+                    title={exportAspectFormat === 'story' ? 'Download 9:16 Vertical Story Image' : 'Download Landscape Image Card'}
                   >
                     {isDownloadingCustomFlyer ? (
                       <>
@@ -2132,39 +2165,53 @@ export function PoetryClient() {
                     ) : (
                       <>
                         <Download className="size-4 text-slate-950" />
-                        <span>{isUrdu ? (exportAspectFormat === 'story' ? '📱 9:16 سٹوری کارڈ (HD)' : 'تصویر کارڈ ڈاؤنلوڈ (HD)') : (exportAspectFormat === 'story' ? '📱 Download 9:16 Story (HD)' : 'Download Image Card (HD)')}</span>
+                        <span>
+                          {isUrdu
+                            ? exportAspectFormat === 'story'
+                              ? '📱 9:16 سٹوری کارڈ (HD)'
+                              : 'تصویر کارڈ ڈاؤنلوڈ (HD)'
+                            : exportAspectFormat === 'story'
+                            ? '📱 Download 9:16 Story (HD)'
+                            : 'Download Image Card (HD)'}
+                        </span>
                       </>
                     )}
                   </button>
 
-                  {/* Download Video Card */}
                   <button
                     type="button"
                     onClick={handleDownloadCustomVideo}
                     disabled={isGeneratingCustomVideo || isDownloadingCustomFlyer}
                     className={cn(
-                      "flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-black transition-all border shadow-lg cursor-pointer",
+                      'flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-black transition-all border shadow-lg cursor-pointer',
                       isGeneratingCustomVideo
-                        ? "bg-rose-500/25 text-rose-200 border-rose-400/50 cursor-wait animate-pulse"
-                        : "bg-gradient-to-r from-rose-600 to-pink-700 hover:from-rose-500 hover:to-pink-600 text-white border-rose-500/40 shadow-rose-600/20 active:scale-95"
+                        ? 'bg-rose-500/25 text-rose-200 border-rose-400/50 cursor-wait animate-pulse'
+                        : 'bg-gradient-to-r from-rose-600 to-pink-700 hover:from-rose-500 hover:to-pink-600 text-white border-rose-500/40 shadow-rose-600/20 active:scale-95'
                     )}
-                    title={exportAspectFormat === 'story' ? 'Download 9:16 Animated Video Reel for Instagram / WhatsApp Status' : 'Download Video Card'}
+                    title={exportAspectFormat === 'story' ? 'Download 9:16 Animated Video Reel' : 'Download Video Card'}
                   >
                     {isGeneratingCustomVideo ? (
                       <>
                         <Loader2 className="size-4 animate-spin text-white" />
-                        <span>{customVideoProgress > 0 ? `${customVideoProgress}%` : (isUrdu ? 'ویڈیو بن رہی ہے...' : 'Making Video...')}</span>
+                        <span>{customVideoProgress > 0 ? `${customVideoProgress}%` : isUrdu ? 'ویڈیو بن رہی ہے...' : 'Making Video...'}</span>
                       </>
                     ) : (
                       <>
                         <Video className="size-4 text-white" />
-                        <span>{isUrdu ? (exportAspectFormat === 'story' ? '🎥 9:16 ریل ویڈیو (MP4)' : 'ویڈیو ڈاؤنلوڈ (MP4)') : (exportAspectFormat === 'story' ? '🎥 Download 9:16 Reel (MP4)' : 'Download Video (MP4)')}</span>
+                        <span>
+                          {isUrdu
+                            ? exportAspectFormat === 'story'
+                              ? '🎥 9:16 ریل ویڈیو (MP4)'
+                              : 'ویڈیو ڈاؤنلوڈ (MP4)'
+                            : exportAspectFormat === 'story'
+                            ? '🎥 Download 9:16 Reel (MP4)'
+                            : 'Download Video (MP4)'}
+                        </span>
                       </>
                     )}
                   </button>
                 </div>
 
-                {/* Secondary Quick Share Buttons */}
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
@@ -2225,7 +2272,6 @@ export function PoetryClient() {
           </div>
           
           <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
-            {/* Per-page selector */}
             <div className="flex items-center gap-1.5 text-xs text-slate-400">
               <span className="text-[11px]">{isUrdu ? 'فی صفحہ:' : 'Per page:'}</span>
               <select
@@ -2266,7 +2312,7 @@ export function PoetryClient() {
             <div className="size-10 rounded-full border-3 border-amber-500/20 border-t-amber-400 animate-spin" />
             <div className="text-center space-y-1">
               <h3 className="text-base font-bold text-slate-200">
-                {isUrdu ? 'گنجینۂ شاعری سے کلام لوڈ ہو رہا ہے...' : 'Loading Poetry Treasury from Cloud...'}
+                {isUrdu ? 'گنجینۂ شاعری سے کلام لوڈ ہو رہا ہے...' : 'Loading Poetry Treasury from Cloud...'}
               </h3>
             </div>
           </div>
@@ -2311,15 +2357,14 @@ export function PoetryClient() {
                     id={poem.id}
                     translate="no"
                     className={cn(
-                      "notranslate group relative flex flex-col justify-between rounded-3xl p-4 sm:p-6 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden break-words border bg-gradient-to-br",
+                      'notranslate group relative flex flex-col justify-between rounded-3xl p-4 sm:p-6 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden break-words border bg-gradient-to-br',
                       theme.bgClass,
                       theme.borderClass,
                       isHighlighted
-                        ? "ring-2 ring-amber-400 shadow-amber-500/20"
-                        : "hover:shadow-amber-500/5"
+                        ? 'ring-2 ring-amber-400 shadow-amber-500/20'
+                        : 'hover:shadow-amber-500/5'
                     )}
                   >
-                    {/* Atmospheric Glow & Ornaments */}
                     <div
                       className="absolute -top-24 -right-24 size-64 rounded-full pointer-events-none blur-3xl opacity-40 transition-opacity group-hover:opacity-70"
                       style={{ background: theme.glowColor }}
@@ -2329,15 +2374,14 @@ export function PoetryClient() {
                       style={{ background: theme.glowColor }}
                     />
                     <div className="absolute top-0 inset-x-8 h-[1px] bg-gradient-to-r from-transparent via-amber-400/40 to-transparent pointer-events-none" />
-                    <div className={cn("absolute top-2.5 left-3 text-xs select-none pointer-events-none font-serif opacity-30", theme.filigreeClass)}>╔═</div>
-                    <div className={cn("absolute top-2.5 right-3 text-xs select-none pointer-events-none font-serif opacity-30", theme.filigreeClass)}>═╗</div>
+                    <div className={cn('absolute top-2.5 left-3 text-xs select-none pointer-events-none font-serif opacity-30', theme.filigreeClass)}>╔═</div>
+                    <div className={cn('absolute top-2.5 right-3 text-xs select-none pointer-events-none font-serif opacity-30', theme.filigreeClass)}>═╗</div>
 
-                    {/* Top Metadata Header */}
                     <div className="relative z-10">
                       <div className="flex items-start justify-between gap-2 mb-3">
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className={cn("text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full border shadow-2xs", theme.tagBadgeClass)}>
+                            <span className={cn('text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full border shadow-2xs', theme.tagBadgeClass)}>
                               {poem.originalLanguage}
                             </span>
                             {poem.format === 'full_poem' && (
@@ -2365,14 +2409,13 @@ export function PoetryClient() {
                             )}
                           </p>
 
-                          {/* Live Metrics: Views, Likes, Shares (Identical to other Cardzy cards) */}
                           <div className="flex items-center gap-1.5 mt-2.5 flex-wrap">
                             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-[10px] font-bold shadow-2xs">
                               <Eye className="size-2.5 text-emerald-400 shrink-0" />
                               <span>{formatMetricCount(metrics.views)} {isUrdu ? 'مناظر' : 'views'}</span>
                             </span>
                             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/25 text-rose-300 text-[10px] font-bold shadow-2xs">
-                              <Heart className={cn("size-2.5 shrink-0", isLiked ? "fill-rose-400 text-rose-400" : "text-rose-400")} />
+                              <Heart className={cn('size-2.5 shrink-0', isLiked ? 'fill-rose-400 text-rose-400' : 'text-rose-400')} />
                               <span>{formatMetricCount(metrics.likes)}</span>
                             </span>
                             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-300 text-[10px] font-bold shadow-2xs">
@@ -2382,7 +2425,6 @@ export function PoetryClient() {
                           </div>
                         </div>
 
-                        {/* Top Action Buttons (Like) */}
                         <div className="flex items-center gap-1 shrink-0">
                           <button
                             type="button"
@@ -2401,7 +2443,6 @@ export function PoetryClient() {
                         </div>
                       </div>
 
-                      {/* Language Switcher Tabs per poem */}
                       {(() => {
                         const pLang = poem.originalLanguage
                         let tabs: { id: 'original' | 'roman' | 'english' | 'urdu' | 'meaning'; label: string }[] = []
@@ -2471,42 +2512,39 @@ export function PoetryClient() {
                         )
                       })()}
 
-                      {/* Main Verse Content Area */}
-                      <div translate="no" className={cn("notranslate min-h-[150px] flex flex-col justify-between p-4 sm:p-5 rounded-2xl border relative overflow-hidden backdrop-blur-md shadow-inner transition-all", theme.innerBoxClass)}>
-                        <div className={cn("absolute right-3 bottom-2 opacity-10 text-5xl select-none font-serif pointer-events-none", theme.accentColor)}>
+                      <div translate="no" className={cn('notranslate min-h-[150px] flex flex-col justify-between p-4 sm:p-5 rounded-2xl border relative overflow-hidden backdrop-blur-md shadow-inner transition-all', theme.innerBoxClass)}>
+                        <div className={cn('absolute right-3 bottom-2 opacity-10 text-5xl select-none font-serif pointer-events-none', theme.accentColor)}>
                           ❦
                         </div>
 
-                        {/* --- 1. ORIGINAL SCRIPT VIEW --- */}
                         {currentTab === 'original' && (
                           <div translate="no" className="notranslate w-full flex flex-col justify-between flex-1">
-                            <div className={cn("space-y-2.5 w-full max-h-[380px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-amber-500/30", poem.direction === 'rtl' ? "text-right" : "text-left")}>
+                            <div className={cn('space-y-2.5 w-full max-h-[380px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-amber-500/30', poem.direction === 'rtl' ? 'text-right' : 'text-left')}>
                               {poem.originalText
                                 .split('\n')
                                 .filter((line) => line.trim() && !line.includes('شعر نمبر') && !line.startsWith('—'))
                                 .map((line, idx) => (
-                                <p
-                                  key={idx}
-                                  translate="no"
-                                  className={cn(
-                                    "notranslate leading-relaxed break-words",
-                                    poem.direction === 'rtl'
-                                      ? "font-urdu text-lg sm:text-xl text-amber-100"
-                                      : "font-serif text-sm sm:text-base text-slate-100 italic"
-                                  )}
-                                  dir={poem.direction}
-                                >
-                                  {line}
-                                </p>
-                              ))}
+                                  <p
+                                    key={idx}
+                                    translate="no"
+                                    className={cn(
+                                      'notranslate leading-relaxed break-words',
+                                      poem.direction === 'rtl'
+                                        ? 'font-urdu text-lg sm:text-xl text-amber-100'
+                                        : 'font-serif text-sm sm:text-base text-slate-100 italic'
+                                    )}
+                                    dir={poem.direction}
+                                  >
+                                    {line}
+                                  </p>
+                                ))}
                             </div>
 
-                            {/* Poet Attribution */}
                             <div
                               translate="no"
                               className={cn(
-                                "notranslate mt-4 pt-2.5 border-t border-amber-500/20 flex items-center gap-2",
-                                poem.direction === 'rtl' ? "justify-end text-right" : "justify-start text-left"
+                                'notranslate mt-4 pt-2.5 border-t border-amber-500/20 flex items-center gap-2',
+                                poem.direction === 'rtl' ? 'justify-end text-right' : 'justify-start text-left'
                               )}
                               dir={poem.direction}
                             >
@@ -2529,7 +2567,6 @@ export function PoetryClient() {
                           </div>
                         )}
 
-                        {/* --- 2. URDU TRANSLATION VIEW --- */}
                         {currentTab === 'urdu' && (
                           <div translate="no" className="notranslate w-full flex flex-col justify-between flex-1 text-right" dir="rtl">
                             <div className="space-y-2.5 w-full max-h-[380px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-amber-500/30 text-right">
@@ -2537,10 +2574,10 @@ export function PoetryClient() {
                                 .split('\n')
                                 .filter((line) => line.trim() && !line.includes('شعر نمبر') && !line.startsWith('—'))
                                 .map((line, idx) => (
-                                <p key={idx} translate="no" className="notranslate font-urdu text-lg sm:text-xl text-amber-100 leading-relaxed break-words">
-                                  {line}
-                                </p>
-                              ))}
+                                  <p key={idx} translate="no" className="notranslate font-urdu text-lg sm:text-xl text-amber-100 leading-relaxed break-words">
+                                    {line}
+                                  </p>
+                                ))}
                             </div>
 
                             <div translate="no" className="notranslate mt-4 pt-2.5 border-t border-amber-500/20 flex items-center justify-end gap-2 text-right">
@@ -2552,7 +2589,6 @@ export function PoetryClient() {
                           </div>
                         )}
 
-                        {/* --- 3. ROMAN URDU VIEW --- */}
                         {currentTab === 'roman' && (
                           <div translate="no" className="notranslate w-full flex flex-col justify-between flex-1 text-left" dir="ltr">
                             <div className="space-y-2 w-full max-h-[380px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-amber-500/30">
@@ -2560,10 +2596,10 @@ export function PoetryClient() {
                                 .split('\n')
                                 .filter((line) => line.trim() && !line.includes('شعر نمبر') && !line.startsWith('—'))
                                 .map((line, idx) => (
-                                <p key={idx} translate="no" className="notranslate text-xs sm:text-sm text-slate-200 font-medium italic break-words">
-                                  {line.split(' — ')[0]}
-                                </p>
-                              ))}
+                                  <p key={idx} translate="no" className="notranslate text-xs sm:text-sm text-slate-200 font-medium italic break-words">
+                                    {line.split(' — ')[0]}
+                                  </p>
+                                ))}
                             </div>
 
                             <div translate="no" className="notranslate mt-4 pt-2.5 border-t border-slate-800/80 flex items-center justify-start gap-2 text-left" dir="ltr">
@@ -2577,7 +2613,6 @@ export function PoetryClient() {
                           </div>
                         )}
 
-                        {/* --- 4. ENGLISH TRANSLATION VIEW --- */}
                         {currentTab === 'english' && (
                           <div translate="no" className="notranslate w-full flex flex-col justify-between flex-1 text-left" dir="ltr">
                             <div className="space-y-2 w-full max-h-[380px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-amber-500/30">
@@ -2604,7 +2639,6 @@ export function PoetryClient() {
                           </div>
                         )}
 
-                        {/* --- 5. CONTEXT & MEANING VIEW --- */}
                         {currentTab === 'meaning' && (
                           <div translate="no" className="notranslate w-full flex flex-col justify-between flex-1 text-left" dir="ltr">
                             <div className="space-y-2 w-full">
@@ -2635,9 +2669,7 @@ export function PoetryClient() {
                       </div>
                     </div>
 
-                    {/* Bottom Action Footer */}
                     <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex flex-col gap-2.5">
-                      {/* 1-Click Poetry-to-Card Conversion CTA */}
                       <button
                         type="button"
                         onClick={() => handleTurnPoemIntoCard(poem)}
@@ -2648,7 +2680,6 @@ export function PoetryClient() {
                         <span>{isUrdu ? 'اس شعر کا 3D کارڈ بنائیں ✨' : 'Turn this poem into a 3D Wish Card ✨'}</span>
                       </button>
 
-                      {/* Direct Actions: Copy, WhatsApp, SMS/Share, Flyer */}
                       <div className="flex items-center justify-between gap-1.5 flex-wrap">
                         <div className="flex items-center gap-1.5 flex-wrap">
                           <button
@@ -2686,12 +2717,12 @@ export function PoetryClient() {
                             onClick={() => handleDownloadFlyer(poem)}
                             disabled={isGeneratingFlyer === poem.id || generatingVideoId === poem.id}
                             className={cn(
-                              "flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all border shrink-0",
+                              'flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all border shrink-0',
                               isGeneratingFlyer === poem.id
-                                ? "bg-amber-500/25 text-amber-200 border-amber-400/50 cursor-wait animate-pulse shadow-sm shadow-amber-500/20"
-                                : "bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border-amber-500/30 cursor-pointer active:scale-95"
+                                ? 'bg-amber-500/25 text-amber-200 border-amber-400/50 cursor-wait animate-pulse shadow-sm shadow-amber-500/20'
+                                : 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border-amber-500/30 cursor-pointer active:scale-95'
                             )}
-                            title={isUrdu ? (exportAspectFormat === 'story' ? 'موبائل سائز 9:16 تصویر برائے انسٹاگرام و واٹس ایپ' : 'کارڈ ڈاؤن لوڈ کریں (تصویر)') : (exportAspectFormat === 'story' ? 'Download 9:16 Vertical Story Image for Instagram / WhatsApp Status' : 'Download High-Resolution Card (Image)')}
+                            title={isUrdu ? 'کارڈ ڈاؤن لوڈ کریں (تصویر)' : 'Download High-Resolution Card (Image)'}
                           >
                             {isGeneratingFlyer === poem.id ? (
                               <>
@@ -2701,7 +2732,7 @@ export function PoetryClient() {
                             ) : (
                               <>
                                 <Download className="size-3.5" />
-                                <span>{exportAspectFormat === 'story' ? (isUrdu ? '📱 9:16 تصویر' : '📱 9:16 Story') : (isUrdu ? 'تصویر' : 'Image')}</span>
+                                <span>{exportAspectFormat === 'story' ? (isUrdu ? '📱 9:16 تصویر' : '📱 9:16 Story') : isUrdu ? 'تصویر' : 'Image'}</span>
                               </>
                             )}
                           </button>
@@ -2711,22 +2742,22 @@ export function PoetryClient() {
                             onClick={() => handleDownloadPoetryVideo(poem)}
                             disabled={generatingVideoId === poem.id || isGeneratingFlyer === poem.id}
                             className={cn(
-                              "flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all border shrink-0",
+                              'flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all border shrink-0',
                               generatingVideoId === poem.id
-                                ? "bg-rose-500/25 text-rose-200 border-rose-400/50 cursor-wait animate-pulse shadow-sm shadow-rose-500/20"
-                                : "bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border-rose-500/30 cursor-pointer active:scale-95"
+                                ? 'bg-rose-500/25 text-rose-200 border-rose-400/50 cursor-wait animate-pulse shadow-sm shadow-rose-500/20'
+                                : 'bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border-rose-500/30 cursor-pointer active:scale-95'
                             )}
-                            title={isUrdu ? (exportAspectFormat === 'story' ? 'موبائل سائز 9:16 ویڈیو برائے انسٹاگرام ریلز و واٹس ایپ' : 'شاعری کی متحرک ویڈیو ڈاؤنلوڈ کریں') : (exportAspectFormat === 'story' ? 'Download 9:16 Vertical Video Reel for Instagram Reels & WhatsApp Status' : 'Download Animated Video (MP4)')}
+                            title={isUrdu ? 'شاعری کی متحرک ویڈیو ڈاؤنلوڈ کریں' : 'Download Animated Video (MP4)'}
                           >
                             {generatingVideoId === poem.id ? (
                               <>
                                 <Loader2 className="size-3.5 animate-spin text-rose-300" />
-                                <span>{videoProgress > 0 ? `${videoProgress}%` : (isUrdu ? 'ویڈیو بن رہی ہے...' : 'Making...')}</span>
+                                <span>{videoProgress > 0 ? `${videoProgress}%` : isUrdu ? 'ویڈیو بن رہی ہے...' : 'Making...'}</span>
                               </>
                             ) : (
                               <>
                                 <Video className="size-3.5 text-rose-400" />
-                                <span>{exportAspectFormat === 'story' ? (isUrdu ? '🎥 9:16 ویڈیو' : '🎥 9:16 Reel') : (isUrdu ? 'ویڈیو' : 'Video (MP4)')}</span>
+                                <span>{exportAspectFormat === 'story' ? (isUrdu ? '🎥 9:16 ویڈیو' : '🎥 9:16 Reel') : isUrdu ? 'ویڈیو' : 'Video (MP4)'}</span>
                               </>
                             )}
                           </button>
@@ -2742,7 +2773,6 @@ export function PoetryClient() {
             {totalPages > 1 ? (
               <div className="mt-12 pt-6 border-t border-slate-800/90 flex flex-col items-center gap-4">
                 <div className="flex items-center justify-center gap-1.5 flex-wrap">
-                  {/* First Page */}
                   <button
                     type="button"
                     onClick={() => handlePageChange(1)}
@@ -2754,7 +2784,6 @@ export function PoetryClient() {
                     <ChevronsLeft className="size-4" />
                   </button>
 
-                  {/* Previous Page */}
                   <button
                     type="button"
                     onClick={() => handlePageChange(currentPage - 1)}
@@ -2767,7 +2796,6 @@ export function PoetryClient() {
                     <span className="hidden sm:inline">{isUrdu ? 'پچھلا' : 'Prev'}</span>
                   </button>
 
-                  {/* Page numbers */}
                   <div className="flex items-center gap-1">
                     {getPageNumbers().map((p, idx) => {
                       if (typeof p === 'string') {
@@ -2784,10 +2812,10 @@ export function PoetryClient() {
                           type="button"
                           onClick={() => handlePageChange(p)}
                           className={cn(
-                            "min-w-9 h-9 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center",
+                            'min-w-9 h-9 px-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center',
                             isActive
-                              ? "bg-amber-500 text-slate-950 font-black shadow-md shadow-amber-500/25 ring-2 ring-amber-400/50 scale-105"
-                              : "bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800/80"
+                              ? 'bg-amber-500 text-slate-950 font-black shadow-md shadow-amber-500/25 ring-2 ring-amber-400/50 scale-105'
+                              : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800/80'
                           )}
                           aria-current={isActive ? 'page' : undefined}
                         >
@@ -2797,7 +2825,6 @@ export function PoetryClient() {
                     })}
                   </div>
 
-                  {/* Next Page */}
                   <button
                     type="button"
                     onClick={() => handlePageChange(currentPage + 1)}
@@ -2810,7 +2837,6 @@ export function PoetryClient() {
                     <ChevronRight className="size-4" />
                   </button>
 
-                  {/* Last Page */}
                   <button
                     type="button"
                     onClick={() => handlePageChange(totalPages)}
@@ -2823,7 +2849,6 @@ export function PoetryClient() {
                   </button>
                 </div>
 
-                {/* Quick Page Jump & Page Summary */}
                 <div className="flex items-center gap-3 text-xs text-slate-400 flex-wrap justify-center">
                   <span>
                     {isUrdu ? (

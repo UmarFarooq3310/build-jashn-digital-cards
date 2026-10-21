@@ -4727,9 +4727,12 @@ export default function AdminPortalPage() {
                   <h3 className="text-lg font-extrabold text-foreground flex items-center gap-2">
                     <BookOpen className="size-5 text-amber-500" />
                     All Poetry Cards & Live Engagement Metrics
+                    <span className="text-sm font-bold text-muted-foreground">
+                      ({filteredPoetryList.length}{filteredPoetryList.length !== mergedPoetryList.length ? ` of ${mergedPoetryList.length}` : ''})
+                    </span>
                   </h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Browse all 1,000 poems with live like counters, shares, copies, and views displayed directly on top of each card.
+                    Browse all poems with live like counters, shares, copies, and views displayed directly on top of each card.
                   </p>
                 </div>
 
@@ -4757,10 +4760,13 @@ export default function AdminPortalPage() {
                     }}
                     className="h-8 px-2.5 rounded-xl text-xs bg-card border border-border text-foreground font-medium"
                   >
-                    <option value="all">All Categories ({POETRY_CATEGORIES.length})</option>
-                    {POETRY_CATEGORIES.map((c) => (
-                      <option key={c.id} value={c.id}>{c.label}</option>
-                    ))}
+                    <option value="all">All Categories ({mergedPoetryList.length} poems)</option>
+                    {POETRY_CATEGORIES.map((c) => {
+                      const catCount = mergedPoetryList.filter(p => p.category === c.id).length
+                      return (
+                        <option key={c.id} value={c.id}>{c.label} ({catCount})</option>
+                      )
+                    })}
                   </select>
 
                   <button
@@ -4777,7 +4783,12 @@ export default function AdminPortalPage() {
                     )}
                   >
                     <Heart className="size-3" />
-                    <span>Engaged Only ({mergedPoetryList.filter(p => (p.likes > 0 || p.shares > 0 || p.copies > 0 || p.views > 0)).length})</span>
+                    <span>Engaged Only ({(() => {
+                      const baseList = poetryCategoryFilter === 'all'
+                        ? mergedPoetryList
+                        : mergedPoetryList.filter(p => p.category === poetryCategoryFilter)
+                      return baseList.filter(p => (p.likes > 0 || p.shares > 0 || p.copies > 0 || p.views > 0)).length
+                    })()})</span>
                   </button>
 
                   {deletedPoetryIds.length > 0 && (

@@ -1665,7 +1665,7 @@
     "originalLanguage": "pa",
     "direction": "rtl",
     "originalText": "میری بکل دے وچ چور، نی کیہنوں کوک سناواں\nچوری چوری نکل گیا، جگ وچ پے گیا شور",
-    "romanText": "Meri bukkal de vich chor, nee keehnoon kook sunawaan\nChori chori nikal گیا, jag vich pai gaya shor",
+    "romanText": "Meri bukkal de vich chor, nee keehnoon kook sunawaan\nChori chori nikal gaya, jag vich pai gaya shor",
     "englishTranslation": "Within the folds of my cloak hides the Beloved Thief; unto whom shall I cry out? When the secret was revealed, wonder spread across the world.",
     "urduTranslation": "میری چادر کے اوٹ میں پیارا چور چھپا بیٹھا ہے، میں کسے فریاد سناؤں؟ جب حقیقت کھلی تو سارے جہاں میں چرچا ہو گیا۔",
     "meaning": "Authentic masterpiece by Baba Bulleh Shah exploring Sufi & Spiritual.",
@@ -3735,21 +3735,21 @@
   },
   {
     "id": "poem-0130",
-    "title": "Love & Romance — Faiz Ahmad Faiz #0130",
+    "title": "Hum Dekhenge (دو سطری)",
     "format": "two_liner",
     "poet": "Faiz Ahmad Faiz",
     "poetUrdu": "فیض احمد فیض",
     "poetOrigin": "Sialkot / Lahore, Pakistan",
     "poetEra": "1911 – 1984",
-    "category": "ishq",
-    "categoryLabel": "Love & Romance",
+    "category": "khudi",
+    "categoryLabel": "Motivation & Khudi",
     "originalLanguage": "ur",
     "direction": "rtl",
     "originalText": "ہم دیکھیں گے لازم ہے کہ ہم بھی دیکھیں گے\nوہ دن کہ جس کا وعدہ ہے جو لوحِ ازل پہ لکھا ہے",
-    "romanText": "Raat yoon dil mein teri khoi hui yaad aayi, Jaise veerane mein aahista se bahaar aa jaaye",
-    "englishTranslation": "Authentic verse by Faiz Ahmad Faiz celebrating timeless poetic themes.",
+    "romanText": "Hum dekhenge laazim hai ke hum bhi dekhenge\nWoh din ke jis ka waada hai jo lauh-e-azal pe likkha hai",
+    "englishTranslation": "We shall bear witness, it is bound that we too shall bear witness; to that promised day inscribed on the tablet of eternity.",
     "urduTranslation": "ہم دیکھیں گے لازم ہے کہ ہم بھی دیکھیں گے\nوہ دن کہ جس کا وعدہ ہے جو لوحِ ازل پہ لکھا ہے",
-    "meaning": "Authentic masterpiece verse by Faiz Ahmad Faiz exploring Love & Romance.",
+    "meaning": "Iconic couplet from Hum Dekhenge by Faiz Ahmad Faiz celebrating resilience and hope.",
     "tags": [
       "ishq",
       "faiz ahmad faiz",
@@ -4100,7 +4100,7 @@
   },
   {
     "id": "poem-0143",
-    "title": "Love & Romance — Ahmad Faraz #0143",
+    "title": "Is Se Pehle Ke Bewafa Ho Jaayein",
     "format": "two_liner",
     "poet": "Ahmad Faraz",
     "poetUrdu": "احمد فراز",
@@ -4111,10 +4111,10 @@
     "originalLanguage": "ur",
     "direction": "rtl",
     "originalText": "اس سے پہلے کہ بے وفا ہو جائیں\nکیوں نہ اے دوست ہم جدا ہو جائیں",
-    "romanText": "Ranjish hi sahi dil hi dukhaane ke liye aa, Aa phir se mujhe chhor ke jaane ke liye aa",
+    "romanText": "Iss se pehle ke bewafa ho jaayein\nKyun na ae dost hum juda ho jaayein",
     "englishTranslation": "Authentic verse by Ahmad Faraz celebrating timeless poetic themes.",
     "urduTranslation": "اس سے پہلے کہ بے وفا ہو جائیں\nکیوں نہ اے دوست ہم جدا ہو جائیں",
-    "meaning": "Authentic masterpiece verse by Ahmad Faraz exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Ahmad Faraz exploring parting and human vulnerability.",
     "tags": [
       "ishq",
       "ahmad faraz",
@@ -4129,7 +4129,7 @@
   },
   {
     "id": "poem-0144",
-    "title": "Love & Romance — Ahmad Faraz #0144",
+    "title": "Karoon Na Yaad To Har Baat Bhool Jaati Hai",
     "format": "two_liner",
     "poet": "Ahmad Faraz",
     "poetUrdu": "احمد فراز",
@@ -4140,10 +4140,10 @@
     "originalLanguage": "ur",
     "direction": "rtl",
     "originalText": "کروں نہ یاد تو ہر بات بھول جاتی ہے\nشمار کیجیے تو ہر اک ادا میں رہتا ہے",
-    "romanText": "Suna hai log usey aankh bhar ke dekhte hain, So uss ke shehar mein kuch din thehar ke dekhte hain",
+    "romanText": "Karoon na yaad to har baat bhool jaati hai\nShumaar keejiye to har ik ada mein rehta hai",
     "englishTranslation": "Authentic verse by Ahmad Faraz celebrating timeless poetic themes.",
     "urduTranslation": "کروں نہ یاد تو ہر بات بھول جاتی ہے\nشمار کیجیے تو ہر اک ادا میں رہتا ہے",
-    "meaning": "Authentic masterpiece verse by Ahmad Faraz exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Ahmad Faraz exploring memory and longing.",
     "tags": [
       "ishq",
       "ahmad faraz",
@@ -4186,7 +4186,7 @@
   },
   {
     "id": "poem-0146",
-    "title": "Love & Romance — Ahmad Faraz #0146",
+    "title": "Yaadon Ke Dareechon Se Kabhi Jhaank Ke Dekho",
     "format": "two_liner",
     "poet": "Ahmad Faraz",
     "poetUrdu": "احمد فراز",
@@ -4197,10 +4197,10 @@
     "originalLanguage": "ur",
     "direction": "rtl",
     "originalText": "یادوں کے دریچوں سے کبھی جھانک کے دیکھو\nہم آج بھی تنہا ہیں ترے شہر کے اندر",
-    "romanText": "Ab ke hum bichhde to shayad kabhi khwaabon mein milein, Jis tarah sookhe hue phool kitaabon mein milein",
+    "romanText": "Yaadon ke dareechon se kabhi jhaank ke dekho\nHum aaj bhi tanha hain tere shehar ke andar",
     "englishTranslation": "Authentic verse by Ahmad Faraz celebrating timeless poetic themes.",
     "urduTranslation": "یادوں کے دریچوں سے کبھی جھانک کے دیکھو\nہم آج بھی تنہا ہیں ترے شہر کے اندر",
-    "meaning": "Authentic masterpiece verse by Ahmad Faraz exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Ahmad Faraz exploring nostalgia and solitude.",
     "tags": [
       "ishq",
       "ahmad faraz",
@@ -4635,7 +4635,7 @@
   },
   {
     "id": "poem-0162",
-    "title": "Love & Romance — Parveen Shakir #0162",
+    "title": "Aks-e-Khushboo Hoon Bikharne Se Na Roke Koi",
     "format": "two_liner",
     "poet": "Parveen Shakir",
     "poetUrdu": "پروین شاکر",
@@ -4646,10 +4646,10 @@
     "originalLanguage": "ur",
     "direction": "rtl",
     "originalText": "عکسِ خوشبو ہوں بکھرنے سے نہ روکے کوئی\nاور بکھر جاؤں تو مجھ کو نہ سمیٹے کوئی",
-    "romanText": "Woh to khushboo hai hawaon mein bikhar jaayega, Masla phool ka hai phool kidhar jaayega",
+    "romanText": "Aks-e-khushboo hoon bikharne se na roke koi\nAur bikhar jaaoon to mujh ko na samete koi",
     "englishTranslation": "Authentic verse by Parveen Shakir celebrating timeless poetic themes.",
     "urduTranslation": "عکسِ خوشبو ہوں بکھرنے سے نہ روکے کوئی\nاور بکھر جاؤں تو مجھ کو نہ سمیٹے کوئی",
-    "meaning": "Authentic masterpiece verse by Parveen Shakir exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Parveen Shakir exploring sensitivity and freedom.",
     "tags": [
       "ishq",
       "parveen shakir",
@@ -4692,7 +4692,7 @@
   },
   {
     "id": "poem-0164",
-    "title": "Love & Romance — Parveen Shakir #0164",
+    "title": "Ab To Us Raah Se Woh Shakhs Guzarta Bhi Nahi",
     "format": "two_liner",
     "poet": "Parveen Shakir",
     "poetUrdu": "پروین شاکر",
@@ -4703,10 +4703,10 @@
     "originalLanguage": "ur",
     "direction": "rtl",
     "originalText": "اب تو اس راہ سے وہ شخص گزرتا بھی نہیں\nاب کس امید پہ دروازے سے جھانکیں آنکھیں",
-    "romanText": "Kuch to hawa bhi sard thi kuch tha lahoo mein zehr bhi, Pichhli ruton ka saath bhi ranjish-e-be-sabab bhi thi",
+    "romanText": "Ab to uss raah se woh shakhs guzarta bhi nahi\nAb kis umeed pe darwaaze se jhaankein aankhein",
     "englishTranslation": "Authentic verse by Parveen Shakir celebrating timeless poetic themes.",
     "urduTranslation": "اب تو اس راہ سے وہ شخص گزرتا بھی نہیں\nاب کس امید پہ دروازے سے جھانکیں آنکھیں",
-    "meaning": "Authentic masterpiece verse by Parveen Shakir exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Parveen Shakir exploring longing and fading hope.",
     "tags": [
       "ishq",
       "parveen shakir",
@@ -4903,10 +4903,10 @@
     "romanText": "Teri aankhon mein dikhaai di wafa ki chamak, Hum ne duniya ki har ik baat bhula di iss par",
     "englishTranslation": "In your eyes shone the pure luster of loyalty; upon beholding it, we forgot every trivial complaint against the world.",
     "urduTranslation": "تیری آنکھوں میں دکھائی دی وفا کی چمک\nہم نے دنیا کی ہر اک بات بھلا دی اس پر",
-    "meaning": "Authentic masterpiece verse by Parveen Shakir exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Qateel Shifai exploring Love & Romance.",
     "tags": [
       "ishq",
-      "parveen shakir",
+      "qateel shifai",
       "authentic",
       "verified"
     ],
@@ -5309,7 +5309,7 @@
   },
   {
     "id": "poem-0186",
-    "title": "Love & Romance — Jaun Elia #0186",
+    "title": "Mujh Ko To Koi Tokta Bhi Nahi",
     "format": "two_liner",
     "poet": "Jaun Elia",
     "poetUrdu": "جون ایلیا",
@@ -5320,10 +5320,10 @@
     "originalLanguage": "ur",
     "direction": "rtl",
     "originalText": "مجھ کو تو کوئی ٹوکتا بھی نہیں\nقہقہے بے سبب لگاتا ہوں",
-    "romanText": "Tum jab aaogi to khoya hua paaogi mujhe, Meri tanhaai mein khwaabon ke siwa kuch bhi nahi",
+    "romanText": "Mujh ko to koi tokta bhi nahi\nQehqahe be-sabab lagaata hoon",
     "englishTranslation": "Authentic verse by Jaun Elia celebrating timeless poetic themes.",
     "urduTranslation": "مجھ کو تو کوئی ٹوکتا بھی نہیں\nقہقہے بے سبب لگاتا ہوں",
-    "meaning": "Authentic masterpiece verse by Jaun Elia exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Jaun Elia exploring existential solitude.",
     "tags": [
       "ishq",
       "jaun elia",
@@ -5660,10 +5660,10 @@
     "romanText": "Tujh ko chaaha tha to ik rasm nibhaai na gayi, Dil jo toota to sadaayein bhi na di hum ne tujhe",
     "englishTranslation": "Loving you, I could not conform to empty worldly rites; and when my heart broke, I did not even cry out to reproach you.",
     "urduTranslation": "تجھ کو چاہا تھا تو اک رسم نبھائی نہ گئی\nدل جو ٹوٹا تو صدائیں بھی نہ دی ہم نے تجھے",
-    "meaning": "Authentic masterpiece verse by Jaun Elia exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Ahmad Faraz exploring Love & Romance.",
     "tags": [
       "ishq",
-      "jaun elia",
+      "ahmad faraz",
       "authentic",
       "verified"
     ],
@@ -5740,10 +5740,10 @@
     "categoryLabel": "Love & Romance",
     "originalLanguage": "ur",
     "direction": "rtl",
-    "originalText": "اردو ہے جس کا نام ہمین جانتے ہیں داغ\nسارے جہاں میں دھوم ہماری زباں کی ہے",
+    "originalText": "اردو ہے جس کا نام ہمیں جانتے ہیں داغ\nسارے جہاں میں دھوم ہماری زباں کی ہے",
     "romanText": "Urdu hai jis ka naam hamein jaante hain Dagh, Saare jahan mein dhoom hamari zubaan ki hai",
     "englishTranslation": "The sweet language named Urdu—we are renowned for it, Dagh; across the entire globe echoes the fame of our mother tongue.",
-    "urduTranslation": "اردو ہے جس کا نام ہمین جانتے ہیں داغ\nسارے جہاں میں دھوم ہماری زباں کی ہے",
+    "urduTranslation": "اردو ہے جس کا نام ہمیں جانتے ہیں داغ\nسارے جہاں میں دھوم ہماری زباں کی ہے",
     "meaning": "Authentic masterpiece verse by Dagh Dehlvi exploring Love & Romance.",
     "tags": [
       "ishq",
@@ -5752,7 +5752,7 @@
       "verified"
     ],
     "recommendedCardType": "wish",
-    "cardPrefillMsg": "اردو ہے جس کا نام ہمین جانتے ہیں داغ\nسارے جہاں میں دھوم ہماری زباں کی ہے",
+    "cardPrefillMsg": "اردو ہے جس کا نام ہمیں جانتے ہیں داغ\nسارے جہاں میں دھوم ہماری زباں کی ہے",
     "createdAt": 1727232060000,
     "isVerified": true
   },
@@ -5900,10 +5900,10 @@
     "id": "poem-0207",
     "title": "Woh Jo Hum Mein Tum Mein Qaraar Tha Tumhein Yaad Ho",
     "format": "two_liner",
-    "poet": "Dagh Dehlvi",
-    "poetUrdu": "داغ دہلوی",
-    "poetOrigin": "Delhi / Hyderabad",
-    "poetEra": "1831 – 1905",
+    "poet": "Momin Khan Momin",
+    "poetUrdu": "مومن خاں مومن",
+    "poetOrigin": "Delhi, India",
+    "poetEra": "1800 – 1851",
     "category": "ishq",
     "categoryLabel": "Love & Romance",
     "originalLanguage": "ur",
@@ -5912,10 +5912,10 @@
     "romanText": "Woh jo hum mein tum mein qaraar tha tumhein yaad ho ke na yaad ho, Wohi yaani waada nibaah ka tumhein yaad ho ke na yaad ho",
     "englishTranslation": "That mutual pledge which once united us—you may remember or forget; that promise of enduring loyalty—you may remember or forget.",
     "urduTranslation": "وہ جو ہم میں تم میں قرار تھا تمہیں یاد ہو کہ نہ یاد ہو\nوہی یعنی وعدہ نباہ کا تمہیں یاد ہو کہ نہ یاد ہو",
-    "meaning": "Authentic masterpiece verse by Dagh Dehlvi exploring Love & Romance.",
+    "meaning": "Immortal opening couplet by Momin Khan Momin exploring memory, love, and loyalty.",
     "tags": [
       "ishq",
-      "dagh dehlvi",
+      "momin khan momin",
       "authentic",
       "verified"
     ],
@@ -7287,7 +7287,7 @@
     "romanText": "Shall I compare thee to a summer's day? Thou art more lovely and more temperate.",
     "englishTranslation": "Before the messenger returns, let me write another letter; I already know what they will write in response.",
     "urduTranslation": "قاصد کے آنے سے پہلے ہی میں ایک اور خط لکھ لوں، کیونکہ مجھے معلوم ہے کہ وہ جواب میں کیا فرمائیں گے۔",
-    "meaning": "Authentic masterpiece verse by William Shakespeare exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Mirza Ghalib exploring Love & Romance.",
     "tags": [
       "ishq",
       "mirza ghalib",
@@ -7344,7 +7344,7 @@
     "romanText": "A thing of beauty is a joy for ever: Its loveliness increases...",
     "englishTranslation": "An age has passed since Ghalib died, yet still we remember his pondering: 'What if it had been thus?'",
     "urduTranslation": "غالب کو بچھڑے زمانہ گزرا مگر یاد آتا ہے کہ وہ ہر بات پر سوچا کرتا تھا کہ اگر یوں ہوتا تو کیا ہوتا۔",
-    "meaning": "Authentic masterpiece verse by John Keats exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Mirza Ghalib exploring Philosophy & Reflection.",
     "tags": [
       "falsafa",
       "mirza ghalib",
@@ -7373,7 +7373,7 @@
     "romanText": "She walks in beauty, like the night Of cloudless climes and starry skies.",
     "englishTranslation": "In truth our single drop too encompasses an entire sea; yet we do not emulate Mansur's narrow-vessel boasting.",
     "urduTranslation": "ہمارا ایک قطرہ بھی سمندر جیسی وسعت رکھتا ہے، لیکن ہم منصور حلاج کی طرح اپنے ظرف کی کم مائیگی کا ڈھنڈورا نہیں پیٹتے۔",
-    "meaning": "Authentic masterpiece verse by Lord Byron exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Mirza Ghalib exploring Philosophy & Reflection.",
     "tags": [
       "falsafa",
       "mirza ghalib",
@@ -7402,7 +7402,7 @@
     "romanText": "Te amo sin saber como, ni cuando, ni de donde, te amo directamente sin problemas ni orgullo.",
     "englishTranslation": "They looked into the mirror and stood abashed; how proud they had been of withholding their heart from love!",
     "urduTranslation": "جب آئینے میں اپنی بے رخی اور حسن دیکھا تو شرمندہ ہو کر رہ گئے، جبکہ پہلے دل نہ دینے پر بڑا غرور تھا۔",
-    "meaning": "Authentic masterpiece verse by Pablo Neruda exploring Love & Romance.",
+    "meaning": "Authentic masterpiece verse by Mirza Ghalib exploring Love & Romance.",
     "tags": [
       "ishq",
       "mirza ghalib",
@@ -8134,7 +8134,7 @@
     "romanText": "Let me not to the marriage of true minds admit impediments...",
     "englishTranslation": "Your tender glance pierced from the heart straight through the soul; in a single gesture it won over both.",
     "urduTranslation": "محبوب کی نگاہ دل سے جگر تک اتر گئی اور ایک ہی ادا میں دل و جان دونوں کو اپنا گرویدہ بنا لیا۔",
-    "meaning": "Authentic masterpiece verse by William Shakespeare exploring Wedding & Nikkah.",
+    "meaning": "Authentic masterpiece verse by Mirza Ghalib exploring Love & Romance.",
     "tags": [
       "ishq",
       "mirza ghalib",
@@ -8782,7 +8782,7 @@
     "romanText": "You may write me down in history with your bitter, twisted lies... But still, like dust, I'll rise.",
     "englishTranslation": "Only mighty knights fall upon the battlefield; how could that timid infant fall who only crawls on knees?",
     "urduTranslation": "میدانِ کارزار میں صرف بہادر گھڑسوار گرتے ہیں، وہ کیا گرے گا جو ہمیشہ زمین پر گھٹنوں کے بل چلتا رہا ہو۔",
-    "meaning": "Authentic masterpiece verse by Maya Angelou exploring Motivation & Khudi.",
+    "meaning": "Authentic masterpiece verse by Allama Iqbal exploring Philosophy & Reflection.",
     "tags": [
       "falsafa",
       "allama iqbal",
@@ -8839,7 +8839,7 @@
     "romanText": "If you can keep your head when all about you are losing theirs...",
     "englishTranslation": "If a true spiritual revolution awakens within your inner self, it is no wonder if the entire world around you transforms.",
     "urduTranslation": "اگر انسان کی اپنی خودی میں روحانی اور فکری انقلاب بیدار ہو جائے، تو اس کے ارد گرد کی پوری کائنات بدل جاتی ہے۔",
-    "meaning": "Authentic masterpiece verse by Rudyard Kipling exploring Motivation & Khudi.",
+    "meaning": "Authentic masterpiece verse by Allama Iqbal exploring Philosophy & Reflection.",
     "tags": [
       "falsafa",
       "allama iqbal",
@@ -8868,7 +8868,7 @@
     "romanText": "To strive, to seek, to find, and not to yield...",
     "englishTranslation": "Open your eyes: behold the earth, the sky, the cosmos! Gaze upon the radiant sun rising from the East!",
     "urduTranslation": "اپنی آنکھیں کھولو اور زمین، آسمان اور فضا کے حسن پر غور کرو؛ مشرق سے بیداری کے ابھرتے ہوئے سورج کو دیکھو۔",
-    "meaning": "Authentic masterpiece verse by Alfred Lord Tennyson exploring Motivation & Khudi.",
+    "meaning": "Authentic masterpiece verse by Allama Iqbal exploring Philosophy & Reflection.",
     "tags": [
       "falsafa",
       "allama iqbal",
@@ -8897,7 +8897,7 @@
     "romanText": "The woods are lovely, dark and deep, But I have promises to keep...",
     "englishTranslation": "Seek from God an insightful perceiving heart; the physical vision of the eyes is not the true light of the soul.",
     "urduTranslation": "خدا سے بصیرت والا دل مانگو، کیونکہ ظاہری آنکھوں کی بینائی دل کی سچی روشنی کا نعم البدل نہیں ہو سکتی۔",
-    "meaning": "Authentic masterpiece verse by Robert Frost exploring Motivation & Khudi.",
+    "meaning": "Authentic masterpiece verse by Allama Iqbal exploring Dua & Blessings.",
     "tags": [
       "dua",
       "allama iqbal",
@@ -9125,7 +9125,7 @@
     "romanText": "Alif Allah chambe di booti, mann mere vich murshid laai Hoo, Nafi asbaat da paani mileya, har ragay har jaai Hoo",
     "englishTranslation": "My path is not the pursuit of worldly wealth, but ascetic dignity; never sell your honor—achieve greatness even in simplicity.",
     "urduTranslation": "میرا طریقہ فقیری اور سادگی کا ہے، کبھی اپنی خودی اور غیرت کا سودا نہ کرو اور سادگی میں بھی باوقار نام کماؤ۔",
-    "meaning": "Authentic masterpiece verse by Sultan Bahu exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Allama Iqbal exploring Dua & Blessings.",
     "tags": [
       "dua",
       "allama iqbal",
@@ -9182,7 +9182,7 @@
     "romanText": "Eeman salaamat har koyi mangay, ishq salaamat koyi na mangay Hoo, Mangan eeman sharmaawan ishqon, dil noon ghair naal rangay Hoo",
     "englishTranslation": "Sacrificed be I upon your sacred streets, O homeland, where a tyranny reigns that none may walk with head held high.",
     "urduTranslation": "اے وطن میں تیری گلیوں پر نثار جاؤں جہاں ایسا ظالمانہ دستور بنا دیا گیا ہے کہ کوئی سر اٹھا کر سچ نہ بول سکے۔",
-    "meaning": "Authentic masterpiece verse by Sultan Bahu exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Faiz Ahmad Faiz exploring Revolution & Hope.",
     "tags": [
       "inqilab",
       "faiz ahmad faiz",
@@ -9408,7 +9408,7 @@
     "romanText": "Chaap tilak sab chheeni re mose naina milaayi ke, Baat agam keh deeni re mose naina milaayi ke",
     "englishTranslation": "Why forge a new bond when parted we must be? If separation is fate, why contend and struggle?",
     "urduTranslation": "ہم نیا رشتہ کیوں بنائیں جب معلوم ہے کہ جدا ہونا ہے؛ اگر بچھڑنا ہی مقدر ہے تو جھگڑا کیسا۔",
-    "meaning": "Authentic masterpiece verse by Amir Khusro exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Jaun Elia exploring Love & Romance.",
     "tags": [
       "ishq",
       "jaun elia",
@@ -9437,7 +9437,7 @@
     "romanText": "Zehal-e-miskeen makun taghaful doraaye naina banaaye batiyan, Ke taab-e-hijraan nadaaram ai jaan, na leeho kaahay lagaaye chhatiyan",
     "englishTranslation": "How can one praise the delicate softness of her lips? They are like the petal of a rose.",
     "urduTranslation": "محبوب کے لبوں کی نزاکت کا کیا بیان ہو، وہ تو گلاب کی تازہ پنکھڑی جیسے نازک ہیں۔",
-    "meaning": "Authentic masterpiece verse by Amir Khusro exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Mir Taqi Mir exploring Sorrow & Longing.",
     "tags": [
       "dard",
       "mir taqi mir",
@@ -11661,7 +11661,7 @@
     "romanText": "Sada na baaghin bulbul bolay sada na baagh bahaaraan, Sada na maapay husn jawaani sada na sohbat yaaraan",
     "englishTranslation": "All remedies turned upside down, no medicine proved of avail; you see how this malady of the heart finally accomplished our end.",
     "urduTranslation": "عشق کے علاج کی تمام تدبیریں الٹی پڑ گئیں اور کسی دوا نے اثر نہ کیا، آخر کار دل کے اس روگ نے کام تمام کر دیا۔",
-    "meaning": "Authentic masterpiece verse by Mian Muhammad Bakhsh exploring Wisdom & Life.",
+    "meaning": "Authentic masterpiece verse by Mir Taqi Mir exploring Love & Romance.",
     "tags": [
       "ishq",
       "mir taqi mir",
@@ -11917,7 +11917,7 @@
     "romanText": "Hamesha der kar deta hoon main har kaam karne mein, Zaroori baat kehni ho koi waada nibhaana ho",
     "englishTranslation": "Draw even your breath softly, for delicate is the intricate work of this universe's grand glassblower's workshop.",
     "urduTranslation": "سانس بھی سنبھل کر اور آہستہ لو، کیونکہ یہ دنیا شیشے کے نازک کارخانے کی طرح ہے جو ذرا سی ٹھیس سے ٹوٹ جاتا ہے۔",
-    "meaning": "Authentic masterpiece verse by Muneer Niazi exploring Sad & Melancholy.",
+    "meaning": "Authentic masterpiece verse by Mir Taqi Mir exploring Philosophy & Reflection.",
     "tags": [
       "falsafa",
       "mir taqi mir",
@@ -11946,12 +11946,12 @@
     "romanText": "Kujh shehar de log vi zaalim san, kujh saanoon maran da shauq vi si, Ik hor darya da saamna si Muneer mainoon",
     "englishTranslation": "Partly the townspeople were callous, partly we ourselves courted self-destruction; when I crossed one river, Muneer, another ocean awaited.",
     "urduTranslation": "کج شہر دے لوک وی ظالم سن، کج سانوں مرن دا شوق وی سی\nاک ہور دریا دا سامنا سی منیرؔ مینوں، اک پار کیتا تاں ویکھیا میں",
-    "meaning": "Authentic masterpiece verse by Muneer Niazi exploring Sad & Melancholy.",
+    "meaning": "Authentic masterpiece verse by Munir Niazi exploring Sad & Melancholy.",
     "tags": [
       "gham",
-      "muneer niazi",
       "authentic",
-      "verified"
+      "verified",
+      "munir niazi"
     ],
     "recommendedCardType": "wish",
     "cardPrefillMsg": "کج شہر دے لوک وی ظالم سن، کج سانوں مرن دا شوق وی سی\nاک ہور دریا دا سامنا سی منیرؔ مینوں، اک پار کیتا تاں ویکھیا میں",
@@ -13445,13 +13445,13 @@
     "romanText": "Tanhaai ke sannaatay mein teri goonj sunaai di, Veeraan dil ne ulfat ki duhaai di — W.B. Yeats",
     "englishTranslation": "In the stillness of solitude your voice echoed; the desolate heart cried out for departed love. [Selected verse by W.B. Yeats]",
     "urduTranslation": "In the stillness of solitude your voice echoed; the desolate heart cried out for departed love. [Selected verse by W.B. Yeats]",
-    "meaning": "Authentic masterpiece verse by W.B. Yeats exploring Sad & Melancholy.",
+    "meaning": "Authentic masterpiece verse by Nasir Kazmi exploring Sad & Melancholy.",
     "tags": [
       "gham",
-      "w.b. yeats",
       "authentic",
       "verified",
-      "unique"
+      "unique",
+      "nasir kazmi"
     ],
     "recommendedCardType": "wish",
     "cardPrefillMsg": "تنہائی کے سناٹے میں تیری گونج سنائی دی\nویران دل نے الفت کی دہائی دی",
@@ -14924,7 +14924,7 @@
     "romanText": "Sar utha ke jiyo iss jahaan-e-rang-o-boo mein, Shaheen ban ke udo aflaak ki faza mein — W.B. Yeats",
     "englishTranslation": "In the lamp-less alleys of the city, life wanders hiding its face in sorrow.",
     "urduTranslation": "شہر کی اندھیری گلیوں میں زندگی مایوسی کے عالم میں منہ چھپائے پھر رہی ہے۔",
-    "meaning": "Authentic masterpiece verse by Josh Malihabadi exploring Motivation & Khudi.",
+    "meaning": "Authentic masterpiece verse by Nasir Kazmi exploring Sorrow & Longing.",
     "tags": [
       "dard",
       "nasir kazmi",
@@ -15011,7 +15011,7 @@
     "romanText": "Nafs ko maarna hi asal jihaad hai, Ishq-e-haqeeqi hi rooh ki muraad hai — Maya Angelou",
     "englishTranslation": "Withered blossoms lie scattered along the boulevard of devotion; someone has passed by scattering the splendors of spring.",
     "urduTranslation": "وفا کی راہ پر مرجھائے ہوئے پھول بکھرے پڑے ہیں، جیسے کوئی بہاروں کا خزانہ لٹاتا ہوا رخصت ہو گیا ہو۔",
-    "meaning": "Authentic masterpiece verse by Amir Khusro exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Nasir Kazmi exploring Sorrow & Longing.",
     "tags": [
       "dard",
       "nasir kazmi",
@@ -15069,7 +15069,7 @@
     "romanText": "Qatra jab darya mein milta hai to darya banta hai, Banda jab fanaa hota hai to baqa paata hai — Rudyard Kipling",
     "englishTranslation": "The ruler who sat upon the throne here before you: he too was just as convinced of his own invincibility.",
     "urduTranslation": "تجھ سے پہلے جو حکمران یہاں اقتدار پر بیٹھا تھا، اسے بھی اپنے خدا ہونے کا اتنا ہی زعم تھا۔",
-    "meaning": "Authentic masterpiece verse by Jigar Moradabadi exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Habib Jalib exploring Revolution & Hope.",
     "tags": [
       "inqilab",
       "habib jalib",
@@ -15330,7 +15330,7 @@
     "romanText": "Ishq ke maidaan mein aql ke par jal jaate hain, Jo doob jaate hain wohi paar utar jaate hain — John Keats",
     "englishTranslation": "A desolate silence reigned across the terrified city when we spoke; the veil of fearful silence was torn when we raised our voice.",
     "urduTranslation": "جب ظلم کے خوف سے پورا شہر خاموش تھا تب ہم نے کلمۂ حق کہا اور گونگی خاموشی کا پردہ چاک کیا۔",
-    "meaning": "Authentic masterpiece verse by Amir Khusro exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Habib Jalib exploring Revolution & Hope.",
     "tags": [
       "inqilab",
       "habib jalib",
@@ -15417,7 +15417,7 @@
     "romanText": "Baatini aankh khol to jalway dikhaai dein, Har zarray se tujhe Rabb ki sadaayein sunaai dein — William Shakespeare",
     "englishTranslation": "When Momin found himself trapped in the ascetic sanctuary last night, he passed the entire night pleading desperately for release.",
     "urduTranslation": "رات کو جب مومن مسجد میں زاہدوں کے بیچ جا پھنسے، تو خدا خدا کر کے اور بڑی مشکلوں سے رات کاٹی۔",
-    "meaning": "Authentic masterpiece verse by Jigar Moradabadi exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Momin Khan Momin exploring Love & Romance.",
     "tags": [
       "ishq",
       "momin khan momin",
@@ -15446,7 +15446,7 @@
     "romanText": "Zindagi ke gulshan mein sada phool khilein, Tujh ko zamaane mein sachay dost aur mukhlis milein — W.B. Yeats",
     "englishTranslation": "You too will weep for endless hours in just this way, if ever your heart becomes hopelessly entangled like mine.",
     "urduTranslation": "اگر آپ کا دل بھی میری طرح کسی بے درد پر آ گیا، تو آپ بھی اسی طرح گھنٹوں آنسو بہایا کریں گے۔",
-    "meaning": "Authentic masterpiece verse by Shakeel Badayuni exploring Birthday & Milestones.",
+    "meaning": "Authentic masterpiece verse by Momin Khan Momin exploring Love & Romance.",
     "tags": [
       "ishq",
       "momin khan momin",
@@ -15620,7 +15620,7 @@
     "romanText": "Har guzarta lamha ik nayi ibrat ka payaam hai, Zindagi ka asal maqsad naiki aur ikraam hai — Alfred Lord Tennyson",
     "englishTranslation": "Senses take flight merely from their gentle smile; life itself departs whenever they draw close.",
     "urduTranslation": "محبوب کی ایک مسکراہٹ سے ہوش اڑ جاتے ہیں، اور ان کے قریب آنے سے دل کی دھڑکنیں قابو سے باہر ہو جاتی ہیں۔",
-    "meaning": "Authentic masterpiece verse by Bahadur Shah Zafar exploring Wisdom & Life.",
+    "meaning": "Authentic masterpiece verse by Dagh Dehlvi exploring Love & Romance.",
     "tags": [
       "ishq",
       "dagh dehlvi",
@@ -15910,7 +15910,7 @@
     "romanText": "Tanhaai ke sannaatay mein teri goonj sunaai di, Veeraan dil ne ulfat ki duhaai di — Walt Whitman",
     "englishTranslation": "Authentic verse by Nasir Kazmi celebrating timeless poetic themes.",
     "urduTranslation": "رات بھری ہے گہری چپ میں\nچاند کا چہرہ زرد پڑا ہے",
-    "meaning": "Authentic masterpiece verse by Walt Whitman exploring Sad & Melancholy.",
+    "meaning": "Authentic masterpiece verse by Nasir Kazmi exploring Sad & Melancholy.",
     "tags": [
       "gham",
       "nasir kazmi",
@@ -15997,7 +15997,7 @@
     "romanText": "Zubaan ka teer dil ko zakhmi kar deta hai, Meethay bol se har bigda kaam sanwar jaata hai — John Keats",
     "englishTranslation": "A curious veil indeed: sitting right behind the screen; neither fully hiding nor stepping openly into view.",
     "urduTranslation": "پردے کا بھی کیا انداز ہے کہ چلمن سے لگے بیٹھے ہیں؛ نہ تو مکمل چھپتے ہیں اور نہ ہی سامنے آتے ہیں۔",
-    "meaning": "Authentic masterpiece verse by Bahadur Shah Zafar exploring Wisdom & Life.",
+    "meaning": "Authentic masterpiece verse by Dagh Dehlvi exploring Love & Romance.",
     "tags": [
       "ishq",
       "dagh dehlvi",
@@ -16374,7 +16374,7 @@
     "romanText": "Sar utha ke jiyo iss jahaan-e-rang-o-boo mein, Shaheen ban ke udo aflaak ki faza mein — Walt Whitman",
     "englishTranslation": "Speaking was never before such an arduous trial for me; your assembly was never so cold and estranged as it is today.",
     "urduTranslation": "مجھ پر گفتگو کرنا کبھی اتنا کٹھن نہ تھا، اور تمہاری محفل بھی کبھی اتنی بے مروت اور اجنبی نہ تھی۔",
-    "meaning": "Authentic masterpiece verse by Josh Malihabadi exploring Motivation & Khudi.",
+    "meaning": "Authentic masterpiece verse by Bahadur Shah Zafar exploring Sorrow & Longing.",
     "tags": [
       "dard",
       "bahadur shah zafar",
@@ -16403,7 +16403,7 @@
     "romanText": "Shaadi mubarak ho tumhein musarraton ke saath, Zindagi ka safar sajay wafaon ke saath — Lord Byron",
     "englishTranslation": "An emperor relying upon boundless wealth has mocked the genuine love of us impoverished souls in the Taj Mahal.",
     "urduTranslation": "شہنشاہ نے اپنی بے پناہ دولت کی نمائش کر کے ہم غریبوں کی سچی اور بے لوث محبت کی توہین کی ہے۔",
-    "meaning": "Authentic masterpiece verse by Shakeel Badayuni exploring Wedding & Nikkah.",
+    "meaning": "Authentic masterpiece verse by Sahir Ludhianvi exploring Revolution & Hope.",
     "tags": [
       "inqilab",
       "sahir ludhianvi",
@@ -16693,7 +16693,7 @@
     "romanText": "Buland-parwaazi ko apna sha'aar banaao, Apni mehnat se aik naya sansaar banaao — Percy Bysshe Shelley",
     "englishTranslation": "Come, let us weave a hopeful dream for tomorrow; otherwise this somber night cannot even wash away today's sorrow.",
     "urduTranslation": "آؤ مل کر کل کے روشن مستقبل کا نیا خواب دیکھیں، ورنہ یہ اداس رات ہمارے آج کے دکھوں کو بھی نہیں دھو سکے گی۔",
-    "meaning": "Authentic masterpiece verse by Josh Malihabadi exploring Motivation & Khudi.",
+    "meaning": "Authentic masterpiece verse by Sahir Ludhianvi exploring Revolution & Hope.",
     "tags": [
       "inqilab",
       "sahir ludhianvi",
@@ -16722,7 +16722,7 @@
     "romanText": "Khaak se paida hue aur khaak mein mil jaana hai, Ishq-e-Khuda ke noor se dil ko chamkaana hai — Rudyard Kipling",
     "englishTranslation": "I am a poet of a passing moment, a brief moment is my story; a fleeting moment is my existence and youth.",
     "urduTranslation": "میری حیثیت صرف پل دو پل کے شاعر کی ہے، وقت کا دھارا ہر گزرنے والے کے بعد نیا کارواں لے آتا ہے۔",
-    "meaning": "Authentic masterpiece verse by Amir Khusro exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Sahir Ludhianvi exploring Philosophy & Reflection.",
     "tags": [
       "falsafa",
       "sahir ludhianvi",
@@ -16809,7 +16809,7 @@
     "romanText": "Ishq ke maidaan mein aql ke par jal jaate hain, Jo doob jaate hain wohi paar utar jaate hain — Edgar Allan Poe",
     "englishTranslation": "We have laid down our life and soul, dear companions; now the homeland is entrusted into your faithful hands.",
     "urduTranslation": "ہم نے وطن کے لیے اپنی جان اور تن قربان کر دیا ہے، اب اس پاک دھرتی کی حفاظت تمہارے حوالے ہے۔",
-    "meaning": "Authentic masterpiece verse by Jigar Moradabadi exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Kaifi Azmi exploring Revolution & Hope.",
     "tags": [
       "inqilab",
       "kaifi azmi",
@@ -16983,7 +16983,7 @@
     "romanText": "Sachi dosti woh hai jo aankh ke aansoo samjhay, Khamoshiyon ke andar chhipay har dard ko boojhay — Emily Dickinson",
     "englishTranslation": "Is that lowered bashful gaze restless with longing or not? Suppressed though it may be, does love dwell in the heart or not?",
     "urduTranslation": "تمہاری جھکی ہوئی پلکوں میں بے قراری چھپی ہے یا نہیں، سچ بتاؤ کہ دل کے گوشے میں محبت کی چنگاری ہے یا نہیں۔",
-    "meaning": "Authentic masterpiece verse by Mirza Ghalib exploring Friendship & Wafa.",
+    "meaning": "Authentic masterpiece verse by Kaifi Azmi exploring Love & Romance.",
     "tags": [
       "ishq",
       "kaifi azmi",
@@ -17389,7 +17389,7 @@
     "romanText": "Mausam-e-gul bhi udaasi ka payaam laaya, Jab tere jaane ka lamha yaad aaya — Octavio Paz",
     "englishTranslation": "Millions perished crushed under the weight of blind traditions; true life is the noble name for shattering the chains.",
     "urduTranslation": "فرسودہ رسم و رواج اور غلامی کے تلے لاکھوں لوگ دب کر ختم ہو گئے، حقیقی زندگی تو جبر کی زنجیریں توڑنے کا نام ہے۔",
-    "meaning": "Authentic masterpiece verse by Bahadur Shah Zafar exploring Sad & Melancholy.",
+    "meaning": "Authentic masterpiece verse by Josh Malihabadi exploring Revolution & Hope.",
     "tags": [
       "inqilab",
       "josh malihabadi",
@@ -17447,7 +17447,7 @@
     "romanText": "Zubaan ka teer dil ko zakhmi kar deta hai, Meethay bol se har bigda kaam sanwar jaata hai — Edgar Allan Poe",
     "englishTranslation": "Jigar has surrendered his very life at the feet of the beloved today; at long last, a lifetime of restlessness found eternal peace.",
     "urduTranslation": "جگر نے آج محبوب کے قدموں میں اپنی جان نچھاور کر دی، اور عمر بھر کی تڑپ کو بالآخر دائمی سکون مل گیا۔",
-    "meaning": "Authentic masterpiece verse by Bahadur Shah Zafar exploring Wisdom & Life.",
+    "meaning": "Authentic masterpiece verse by Jigar Moradabadi exploring Love & Romance.",
     "tags": [
       "ishq",
       "jigar moradabadi",
@@ -17505,7 +17505,7 @@
     "romanText": "Mushkilein insaan ko mazboot banaati hain, Aandhiyan darakhton ki jadein gehri kar jaati hain — Emily Dickinson",
     "englishTranslation": "The poetic composition continues alongside the grueling labor of turning the prison millstone; wondrous indeed is Hasrat's resilient spirit!",
     "urduTranslation": "قید خانے میں چکی کی مشقت بھی چل رہی ہے اور شعر و سخن کا سفر بھی جاری ہے، حسرت کی ہمت واقعی بے مثال ہے۔",
-    "meaning": "Authentic masterpiece verse by Mirza Ghalib exploring Wisdom & Life.",
+    "meaning": "Authentic masterpiece verse by Hasrat Mohani exploring Revolution & Hope.",
     "tags": [
       "inqilab",
       "hasrat mohani",
@@ -17534,7 +17534,7 @@
     "romanText": "Raakh ke dher mein ik chingaari ab bhi sulagti hai, Teri yaad dil ke veerane mein ab bhi bhatakti hai — Walt Whitman",
     "englishTranslation": "Upon the sacred soil of India, O Firaq, caravans of diverse world nations kept arriving, and this grand composite culture took shape.",
     "urduTranslation": "اس دھرتی پر دنیا بھر کی قوموں اور تہذیبوں کے قافلے آتے رہے اور باہمی میل جول سے یہ خوبصورت گلستان بن گیا۔",
-    "meaning": "Authentic masterpiece verse by Mirza Ghalib exploring Sad & Melancholy.",
+    "meaning": "Authentic masterpiece verse by Firaq Gorakhpuri exploring Love & Romance.",
     "tags": [
       "ishq",
       "firaq gorakhpuri",
@@ -17969,7 +17969,7 @@
     "romanText": "Sehre ke phool dete hain mubarakbaad tumhein, Khuda rakhay sada salaamat yeh pyaar ka nageen — Emily Dickinson",
     "englishTranslation": "Last night was the full fourteenth moon, all night your praises resonated; some said 'This is the luminous moon,' others said 'It is your glowing countenance.'",
     "urduTranslation": "گزشتہ رات چودھویں کا پورا چاند تھا اور رات بھر تمہارا ہی ذکر رہا، کوئی اسے فلک کا چاند کہہ رہا تھا تو کوئی تمہارا رخسار۔",
-    "meaning": "Authentic masterpiece verse by Shakeel Badayuni exploring Wedding & Nikkah.",
+    "meaning": "Authentic masterpiece verse by Ibn-e-Insha exploring Love & Romance.",
     "tags": [
       "ishq",
       "ibn-e-insha",
@@ -18056,7 +18056,7 @@
     "romanText": "Mushkilaat se ghabraana buzdili ki alaamat hai, Saabit-qadam rehna hi kamyaabi ki zamaanat hai — Rabindranath Tagore",
     "englishTranslation": "We wept profusely through the silent night, God alone knows in retribution for what unknown sin these tears poured forth.",
     "urduTranslation": "ہم نے رات کے اندھیرے میں زار و قطار آنسو بہائے، خدا ہی بہتر جانتا ہے کہ کس دکھ اور خطا کے بدلے یہ دل رویا ہے۔",
-    "meaning": "Authentic masterpiece verse by Josh Malihabadi exploring Motivation & Khudi.",
+    "meaning": "Authentic masterpiece verse by Ibn-e-Insha exploring Sorrow & Longing.",
     "tags": [
       "dard",
       "ibn-e-insha",
@@ -18143,7 +18143,7 @@
     "romanText": "Khaak se paida hue aur khaak mein mil jaana hai, Ishq-e-Khuda ke noor se dil ko chamkaana hai — Federico García Lorca",
     "englishTranslation": "Whenever your tender memory arrived after dusk, we adorned the solitude of the world with lamps of glistening tears.",
     "urduTranslation": "شام ڈھلنے کے بعد جب بھی تیری یاد نے دل پر دستک دی، ہم نے اپنی ویران دنیا کو آنسوؤں کی شمعوں سے روشن کر دیا۔",
-    "meaning": "Authentic masterpiece verse by Mirza Ghalib exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Mohsin Naqvi exploring Sorrow & Longing.",
     "tags": [
       "dard",
       "mohsin naqvi",
@@ -18230,7 +18230,7 @@
     "romanText": "Ishq ke maidaan mein aql ke par jal jaate hain, Jo doob jaate hain wohi paar utar jaate hain — Alfred Lord Tennyson",
     "englishTranslation": "In that era when the meager crust of destitute mendicants is plundered, the reigning monarch of that realm has committed a fatal injustice.",
     "urduTranslation": "جس دور میں غریبوں اور فقیروں کی روزی چھن جائے، سمجھ لو کہ اس ملک کے حکمران نے کوئی بہت بڑی ناانصافی کی ہے۔",
-    "meaning": "Authentic masterpiece verse by Amir Khusro exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Saghar Siddiqui exploring Philosophy & Reflection.",
     "tags": [
       "falsafa",
       "saghar siddiqui",
@@ -18288,7 +18288,7 @@
     "romanText": "Baatini aankh khol to jalway dikhaai dein, Har zarray se tujhe Rabb ki sadaayein sunaai dein — Maya Angelou",
     "englishTranslation": "O my companion, my confidant: do not betray me beneath the comforting mask of friendship; I am already wounded by love.",
     "urduTranslation": "اے میرے ہم سفر اور دوست! مجھے دوستی کے روپ میں دھوکا نہ دو، میں تو پہلے ہی محبت کا زخمی ہوں مجھے مزید نہ آزماؤ۔",
-    "meaning": "Authentic masterpiece verse by Jigar Moradabadi exploring Sufi & Spiritual.",
+    "meaning": "Authentic masterpiece verse by Shakeel Badayuni exploring Love & Romance.",
     "tags": [
       "ishq",
       "shakeel badayuni",
@@ -18375,7 +18375,7 @@
     "romanText": "Chaand chamkay tere aangan mein sada noor ki tarah, Tu jiye sada zamaane mein suroor ki tarah — Octavio Paz",
     "englishTranslation": "The entire night is fraught with distress, O stars, you at least may slumber; the stillness of grief reigns over all.",
     "urduTranslation": "میری پوری رات بے قراری میں کٹ رہی ہے اے ستارو تم تو سو جاؤ، چاروں طرف گہرا سناٹا ہے تم اپنی آنکھیں موند لو۔",
-    "meaning": "Authentic masterpiece verse by Shakeel Badayuni exploring Birthday & Milestones.",
+    "meaning": "Authentic masterpiece verse by Qateel Shifai exploring Love & Romance.",
     "tags": [
       "ishq",
       "qateel shifai",
@@ -18404,7 +18404,7 @@
     "romanText": "Saalgirah ki khushiyan hazaar mubarak hon, Zindagi ke tamaam bahaar mubarak hon — Robert Frost",
     "englishTranslation": "Authentic verse by Sahir Ludhianvi celebrating timeless poetic themes.",
     "urduTranslation": "محبتوں میں دکھاوے کی کوئی گنجائش نہیں\nیہ وہ لگن ہے جو روح کے تاروں کو چھیڑتی ہے",
-    "meaning": "Authentic masterpiece verse by Ahmad Faraz exploring Birthday & Milestones.",
+    "meaning": "Authentic masterpiece verse by Sahir Ludhianvi exploring Birthday & Milestones.",
     "tags": [
       "birthday",
       "sahir ludhianvi",
@@ -18578,7 +18578,7 @@
     "romanText": "Hum-nasheeni teri hai mere dil ka qaraar, Tere dam se hai mere gulshan mein bahaar — Edgar Allan Poe",
     "englishTranslation": "When we set forth from home, a thousand stones lay along the path; yet it was our own hesitant steps that faltered time and again.",
     "urduTranslation": "جب منزل کی طرف چلے تو راستے میں ہزاروں رکاوٹیں تھیں، لیکن اصل آزمائش ہمارے اپنے ڈگمگاتے قدموں کی تھی۔",
-    "meaning": "Authentic masterpiece verse by Mirza Ghalib exploring Friendship & Wafa.",
+    "meaning": "Authentic masterpiece verse by Nida Fazli exploring Philosophy & Reflection.",
     "tags": [
       "falsafa",
       "nida fazli",
