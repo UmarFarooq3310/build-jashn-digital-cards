@@ -2193,7 +2193,7 @@ export function PoetryClient() {
                     {isGeneratingCustomVideo ? (
                       <>
                         <Loader2 className="size-4 animate-spin text-white" />
-                        <span>{customVideoProgress > 0 ? `${customVideoProgress}%` : isUrdu ? 'ویڈیو بن رہی ہے...' : 'Making Video...'}</span>
+                        <span>{customVideoProgress > 84 ? `Converting ${customVideoProgress}%` : customVideoProgress > 0 ? `${customVideoProgress}%` : isUrdu ? 'ویڈیو بن رہی ہے...' : 'Making Video...'}</span>
                       </>
                     ) : (
                       <>
@@ -2752,7 +2752,7 @@ export function PoetryClient() {
                             {generatingVideoId === poem.id ? (
                               <>
                                 <Loader2 className="size-3.5 animate-spin text-rose-300" />
-                                <span>{videoProgress > 0 ? `${videoProgress}%` : isUrdu ? 'ویڈیو بن رہی ہے...' : 'Making...'}</span>
+                                <span>{videoProgress > 84 ? `Converting ${videoProgress}%` : videoProgress > 0 ? `${videoProgress}%` : isUrdu ? 'ویڈیو بن رہی ہے...' : 'Making...'}</span>
                               </>
                             ) : (
                               <>

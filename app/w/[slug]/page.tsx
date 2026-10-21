@@ -522,7 +522,7 @@ function WishPublicContent({ slug }: { slug: string }) {
                   {isGeneratingVideo ? (
                     <>
                       <Loader2 className="size-3 animate-spin text-rose-300" />
-                      <span>{videoProgress > 0 ? `${videoProgress}%` : 'Making...'}</span>
+                      <span>{videoProgress > 84 ? `Converting ${videoProgress}%` : videoProgress > 0 ? `Recording ${videoProgress}%` : 'Making...'}</span>
                     </>
                   ) : (
                     <>

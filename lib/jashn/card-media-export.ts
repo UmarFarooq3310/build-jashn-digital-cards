@@ -2,6 +2,7 @@
 
 import { recordCardShare } from '@/lib/jashn/magic-service'
 import { getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
+import fixWebmDuration from 'fix-webm-duration'
 
 export interface CardMediaExportOptions {
   element: HTMLElement | null
@@ -74,90 +75,99 @@ function getBestVideoMimeType(): { mimeType: string; isRealMp4: boolean } {
 }
 
 /**
- * Robust EBML header duration patcher.
- * Inserts TimecodeScale and Duration into the EBML Segment Info.
- * This directly fixes the "00:01" playback bug on Android players and galleries.
+ * Duration metadata is now handled by the `fix-webm-duration` package, which
+ * properly parses the EBML structure and INSERTS the Duration element when it is
+ * missing (the case on Android Chrome). The previous custom implementation could
+ * only patch an existing Duration tag and silently returned the unpatched blob
+ * when the tag was absent — causing Android media players, Instagram, and
+ * Facebook to show "00:01" instead of the real duration.
  */
-function fixWebmDuration(blob: Blob, durationMs: number): Promise<Blob> {
-  return new Promise((resolve) => {
-    const fileReader = new FileReader()
-    fileReader.onload = () => {
-      const buffer = fileReader.result as ArrayBuffer
-      if (!buffer) {
-        resolve(blob)
-        return
+
+// ── FFmpeg.wasm for WebM → MP4 conversion ──
+// Android Chrome can only record WebM via MediaRecorder. We transcode the
+// resulting WebM to H.264/AAC MP4 using ffmpeg.wasm so the final file works
+// everywhere — Instagram, Facebook, Android Gallery, WhatsApp status, etc.
+
+let ffmpegInstance: any = null
+let ffmpegLoadPromise: Promise<any> | null = null
+
+async function getFFmpegInstance(): Promise<any> {
+  if (ffmpegInstance?.loaded) return ffmpegInstance
+  if (ffmpegLoadPromise) return ffmpegLoadPromise
+
+  ffmpegLoadPromise = (async () => {
+    const { FFmpeg } = await import('@ffmpeg/ffmpeg')
+    const { toBlobURL } = await import('@ffmpeg/util')
+
+    const ffmpeg = new FFmpeg()
+    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.9/dist/umd'
+    await ffmpeg.load({
+      coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+      wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+    })
+
+    ffmpegInstance = ffmpeg
+    return ffmpeg
+  })()
+
+  try {
+    return await ffmpegLoadPromise
+  } catch (err) {
+    ffmpegLoadPromise = null
+    throw err
+  }
+}
+
+async function convertWebmToMp4(
+  webmBlob: Blob,
+  onProgress?: (percent: number) => void
+): Promise<Blob | null> {
+  try {
+    const ffmpeg = await getFFmpegInstance()
+
+    let progressCb: ((e: { progress: number; time: number }) => void) | undefined
+    if (onProgress) {
+      progressCb = ({ progress }) => {
+        // Map ffmpeg 0.0-1.0 to 85-99 (recording already covered 0-84)
+        onProgress(Math.min(99, 85 + Math.round(progress * 14)))
       }
-
-      const bytes = new Uint8Array(buffer)
-      let segmentPos = -1
-
-      // Locate EBML Segment Element [0x18, 0x53, 0x80, 0x67]
-      for (let i = 0; i < Math.min(bytes.length - 4, 1024); i++) {
-        if (
-          bytes[i] === 0x18 &&
-          bytes[i + 1] === 0x53 &&
-          bytes[i + 2] === 0x80 &&
-          bytes[i + 3] === 0x67
-        ) {
-          segmentPos = i
-          break
-        }
-      }
-
-      if (segmentPos === -1) {
-        resolve(blob)
-        return
-      }
-
-      // Locate Segment Info [0x15, 0x49, 0xA9, 0x66]
-      let infoPos = -1
-      for (let i = segmentPos; i < Math.min(bytes.length - 4, segmentPos + 500); i++) {
-        if (
-          bytes[i] === 0x15 &&
-          bytes[i + 1] === 0x49 &&
-          bytes[i + 2] === 0xa9 &&
-          bytes[i + 3] === 0x66
-        ) {
-          infoPos = i
-          break
-        }
-      }
-
-      if (infoPos === -1) {
-        resolve(blob)
-        return
-      }
-
-      // Find Duration tag [0x44, 0x89] inside Info
-      let durationTagPos = -1
-      for (let i = infoPos; i < Math.min(bytes.length - 6, infoPos + 300); i++) {
-        if (bytes[i] === 0x44 && bytes[i + 1] === 0x89) {
-          durationTagPos = i
-          break
-        }
-      }
-
-      const view = new DataView(buffer)
-      if (durationTagPos !== -1) {
-        const floatLen = bytes[durationTagPos + 2]
-        if (floatLen === 4 && durationTagPos + 7 <= bytes.length) {
-          view.setFloat32(durationTagPos + 3, durationMs, false) // Big-endian Float32
-          resolve(new Blob([buffer], { type: 'video/webm' }))
-          return
-        } else if (floatLen === 8 && durationTagPos + 11 <= bytes.length) {
-          view.setFloat64(durationTagPos + 3, durationMs, false) // Big-endian Float64
-          resolve(new Blob([buffer], { type: 'video/webm' }))
-          return
-        }
-      }
-
-      // If duration tag was not pre-allocated by the browser, return original blob
-      resolve(blob)
+      ffmpeg.on('progress', progressCb)
     }
 
-    fileReader.onerror = () => resolve(blob)
-    fileReader.readAsArrayBuffer(blob)
-  })
+    try {
+      const inputData = new Uint8Array(await webmBlob.arrayBuffer())
+      await ffmpeg.writeFile('input.webm', inputData)
+
+      await ffmpeg.exec([
+        '-i', 'input.webm',
+        '-c:v', 'libx264',
+        '-preset', 'ultrafast',
+        '-crf', '23',
+        '-pix_fmt', 'yuv420p',
+        '-c:a', 'aac',
+        '-b:a', '128k',
+        '-movflags', '+faststart',
+        'output.mp4',
+      ])
+
+      const outputData = await ffmpeg.readFile('output.mp4')
+      const mp4Blob = new Blob([outputData as Uint8Array], { type: 'video/mp4' })
+
+      try {
+        await ffmpeg.deleteFile('input.webm')
+        await ffmpeg.deleteFile('output.mp4')
+      } catch {}
+
+      return mp4Blob
+    } finally {
+      if (progressCb) {
+        ffmpeg.off('progress', progressCb)
+      }
+    }
+  } catch (err) {
+    console.error('FFmpeg conversion failed, falling back to WebM:', extractErrorMessage(err))
+    return null
+  }
 }
 
 function resolveSoundUrl(audioTrack?: string, cardType?: string, occasionId?: string): string {
@@ -519,6 +529,12 @@ export async function recordImageAsVideo({
 
   const { mimeType: chosenMime, isRealMp4 } = getBestVideoMimeType()
 
+  // Preload FFmpeg in the background while recording if we'll need WebM→MP4 conversion.
+  // This overlaps the ~30MB core download with the 10-14s recording to save time.
+  if (!isRealMp4) {
+    getFFmpegInstance().catch(() => {})
+  }
+
   let recorder: MediaRecorder
   try {
     recorder = new MediaRecorder(stream, {
@@ -571,24 +587,35 @@ export async function recordImageAsVideo({
           return
         }
 
-        // CRITICAL: Patch WebM duration metadata if not true MP4
+        // CRITICAL: Fix WebM duration metadata if not true MP4.
+        // Android Chrome's MediaRecorder produces WebM files WITHOUT a Duration
+        // element in the EBML header. The fix-webm-duration package properly parses
+        // the EBML structure and INSERTS the Duration element when missing — fixing
+        // the "00:01" bug in Android media players, Instagram, and Facebook.
         if (!isRealMp4 && (actualMime.includes('webm') || blob.type.includes('webm'))) {
           try {
-            blob = await fixWebmDuration(blob, DURATION_MS)
+            blob = await fixWebmDuration(blob, DURATION_MS, { logger: false })
           } catch {}
+        }
+
+        // Convert WebM → MP4 (H.264/AAC) for maximum compatibility with
+        // Instagram, Facebook, WhatsApp status, and Android Gallery.
+        // Falls back to .webm download if ffmpeg conversion fails.
+        let finalBlob = blob
+        let ext = isRealMp4 ? 'mp4' : 'webm'
+
+        if (!isRealMp4 && blob.type.includes('webm')) {
+          const mp4Blob = await convertWebmToMp4(blob, onProgress)
+          if (mp4Blob && mp4Blob.size > 0) {
+            finalBlob = mp4Blob
+            ext = 'mp4'
+          }
         }
 
         if (onProgress) onProgress(100)
 
-        // CRITICAL FOR ANDROID PLAYERS:
-        // If the browser natively recorded MP4 (e.g. Safari), use .mp4.
-        // If Android recorded WebM, DO NOT name it .mp4! Android Gallery interprets
-        // a WebM with .mp4 extension as a corrupt file and displays it as 00:01 / 25fps.
-        // Saving as .webm allows MX Player, VLC, and Google Photos to open it with full duration!
-        const ext = isRealMp4 ? 'mp4' : 'webm'
         const cleanName = fileName.endsWith(`.${ext}`) ? fileName : `${fileName}.${ext}`
-
-        const blobUrl = URL.createObjectURL(blob)
+        const blobUrl = URL.createObjectURL(finalBlob)
         const link = document.createElement('a')
         link.download = cleanName
         link.href = blobUrl
@@ -725,8 +752,8 @@ export async function recordImageAsVideo({
       })
       ctx.restore()
 
-      // Progress reporting
-      const progressPercent = Math.min(99, Math.round((elapsed / DURATION_MS) * 100))
+      // Progress reporting (capped at 84% — 85-100% reserved for MP4 conversion phase)
+      const progressPercent = Math.min(84, Math.round((elapsed / DURATION_MS) * 84))
       if (onProgress) onProgress(progressPercent)
 
       if (elapsed < DURATION_MS) {
