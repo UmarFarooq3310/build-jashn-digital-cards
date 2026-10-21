@@ -546,7 +546,7 @@ export function PoetryClient() {
     let currentY = isStory ? 170 : 80
 
     if (isStory) {
-      ctx.fillStyle = '#fbbf24'
+      ctx.fillStyle = '#fde68a'
       ctx.font = 'bold 20px sans-serif'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
@@ -556,7 +556,10 @@ export function PoetryClient() {
 
     if (dedication && dedication.trim()) {
       const cleanDedication = dedication.trim()
-      ctx.font = isStory ? 'bold 24px sans-serif' : 'bold 21px sans-serif'
+      const dedIsRtl = /[\u0600-\u06FF]/.test(cleanDedication)
+      ctx.font = isStory
+        ? (dedIsRtl ? 'bold 24px "Noto Nastaliq Urdu", "Traditional Arabic", serif' : 'bold 24px sans-serif')
+        : (dedIsRtl ? 'bold 21px "Noto Nastaliq Urdu", "Traditional Arabic", serif' : 'bold 21px sans-serif')
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       const dedText = `✨ ${cleanDedication} ✨`
@@ -573,7 +576,7 @@ export function PoetryClient() {
       ctx.lineWidth = 1.5
       ctx.stroke()
 
-      ctx.fillStyle = activeTheme.flyerAccent || '#38bdf8'
+      ctx.fillStyle = '#fde68a'
       ctx.fillText(dedText, 540, currentY)
 
       currentY += isStory ? 130 : 110
