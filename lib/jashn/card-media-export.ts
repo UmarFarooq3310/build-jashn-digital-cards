@@ -263,8 +263,14 @@ function extractErrorMessage(e: unknown): string {
   return String(e)
 }
 
-async function captureCardDataUrl(element: HTMLElement): Promise<string> {
-  const { toPng } = await import('html-to-image')
+/**
+ * Captures a DOM element to an HTMLCanvasElement using html-to-image.
+ * Used by both downloadCardVideo and downloadCardPng so they share the
+ * same capture logic, and downloadCardVideo can use the memory-efficient
+ * blob-URL path instead of a large base64 data URL string.
+ */
+async function captureCardCanvas(element: HTMLElement): Promise<HTMLCanvasElement> {
+  const { toCanvas } = await import('html-to-image')
 
   const originalCssRules = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, 'cssRules')
   if (originalCssRules) {
@@ -292,7 +298,7 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
   const TRANSPARENT_PIXEL =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIABQABNjN9GQAAAAlwSFlzAAAWJQAAFiUBSVIk8AAAAA0lEQVQI12P4z8BQDwAEgAF/QualzQAAAABJRU5ErkJggg=='
 
-  const toPngOptions = {
+  const captureOptions = {
     cacheBust: true,
     filter: (node: Node) => {
       const el = node as HTMLElement
@@ -325,14 +331,49 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
   }
 
   try {
-    return await toPng(element, toPngOptions)
+    return await toCanvas(element, captureOptions)
   } catch {
-    return await toPng(element, { ...toPngOptions, skipFonts: true, pixelRatio: 1 })
+    return await toCanvas(element, { ...captureOptions, skipFonts: true, pixelRatio: 1 })
   } finally {
     if (originalCssRules) {
       Object.defineProperty(CSSStyleSheet.prototype, 'cssRules', originalCssRules)
     }
   }
+}
+
+async function captureCardDataUrl(element: HTMLElement): Promise<string> {
+  const canvas = await captureCardCanvas(element)
+  return canvas.toDataURL('image/png')
+}
+
+/**
+ * Converts a canvas to an Image using blob URLs for mobile memory efficiency.
+ * canvas.toDataURL on a large canvas produces a multi-MB base64 string that
+ * can cause Image loading to fail on Android — which forces a fallback to
+ * MediaRecorder (known "00:01" duration bug). Blob URLs are far lighter.
+ * Returns the Image and the URL so the caller can revoke it after use.
+ */
+async function canvasToImage(canvas: HTMLCanvasElement): Promise<{ img: HTMLImageElement; imgUrl: string }> {
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob(resolve, 'image/png')
+  )
+
+  let imgUrl: string
+  if (blob && blob.size > 0) {
+    imgUrl = URL.createObjectURL(blob)
+  } else {
+    // Fallback for very old browsers without toBlob
+    imgUrl = canvas.toDataURL('image/png')
+  }
+
+  const img = new Image()
+  img.src = imgUrl
+  await new Promise((resolve, reject) => {
+    img.onload = resolve
+    img.onerror = () => reject(new Error('Image load failed'))
+  })
+
+  return { img, imgUrl }
 }
 
 export async function downloadCardPng({
@@ -1158,25 +1199,34 @@ export async function downloadCanvasAsVideo({
   durationSeconds?: number
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
-  const dataUrl = canvas.toDataURL('image/png')
-  const img = new Image()
-  img.src = dataUrl
-  await new Promise((resolve, reject) => {
-    img.onload = resolve
-    img.onerror = () => reject(new Error('Canvas image load failed'))
-  })
+  try {
+    // Use toBlob + createObjectURL instead of toDataURL for better mobile memory
+    // efficiency. toDataURL on a 1080×1920 canvas produces a multi-MB base64 string
+    // that can cause Image loading to fail on Android, forcing a MediaRecorder
+    // fallback with the known "00:01" duration bug. Blob URLs are far lighter.
+    const { img, imgUrl } = await canvasToImage(canvas)
 
-  return recordImageAsVideo({
-    img,
-    fileName,
-    cardType: 'poetry',
-    occasionId,
-    audioTrack: audioTrack || 'friendship-soft',
-    audioUrl,
-    targetAspectRatio,
-    durationSeconds,
-    onProgress,
-  })
+    try {
+      return await recordImageAsVideo({
+        img,
+        fileName,
+        cardType: 'poetry',
+        occasionId,
+        audioTrack: audioTrack || 'friendship-soft',
+        audioUrl,
+        targetAspectRatio,
+        durationSeconds,
+        onProgress,
+      })
+    } finally {
+      if (imgUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(imgUrl)
+      }
+    }
+  } catch (e: unknown) {
+    console.error('Canvas video export error:', extractErrorMessage(e))
+    return false
+  }
 }
 
 export async function downloadCardVideo({
@@ -1198,25 +1248,29 @@ export async function downloadCardVideo({
       recordCardShare(cardType, cardSlug, 'video')
     }
 
-    const dataUrl = await captureCardDataUrl(element)
-    const img = new Image()
-    img.src = dataUrl
-    await new Promise((resolve, reject) => {
-      img.onload = resolve
-      img.onerror = () => reject(new Error('Snapshot image failed to load'))
-    })
+    // Capture DOM element → canvas → blob URL (same memory-efficient path
+    // as downloadCanvasAsVideo / poetry cards). Avoids large base64 data URL
+    // strings that cause Image loading failures on Android.
+    const capturedCanvas = await captureCardCanvas(element)
+    const { img, imgUrl } = await canvasToImage(capturedCanvas)
 
-    return recordImageAsVideo({
-      img,
-      fileName,
-      cardType,
-      occasionId,
-      audioTrack,
-      audioUrl,
-      targetAspectRatio,
-      durationSeconds,
-      onProgress,
-    })
+    try {
+      return await recordImageAsVideo({
+        img,
+        fileName,
+        cardType,
+        occasionId,
+        audioTrack,
+        audioUrl,
+        targetAspectRatio,
+        durationSeconds,
+        onProgress,
+      })
+    } finally {
+      if (imgUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(imgUrl)
+      }
+    }
   } catch (e: unknown) {
     console.error('Video export error:', extractErrorMessage(e))
     return false

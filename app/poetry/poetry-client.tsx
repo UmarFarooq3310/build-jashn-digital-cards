@@ -1256,7 +1256,7 @@ export function PoetryClient() {
       ctx.fillStyle = '#fbbf24'
       ctx.font = 'bold 20px sans-serif'
       ctx.fillText('✨ CARDZY DIGITAL POETRY STUDIO ✨', 540, topY)
-      topY += 46
+      topY += 72
     }
 
     ctx.fillStyle = '#fde68a'
