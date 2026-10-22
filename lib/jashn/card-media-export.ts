@@ -286,14 +286,41 @@ async function captureCardCanvas(element: HTMLElement): Promise<HTMLCanvasElemen
     })
   }
 
-  const rect = element.getBoundingClientRect()
-  const offsetW = element.offsetWidth || 0
-  const rectW = Math.round(rect.width) || 0
-  const naturalWidth = Math.max(offsetW || rectW, 320)
+  // ── Temporarily expand all scrollable / max-height containers so the
+  // FULL text is captured — not just the visible scrolled portion.
+  // This fixes wish cards (and any other card) where the message sits
+  // inside a max-h-* overflow-y-auto box. Styles are restored after
+  // capture so the live page is unaffected.
+  const savedStyles: { el: HTMLElement; maxHeight: string; overflow: string; overflowY: string; height: string }[] = []
 
-  const offsetH = element.offsetHeight || 0
-  const rectH = Math.round(rect.height) || 0
-  const naturalHeight = Math.max(offsetH || rectH, 280)
+  const expandElement = (el: HTMLElement) => {
+    const computed = window.getComputedStyle(el)
+    if (
+      computed.maxHeight !== 'none' ||
+      computed.overflowY === 'auto' ||
+      computed.overflowY === 'scroll'
+    ) {
+      savedStyles.push({
+        el,
+        maxHeight: el.style.maxHeight,
+        overflow: el.style.overflow,
+        overflowY: el.style.overflowY,
+        height: el.style.height,
+      })
+      el.style.maxHeight = 'none'
+      el.style.overflow = 'visible'
+      el.style.overflowY = 'visible'
+    }
+  }
+
+  // Expand the root element itself
+  expandElement(element)
+  // Expand all descendants
+  element.querySelectorAll('*').forEach((child) => expandElement(child as HTMLElement))
+
+  // Force a synchronous reflow so scrollHeight reflects the expanded layout
+  const naturalWidth = Math.max(element.offsetWidth || Math.round(element.getBoundingClientRect().width), 320)
+  const naturalHeight = Math.max(element.scrollHeight, 280)
 
   const TRANSPARENT_PIXEL =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIABQABNjN9GQAAAAlwSFlzAAAWJQAAFiUBSVIk8AAAAA0lEQVQI12P4z8BQDwAEgAF/QualzQAAAABJRU5ErkJggg=='
@@ -315,7 +342,7 @@ async function captureCardCanvas(element: HTMLElement): Promise<HTMLCanvasElemen
     skipFonts: false,
     fetchRequestInit: { cache: 'force-cache' as RequestCache },
     style: {
-      overflow: 'hidden',
+      overflow: 'visible',
       transform: 'none',
       transformOrigin: 'top left',
       margin: '0',
@@ -335,6 +362,13 @@ async function captureCardCanvas(element: HTMLElement): Promise<HTMLCanvasElemen
   } catch {
     return await toCanvas(element, { ...captureOptions, skipFonts: true, pixelRatio: 1 })
   } finally {
+    // Restore all temporarily expanded elements
+    savedStyles.forEach(({ el, maxHeight, overflow, overflowY, height }) => {
+      el.style.maxHeight = maxHeight
+      el.style.overflow = overflow
+      el.style.overflowY = overflowY
+      el.style.height = height
+    })
     if (originalCssRules) {
       Object.defineProperty(CSSStyleSheet.prototype, 'cssRules', originalCssRules)
     }
