@@ -754,18 +754,40 @@ export function PoetryClient() {
     )
 
     try {
-      const selectedTheme = POETRY_THEMES.find((t) => t.id === customThemeId) || POETRY_THEMES[0]
-      const canvas = await generateCustomPoetryCanvas(
-        customVerse,
-        customPoet,
-        customDedication,
-        selectedTheme,
-        exportAspectFormat
-      )
-      if (!canvas) throw new Error('Failed to generate canvas')
+      // Build a Poem object from the custom input so we can use the SAME
+      // generatePoetryCanvas + downloadCanvasAsVideo pipeline as the database
+      // poems — one code path, same output on every platform including Android.
+      const isRtl = /[\u0600-\u06FF]/.test(customVerse)
+      const fullVerse = customDedication?.trim()
+        ? `${customDedication}\n\n${customVerse}`
+        : customVerse
 
-      const sanitizedPoet = (customPoet || 'verse').toLowerCase().replace(/[^a-z0-9]/g, '-')
-      const fileName = isStory ? `Cardzy-Custom-Reel-${sanitizedPoet}-video` : `Cardzy-Custom-Poetry-${sanitizedPoet}-video`
+      const customPoemObj: Poem = {
+        id: `custom-${Date.now()}`,
+        title: 'Custom Poetry',
+        format: 'full_poem',
+        poet: customPoet || (isRtl ? 'شاعر' : 'Poet'),
+        poetUrdu: isRtl ? (customPoet || 'شاعر') : '',
+        poetEra: '',
+        category: 'ishq',
+        categoryLabel: 'Custom',
+        originalLanguage: isRtl ? 'ur' : 'en',
+        direction: isRtl ? 'rtl' : 'ltr',
+        originalText: fullVerse,
+        romanText: fullVerse,
+        englishTranslation: '',
+        tags: [],
+        recommendedCardType: 'wish',
+        cardPrefillMsg: customVerse,
+      }
+
+      const result = await generatePoetryCanvas(customPoemObj, exportAspectFormat)
+      if (!result) throw new Error('Failed to generate canvas')
+
+      const { canvas, sanitizedTitle } = result
+      const fileName = isStory
+        ? `Cardzy-Custom-Reel-${sanitizedTitle}-video`
+        : `Cardzy-Custom-Poetry-${sanitizedTitle}-video`
       const success = await downloadCanvasAsVideo({
         canvas,
         fileName,
@@ -784,6 +806,13 @@ export function PoetryClient() {
             ? '9:16 Mobile Reel Video downloaded! 🎥'
             : 'Poetry video downloaded! 🎥',
           'success'
+        )
+      } else {
+        showToast(
+          isUrdu
+            ? 'ویڈیو ڈاؤنلوڈ نہیں ہو سکی، دوبارہ کوشش کریں'
+            : 'Video download failed — please try again',
+          'error'
         )
       }
     } catch (err) {
