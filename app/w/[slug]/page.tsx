@@ -297,15 +297,28 @@ function WishPublicContent({ slug }: { slug: string }) {
     setIsGeneratingVideo(true)
     setVideoProgress(0)
     try {
-      await downloadCardVideo({
+      const success = await downloadCardVideo({
         element: cardRef.current,
         fileName: `wish-${slug}`,
         cardType: 'wish',
         cardSlug: slug,
         occasionId: activeWish?.occasionId,
         audioTrack: activeWish?.audioTrack,
+        targetAspectRatio: '9:16',
+        durationSeconds: 10,
         onProgress: (p) => setVideoProgress(p),
       })
+      if (success) {
+        showToast(
+          lang === 'ur' ? 'ویڈیو کامیابی سے ڈاؤنلوڈ ہو گئی! 🎥' : 'Wish card video downloaded successfully! 🎥',
+          'success'
+        )
+      } else {
+        showToast(
+          lang === 'ur' ? 'ویڈیو ڈاؤنلوڈ نہیں ہو سکی، دوبارہ کوشش کریں' : 'Video download failed — please try again',
+          'error'
+        )
+      }
     } finally {
       setIsGeneratingVideo(false)
     }

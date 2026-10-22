@@ -251,6 +251,8 @@ export function CardShareModal({ card, onClose, simpleMode = false }: CardShareM
         cardSlug: card.slug,
         occasionId: (card as any).occasionId || (card as any).typeId,
         audioTrack: (card as any).audioTrack,
+        targetAspectRatio: '9:16',
+        durationSeconds: 10,
         onProgress: (p) => setVideoProgress(p),
       })
     } catch (err) {

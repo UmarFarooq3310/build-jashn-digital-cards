@@ -96,6 +96,8 @@ export function ShareBar({
         cardSlug: inferredSlug,
         occasionId,
         audioTrack,
+        targetAspectRatio: '9:16',
+        durationSeconds: 10,
         onProgress: (percent) => setVideoProgress(percent),
       })
     } finally {

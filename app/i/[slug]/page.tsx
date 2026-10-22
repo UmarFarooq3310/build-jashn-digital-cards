@@ -296,15 +296,28 @@ function InvitationPublicContent({ slug }: { slug: string }) {
     setIsGeneratingVideo(true)
     setVideoProgress(0)
     try {
-      await downloadCardVideo({
+      const success = await downloadCardVideo({
         element: cardRef.current,
         fileName: `invitation-${slug}`,
         cardType: 'invite',
         cardSlug: slug,
         occasionId: activeInvitation.typeId,
         audioTrack: activeInvitation.audioTrack,
+        targetAspectRatio: '9:16',
+        durationSeconds: 10,
         onProgress: (p) => setVideoProgress(p),
       })
+      if (success) {
+        showToast(
+          lang === 'ur' ? 'دعوت نامہ ویڈیو کامیابی سے ڈاؤنلوڈ ہو گئی! 🎥' : 'Invitation video downloaded successfully! 🎥',
+          'success'
+        )
+      } else {
+        showToast(
+          lang === 'ur' ? 'ویڈیو ڈاؤنلوڈ نہیں ہو سکی، دوبارہ کوشش کریں' : 'Video download failed — please try again',
+          'error'
+        )
+      }
     } finally {
       setIsGeneratingVideo(false)
     }

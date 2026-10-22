@@ -30,7 +30,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
   const searchParams = useSearchParams()
 
   const { user, visitingCards, getVisitingCard, incrementVisitingCardView, deleteVisitingCard, showToast } = useJashn()
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const cardRef = useRef<HTMLDivElement>(null)
   const viewIncrementedRef = useRef<string | null>(null)
 
@@ -240,13 +240,27 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
     setIsGeneratingVideo(true)
     setVideoProgress(0)
     try {
-      await downloadCardVideo({
+      const success = await downloadCardVideo({
         element: cardRef.current,
         fileName: `vcard-${card.slug}`,
         cardType: 'vcard',
         cardSlug: card.slug,
+        audioTrack: 'corporate-ambient',
+        targetAspectRatio: '9:16',
+        durationSeconds: 10,
         onProgress: (p) => setVideoProgress(p),
       })
+      if (success) {
+        showToast(
+          lang === 'ur' ? 'ویڈیو کامیابی سے ڈاؤنلوڈ ہو گئی! 🎥' : 'Digital card video downloaded successfully! 🎥',
+          'success'
+        )
+      } else {
+        showToast(
+          lang === 'ur' ? 'ویڈیو ڈاؤنلوڈ نہیں ہو سکی، دوبارہ کوشش کریں' : 'Video download failed — please try again',
+          'error'
+        )
+      }
     } finally {
       setIsGeneratingVideo(false)
     }
