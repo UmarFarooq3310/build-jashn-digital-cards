@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/seo'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const frequentUpdateDate = new Date('2026-10-17')
-  const monthlyUpdateDate = new Date('2026-10-17')
+  const frequentUpdateDate = new Date('2026-10-23')
+  const monthlyUpdateDate = new Date('2026-10-23')
   const yearlyUpdateDate = new Date('2026-10-01')
 
   // ─── Static pages ────────────────────────────────────────────────────────────

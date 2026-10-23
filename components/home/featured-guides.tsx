@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import Image from "next/image"
 import { BookOpen, ArrowRight, Clock, Sparkles } from "lucide-react"
 
 const FEATURED_GUIDES = [
@@ -116,13 +115,14 @@ export function FeaturedGuidesSection() {
                   href={guide.authorHref}
                   className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
                 >
-                  <div className="relative size-8 rounded-full overflow-hidden border border-border bg-muted">
-                    <Image
+                  <div className="relative size-8 rounded-full overflow-hidden border border-border bg-muted shrink-0">
+                    <img
                       src={guide.authorAvatar}
                       alt={guide.author}
                       width={32}
                       height={32}
                       className="object-cover size-full"
+                      loading="lazy"
                     />
                   </div>
                   <div>
