@@ -49,7 +49,7 @@ export function ThemePicker({
   }
 
   return (
-    <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4 md:grid-cols-6">
+    <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4 md:grid-cols-6 w-full max-w-full">
       {THEMES.map((theme) => {
         const isSelected = value === theme.id
         const isLocked = theme.isPremium && !isPro

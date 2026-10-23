@@ -125,7 +125,7 @@ export function InvitationTypePicker({
   const list = INVITATION_TYPES.filter((t) => t.category === cat)
 
   return (
-    <div>
+    <div className="w-full max-w-full overflow-hidden">
       {/* Category filter pills */}
       <div className="mb-4 flex flex-wrap gap-2">
         {INVITATION_CATEGORIES.map((c) => {

@@ -449,11 +449,11 @@ export function SmartWordingPicker({
   }, [selectedCategory, groupWordings])
 
   return (
-    <div className="space-y-2.5 p-3 sm:p-3.5 rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/5 via-background to-rose-500/5 shadow-xs">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-500">
-          <Sparkles className="size-3.5 text-amber-400 animate-pulse" />
-          <span>
+    <div className="space-y-2.5 p-3 sm:p-3.5 rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/5 via-background to-rose-500/5 shadow-xs w-full max-w-full overflow-hidden">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-500 min-w-0">
+          <Sparkles className="size-3.5 text-amber-400 animate-pulse shrink-0" />
+          <span className="truncate">
             {isUrdu
               ? activeGroup === 'wedding'
                 ? activeMode === 'invitation'

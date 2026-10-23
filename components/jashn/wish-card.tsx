@@ -522,9 +522,9 @@ export const WishCard = forwardRef<HTMLDivElement, {
   }, { scope: wrapRef })
 
   return (
-    <div ref={wrapRef} className="wish-card-wrapper relative w-full py-1" style={{ perspective: '1000px' }}>
+    <div ref={wrapRef} className="wish-card-wrapper relative w-full max-w-full overflow-hidden py-1" style={{ perspective: '1000px' }}>
       <div
-        className="pointer-events-none absolute -inset-4 -z-10 rounded-full opacity-35 blur-3xl transition-opacity duration-500"
+        className="pointer-events-none absolute -inset-2 -z-10 rounded-full opacity-35 blur-2xl transition-opacity duration-500 max-w-full"
         style={{ background: `radial-gradient(circle, var(--c-glow, #ffd700) 0%, transparent 70%)` }}
       />
 

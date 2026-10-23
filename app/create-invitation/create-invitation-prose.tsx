@@ -52,7 +52,7 @@ export function CreateInvitationProse() {
   ]
 
   return (
-    <section className="bg-muted/40 border-t border-border/60 py-14 md:py-20">
+    <section className="bg-muted/40 border-t border-border/60 py-14 md:py-20 w-full overflow-hidden">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-12">
 
         <div className="space-y-4">

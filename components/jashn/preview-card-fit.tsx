@@ -97,14 +97,14 @@ export function PreviewCardFit({
   return (
     <div
       ref={outerRef}
-      className={cn("w-full flex flex-col items-center overflow-visible transition-[height] duration-200 ease-out", className)}
+      className={cn("w-full max-w-full flex flex-col items-center overflow-hidden transition-[height] duration-200 ease-out", className)}
       style={{
         height: scaledHeight ? `${scaledHeight}px` : undefined,
       }}
       suppressHydrationWarning
     >
       <div
-        className="w-full origin-top"
+        className="w-full max-w-full origin-top"
         style={{
           transform: scale < 1 ? `scale(${scale})` : undefined,
           transformOrigin: 'top center',

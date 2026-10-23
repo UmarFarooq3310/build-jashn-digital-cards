@@ -808,31 +808,33 @@ function CreateInvitationContent() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-20">
+    <div className="w-full min-w-0 pb-20">
       <div className="mb-8 text-center space-y-4">
         {/* Studio Product Switcher */}
-        <div className="inline-flex items-center justify-center gap-1.5 p-1 rounded-2xl bg-muted/60 border border-border/70 backdrop-blur-md">
-          <Link
-            href="/create-wish"
-            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
-          >
-            💌 {t('studioTabWish', 'Wish Cards')}
-          </Link>
-          <span className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-black text-white shadow-xs bg-[#7B0D1E]">
-            🎉 {t('studioTabInvite', 'Invitations')}
-          </span>
-          <Link
-            href="/create-magic-link"
-            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
-          >
-            🪄 {t('studioTabMagic', 'Magic Links')}
-          </Link>
-          <Link
-            href="/create-visiting-card"
-            className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
-          >
-            📇 {t('studioTabVCard', 'Visiting Cards')}
-          </Link>
+        <div className="w-full overflow-x-auto scrollbar-none py-1 flex justify-center">
+          <div className="inline-flex items-center justify-center gap-1.5 p-1 rounded-2xl bg-muted/60 border border-border/70 backdrop-blur-md shrink-0 max-w-full">
+            <Link
+              href="/create-wish"
+              className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all shrink-0"
+            >
+              💌 {t('studioTabWish', 'Wish Cards')}
+            </Link>
+            <span className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-black text-white shadow-xs bg-[#7B0D1E] shrink-0">
+              🎉 {t('studioTabInvite', 'Invitations')}
+            </span>
+            <Link
+              href="/create-magic-link"
+              className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all shrink-0"
+            >
+              🪄 {t('studioTabMagic', 'Magic Links')}
+            </Link>
+            <Link
+              href="/create-visiting-card"
+              className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all shrink-0"
+            >
+              📇 {t('studioTabVCard', 'Visiting Cards')}
+            </Link>
+          </div>
         </div>
 
         {/* Hero Title & Subtitle */}
@@ -914,9 +916,9 @@ function CreateInvitationContent() {
 
       {/* 📱 Mobile Tabs (Only visible when step >= 2 & Mobile < 1024px) */}
 
-      <div className="grid gap-8 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-8 min-w-0 w-full lg:grid-cols-12">
         {/* Main Column */}
-        <div className="lg:col-span-7 space-y-4">
+        <div className="lg:col-span-7 space-y-4 w-full min-w-0">
           <div className="rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-sm">
             {step === 1 && (
               <div className="space-y-4">
@@ -990,7 +992,7 @@ function CreateInvitationContent() {
                 </div>
 
                 {/* Quick Switch Template Pills */}
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                <div className="w-full min-w-0 max-w-full flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
                   <span className="text-[10px] font-bold text-muted-foreground shrink-0 uppercase tracking-wider">Quick Fill:</span>
                   {INVITATION_QUICK_STARTERS.map((s) => (
                     <button
@@ -1536,8 +1538,8 @@ function CreateInvitationContent() {
         </div>
 
         {/* Desktop & Mobile Right Column — Sticky Live Interactive Preview */}
-        <div className="lg:col-span-5 space-y-4">
-          <div id="invitation-live-preview-box" className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden" suppressHydrationWarning>
+        <div className="lg:col-span-5 space-y-4 w-full min-w-0">
+          <div id="invitation-live-preview-box" className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden w-full max-w-full" suppressHydrationWarning>
             <div className="mb-3 flex items-center justify-between px-1">
               <p className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
                 <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}

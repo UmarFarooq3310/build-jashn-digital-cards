@@ -558,10 +558,10 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
   }, { scope: wrapRef, dependencies: [typeTheme?.animProfile] })
 
   return (
-    <div ref={wrapRef} className="card-3d-wrap w-full" style={{ perspective: '1200px' }}>
+    <div ref={wrapRef} className="card-3d-wrap w-full max-w-full overflow-hidden" style={{ perspective: '1200px' }}>
       {/* Ambient glow blob behind card */}
       <div
-        className="inv-parallax-far pointer-events-none absolute -inset-8 -z-10 rounded-full opacity-30 blur-3xl"
+        className="inv-parallax-far pointer-events-none absolute -inset-2 -z-10 rounded-full opacity-30 blur-2xl max-w-full"
         style={{ background: 'radial-gradient(circle, var(--c-glow,#ffd700) 0%, transparent 70%)' }}
       />
 

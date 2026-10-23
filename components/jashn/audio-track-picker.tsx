@@ -157,39 +157,39 @@ export function AudioTrackPicker({
       </div>
 
       {/* Main Switcher: Matched for Event vs All 20 Tracks */}
-      <div className="flex items-center gap-1.5 p-1 bg-muted/60 rounded-xl border border-border/60">
+      <div className="flex items-center gap-1.5 p-1 bg-muted/60 rounded-xl border border-border/60 w-full max-w-full overflow-hidden">
         <button
           type="button"
           onClick={() => setViewMode('matched')}
           className={cn(
-            'flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer',
+            'flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 sm:px-3 rounded-lg text-xs font-bold transition-all cursor-pointer',
             viewMode === 'matched'
               ? 'bg-card text-[#7B0D1E] shadow-xs border border-border/80'
               : 'text-muted-foreground hover:text-foreground'
           )}
         >
-          <Sparkles className="size-3.5 text-amber-500" />
-          <span>Recommended for this Event ({matchedTracks.length - 1})</span>
+          <Sparkles className="size-3.5 text-amber-500 shrink-0" />
+          <span className="truncate">Recommended ({matchedTracks.length - 1})</span>
         </button>
 
         <button
           type="button"
           onClick={() => setViewMode('all')}
           className={cn(
-            'flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer',
+            'flex-1 min-w-0 flex items-center justify-center gap-1.5 py-1.5 px-2 sm:px-3 rounded-lg text-xs font-bold transition-all cursor-pointer',
             viewMode === 'all'
               ? 'bg-card text-[#7B0D1E] shadow-xs border border-border/80'
               : 'text-muted-foreground hover:text-foreground'
           )}
         >
-          <SlidersHorizontal className="size-3.5" />
-          <span>Explore All 20 Sounds</span>
+          <SlidersHorizontal className="size-3.5 shrink-0" />
+          <span className="truncate">All 20 Sounds</span>
         </button>
       </div>
 
       {/* Category Pills (Visible when in 'all' view) */}
       {viewMode === 'all' && (
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-[11px]">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-[11px] w-full max-w-full">
           {CATEGORY_TABS.map((cat) => {
             const isActive = categoryFilter === cat.id
             return (

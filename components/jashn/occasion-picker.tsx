@@ -122,7 +122,7 @@ export function OccasionPicker({
   const list = OCCASIONS.filter((o) => o.category === cat)
 
   return (
-    <div>
+    <div className="w-full max-w-full overflow-hidden">
       {/* Category filter pills */}
       <div className="mb-4 flex flex-wrap gap-2">
         {OCCASION_CATEGORIES.map((c) => (

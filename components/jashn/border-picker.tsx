@@ -207,7 +207,7 @@ export function BorderPicker({
   }
 
   return (
-    <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4 md:grid-cols-5">
+    <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4 md:grid-cols-5 w-full max-w-full">
       {BORDERS.map((b) => {
         const locked = b.isPremium && !isPro
         const active = value === b.id
