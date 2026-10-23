@@ -508,6 +508,116 @@ export default function MagicLinksGuidePage() {
               <li>{getText('sec3Bullet1')}</li>
               <li>{getText('sec3Bullet2')}</li>
             </ul>
+
+            {/* Section 4: Technical Architecture */}
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 border-b border-border/80 pb-2">
+              4. The Client-Side Magic: Zero-Database Privacy
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Traditional online greeting card platforms require senders and recipients to register accounts, sign in with passwords, and store intimate personal messages in centralized cloud databases. Cardzy takes a radically modern, privacy-first architectural approach:
+            </p>
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-xs my-4 space-y-3">
+              <h4 className="font-bold text-sm sm:text-base text-foreground">
+                How Dynamic URL Encoding Operates
+              </h4>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                When you create a Magic Link, your recipient&rsquo;s name, occasion, greeting, and design preferences are serialized and URL-encoded directly into the shareable link hash. When your recipient taps the link on WhatsApp, iMessage, or email, their browser decrypts and renders the animation entirely client-side.
+              </p>
+              <ul className="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-muted-foreground">
+                <li><strong className="text-foreground">Zero App Installation:</strong> Works instantly on every modern iOS Safari and Android Chrome browser.</li>
+                <li><strong className="text-foreground">Permanent Preservation:</strong> Because the card data resides within the URL itself, the card cannot be arbitrarily deleted by server cleanups. Senders and recipients can bookmark the link forever.</li>
+                <li><strong className="text-foreground">No Spam or Profiling:</strong> Neither you nor your recipient will ever receive spam marketing emails or push notifications as a result of viewing a Magic Link.</li>
+              </ul>
+            </div>
+
+            {/* Section 5: The 3D Unboxing Experience */}
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 border-b border-border/80 pb-2">
+              5. The Anatomy of an Interactive 3D Unboxing
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              A static image in a chat bubble is easily scrolled past and forgotten. A Cardzy Magic Link creates anticipation and wonder through interactive sensory micro-interactions:
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2 my-4">
+              <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                <h5 className="font-bold text-xs sm:text-sm text-foreground">✦ Royal Wax Seal Tap</h5>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  The recipient encounters a beautifully rendered virtual envelope sealed with a golden royal monogram. Tapping the seal triggers realistic physics-based opening animations.
+                </p>
+              </div>
+              <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                <h5 className="font-bold text-xs sm:text-sm text-foreground">✦ Particle Physics Confetti</h5>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Upon opening, customizable celebration particles (gold sparkle, festive confetti, or pastel petals) burst dynamically across the screen, mimicking real-life party poppers.
+                </p>
+              </div>
+              <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                <h5 className="font-bold text-xs sm:text-sm text-foreground">✦ Ambient Musical Chimes</h5>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Soft celebratory chimes, classical shehnai, or acoustic melodies play smoothly upon interaction, creating an immersive celebration atmosphere.
+                </p>
+              </div>
+              <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                <h5 className="font-bold text-xs sm:text-sm text-foreground">✦ Instant Return Blessings</h5>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Recipients can tap a one-touch response button to bounce back heart reactions, blessings, or custom RSVP replies straight to the sender&rsquo;s WhatsApp.
+                </p>
+              </div>
+            </div>
+
+            {/* Section 6: Creative Use Cases */}
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 border-b border-border/80 pb-2">
+              6. High-Impact Creative Use Cases for Magic Links
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Magic Links are versatile tools beyond standard birthday cards. Popular creative uses include:
+            </p>
+            <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+              <li>
+                <strong className="text-foreground">Surprise Announcements:</strong> Gender reveals, graduation results, promotion celebrations, and proposal invitations packaged into an interactive digital envelope.
+              </li>
+              <li>
+                <strong className="text-foreground">Corporate Client Appreciation:</strong> Disclose holiday wishes, Ramadan Mubarak greetings, or Year-End gratitude to corporate partners with personalized company logos and executive messages.
+              </li>
+              <li>
+                <strong className="text-foreground">VIP Event Teasers:</strong> Send private, password-free countdown links for exclusive dinner parties, product launches, or family milestone anniversaries.
+              </li>
+            </ul>
+
+            {/* Frequently Asked Questions */}
+            <div className="mt-10 space-y-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground border-b border-border/80 pb-2">
+                Frequently Asked Questions: Magic Links
+              </h3>
+
+              <div className="space-y-3">
+                <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                  <h4 className="font-bold text-sm sm:text-base text-foreground">
+                    Does the person opening the Magic Link need to create an account?
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    No. The recipient never needs an account, password, or third-party app. They simply tap the link on any smartphone or computer browser to immediately experience the 3D unboxing.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                  <h4 className="font-bold text-sm sm:text-base text-foreground">
+                    Can I track if my Magic Link has been opened?
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Yes. Cardzy Magic Links support privacy-friendly view receipts. When enabled, senders can check status counters or receive a lightweight confirmation ping when the link is unlocked.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                  <h4 className="font-bold text-sm sm:text-base text-foreground">
+                    How long do Magic Links remain active?
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Because the core card parameters are encoded directly into the web URL, Magic Links remain functional indefinitely. They will continue to render whenever the link is visited in any modern browser.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           <footer className="mt-12 border-t border-border/80 pt-8 text-center">

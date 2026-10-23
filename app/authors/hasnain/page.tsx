@@ -8,11 +8,12 @@ import { Breadcrumbs } from '@/components/breadcrumbs'
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Hasnain — Creative & Cultural Events Editor | Cardzy',
+  title: 'Hasnain Sajid — Creative & Cultural Events Editor | Cardzy',
   description:
-    'Hasnain is Creative Events Editor at Cardzy, crafting guides on 3D animated holiday e-cards, party invites, and digital card etiquette.',
+    'Hasnain Sajid is Creative Events Editor at Cardzy, crafting guides on 3D animated holiday e-cards, party invites, and digital card etiquette.',
   keywords: [
-    'Hasnain Cardzy',
+    'Hasnain Sajid Cardzy',
+    'Hasnain Sajid author',
     'holiday ecards editor',
     '3D greeting card author',
     'digital celebration etiquette',
@@ -21,19 +22,19 @@ export const metadata: Metadata = {
   alternates: getPageAlternates('/authors/hasnain'),
   robots: PUBLIC_ROBOTS,
   openGraph: {
-    title: 'Hasnain — Creative & Cultural Events Editor | Cardzy',
+    title: 'Hasnain Sajid — Creative & Cultural Events Editor | Cardzy',
     description:
-      'Hasnain is Creative Events Editor at Cardzy, crafting guides on 3D animated holiday e-cards, party invites, and digital card etiquette.',
+      'Hasnain Sajid is Creative Events Editor at Cardzy, crafting guides on 3D animated holiday e-cards, party invites, and digital card etiquette.',
     url: 'https://cardzy.online/authors/hasnain',
     siteName: 'Cardzy',
     type: 'profile',
-    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Hasnain' }],
+    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Hasnain Sajid' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Hasnain — Creative & Cultural Events Editor | Cardzy',
+    title: 'Hasnain Sajid — Creative & Cultural Events Editor | Cardzy',
     description:
-      'Hasnain is Creative Events Editor at Cardzy, crafting guides on 3D animated holiday e-cards, party invites, and digital card etiquette.',
+      'Hasnain Sajid is Creative Events Editor at Cardzy, crafting guides on 3D animated holiday e-cards, party invites, and digital card etiquette.',
     images: ['https://cardzy.online/og-image.jpg'],
   },
 }
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Hasnain',
+  name: 'Hasnain Sajid',
   jobTitle: 'Creative & Cultural Events Editor',
   worksFor: {
     '@type': 'Organization',
@@ -72,7 +73,7 @@ const personJsonLd = {
 }
 
 export default function HasnainAuthorPage() {
-  const authorPosts = BLOG_POSTS.filter((post) => post.author.name === 'Hasnain')
+  const authorPosts = BLOG_POSTS.filter((post) => post.author.name === 'Hasnain Sajid' || post.author.name === 'Hasnain')
 
   return (
     <>
@@ -85,7 +86,7 @@ export default function HasnainAuthorPage() {
         <Breadcrumbs
           items={[
             { label: 'Authors & Editors', href: '/authors' },
-            { label: 'Hasnain' },
+            { label: 'Hasnain Sajid' },
           ]}
           className="mb-6"
         />
@@ -98,7 +99,7 @@ export default function HasnainAuthorPage() {
               <div className="size-28 sm:size-32 rounded-3xl bg-gradient-to-br from-blue-800 via-indigo-900 to-sky-900 p-1 shadow-lg shadow-blue-950/20 overflow-hidden">
                 <img
                   src="/authors/hasnain.svg"
-                  alt="Hasnain - Creative & Cultural Events Editor"
+                  alt="Hasnain Sajid - Creative & Cultural Events Editor"
                   width={128}
                   height={128}
                   className="size-full rounded-[22px] object-cover"
@@ -121,7 +122,7 @@ export default function HasnainAuthorPage() {
               </div>
 
               <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-                Hasnain
+                Hasnain Sajid
               </h1>
               <p className="text-sm sm:text-base font-semibold text-blue-700 dark:text-blue-400">
                 Creative &amp; Cultural Events Editor · Cardzy Digital Solutions
@@ -141,7 +142,7 @@ export default function HasnainAuthorPage() {
           {/* ── Professional Bio ──────────────────────────────────────── */}
           <div className="pt-6 border-t border-border space-y-4 text-sm sm:text-base text-muted-foreground leading-relaxed">
             <p>
-              <strong className="text-foreground">Hasnain</strong> is the Creative &amp; Cultural Events Editor at Cardzy Digital Solutions, producing authoritative guides on festive digital greeting cards, 3D animations, music synchronization, and digital etiquette for international celebrations.
+              <strong className="text-foreground">Hasnain Sajid</strong> is the Creative &amp; Cultural Events Editor at Cardzy Digital Solutions, producing authoritative guides on festive digital greeting cards, 3D animations, music synchronization, and digital etiquette for international celebrations.
             </p>
             <p>
               With five years of experience in creative writing, digital media production, and cultural journalism, Hasnain explores how multicultural families in over 60 countries celebrate Eid ul Fitr, Eid ul Adha, Ramadan, Christmas, Diwali, Lunar New Year, Hanukkah, and birthdays through customized interactive digital wish cards.
@@ -219,7 +220,7 @@ export default function HasnainAuthorPage() {
           <div className="flex items-center gap-2">
             <BookOpen className="size-5 text-blue-600 dark:text-blue-400" />
             <h2 className="text-2xl font-extrabold text-foreground tracking-tight">
-              Published Guides by Hasnain
+              Published Guides by Hasnain Sajid
             </h2>
           </div>
 

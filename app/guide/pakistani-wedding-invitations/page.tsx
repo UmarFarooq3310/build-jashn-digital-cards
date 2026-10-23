@@ -240,7 +240,7 @@ export default function WeddingGuidePage() {
 
             {/* Boxed template: Mehndi */}
             <div className="rounded-2xl border border-border bg-card p-6 shadow-sm my-6 space-y-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-2 py-0.5 rounded">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded">
                 {getText('templateMehndiBadge')}
               </span>
               <p className="font-semibold text-foreground text-sm">{getText('labelEnglishWording')}</p>
@@ -255,7 +255,7 @@ export default function WeddingGuidePage() {
 
             {/* Boxed template: Baraat */}
             <div className="rounded-2xl border border-border bg-card p-6 shadow-sm my-6 space-y-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary bg-primary/5 px-2 py-0.5 rounded">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded">
                 {getText('templateBaraatBadge')}
               </span>
               <p className="font-semibold text-foreground text-sm">{getText('labelEnglishWording')}</p>
@@ -267,6 +267,112 @@ export default function WeddingGuidePage() {
                 اللہ تعالیٰ کے فضل و کرم سے، ہم آپ کو اپنی بیٹی عائشہ اور ہمزہ کے رشتہ ازدواج میں منسلک ہونے کی خوشی میں شرکت کی دعوت دیتے ہیں۔
               </p>
             </div>
+
+            {/* Boxed template: Nikkah Ceremony */}
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm my-6 space-y-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
+                Nikkah Ceremony Template
+              </span>
+              <p className="font-semibold text-foreground text-sm">English Wording:</p>
+              <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed">
+                &ldquo;In the name of Allah, the Most Gracious, the Most Merciful. We humbly invite you to witness the sacred Nikkah ceremony uniting Ayesha and Hamza in marriage, seeking Allah&rsquo;s eternal blessings and prayers for their new journey.&rdquo;
+              </p>
+              <p className="font-semibold text-foreground text-sm mt-3">Urdu Calligraphy Wording:</p>
+              <p className="text-sm font-urdu text-primary text-right leading-relaxed">
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ — عائشہ اور ہمزہ کے مقدس نکاح کی تقریب میں آپ کی شرکت اور دعاؤں کے دلی طالبگار ہیں۔
+              </p>
+            </div>
+
+            {/* Boxed template: Walima Banquet */}
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm my-6 space-y-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">
+                Walima Reception Template (Groom&rsquo;s Family)
+              </span>
+              <p className="font-semibold text-foreground text-sm">English Wording:</p>
+              <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed">
+                &ldquo;Mr. &amp; Mrs. Salman Khan request the pleasure of your company at the Walima Reception celebrating the wedding of their son, Hamza, with Ayesha (daughter of Mr. &amp; Mrs. Tariq Mahmood). Your gracious presence and prayers will honor us.&rdquo;
+              </p>
+              <p className="font-semibold text-foreground text-sm mt-3">Urdu Calligraphy Wording:</p>
+              <p className="text-sm font-urdu text-primary text-right leading-relaxed">
+                محترم سلمان خان اپنے فرزند ہمزہ کی دعوتِ ولیمہ میں آپ کی تشریف آوری کے صمیم قلب سے متمنی ہیں۔
+              </p>
+            </div>
+
+            {/* Section: Traditions & Event Breakdown */}
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 border-b border-border/80 pb-2">
+              The Five Essential Pakistani Wedding Events Explained
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Pakistani weddings are renowned worldwide for their cultural richness, vibrant multi-day festivities, and profound family involvement. Unlike Western single-day weddings, a traditional Pakistani wedding unfolds across a series of distinct ceremonies, each with its own customs, color palette, and invitation etiquette:
+            </p>
+            <div className="space-y-4 my-4">
+              <div className="p-4 rounded-xl border border-border bg-card/60">
+                <h4 className="font-bold text-foreground text-sm sm:text-base flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-amber-500 shrink-0" /> 1. Dholki &amp; Mayun (Home Festivities)
+                </h4>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1.5 leading-relaxed">
+                  The wedding festivities commence with Dholki and Mayun ceremonies, traditionally hosted informally at the bride and groom&rsquo;s respective residences. Close relatives gather to beat traditional folk rhythms on the dholak, sing nostalgic wedding geet, and apply soothing turmeric paste (ubtan) to the bride. Invitations for Mayun are typically intimate and dispatched via personal WhatsApp messages or close-circle digital links.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl border border-border bg-card/60">
+                <h4 className="font-bold text-foreground text-sm sm:text-base flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-yellow-500 shrink-0" /> 2. Mehndi &amp; Sangeet (Celebration of Henna &amp; Dance)
+                </h4>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1.5 leading-relaxed">
+                  The Mehndi is undeniably the most energetic and festive evening of the wedding week. Marked by marigold florals, vibrant yellow and lime green attire, intricate henna application, and choreographed dance performances by cousins and friends. The invitation wording for a Mehndi card should capture this joyful exuberance with playful phrasing and vivid aesthetic cues.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl border border-border bg-card/60">
+                <h4 className="font-bold text-foreground text-sm sm:text-base flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-emerald-500 shrink-0" /> 3. Nikkah (The Sacred Islamic Marriage Contract)
+                </h4>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1.5 leading-relaxed">
+                  The Nikkah represents the spiritual and legal heart of the union. Performed in a serene mosque setting or at the wedding venue, the Nikkah involves the mutual signing of the marriage contract in the presence of an Islamic scholar, designated witnesses (Gawah), and family elders. The invitation tone for the Nikkah must be solemn, respectful, and reverent, traditionally opening with the sacred Bismillah calligraphy and Quranic verses on love and tranquility (Surah Ar-Rum 30:21).
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl border border-border bg-card/60">
+                <h4 className="font-bold text-foreground text-sm sm:text-base flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-rose-500 shrink-0" /> 4. Baraat &amp; Shaadi Reception (The Grand Procession &amp; Farewell)
+                </h4>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1.5 leading-relaxed">
+                  Hosted with utmost hospitality by the bride&rsquo;s parents, the Baraat marks the arrival of the groom&rsquo;s procession. Following an elaborate royal feast, the emotional culmination of the night is the Rukhsati (the poignant departure of the bride under the shadow of the Holy Quran). Baraat invitations are formal, dignified, and prominently feature the names of the bride&rsquo;s parents extending the invitation.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl border border-border bg-card/60">
+                <h4 className="font-bold text-foreground text-sm sm:text-base flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-indigo-500 shrink-0" /> 5. Walima (The Sunnah Wedding Banquet)
+                </h4>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1.5 leading-relaxed">
+                  The Walima is the concluding feast hosted exclusively by the groom&rsquo;s parents to introduce the newlywed couple to the broader community, extended family, and professional colleagues. Grounded in Islamic Sunnah, the Walima is characterized by elegant formalwear, celebratory dining, and heartfelt congratulations.
+                </p>
+              </div>
+            </div>
+
+            {/* Section: Timeline & RSVP Strategy */}
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 border-b border-border/80 pb-2">
+              Digital Wedding Etiquette &amp; WhatsApp RSVP Strategy
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Managing hundreds of guests across multiple cities and international time zones is one of the greatest logistical hurdles in South Asian wedding planning. Digital invitations created through Cardzy transform this process from overwhelming chaos into effortless precision:
+            </p>
+            <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+              <li>
+                <strong className="text-foreground">Dispatch Timelines:</strong> Send your initial &ldquo;Save the Date&rdquo; card 8 to 12 weeks prior to the wedding date, especially if overseas relatives will be booking flights. Dispatch the official interactive invitation link 4 to 6 weeks before the first ceremony.
+              </li>
+              <li>
+                <strong className="text-foreground">Seamless WhatsApp Distribution:</strong> Rather than printing hundreds of heavy paper envelopes that risk postal delays, a Cardzy web card generates a rich, high-resolution preview card on WhatsApp. Guests tap the preview to open a royal, responsive page complete with background shehnai melodies and animated floral motifs.
+              </li>
+              <li>
+                <strong className="text-foreground">Real-Time Headcount Management:</strong> Traditional paper RSVP cards rarely get mailed back in Pakistan. With Cardzy, guests confirm attendance and guest counts with a single tap on WhatsApp or online, enabling catering halls to prepare exact seatings and meal courses without expensive food waste.
+              </li>
+              <li>
+                <strong className="text-foreground">GPS Mapping Directions:</strong> Eliminate the stress of frantic phone calls from lost drivers on the night of the Baraat. Cardzy cards embed one-touch Google Maps navigation directly to the banquet hall entrance.
+              </li>
+            </ul>
 
             <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4 border-b border-border/80 pb-2">
               {getText('sec3Title')}
@@ -293,6 +399,60 @@ export default function WeddingGuidePage() {
                 <p className="text-xs text-muted-foreground mt-1">
                   {getText('musicDesc')}
                 </p>
+              </div>
+            </div>
+
+            {/* Frequently Asked Questions Section */}
+            <div className="mt-10 space-y-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground border-b border-border/80 pb-2">
+                Frequently Asked Questions: Pakistani Wedding Invitations
+              </h3>
+
+              <div className="space-y-3">
+                <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                  <h4 className="font-bold text-sm sm:text-base text-foreground">
+                    What is the standard Pakistani wedding card text format in Urdu &amp; English?
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    A standard Pakistani wedding card includes the Bismillah calligraphy header, host parent names, groom and bride names, function dates and times for Nikkah, Mehndi, Barat, and Walima, venue GPS map location, and RSVP contact phone numbers.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                  <h4 className="font-bold text-sm sm:text-base text-foreground">
+                    How does digital wedding RSVP management work for Pakistani weddings?
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Cardzy provides live digital RSVP management. Guests open a single WhatsApp card link, tap to confirm attendance and guest count for each function (Nikkah, Mehndi, Walima), and hosts track confirmed guest headcounts in real-time.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                  <h4 className="font-bold text-sm sm:text-base text-foreground">
+                    Should I write Pakistani wedding invitations in Urdu or English?
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    A bilingual invitation combining both languages is ideal. It honors traditional elders with Urdu Nastaliq script while ensuring younger guests and international relatives easily understand the schedule in English.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                  <h4 className="font-bold text-sm sm:text-base text-foreground">
+                    How should guest arrival vs dinner timings be phrased to avoid late arrivals?
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    State both milestones clearly: &ldquo;Guest Reception &amp; Welcome at 7:30 PM &bull; Dinner Served Promptly at 8:45 PM &bull; Rukhsati at 10:30 PM&rdquo;. Giving a defined dinner time establishes realistic expectations and avoids banquet hall curfew surcharges.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                  <h4 className="font-bold text-sm sm:text-base text-foreground">
+                    Can I include music or shehnai audio in a digital wedding card?
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Yes! Cardzy supports ambient celebration music including classical shehnai, sitar instrumentals, and celebratory melodies that can play automatically when guests open the invitation envelope.
+                  </p>
+                </div>
               </div>
             </div>
 

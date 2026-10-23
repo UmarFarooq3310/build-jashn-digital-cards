@@ -119,7 +119,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Explore 10 creative ways to use Cardzy's new Magic Links feature. Track RSVPs, send VIP invites, and manage corporate digital cards like a pro.",
     "category": "Event Planning",
     "author": {
-      "name": "Kainat",
+      "name": "Kainat Rasheed",
       "role": "Tech & Digital Product Strategist",
       "avatar": "/authors/kainat.svg"
     },
@@ -455,7 +455,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Compare digital vs paper wedding invitations: cost breakdown in PKR/USD, eco-friendly benefits, live WhatsApp RSVPs, and instant global delivery.",
     "category": "Event Planning",
     "author": {
-      "name": "Kainat",
+      "name": "Kainat Rasheed",
       "role": "Tech & Digital Product Strategist",
       "avatar": "/authors/kainat.svg"
     },
@@ -569,7 +569,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "answer": "Not at all. The prestige of a wedding invitation comes from its design quality, wording elegance, and the warmth it conveys — not its physical format. A 4K animated Cardzy invitation with gold Bismillah calligraphy, royal emerald themes, and formal bilingual wording is every bit as prestigious as a printed card — and infinitely more practical for modern families."
         }
       ],
-      "conclusion": "Choosing digital wedding invitations is not just a budget-smart decision — it is a modern, eco-friendly upgrade that elevates how your family celebrates. With live RSVP tracking and instant WhatsApp delivery, the [Cardzy Wedding Invitation Creator](/create-invitation) lets you design a truly royal invite in under an hour. You can also explore our [NFC Metal Cards vs Smart Digital vCards Guide](/blog/nfc-metal-cards-vs-smart-digital-vcards-comparison-2026) for eco-friendly networking, reviewed by [Kainat](/authors/kainat)."
+      "conclusion": "Choosing digital wedding invitations is not just a budget-smart decision — it is a modern, eco-friendly upgrade that elevates how your family celebrates. With live RSVP tracking and instant WhatsApp delivery, the [Cardzy Wedding Invitation Creator](/create-invitation) lets you design a truly royal invite in under an hour. You can also explore our [NFC Metal Cards vs Smart Digital vCards Guide](/blog/nfc-metal-cards-vs-smart-digital-vcards-comparison-2026) for eco-friendly networking, reviewed by [Kainat Rasheed](/authors/kainat)."
     }
   },
   {
@@ -707,7 +707,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Discover why executives in Pakistan use smart digital business cards. Features 1-tap vCard save, QR code sharing, social links, and zero print cost.",
     "category": "Business & vCards",
     "author": {
-      "name": "Kainat",
+      "name": "Kainat Rasheed",
       "role": "Tech & Digital Product Strategist",
       "avatar": "/authors/kainat.svg"
     },
@@ -779,7 +779,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "answer": "Yes! Cardzy provides executive dark gold, obsidian black, royal blue, and sleek silver themes designed for corporate professionals."
         }
       ],
-      "conclusion": "Networking in 2026 demands speed, professionalism, and digital sophistication. Build your contactless profile on the [Cardzy Digital Business Card Builder](/create-visiting-card) and read our [vCard Networking Guide](/blog/the-future-of-networking-smart-digital-business-cards-with-vcf-download), authored by [Kainat](/authors/kainat)."
+      "conclusion": "Networking in 2026 demands speed, professionalism, and digital sophistication. Build your contactless profile on the [Cardzy Digital Business Card Builder](/create-visiting-card) and read our [vCard Networking Guide](/blog/the-future-of-networking-smart-digital-business-cards-with-vcf-download), authored by [Kainat Rasheed](/authors/kainat)."
     }
   },
   {
@@ -1020,7 +1020,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Design custom 3D holiday cards for Christmas, Thanksgiving, New Year, and global celebrations. Add photos, festive music, and greetings in 18 languages.",
     "category": "Eid & Holidays",
     "author": {
-      "name": "Hasnain",
+      "name": "Hasnain Sajid",
       "role": "Creative & Cultural Events Editor",
       "avatar": "/authors/hasnain.svg"
     },
@@ -1119,7 +1119,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "answer": "Yes, choose from curated holiday instrumental tracks or festive ambient soundscapes."
         }
       ],
-      "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal and warm. Design your custom card on [Cardzy 3D Animated Wishes](/create-wish), and follow our [Digital Invitation Sharing Etiquette Guide](/blog/digital-invitation-etiquette-whatsapp-social-media-sharing-tips), curated by [Hasnain](/authors/hasnain)."
+      "conclusion": "No matter how many miles separate you from the people you cherish, holiday greetings should feel personal and warm. Design your custom card on [Cardzy 3D Animated Wishes](/create-wish), and follow our [Digital Invitation Sharing Etiquette Guide](/blog/digital-invitation-etiquette-whatsapp-social-media-sharing-tips), curated by [Hasnain Sajid](/authors/hasnain)."
     }
   },
   {
@@ -1130,7 +1130,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Create animated birthday cards and party invitations with custom photos, music, and 1-click WhatsApp RSVP. Perfect for milestone birthdays and surprise bashes.",
     "category": "Event Planning",
     "author": {
-      "name": "Hasnain",
+      "name": "Hasnain Sajid",
       "role": "Creative & Cultural Events Editor",
       "avatar": "/authors/hasnain.svg"
     },
@@ -1240,7 +1240,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Upgrade your professional networking with smart digital business cards. Features 1-click .VCF contact saving, QR codes, and direct WhatsApp connections.",
     "category": "Business & vCards",
     "author": {
-      "name": "Kainat",
+      "name": "Kainat Rasheed",
       "role": "Tech & Digital Product Strategist",
       "avatar": "/authors/kainat.svg"
     },
@@ -1339,7 +1339,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "answer": "Yes, building, hosting, and sharing your executive digital card on Cardzy is 100% free."
         }
       ],
-      "conclusion": "Your business card is the opening handshake of every professional relationship. Create your profile on the [Cardzy Digital vCard Builder](/create-visiting-card) and read our [NFC Metal Cards vs Digital vCards Comparison](/blog/nfc-metal-cards-vs-smart-digital-vcards-comparison-2026), reviewed by [Kainat](/authors/kainat)."
+      "conclusion": "Your business card is the opening handshake of every professional relationship. Create your profile on the [Cardzy Digital vCard Builder](/create-visiting-card) and read our [NFC Metal Cards vs Digital vCards Comparison](/blog/nfc-metal-cards-vs-smart-digital-vcards-comparison-2026), reviewed by [Kainat Rasheed](/authors/kainat)."
     }
   },
   {
@@ -1350,7 +1350,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Master digital invitation etiquette on WhatsApp and SMS. Learn polite timing, broadcast personalization tips, and courteous RSVP follow-up strategies.",
     "category": "Event Planning",
     "author": {
-      "name": "Hasnain",
+      "name": "Hasnain Sajid",
       "role": "Creative & Cultural Events Editor",
       "avatar": "/authors/hasnain.svg"
     },
@@ -1455,7 +1455,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "answer": "Cardzy's digital invitation links are universally accessible. They can be shared across any platform, including standard SMS text messages, iMessage, Email, or Facebook Messenger without losing any interactivity."
         }
       ],
-      "conclusion": "Mastering digital invitation etiquette is all about balancing modern convenience with traditional warmth. Create your personalized invites on [Cardzy](/create-invitation) and discover guest list strategies in our [Wedding RSVP Management Guide](/blog/how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly), curated by [Hasnain](/authors/hasnain)."
+      "conclusion": "Mastering digital invitation etiquette is all about balancing modern convenience with traditional warmth. Create your personalized invites on [Cardzy](/create-invitation) and discover guest list strategies in our [Wedding RSVP Management Guide](/blog/how-to-manage-wedding-guest-lists-and-whatsapp-rsvps-effortlessly), curated by [Hasnain Sajid](/authors/hasnain)."
     }
   },
   {
@@ -1698,7 +1698,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Explore specialized digital visiting cards for doctors, lawyers, and consultants. Share clinic hours, credentials, and one-tap contact details seamlessly.",
     "category": "Business & vCards",
     "author": {
-      "name": "Kainat",
+      "name": "Kainat Rasheed",
       "role": "Tech & Digital Product Strategist",
       "avatar": "/authors/kainat.svg"
     },
@@ -1803,7 +1803,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "answer": "Yes, they are as secure as sharing a physical card. You have full control over what information you display, and you can update or remove details at any time from your Cardzy dashboard."
         }
       ],
-      "conclusion": "For doctors, lawyers, and engineers, a smart digital card is essential for professional authority. Build your profile on the [Cardzy Professional vCard Platform](/create-visiting-card) and compare options in our [Pakistani Executives Business Card Guide](/blog/smart-digital-business-cards-for-pakistani-entrepreneurs-and-executives), authored by [Kainat](/authors/kainat)."
+      "conclusion": "For doctors, lawyers, and engineers, a smart digital card is essential for professional authority. Build your profile on the [Cardzy Professional vCard Platform](/create-visiting-card) and compare options in our [Pakistani Executives Business Card Guide](/blog/smart-digital-business-cards-for-pakistani-entrepreneurs-and-executives), authored by [Kainat Rasheed](/authors/kainat)."
     }
   },
   {
@@ -2144,7 +2144,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Create inspiring Ramadan Mubarak greeting cards and Iftar dinner invitations. Features Islamic calligraphy, prayer timings, and 1-tap RSVP confirmations.",
     "category": "Eid & Holidays",
     "author": {
-      "name": "Hasnain",
+      "name": "Hasnain Sajid",
       "role": "Creative & Cultural Events Editor",
       "avatar": "/authors/hasnain.svg"
     },
@@ -2242,7 +2242,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "answer": "Yes, configure a live countdown timer on your digital invitation that counts down to the event time."
         }
       ],
-      "conclusion": "Ramadan is a blessed opportunity to reconnect with faith, family, and community. Design custom Iftar dinner invitations on [Cardzy Digital Invitations](/create-invitation), and discover warm wording in our [Roza Kushai & Dawat Guide](/blog/housewarming-dawat-and-roza-kushai-digital-invitation-guide), curated by [Hasnain](/authors/hasnain)."
+      "conclusion": "Ramadan is a blessed opportunity to reconnect with faith, family, and community. Design custom Iftar dinner invitations on [Cardzy Digital Invitations](/create-invitation), and discover warm wording in our [Roza Kushai & Dawat Guide](/blog/housewarming-dawat-and-roza-kushai-digital-invitation-guide), curated by [Hasnain Sajid](/authors/hasnain)."
     }
   },
   {
@@ -2253,7 +2253,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Design memorable graduation wish cards and farewell party invites. Add photo memories, celebratory audio, and venue directions for classmates and family.",
     "category": "Event Planning",
     "author": {
-      "name": "Kainat",
+      "name": "Kainat Rasheed",
       "role": "Tech & Digital Product Strategist",
       "avatar": "/authors/kainat.svg"
     },
@@ -2351,7 +2351,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "answer": "Very easy. Copy your unique Cardzy link and paste it into any social media platform, email, or direct message."
         }
       ],
-      "conclusion": "Academic milestones represent years of discipline, sacrifice, and growth. Celebrate graduation with [Cardzy Animated Wishes](/create-wish). As you transition into the corporate world, launch your professional profile on the [Smart Digital Business Card Builder](/create-visiting-card), authored by [Kainat](/authors/kainat)."
+      "conclusion": "Academic milestones represent years of discipline, sacrifice, and growth. Celebrate graduation with [Cardzy Animated Wishes](/create-wish). As you transition into the corporate world, launch your professional profile on the [Smart Digital Business Card Builder](/create-visiting-card), authored by [Kainat Rasheed](/authors/kainat)."
     }
   },
   {
@@ -2588,7 +2588,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Create 3D animated gaming scorecard cards for PUBG, Free Fire, and esports tournaments. Customize kills, ranks, gamer tags, and share live bragging links on Discord.",
     "category": "Event Planning",
     "author": {
-      "name": "Hasnain",
+      "name": "Hasnain Sajid",
       "role": "Creative & Cultural Events Editor",
       "avatar": "/authors/hasnain.svg"
     },
@@ -2690,7 +2690,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "answer": "Yes, you can add custom buttons directing guests directly to your Discord server, clan Instagram, or YouTube channel."
         }
       ],
-      "conclusion": "Every clutch, every chicken dinner, and every tournament trophy represents dedication and skill. Design your team victory scorecard on [Cardzy 3D Cards](/create-wish) and follow our [Digital Sharing Etiquette Guide](/blog/digital-invitation-etiquette-whatsapp-social-media-sharing-tips), curated by [Hasnain](/authors/hasnain)."
+      "conclusion": "Every clutch, every chicken dinner, and every tournament trophy represents dedication and skill. Design your team victory scorecard on [Cardzy 3D Cards](/create-wish) and follow our [Digital Sharing Etiquette Guide](/blog/digital-invitation-etiquette-whatsapp-social-media-sharing-tips), curated by [Hasnain Sajid](/authors/hasnain)."
     }
   },
   {
@@ -2811,7 +2811,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "metaDescription": "Honest comparison of NFC physical cards vs smart digital vCards for entrepreneurs in Pakistan, UAE & GCC. Compare cost, contact saving speed, and flexibility.",
     "category": "Business & vCards",
     "author": {
-      "name": "Kainat",
+      "name": "Kainat Rasheed",
       "role": "Tech & Digital Product Strategist",
       "avatar": "/authors/kainat.svg"
     },
@@ -2913,7 +2913,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "answer": "Yes! You can add your Cardzy link or embedded QR code directly to your corporate email signature in Outlook, Gmail, or Apple Mail."
         }
       ],
-      "conclusion": "In 2026, professional credibility is defined by speed, elegance, and frictionless communication. Upgrade to a contactless profile on the [Cardzy Digital Business Card Platform](/create-visiting-card) and read our [Digital Business Cards for Pakistani Executives Guide](/blog/smart-digital-business-cards-for-pakistani-entrepreneurs-and-executives), authored by [Kainat](/authors/kainat)."
+      "conclusion": "In 2026, professional credibility is defined by speed, elegance, and frictionless communication. Upgrade to a contactless profile on the [Cardzy Digital Business Card Platform](/create-visiting-card) and read our [Digital Business Cards for Pakistani Executives Guide](/blog/smart-digital-business-cards-for-pakistani-entrepreneurs-and-executives), authored by [Kainat Rasheed](/authors/kainat)."
     }
   }
 ]

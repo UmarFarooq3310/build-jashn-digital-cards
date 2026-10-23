@@ -39,7 +39,7 @@ const EID_GUIDE_TEXT: Record<string, Record<string, string>> = {
     en: "4 min read", ur: "4 منٹ مطالعہ", es: "4 min de lectura", fr: "4 min de lecture", ar: "4 دقائق قراءة", hi: "4 मिनट का पाठ", zh: "4 分钟阅读", pt: "4 min de leitura", ru: "4 мин чтения", de: "4 Min. Lesezeit", ja: "4分で読める", ko: "4분 소요", it: "4 min di lettura", tr: "4 dk okuma", id: "4 menit baca", bn: "৪ মিনিট পাঠ", vi: "4 phút đọc", sw: "dakika 4 za kusoma"
   },
   author: {
-    en: "By Hasnain", ur: "تحریر: حسنین", es: "Por Hasnain", fr: "Par Hasnain", ar: "بقلم حسنين", hi: "हुसनैन द्वारा", zh: "Hasnain 撰写", pt: "Por Hasnain", ru: "Автор: Хаснайн", de: "Von Hasnain", ja: "Hasnainによる執筆", ko: "Hasnain 작성", it: "Di Hasnain", tr: "Hasnain Tarafından", id: "Oleh Hasnain", bn: "হাসনাইন কর্তৃক", vi: "Bởi Hasnain", sw: "Na Hasnain"
+    en: "By Hasnain Sajid", ur: "تحریر: حسنین ساجد", es: "Por Hasnain Sajid", fr: "Par Hasnain Sajid", ar: "بقلم حسنين ساجد", hi: "हसनैन साजिद द्वारा", zh: "Hasnain Sajid 撰写", pt: "Por Hasnain Sajid", ru: "Автор: Хаснайн Саджид", de: "Von Hasnain Sajid", ja: "Hasnain Sajidによる執筆", ko: "Hasnain Sajid 작성", it: "Di Hasnain Sajid", tr: "Hasnain Sajid Tarafından", id: "Oleh Hasnain Sajid", bn: "হাসনাইন সাজিদ কর্তৃক", vi: "Bởi Hasnain Sajid", sw: "Na Hasnain Sajid"
   },
   introP1: {
     en: "Eid-ul-Fitr and Eid-ul-Adha are times of immense gratitude, gathering, and sharing love with family. Sending an animated digital wish card brings back nostalgic holiday warmth with music chimes, calligraphic greetings, and custom designs.",
@@ -437,6 +437,69 @@ export default function EidGuidePage() {
                 <strong>{getText('step4Title')}: </strong>{getText('step4Desc')}
               </li>
             </ol>
+
+            {/* Section 5: Eid-ul-Fitr vs Eid-ul-Adha */}
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 border-b border-border/80 pb-2">
+              5. Tailoring Messages: Eid-ul-Fitr vs. Eid-ul-Adha
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              While both Eids are occasions of profound spiritual joy, their themes and customary greetings reflect different dimensions of devotion:
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2 my-4">
+              <div className="rounded-xl border border-border bg-card p-4 space-y-2">
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Eid-ul-Fitr (Sweet Eid)</span>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Marking the completion of Ramadan, Eid-ul-Fitr emphasizes gratitude for spiritual rejuvenation, shared sweets (Sheer Khurma), Eidi gifts for children, and reconciliation. Greetings should focus on peace, forgiveness, and accepted fasts (<em>Taqabbal Allahu Minna wa Minkum</em>).
+                </p>
+                <p className="text-xs italic text-primary/90 bg-primary/5 p-2 rounded">
+                  &ldquo;May the sweet blessings of Ramadan linger in your home throughout the year. Wishing you and your family an Eid-ul-Fitr overflowing with harmony, joy, and delicious treats!&rdquo;
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-border bg-card p-4 space-y-2">
+                <span className="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Eid-ul-Adha (Bakra Eid / Hajj)</span>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Commemorating Prophet Ibrahim&rsquo;s unwavering devotion and coinciding with the annual Hajj pilgrimage, Eid-ul-Adha highlights selflessness, charity, sacrifice, and caring for the underprivileged. Messages should honor patience, sacrifice, and divine rewards.
+                </p>
+                <p className="text-xs italic text-amber-600 dark:text-amber-400 bg-amber-500/5 p-2 rounded">
+                  &ldquo;May your sacrifices be accepted by the Almighty, and may your heart be blessed with boundless faith, courage, and contentment. Blessed Eid-ul-Adha to your family!&rdquo;
+                </p>
+              </div>
+            </div>
+
+            {/* Section 6: Chand Raat Greetings */}
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 border-b border-border/80 pb-2">
+              6. Chand Raat Greetings: Welcoming the Festive Crescent
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              The excitement of Eid peaks on Chand Raat, the vibrant evening when the new crescent moon is sighted. Markets burst with bangles and henna artists, and families exchange spontaneous anticipation greetings:
+            </p>
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-xs my-4 space-y-3">
+              <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed">
+                &ldquo;The silver crescent has graced the night sky! May Chand Raat usher in an Eid filled with glowing smiles, melodious laughter, and cherished blessings for you and your family. Chand Raat Mubarak!&rdquo;
+              </p>
+              <div className="border-t border-border/60 pt-3">
+                <p className="text-xs font-semibold text-primary font-urdu text-right leading-relaxed">
+                  مبارک ہو کہ عید کا چاند نظر آ گیا ہے — چاند رات کی پرمسرت ساعتیں آپ کے لیے نویدِ مسرت لائیں۔
+                </p>
+              </div>
+            </div>
+
+            {/* Section 7: Professional & Corporate Eid Greetings */}
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 border-b border-border/80 pb-2">
+              7. Professional &amp; Corporate Eid Greetings for Teams &amp; Clients
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              When wishing business colleagues, clients, or remote team members, maintain a warm yet professional decorum:
+            </p>
+            <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+              <li>
+                <strong className="text-foreground">For Clients &amp; Partners:</strong> &ldquo;On the auspicious occasion of Eid, the entire team at [Company Name] extends our warmest wishes for prosperity, happiness, and continued partnership. Eid Mubarak!&rdquo;
+              </li>
+              <li>
+                <strong className="text-foreground">For Teammates &amp; Employees:</strong> &ldquo;Wishing you and your loved ones a well-deserved, joyful Eid break. Thank you for your continued dedication, leadership, and positive spirit throughout the year.&rdquo;
+              </li>
+            </ul>
 
           </div>
 

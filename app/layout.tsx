@@ -79,8 +79,8 @@ export const metadata: Metadata = {
   keywords: DEFAULT_KEYWORDS,
   authors: [
     { name: 'Umar Farooq', url: 'https://cardzy.online/authors/umar-farooq' },
-    { name: 'Kainat', url: 'https://cardzy.online/authors/kainat' },
-    { name: 'Hasnain', url: 'https://cardzy.online/authors/hasnain' },
+    { name: 'Kainat Rasheed', url: 'https://cardzy.online/authors/kainat' },
+    { name: 'Hasnain Sajid', url: 'https://cardzy.online/authors/hasnain' },
   ],
   creator: SITE_CREATOR,
   publisher: SITE_PUBLISHER,

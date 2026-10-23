@@ -1045,7 +1045,89 @@ export default function PoetryGuidePage() {
           </ul>
         </section>
 
-        {/* Section 5: Call to Action Banner */}
+        {/* Section 5: The Cultural Role of Poetry in Celebrations */}
+        <section className="space-y-4 pt-4 border-t border-border/80">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+            5. The Soul of Urdu Poetry in Wedding &amp; Celebration Cards
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            In South Asian and Middle Eastern cultures, an invitation or greeting card without poetry feels incomplete. Verses (Ash&rsquo;aar) bridge the formal logistical details of a wedding date or birthday wish with emotional and spiritual depth.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2 my-4">
+            <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+              <span className="text-xs font-bold text-amber-500 uppercase tracking-wider">Allama Iqbal &bull; Ambition &amp; Khudi</span>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Ideal for graduation announcements, professional visiting cards, and youth birthdays. Iqbal&rsquo;s rousing imagery of the Shaheen (falcon) inspires self-reliance and moral excellence.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+              <span className="text-xs font-bold text-rose-500 uppercase tracking-wider">Mirza Ghalib &bull; Depth &amp; Nuance</span>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Revered for intricate philosophical romance and wordplay. Ghalib&rsquo;s couplets elevate wedding invitations and romantic anniversary cards with peerless 19th-century Delhi court elegance.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+              <span className="text-xs font-bold text-emerald-500 uppercase tracking-wider">Faiz Ahmed Faiz &bull; Hope &amp; Spring</span>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Faiz brings romantic tender optimism (<em>Gulon mein rang bhare baad-e-naubahar chale</em>), perfect for wedding receptions, spring festivities, and fresh beginnings.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+              <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider">Sufi Masters &bull; Rumi &amp; Muhammad Bakhsh</span>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Spiritual couplets in Punjabi, Persian, and Urdu invoking divine blessings, humility, and steadfast faith—cherished on solemn Nikkah and Eid Mubarak cards.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 6: Nastaliq Typography on Digital Screens */}
+        <section className="space-y-4 pt-4 border-t border-border/80">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+            6. Rendering Nastaliq Calligraphy Flawlessly on Mobile Screens
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            One of Cardzy&rsquo;s major technological breakthroughs is authentic web-native Nastaliq rendering. Traditional web browsers struggle with Urdu because Nastaliq characters cascade diagonally rather than horizontally like standard Arabic Naskh:
+          </p>
+          <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+            <li>
+              <strong className="text-foreground">Optimized Web Fonts:</strong> Cardzy loads lightweight subsetted Noto Nastaliq Urdu typefaces, ensuring lightning-fast load times even on 3G cellular connections.
+            </li>
+            <li>
+              <strong className="text-foreground">High-DPI Canvas Rendering:</strong> When downloading Story Cards or generating 9:16 vertical videos, Cardzy draws at 2x device pixel ratio for razor-sharp typography suitable for Instagram Stories and WhatsApp Statuses.
+            </li>
+            <li>
+              <strong className="text-foreground">Bilingual Roman &amp; English Transliteration:</strong> Each classical verse is accompanied by phonetic Roman Urdu and English literary translations so every family member across the diaspora can appreciate the meaning.
+            </li>
+          </ul>
+        </section>
+
+        {/* Frequently Asked Questions */}
+        <section className="space-y-4 pt-4 border-t border-border/80">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+            Frequently Asked Questions: Poetry Cards &amp; Treasury
+          </h2>
+          <div className="space-y-3">
+            <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+              <h4 className="font-bold text-sm sm:text-base text-foreground">
+                How do I add my own custom poetry to a digital wedding or wish card?
+              </h4>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                In the Cardzy Poetry Studio or Wish Card creator, simply paste your custom verses into the poem text field. Our engine automatically applies royal typography formatting, Nastaliq kerning, and optional translation badges.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+              <h4 className="font-bold text-sm sm:text-base text-foreground">
+                Can I download poetry story cards to share as 9:16 vertical status videos?
+              </h4>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Yes! Every verse in Cardzy&rsquo;s 1,000+ treasury can be rendered into an ultra-HD 1080x1920 Story Card image or 10-second animated MP4 video with ambient music, ready for WhatsApp Status, Instagram Stories, and TikTok.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 7: Call to Action Banner */}
         <div className="p-8 rounded-3xl bg-gradient-to-br from-amber-500/10 via-emerald-500/10 to-slate-900 border border-amber-500/30 text-center space-y-4 mt-8">
           <Feather className="size-8 mx-auto text-amber-400 animate-pulse" />
           <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">

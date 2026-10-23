@@ -279,7 +279,7 @@ export default function PricingPage() {
 
             {/* Pricing FAQ */}
             <div className="pt-8 space-y-4">
-              <h3 className="font-bold text-lg text-foreground">{t('pricingFaqH3')}</h3>
+              <h3 className="font-bold text-xl text-foreground">{t('pricingFaqH3')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm text-muted-foreground">
                 <div className="rounded-2xl border border-border/80 bg-background/60 p-5 space-y-1.5 shadow-xs">
                   <h4 className="font-bold text-foreground text-sm">{t('pricingFaqQ1')}</h4>
@@ -288,6 +288,66 @@ export default function PricingPage() {
                 <div className="rounded-2xl border border-border/80 bg-background/60 p-5 space-y-1.5 shadow-xs">
                   <h4 className="font-bold text-foreground text-sm">{t('pricingFaqQ2')}</h4>
                   <p className="leading-relaxed">{t('pricingFaqA2')}</p>
+                </div>
+                <div className="rounded-2xl border border-border/80 bg-background/60 p-5 space-y-1.5 shadow-xs">
+                  <h4 className="font-bold text-foreground text-sm">Which local and international payment methods are supported?</h4>
+                  <p className="leading-relaxed">
+                    In Pakistan, we support instant mobile payments via JazzCash, EasyPaisa, Raast instant transfers, SadaPay, NayaPay, and bank transfers. Internationally, we accept all major Visa, MasterCard, UnionPay debit/credit cards, and digital wallet options.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-border/80 bg-background/60 p-5 space-y-1.5 shadow-xs">
+                  <h4 className="font-bold text-foreground text-sm">Can I upgrade to Pro for just a single month for my wedding?</h4>
+                  <p className="leading-relaxed">
+                    Absolutely! You are never locked into an annual contract. Many couples upgrade to the $1.99 (Rs 499) monthly Pro plan to manage their wedding RSVPs, download guest headcounts, and export 10-second high-definition vertical MP4 videos, then downgrade to Free whenever they choose.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-border/80 bg-background/60 p-5 space-y-1.5 shadow-xs">
+                  <h4 className="font-bold text-foreground text-sm">Do my wedding guests or greeting card recipients see advertisements?</h4>
+                  <p className="leading-relaxed">
+                    On our Pro plan, your published wedding invitation links, greeting cards, and smart visiting cards are delivered 100% ad-free with zero watermarks. Your guests enjoy a clean, royal experience with nothing distracting from your celebration.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-border/80 bg-background/60 p-5 space-y-1.5 shadow-xs">
+                  <h4 className="font-bold text-foreground text-sm">Do my existing cards disappear if I cancel my subscription?</h4>
+                  <p className="leading-relaxed">
+                    Never. All wedding websites, wish cards, and visiting cards you have already created remain live and accessible online. If you downgrade to the Free plan, you retain access to basic features while premium themes and export tools revert to Free mode.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-border/80 bg-background/60 p-5 space-y-1.5 shadow-xs">
+                  <h4 className="font-bold text-foreground text-sm">Can I create corporate or executive visiting cards with Cardzy Pro?</h4>
+                  <p className="leading-relaxed">
+                    Yes! Pro users can generate unlimited smart digital visiting cards (vCards) with custom brand palettes, company logos, direct WhatsApp click-to-chat links, one-touch phone dialing, and downloadable .vcf contact files.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-border/80 bg-background/60 p-5 space-y-1.5 shadow-xs">
+                  <h4 className="font-bold text-foreground text-sm">How does the 100% Satisfaction Guarantee and support work?</h4>
+                  <p className="leading-relaxed">
+                    Our team provides dedicated direct customer support via WhatsApp (+92 309 3518796) and email (cardzyonline@gmail.com). If you experience any technical difficulties activating Pro features or exporting cards, our engineering team assists you within hours.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Value Breakdown & Eco-friendly Comparison */}
+            <div className="mt-12 p-6 sm:p-8 rounded-3xl border border-border bg-card/60 space-y-4">
+              <h3 className="font-extrabold text-lg sm:text-xl text-foreground">
+                Cardzy Pro vs. Traditional Paper Invitations: The Smart Choice
+              </h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Traditional paper wedding invitations for a 300-guest event typically cost between Rs 35,000 to Rs 90,000 ($120 to $350 USD) when factoring in gold foil printing, calligrapher fees, boxed packaging, and courier delivery charges. Furthermore, last-minute venue changes or timing corrections require costly reprints.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">
+                <div className="p-3.5 rounded-xl border border-border bg-background space-y-1">
+                  <div className="font-bold text-emerald-600 dark:text-emerald-400">95% Cost Savings</div>
+                  <p className="text-muted-foreground">Get unlimited digital guest links, instant RSVP tracking, and high-definition MP4 story cards starting at just Rs 499 ($1.99).</p>
+                </div>
+                <div className="p-3.5 rounded-xl border border-border bg-background space-y-1">
+                  <div className="font-bold text-primary">100% Eco-Friendly</div>
+                  <p className="text-muted-foreground">Save hundreds of pounds of bleached cardstock, synthetic foils, and transport emissions with zero-waste digital celebration cards.</p>
+                </div>
+                <div className="p-3.5 rounded-xl border border-border bg-background space-y-1">
+                  <div className="font-bold text-amber-500">Live Edits Anytime</div>
+                  <p className="text-muted-foreground">Update hall dinner timings, GPS map coordinates, or ceremony dates instantly without sending confused correction messages.</p>
                 </div>
               </div>
             </div>

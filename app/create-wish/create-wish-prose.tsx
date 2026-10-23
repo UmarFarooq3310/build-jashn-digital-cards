@@ -123,6 +123,39 @@ export function CreateWishProse() {
           </ul>
         </div>
 
+        {/* Frequently Asked Questions */}
+        <div className="space-y-4">
+          <h2 className={`text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+            Frequently Asked Questions: Digital Wish Cards
+          </h2>
+          <div className="space-y-3">
+            <div className="p-4 rounded-2xl bg-card border border-border/70">
+              <h4 className="text-sm font-bold text-foreground mb-1">
+                Can I customize the background music and upload personal photos?
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Yes! Cardzy allows you to upload any portrait photo or family memory to be framed elegantly on the card. You can also pick from multiple synthesized ambient celebration melodies and festive chime effects.
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl bg-card border border-border/70">
+              <h4 className="text-sm font-bold text-foreground mb-1">
+                How does sharing on WhatsApp work?
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                When you click &ldquo;Share on WhatsApp&rdquo;, Cardzy generates a high-resolution preview link with the recipient&rsquo;s name. Tapping the link opens an interactive 3D unboxing animation with confetti and music directly in their browser.
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl bg-card border border-border/70">
+              <h4 className="text-sm font-bold text-foreground mb-1">
+                Is Cardzy free to use for family celebrations?
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Yes! You can design and share digital greeting cards 100% free with no account creation or credit card required. Free cards stay active for 30 days. Pro users can unlock permanent lifetime card preservation and remove all watermarks.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Featured Guides Box for Contextual Internal Linking */}
         <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/5 p-6 space-y-4">
           <h3 className={`text-xl font-bold text-foreground flex items-center gap-2 ${isUrdu ? 'font-urdu text-2xl' : ''}`}>

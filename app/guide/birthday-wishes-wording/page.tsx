@@ -107,24 +107,24 @@ const BIRTHDAY_GUIDE_TEXT: Record<string, Record<string, string>> = {
     sw: 'dakika 5 za kusoma',
   },
   author: {
-    en: 'By Hasnain',
-    ur: 'تحریر: حسنین',
-    ar: 'بقلم حسنين',
-    es: 'Por Hasnain',
-    fr: 'Par Hasnain',
-    hi: 'हुसनैन द्वारा',
-    zh: 'Hasnain 撰写',
-    pt: 'Por Hasnain',
-    ru: 'Автор: Хаснайн',
-    de: 'Von Hasnain',
-    ja: 'Hasnainによる執筆',
-    ko: 'Hasnain 작성',
-    it: 'Di Hasnain',
-    tr: 'Hasnain Tarafından',
-    id: 'Oleh Hasnain',
-    bn: 'হাসনাইন কর্তৃক',
-    vi: 'Bởi Hasnain',
-    sw: 'Na Hasnain',
+    en: 'By Hasnain Sajid',
+    ur: 'تحریر: حسنین ساجد',
+    ar: 'بقلم حسنين ساجد',
+    es: 'Por Hasnain Sajid',
+    fr: 'Par Hasnain Sajid',
+    hi: 'हसनैन साजिद द्वारा',
+    zh: 'Hasnain Sajid 撰写',
+    pt: 'Por Hasnain Sajid',
+    ru: 'Автор: Хаснайн Саджид',
+    de: 'Von Hasnain Sajid',
+    ja: 'Hasnain Sajidによる執筆',
+    ko: 'Hasnain Sajid 작성',
+    it: 'Di Hasnain Sajid',
+    tr: 'Hasnain Sajid Tarafından',
+    id: 'Oleh Hasnain Sajid',
+    bn: 'হাসনাইন সাজিদ কর্তৃক',
+    vi: 'Bởi Hasnain Sajid',
+    sw: 'Na Hasnain Sajid',
   },
   introP1: {
     en: 'The hardest part of sending a birthday card is rarely the design — it\'s staring at a blank message box, trying to find words that actually sound like you. Below are wording ideas sorted by tone and relationship, so you can pick one, tweak it with a name or an inside joke, and send it in under a minute.',
@@ -838,6 +838,110 @@ export default function BirthdayGuidePage() {
               <li><strong>{getText('step3Title')}: </strong>{getText('step3Desc')}</li>
               <li><strong>{getText('step4Title')}: </strong>{getText('step4Desc')}</li>
             </ol>
+
+            {/* Section 7: Milestone Birthday Messages */}
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 border-b border-border/80 pb-2">
+              7. Celebrating Life Milestones: 18th, 21st, 30th &amp; 50th Golden Jubilees
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Certain birthdays represent monumental chapters in life. When someone crosses a significant milestone, generic greetings fall short. Here are curated wording templates tailored to major life milestones:
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2 my-4">
+              <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider">18th Birthday (Adulthood)</span>
+                <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed">
+                  &ldquo;Welcome to the world of adulthood! May your 18th year unlock bold adventures, big ambitions, and the freedom to craft your own extraordinary path. Happy 18th Birthday!&rdquo;
+                </p>
+              </div>
+              <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                <span className="text-xs font-bold text-purple-500 uppercase tracking-wider">21st Birthday (Key to the World)</span>
+                <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed">
+                  &ldquo;Happy 21st Birthday! You have your whole magnificent future ahead. May your twenty-first year be filled with laughter, unforgettable memories, and vibrant triumphs.&rdquo;
+                </p>
+              </div>
+              <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                <span className="text-xs font-bold text-emerald-500 uppercase tracking-wider">30th Birthday (The Prime Decade)</span>
+                <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed">
+                  &ldquo;Cheers to 30 years of brilliance! Your thirties are where wisdom meets confidence and dreams take real flight. Wishing you the most rewarding decade yet.&rdquo;
+                </p>
+              </div>
+              <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                <span className="text-xs font-bold text-amber-500 uppercase tracking-wider">50th Birthday (Golden Jubilee)</span>
+                <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed">
+                  &ldquo;Celebrating 50 glorious years of kindness, leadership, and love! May your Golden Jubilee be as radiant, inspiring, and treasured as the impact you have made on all of us.&rdquo;
+                </p>
+              </div>
+            </div>
+
+            {/* Section 8: Romantic & Deep Wishes for Partners */}
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 border-b border-border/80 pb-2">
+              8. Romantic &amp; Deep Wishes for Your Soulmate
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              When wishing your spouse or partner, you want words that convey tenderness, shared gratitude, and eternal companionship:
+            </p>
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-xs my-4 space-y-3">
+              <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed">
+                &ldquo;To the person who turns ordinary days into poetry: Happy Birthday, my love. Thank you for filling our life with warmth, understanding, and laughter. Every year by your side is my greatest blessing, and I cannot wait to celebrate many more lifetimes of happiness with you.&rdquo;
+              </p>
+              <div className="border-t border-border/60 pt-3">
+                <p className="text-xs font-semibold text-primary font-urdu text-right leading-relaxed">
+                  خدا کرے کہ مری عمر بھی تمھیں لگ جائے — سالگرہ کی ڈھیروں دعائیں اور پیار، میری زندگی کی سب سے بڑی خوشی آپ ہیں۔
+                </p>
+              </div>
+            </div>
+
+            {/* Section 9: Handling Belated Birthday Wishes with Grace */}
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 border-b border-border/80 pb-2">
+              9. Belated Birthday Greetings: How to Send Love After the Date
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Life gets hectic and sometimes birthdays slip through the calendar cracks. A thoughtful digital card with gentle humor turns a late wish into an endearing surprise:
+            </p>
+            <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+              <li>
+                <strong className="text-foreground">The Extended Celebration Angle:</strong> &ldquo;A celebration this special shouldn&rsquo;t be confined to a single 24-hour day! Extending your birthday festivities with all my love, prayers, and apologies for the delay. Happy Belated Birthday!&rdquo;
+              </li>
+              <li>
+                <strong className="text-foreground">The Playful Tech Twist:</strong> &ldquo;My calendar glitched, but my best wishes for your health, happiness, and prosperity are permanently on time. Wishing you a truly phenomenal year ahead!&rdquo;
+              </li>
+            </ul>
+
+            {/* Frequently Asked Questions */}
+            <div className="mt-10 space-y-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground border-b border-border/80 pb-2">
+                Frequently Asked Questions: Birthday Card Wording &amp; Etiquette
+              </h3>
+
+              <div className="space-y-3">
+                <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                  <h4 className="font-bold text-sm sm:text-base text-foreground">
+                    What should I write in a birthday card if I don&rsquo;t know the person very well?
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Keep it warm, positive, and universally respectful. A classic phrase like &ldquo;Wishing you a very happy birthday and a wonderful year ahead filled with health, joy, and success&rdquo; strikes the perfect polite tone for coworkers, acquaintances, or distant relatives.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                  <h4 className="font-bold text-sm sm:text-base text-foreground">
+                    How do I make a digital birthday card feel truly personal?
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Personalize with three core elements on Cardzy: (1) Add a treasured photograph or selfie together, (2) select a meaningful background melody or birthday chime, and (3) include a specific shared memory or nickname in the message text.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                  <h4 className="font-bold text-sm sm:text-base text-foreground">
+                    Is it acceptable to send a digital birthday card via WhatsApp instead of paper?
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Modern digital cards are overwhelmingly preferred because they arrive instantaneously regardless of geography, feature interactive 3D unboxing animations with music, and eliminate paper waste. Over 80% of personal birthday greetings today are delivered via messaging apps like WhatsApp.
+                  </p>
+                </div>
+              </div>
+            </div>
 
           </div>
 

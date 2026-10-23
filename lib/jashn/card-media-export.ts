@@ -318,8 +318,11 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
 
   // Expand the root element itself
   expandElement(element)
-  // Expand all descendants
-  element.querySelectorAll('*').forEach((child) => expandElement(child as HTMLElement))
+  // Expand only scrollable / max-height candidates (instant, avoids 100+ synchronous style recalcs)
+  const scrollCandidates = element.querySelectorAll<HTMLElement>(
+    '.overflow-y-auto, .overflow-auto, [class*="max-h-"], [class*="overflow-"], [style*="max-height"], [style*="overflow"]'
+  )
+  scrollCandidates.forEach(expandElement)
 
   // Force a synchronous reflow so scrollHeight reflects the expanded layout
   const naturalWidth = Math.max(element.offsetWidth || Math.round(element.getBoundingClientRect().width), 320)
@@ -587,12 +590,8 @@ function drawSafeRoundRect(
   }
 }
 
-function drawCardVideoFrame({
-  ctx,
+function createCardVideoBaseCanvas({
   img,
-  t,
-  elapsed,
-  dtFactor,
   targetWidth,
   targetHeight,
   isNineSixteen,
@@ -601,14 +600,8 @@ function drawCardVideoFrame({
   cardW,
   cardH,
   cardType,
-  ribbons,
-  stars,
 }: {
-  ctx: CanvasRenderingContext2D
   img: HTMLImageElement
-  t: number
-  elapsed: number
-  dtFactor: number
   targetWidth: number
   targetHeight: number
   isNineSixteen: boolean
@@ -617,15 +610,19 @@ function drawCardVideoFrame({
   cardW: number
   cardH: number
   cardType?: string
-  occasionId?: string
-  ribbons: any[]
-  stars: any[]
-}) {
-  ctx.clearRect(0, 0, targetWidth, targetHeight)
+}): HTMLCanvasElement {
+  const baseCanvas = document.createElement('canvas')
+  baseCanvas.width = targetWidth
+  baseCanvas.height = targetHeight
+  const bCtx = baseCanvas.getContext('2d', { alpha: false })
+  if (!bCtx) return baseCanvas
+
+  bCtx.imageSmoothingEnabled = true
+  bCtx.imageSmoothingQuality = 'high'
 
   if (isNineSixteen && (cardW < targetWidth || cardH < targetHeight)) {
     // 1. Draw rich thematic backdrop
-    const bgGrad = ctx.createLinearGradient(0, 0, targetWidth, targetHeight)
+    const bgGrad = bCtx.createLinearGradient(0, 0, targetWidth, targetHeight)
     if (cardType === 'vcard') {
       bgGrad.addColorStop(0, '#0a0f1d')
       bgGrad.addColorStop(0.5, '#111827')
@@ -639,11 +636,11 @@ function drawCardVideoFrame({
       bgGrad.addColorStop(0.5, '#1e1b4b')
       bgGrad.addColorStop(1, '#050814')
     }
-    ctx.fillStyle = bgGrad
-    ctx.fillRect(0, 0, targetWidth, targetHeight)
+    bCtx.fillStyle = bgGrad
+    bCtx.fillRect(0, 0, targetWidth, targetHeight)
 
-    // Ambient radial glow in center
-    const glow = ctx.createRadialGradient(
+    // Center radial glow
+    const glow = bCtx.createRadialGradient(
       targetWidth / 2,
       targetHeight / 2,
       40,
@@ -661,85 +658,110 @@ function drawCardVideoFrame({
       glow.addColorStop(0, 'rgba(168, 85, 247, 0.16)')
       glow.addColorStop(1, 'rgba(0, 0, 0, 0)')
     }
-    ctx.fillStyle = glow
-    ctx.fillRect(0, 0, targetWidth, targetHeight)
+    bCtx.fillStyle = glow
+    bCtx.fillRect(0, 0, targetWidth, targetHeight)
 
     // 2. Ambient blurred background preview of the card
-    ctx.save()
-    ctx.globalAlpha = 0.22
-    ctx.drawImage(img, -40, -40, targetWidth + 80, targetHeight + 80)
-    ctx.restore()
+    bCtx.save()
+    bCtx.globalAlpha = 0.22
+    bCtx.drawImage(img, -40, -40, targetWidth + 80, targetHeight + 80)
+    bCtx.restore()
 
-    // 3. Draw top header pill
-    ctx.save()
+    // 3. Top header pill
+    bCtx.save()
     const headerY = Math.max(40, Math.min(cardY - 44, 76))
     const pillText = cardType === 'vcard'
       ? '💼 DIGITAL BUSINESS CARD'
       : cardType === 'invite'
       ? '✨ CORDIAL INVITATION'
       : '🎉 SPECIAL GREETING'
-    ctx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-    const textW = ctx.measureText(pillText).width
+    bCtx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    const textW = bCtx.measureText(pillText).width
     const pillW = textW + 36
     const pillH = 34
     const pillX = (targetWidth - pillW) / 2
 
-    // Pill background
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.78)'
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)'
-    ctx.lineWidth = 1
-    ctx.beginPath()
-    drawSafeRoundRect(ctx, pillX, headerY - 22, pillW, pillH, 17)
-    ctx.fill()
-    ctx.stroke()
+    bCtx.fillStyle = 'rgba(15, 23, 42, 0.78)'
+    bCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)'
+    bCtx.lineWidth = 1
+    bCtx.beginPath()
+    drawSafeRoundRect(bCtx, pillX, headerY - 22, pillW, pillH, 17)
+    bCtx.fill()
+    bCtx.stroke()
 
-    // Pill text
-    ctx.fillStyle = '#f8fafc'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    ctx.fillText(pillText, targetWidth / 2, headerY - 5)
-    ctx.restore()
+    bCtx.fillStyle = '#f8fafc'
+    bCtx.textAlign = 'center'
+    bCtx.textBaseline = 'middle'
+    bCtx.fillText(pillText, targetWidth / 2, headerY - 5)
+    bCtx.restore()
 
-    // 4. Draw card with realistic soft drop shadow
-    ctx.save()
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.65)'
-    ctx.shadowBlur = 36
-    ctx.shadowOffsetY = 18
-    ctx.drawImage(img, cardX, cardY, cardW, cardH)
-    ctx.restore()
+    // 4. Draw card with realistic soft drop shadow (pre-rendered ONCE for major speedup!)
+    bCtx.save()
+    bCtx.shadowColor = 'rgba(0, 0, 0, 0.65)'
+    bCtx.shadowBlur = 36
+    bCtx.shadowOffsetY = 18
+    bCtx.drawImage(img, cardX, cardY, cardW, cardH)
+    bCtx.restore()
 
     // 5. Draw bottom footer pill
-    ctx.save()
+    bCtx.save()
     const footerY = Math.min(targetHeight - 40, Math.max(cardY + cardH + 44, targetHeight - 74))
     const footerText = '✦ CARDZY · DIGITAL EXPERIENCES ✦'
-    ctx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-    const footW = ctx.measureText(footerText).width + 36
+    bCtx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    const footW = bCtx.measureText(footerText).width + 36
     const footH = 32
     const footX = (targetWidth - footW) / 2
 
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.78)'
-    ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)'
-    ctx.lineWidth = 1
-    ctx.beginPath()
-    drawSafeRoundRect(ctx, footX, footerY - 20, footW, footH, 16)
-    ctx.fill()
-    ctx.stroke()
+    bCtx.fillStyle = 'rgba(15, 23, 42, 0.78)'
+    bCtx.strokeStyle = 'rgba(212, 175, 55, 0.35)'
+    bCtx.lineWidth = 1
+    bCtx.beginPath()
+    drawSafeRoundRect(bCtx, footX, footerY - 20, footW, footH, 16)
+    bCtx.fill()
+    bCtx.stroke()
 
-    ctx.fillStyle = '#fbbf24'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    ctx.fillText(footerText, targetWidth / 2, footerY - 4)
-    ctx.restore()
+    bCtx.fillStyle = '#fbbf24'
+    bCtx.textAlign = 'center'
+    bCtx.textBaseline = 'middle'
+    bCtx.fillText(footerText, targetWidth / 2, footerY - 4)
+    bCtx.restore()
   } else {
     // Direct full-bleed drawing (e.g. poetry card that is already full 720x1280)
-    ctx.drawImage(img, cardX, cardY, cardW, cardH)
+    bCtx.drawImage(img, cardX, cardY, cardW, cardH)
   }
 
-  // 6. Micro-pixel noise to force Android GPU hardware encoder to serialize every frame
+  return baseCanvas
+}
+
+function drawCardVideoFrame({
+  ctx,
+  baseCanvas,
+  t,
+  elapsed,
+  dtFactor,
+  targetWidth,
+  targetHeight,
+  ribbons,
+  stars,
+}: {
+  ctx: CanvasRenderingContext2D
+  baseCanvas: HTMLCanvasElement
+  t: number
+  elapsed: number
+  dtFactor: number
+  targetWidth: number
+  targetHeight: number
+  ribbons: any[]
+  stars: any[]
+}) {
+  // 1. Instantly blit the pre-rendered base canvas (single fast GPU drawImage)
+  ctx.drawImage(baseCanvas, 0, 0)
+
+  // 2. Micro-pixel noise to force Android GPU hardware encoder to serialize every frame
   ctx.fillStyle = (Math.floor(elapsed / 100) % 2 === 0) ? 'rgba(255, 255, 255, 0.008)' : 'rgba(0, 0, 0, 0.008)'
   ctx.fillRect(0, 0, 2, 2)
 
-  // 7. Shimmer sheen sweep
+  // 3. Shimmer sheen sweep
   const sheenPeriod = 2.4
   const cycleProgress = (t % sheenPeriod) / sheenPeriod
   const sheenAlpha = Math.sin(cycleProgress * Math.PI) * 0.8
@@ -760,9 +782,10 @@ function drawCardVideoFrame({
   ctx.fillRect(0, 0, targetWidth, targetHeight)
   ctx.restore()
 
-  // 8. Confetti ribbons
+  // 4. Confetti ribbons
   ctx.save()
-  ribbons.forEach((r) => {
+  for (let i = 0; i < ribbons.length; i++) {
+    const r = ribbons[i]
     r.y += r.vy * dtFactor
     r.x += (r.vx + Math.sin(t * r.wobbleSpeed + r.wobbleOffset) * 0.8) * dtFactor
     r.rotX += r.speedX * dtFactor
@@ -782,13 +805,14 @@ function drawCardVideoFrame({
     ctx.fillStyle = r.color
     ctx.fillRect(-r.w / 2, -r.h / 2, r.w, r.h)
     ctx.restore()
-  })
+  }
   ctx.restore()
 
-  // 9. Diamond stars
+  // 5. Diamond stars
   ctx.save()
   ctx.globalCompositeOperation = 'screen'
-  stars.forEach((s) => {
+  for (let i = 0; i < stars.length; i++) {
+    const s = stars[i]
     s.y -= s.speedY * dtFactor
     if (s.y < -20) {
       s.y = targetHeight + 20
@@ -797,7 +821,7 @@ function drawCardVideoFrame({
     const posX = s.x + Math.sin(t * 1.5 + s.wobbleOffset) * 6
     const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed + s.twinkleOffset)
     drawDiamondStar(ctx, posX, s.y, s.size, twinkle, t * s.rotSpeed)
-  })
+  }
   ctx.restore()
 }
 
@@ -833,6 +857,19 @@ async function recordImageAsMp4WebCodecs({
   // ── Compute 16-pixel aligned video dimensions (default 720x1280 9:16) ──
   const dims = computeVideoDimensions(img, targetAspectRatio)
   const { targetWidth, targetHeight, isNineSixteen, cardX, cardY, cardW, cardH } = dims
+
+  // Pre-render static card, drop shadow, background glow, and badges ONCE (major speedup!)
+  const baseCanvas = createCardVideoBaseCanvas({
+    img,
+    targetWidth,
+    targetHeight,
+    isNineSixteen,
+    cardX,
+    cardY,
+    cardW,
+    cardH,
+    cardType,
+  })
 
   const canvas = document.createElement('canvas')
   canvas.width = targetWidth
@@ -1063,19 +1100,12 @@ async function recordImageAsMp4WebCodecs({
 
     drawCardVideoFrame({
       ctx,
-      img,
+      baseCanvas,
       t,
       elapsed,
       dtFactor,
       targetWidth,
       targetHeight,
-      isNineSixteen,
-      cardX,
-      cardY,
-      cardW,
-      cardH,
-      cardType,
-      occasionId,
       ribbons,
       stars,
     })
@@ -1093,10 +1123,8 @@ async function recordImageAsMp4WebCodecs({
       onProgress(Math.min(84, Math.round((frameIdx / TOTAL_FRAMES) * 84)))
     }
 
-    if (videoEncoder.encodeQueueSize > 10) {
-      while (videoEncoder.encodeQueueSize > 5) {
-        await new Promise((r) => setTimeout(r, 1))
-      }
+    if (videoEncoder.encodeQueueSize > 8) {
+      await new Promise((r) => setTimeout(r, 0))
     }
 
     if (videoError) throw videoError
@@ -1196,6 +1224,19 @@ export async function recordImageAsVideo({
   // 16-pixel aligned video dimensions
   const dims = computeVideoDimensions(img, targetAspectRatio)
   const { targetWidth, targetHeight, isNineSixteen, cardX, cardY, cardW, cardH } = dims
+
+  // Pre-render static card base ONCE
+  const baseCanvas = createCardVideoBaseCanvas({
+    img,
+    targetWidth,
+    targetHeight,
+    isNineSixteen,
+    cardX,
+    cardY,
+    cardW,
+    cardH,
+    cardType,
+  })
 
   const canvas = document.createElement('canvas')
   canvas.width = targetWidth
@@ -1436,19 +1477,12 @@ export async function recordImageAsVideo({
 
       drawCardVideoFrame({
         ctx,
-        img,
+        baseCanvas,
         t,
         elapsed,
         dtFactor,
         targetWidth,
         targetHeight,
-        isNineSixteen,
-        cardX,
-        cardY,
-        cardW,
-        cardH,
-        cardType,
-        occasionId,
         ribbons,
         stars,
       })

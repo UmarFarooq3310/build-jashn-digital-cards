@@ -138,6 +138,39 @@ export function CreateInvitationProse() {
           </ul>
         </div>
 
+        {/* Frequently Asked Questions */}
+        <div className="space-y-4">
+          <h2 className={`text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+            Frequently Asked Questions: Digital Wedding &amp; Event Invitations
+          </h2>
+          <div className="space-y-3">
+            <div className="p-4 rounded-2xl bg-card border border-border/70">
+              <h4 className="text-sm font-bold text-foreground mb-1">
+                How does WhatsApp RSVP tracking work for large wedding guest lists?
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                When guests click the WhatsApp RSVP button on your invitation link, a pre-filled confirmation text is prepared automatically with their name and headcount. Hosts can also review all confirmed attendance tallies in their Cardzy dashboard and export the list to CSV for catering hall planning.
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl bg-card border border-border/70">
+              <h4 className="text-sm font-bold text-foreground mb-1">
+                Can I include Google Maps GPS navigation to my banquet hall?
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Yes! Every invitation includes a dedicated venue location button. Guests simply tap to launch Google Maps or Apple Maps with turn-by-turn driving directions straight to your wedding hall entrance.
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl bg-card border border-border/70">
+              <h4 className="text-sm font-bold text-foreground mb-1">
+                Are both Urdu Nastaliq and English languages supported on the same card?
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Yes. Our bilingual templates display traditional Urdu Nastaliq Bismillah calligraphy alongside crisp English event schedules, ensuring elders appreciate the cultural reverence while modern guests easily read the timings.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Featured Wedding Guides Box for Contextual Internal Linking */}
         <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/5 p-6 space-y-4">
           <h3 className={`text-xl font-bold text-foreground flex items-center gap-2 ${isUrdu ? 'font-urdu text-2xl' : ''}`}>

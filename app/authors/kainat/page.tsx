@@ -8,11 +8,12 @@ import { Breadcrumbs } from '@/components/breadcrumbs'
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Kainat — Tech & Digital Product Strategist | Cardzy',
+  title: 'Kainat Rasheed — Tech & Digital Product Strategist | Cardzy',
   description:
-    'Kainat is Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards) and paperless event technology.',
+    'Kainat Rasheed is Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards) and paperless event technology.',
   keywords: [
-    'Kainat Cardzy',
+    'Kainat Rasheed Cardzy',
+    'Kainat Rasheed author',
     'digital business cards author',
     'vCard technology expert',
     'paperless networking strategist',
@@ -21,19 +22,19 @@ export const metadata: Metadata = {
   alternates: getPageAlternates('/authors/kainat'),
   robots: PUBLIC_ROBOTS,
   openGraph: {
-    title: 'Kainat — Tech & Digital Product Strategist | Cardzy',
+    title: 'Kainat Rasheed — Tech & Digital Product Strategist | Cardzy',
     description:
-      'Kainat is Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards) and paperless event technology.',
+      'Kainat Rasheed is Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards) and paperless event technology.',
     url: 'https://cardzy.online/authors/kainat',
     siteName: 'Cardzy',
     type: 'profile',
-    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Kainat' }],
+    images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Kainat Rasheed' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kainat — Tech & Digital Product Strategist | Cardzy',
+    title: 'Kainat Rasheed — Tech & Digital Product Strategist | Cardzy',
     description:
-      'Kainat is Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards) and paperless event technology.',
+      'Kainat Rasheed is Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards) and paperless event technology.',
     images: ['https://cardzy.online/og-image.jpg'],
   },
 }
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Kainat',
+  name: 'Kainat Rasheed',
   jobTitle: 'Tech & Digital Product Strategist',
   worksFor: {
     '@type': 'Organization',
@@ -72,7 +73,7 @@ const personJsonLd = {
 }
 
 export default function KainatAuthorPage() {
-  const authorPosts = BLOG_POSTS.filter((post) => post.author.name === 'Kainat')
+  const authorPosts = BLOG_POSTS.filter((post) => post.author.name === 'Kainat Rasheed' || post.author.name === 'Kainat')
 
   return (
     <>
@@ -85,7 +86,7 @@ export default function KainatAuthorPage() {
         <Breadcrumbs
           items={[
             { label: 'Authors & Editors', href: '/authors' },
-            { label: 'Kainat' },
+            { label: 'Kainat Rasheed' },
           ]}
           className="mb-6"
         />
@@ -98,7 +99,7 @@ export default function KainatAuthorPage() {
               <div className="size-28 sm:size-32 rounded-3xl bg-gradient-to-br from-amber-700 via-orange-800 to-rose-900 p-1 shadow-lg shadow-amber-950/20 overflow-hidden">
                 <img
                   src="/authors/kainat.svg"
-                  alt="Kainat - Tech & Digital Product Strategist"
+                  alt="Kainat Rasheed - Tech & Digital Product Strategist"
                   width={128}
                   height={128}
                   className="size-full rounded-[22px] object-cover"
@@ -121,7 +122,7 @@ export default function KainatAuthorPage() {
               </div>
 
               <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-                Kainat
+                Kainat Rasheed
               </h1>
               <p className="text-sm sm:text-base font-semibold text-amber-700 dark:text-amber-400">
                 Tech &amp; Digital Product Strategist · Cardzy Digital Solutions
@@ -141,7 +142,7 @@ export default function KainatAuthorPage() {
           {/* ── Professional Bio ──────────────────────────────────────── */}
           <div className="pt-6 border-t border-border space-y-4 text-sm sm:text-base text-muted-foreground leading-relaxed">
             <p>
-              <strong className="text-foreground">Kainat</strong> is the Tech &amp; Digital Product Strategist at Cardzy Digital Solutions, leading product innovation across smart digital visiting cards (vCards), QR code synchronization, and enterprise contact sharing workflows.
+              <strong className="text-foreground">Kainat Rasheed</strong> is the Tech &amp; Digital Product Strategist at Cardzy Digital Solutions, leading product innovation across smart digital visiting cards (vCards), QR code synchronization, and enterprise contact sharing workflows.
             </p>
             <p>
               With an academic background in Human-Computer Interaction and over six years designing digital products for professionals, Kainat evaluates how executives, doctors, real estate consultants, and freelancers transition from disposable paper business cards to dynamic, paperless digital identities.
@@ -219,7 +220,7 @@ export default function KainatAuthorPage() {
           <div className="flex items-center gap-2">
             <BookOpen className="size-5 text-amber-600 dark:text-amber-400" />
             <h2 className="text-2xl font-extrabold text-foreground tracking-tight">
-              Published Guides by Kainat
+              Published Guides by Kainat Rasheed
             </h2>
           </div>
 

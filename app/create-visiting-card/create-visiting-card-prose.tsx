@@ -136,6 +136,39 @@ export function CreateVisitingCardProse() {
           </ul>
         </div>
 
+        {/* Frequently Asked Questions */}
+        <div className="space-y-4">
+          <h2 className={`text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl ${isUrdu ? 'font-urdu leading-relaxed' : ''}`}>
+            Frequently Asked Questions: Smart Digital Visiting Cards
+          </h2>
+          <div className="space-y-3">
+            <div className="p-4 rounded-2xl bg-card border border-border/70">
+              <h4 className="text-sm font-bold text-foreground mb-1">
+                How does a client save my contact information to their phone?
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                When a client opens your card or scans your QR code, they tap the &ldquo;Save to Contacts&rdquo; button. This immediately generates a universal .vcf contact card containing your full name, phone numbers, email, company, and website, adding your details straight into their Apple Contacts or Google Contacts without manual typing.
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl bg-card border border-border/70">
+              <h4 className="text-sm font-bold text-foreground mb-1">
+                Can I update my details without reprinting or changing my QR code?
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Yes! That is the core advantage of a Cardzy digital card. When you change your phone number, office location, or job title, your existing QR code and link automatically display your updated information.
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl bg-card border border-border/70">
+              <h4 className="text-sm font-bold text-foreground mb-1">
+                Can I use my digital visiting card offline at conferences?
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Yes. You can save your unique high-resolution QR code to your phone’s lock screen, apple wallet, or photo gallery. At business expos, prospects can scan your QR code directly off your screen, even in crowded venues.
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
   )

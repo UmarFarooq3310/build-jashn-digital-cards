@@ -189,6 +189,55 @@ export function CreateMagicLinkProse() {
                 Yes! You can create and deliver up to 5 Magic Links 100% free with no credit card required. Free links stay active for 30 days. Pro users can upgrade anytime for unlimited links, permanent lifetime storage without auto-purge, and full watermark removal.
               </p>
             </div>
+
+            <div className="p-4 rounded-2xl bg-card border border-border/70">
+              <h4 className="text-sm font-bold text-foreground mb-1">
+                What devices and browsers support 3D Magic Links?
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Cardzy Magic Links are engineered with modern lightweight WebGL, CSS 3D transforms, and Web Audio APIs. They are universally compatible with Apple Safari on iOS, Google Chrome on Android, Microsoft Edge, and desktop browsers without installing external plugins.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-card border border-border/70">
+              <h4 className="text-sm font-bold text-foreground mb-1">
+                Is my personal confession or love letter private?
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Yes. Because data is serialized directly into your unique URL hash, your personal message is rendered locally in the recipient&rsquo;s browser upon opening. We do not store or index private proposal letters on searchable public databases.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Pro Tips for Creating Viral Surprises */}
+        <div className="space-y-4">
+          <h2
+            className={`text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl ${
+              isUrdu ? 'font-urdu leading-relaxed' : ''
+            }`}
+          >
+            Tips for Designing an Unforgettable Magic Link Surprise
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs sm:text-sm">
+            <div className="p-4 rounded-2xl bg-card border border-border/70 space-y-1">
+              <h5 className="font-bold text-foreground">1. Keep the Teaser Mysterious</h5>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                When sharing your card link on WhatsApp, add a playful caption like &ldquo;I made something special just for you... open when you have 1 minute alone!&rdquo; This builds maximum anticipation.
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl bg-card border border-border/70 space-y-1">
+              <h5 className="font-bold text-foreground">2. Pair with Ambient Music</h5>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Select a background melody that matches the sentiment—acoustic guitar for birthdays, gentle orchestral strings for proposals, or traditional shehnai for wedding invitations.
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl bg-card border border-border/70 space-y-1">
+              <h5 className="font-bold text-foreground">3. High-Quality Center Photo</h5>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Use a bright, well-lit square photo of your recipient or a treasured shared memory. It will be framed in the luxury 3D capsule with golden foil borders upon unboxing.
+              </p>
+            </div>
           </div>
         </div>
       </div>
