@@ -19,13 +19,13 @@ export const metadata: Metadata = {
     'digital celebration etiquette',
     'Cardzy authors',
   ],
-  alternates: getPageAlternates('/authors/hasnain'),
+  alternates: getPageAlternates('/authors/hasnain-sajid'),
   robots: PUBLIC_ROBOTS,
   openGraph: {
     title: 'Hasnain Sajid — Creative & Cultural Events Editor | Cardzy',
     description:
       'Hasnain Sajid is Creative Events Editor at Cardzy, crafting guides on 3D animated holiday e-cards, party invites, and digital card etiquette.',
-    url: 'https://cardzy.online/authors/hasnain',
+    url: 'https://cardzy.online/authors/hasnain-sajid',
     siteName: 'Cardzy',
     type: 'profile',
     images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Hasnain Sajid' }],
@@ -50,7 +50,8 @@ const personJsonLd = {
     name: 'Cardzy Digital Solutions',
     url: 'https://cardzy.online',
   },
-  image: 'https://cardzy.online/authors/hasnain.svg',
+  image: 'https://cardzy.online/authors/hasnain-sajid.svg',
+  url: 'https://cardzy.online/authors/hasnain-sajid',
   description:
     'Creative Events Editor at Cardzy specializing in 3D animated greeting cards, holiday celebrations in 18 languages, and card etiquette.',
   alumniOf: {
@@ -72,7 +73,7 @@ const personJsonLd = {
   email: 'mailto:cardzyonline@gmail.com',
 }
 
-export default function HasnainAuthorPage() {
+export default function HasnainSajidAuthorPage() {
   const authorPosts = BLOG_POSTS.filter((post) => post.author.name === 'Hasnain Sajid' || post.author.name === 'Hasnain')
 
   return (
@@ -98,7 +99,7 @@ export default function HasnainAuthorPage() {
             <div className="relative shrink-0">
               <div className="size-28 sm:size-32 rounded-3xl bg-gradient-to-br from-blue-800 via-indigo-900 to-sky-900 p-1 shadow-lg shadow-blue-950/20 overflow-hidden">
                 <img
-                  src="/authors/hasnain.svg"
+                  src="/authors/hasnain-sajid.svg"
                   alt="Hasnain Sajid - Creative & Cultural Events Editor"
                   width={128}
                   height={128}

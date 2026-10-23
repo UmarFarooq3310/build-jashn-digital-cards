@@ -834,7 +834,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
             >
               <div className="size-11 rounded-full bg-[#D4AF37]/20 border-2 border-[#D4AF37]/50 flex items-center justify-center text-[#D4AF37] font-black text-base group-hover/author:border-[#D4AF37] transition-all shadow-md overflow-hidden shrink-0">
                 <img
-                  src={`/authors/${authorSlug}.svg`}
+                  src={post.author.avatar || `/authors/${authorSlug}.svg`}
                   alt={post.author.name}
                   width={44}
                   height={44}
@@ -987,7 +987,7 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
               <div className="size-20 rounded-2xl bg-[#D4AF37]/20 border-2 border-[#D4AF37] flex items-center justify-center text-[#D4AF37] font-black text-2xl shrink-0 shadow-lg overflow-hidden">
                 <img
-                  src={`/authors/${authorSlug}.svg`}
+                  src={post.author.avatar || `/authors/${authorSlug}.svg`}
                   alt={post.author.name}
                   width={80}
                   height={80}

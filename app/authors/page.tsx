@@ -59,7 +59,7 @@ const AUTHORS = [
   },
   {
     name: 'Kainat Rasheed',
-    slug: 'kainat',
+    slug: 'kainat-rasheed',
     role: 'Tech & Digital Product Strategist',
     badge: 'Tech Lead',
     experience: '6+ Years Experience',
@@ -74,7 +74,7 @@ const AUTHORS = [
   },
   {
     name: 'Hasnain Sajid',
-    slug: 'hasnain',
+    slug: 'hasnain-sajid',
     role: 'Creative & Cultural Events Editor',
     badge: 'Creative Editor',
     experience: '5+ Years Experience',

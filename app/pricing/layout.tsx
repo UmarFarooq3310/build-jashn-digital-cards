@@ -34,11 +34,50 @@ export const metadata: Metadata = {
   },
 }
 
+const pricingProductJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Cardzy Pro Digital Celebration & RSVP Suite',
+  description:
+    'Unlimited 4K animated wedding invitations, live WhatsApp RSVP management, smart contactless digital visiting cards (vCards), and lifetime storage.',
+  image: 'https://cardzy.online/og-image.jpg',
+  brand: {
+    '@type': 'Brand',
+    name: 'Cardzy',
+  },
+  offers: [
+    {
+      '@type': 'Offer',
+      name: 'Monthly Pro',
+      price: '1.99',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: 'https://cardzy.online/pricing',
+    },
+    {
+      '@type': 'Offer',
+      name: 'Annual Pro VIP',
+      price: '20.30',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: 'https://cardzy.online/pricing',
+    },
+  ],
+}
+
 export default function PricingLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return <>{children}</>
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingProductJsonLd) }}
+      />
+      {children}
+    </>
+  )
 }
 

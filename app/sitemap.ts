@@ -139,13 +139,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${SITE_URL}/authors/kainat`,
+      url: `${SITE_URL}/authors/kainat-rasheed`,
       lastModified: monthlyUpdateDate,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${SITE_URL}/authors/hasnain`,
+      url: `${SITE_URL}/authors/hasnain-sajid`,
       lastModified: monthlyUpdateDate,
       changeFrequency: 'monthly',
       priority: 0.7,

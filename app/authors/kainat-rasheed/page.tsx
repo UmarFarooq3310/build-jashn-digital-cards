@@ -19,13 +19,13 @@ export const metadata: Metadata = {
     'paperless networking strategist',
     'Cardzy authors',
   ],
-  alternates: getPageAlternates('/authors/kainat'),
+  alternates: getPageAlternates('/authors/kainat-rasheed'),
   robots: PUBLIC_ROBOTS,
   openGraph: {
     title: 'Kainat Rasheed — Tech & Digital Product Strategist | Cardzy',
     description:
       'Kainat Rasheed is Tech & Product Strategist at Cardzy, writing guides on smart digital business cards (vCards) and paperless event technology.',
-    url: 'https://cardzy.online/authors/kainat',
+    url: 'https://cardzy.online/authors/kainat-rasheed',
     siteName: 'Cardzy',
     type: 'profile',
     images: [{ url: 'https://cardzy.online/og-image.jpg', width: 1200, height: 630, alt: 'Kainat Rasheed' }],
@@ -50,7 +50,8 @@ const personJsonLd = {
     name: 'Cardzy Digital Solutions',
     url: 'https://cardzy.online',
   },
-  image: 'https://cardzy.online/authors/kainat.svg',
+  image: 'https://cardzy.online/authors/kainat-rasheed.svg',
+  url: 'https://cardzy.online/authors/kainat-rasheed',
   description:
     'Tech Strategist at Cardzy specializing in smart digital business cards (vCards), paperless networking, and mobile user experience.',
   alumniOf: {
@@ -58,11 +59,11 @@ const personJsonLd = {
     name: 'Lahore University of Management Sciences (LUMS)',
   },
   knowsAbout: [
-    'Smart Digital Visiting Cards (vCards)',
-    'Paperless Corporate Networking',
-    'QR Code Contact Synchronization',
-    'Mobile UI/UX Optimization',
-    'Sustainable Event Technology',
+    'Smart Digital Visiting Cards (vCard .vcf protocol)',
+    'Paperless Enterprise Identity & Digital Networking',
+    'QR Code Dynamics & Contact Synchronization',
+    'Mobile UX & Web Performance Optimization',
+    'Pakistani Corporate Tech Adoption & NFC Systems',
   ],
   sameAs: [
     'https://www.instagram.com/cardzyonline/',
@@ -72,7 +73,7 @@ const personJsonLd = {
   email: 'mailto:cardzyonline@gmail.com',
 }
 
-export default function KainatAuthorPage() {
+export default function KainatRasheedAuthorPage() {
   const authorPosts = BLOG_POSTS.filter((post) => post.author.name === 'Kainat Rasheed' || post.author.name === 'Kainat')
 
   return (
@@ -98,7 +99,7 @@ export default function KainatAuthorPage() {
             <div className="relative shrink-0">
               <div className="size-28 sm:size-32 rounded-3xl bg-gradient-to-br from-amber-700 via-orange-800 to-rose-900 p-1 shadow-lg shadow-amber-950/20 overflow-hidden">
                 <img
-                  src="/authors/kainat.svg"
+                  src="/authors/kainat-rasheed.svg"
                   alt="Kainat Rasheed - Tech & Digital Product Strategist"
                   width={128}
                   height={128}
@@ -114,10 +115,10 @@ export default function KainatAuthorPage() {
             <div className="text-center sm:text-left space-y-2 flex-1">
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 px-3 py-0.5 text-xs font-bold text-amber-700 dark:text-amber-300 uppercase tracking-wider">
-                  <Award className="size-3.5 text-amber-600" /> Tech &amp; Product Lead
+                  <Award className="size-3.5 text-amber-600" /> Digital Product Lead
                 </span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300">
-                  <Sparkles className="size-3 text-emerald-500" /> 6+ Yrs Experience
+                <span className="inline-flex items-center gap-1 rounded-full bg-orange-500/10 border border-orange-500/30 px-2.5 py-0.5 text-xs font-semibold text-orange-800 dark:text-orange-300">
+                  <Sparkles className="size-3 text-orange-500" /> 6+ Yrs Experience
                 </span>
               </div>
 
@@ -133,7 +134,7 @@ export default function KainatAuthorPage() {
                   <MapPin className="size-3.5 text-amber-600 shrink-0" /> Lahore / Islamabad, Pakistan
                 </span>
                 <span className="flex items-center gap-1">
-                  <GraduationCap className="size-3.5 text-emerald-600 shrink-0" /> M.S. Information Technology (LUMS)
+                  <GraduationCap className="size-3.5 text-amber-600 shrink-0" /> M.S. Information Technology (LUMS)
                 </span>
               </div>
             </div>

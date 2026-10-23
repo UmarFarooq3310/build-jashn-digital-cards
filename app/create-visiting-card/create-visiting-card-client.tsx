@@ -477,10 +477,11 @@ export default function CreateVisitingCardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-20">
-      <div className="mb-8 text-center space-y-4">
+    <div className="w-full min-w-0 pb-20">
+      <div className="mb-6 text-center space-y-4">
         {/* Studio Product Switcher */}
-        <div className="inline-flex items-center justify-center gap-1.5 p-1 rounded-2xl bg-muted/60 border border-border/70 backdrop-blur-md">
+        <div className="w-full overflow-x-auto scrollbar-none py-1 flex justify-center">
+          <div className="inline-flex items-center justify-center gap-1.5 p-1 rounded-2xl bg-muted/60 border border-border/70 backdrop-blur-md shrink-0 max-w-full">
           <Link
             href="/create-wish"
             className="inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-card/60 transition-all"
@@ -503,33 +504,8 @@ export default function CreateVisitingCardPage() {
             📇 {t('studioTabVCard', 'Visiting Cards')}
           </span>
         </div>
-
-        {/* Hero Title & Subtitle */}
-        <div className="max-w-2xl mx-auto space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            Build Your Smart Digital Business Card 💼
-          </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Create an NFC & WhatsApp ready vCard in 60 seconds. Clients save your number with 1 tap.
-          </p>
-
-          {/* Reassurance Trust Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold">
-              🎁 100% Free Forever
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-[11px] font-bold">
-              📇 1-Tap Save Contact (.vcf)
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 text-[11px] font-bold">
-              📲 QR Code for Networking
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-[11px] font-bold">
-              ⭐ Pro Lifetime Storage
-            </span>
-          </div>
-        </div>
       </div>
+    </div>
 
       {createdCard ? (
         /* Fallback Created Result View (if rendered directly) */

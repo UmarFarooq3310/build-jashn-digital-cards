@@ -33,10 +33,38 @@ export const metadata: Metadata = {
   },
 }
 
+const customOrderProductJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Cardzy Bespoke Custom Card & Invitation Design Service',
+  description:
+    'Dedicated concierge design service for bespoke 3D animated cards, luxury wedding invitations, and corporate e-invites crafted by Cardzy artists.',
+  image: 'https://cardzy.online/og-image.jpg',
+  brand: {
+    '@type': 'Brand',
+    name: 'Cardzy',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '9.99',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    url: 'https://cardzy.online/custom-order',
+  },
+}
+
 export default function CustomOrderLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return <>{children}</>
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(customOrderProductJsonLd) }}
+      />
+      {children}
+    </>
+  )
 }

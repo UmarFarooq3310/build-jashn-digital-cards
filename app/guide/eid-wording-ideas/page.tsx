@@ -264,7 +264,7 @@ export default function EidGuidePage() {
               <span className="flex items-center gap-1">
                 <Clock className="size-4" /> {getText('readTime')}
               </span>
-              <Link href="/authors/hasnain" className="hover:text-emerald-600 dark:hover:text-emerald-400 font-semibold transition-colors">
+              <Link href="/authors/hasnain-sajid" className="hover:text-emerald-600 dark:hover:text-emerald-400 font-semibold transition-colors">
                 {getText('author')}
               </Link>
             </div>

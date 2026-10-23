@@ -63,25 +63,6 @@ export function CreateMagicLinkWrapper() {
           )}
         </p>
 
-        {/* Feature Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
-          {[
-            { e: '💍', t: '3D Ring Box Proposal', c: 'hover:border-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/30' },
-            { e: '🎂', t: 'Blowable Candles', c: 'hover:border-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/30' },
-            { e: '🎊', t: 'Floating Confetti', c: 'hover:border-purple-300 hover:bg-purple-50 dark:hover:bg-purple-950/30' },
-            { e: '🌙', t: 'Eid & Ramadan', c: 'hover:border-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30' },
-            { e: '📲', t: '1-Click WhatsApp Share', c: 'hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950/30' },
-          ].map((p) => (
-            <span
-              key={p.t}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-card/80 backdrop-blur-sm border border-border text-foreground shadow-sm transition-all duration-300 cursor-default ${p.c}`}
-            >
-              <span className="text-lg">{p.e}</span>
-              <span>{p.t}</span>
-            </span>
-          ))}
-        </div>
-
         {/* Client Tool Body */}
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/50 pointer-events-none -z-10 rounded-3xl" />

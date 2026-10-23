@@ -25,8 +25,8 @@ const FEATURED_GUIDES = [
     categoryColor: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30",
     author: "Kainat Rasheed",
     authorRole: "Tech & Digital Product Strategist",
-    authorAvatar: "/authors/kainat.svg",
-    authorHref: "/authors/kainat",
+    authorAvatar: "/authors/kainat-rasheed.svg",
+    authorHref: "/authors/kainat-rasheed",
     readTime: "10 min read",
   },
   {
@@ -37,8 +37,8 @@ const FEATURED_GUIDES = [
     categoryColor: "bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30",
     author: "Hasnain Sajid",
     authorRole: "Creative & Cultural Events Editor",
-    authorAvatar: "/authors/hasnain.svg",
-    authorHref: "/authors/hasnain",
+    authorAvatar: "/authors/hasnain-sajid.svg",
+    authorHref: "/authors/hasnain-sajid",
     readTime: "11 min read",
   },
   {

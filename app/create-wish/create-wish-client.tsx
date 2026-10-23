@@ -849,34 +849,8 @@ function CreateWishContent() {
           </div>
         </div>
 
-        {/* Hero Title & Subtitle */}
-        <div className="max-w-2xl mx-auto space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            Create & Send a Digital Greeting Card ✨
-          </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Personalize in 60 seconds with live preview. 100% Free to create and send directly via WhatsApp.
-          </p>
-
-          {/* Reassurance Trust Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold">
-              🎁 100% Free Forever
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-[11px] font-bold">
-              ⚡ No Signup Required
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 text-[11px] font-bold">
-              📱 Interactive 3D on Phones
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-[11px] font-bold">
-              ⭐ Pro Lifetime Storage
-            </span>
-          </div>
-        </div>
-
         {/* 4-Part Progress Stepper */}
-        <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
           {[
             { s: 1, label: t('stepWishPartOccasion') || t('stepPartOccasion') || '1. Occasion' },
             { s: 2, label: t('stepWishPartDetails') || '2. Message & Details' },
@@ -1001,26 +975,6 @@ function CreateWishContent() {
                   >
                     <Grid className="size-3 text-[#7B0D1E]" /> {t('viewOccasions')}
                   </Button>
-                </div>
-
-                {/* Quick Switch Template Pills */}
-                <div className="w-full min-w-0 max-w-full flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-                  <span className="text-[10px] font-bold text-muted-foreground shrink-0 uppercase tracking-wider">Quick Fill:</span>
-                  {WISH_QUICK_STARTERS.map((s) => (
-                    <button
-                      key={s.id}
-                      type="button"
-                      onClick={() => handleApplyQuickStarter(s)}
-                      className={cn(
-                        "px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all shrink-0 border cursor-pointer",
-                        occasionId === s.occasionId
-                          ? "bg-[#7B0D1E]/15 border-[#7B0D1E]/40 text-[#7B0D1E] font-bold"
-                          : "bg-muted/50 border-border hover:bg-muted text-foreground"
-                      )}
-                    >
-                      {s.label}
-                    </button>
-                  ))}
                 </div>
 
                 <div className={cn('space-y-5 text-left', (lang === 'ur' || lang === 'ar') && 'text-right font-urdu')}>

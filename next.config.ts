@@ -440,6 +440,16 @@ const nextConfig: NextConfig = {
         destination: '/blog/smart-vcard-for-doctors-lawyers-engineers-smart-business-cards',
         permanent: true,
       },
+      {
+        source: '/authors/hasnain',
+        destination: '/authors/hasnain-sajid',
+        permanent: true,
+      },
+      {
+        source: '/authors/kainat',
+        destination: '/authors/kainat-rasheed',
+        permanent: true,
+      },
     ]
   },
 }

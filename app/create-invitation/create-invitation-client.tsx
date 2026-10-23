@@ -837,31 +837,8 @@ function CreateInvitationContent() {
           </div>
         </div>
 
-        {/* Hero Title & Subtitle */}
-        <div className="max-w-2xl mx-auto space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            Design & Deliver Royal Digital Invitations 👑
-          </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Bilingual Nikkah, Barat, Walima, and Birthday invites with interactive RSVP & live countdown.
-          </p>
-
-          {/* Reassurance Trust Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold">
-              🎁 100% Free to Create & Send
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 text-[11px] font-bold">
-              💌 1-Tap WhatsApp RSVP Tracking
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-[11px] font-bold">
-              ⭐ Pro Lifetime Storage
-            </span>
-          </div>
-        </div>
-
         {/* 4-Part Progress Stepper */}
-        <div className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
           {[
             { s: 1, label: t('stepPartOccasion') || '1. Occasion' },
             { s: 2, label: t('stepPartDetails') || '2. Event Details' },
@@ -989,26 +966,6 @@ function CreateInvitationContent() {
                   >
                     <Grid className="size-3 text-[#7B0D1E]" /> {t('viewOccasions')}
                   </Button>
-                </div>
-
-                {/* Quick Switch Template Pills */}
-                <div className="w-full min-w-0 max-w-full flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-                  <span className="text-[10px] font-bold text-muted-foreground shrink-0 uppercase tracking-wider">Quick Fill:</span>
-                  {INVITATION_QUICK_STARTERS.map((s) => (
-                    <button
-                      key={s.id}
-                      type="button"
-                      onClick={() => handleApplyQuickStarter(s)}
-                      className={cn(
-                        "px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all shrink-0 border cursor-pointer",
-                        typeId === s.typeId
-                          ? "bg-[#7B0D1E]/15 border-[#7B0D1E]/40 text-[#7B0D1E] font-bold"
-                          : "bg-muted/50 border-border hover:bg-muted text-foreground"
-                      )}
-                    >
-                      {s.label}
-                    </button>
-                  ))}
                 </div>
 
                 {/* 📝 Part 2: Event Details */}
@@ -1307,27 +1264,6 @@ function CreateInvitationContent() {
                         <span>{t('generateWithAi') || '✨ AI Invitation Generator'}</span>
                       </button>
                     </div>
-
-                    {/* 📝 CHOOSE PRE-WRITTEN INVITATION TEMPLATE */}
-                    {wordingTemplates.length > 0 && (
-                      <div className="rounded-2xl border border-input bg-card p-4 space-y-2.5 shadow-xs">
-                        <label className={cn("text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5", (lang === 'ur' || lang === 'ar') ? "text-right flex-row-reverse font-urdu" : "text-left")}>
-                          <Sparkles className="size-4 text-amber-500" /> {t('selectWordingTemplateLabel') || t('choosePrewrittenTemplate') || 'CHOOSE PRE-WRITTEN INVITATION TEMPLATE:'}
-                        </label>
-                        <div className="flex flex-wrap gap-2">
-                          {wordingTemplates.map((tmpl, idx) => (
-                            <button
-                              key={idx}
-                              type="button"
-                              onClick={() => applyWordingTemplate(tmpl)}
-                              className="flex items-center gap-1.5 rounded-xl border border-[#7B0D1E]/20 bg-[#7B0D1E]/5 px-3 py-1.5 text-xs font-bold text-[#7B0D1E] hover:bg-[#7B0D1E]/15 transition-all active:scale-95 shadow-xs"
-                            >
-                              📜 <span>{tmpl.name}</span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
 
                     {/* 1-Click Smart Wording, Duas & Shayari */}
                     <SmartWordingPicker

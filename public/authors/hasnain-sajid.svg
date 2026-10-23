@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+
+    <!-- Background Gradient: Deep Royal Indigo / Midnight Azure -->
+    <linearGradient id="hs-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="40%" stop-color="#1e1b4b" />
+      <stop offset="80%" stop-color="#1e3a8a" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+
+    <!-- Warm Gold Accent Gradient -->
+    <linearGradient id="hs-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="50%" stop-color="#d4af37" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+
+    <!-- Natural Warm South Asian Skin Gradient -->
+    <linearGradient id="hs-skin" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8d7be" />
+      <stop offset="70%" stop-color="#ebbe9e" />
+      <stop offset="100%" stop-color="#dca480" />
+    </linearGradient>
+
+    <!-- Skin Shadow for Neck/Jaw -->
+    <linearGradient id="hs-shadow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c98a65" />
+      <stop offset="100%" stop-color="#b87550" />
+    </linearGradient>
+
+    <!-- Hair Depth Gradient -->
+    <linearGradient id="hs-hair" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2d2d30" />
+      <stop offset="60%" stop-color="#1c1c1e" />
+      <stop offset="100%" stop-color="#09090b" />
+    </linearGradient>
+
+    <!-- Blazer Gradient -->
+    <linearGradient id="hs-suit" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#090d16" />
+    </linearGradient>
+
+    <!-- Lapel Gradient -->
+    <linearGradient id="hs-lapel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+  </defs>
+
+  <!-- Card Background -->
+  <rect width="200" height="200" rx="40" fill="url(#hs-bg)" />
+
+  <!-- Outer Editorial Decorative Gold/Cyan Ring -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#hs-gold)" stroke-width="2" stroke-dasharray="6,4" opacity="0.65" />
+  <circle cx="100" cy="100" r="86" fill="none" stroke="#38bdf8" stroke-width="0.75" opacity="0.3" />
+
+  <!-- ── SHOULDERS / SUIT ─────────────────────────────────── -->
+  <!-- Suit Body -->
+  <path d="M36 200 C36 148, 64 130, 100 130 C136 130, 164 148, 164 200 Z" fill="url(#hs-suit)" />
+
+  <!-- White Crisp Dress Shirt -->
+  <path d="M84 130 L100 174 L116 130 Z" fill="#ffffff" />
+  <!-- Shirt Inner Shadow -->
+  <path d="M96 130 L100 174 L104 130 Z" fill="#e2e8f0" />
+
+  <!-- Sapphire & Gold Silk Tie -->
+  <path d="M96 133 L104 133 L103 141 L97 141 Z" fill="#0284c7" />
+  <path d="M97 141 L103 141 L105 186 L100 196 L95 186 Z" fill="#0369a1" />
+  <path d="M98 143 L102 143 L104 186 L100 194 L96 186 Z" fill="#0284c7" />
+  <!-- Tie diagonal gold stripe accents -->
+  <line x1="97" y1="152" x2="103" y2="157" stroke="url(#hs-gold)" stroke-width="1.2" opacity="0.8" />
+  <line x1="96" y1="164" x2="104" y2="169" stroke="url(#hs-gold)" stroke-width="1.2" opacity="0.8" />
+  <line x1="96" y1="176" x2="104" y2="181" stroke="url(#hs-gold)" stroke-width="1.2" opacity="0.8" />
+
+  <!-- Shirt Collar Points -->
+  <path d="M84 130 L98 141 L88 144 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.75" />
+  <path d="M116 130 L102 141 L112 144 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.75" />
+
+  <!-- Suit Lapels (Left & Right) -->
+  <path d="M56 200 L76 134 L93 158 L68 200 Z" fill="url(#hs-lapel)" stroke="#475569" stroke-width="0.5" />
+  <path d="M144 200 L124 134 L107 158 L132 200 Z" fill="url(#hs-lapel)" stroke="#475569" stroke-width="0.5" />
+
+  <!-- Lapel Gold Pin (Cardzy Stylist Emblem) -->
+  <circle cx="70" cy="154" r="2.5" fill="url(#hs-gold)" />
+
+  <!-- ── NECK & CHIN SHADOW ──────────────────────────────── -->
+  <rect x="88" y="104" width="24" height="30" rx="6" fill="url(#hs-skin)" />
+  <!-- Shadow under jaw -->
+  <path d="M88 107 C94 116, 106 116, 112 107 L112 118 C106 122, 94 122, 88 118 Z" fill="url(#hs-shadow)" opacity="0.45" />
+
+  <!-- ── EARS ────────────────────────────────────────────── -->
+  <!-- Left Ear -->
+  <ellipse cx="69" cy="80" rx="5" ry="9" fill="url(#hs-skin)" />
+  <path d="M69 75 C67 78, 67 82, 70 85" stroke="url(#hs-shadow)" stroke-width="1" fill="none" />
+  <!-- Right Ear -->
+  <ellipse cx="131" cy="80" rx="5" ry="9" fill="url(#hs-skin)" />
+  <path d="M131 75 C133 78, 133 82, 130 85" stroke="url(#hs-shadow)" stroke-width="1" fill="none" />
+
+  <!-- ── HEAD / JAW SHAPE ────────────────────────────────── -->
+  <!-- Defined Masculine Jawline & Head -->
+  <path d="M72 74 C72 52, 82 42, 100 42 C118 42, 128 52, 128 74 C128 94, 120 110, 100 110 C80 110, 72 94, 72 74 Z" fill="url(#hs-skin)" />
+
+  <!-- ── NEAT DESIGNER STUBBLE (Light & Groomed) ─────────── -->
+  <path d="M74 80 C74 102, 84 109, 100 109 C116 109, 126 102, 126 80 C126 86, 122 104, 100 104 C78 104, 74 86, 74 80 Z" fill="#18181b" opacity="0.12" />
+
+  <!-- ── EYES & BROWS ────────────────────────────────────── -->
+  <!-- Left Eye White & Iris -->
+  <ellipse cx="88" cy="74" rx="5" ry="3.5" fill="#ffffff" />
+  <circle cx="88.5" cy="74" r="2.6" fill="#1e1b18" />
+  <circle cx="88.5" cy="74" r="1.3" fill="#09090b" />
+  <circle cx="87.5" cy="73" r="0.8" fill="#ffffff" />
+  <path d="M83 72 Q88 70 93 72" stroke="#451a03" stroke-width="0.8" fill="none" />
+
+  <!-- Right Eye White & Iris -->
+  <ellipse cx="112" cy="74" rx="5" ry="3.5" fill="#ffffff" />
+  <circle cx="111.5" cy="74" r="2.6" fill="#1e1b18" />
+  <circle cx="111.5" cy="74" r="1.3" fill="#09090b" />
+  <circle cx="110.5" cy="73" r="0.8" fill="#ffffff" />
+  <path d="M107 72 Q112 70 117 72" stroke="#451a03" stroke-width="0.8" fill="none" />
+
+  <!-- Groomed Masculine Eyebrows -->
+  <path d="M81 67 Q88 64 95 67" stroke="#18181b" stroke-width="2.6" stroke-linecap="round" fill="none" />
+  <path d="M105 67 Q112 64 119 67" stroke="#18181b" stroke-width="2.6" stroke-linecap="round" fill="none" />
+
+  <!-- ── NOSE ────────────────────────────────────────────── -->
+  <path d="M99 71 L97 81 Q100 84 103 81" stroke="url(#hs-shadow)" stroke-width="1.4" stroke-linecap="round" fill="none" />
+
+  <!-- ── CONFIDENT EDITORIAL SMILE ───────────────────────── -->
+  <path d="M92 92 Q100 97 108 92" stroke="#a14324" stroke-width="2" stroke-linecap="round" fill="none" />
+  <!-- Soft lip shadow -->
+  <path d="M95 95 Q100 97.5 105 95" stroke="url(#hs-shadow)" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.6" />
+
+  <!-- ── STYLED MODERN HAIR ──────────────────────────────── -->
+  <!-- Modern Pompadour / Side-Part Volume with clean taper -->
+  <path d="M68 68 C66 48, 76 34, 100 34 C122 34, 134 44, 131 66 C129 60, 126 50, 116 44 C104 38, 88 40, 78 48 C72 54, 70 60, 68 68 Z" fill="url(#hs-hair)" />
+  <!-- Hair sweep / volume overlay -->
+  <path d="M72 52 C78 40, 96 36, 112 40 C124 43, 130 52, 128 62 C125 50, 115 42, 98 42 C84 42, 76 48, 72 52 Z" fill="#3f3f46" opacity="0.5" />
+  <!-- Hair side-taper -->
+  <path d="M68 64 C68 74, 72 79, 72 79 L73 72 Z" fill="url(#hs-hair)" />
+  <path d="M132 64 C132 74, 128 79, 128 79 L127 72 Z" fill="url(#hs-hair)" />
+</svg>
