@@ -797,7 +797,7 @@ export default function CardAnimationPreview({
   return (
     <div
       ref={containerRef}
-      className={cn("relative w-full overflow-hidden", className)}
+      className={cn("relative w-full mx-auto overflow-hidden", className)}
     >
       {/* ── Card content ── */}
       {children}

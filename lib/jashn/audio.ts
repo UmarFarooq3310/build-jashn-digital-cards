@@ -524,14 +524,18 @@ export function getDefaultAudioTrackForOccasion(id: string | undefined): string 
     return 'achievement-brass'
   }
 
-  // Corporate & Professional vCards
+  // Digital Visiting Cards (vCards) - poetic & soothing
+  if (cleanId.includes('vcard')) {
+    return 'friendship-soft'
+  }
+
+  // Corporate & Professional Events
   if (
     cleanId.includes('business') ||
     cleanId.includes('shop') ||
     cleanId.includes('office') ||
     cleanId.includes('seminar') ||
-    cleanId.includes('corporate') ||
-    cleanId.includes('vcard')
+    cleanId.includes('corporate')
   ) {
     return 'corporate-ambient'
   }

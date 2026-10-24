@@ -260,7 +260,11 @@ function CreateWishContent() {
     'esports-winner',
   ].includes(occasionId)
 
-  const isPoetryOccasion = occasionId === 'poetry' || Boolean(poetName || dedication)
+  const isPoetryOccasion = occasionId === 'poetry'
+
+  const isCustomRelation = Boolean(
+    relation && !RELATIONS.some((r) => r.en.toLowerCase() === relation.toLowerCase())
+  )
 
   const isNumberDrawOrBingo = ['number-draw-winner', 'bingo-winner'].includes(occasionId)
 
@@ -304,8 +308,13 @@ function CreateWishContent() {
     setRelation(starter.relation)
     setMessage(starter.message)
     isUserCustomEditedMessage.current = true
-    if ((starter as any).poetName) setPoetName((starter as any).poetName)
-    if ((starter as any).dedication) setDedication((starter as any).dedication)
+    setPoetName((starter as any).poetName || '')
+    setDedication((starter as any).dedication || '')
+    setPlayerName('')
+    setKillCount('')
+    setRank('')
+    setWinningNumber('')
+    setDeveloperName('')
     if (starter.audioTrack) setAudioTrack(starter.audioTrack)
     if (starter.themeId) setThemeId(starter.themeId)
     if (!senderName.trim()) {
@@ -621,26 +630,32 @@ function CreateWishContent() {
   }
 
   function handleOccasionSelect(id: string) {
+    const isDifferentOccasion = id !== occasionId
     setOccasionId(id)
     setAudioTrack(getDefaultAudioTrackForOccasion(id))
     setErrors({})
     changeStep(2)
     
-    const newTemplates = getTemplates(id)
-    const isSensitiveOccasion = id === 'sympathy' || id === 'condolence' || id.includes('sympathy') || id.includes('condolence') || id.includes('majlis') || id.includes('taazia') || id.includes('chelum') || id.includes('chehlum') || id.includes('ashura')
-    const hasCelebratoryKeywords = /مبارک|سالگرہ|شادی|birthday|congratulat|happy|celebrat|party|mubarak|wedding|anniversary/i.test(message)
-    const isMsgTemplate = isTemplateMessage(message)
+    if (isDifferentOccasion) {
+      // Clear old occasion-specific details so Step 2 doesn't display previous occasion's details
+      setRelation('')
+      setRecipientName('')
+      setPlayerName('')
+      setKillCount('')
+      setRank('')
+      setWinningNumber('')
+      setDeveloperName('')
+      setPoetName('')
+      setDedication('')
 
-    // Overwrite with newly selected occasion's template if:
-    // 1. Message is empty
-    // 2. User has never manually typed custom text (!isUserCustomEditedMessage.current)
-    // 3. Current message is one of the predefined templates from previous occasion
-    // 4. Switching to a sensitive condolence occasion and message contains celebratory text!
-    if (!message.trim() || !isUserCustomEditedMessage.current || isMsgTemplate || (isSensitiveOccasion && hasCelebratoryKeywords)) {
+      // Always refresh to newly selected occasion's auto template so user can freely select auto-fill texts
+      const newTemplates = getTemplates(id)
       if (newTemplates.length > 0) {
         setMessage(getLocalizedTemplateText(newTemplates[0], lang))
-        isUserCustomEditedMessage.current = false
+      } else {
+        setMessage('')
       }
+      isUserCustomEditedMessage.current = false
     }
   }
 
@@ -942,7 +957,16 @@ function CreateWishContent() {
                 <OccasionPicker value={occasionId} onChange={handleOccasionSelect} />
                 <div className="flex justify-end pt-4 border-t border-border">
                   <Button
-                    onClick={() => setStep(2)}
+                    onClick={() => {
+                      changeStep(2)
+                      if (!message.trim()) {
+                        const newTemplates = getTemplates(occasionId)
+                        if (newTemplates.length > 0) {
+                          setMessage(getLocalizedTemplateText(newTemplates[0], lang))
+                        }
+                        isUserCustomEditedMessage.current = false
+                      }
+                    }}
                     className="w-full sm:w-auto h-12 px-8 rounded-2xl font-bold text-sm bg-[#7B0D1E] hover:bg-[#630A18] text-white shadow-lg shadow-[#7B0D1E]/20 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>{t('btnNext') || 'Next'}</span>
@@ -1329,7 +1353,7 @@ function CreateWishContent() {
                           <span>{t('whoIsCardForHeader') || '1. WHO IS THIS CARD FOR? (SELECT RELATION)'}</span>
                           <span className="text-red-500 font-bold ml-0.5">*</span>
                         </h3>
-                        <div className={cn("flex flex-wrap gap-2 pt-1", (lang === 'ur' || lang === 'ar') && "justify-end")}>
+                        <div className={cn("flex flex-wrap items-center gap-2 pt-1", (lang === 'ur' || lang === 'ar') && "justify-end")}>
                           {RELATIONS.map((r) => (
                             <button
                               key={r.id}
@@ -1345,7 +1369,7 @@ function CreateWishContent() {
                                   })
                                 }
                               }}
-                              className={`rounded-full border px-4 py-1.5 text-xs font-bold transition-all ${
+                              className={`rounded-full border px-4 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                                 relation === r.en
                                   ? 'border-[#7B0D1E] bg-[#7B0D1E] text-white shadow-xs ring-2 ring-[#7B0D1E]/25'
                                   : errors.relation
@@ -1356,6 +1380,48 @@ function CreateWishContent() {
                               {t(('rel' + r.id) as any) || r.en}
                             </button>
                           ))}
+
+                          {/* Small custom relationship entry in last of relation options */}
+                          <div className={cn(
+                            "relative inline-flex items-center rounded-full border px-3 py-1 text-xs transition-all",
+                            isCustomRelation
+                              ? "border-[#7B0D1E] bg-[#7B0D1E]/10 ring-2 ring-[#7B0D1E]/25 shadow-xs"
+                              : "border-dashed border-border bg-card hover:border-[#7B0D1E]/50"
+                          )}>
+                            <span className="text-xs mr-1 shrink-0">✍️</span>
+                            <input
+                              type="text"
+                              value={isCustomRelation ? relation : ''}
+                              onChange={(e) => {
+                                const val = e.target.value
+                                setRelation(val)
+                                if (val.trim()) {
+                                  setErrors((prev) => {
+                                    const copy = { ...prev }
+                                    delete copy.relation
+                                    return copy
+                                  })
+                                }
+                              }}
+                              placeholder={
+                                lang === 'ur'
+                                  ? 'دیگر رشتہ لکھیں (مثلاً استاد، کزن)...'
+                                  : 'Other relation (e.g. Teacher, Cousin)...'
+                              }
+                              dir={lang === 'ur' || lang === 'ar' ? 'rtl' : 'ltr'}
+                              className="bg-transparent text-xs font-bold text-foreground placeholder:text-muted-foreground/60 outline-none w-36 sm:w-48"
+                            />
+                            {isCustomRelation && relation && (
+                              <button
+                                type="button"
+                                onClick={() => setRelation('')}
+                                className="ml-1 text-xs text-muted-foreground hover:text-foreground shrink-0 cursor-pointer"
+                                title="Clear"
+                              >
+                                ✕
+                              </button>
+                            )}
+                          </div>
                         </div>
                         {errors.relation && (
                           <p className={cn("mt-1.5 flex items-center gap-1 text-xs font-semibold text-red-500", (lang === 'ur' || lang === 'ar') ? "justify-end font-urdu" : "text-left")}>
@@ -1455,13 +1521,13 @@ function CreateWishContent() {
                             ? (lang === 'ur' ? 'مشہور اشعار منتخب کریں' : 'CHOOSE FAMOUS POETIC COUPLET')
                             : (t('choosePrewrittenWishTemplate') || 'CHOOSE PRE-WRITTEN WISH TEMPLATE')}
                         </label>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                           {templates.map((tmpl, idx) => (
                             <button
                               key={idx}
                               type="button"
                               onClick={() => applyTemplate(idx)}
-                              className="flex items-center gap-1.5 rounded-xl border border-[#7B0D1E]/20 bg-[#7B0D1E]/5 px-3 py-1.5 text-xs font-bold text-[#7B0D1E] hover:bg-[#7B0D1E]/15 transition-all"
+                              className="flex items-center gap-1.5 rounded-xl border border-[#7B0D1E]/20 bg-[#7B0D1E]/5 px-3 py-1.5 text-xs font-bold text-[#7B0D1E] hover:bg-[#7B0D1E]/15 transition-all cursor-pointer"
                             >
                               {isPoetryOccasion ? '📜 ' : '🎁 '}
                               {isPoetryOccasion
@@ -1469,6 +1535,20 @@ function CreateWishContent() {
                                 : `${t('templatePrefix') || 'Template'} ${idx + 1}`}
                             </button>
                           ))}
+                          {message.trim() && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setMessage('')
+                                isUserCustomEditedMessage.current = true
+                              }}
+                              className="flex items-center gap-1 rounded-xl border border-border bg-card px-2.5 py-1.5 text-xs font-bold text-muted-foreground hover:bg-muted/70 transition-all cursor-pointer ml-auto"
+                              title="Clear text to pick another template"
+                            >
+                              <span>✕</span>
+                              <span>{lang === 'ur' ? 'متن صاف کریں' : 'Clear Text'}</span>
+                            </button>
+                          )}
                         </div>
                       </div>
                     )}
@@ -1696,7 +1776,7 @@ function CreateWishContent() {
 
         {/* Desktop & Mobile Right Column — Sticky Live Animated Card Preview */}
         <div className="lg:col-span-5 space-y-4 w-full min-w-0">
-          <div id="card-live-preview-box" className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden w-full max-w-full" suppressHydrationWarning>
+          <div id="card-live-preview-box" className="sticky top-20 rounded-3xl border border-border bg-card/60 p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden w-full max-w-full" suppressHydrationWarning>
             <div className="mb-3 flex items-center justify-between px-1">
               <p className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
                 <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
@@ -1707,7 +1787,7 @@ function CreateWishContent() {
             </div>
 
             <PreviewCardFit topOffset={80} bottomOffset={24} reservedHeaderHeight={56}>
-              <CardAnimationPreview occasionId={occasionId} animationKey={occasionId} className="max-w-md mx-auto" roundedClass="rounded-[2.5rem]">
+              <CardAnimationPreview occasionId={occasionId} animationKey={occasionId} className="w-full max-w-full mx-auto" roundedClass="rounded-[2.5rem]">
                 <WishCard
                   data={{
                     occasionId,

@@ -21,6 +21,7 @@ import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
 import { recordCardShare } from '@/lib/jashn/magic-service'
 import { downloadVCard } from '@/lib/jashn/vcard-export'
 import { downloadCardPng, downloadCardVideo } from '@/lib/jashn/card-media-export'
+import { getVisitingCardTheme } from '@/lib/jashn/visiting-card-themes'
 import { cn } from '@/lib/utils'
 
 export default function VisitingCardPublicPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -245,7 +246,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
         fileName: `vcard-${card.slug}`,
         cardType: 'vcard',
         cardSlug: card.slug,
-        audioTrack: 'corporate-ambient',
+        audioTrack: 'friendship-soft',
         targetAspectRatio: '9:16',
         durationSeconds: 10,
         onProgress: (p) => setVideoProgress(p),
@@ -310,6 +311,8 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
     }
   }
 
+  const vTheme = getVisitingCardTheme(card?.themeId)
+
   // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Creator Control Panel) ──
   // ── 1. SENDER / CREATOR SCREEN (Clean Responsive Desktop/Mobile Layout, No Repetition) ──
   if (isSenderMode) {
@@ -321,7 +324,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center lg:h-full lg:max-h-full">
           {/* Digital Visiting Card Surface Column */}
           <div className="order-2 lg:order-1 lg:col-span-8 xl:col-span-8 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
-            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10">
+            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Eye className="size-3.5 text-[#D4AF37]" /> Interactive Client View
               </span>
@@ -337,7 +340,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
             </div>
 
             <div className="w-full flex-1 min-h-0 pt-4 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
-              <div className="w-full max-w-lg lg:max-w-xl">
+              <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
                 <VisitingCardView ref={cardRef} data={card} showShareBtn={false} showQrCode={false} />
               </div>
             </div>
@@ -581,12 +584,9 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
 
   // ── 2. RECEIVER SCREEN (Clean 100dvh Full-Screen Viewport + Cardzy Make Your Own) ──
   return (
-    <div className="flex min-h-[100dvh] flex-col justify-between items-center relative overflow-y-auto px-4 py-4 sm:py-6 bg-[#050507] text-white w-full select-none">
-      {/* Gold Ambient Background Glow */}
-      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 size-[32rem] rounded-full bg-[#D4AF37]/10 blur-[120px]" />
-
+    <div className="flex min-h-[100dvh] flex-col justify-between items-center relative overflow-y-auto px-3 py-3 text-white w-full select-none">
       {/* Receiver Screen Top Minimal Bar */}
-      <header className="w-full max-w-lg flex items-center justify-between z-20 py-2 px-3.5 rounded-full bg-zinc-900/80 backdrop-blur-md border border-[#D4AF37]/30 shadow-xl">
+      <header className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl flex items-center justify-between z-20 py-2 px-3.5 rounded-full bg-zinc-900/80 backdrop-blur-md border border-[#D4AF37]/30 shadow-xl">
         <Link href="/" className="flex items-center gap-2 group">
           <CardzyLogo className="size-7 transition-transform group-hover:scale-105" />
           <span className="text-sm font-extrabold tracking-tight bg-gradient-to-r from-[#D4AF37] via-[#FFF8DC] to-[#E5C35A] bg-clip-text text-transparent">
@@ -603,15 +603,15 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
         </Link>
       </header>
 
-      {/* Receiver Screen Main Centered 3D Business Card */}
-      <main className="w-full max-w-xl flex-1 flex flex-col items-center justify-center my-auto py-6 sm:py-10 z-10">
-        <div className="w-full py-2 flex justify-center">
-          <VisitingCardView ref={cardRef} data={card} showShareBtn={false} showQrCode={false} className="max-w-lg lg:max-w-xl" />
+      {/* Receiver Screen Main Centered Card Container */}
+      <main className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl flex-1 flex flex-col items-center justify-center my-auto py-2 z-10">
+        <div className="w-full flex justify-center">
+          <VisitingCardView ref={cardRef} data={card} showShareBtn={false} showQrCode={false} />
         </div>
       </main>
 
       {/* Receiver Screen Footer Control */}
-      <footer className="w-full max-w-md flex flex-col items-center gap-3 z-20 pb-4 text-center">
+      <footer className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl flex flex-col items-center gap-3 z-20 pb-4 text-center">
         <div className="grid grid-cols-2 gap-2.5 w-full max-w-xs">
           <button
             onClick={() => {

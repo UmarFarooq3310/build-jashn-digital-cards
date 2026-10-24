@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 
 export interface WordingItem {
   id: string
-  group: 'wedding' | 'birthday' | 'eid' | 'anniversary' | 'friendship' | 'general'
+  group: 'wedding' | 'birthday' | 'eid' | 'anniversary' | 'friendship' | 'condolence' | 'general'
   subCategory: string
   scope?: 'invitation' | 'wish' | 'all'
   label: string
@@ -281,29 +281,154 @@ const ALL_WORDING_ITEMS: WordingItem[] = [
     urdu: 'شاندار کامیابی اور ڈگری کی تکمیل پر دلی مبارکباد! آپ کی محنت رنگ لائی، مستقبل میں مزید کامیابیوں کے لیے دعا گو۔',
     english: 'Heartiest congratulations on your outstanding achievement and graduation! Wishing you a brilliant and prosperous career ahead.',
   },
+  // =========================================================================
+  // --- 6. CONDOLENCES, SYMPATHY & SOLEMN OCCASIONS (تعزیت، ہمدردی و ایصالِ ثواب) ---
+  // =========================================================================
   {
-    id: 'g-condolence-inna-lillah',
-    group: 'general',
-    subCategory: 'sympathy',
+    id: 'c-inna-lillahi-maghfirat',
+    group: 'condolence',
+    subCategory: 'inna-lillah',
     scope: 'all',
-    label: '🕊️ Deepest Sympathy & Dua (دلی تعزیت و مغفرت کی دعا)',
-    urdu: 'إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ\n\nاس غم کی گھڑی میں ہم آپ اور آپ کے تمام اہل خانہ کے دکھ میں برابر کے شریک ہیں۔ اللہ تعالیٰ مرحوم کو جوارِ رحمت میں اعلیٰ مقام اور تمام پسماندگان کو صبرِ جمیل عطا فرمائے۔ آمین۔',
-    english: 'Inna Lillahi wa inna ilayhi raji\'un. Sending our deepest condolences and heartfelt prayers to you and your family. May Allah grant the departed soul highest rank in Jannah and bless you with patience and comfort. Ameen.',
+    label: '🕊️ Inna Lillahi & Jannah Dua (انا للہ و بلندیٔ درجات)',
+    urdu: 'إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ\n\nاس غمگین لمحے میں ہم آپ اور آپ کے تمام اہل خانہ کے دکھ میں برابر کے شریک ہیں۔ اللہ تعالیٰ مرحوم کو اپنی جوارِ رحمت میں اعلیٰ مقام اور تمام پسماندگان کو صبرِ جمیل و اجرِ عظیم عطا فرمائے۔ آمین۔',
+    english: 'Inna Lillahi wa inna ilayhi raji\'un. Sending our deepest condolences and heartfelt prayers to you and your family. May Allah Almighty grant the departed soul highest rank in Jannat-ul-Firdaus and bless your family with patience and strength. Ameen.',
   },
   {
-    id: 'g-condolence-patience',
-    group: 'general',
-    subCategory: 'sympathy',
+    id: 'c-quran-sabireen',
+    group: 'condolence',
+    subCategory: 'inna-lillah',
     scope: 'all',
-    label: '🕊️ Prayers for Comfort & Strength (صبر و حوصلہ کی دعا)',
-    urdu: 'دلی تعزیت و ہمدردی۔ اللہ پاک آپ کو اور آپ کے خاندان کو اس گہرے صدمے پر صبر و حوصلہ عطا فرمائے اور غم کو اپنی رحمتوں سے ہلکا فرمائے۔ آمین۔',
-    english: 'Please accept our heartfelt condolences and deepest sympathy during this difficult time. Wishing you peace, comfort, and strength in the days ahead. Our prayers are with you.',
+    label: '🤲 Quran Surah Al-Baqarah (وَبَشِّرِ الصَّابِرِينَ)',
+    urdu: 'وَبَشِّرِ الصَّابِرِينَ الَّذِينَ إِذَا أَصَابَتْهُم مُّصِيبَةٌ قَالُوا إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ\n\nاللہ تعالیٰ اس کٹھن گھڑی میں آپ کے دل کو اطمینان بخشے، غم کے بوجھ کو ہلکا فرمائے اور آپ کو صابرین کا عظیم اجر عطا فرمائے۔ آمین۔',
+    english: 'Give good news to the patient who, when calamity strikes them, say: "Indeed we belong to Allah, and to Him we shall return." (Surah Al-Baqarah 2:155-156)\n\nMay Allah shower tranquility upon your grieving hearts and surround your home with His mercy.',
+  },
+  {
+    id: 'c-sunnah-dua',
+    group: 'condolence',
+    subCategory: 'inna-lillah',
+    scope: 'all',
+    label: '🕊️ Sunnah Maghfirat Prayer (دعائے مغفرت و رحمت)',
+    urdu: 'اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ وَعَافِهِ وَاعْفُ عَنْهُ وَأَكْرِمْ نُزُلَهُ وَوَسِّعْ مُدْخَلَهُ\n\nاللہ پاک مرحوم کی تمام لغزشوں کو معاف فرما کر ان کی لحد کو نور سے منور فرمائے اور قبر کو جنت کے باغوں میں سے ایک باغ بنائے۔ آمین۔',
+    english: 'O Allah, forgive them, have mercy upon them, pardon them, and grant them an honorable resting place.\n\nMay Almighty Allah illuminate their grave with divine light and unite you all in the highest gardens of Jannah. Ameen.',
+  },
+  {
+    id: 'c-loss-father',
+    group: 'condolence',
+    subCategory: 'parents',
+    scope: 'all',
+    label: '🖤 Loss of Beloved Father (والد محترم کی رحلت)',
+    urdu: 'والد کا سایہ ایک گھنے اور محفوظ درخت کی مانند ہوتا ہے۔ آپ کے محترم والد کی رحلت کا سن کر دلی دکھ اور گہرا صدمہ ہوا۔ اللہ پاک ان کی بے حساب مغفرت فرمائے اور ان کے نیک اعمال کو ان کا توشۂ آخرت بنائے۔ اللہ تعالیٰ آپ سب کو یہ عظیم صدمہ برداشت کرنے کی توفیق اور صبرِ جمیل عطا فرمائے۔ آمین۔',
+    english: 'Deeply sorrowed by the heartbreaking passing of your beloved father. A father’s loving shelter, wisdom, and prayers can never be replaced. May Allah bless his noble soul with the highest station in Jannah, forgive his shortcomings, and envelop your family in solace and strength. Ameen.',
+  },
+  {
+    id: 'c-loss-mother',
+    group: 'condolence',
+    subCategory: 'parents',
+    scope: 'all',
+    label: '🖤 Loss of Beloved Mother (والدہ ماجدہ کی وفات)',
+    urdu: 'ماں کی محبت اور دعائیں زندگی کی سب سے بڑی پناہ گاہ ہوتی ہیں۔ آپ کی والدہ ماجدہ کے سانحۂ ارتحال پر دل انتہائی مغموم ہے۔ اللہ تبارک و تعالیٰ ان کے درجات بلند فرمائے، ان کی قبر پر اپنی رحمتوں کی شبنم برسائے اور پسماندگان کو صبر و ہمت کی دولت عطا فرمائے۔ آمین۔',
+    english: 'Words cannot express our heartfelt sorrow on the passing of your beloved mother. Her unconditional love, gentle warmth, and selfless prayers will forever shine in your life. May Almighty Allah grant her the highest abode in Jannat-ul-Firdaus and grant you and your family immense patience.',
+  },
+  {
+    id: 'c-loss-elder',
+    group: 'condolence',
+    subCategory: 'parents',
+    scope: 'all',
+    label: '🖤 Loss of Respected Elder / Grandparent (بزرگوں کی رحلت)',
+    urdu: 'گھر کے بزرگوں کا وجود پورے خاندان کے لیے رحمت اور برکت کا سرچشمہ ہوتا ہے۔ آپ کے محترم بزرگ کی وفات پر ہم دلی تعزیت پیش کرتے ہیں۔ اللہ پاک ان کے درجات بلند فرمائے اور خاندان کو ان کے بتائے ہوئے نیک راستے پر چلنے کی توفیق دے۔ آمین۔',
+    english: 'Deeply saddened by the loss of your revered family elder. Their life was a beacon of grace, wisdom, and prayers for generations. May Allah reward their lifetime of goodness with boundless mercy and eternal peace in Jannah.',
+  },
+  {
+    id: 'c-comfort-patience',
+    group: 'condolence',
+    subCategory: 'comfort',
+    scope: 'all',
+    label: '💐 Prayers for Comfort & Strength (صبر و حوصلہ کی دعا)',
+    urdu: 'دلی تعزیت و ہمدردی۔ اللہ پاک آپ کو اور آپ کے خاندان کو اس گہرے صدمے پر صبر و حوصلہ عطا فرمائے اور غم کو اپنی رحمتوں سے ہلکا فرمائے۔ اس کٹھن گھڑی میں ہماری ہمدردیاں اور دعائیں آپ کے ساتھ ہیں۔ آمین۔',
+    english: 'Please accept our heartfelt condolences and deepest sympathy during this difficult time. Wishing you peace to bring comfort, courage to face the days ahead, and loving memories to forever hold in your heart.',
+  },
+  {
+    id: 'c-gentle-universal',
+    group: 'condolence',
+    subCategory: 'comfort',
+    scope: 'all',
+    label: '🕊️ Gentle Words of Solace (دلی ہمدردی و تسلی)',
+    urdu: 'اس دکھ اور غم کی گھڑی میں ہمارے دل اور دعائیں آپ کے ساتھ ہیں۔ جانے والے کی خوبصورت یادیں اور نیکی کے نقوش ہمیشہ ہمارے دلوں میں زندہ رہیں گے۔ اللہ تعالیٰ آپ کو سکون اور تقویت بخشے۔',
+    english: 'Holding you close in our thoughts and prayers during this tender time of loss. May the quiet moments of reflection bring you peace, and may the enduring love you shared carry you through the days ahead.',
+  },
+  {
+    id: 'c-memory-lives-on',
+    group: 'condolence',
+    subCategory: 'comfort',
+    scope: 'all',
+    label: '🕯️ Those We Love Live Forever (خوبصورت یادیں)',
+    urdu: 'جو لوگ ہمارے دلوں میں بستے ہیں وہ کبھی جدا نہیں ہوتے۔ ان کی محبت، شفقت اور خلوص ہمیشہ ہمارے ارد گرد خوشبو کی طرح قائم رہے گی۔ غم کے اس سفر میں ہم آپ کے شانہ بشانہ ہیں۔',
+    english: 'Those we love don’t go away, they walk beside us every day in the memories we hold dear. May the beautiful legacy of their life bring comfort and gentle healing to your grieving heart.',
+  },
+  {
+    id: 'c-get-well-sunnah',
+    group: 'condolence',
+    subCategory: 'get-well',
+    scope: 'all',
+    label: '🏥 Sunnah Healing Dua (شفائے کاملہ کی دعا)',
+    urdu: 'اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَاسَ، اشْفِهِ وَأَنْتَ الشَّافِي، لَا شِفَاءَ إِلَّا شِفَاؤُكَ، شِفَاءً لَا يُغَادِرُ سَقَمًا\n\nاللہ تعالیٰ آپ کو شفائے کاملہ و عاجلہ عطا فرمائے اور بیماری کی ہر تکلیف کو صحت و تندرستی میں بدل دے۔ آمین۔',
+    english: 'O Allah, Lord of mankind, remove the illness and grant healing. You are the Healer, there is no healing except Yours, a healing that leaves behind no ailment.\n\nPraying wholeheartedly for your complete recovery and renewed vitality!',
+  },
+  {
+    id: 'c-get-well-hospital',
+    group: 'condolence',
+    subCategory: 'get-well',
+    scope: 'all',
+    label: '🏥 Speedy Recovery & Home Return (جلد صحت یابی)',
+    urdu: 'ہم آپ کی جلد صحت یابی اور ہسپتال سے خیر و عافیت کے ساتھ گھر واپسی کے لیے دل کی گہرائیوں سے دعا گو ہیں۔ اپنا پورا خیال رکھیں، آرام فرمائیں اور جلد مسکراتے ہوئے اپنے معمولات پر لوٹیں۔',
+    english: 'Sending you warmest hugs, healing thoughts, and strength for a swift and comfortable recovery. Rest well, take it one day at a time, and know that everyone is rooting for you and sending love!',
+  },
+  {
+    id: 'c-chehlum-remembrance',
+    group: 'condolence',
+    subCategory: 'chehlum',
+    scope: 'all',
+    label: '🕯️ Chehlum, Majlis & Isaal-e-Sawab (چہلم و ایصالِ ثواب)',
+    urdu: 'ایصالِ ثواب اور چہلم کی اس پروقار و با برکت تقریب پر دعا گو ہیں کہ اللہ تبارک و تعالیٰ تمام تلاوتِ قرآن، دعاؤں اور ہدیۂ نعت کو شرفِ قبولیت بخشے اور مرحوم کے درجات کو بلند فرمائے۔ آمین۔',
+    english: 'On this solemn commemoration of Chehlum and Isaal-e-Sawab, we pray that Almighty Allah accepts every recitation, prayer, and charity offered in their loving memory, illuminating their soul with eternal serenity.',
   },
 ]
 
-export function resolveWordingGroup(eventType?: string, occasionId?: string): 'wedding' | 'birthday' | 'eid' | 'anniversary' | 'friendship' | 'general' {
+export function resolveWordingGroup(eventType?: string, occasionId?: string): 'wedding' | 'birthday' | 'eid' | 'anniversary' | 'friendship' | 'condolence' | 'general' {
   const target = (eventType || occasionId || '').toLowerCase()
   if (!target) return 'wedding'
+
+  // Sensitive & Condolence Occasions (Prioritized so sad events never show celebratory wording)
+  if (
+    [
+      'sympathy',
+      'condolence',
+      'condolences',
+      'sad',
+      'death',
+      'loss',
+      'grief',
+      'bereavement',
+      'funeral',
+      'janaza',
+      'quran-khwani',
+      'soyem',
+      'chehlum',
+      'arbaeen',
+      'majlis',
+      'ashura',
+      'taziya',
+      'get-well',
+      'get-well-soon',
+      'hospital',
+      'recovery',
+      'illness',
+      'miss-you',
+      'farewell',
+    ].some((k) => target.includes(k))
+  ) {
+    return 'condolence'
+  }
 
   if (
     [
@@ -396,6 +521,15 @@ export function SmartWordingPicker({
   // Get categories tailored specifically for active group
   const categories = useMemo(() => {
     switch (activeGroup) {
+      case 'condolence':
+        return [
+          { id: 'all', label: isUrdu ? '🕊️ تمام تعزیتی و ہمدردی پیغامات' : '🕊️ All Sympathy & Solace', icon: Heart },
+          { id: 'inna-lillah', label: isUrdu ? '🤲 انا للہ و دعائے مغفرت' : '🤲 Inna Lillahi & Duas', icon: Moon },
+          { id: 'parents', label: isUrdu ? '🖤 والدین و بزرگوں کی وفات' : '🖤 Loss of Parents & Elders', icon: Crown },
+          { id: 'comfort', label: isUrdu ? '💐 صبر و دلی ہمدردی' : '💐 Comfort & Strength', icon: Sparkles },
+          { id: 'get-well', label: isUrdu ? '🏥 شفائے کاملہ و عیادت' : '🏥 Get Well & Healing', icon: Smile },
+          { id: 'chehlum', label: isUrdu ? '🕯️ چہلم، مجلس و ایصالِ ثواب' : '🕯️ Chehlum & Remembrance', icon: Star },
+        ]
       case 'wedding':
         return [
           { id: 'all', label: isUrdu ? '✨ تمام شادی پیغامات' : '✨ All Wedding Templates', icon: Sparkles },

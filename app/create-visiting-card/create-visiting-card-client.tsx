@@ -1104,13 +1104,15 @@ export default function CreateVisitingCardPage() {
 
           {/* Live Preview Column */}
           <div className="lg:col-span-5 sticky top-24 space-y-4">
-            <div className="text-center">
-              <span className="text-xs font-extrabold uppercase tracking-widest text-[#7B0D1E] flex items-center justify-center gap-1.5">
-                <Sparkles className="size-3.5" />
-                <span>{t('livePreviewTitle') || 'Live Real-Time Preview'}</span>
-              </span>
+            <div className="w-full space-y-3">
+              <div className="text-center">
+                <span className="text-xs font-extrabold uppercase tracking-widest text-[#7B0D1E] flex items-center justify-center gap-1.5">
+                  <Sparkles className="size-3.5" />
+                  <span>{t('livePreviewTitle') || 'Live Real-Time Preview'}</span>
+                </span>
+              </div>
+              <VisitingCardView data={previewData} showShareBtn={false} />
             </div>
-            <VisitingCardView data={previewData} showShareBtn={false} />
           </div>
         </div>
       )}

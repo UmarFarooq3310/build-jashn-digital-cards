@@ -595,7 +595,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center lg:h-full lg:max-h-full">
           {/* Interactive Magic Link Capsule Column */}
           <div className="order-2 lg:order-1 lg:col-span-8 xl:col-span-8 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
-            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10">
+            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Eye className="size-3.5 text-purple-400" /> Interactive Receiver Preview
               </span>
@@ -907,7 +907,7 @@ function MagicLinkInner({ slug }: { slug: string }) {
 
       {/* Bespoke Occasion Experience Container (Always Centered & Zero Scroll) */}
       {/* Bespoke Occasion Experience Container (Interactive 3D Holographic Card) */}
-      <main className="w-full max-w-2xl z-10 flex flex-col items-center justify-center my-auto animate-float-slow">
+      <main className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl mx-auto z-10 flex flex-col items-center justify-center my-auto animate-float-slow">
         {renderScenario()}
       </main>
 

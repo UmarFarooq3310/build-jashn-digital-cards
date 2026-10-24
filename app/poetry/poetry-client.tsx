@@ -183,19 +183,10 @@ export function PoetryClient() {
   >({})
 
   const [isMounted, setIsMounted] = useState<boolean>(false)
-  const [exportAspectFormat, setExportAspectFormat] = useState<'story' | 'banner'>('banner')
-  const userManuallySetFormatRef = useRef<boolean>(false)
+  const exportAspectFormat: 'story' = 'story'
 
   useEffect(() => {
     setIsMounted(true)
-    const detectDeviceFormat = () => {
-      if (userManuallySetFormatRef.current) return
-      const isMobile = window.innerWidth < 768 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
-      setExportAspectFormat(isMobile ? 'story' : 'banner')
-    }
-    detectDeviceFormat()
-    window.addEventListener('resize', detectDeviceFormat)
-    return () => window.removeEventListener('resize', detectDeviceFormat)
   }, [])
 
   const [customPoet, setCustomPoet] = useState<string>('مرزا اسد اللہ خاں غالب')
@@ -1722,61 +1713,6 @@ export function PoetryClient() {
               </select>
             </div>
           </div>
-
-          <div className="mt-3 pt-2.5 border-t border-amber-500/20 flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-1.5 text-xs text-amber-200/90 font-bold">
-              <span>📐 {isUrdu ? 'ڈاؤنلوڈ کارڈ سائز:' : 'Export Format:'}</span>
-              <span className="text-[11px] text-slate-400 font-normal hidden sm:inline">
-                {exportAspectFormat === 'story'
-                  ? isUrdu
-                    ? '(انسٹاگرام سٹوری، ریلز اور واٹس ایپ سٹیٹس کے لیے عمودی 9:16 سائز)'
-                    : '(Vertical 9:16 portrait in height for Instagram Stories, Reels & WhatsApp Status)'
-                  : isUrdu
-                  ? '(لیپ ٹاپ کے لیے چوڑا بینر سائز)'
-                  : '(Landscape banner in width for Laptop & PC)'}
-              </span>
-            </div>
-            <div className="inline-flex rounded-xl bg-slate-900 border border-amber-500/40 p-1 shadow-md">
-              <button
-                type="button"
-                onClick={() => {
-                  userManuallySetFormatRef.current = true
-                  setExportAspectFormat('story')
-                }}
-                className={cn(
-                  'px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer',
-                  exportAspectFormat === 'story'
-                    ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-md font-black'
-                    : 'text-slate-300 hover:text-amber-300'
-                )}
-                title="Mobile Portrait (9:16 Height) - Instagram Stories, Reels, TikTok, WhatsApp Status"
-              >
-                <span>📱 9:16 Mobile Story</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-950/20 font-bold">
-                  {isUrdu ? 'انسٹا / سٹیٹس' : 'Insta / Status'}
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  userManuallySetFormatRef.current = true
-                  setExportAspectFormat('banner')
-                }}
-                className={cn(
-                  'px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer',
-                  exportAspectFormat === 'banner'
-                    ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-md font-black'
-                    : 'text-slate-300 hover:text-amber-300'
-                )}
-                title="Laptop Landscape Banner (Width)"
-              >
-                <span>💻 Laptop Banner</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-950/20 font-bold">
-                  {isUrdu ? 'لیپ ٹاپ' : 'Wide'}
-                </span>
-              </button>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -2038,40 +1974,9 @@ export function PoetryClient() {
                   <Eye className="size-3.5 text-emerald-400" />
                   <span>{isUrdu ? 'براہ راست کارڈ پریویو' : 'Live Card Preview'}</span>
                 </span>
-                <div className="inline-flex rounded-lg bg-slate-900 border border-amber-500/30 p-0.5">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      userManuallySetFormatRef.current = true
-                      setExportAspectFormat('story')
-                    }}
-                    className={cn(
-                      'px-2 py-1 text-[11px] font-bold rounded-md transition-all flex items-center gap-1 cursor-pointer',
-                      exportAspectFormat === 'story'
-                        ? 'bg-amber-500 text-slate-950 shadow-xs font-black'
-                        : 'text-slate-400 hover:text-amber-200'
-                    )}
-                    title="Mobile Portrait 9:16 in Height"
-                  >
-                    <span>📱 9:16 Story</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      userManuallySetFormatRef.current = true
-                      setExportAspectFormat('banner')
-                    }}
-                    className={cn(
-                      'px-2 py-1 text-[11px] font-bold rounded-md transition-all flex items-center gap-1 cursor-pointer',
-                      exportAspectFormat === 'banner'
-                        ? 'bg-amber-500 text-slate-950 shadow-xs font-black'
-                        : 'text-slate-400 hover:text-amber-200'
-                    )}
-                    title="Laptop Landscape Banner"
-                  >
-                    <span>💻 Banner</span>
-                  </button>
-                </div>
+                <span className="text-[11px] font-bold text-amber-400/90 flex items-center gap-1 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/30">
+                  <span>📱 9:16 Mobile Story</span>
+                </span>
               </div>
 
               {(() => {
@@ -2085,10 +1990,7 @@ export function PoetryClient() {
                 return (
                   <div
                     className={cn(
-                      'rounded-3xl p-5 sm:p-6 border shadow-2xl relative overflow-hidden transition-all duration-300 bg-gradient-to-br flex flex-col justify-between',
-                      isMounted && exportAspectFormat === 'story'
-                        ? 'aspect-[9/16] min-h-[460px] max-w-[320px] mx-auto w-full'
-                        : 'min-h-[300px]',
+                      'rounded-3xl p-5 sm:p-6 border shadow-2xl relative overflow-hidden transition-all duration-300 bg-gradient-to-br flex flex-col justify-between aspect-[9/16] min-h-[460px] max-w-[320px] mx-auto w-full',
                       activeTheme.bgClass,
                       activeTheme.borderClass
                     )}
@@ -2187,7 +2089,7 @@ export function PoetryClient() {
                         ? 'bg-amber-500/25 text-amber-200 border-amber-400/50 cursor-wait animate-pulse'
                         : 'bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-slate-950 border-amber-400/40 shadow-amber-500/20 active:scale-95'
                     )}
-                    title={exportAspectFormat === 'story' ? 'Download 9:16 Vertical Story Image' : 'Download Landscape Image Card'}
+                    title="Download 9:16 Vertical Story Image"
                   >
                     {isDownloadingCustomFlyer ? (
                       <>
@@ -2197,15 +2099,7 @@ export function PoetryClient() {
                     ) : (
                       <>
                         <Download className="size-4 text-slate-950" />
-                        <span>
-                          {isUrdu
-                            ? exportAspectFormat === 'story'
-                              ? '📱 9:16 سٹوری کارڈ (HD)'
-                              : 'تصویر کارڈ ڈاؤنلوڈ (HD)'
-                            : exportAspectFormat === 'story'
-                            ? '📱 Download 9:16 Story (HD)'
-                            : 'Download Image Card (HD)'}
-                        </span>
+                        <span>{isUrdu ? '📱 9:16 سٹوری کارڈ (HD)' : '📱 Download 9:16 Story (HD)'}</span>
                       </>
                     )}
                   </button>
@@ -2220,7 +2114,7 @@ export function PoetryClient() {
                         ? 'bg-rose-500/25 text-rose-200 border-rose-400/50 cursor-wait animate-pulse'
                         : 'bg-gradient-to-r from-rose-600 to-pink-700 hover:from-rose-500 hover:to-pink-600 text-white border-rose-500/40 shadow-rose-600/20 active:scale-95'
                     )}
-                    title={exportAspectFormat === 'story' ? 'Download 9:16 Animated Video Reel' : 'Download Video Card'}
+                    title="Download 9:16 Animated Video Reel"
                   >
                     {isGeneratingCustomVideo ? (
                       <>
@@ -2230,15 +2124,7 @@ export function PoetryClient() {
                     ) : (
                       <>
                         <Video className="size-4 text-white" />
-                        <span>
-                          {isUrdu
-                            ? exportAspectFormat === 'story'
-                              ? '🎥 9:16 ریل ویڈیو (MP4)'
-                              : 'ویڈیو ڈاؤنلوڈ (MP4)'
-                            : exportAspectFormat === 'story'
-                            ? '🎥 Download 9:16 Reel (MP4)'
-                            : 'Download Video (MP4)'}
-                        </span>
+                        <span>{isUrdu ? '🎥 9:16 ریل ویڈیو (MP4)' : '🎥 Download 9:16 Reel (MP4)'}</span>
                       </>
                     )}
                   </button>
@@ -2764,7 +2650,7 @@ export function PoetryClient() {
                             ) : (
                               <>
                                 <Download className="size-3.5" />
-                                <span>{exportAspectFormat === 'story' ? (isUrdu ? '📱 9:16 تصویر' : '📱 9:16 Story') : isUrdu ? 'تصویر' : 'Image'}</span>
+                                <span>{isUrdu ? '📱 9:16 تصویر' : '📱 9:16 Story'}</span>
                               </>
                             )}
                           </button>
@@ -2789,7 +2675,7 @@ export function PoetryClient() {
                             ) : (
                               <>
                                 <Video className="size-3.5 text-rose-400" />
-                                <span>{exportAspectFormat === 'story' ? (isUrdu ? '🎥 9:16 ویڈیو' : '🎥 9:16 Reel') : isUrdu ? 'ویڈیو' : 'Video (MP4)'}</span>
+                                <span>{isUrdu ? '🎥 9:16 ویڈیو' : '🎥 9:16 Reel'}</span>
                               </>
                             )}
                           </button>

@@ -589,14 +589,13 @@ export function ThreeDCardWrapper({
           ========================================================= */}
       <div
         className={cn(
-          "w-full rounded-[2.5rem] z-10 relative",
-          "transition-all duration-700",
+          "w-full z-10 relative transition-all duration-700",
           isOpen 
-            ? "relative h-auto opacity-100 pointer-events-auto scale-100 card-viewport-fit" 
-            : "absolute inset-0 h-full opacity-0 pointer-events-none scale-95 overflow-hidden"
+            ? "relative h-auto opacity-100 pointer-events-auto scale-100 card-viewport-fit rounded-none shadow-none" 
+            : "absolute inset-0 h-full opacity-0 pointer-events-none scale-95 overflow-hidden rounded-[2.5rem]"
         )}
         style={{
-          boxShadow: '0 25px 55px -12px rgba(0, 0, 0, 0.45)',
+          boxShadow: isOpen ? 'none' : '0 25px 55px -12px rgba(0, 0, 0, 0.45)',
         }}
       >
         {children}

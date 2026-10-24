@@ -381,7 +381,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
     'esports-winner',
   ].includes(data.occasionId)
 
-  const isPoetry = data.occasionId === 'poetry' || Boolean(data.poetName || data.dedication)
+  const isPoetry = data.occasionId === 'poetry'
 
   const defaultBorderId = isIslamic ? 'mughal-arch' : (isGamingWinner ? 'cyber-hud' : (isPoetry ? 'mughal-arch' : 'mehndi'))
 
@@ -530,7 +530,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
       <div
         ref={ref}
-        className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl px-4 py-4 sm:px-6 sm:py-5 lg:py-6 text-center shadow-xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
+        className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl px-4 py-5 sm:px-6 sm:py-6 text-center shadow-2xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
         style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
       >
         <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId || defaultBorderId} decorations={occasion?.decorations} />
@@ -577,7 +577,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
         <div className="card-shimmer-sweep pointer-events-none parallax-mid" aria-hidden="true" />
 
-        <div className="relative z-10 mx-auto flex w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl flex-col items-center gap-3 sm:gap-5 px-3 pt-5 pb-3 sm:py-5">
+        <div className="relative z-10 mx-auto flex w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl flex-col items-center gap-3 sm:gap-4 px-3 pt-4 pb-3 sm:py-4">
           {/* 🎮 Dedicated Esports Gaming HUD 🎮 */}
           {isGamingWinner ? (
             <GamingScorecardHUD data={data} lang={lang} isPublicCard={isPublicCard} />

@@ -567,7 +567,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
       <div
         ref={ref}
-        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} ${typeTheme?.typeClass ?? ''} mx-auto w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl rounded-3xl shadow-xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
+        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} ${typeTheme?.typeClass ?? ''} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl shadow-2xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
         style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
       >
         {/* Decor layer (anchored to card frame) */}

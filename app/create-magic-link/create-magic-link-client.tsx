@@ -2446,8 +2446,8 @@ export default function CreateMagicLinkClient() {
 
               {/* RIGHT COLUMN: STICKY LIVE INTERACTIVE CAPSULE PREVIEW */}
               <div className="lg:col-span-5 space-y-4">
-                <div className="sticky top-20">
-                  <div className="flex items-center justify-between mb-3">
+                <div className="sticky top-20 w-full">
+                  <div className="flex items-center justify-between mb-3 px-1">
                     <span className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 text-muted-foreground">
                       <Eye className="size-3.5 text-[#7B0D1E]" />
                       <span>{t('livePreviewCapsule', 'Live Preview')}</span>
@@ -2460,7 +2460,7 @@ export default function CreateMagicLinkClient() {
 
                   {/* Premium Preview Frame */}
                   <div
-                    className="rounded-3xl p-4 sm:p-5 text-white relative overflow-hidden bg-slate-950 border border-border shadow-xl"
+                    className="rounded-3xl p-4 sm:p-5 text-white relative overflow-hidden bg-slate-950 border border-border shadow-xl w-full"
                   >
                     {/* Ambient glow orbs */}
                     <div

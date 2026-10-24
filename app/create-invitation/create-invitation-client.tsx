@@ -603,19 +603,31 @@ function CreateInvitationContent() {
   // Auth protection removed to support guest user creation as requested
 
   function handleTypeSelect(id: string) {
+    const isDifferentType = id !== typeId
     setTypeId(id)
     setAudioTrack(getDefaultAudioTrackForOccasion(id))
     setErrors({})
     changeStep(2)
 
-    // Automatically set default templates for the newly selected occasion
-    const tPlates = getInvitationWordingTemplates(id, lang)
-    if (tPlates.length > 0) {
-      const tmpl = tPlates[0]
-      setTitle(tmpl.title)
-      setHostNames(tmpl.hostNames)
-      setNotes(tmpl.notes)
-      if (tmpl.dressCode) setDressCode(tmpl.dressCode)
+    if (isDifferentType) {
+      const nextType = getInvitationType(id)
+      if (!nextType?.couple) {
+        setGroom('')
+        setBride('')
+      }
+      
+      // Automatically set default templates for the newly selected occasion
+      const tPlates = getInvitationWordingTemplates(id, lang)
+      if (tPlates.length > 0) {
+        const tmpl = tPlates[0]
+        setTitle(tmpl.title)
+        setHostNames(tmpl.hostNames)
+        setNotes(tmpl.notes)
+        if (tmpl.dressCode) setDressCode(tmpl.dressCode)
+      } else {
+        setTitle('')
+        setNotes('')
+      }
     }
   }
 
@@ -1475,7 +1487,7 @@ function CreateInvitationContent() {
 
         {/* Desktop & Mobile Right Column — Sticky Live Interactive Preview */}
         <div className="lg:col-span-5 space-y-4 w-full min-w-0">
-          <div id="invitation-live-preview-box" className="sticky top-20 rounded-3xl border border-border bg-card p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden w-full max-w-full" suppressHydrationWarning>
+          <div id="invitation-live-preview-box" className="sticky top-20 rounded-3xl border border-border bg-card/60 p-4 sm:p-5 shadow-xl text-center backdrop-blur-md overflow-hidden w-full max-w-full" suppressHydrationWarning>
             <div className="mb-3 flex items-center justify-between px-1">
               <p className="text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5">
                 <Heart className="size-3.5 text-[#7B0D1E] animate-pulse" /> {t('livePreview')}
@@ -1486,7 +1498,7 @@ function CreateInvitationContent() {
             </div>
 
             <PreviewCardFit topOffset={80} bottomOffset={24} reservedHeaderHeight={56}>
-              <CardAnimationPreview occasionId={typeId} animationKey={typeId} className="max-w-sm mx-auto" roundedClass="rounded-3xl">
+              <CardAnimationPreview occasionId={typeId} animationKey={typeId} className="w-full max-w-full mx-auto" roundedClass="rounded-3xl">
                 <InvitationCard
                   data={{
                     typeId,

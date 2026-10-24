@@ -112,7 +112,7 @@ export function PreviewCardFit({
         }}
         suppressHydrationWarning
       >
-        <div ref={contentRef} className="w-full" suppressHydrationWarning>
+        <div ref={contentRef} className="w-full max-w-full" suppressHydrationWarning>
           {children}
         </div>
       </div>

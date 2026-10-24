@@ -189,7 +189,7 @@ END:VCARD`
   }, { scope: wrapRef })
 
   return (
-    <div className={cn("w-full max-w-md mx-auto space-y-4 font-sans select-none", className)}>
+    <div className={cn("w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl mx-auto space-y-4 font-sans select-none", className)}>
       {/* Dynamic Keyframes */}
       <style jsx global>{`
         @keyframes shineSheen {
@@ -203,7 +203,7 @@ END:VCARD`
       `}</style>
 
       {/* Main 3D Flip Card Container */}
-      <div ref={wrapRef} className="relative w-full" style={{ perspective: '1000px' }}>
+      <div ref={wrapRef} className="relative w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl mx-auto" style={{ perspective: '1000px' }}>
         {/* Ambient Backlight Glow Blob */}
         <div
           className="pointer-events-none absolute -inset-6 -z-10 rounded-full opacity-30 blur-3xl transition-opacity"
@@ -213,7 +213,7 @@ END:VCARD`
         <div
           ref={ref}
           className={cn(
-            'visiting-card-surface relative overflow-hidden rounded-[32px] p-6 sm:p-8 transition-all duration-500 border-2 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl',
+            'visiting-card-surface relative overflow-hidden rounded-[32px] p-6 sm:p-8 transition-all duration-500 border-2 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl mx-auto',
             isLight ? 'border-slate-300/80 shadow-[0_15px_45px_rgba(0,0,0,0.12)]' : 'border-[#D4AF37]/50 shadow-[0_20px_60px_rgba(0,0,0,0.6)]',
             isRtl && 'text-right'
           )}
@@ -292,7 +292,7 @@ END:VCARD`
               {/* Profile Avatar & Primary Details */}
               <div className={cn('flex flex-col items-center gap-3 pt-0 text-center', isRtl && 'flex-col')}>
                 <div className={cn(
-                  "relative size-20 sm:size-24 shrink-0 rounded-full border-3 overflow-hidden flex items-center justify-center shadow-[0_0_30px_rgba(212,175,55,0.35)] font-black text-3xl uppercase transition-transform hover:scale-105 duration-300",
+                  "relative size-22 sm:size-28 shrink-0 rounded-full border-3 overflow-hidden flex items-center justify-center shadow-[0_0_30px_rgba(212,175,55,0.35)] font-black text-3xl uppercase transition-transform hover:scale-105 duration-300",
                   isLight
                     ? "bg-white border-slate-300 text-teal-800 shadow-md"
                     : "bg-gradient-to-br from-[#D4AF37]/30 via-white/10 to-black/40 border-[#D4AF37] text-[#D4AF37]"
@@ -323,31 +323,31 @@ END:VCARD`
                 <div className={cn('space-y-1 flex-1 min-w-0 w-full', isRtl && 'space-y-1.5')}>
                   <div className={cn('flex items-center justify-center gap-1.5 flex-wrap', isRtl && 'flex-row-reverse')}>
                     <h2 className={cn(
-                      'text-xl sm:text-2xl font-black tracking-tight leading-snug break-words drop-shadow-sm',
+                      'text-2xl sm:text-3xl font-black tracking-tight leading-snug break-words drop-shadow-sm',
                       isLight ? 'text-slate-900' : 'text-white',
                       isRtl && 'font-urdu'
                     )}>
                       {data.fullName || '---'}
                     </h2>
-                    <ShieldCheck className={cn("size-4.5 shrink-0", isLight ? "text-teal-600" : "text-[#D4AF37]")} />
+                    <ShieldCheck className={cn("size-5 shrink-0", isLight ? "text-teal-600" : "text-[#D4AF37]")} />
                   </div>
 
                   <p className={cn(
-                    'text-xs sm:text-sm font-bold flex justify-center items-center gap-1.5 leading-snug break-words',
+                    'text-sm sm:text-base font-bold flex justify-center items-center gap-1.5 leading-snug break-words',
                     isLight ? 'text-teal-800' : 'text-[#F5E6A8]',
                     isRtl && 'flex-row-reverse font-urdu'
                   )}>
-                    <Briefcase className={cn("size-3.5 shrink-0", isLight ? "text-teal-700" : "text-[#D4AF37]")} />
+                    <Briefcase className={cn("size-4 shrink-0", isLight ? "text-teal-700" : "text-[#D4AF37]")} />
                     <span>{translatedTitle}</span>
                   </p>
 
                   {(data.company || !isPublicCard) && (
                     <p className={cn(
-                      'text-xs font-semibold flex justify-center items-center gap-1.5 leading-snug break-words',
+                      'text-xs sm:text-sm font-semibold flex justify-center items-center gap-1.5 leading-snug break-words',
                       isLight ? 'text-slate-600' : 'text-zinc-300',
                       isRtl && 'flex-row-reverse font-urdu'
                     )}>
-                      <Building2 className="size-3.5 shrink-0 text-zinc-400" />
+                      <Building2 className="size-4 shrink-0 text-zinc-400" />
                       <span>{data.company || '---'}</span>
                     </p>
                   )}
@@ -358,27 +358,27 @@ END:VCARD`
 
               {/* Full Contact Information List (Visible Text Data for Image Sharing & Tappable Actions) */}
               <div className={cn(
-                "backdrop-blur-xl rounded-2xl p-3 sm:p-3.5 border space-y-2 text-xs",
+                "backdrop-blur-xl rounded-2xl p-3.5 sm:p-4 border space-y-2.5 text-xs sm:text-sm",
                 isLight ? "bg-white/85 border-slate-200 shadow-xs text-slate-800" : "bg-slate-950/70 border-white/10 text-white"
               )}>
                 {/* Phone / Call */}
                 {(data.phone || !isPublicCard) && (
                   <div
                     className={cn(
-                      'group flex items-center justify-between gap-2.5 p-1.5 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5',
+                      'group flex items-center justify-between gap-2.5 p-2 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5',
                       isRtl && 'flex-row-reverse'
                     )}
                   >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="size-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/40">
-                        <Phone className="size-3.5" />
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="size-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/40">
+                        <Phone className="size-4" />
                       </div>
                       <div className="min-w-0 text-left">
-                        <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                        <span className="text-[11px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
                           {t('phoneLabel') || 'Phone'}
                         </span>
                         <span className={cn(
-                          "truncate text-xs font-mono font-bold block pt-0.5",
+                          "truncate text-sm sm:text-base font-mono font-bold block pt-0.5",
                           isLight ? "text-slate-900 group-hover:text-emerald-700" : "text-white group-hover:text-emerald-300"
                         )}>
                           {data.phone || '---'}
@@ -417,20 +417,20 @@ END:VCARD`
                 {(data.whatsapp || data.phone || !isPublicCard) && (
                   <div
                     className={cn(
-                      'group flex items-center justify-between gap-2.5 p-1.5 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5',
+                      'group flex items-center justify-between gap-2.5 p-2 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5',
                       isRtl && 'flex-row-reverse'
                     )}
                   >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="size-7 rounded-lg bg-[#25D366]/20 text-[#25D366] flex items-center justify-center shrink-0 border border-[#25D366]/40">
-                        <MessageSquare className="size-3.5" />
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="size-8 rounded-lg bg-[#25D366]/20 text-[#25D366] flex items-center justify-center shrink-0 border border-[#25D366]/40">
+                        <MessageSquare className="size-4" />
                       </div>
                       <div className="min-w-0 text-left">
-                        <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                        <span className="text-[11px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
                           WhatsApp
                         </span>
                         <span className={cn(
-                          "truncate text-xs font-mono font-bold block pt-0.5",
+                          "truncate text-sm sm:text-base font-mono font-bold block pt-0.5",
                           isLight ? "text-slate-900 group-hover:text-[#25D366]" : "text-white group-hover:text-[#25D366]"
                         )}>
                           {data.whatsapp || data.phone || '---'}
@@ -470,19 +470,19 @@ END:VCARD`
                     <a
                       href={`mailto:${data.email}?subject=Business%20Inquiry`}
                       className={cn(
-                        'group flex items-center gap-2.5 p-1.5 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5 w-full',
+                        'group flex items-center gap-3 p-2 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5 w-full',
                         isRtl && 'flex-row-reverse'
                       )}
                     >
-                      <div className="size-7 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/40">
-                        <Mail className="size-3.5" />
+                      <div className="size-8 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/40">
+                        <Mail className="size-4" />
                       </div>
                       <div className="min-w-0 flex-1 text-left">
-                        <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                        <span className="text-[11px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
                           {t('emailLabel') || 'Email'}
                         </span>
                         <span className={cn(
-                          "text-xs font-bold block pt-0.5 break-all",
+                          "text-sm sm:text-base font-bold block pt-0.5 break-all",
                           isLight ? "text-slate-900 group-hover:text-sky-600" : "text-white group-hover:text-sky-300"
                         )}>
                           {data.email}
@@ -492,18 +492,18 @@ END:VCARD`
                   ) : (
                     <div
                       className={cn(
-                        'group flex items-center gap-2.5 p-1.5 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5 w-full',
+                        'group flex items-center gap-3 p-2 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5 w-full',
                         isRtl && 'flex-row-reverse'
                       )}
                     >
-                      <div className="size-7 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/40 opacity-40">
-                        <Mail className="size-3.5" />
+                      <div className="size-8 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/40 opacity-40">
+                        <Mail className="size-4" />
                       </div>
                       <div className="min-w-0 flex-1 text-left opacity-40">
-                        <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                        <span className="text-[11px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
                           {t('emailLabel') || 'Email'}
                         </span>
-                        <span className="text-xs font-bold block pt-0.5 text-slate-500">
+                        <span className="text-sm font-bold block pt-0.5 text-slate-500">
                           ---
                         </span>
                       </div>
@@ -515,20 +515,20 @@ END:VCARD`
                 {(data.website || !isPublicCard) && (
                   <div
                     className={cn(
-                      'group flex items-center justify-between gap-2.5 p-1.5 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5',
+                      'group flex items-center justify-between gap-2.5 p-2 rounded-xl transition-all hover:bg-white/10 dark:hover:bg-white/5',
                       isRtl && 'flex-row-reverse'
                     )}
                   >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="size-7 rounded-lg bg-[#D4AF37]/20 text-[#D4AF37] flex items-center justify-center shrink-0 border border-[#D4AF37]/40">
-                        <Globe className="size-3.5" />
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="size-8 rounded-lg bg-[#D4AF37]/20 text-[#D4AF37] flex items-center justify-center shrink-0 border border-[#D4AF37]/40">
+                        <Globe className="size-4" />
                       </div>
                       <div className="min-w-0 text-left">
-                        <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                        <span className="text-[11px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
                           {t('websiteLabel') || 'Website'}
                         </span>
                         <span className={cn(
-                          "truncate text-xs font-bold block pt-0.5",
+                          "truncate text-sm sm:text-base font-bold block pt-0.5",
                           isLight ? "text-slate-900 group-hover:text-teal-700" : "text-white group-hover:text-[#D4AF37]"
                         )}>
                           {data.website ? data.website.replace(/^https?:\/\//, '') : '---'}
@@ -545,7 +545,7 @@ END:VCARD`
                         data-no-download="true"
                         className="no-export no-download"
                       >
-                        <ExternalLink className="size-3.5 text-zinc-400 shrink-0 mr-1 hover:text-white" />
+                        <ExternalLink className="size-4 text-zinc-400 shrink-0 mr-1 hover:text-white" />
                       </a>
                     )}
                   </div>
@@ -553,16 +553,16 @@ END:VCARD`
 
                 {/* Single Full Address String */}
                 {(data.address || !isPublicCard) && (
-                  <div className={cn('flex items-start gap-2.5 p-1.5 rounded-xl', isRtl && 'flex-row-reverse')}>
-                    <div className="size-7 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 border border-rose-500/40 mt-0.5">
-                      <MapPin className="size-3.5" />
+                  <div className={cn('flex items-start gap-3 p-2 rounded-xl', isRtl && 'flex-row-reverse')}>
+                    <div className="size-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 border border-rose-500/40 mt-0.5">
+                      <MapPin className="size-4" />
                     </div>
                     <div className="flex-1 min-w-0 text-left">
-                      <span className="text-[10px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
+                      <span className="text-[11px] text-muted-foreground block leading-none font-semibold uppercase tracking-wider">
                         {t('businessAddress') || 'Address / Location'}
                       </span>
                       <span className={cn(
-                        "font-medium leading-relaxed block text-xs pt-0.5 break-words",
+                        "font-medium leading-relaxed block text-xs sm:text-sm pt-0.5 break-words",
                         isLight ? "text-slate-800" : "text-zinc-200"
                       )}>
                         {data.address || '---'}
@@ -575,7 +575,7 @@ END:VCARD`
               {/* Professional Bio */}
               {(data.bio || !isPublicCard) && (
                 <div className={cn(
-                  "p-3 rounded-2xl backdrop-blur-md border text-xs leading-relaxed font-medium italic text-center",
+                  "p-3.5 sm:p-4 rounded-2xl backdrop-blur-md border text-xs sm:text-sm leading-relaxed font-medium italic text-center",
                   isLight ? "bg-white/70 border-slate-200 text-slate-700" : "bg-slate-950/50 border-white/10 text-zinc-300"
                 )}>
                   &ldquo;{data.bio || '---'}&rdquo;
@@ -603,6 +603,46 @@ END:VCARD`
                   <span>{t('saveContactToPhone') || 'Save Contact to Phone (.vcf)'}</span>
                 </button>
               )}
+
+              {/* Integrated Official Digital Seal & QR Code (Full-bleed card footer for downloads & mobile) */}
+              <div className="pt-2.5 sm:pt-3 border-t border-white/10 flex items-center justify-between gap-3 text-left">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="size-11 sm:size-12 rounded-xl bg-white p-1 shadow-md shrink-0 flex items-center justify-center">
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=09090b&bgcolor=ffffff&data=${encodeURIComponent(
+                        data.slug ? `https://cardzy.online/v/${data.slug}` : 'https://cardzy.online'
+                      )}`}
+                      alt="vCard QR Code"
+                      crossOrigin="anonymous"
+                      className="size-full object-contain"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <span className={cn(
+                      "text-[10.5px] font-extrabold uppercase tracking-wider block leading-tight",
+                      isLight ? "text-slate-900" : "text-[#D4AF37]"
+                    )}>
+                      Scan to Save Contact (.vcf)
+                    </span>
+                    <p className={cn(
+                      "text-[9.5px] font-semibold truncate leading-tight mt-0.5",
+                      isLight ? "text-slate-600" : "text-zinc-400"
+                    )}>
+                      Official Verified Digital Profile
+                    </p>
+                  </div>
+                </div>
+
+                <div className={cn(
+                  "shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-extrabold uppercase tracking-wider backdrop-blur-md",
+                  isLight
+                    ? "bg-teal-50 border-teal-200 text-teal-800"
+                    : "bg-[#D4AF37]/15 border-[#D4AF37]/40 text-[#D4AF37]"
+                )}>
+                  <ShieldCheck className="size-3.5" />
+                  <span>Cardzy</span>
+                </div>
+              </div>
             </div>
           ) : (
             /* Back Side View (QR & Profile Detail) */
