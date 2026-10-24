@@ -625,7 +625,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
               )}
 
               {data.photoUrl ? (
-                <div className="avatar-float-anim relative my-1" style={{ filter: 'drop-shadow(0 8px 22px rgba(0,0,0,0.4))' }}>
+                <div className="avatar-float-anim relative my-2" style={{ filter: 'drop-shadow(0 8px 22px rgba(0,0,0,0.4))' }}>
                   <span
                     className="parallax-near absolute inset-0 -z-10 rounded-full blur-xl opacity-75"
                     style={{ background: 'radial-gradient(circle, var(--c-glow, #ffd700) 0%, transparent 75%)', transform: 'scale(1.5)' }}
@@ -640,8 +640,21 @@ export const WishCard = forwardRef<HTMLDivElement, {
                     <img src={data.photoUrl} alt="Uploaded Card Photo" crossOrigin="anonymous" className="size-full object-cover" />
                   </ZoomableImageBadge>
                 </div>
+              ) : occasion ? (
+                <span
+                  className="wc-stagger parallax-mid flex items-center justify-center rounded-full border transition-transform duration-300 hover:scale-105 my-1"
+                  style={{
+                    width: 54, height: 54,
+                    borderColor: 'var(--c-accent)',
+                    color: 'var(--c-accent)',
+                    background: 'color-mix(in oklab, var(--c-accent) 12%, transparent)',
+                    boxShadow: '0 4px 18px color-mix(in oklab, var(--c-accent) 30%, transparent)',
+                  }}
+                >
+                  <JashnIcon name={occasion.icon} className="size-7 md:size-8" />
+                </span>
               ) : showAvatar ? (
-                <div className="avatar-float-anim relative" style={{ filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.32))' }}>
+                <div className="avatar-float-anim relative my-1" style={{ filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.32))' }}>
                   <span
                     className="parallax-near absolute inset-0 -z-10 rounded-full blur-lg opacity-60"
                     style={{ background: 'radial-gradient(circle, var(--c-glow) 0%, transparent 70%)', transform: 'scale(1.4)' }}
@@ -649,19 +662,6 @@ export const WishCard = forwardRef<HTMLDivElement, {
                   <RelationAvatar relation={data.relation || data.recipientName} size={68} />
                 </div>
               ) : null}
-
-              <span
-                className="wc-stagger parallax-mid flex items-center justify-center rounded-full border transition-transform duration-300 hover:scale-105"
-                style={{
-                  width: 54, height: 54,
-                  borderColor: 'var(--c-accent)',
-                  color: 'var(--c-accent)',
-                  background: 'color-mix(in oklab, var(--c-accent) 12%, transparent)',
-                  boxShadow: '0 4px 18px color-mix(in oklab, var(--c-accent) 30%, transparent)',
-                }}
-              >
-                {occasion ? <JashnIcon name={occasion.icon} className="size-7 md:size-8" /> : null}
-              </span>
 
               {occasion && (
                 <h2

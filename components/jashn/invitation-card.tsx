@@ -653,62 +653,84 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
           {/* ── Couple avatars or Custom Uploaded Photos ── */}
           {isCouple ? (
-            <div className="flex items-center justify-center gap-3 sm:gap-5 inv-parallax-near py-1">
-              <div className="flex flex-col items-center gap-1">
+            (data.photoUrl && data.photoUrl2) ? (
+              <div className="flex items-center justify-center gap-3 sm:gap-5 inv-parallax-near py-1">
+                {/* Groom photo (First) */}
                 <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
-                  {data.photoUrl ? (
-                    <ZoomableImageBadge
-                      src={data.photoUrl}
-                      alt={data.bride || 'Bride Photo'}
-                      title={data.bride ? `${data.bride} (Bride / Host)` : 'Portrait Photo'}
-                      badgeText="Tap to zoom"
-                      badgePosition="center"
-                      className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] shadow-lg bg-black/40"
-                    >
-                      <img src={data.photoUrl} alt={data.bride || "Photo 1"} crossOrigin="anonymous" className="size-full object-cover" />
-                    </ZoomableImageBadge>
-                  ) : (
-                    <RelationAvatar relation="bride" size={60} />
-                  )}
+                  <ZoomableImageBadge
+                    src={data.photoUrl}
+                    alt={data.groom || 'Groom Photo'}
+                    title={data.groom ? `${data.groom} (Groom / Host)` : 'Portrait Photo'}
+                    badgeText="Tap to zoom"
+                    badgePosition="center"
+                    className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] shadow-lg bg-black/40"
+                  >
+                    <img src={data.photoUrl} alt={data.groom || "Photo 1"} crossOrigin="anonymous" className="size-full object-cover" />
+                  </ZoomableImageBadge>
                 </div>
-                {(data.bride || !isPublicCard) && (
-                  <p className="text-[11px] sm:text-xs opacity-80 font-bold tracking-wide">{data.bride || '---'}</p>
-                )}
-              </div>
 
-              {/* Ampersand / heart centre */}
-              <div className="flex flex-col items-center inv-avatar-anim">
-                <svg width="32" height="28" viewBox="0 0 36 32" fill="none" className="size-6 sm:size-7">
-                  <path
-                    d="M18 28 Q5 20 5 11 A7 7 0 0 1 18 9 A7 7 0 0 1 31 11 Q31 20 18 28Z"
-                    fill="var(--c-accent)"
-                    opacity="0.85"
-                  />
-                </svg>
-              </div>
+                {/* Ampersand / heart centre */}
+                <div className="flex flex-col items-center inv-avatar-anim">
+                  <svg width="32" height="28" viewBox="0 0 36 32" fill="none" className="size-6 sm:size-7">
+                    <path
+                      d="M18 28 Q5 20 5 11 A7 7 0 0 1 18 9 A7 7 0 0 1 31 11 Q31 20 18 28Z"
+                      fill="var(--c-accent)"
+                      opacity="0.85"
+                    />
+                  </svg>
+                </div>
 
-              <div className="flex flex-col items-center gap-1">
+                {/* Bride photo (Second) */}
                 <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
-                  {data.photoUrl2 ? (
-                    <ZoomableImageBadge
-                      src={data.photoUrl2}
-                      alt={data.groom || 'Groom Photo'}
-                      title={data.groom ? `${data.groom} (Groom / Host)` : 'Portrait Photo'}
-                      badgeText="Tap to zoom"
-                      badgePosition="center"
-                      className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] shadow-lg bg-black/40"
-                    >
-                      <img src={data.photoUrl2} alt={data.groom || "Photo 2"} crossOrigin="anonymous" className="size-full object-cover" />
-                    </ZoomableImageBadge>
-                  ) : (
-                    <RelationAvatar relation="groom" size={60} />
-                  )}
+                  <ZoomableImageBadge
+                    src={data.photoUrl2}
+                    alt={data.bride || 'Bride Photo'}
+                    title={data.bride ? `${data.bride} (Bride / Host)` : 'Portrait Photo'}
+                    badgeText="Tap to zoom"
+                    badgePosition="center"
+                    className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] shadow-lg bg-black/40"
+                  >
+                    <img src={data.photoUrl2} alt={data.bride || "Photo 2"} crossOrigin="anonymous" className="size-full object-cover" />
+                  </ZoomableImageBadge>
                 </div>
-                {(data.groom || !isPublicCard) && (
-                  <p className="text-[11px] sm:text-xs opacity-80 font-bold tracking-wide">{data.groom || '---'}</p>
-                )}
               </div>
-            </div>
+            ) : (data.photoUrl || data.photoUrl2) ? (
+              /* If only 1 image added: show 1 image only in center */
+              <div className="flex items-center justify-center my-2 inv-parallax-near">
+                <ZoomableImageBadge
+                  src={data.photoUrl || data.photoUrl2}
+                  alt={data.groom || data.bride || "Wedding Photo"}
+                  title="Wedding Celebration Photo"
+                  badgeText="Tap to zoom"
+                  className="size-20 sm:size-24 rounded-full border-2 border-[#D4AF37] shadow-xl bg-black/40"
+                >
+                  <img src={data.photoUrl || data.photoUrl2} alt="Wedding Photo" crossOrigin="anonymous" className="size-full object-cover" />
+                </ZoomableImageBadge>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center gap-3 sm:gap-5 inv-parallax-near py-1">
+                {/* Groom avatar (First) */}
+                <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
+                  <RelationAvatar relation="groom" size={60} />
+                </div>
+
+                {/* Ampersand / heart centre */}
+                <div className="flex flex-col items-center inv-avatar-anim">
+                  <svg width="32" height="28" viewBox="0 0 36 32" fill="none" className="size-6 sm:size-7">
+                    <path
+                      d="M18 28 Q5 20 5 11 A7 7 0 0 1 18 9 A7 7 0 0 1 31 11 Q31 20 18 28Z"
+                      fill="var(--c-accent)"
+                      opacity="0.85"
+                    />
+                  </svg>
+                </div>
+
+                {/* Bride avatar (Second) */}
+                <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
+                  <RelationAvatar relation="bride" size={60} />
+                </div>
+              </div>
+            )
           ) : (data.photoUrl || data.photoUrl2) ? (
             /* ── Custom Event Photo (Single / Non-couple) ── */
             <div className="flex items-center justify-center my-2 inv-parallax-near">

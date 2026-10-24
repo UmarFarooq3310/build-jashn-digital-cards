@@ -189,7 +189,7 @@ END:VCARD`
   }, { scope: wrapRef })
 
   return (
-    <div className={cn("w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl mx-auto space-y-4 font-sans select-none", className)}>
+    <div className={cn("w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-3xl xl:max-w-4xl mx-auto space-y-4 font-sans select-none", className)}>
       {/* Dynamic Keyframes */}
       <style jsx global>{`
         @keyframes shineSheen {
@@ -203,7 +203,7 @@ END:VCARD`
       `}</style>
 
       {/* Main 3D Flip Card Container */}
-      <div ref={wrapRef} className="relative w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl mx-auto" style={{ perspective: '1000px' }}>
+      <div ref={wrapRef} className="relative w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-3xl xl:max-w-4xl mx-auto" style={{ perspective: '1000px' }}>
         {/* Ambient Backlight Glow Blob */}
         <div
           className="pointer-events-none absolute -inset-6 -z-10 rounded-full opacity-30 blur-3xl transition-opacity"
@@ -213,7 +213,7 @@ END:VCARD`
         <div
           ref={ref}
           className={cn(
-            'visiting-card-surface relative overflow-hidden rounded-[32px] p-6 sm:p-8 transition-all duration-500 border-2 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl mx-auto',
+            'visiting-card-surface relative overflow-hidden rounded-[32px] p-6 sm:p-8 transition-all duration-500 border-2 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-3xl xl:max-w-4xl mx-auto',
             isLight ? 'border-slate-300/80 shadow-[0_15px_45px_rgba(0,0,0,0.12)]' : 'border-[#D4AF37]/50 shadow-[0_20px_60px_rgba(0,0,0,0.6)]',
             isRtl && 'text-right'
           )}

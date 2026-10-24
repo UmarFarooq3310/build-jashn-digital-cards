@@ -1310,20 +1310,20 @@ function CreateInvitationContent() {
                       </label>
 
                       <div className={cn("grid gap-3", isCouple ? "grid-cols-2" : "grid-cols-1")}>
-                        {/* Photo 1 Upload Box */}
+                        {/* Photo 1 Upload Box (Groom Photo for couple or Event Photo for single) */}
                         <div className="flex flex-col items-center justify-center p-3 rounded-2xl border border-dashed border-input bg-background/50 space-y-2 text-center">
                           <span className="text-[11px] font-semibold text-muted-foreground">
-                            {isCouple ? t('bridePhoto') : t('customCardPhoto')}
+                            {isCouple ? (t('groomPhoto') || 'Groom Photo') : t('customCardPhoto')}
                           </span>
                           {photoUrl ? (
                             <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm group">
                               <ZoomableImageBadge
                                 src={photoUrl}
                                 alt="Photo 1 Preview"
-                                title={isCouple ? 'Bride / Host Portrait' : 'Event Photo'}
+                                title={isCouple ? 'Groom / Host Portrait' : 'Event Photo'}
                                 className="size-full"
                               >
-                                <img src={photoUrl} alt="Bride or Primary Host Portrait Preview" className="size-full object-cover" />
+                                <img src={photoUrl} alt="Groom or Primary Host Portrait Preview" className="size-full object-cover" />
                               </ZoomableImageBadge>
                               <button
                                 type="button"
@@ -1341,21 +1341,21 @@ function CreateInvitationContent() {
                           </label>
                         </div>
 
-                        {/* Photo 2 Upload Box (Only for couple invitations e.g. Groom Photo) */}
+                        {/* Photo 2 Upload Box (Only for couple invitations e.g. Bride Photo) */}
                         {isCouple ? (
                           <div className="flex flex-col items-center justify-center p-3 rounded-2xl border border-dashed border-input bg-background/50 space-y-2 text-center">
                             <span className="text-[11px] font-semibold text-muted-foreground">
-                              {t('groomPhoto')}
+                              {t('bridePhoto') || 'Bride Photo'}
                             </span>
                             {photoUrl2 ? (
                               <div className="relative size-16 rounded-xl overflow-hidden border border-border shadow-sm group">
                                 <ZoomableImageBadge
                                   src={photoUrl2}
                                   alt="Photo 2 Preview"
-                                  title="Groom / Host Portrait"
+                                  title="Bride / Host Portrait"
                                   className="size-full"
                                 >
-                                  <img src={photoUrl2} alt="Groom or Secondary Host Portrait Preview" className="size-full object-cover" />
+                                  <img src={photoUrl2} alt="Bride or Secondary Host Portrait Preview" className="size-full object-cover" />
                                 </ZoomableImageBadge>
                                 <button
                                   type="button"
