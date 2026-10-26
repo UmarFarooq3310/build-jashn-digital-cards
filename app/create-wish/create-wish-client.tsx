@@ -141,6 +141,36 @@ function CreateWishContent() {
   const relationParam = searchParams.get('relation')
   const editSlug = searchParams.get('edit')
 
+  // Track the active edit target slug persistently across steps, history states, and renders
+  const [activeEditSlug, setActiveEditSlug] = useState<string | null>(() => {
+    if (editSlug) return editSlug
+    if (typeof window !== 'undefined') {
+      try {
+        const urlParams = new URLSearchParams(window.location.search)
+        const urlEdit = urlParams.get('edit')
+        if (urlEdit) return urlEdit
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i)
+          if (key && key.startsWith('cardzy_draft_wish_edit_')) {
+            const extractedSlug = key.replace('cardzy_draft_wish_edit_', '')
+            if (extractedSlug) return extractedSlug
+          }
+        }
+      } catch {}
+    }
+    return null
+  })
+
+  // Keep activeEditSlug in sync if URL query parameter changes
+  useEffect(() => {
+    const slugFromQuery = searchParams.get('edit')
+    if (slugFromQuery && slugFromQuery !== activeEditSlug) {
+      setActiveEditSlug(slugFromQuery)
+    }
+  }, [searchParams, activeEditSlug])
+
+  const currentEditSlug = activeEditSlug || editSlug
+
   const resolveOccasionFromCategory = (cat: string | null): string => {
     if (!cat) return 'birthday'
     const c = cat.toLowerCase()
@@ -175,7 +205,7 @@ function CreateWishContent() {
   // Free creation for everyone - no login required to send cards
 
   const [step, setStep] = useState<1 | 2 | 3 | 4>(() => {
-    if (editSlug) return 4
+    if (editSlug || currentEditSlug) return 4
     if (occasionParam || categoryParam) return 2
     return 1
   })
@@ -333,7 +363,7 @@ function CreateWishContent() {
     showToast('✨ Sample names filled! Customize or continue.', 'success')
   }
 
-  const draftKey = editSlug ? `cardzy_draft_wish_edit_${editSlug}` : 'cardzy_draft_wish'
+  const draftKey = currentEditSlug ? `cardzy_draft_wish_edit_${currentEditSlug}` : 'cardzy_draft_wish'
   const [isInitialLoaded, setIsInitialLoaded] = useState(false)
 
   // Listen to beforeunload to detect page refresh/reload reliably
@@ -341,7 +371,7 @@ function CreateWishContent() {
     const handleBeforeUnload = () => {
       try {
         sessionStorage.setItem('__cardzy_reloading__', '1')
-        if (!editSlug) {
+        if (!currentEditSlug) {
           sessionStorage.removeItem(draftKey)
           sessionStorage.removeItem('cardzy_draft_wish')
         }
@@ -351,7 +381,7 @@ function CreateWishContent() {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
     }
-  }, [draftKey, editSlug])
+  }, [draftKey, currentEditSlug])
 
   // 1. Initial Load: Restore draft or fetch edit record
   useEffect(() => {
@@ -366,7 +396,7 @@ function CreateWishContent() {
       } catch {}
 
       // If user refreshed the creation page (and not editing an existing card), clear draft and reset all fields
-      if (!editSlug && isReload) {
+      if (!currentEditSlug && isReload) {
         try {
           sessionStorage.removeItem(draftKey)
           sessionStorage.removeItem('cardzy_draft_wish')
@@ -390,7 +420,7 @@ function CreateWishContent() {
         return
       }
 
-      if (editSlug) {
+      if (currentEditSlug) {
         let loadedData: any = null
         try {
           const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
@@ -398,14 +428,14 @@ function CreateWishContent() {
         } catch {}
 
         if (!loadedData) {
-          const existing = wishes.find((w) => w.slug === editSlug)
+          const existing = wishes.find((w) => w.slug === currentEditSlug || w.id === currentEditSlug)
           if (existing) {
             loadedData = existing
           } else {
             const activeDb = getFirebaseDb() || db
             if (isFirebaseConfigured && activeDb) {
               try {
-                const snap = await getDoc(doc(activeDb, 'wishes', editSlug))
+                const snap = await getDoc(doc(activeDb, 'wishes', currentEditSlug))
                 if (snap.exists()) {
                   loadedData = snap.data()
                 }
@@ -417,6 +447,7 @@ function CreateWishContent() {
         }
 
         if (loadedData && !isCancelled) {
+          if (loadedData.editSlug && !activeEditSlug) setActiveEditSlug(loadedData.editSlug)
           if (loadedData.occasionId) setOccasionId(loadedData.occasionId)
           if (loadedData.themeId) setThemeId(loadedData.themeId)
           if (loadedData.borderId) setBorderId(loadedData.borderId)
@@ -460,6 +491,9 @@ function CreateWishContent() {
               const d = JSON.parse(draftJson)
               if (d && typeof d === 'object') {
                 hasDraft = true
+                if (d.editSlug && !activeEditSlug) {
+                  setActiveEditSlug(d.editSlug)
+                }
                 if (d.occasionId) setOccasionId(d.occasionId)
                 if (d.themeId) setThemeId(d.themeId)
                 if (d.borderId) setBorderId(d.borderId)
@@ -537,10 +571,14 @@ function CreateWishContent() {
             sessionStorage.removeItem(draftKey)
           } catch {}
 
-          // Clean cluttered URL in address bar
+          // Clean cluttered URL in address bar without removing ?edit=
           if (typeof window !== 'undefined' && (poemP || msgParam)) {
             try {
-              window.history.replaceState({}, '', window.location.pathname)
+              const cleanUrl = new URL(window.location.href)
+              cleanUrl.searchParams.delete('poem')
+              cleanUrl.searchParams.delete('message')
+              cleanUrl.searchParams.delete('msg')
+              window.history.replaceState({}, '', cleanUrl.toString())
             } catch {}
           }
         }
@@ -552,12 +590,13 @@ function CreateWishContent() {
     return () => {
       isCancelled = true
     }
-  }, [editSlug, draftKey])
+  }, [currentEditSlug, draftKey, activeEditSlug])
 
   // 2. Auto-save draft on changes (SESSION ONLY for active back/forward flow)
   useEffect(() => {
     if (!isInitialLoaded || typeof window === 'undefined') return
     const draftData = {
+      editSlug: currentEditSlug,
       step,
       occasionId,
       themeId,
@@ -624,7 +663,15 @@ function CreateWishContent() {
   const changeStep = (nextStep: 1 | 2 | 3 | 4) => {
     setStep(nextStep)
     if (typeof window !== 'undefined') {
-      window.history.pushState({ cardzyStep: nextStep }, '', window.location.href)
+      try {
+        const currentUrl = new URL(window.location.href)
+        if (currentEditSlug && !currentUrl.searchParams.get('edit')) {
+          currentUrl.searchParams.set('edit', currentEditSlug)
+        }
+        window.history.pushState({ cardzyStep: nextStep }, '', currentUrl.toString())
+      } catch {
+        window.history.pushState({ cardzyStep: nextStep }, '', window.location.href)
+      }
       window.scrollTo({ top: 100, behavior: 'smooth' })
     }
   }
@@ -726,17 +773,11 @@ function CreateWishContent() {
       }
       return
     }
-    setStep(3)
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 100, behavior: 'smooth' })
-    }
+    changeStep(3)
   }
 
   function handleGoToStep4() {
-    setStep(4)
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 100, behavior: 'smooth' })
-    }
+    changeStep(4)
   }
 
   function handleFieldChange(field: string, value: string, setter: (v: string) => void) {
@@ -809,14 +850,15 @@ function CreateWishContent() {
         audioTrack,
       }
 
-      if (editSlug) {
-        await updateWish(editSlug, payload)
+      const targetEditSlug = currentEditSlug || (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('edit') : null)
+      if (targetEditSlug) {
+        await updateWish(targetEditSlug, payload)
         try {
           sessionStorage.removeItem(draftKey)
           localStorage.removeItem(draftKey)
         } catch {}
         showToast(t('wishUpdatedSuccess', 'Wish card updated successfully! 🎉'), 'success')
-        router.push(`/w/${editSlug}?mode=sender`)
+        router.push(`/w/${targetEditSlug}?mode=sender`)
       } else {
         const wish = await createWish(payload)
         try {
@@ -1763,7 +1805,7 @@ function CreateWishContent() {
                       </>
                     ) : (
                       <>
-                        <span>{editSlug ? (t('btnUpdate') || 'Update') : (t('btnFinish') || 'Finish 🚀')}</span>
+                        <span>{currentEditSlug ? (t('btnUpdate') || 'Update') : (t('btnFinish') || 'Finish 🚀')}</span>
                         <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
                       </>
                     )}

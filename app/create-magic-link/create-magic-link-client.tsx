@@ -759,7 +759,38 @@ export default function CreateMagicLinkClient() {
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const editSlug = searchParams.get('edit')
-  const draftKey = editSlug ? `cardzy_draft_magic_edit_${editSlug}` : 'cardzy_draft_magic'
+
+  // Track the active edit target slug persistently across steps, history states, and renders
+  const [activeEditSlug, setActiveEditSlug] = useState<string | null>(() => {
+    if (editSlug) return editSlug
+    if (typeof window !== 'undefined') {
+      try {
+        const urlParams = new URLSearchParams(window.location.search)
+        const urlEdit = urlParams.get('edit')
+        if (urlEdit) return urlEdit
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i)
+          if (key && key.startsWith('cardzy_draft_magic_edit_')) {
+            const extractedSlug = key.replace('cardzy_draft_magic_edit_', '')
+            if (extractedSlug) return extractedSlug
+          }
+        }
+      } catch {}
+    }
+    return null
+  })
+
+  // Keep activeEditSlug in sync if URL query parameter changes
+  useEffect(() => {
+    const slugFromQuery = searchParams.get('edit')
+    if (slugFromQuery && slugFromQuery !== activeEditSlug) {
+      setActiveEditSlug(slugFromQuery)
+    }
+  }, [searchParams, activeEditSlug])
+
+  const currentEditSlug = activeEditSlug || editSlug
+
+  const draftKey = currentEditSlug ? `cardzy_draft_magic_edit_${currentEditSlug}` : 'cardzy_draft_magic'
   const [isInitialLoaded, setIsInitialLoaded] = useState(false)
 
   // Listen to beforeunload to detect page refresh/reload reliably
@@ -767,7 +798,7 @@ export default function CreateMagicLinkClient() {
     const handleBeforeUnload = () => {
       try {
         sessionStorage.setItem('__cardzy_reloading__', '1')
-        if (!editSlug) {
+        if (!currentEditSlug) {
           sessionStorage.removeItem(draftKey)
           sessionStorage.removeItem('cardzy_draft_magic')
         }
@@ -777,7 +808,7 @@ export default function CreateMagicLinkClient() {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
     }
-  }, [draftKey, editSlug])
+  }, [draftKey, currentEditSlug])
 
   // 1. Initial Load: Restore draft or fetch edit record
   useEffect(() => {
@@ -792,7 +823,7 @@ export default function CreateMagicLinkClient() {
       } catch {}
 
       // If user refreshed the creation page (and not editing an existing card), clear draft and reset all fields
-      if (!editSlug && isReload) {
+      if (!currentEditSlug && isReload) {
         try {
           sessionStorage.removeItem(draftKey)
           sessionStorage.removeItem('cardzy_draft_magic')
@@ -822,7 +853,7 @@ export default function CreateMagicLinkClient() {
         return
       }
 
-      if (editSlug) {
+      if (currentEditSlug) {
         let loadedData: any = null
         try {
           const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
@@ -831,7 +862,7 @@ export default function CreateMagicLinkClient() {
 
         if (!loadedData) {
           try {
-            const remote = await getMagicLink(editSlug)
+            const remote = await getMagicLink(currentEditSlug)
             if (remote) loadedData = remote
           } catch (err) {
             console.error('Error fetching magic link for edit:', err)
@@ -839,6 +870,7 @@ export default function CreateMagicLinkClient() {
         }
 
         if (loadedData && !isCancelled) {
+          if (loadedData.editSlug && !activeEditSlug) setActiveEditSlug(loadedData.editSlug)
           if (loadedData.occasion) setSelectedOccasion(loadedData.occasion)
           if (loadedData.theme) setSelectedTheme(loadedData.theme)
           if (loadedData.type) setLinkType(loadedData.type)
@@ -947,10 +979,14 @@ export default function CreateMagicLinkClient() {
             sessionStorage.removeItem(draftKey)
           } catch {}
 
-          // Clean address bar
+          // Clean address bar without stripping ?edit=
           if (typeof window !== 'undefined' && (poemP || msgP)) {
             try {
-              window.history.replaceState({}, '', window.location.pathname)
+              const cleanUrl = new URL(window.location.href)
+              cleanUrl.searchParams.delete('poem')
+              cleanUrl.searchParams.delete('msg')
+              cleanUrl.searchParams.delete('message')
+              window.history.replaceState({}, '', cleanUrl.toString())
             } catch {}
           }
         }
@@ -962,12 +998,13 @@ export default function CreateMagicLinkClient() {
     return () => {
       isCancelled = true
     }
-  }, [editSlug, draftKey])
+  }, [currentEditSlug, draftKey, activeEditSlug])
 
   // 2. Auto-save draft on every change (SESSION ONLY for active back/forward flow)
   useEffect(() => {
     if (!isInitialLoaded || typeof window === 'undefined') return
     const draftData = {
+      editSlug: currentEditSlug,
       step,
       activeTab,
       selectedOccasion,
@@ -998,6 +1035,7 @@ export default function CreateMagicLinkClient() {
   }, [
     isInitialLoaded,
     draftKey,
+    currentEditSlug,
     step,
     activeTab,
     selectedOccasion,
@@ -1044,11 +1082,23 @@ export default function CreateMagicLinkClient() {
     setStep(nextStep)
     if (nextTab) setActiveTab(nextTab)
     if (typeof window !== 'undefined') {
-      window.history.pushState(
-        { cardzyStep: nextStep, cardzyTab: nextTab || activeTab },
-        '',
-        window.location.href
-      )
+      try {
+        const currentUrl = new URL(window.location.href)
+        if (currentEditSlug && !currentUrl.searchParams.get('edit')) {
+          currentUrl.searchParams.set('edit', currentEditSlug)
+        }
+        window.history.pushState(
+          { cardzyStep: nextStep, cardzyTab: nextTab || activeTab },
+          '',
+          currentUrl.toString()
+        )
+      } catch {
+        window.history.pushState(
+          { cardzyStep: nextStep, cardzyTab: nextTab || activeTab },
+          '',
+          window.location.href
+        )
+      }
       window.scrollTo({ top: 120, behavior: 'smooth' })
     }
   }
@@ -1230,14 +1280,15 @@ export default function CreateMagicLinkClient() {
             : undefined,
       }
 
-      if (editSlug) {
-        await updateMagicLink(editSlug, payload)
+      const targetEditSlug = currentEditSlug || (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('edit') : null)
+      if (targetEditSlug) {
+        await updateMagicLink(targetEditSlug, payload)
         try {
           sessionStorage.removeItem(draftKey)
           localStorage.removeItem(draftKey)
         } catch {}
         showToast(t('magicLinkUpdatedSuccess', 'Magic link updated successfully! ✨'), 'success')
-        router.push(`/m/${editSlug}?mode=sender`)
+        router.push(`/m/${targetEditSlug}?mode=sender`)
       } else {
         const slug = await createMagicLink(payload)
         try {
@@ -2424,7 +2475,7 @@ export default function CreateMagicLinkClient() {
                           ) : (
                             <>
                               <Sparkles className="size-4 text-amber-300 fill-amber-300/40" />
-                              <span>{editSlug ? (t('btnUpdate') || 'Update') : (t('btnFinish', 'Finish ✨'))}</span>
+                              <span>{currentEditSlug ? (t('btnUpdate') || 'Update') : (t('btnFinish', 'Finish ✨'))}</span>
                               <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
                             </>
                           )}

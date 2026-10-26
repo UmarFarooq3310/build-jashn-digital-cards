@@ -459,6 +459,9 @@ export async function updateMagicLink(slug: string, data: Partial<MagicLinkData>
   if (local[slug]) {
     local[slug] = { ...local[slug], ...data }
     saveLocalLink(slug, local[slug])
+  } else {
+    local[slug] = { slug, id: slug, ...data } as MagicLinkData
+    saveLocalLink(slug, local[slug])
   }
 
   // Guaranteed Server Admin SDK sync to Firestore

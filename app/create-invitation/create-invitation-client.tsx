@@ -148,6 +148,37 @@ function CreateInvitationContent() {
   const isUrdu = lang === 'ur' || lang === 'ar'
 
   const editSlug = searchParams.get('edit')
+
+  // Track the active edit target slug persistently across steps, history states, and renders
+  const [activeEditSlug, setActiveEditSlug] = useState<string | null>(() => {
+    if (editSlug) return editSlug
+    if (typeof window !== 'undefined') {
+      try {
+        const urlParams = new URLSearchParams(window.location.search)
+        const urlEdit = urlParams.get('edit')
+        if (urlEdit) return urlEdit
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i)
+          if (key && key.startsWith('cardzy_draft_invite_edit_')) {
+            const extractedSlug = key.replace('cardzy_draft_invite_edit_', '')
+            if (extractedSlug) return extractedSlug
+          }
+        }
+      } catch {}
+    }
+    return null
+  })
+
+  // Keep activeEditSlug in sync if URL query parameter changes
+  useEffect(() => {
+    const slugFromQuery = searchParams.get('edit')
+    if (slugFromQuery && slugFromQuery !== activeEditSlug) {
+      setActiveEditSlug(slugFromQuery)
+    }
+  }, [searchParams, activeEditSlug])
+
+  const currentEditSlug = activeEditSlug || editSlug
+
   const typeParam = searchParams.get('type')
   const titleParam = searchParams.get('title')
   const notesParam = searchParams.get('notes')
@@ -162,7 +193,7 @@ function CreateInvitationContent() {
   const dressCodeParam = searchParams.get('dressCode')
 
   const [step, setStep] = useState<1 | 2 | 3 | 4>(() => {
-    if (editSlug || typeParam || titleParam || poemParam || notesParam) return 2
+    if (editSlug || currentEditSlug || typeParam || titleParam || poemParam || notesParam) return 2
     return 1
   })
   const [typeId, setTypeId] = useState<string>(() => {
@@ -273,7 +304,7 @@ function CreateInvitationContent() {
 
   // Free creation for everyone - no login required to send invitations
 
-  const draftKey = editSlug ? `cardzy_draft_invite_edit_${editSlug}` : 'cardzy_draft_invitation'
+  const draftKey = currentEditSlug ? `cardzy_draft_invite_edit_${currentEditSlug}` : 'cardzy_draft_invitation'
   const [isInitialLoaded, setIsInitialLoaded] = useState(false)
 
   // Listen to beforeunload to detect page refresh/reload reliably
@@ -281,7 +312,7 @@ function CreateInvitationContent() {
     const handleBeforeUnload = () => {
       try {
         sessionStorage.setItem('__cardzy_reloading__', '1')
-        if (!editSlug) {
+        if (!currentEditSlug) {
           sessionStorage.removeItem(draftKey)
           sessionStorage.removeItem('cardzy_draft_invitation')
         }
@@ -291,7 +322,7 @@ function CreateInvitationContent() {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
     }
-  }, [draftKey, editSlug])
+  }, [draftKey, currentEditSlug])
 
   // 1. Initial Load: Restore draft or fetch edit record
   useEffect(() => {
@@ -306,7 +337,7 @@ function CreateInvitationContent() {
       } catch {}
 
       // If user refreshed the creation page (and not editing an existing card), clear draft and reset all fields
-      if (!editSlug && isReload) {
+      if (!currentEditSlug && isReload) {
         try {
           sessionStorage.removeItem(draftKey)
           sessionStorage.removeItem('cardzy_draft_invitation')
@@ -332,7 +363,7 @@ function CreateInvitationContent() {
         return
       }
 
-      if (editSlug) {
+      if (currentEditSlug) {
         let loadedData: any = null
         try {
           const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
@@ -340,14 +371,14 @@ function CreateInvitationContent() {
         } catch {}
 
         if (!loadedData) {
-          const existing = invitations.find((i) => i.slug === editSlug)
+          const existing = invitations.find((i) => i.slug === currentEditSlug || i.id === currentEditSlug)
           if (existing) {
             loadedData = existing
           } else {
             const activeDb = getFirebaseDb() || db
             if (isFirebaseConfigured && activeDb) {
               try {
-                const snap = await getDoc(doc(activeDb, 'invitations', editSlug))
+                const snap = await getDoc(doc(activeDb, 'invitations', currentEditSlug))
                 if (snap.exists()) {
                   loadedData = snap.data()
                 }
@@ -359,6 +390,7 @@ function CreateInvitationContent() {
         }
 
         if (loadedData && !isCancelled) {
+          if (loadedData.editSlug && !activeEditSlug) setActiveEditSlug(loadedData.editSlug)
           if (loadedData.typeId) setTypeId(loadedData.typeId)
           if (loadedData.title !== undefined) setTitle(loadedData.title)
           if (loadedData.hostNames !== undefined) setHostNames(loadedData.hostNames)
@@ -470,10 +502,13 @@ function CreateInvitationContent() {
             sessionStorage.removeItem(draftKey)
           } catch {}
 
-          // Clean cluttered query params from the browser address bar
+          // Clean cluttered query params without stripping ?edit=
           if (typeof window !== 'undefined' && (notesP || poemP)) {
             try {
-              window.history.replaceState({}, '', window.location.pathname)
+              const cleanUrl = new URL(window.location.href)
+              cleanUrl.searchParams.delete('notes')
+              cleanUrl.searchParams.delete('poem')
+              window.history.replaceState({}, '', cleanUrl.toString())
             } catch {}
           }
         }
@@ -485,12 +520,13 @@ function CreateInvitationContent() {
     return () => {
       isCancelled = true
     }
-  }, [editSlug, draftKey])
+  }, [currentEditSlug, draftKey, activeEditSlug])
 
   // 2. Auto-save draft on every change (SESSION ONLY for active back/forward flow)
   useEffect(() => {
     if (!isInitialLoaded || typeof window === 'undefined') return
     const draftData = {
+      editSlug: currentEditSlug,
       step,
       typeId,
       title,
@@ -518,6 +554,7 @@ function CreateInvitationContent() {
   }, [
     isInitialLoaded,
     draftKey,
+    currentEditSlug,
     step,
     typeId,
     title,
@@ -557,7 +594,15 @@ function CreateInvitationContent() {
   const changeStep = (nextStep: 1 | 2 | 3 | 4) => {
     setStep(nextStep)
     if (typeof window !== 'undefined') {
-      window.history.pushState({ cardzyStep: nextStep }, '', window.location.href)
+      try {
+        const currentUrl = new URL(window.location.href)
+        if (currentEditSlug && !currentUrl.searchParams.get('edit')) {
+          currentUrl.searchParams.set('edit', currentEditSlug)
+        }
+        window.history.pushState({ cardzyStep: nextStep }, '', currentUrl.toString())
+      } catch {
+        window.history.pushState({ cardzyStep: nextStep }, '', window.location.href)
+      }
       window.scrollTo({ top: 120, behavior: 'smooth' })
     }
   }
@@ -794,14 +839,15 @@ function CreateInvitationContent() {
         audioTrack,
       }
 
-      if (editSlug) {
-        await updateInvitation(editSlug, payload)
+      const targetEditSlug = currentEditSlug || (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('edit') : null)
+      if (targetEditSlug) {
+        await updateInvitation(targetEditSlug, payload)
         try {
           sessionStorage.removeItem(draftKey)
           localStorage.removeItem(draftKey)
         } catch {}
         showToast(t('invitationUpdatedSuccess', 'Invitation updated successfully! 🎉'), 'success')
-        router.push(`/i/${editSlug}?mode=sender`)
+        router.push(`/i/${targetEditSlug}?mode=sender`)
       } else {
         const inv = await createInvitation(payload)
         try {
@@ -1471,7 +1517,7 @@ function CreateInvitationContent() {
                           </>
                         ) : (
                           <>
-                            <span>{editSlug ? (t('btnUpdate') || 'Update') : (t('btnFinish') || 'Finish 🚀')}</span>
+                            <span>{currentEditSlug ? (t('btnUpdate') || 'Update') : (t('btnFinish') || 'Finish 🚀')}</span>
                             <ArrowRight className={cn("size-4", isUrdu && "rotate-180")} />
                           </>
                         )}

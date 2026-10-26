@@ -50,6 +50,36 @@ export default function CreateVisitingCardPage() {
   const searchParams = useSearchParams()
   const editSlug = searchParams.get('edit')
 
+  // Track the active edit target slug stably across steps, history changes, and renders
+  const [activeEditSlug, setActiveEditSlug] = useState<string | null>(() => {
+    if (editSlug) return editSlug
+    if (typeof window !== 'undefined') {
+      try {
+        const urlParams = new URLSearchParams(window.location.search)
+        const urlEdit = urlParams.get('edit')
+        if (urlEdit) return urlEdit
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i)
+          if (key && key.startsWith('cardzy_draft_vcard_edit_')) {
+            const extractedSlug = key.replace('cardzy_draft_vcard_edit_', '')
+            if (extractedSlug) return extractedSlug
+          }
+        }
+      } catch {}
+    }
+    return null
+  })
+
+  // Keep activeEditSlug in sync if URL query parameter changes
+  useEffect(() => {
+    const slugFromQuery = searchParams.get('edit')
+    if (slugFromQuery && slugFromQuery !== activeEditSlug) {
+      setActiveEditSlug(slugFromQuery)
+    }
+  }, [searchParams, activeEditSlug])
+
+  const currentEditSlug = activeEditSlug || editSlug
+
   const { t, lang, setLang } = useLang()
   const { createVisitingCard, updateVisitingCard, getVisitingCard, showToast } = useJashn()
   const isUrdu = lang === 'ur' || lang === 'ar'
@@ -78,7 +108,7 @@ export default function CreateVisitingCardPage() {
   const [copiedLink, setCopiedLink] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
 
-  const draftKey = editSlug ? `cardzy_draft_vcard_edit_${editSlug}` : 'cardzy_draft_vcard'
+  const draftKey = currentEditSlug ? `cardzy_draft_vcard_edit_${currentEditSlug}` : 'cardzy_draft_vcard'
   const [isInitialLoaded, setIsInitialLoaded] = useState(false)
 
   // Listen to beforeunload to detect page refresh/reload reliably
@@ -86,7 +116,7 @@ export default function CreateVisitingCardPage() {
     const handleBeforeUnload = () => {
       try {
         sessionStorage.setItem('__cardzy_reloading__', '1')
-        if (!editSlug) {
+        if (!currentEditSlug) {
           sessionStorage.removeItem(draftKey)
           sessionStorage.removeItem('cardzy_draft_vcard')
         }
@@ -96,7 +126,7 @@ export default function CreateVisitingCardPage() {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
     }
-  }, [draftKey, editSlug])
+  }, [draftKey, currentEditSlug])
 
   // 1. Initial Load: Restore draft or fetch edit record
   useEffect(() => {
@@ -111,7 +141,7 @@ export default function CreateVisitingCardPage() {
       } catch {}
 
       // If user refreshed the creation page (and not editing an existing card), clear draft and reset all fields
-      if (!editSlug && isReload) {
+      if (!currentEditSlug && isReload) {
         try {
           sessionStorage.removeItem(draftKey)
           sessionStorage.removeItem('cardzy_draft_vcard')
@@ -134,7 +164,7 @@ export default function CreateVisitingCardPage() {
         return
       }
 
-      if (editSlug) {
+      if (currentEditSlug) {
         let loadedData: any = null
         try {
           const draftJson = typeof window !== 'undefined' ? sessionStorage.getItem(draftKey) : null
@@ -142,12 +172,12 @@ export default function CreateVisitingCardPage() {
         } catch {}
 
         if (!loadedData) {
-          let cardToEdit = getVisitingCard(editSlug!)
+          let cardToEdit = getVisitingCard(currentEditSlug)
           if (!cardToEdit) {
             const activeDb = getFirebaseDb() || db
             if (isFirebaseConfigured && activeDb) {
               try {
-                const docSnap = await getDoc(doc(activeDb, 'visitingCards', editSlug!))
+                const docSnap = await getDoc(doc(activeDb, 'visitingCards', currentEditSlug))
                 if (docSnap.exists()) {
                   cardToEdit = docSnap.data() as VisitingCard
                 }
@@ -175,6 +205,7 @@ export default function CreateVisitingCardPage() {
           if (loadedData.themeId) setSelectedThemeId(loadedData.themeId)
           if (loadedData.language) setLang(loadedData.language)
           if (loadedData.step) setStep(loadedData.step as 1 | 2)
+          if (loadedData.editSlug && !activeEditSlug) setActiveEditSlug(loadedData.editSlug)
         }
       } else {
         try {
@@ -182,6 +213,9 @@ export default function CreateVisitingCardPage() {
           if (draftJson) {
             const d = JSON.parse(draftJson)
             if (d && typeof d === 'object' && !isCancelled) {
+              if (d.editSlug && !activeEditSlug) {
+                setActiveEditSlug(d.editSlug)
+              }
               if (d.fullName !== undefined) setFullName(d.fullName)
               if (d.title !== undefined) setTitle(d.title)
               if (d.company !== undefined) setCompany(d.company)
@@ -207,12 +241,13 @@ export default function CreateVisitingCardPage() {
     return () => {
       isCancelled = true
     }
-  }, [editSlug, getVisitingCard, setLang, draftKey])
+  }, [currentEditSlug, getVisitingCard, setLang, draftKey, activeEditSlug])
 
   // 2. Auto-save draft on every change (session-only for back/forward navigation flow)
   useEffect(() => {
     if (!isInitialLoaded || typeof window === 'undefined') return
     const draftData = {
+      editSlug: currentEditSlug,
       step,
       selectedCategory,
       selectedThemeId,
@@ -235,6 +270,7 @@ export default function CreateVisitingCardPage() {
   }, [
     isInitialLoaded,
     draftKey,
+    currentEditSlug,
     step,
     selectedCategory,
     selectedThemeId,
@@ -269,7 +305,15 @@ export default function CreateVisitingCardPage() {
   const changeStep = (nextStep: 1 | 2) => {
     setStep(nextStep)
     if (typeof window !== 'undefined') {
-      window.history.pushState({ cardzyStep: nextStep }, '', window.location.href)
+      try {
+        const currentUrl = new URL(window.location.href)
+        if (currentEditSlug && !currentUrl.searchParams.get('edit')) {
+          currentUrl.searchParams.set('edit', currentEditSlug)
+        }
+        window.history.pushState({ cardzyStep: nextStep }, '', currentUrl.toString())
+      } catch {
+        window.history.pushState({ cardzyStep: nextStep }, '', window.location.href)
+      }
       window.scrollTo({ top: 120, behavior: 'smooth' })
     }
   }
@@ -412,8 +456,9 @@ export default function CreateVisitingCardPage() {
 
     setIsSubmitting(true)
     try {
-      if (editSlug) {
-        await updateVisitingCard(editSlug, {
+      const targetSlug = currentEditSlug || (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('edit') : null)
+      if (targetSlug) {
+        await updateVisitingCard(targetSlug, {
           fullName: fullName.trim(),
           title: title.trim(),
           company: company.trim(),
@@ -434,7 +479,7 @@ export default function CreateVisitingCardPage() {
           localStorage.removeItem(draftKey)
         } catch {}
         showToast(t('cardUpdatedSuccess') || 'Visiting Card Updated Successfully! 🎉', 'success')
-        router.push(`/v/${editSlug}?mode=sender`)
+        router.push(`/v/${targetSlug}?mode=sender`)
       } else {
         const card = await createVisitingCard({
           fullName: fullName.trim(),
@@ -1088,11 +1133,11 @@ export default function CreateVisitingCardPage() {
                     {isSubmitting ? (
                       <>
                         <Sparkles className="size-4 animate-spin" />
-                        <span>{editSlug ? (t('saving') || 'Saving...') : (t('finishingCardBtn') || 'Finishing...')}</span>
+                        <span>{currentEditSlug ? (t('saving') || 'Saving...') : (t('finishingCardBtn') || 'Finishing...')}</span>
                       </>
                     ) : (
                       <>
-                        <span>{editSlug ? (t('btnUpdate') || 'Update') : (t('btnFinish') || 'Finish 🚀')}</span>
+                        <span>{currentEditSlug ? (t('btnUpdate') || 'Update') : (t('btnFinish') || 'Finish 🚀')}</span>
                         <ArrowRight className={cn('size-4', isUrdu && 'rotate-180')} />
                       </>
                     )}

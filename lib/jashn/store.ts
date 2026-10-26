@@ -1005,9 +1005,14 @@ export const useJashn = create<JashnState>()(
       },
 
       updateWish: async (slug: string, data: Partial<Wish>) => {
-        set((s) => ({
-          wishes: s.wishes.map((w) => (w.slug === slug ? { ...w, ...data } : w)),
-        }))
+        set((s) => {
+          const exists = s.wishes.some((w) => w.slug === slug || w.id === slug)
+          return {
+            wishes: exists
+              ? s.wishes.map((w) => (w.slug === slug || w.id === slug ? { ...w, ...data } : w))
+              : [{ slug, id: slug, ...data } as Wish, ...s.wishes],
+          }
+        })
 
         // Guaranteed Server Admin SDK sync to Firestore
         syncRecordToServer('sync_wish', { slug, ...data })
@@ -1023,9 +1028,14 @@ export const useJashn = create<JashnState>()(
       },
 
       updateInvitation: async (slug: string, data: Partial<Invitation>) => {
-        set((s) => ({
-          invitations: s.invitations.map((i) => (i.slug === slug ? { ...i, ...data } : i)),
-        }))
+        set((s) => {
+          const exists = s.invitations.some((i) => i.slug === slug || i.id === slug)
+          return {
+            invitations: exists
+              ? s.invitations.map((i) => (i.slug === slug || i.id === slug ? { ...i, ...data } : i))
+              : [{ slug, id: slug, ...data } as Invitation, ...s.invitations],
+          }
+        })
 
         // Guaranteed Server Admin SDK sync to Firestore
         syncRecordToServer('sync_invitation', { slug, ...data })
@@ -1041,9 +1051,14 @@ export const useJashn = create<JashnState>()(
       },
 
       updateVisitingCard: async (slug: string, data: Partial<VisitingCard>) => {
-        set((s) => ({
-          visitingCards: s.visitingCards.map((v) => (v.slug === slug ? { ...v, ...data } : v)),
-        }))
+        set((s) => {
+          const exists = s.visitingCards.some((v) => v.slug === slug || v.id === slug)
+          return {
+            visitingCards: exists
+              ? s.visitingCards.map((v) => (v.slug === slug || v.id === slug ? { ...v, ...data } : v))
+              : [{ slug, id: slug, ...data } as VisitingCard, ...s.visitingCards],
+          }
+        })
 
         // Guaranteed Server Admin SDK sync to Firestore
         syncRecordToServer('sync_vcard', { slug, ...data })
