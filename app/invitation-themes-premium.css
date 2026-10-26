@@ -267,6 +267,7 @@
 
 /* ── Type-specific gradient mesh indicator strip ─────────────────────── */
 .inv-type-mehndi      .inv-type-strip { background: linear-gradient(90deg, #1a4a2e, #f9c74f, #52b788); }
+.inv-type-mayun       .inv-type-strip { background: linear-gradient(90deg, #b45309, #f59e0b, #ea580c); }
 .inv-type-dholki      .inv-type-strip { background: linear-gradient(90deg, #6a0572, #f72585, #f9c74f); }
 .inv-type-nikkah      .inv-type-strip { background: linear-gradient(90deg, #f8f4ed, #c8860a, #2e7d32); }
 .inv-type-barat       .inv-type-strip { background: linear-gradient(90deg, #5c0a1a, #d4af37, #ffd700); }

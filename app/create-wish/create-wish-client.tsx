@@ -1754,7 +1754,10 @@ function CreateWishContent() {
                   </label>
                   <ThemePicker
                     value={themeId}
-                    onChange={setThemeId}
+                    onChange={(id) => {
+                      setThemeId(id)
+                      setBgVariantId('default')
+                    }}
                     isPro={isPro}
                     onLockedClick={() => router.push('/pricing')}
                   />

@@ -74,6 +74,13 @@ export const INVITATION_TYPE_THEMES: Record<string, InvitationTypeTheme> = {
     particleColor: '#f9c74f',
     gradientMesh: true,
   },
+  mayun: {
+    typeClass: 'inv-type-mayun',
+    decor: 'mehndi-floral',
+    animProfile: 'bloom',
+    particleColor: '#f59e0b',
+    gradientMesh: true,
+  },
   dholki: {
     typeClass: 'inv-type-dholki',
     decor: 'dholki-music',

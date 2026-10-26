@@ -562,13 +562,12 @@ function MagicLinkInner({ slug }: { slug: string }) {
     }
   }
 
-  // ── 1. SENDER / CREATOR SCREEN (Full Website Layout + Delivery Hero + Sticky Mobile Bar) ──
-  // ── 1. SENDER / CREATOR SCREEN (Clean Responsive Desktop/Mobile Layout, No Repetition) ──
+  // ── 1. SENDER / CREATOR SCREEN (Full Magic Link Capsule + Right-Side Delivery Hub) ──
   if (isSenderMode) {
     const fullReceiverUrl = typeof window !== 'undefined' ? `${window.location.origin}${receiverUrl}` : receiverUrl
 
     return (
-      <div className="pt-2 sm:pt-3 pb-24 sm:pb-8 lg:py-2 px-3 sm:px-5 max-w-7xl mx-auto lg:h-[calc(100dvh-4.25rem)] lg:max-h-[calc(100dvh-4.25rem)] flex flex-col justify-center">
+      <div className="pt-2 sm:pt-4 pb-20 sm:pb-12 lg:py-6 px-3 sm:px-5 max-w-7xl mx-auto min-h-screen">
         {isExpiredCard && (
           <div className="mb-3 px-4 py-2 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold text-center">
             ⚠️ Notice: This Free card has expired (&gt;30 days). Public viewers see an expiration notice; you are viewing it in Admin / Preview mode.
@@ -591,11 +590,11 @@ function MagicLinkInner({ slug }: { slug: string }) {
         {/* Twinkling Stars Background Overlay */}
         <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-        {/* ── Main Responsive Grid: Magic Scene (Left on Desktop, Below on Mobile) + Delivery Hub (Top on Mobile, Right on Desktop) ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center lg:h-full lg:max-h-full">
-          {/* Interactive Magic Link Capsule Column */}
-          <div className="order-2 lg:order-1 lg:col-span-8 xl:col-span-8 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
-            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
+        {/* ── Main Responsive Grid: Full Magic Scene (Left on Desktop, Below on Mobile) + Delivery Hub (Sticky on Right on Desktop, Top on Mobile) ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
+          {/* Interactive Magic Link Capsule Column (Full Height, No Inner Vertical Scroll Clipping) */}
+          <div className="order-2 lg:order-1 lg:col-span-8 xl:col-span-8 flex flex-col items-center text-center">
+            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-2 z-10 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Eye className="size-3.5 text-purple-400" /> Interactive Receiver Preview
               </span>
@@ -608,18 +607,19 @@ function MagicLinkInner({ slug }: { slug: string }) {
               </Link>
             </div>
 
-            <div ref={cardRef} className="w-full flex-1 min-h-0 pt-4 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
-              <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
+            {/* Completely unclipped, zero vertical scroll inside, full card on desktop screen */}
+            <div ref={cardRef} className="w-full pt-1 pb-6 px-1 flex flex-col items-center justify-start">
+              <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
                 {renderScenario()}
               </div>
             </div>
           </div>
 
-          {/* Unified 1-Click Delivery Hub Column (Top on Mobile, Vertically Centered on Desktop) */}
-          <div className="order-1 lg:order-2 lg:col-span-4 xl:col-span-4 flex flex-col justify-center lg:h-full lg:max-h-full">
-            <div className="rounded-2xl xl:rounded-3xl border-2 border-purple-500/40 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 text-white p-3.5 sm:p-4 lg:p-3.5 xl:p-4 shadow-xl space-y-2 lg:space-y-2 xl:space-y-2.5 text-left lg:max-h-[calc(100dvh-5.5rem)] lg:overflow-y-auto scrollbar-none">
+          {/* Unified 1-Click Delivery Hub Column (Top on Mobile, Sticky on Desktop) */}
+          <div className="order-1 lg:order-2 lg:col-span-4 xl:col-span-4 flex flex-col justify-start lg:sticky lg:top-6">
+            <div className="rounded-2xl xl:rounded-3xl border-2 border-purple-500/40 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 text-white p-4 lg:p-5 shadow-xl space-y-3 text-left">
               {/* Ready to Deliver celebration highlight */}
-              <div className="p-2 lg:p-2.5 rounded-xl bg-gradient-to-r from-purple-500/20 via-pink-500/15 to-purple-500/20 border border-purple-400/35 shadow-xs flex items-center gap-2">
+              <div className="p-2.5 rounded-xl bg-gradient-to-r from-purple-500/20 via-pink-500/15 to-purple-500/20 border border-purple-400/35 shadow-xs flex items-center gap-2">
                 <span className="text-xl animate-bounce shrink-0">🎉</span>
                 <div className="flex-1 min-w-0 text-left">
                   <span className="text-purple-300 font-extrabold text-xs block leading-tight">Magic Link Live & Ready to Deliver!</span>

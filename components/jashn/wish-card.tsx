@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { useLang } from '@/lib/lang/context'
 import { JashnIcon } from '@/lib/jashn/icon'
 import { getOccasion, getLocalizedMessageText } from '@/lib/jashn/occasions'
-import { getTheme, getCategoryPatternClass, isLightVariant } from '@/lib/jashn/themes'
+import { getTheme, getCategoryPatternClass, isLightVariant, THEME_COLOR_VARS } from '@/lib/jashn/themes'
 import type { Language } from '@/lib/jashn/types'
 import { CardDecor } from './decor'
 import { RelationAvatar, detectRelation } from './relation-avatar'
@@ -413,20 +413,26 @@ export const WishCard = forwardRef<HTMLDivElement, {
       : (!isPublicCard ? '---' : null)
   )
 
-  const activeVariant = occasion?.bgVariants?.find(v => v.id === data.bgVariantId) || occasion?.bgVariants?.find(v => v.id === 'default')
-  const isLight = isLightVariant(activeVariant?.id)
-  const radialGlow = `radial-gradient(ellipse 80% 40% at 50% 0%, color-mix(in oklab, var(--c-accent, #f0c060) 20%, transparent), transparent 65%)`
-  const backgroundStyle: React.CSSProperties = activeVariant
-    ? activeVariant.bgImage
+  const isCustomBgVariant = !!data.bgVariantId && data.bgVariantId !== 'default'
+  const customVariant = isCustomBgVariant
+    ? occasion?.bgVariants?.find(v => v.id === data.bgVariantId)
+    : undefined
+  const isLight = isLightVariant(customVariant?.id || data.themeId)
+  const themeVars = THEME_COLOR_VARS[data.themeId] || THEME_COLOR_VARS['mehndi-red']
+  const radialGlow = `radial-gradient(ellipse 80% 40% at 50% 0%, color-mix(in oklab, var(--c-accent, ${themeVars.accent}) 20%, transparent), transparent 65%)`
+  const backgroundStyle: React.CSSProperties = customVariant
+    ? customVariant.bgImage
       ? {
-          backgroundImage: `${radialGlow}, url(${activeVariant.bgImage})`,
+          backgroundImage: `${radialGlow}, url(${customVariant.bgImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }
       : {
-          background: `${radialGlow}, ${activeVariant.bgGradient}`,
+          background: `${radialGlow}, ${customVariant.bgGradient}`,
         }
-    : {}
+    : {
+        background: `${radialGlow}, linear-gradient(160deg, ${themeVars.bg1}, ${themeVars.bg2})`,
+      }
 
   // ── 3D tilt on mouse move ──────────────────────────────────────────────
   useGSAP(() => {
@@ -530,8 +536,16 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
       <div
         ref={ref}
-        className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl px-4 py-5 sm:px-6 sm:py-6 text-center shadow-2xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
-        style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
+        className={`wish-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl flex flex-col justify-center px-4 pt-8 pb-6 sm:px-6 sm:pt-11 sm:pb-8 text-center shadow-2xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
+        style={{
+          transformStyle: 'preserve-3d',
+          '--c-bg1': themeVars.bg1,
+          '--c-bg2': themeVars.bg2,
+          '--c-ink': themeVars.ink,
+          '--c-accent': themeVars.accent,
+          '--c-glow': themeVars.glow,
+          ...backgroundStyle,
+        } as React.CSSProperties}
       >
         <CardDecor theme={theme} islamic={isIslamic} borderId={data.borderId || defaultBorderId} decorations={occasion?.decorations} />
 
@@ -577,7 +591,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
 
         <div className="card-shimmer-sweep pointer-events-none parallax-mid" aria-hidden="true" />
 
-        <div className="relative z-10 mx-auto flex w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl flex-col items-center gap-3 sm:gap-4 px-3 pt-4 pb-3 sm:py-4">
+        <div className="relative z-10 mx-auto flex w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl flex-col items-center justify-center min-h-[460px] sm:min-h-[520px] gap-3.5 sm:gap-4.5 px-3 pt-3 pb-3 sm:pt-5 sm:pb-4">
           {/* 🎮 Dedicated Esports Gaming HUD 🎮 */}
           {isGamingWinner ? (
             <GamingScorecardHUD data={data} lang={lang} isPublicCard={isPublicCard} />
@@ -602,8 +616,8 @@ export const WishCard = forwardRef<HTMLDivElement, {
                 </p>
               ) : null}
 
-              {/* Sacred Islamic Bismillah Calligraphy Crest */}
-              {isIslamic && (
+              {/* Sacred Islamic / Pakistani Bismillah Calligraphy Crest */}
+              {(isIslamic || data.occasionId === 'wedding' || data.occasionId === 'nikkah' || data.themeId === 'lahori-badshahi' || data.themeId === 'barat-jamawar') && (
                 <div className="flex flex-col items-center justify-center my-1 wc-stagger select-none pointer-events-none max-w-full px-2" aria-hidden="true">
                   <div className="flex items-center justify-center gap-2 mb-1 opacity-90">
                     <span className="h-px w-6 sm:w-10 bg-gradient-to-r from-transparent to-[var(--c-accent)]" />
@@ -687,16 +701,21 @@ export const WishCard = forwardRef<HTMLDivElement, {
                 const isRtlScript = (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(localizedMsg)) && localizedMsg !== '---'
                 
                 if (isPoetry) {
+                  const poetryLen = localizedMsg.trim().length
                   return (
                     <div
-                      className="wc-stagger w-full px-4 sm:px-6 parallax-near transition-all max-h-72 sm:max-h-96 overflow-y-auto overscroll-contain text-center [overflow-wrap:anywhere] [word-break:break-word]"
+                      className="wc-stagger w-full px-4 sm:px-6 parallax-near transition-all max-h-72 sm:max-h-96 overflow-y-auto overscroll-contain text-center [overflow-wrap:anywhere] [word-break:break-word] my-auto"
                     >
                       <div
                         className={cn(
                           "whitespace-pre-line tracking-wide transition-all",
                           isRtlScript
-                            ? "font-urdu text-lg sm:text-xl md:text-2xl leading-[2.3] text-center"
-                            : "font-serif italic text-base sm:text-lg md:text-xl leading-relaxed text-center"
+                            ? (poetryLen < 120
+                                ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-[2.4] text-center"
+                                : "font-urdu text-lg sm:text-xl md:text-2xl leading-[2.3] text-center")
+                            : (poetryLen < 120
+                                ? "font-serif italic text-lg sm:text-xl md:text-2xl leading-relaxed text-center"
+                                : "font-serif italic text-base sm:text-lg md:text-xl leading-relaxed text-center")
                         )}
                         style={{ color: 'var(--c-ink)' }}
                       >
@@ -729,18 +748,29 @@ export const WishCard = forwardRef<HTMLDivElement, {
                   )
                 }
 
+                const msgLen = localizedMsg.trim().length
+                // Responsive & adaptive typography: short messages scale up gracefully to be prominent, balanced and easy to read
+                const fontSizeClass = isRtlScript
+                  ? (msgLen < 90
+                      ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-[2.3]"
+                      : msgLen < 220
+                        ? "font-urdu text-lg sm:text-xl md:text-2xl leading-[2.1]"
+                        : "font-urdu text-base sm:text-lg leading-loose")
+                  : (msgLen < 90
+                      ? "font-serif italic text-lg sm:text-xl md:text-2xl leading-relaxed"
+                      : msgLen < 220
+                        ? "font-serif italic text-base sm:text-lg md:text-xl leading-relaxed"
+                        : "font-serif italic text-sm sm:text-base md:text-lg leading-relaxed")
+
                 return (
                   <div
                     className={cn(
-                      "wc-stagger w-full px-4 sm:px-6 parallax-near transition-all max-h-60 sm:max-h-80 overflow-y-auto overscroll-contain break-words break-all [overflow-wrap:anywhere] [word-break:break-word]",
-                      isRtlScript ? "text-right" : "text-center"
+                      "wc-stagger w-full px-4 sm:px-6 parallax-near transition-all max-h-64 sm:max-h-84 overflow-y-auto overscroll-contain break-words break-all [overflow-wrap:anywhere] [word-break:break-word] text-center my-auto"
                     )}
                   >
                     <p className={cn(
-                      "text-balance transition-all break-words break-all [overflow-wrap:anywhere] [word-break:break-word]",
-                      isRtlScript
-                        ? "font-urdu text-base sm:text-lg md:text-xl leading-loose text-right"
-                        : "text-sm sm:text-base leading-relaxed opacity-95 italic"
+                      "text-balance transition-all break-words break-all [overflow-wrap:anywhere] [word-break:break-word] text-center opacity-95",
+                      fontSizeClass
                     )}
                     style={{ color: 'var(--c-ink)', overflowWrap: 'anywhere', wordBreak: 'break-word' }}
                     >
@@ -751,7 +781,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
               })() : null}
 
               {(data.senderName || !isPublicCard) ? (
-                <p className="wc-stagger text-sm sm:text-base parallax-near">
+                <p className="wc-stagger text-sm sm:text-base md:text-lg parallax-near mt-1">
                   <span className="opacity-70">
                     {isPoetry
                       ? (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(data.senderName || '') ? 'پیشکش: ' : 'Presented by: ')
@@ -760,7 +790,7 @@ export const WishCard = forwardRef<HTMLDivElement, {
                   <span
                     className={cn(
                       "font-bold",
-                      (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(data.senderName || '')) ? "font-urdu tracking-normal" : "tracking-wide"
+                      (lang === 'ur' || lang === 'ar' || /[\u0600-\u06FF]/.test(data.senderName || '')) ? "font-urdu tracking-normal text-base sm:text-lg" : "tracking-wide"
                     )}
                     style={{ color: 'var(--c-accent)' }}
                   >

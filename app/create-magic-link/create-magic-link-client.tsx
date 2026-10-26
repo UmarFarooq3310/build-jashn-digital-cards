@@ -642,8 +642,8 @@ export const MAGIC_QUICK_STARTERS = [
     emoji: '🎂',
     label: 'Birthday Surprise',
     occasion: 'birthday' as MagicOccasion,
-    recipient: 'Sarah',
-    sender: 'Alex',
+    recipient: 'Ayesha',
+    sender: 'Hamza',
     hint: '3D cake & candles',
   },
   {
@@ -651,7 +651,7 @@ export const MAGIC_QUICK_STARTERS = [
     emoji: '💍',
     label: 'Romantic Proposal',
     occasion: 'proposal' as MagicOccasion,
-    recipient: 'My Forever',
+    recipient: 'Meri Jaan',
     sender: 'Always Yours',
     hint: 'Animated ring unbox',
   },
@@ -660,7 +660,7 @@ export const MAGIC_QUICK_STARTERS = [
     emoji: '🌙',
     label: 'Eid Mubarak',
     occasion: 'eid' as MagicOccasion,
-    recipient: 'Dearest Family',
+    recipient: 'Pyari Family',
     sender: 'With Love',
     hint: 'Crescent & lantern',
   },
@@ -669,7 +669,7 @@ export const MAGIC_QUICK_STARTERS = [
     emoji: '🥂',
     label: 'Happy Anniversary',
     occasion: 'anniversary' as MagicOccasion,
-    recipient: 'Honey',
+    recipient: 'My Love',
     sender: 'Forever Yours',
     hint: 'Champagne toast',
   },
@@ -678,7 +678,7 @@ export const MAGIC_QUICK_STARTERS = [
     emoji: '🎓',
     label: 'Graduation Star',
     occasion: 'graduation' as MagicOccasion,
-    recipient: 'Champ',
+    recipient: 'Zaid',
     sender: 'Proud Bestie',
     hint: 'Trophy & cap burst',
   },
@@ -1128,23 +1128,23 @@ export default function CreateMagicLinkClient() {
 
   const handleAutoFillSample = () => {
     const sampleRecipients: Partial<Record<MagicOccasion, string>> = {
-      birthday: 'Sarah',
-      proposal: 'My Forever',
-      anniversary: 'Honey',
-      wedding: 'Happy Couple',
-      eid: 'Dearest Family',
-      graduation: 'Alex',
-      party: 'Bestie',
+      birthday: 'Ayesha',
+      proposal: 'Meri Jaan',
+      anniversary: 'My Love',
+      wedding: 'Ali & Fatima',
+      eid: 'Pyari Family',
+      graduation: 'Zaid',
+      party: 'Besties',
       newborn: 'Little Angel',
-      ramadan: 'Beloved Friends',
-      apology: 'Dearest Friend',
+      ramadan: 'Pyare Dost',
+      apology: 'Meri Jaan',
       friendship: 'My Best Friend',
-      thankyou: 'Kind Mentor',
+      thankyou: 'Respected Mentor',
       getwell: 'Dear Friend',
       newyear: 'Everyone',
     }
-    const sampleSender = user?.name?.trim() || 'Alex'
-    setRecipientName(sampleRecipients[selectedOccasion] || 'Sarah')
+    const sampleSender = user?.name?.trim() || 'Hamza'
+    setRecipientName(sampleRecipients[selectedOccasion] || 'Ayesha')
     setSenderName(senderName.trim() || sampleSender)
     setErrors({})
     showToast('✨ Sample data filled! Click Finish or Preview.', 'success')
@@ -2497,7 +2497,7 @@ export default function CreateMagicLinkClient() {
 
               {/* RIGHT COLUMN: STICKY LIVE INTERACTIVE CAPSULE PREVIEW */}
               <div className="lg:col-span-5 space-y-4">
-                <div className="sticky top-20 w-full">
+                <div className="sticky top-20 w-full max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-none pb-4">
                   <div className="flex items-center justify-between mb-3 px-1">
                     <span className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 text-muted-foreground">
                       <Eye className="size-3.5 text-[#7B0D1E]" />

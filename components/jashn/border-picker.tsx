@@ -68,6 +68,35 @@ export const BORDERS = [
     isPremium: true,
     preview: 'cyber',
   },
+  // ── Authentic Pakistani Borders ──────────────────────────────
+  {
+    id: 'gota-kinari',
+    name: 'Gota Kinari Lace 🌟',
+    desc: 'Traditional golden scalloped bridal lace',
+    isPremium: false,
+    preview: 'gota',
+  },
+  {
+    id: 'ajrak-border',
+    name: 'Sindhi Ajrak Frame 🧣',
+    desc: 'Authentic block-print geometric border',
+    isPremium: false,
+    preview: 'ajrak',
+  },
+  {
+    id: 'truck-art-border',
+    name: 'Truck Art Filigree 🛻',
+    desc: 'Vibrant Pakistani chamakpatti floral frame',
+    isPremium: false,
+    preview: 'truck',
+  },
+  {
+    id: 'marigold-garland',
+    name: 'Marigold Garland (Genda) 🌼',
+    desc: 'Festive yellow & orange floral lori border',
+    isPremium: false,
+    preview: 'marigold',
+  },
 ]
 
 /** Small SVG preview of each border style */
@@ -170,6 +199,46 @@ function BorderPreview({ type, accent = '#c8a44a' }: { type: string; accent?: st
           <path d={`M${W-4} ${H-7} L${W-4} ${H-4} L${W-7} ${H-4}`} stroke="#F59E0B" strokeWidth={1.2} />
           <circle cx={W/2} cy={H/2} r={2} stroke="#06B6D4" strokeWidth={0.6} />
           <line x1={W/2-4} y1={H/2} x2={W/2+4} y2={H/2} stroke="#06B6D4" strokeWidth={0.5} opacity={0.7} />
+        </svg>
+      )
+    case 'gota':
+      return (
+        <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} fill="none">
+          <rect x={2} y={2} width={W-4} height={H-4} rx={2} stroke="#eab308" strokeWidth={1} strokeDasharray="2 1.5" />
+          {[4, 10, 16, 22, 28, 34].map((x) => (
+            <path key={x} d={`M${x-2} 2 Q${x} 4 ${x+2} 2 M${x-2} ${H-2} Q${x} ${H-4} ${x+2} ${H-2}`} stroke="#facc15" strokeWidth={0.7} fill="none" />
+          ))}
+        </svg>
+      )
+    case 'ajrak':
+      return (
+        <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} fill="none">
+          <rect x={2} y={2} width={W-4} height={H-4} rx={2} stroke="#1e3a8a" strokeWidth={1.2} />
+          {[5, 13, 21, 29].map((x) => (
+            <g key={x}>
+              <circle cx={x} cy={3.5} r={1.2} fill="#dc2626" />
+              <circle cx={x} cy={H-3.5} r={1.2} fill="#dc2626" />
+            </g>
+          ))}
+        </svg>
+      )
+    case 'truck':
+      return (
+        <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} fill="none">
+          <rect x={2} y={2} width={W-4} height={H-4} rx={2} stroke="#e11d48" strokeWidth={1} />
+          <path d={`M2 2 L${W-2} 2`} stroke="#facc15" strokeWidth={0.8} strokeDasharray="3 2" />
+          <path d={`M2 ${H-2} L${W-2} ${H-2}`} stroke="#06b6d4" strokeWidth={0.8} strokeDasharray="3 2" />
+        </svg>
+      )
+    case 'marigold':
+      return (
+        <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} fill="none">
+          {[4, 10, 16, 22, 28, 34].map((x, i) => (
+            <g key={x}>
+              <circle cx={x} cy={3.5} r={1.6} fill={i % 2 === 0 ? "#f59e0b" : "#ea580c"} />
+              <circle cx={x} cy={H-3.5} r={1.6} fill={i % 2 === 0 ? "#ea580c" : "#f59e0b"} />
+            </g>
+          ))}
         </svg>
       )
     default:

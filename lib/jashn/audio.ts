@@ -65,6 +65,42 @@ export const AUDIO_TRACKS: AudioTrack[] = [
     src: '/sounds/dholki.m4a',
     icon: 'Flower2',
   },
+  {
+    id: 'pakistani-dholak-tappe',
+    name: 'Lahori Dholak Beats & Tappay 🥁',
+    description: 'Lively authentic Punjabi & Lahori wedding dholak beats with clapping rhythm',
+    category: 'wedding',
+    tag: 'Pakistani Dholki',
+    src: '/sounds/mehndi-dholki.m4a',
+    icon: 'Music',
+  },
+  {
+    id: 'badshahi-shehnai',
+    name: 'Shahi Qila Shaadi Shehnai 🎺',
+    description: 'Imperial royal shehnai & nagara fanfare for Barat, Nikkah & Walima',
+    category: 'wedding',
+    tag: 'Barat & Nikkah',
+    src: '/sounds/wedding-shehnai.m4a',
+    icon: 'Music',
+  },
+  {
+    id: 'khyber-rubab-folk',
+    name: 'Khyber Rubab & Pashto Melodies 🪕',
+    description: 'Soul-stirring northern acoustic rubab strings and tabla rhythm',
+    category: 'festive',
+    tag: 'Rubab Folk',
+    src: '/sounds/wedding.m4a',
+    icon: 'Music',
+  },
+  {
+    id: 'qawwali-night-claps',
+    name: 'Qawwali Night & Sufi Claps 👏',
+    description: 'Atmospheric harmonium drone, tabla rhythm and synchronized clapping for Mehfil',
+    category: 'islamic',
+    tag: 'Sufi Qawwali',
+    src: '/sounds/sufi-harmonium.m4a',
+    icon: 'Sun',
+  },
 
   // --- 2. Islamic & Spiritual Celebrations (3 tracks) ---
   {

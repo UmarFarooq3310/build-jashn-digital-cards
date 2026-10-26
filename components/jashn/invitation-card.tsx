@@ -6,7 +6,7 @@ import { useLang } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
 import { JashnIcon } from '@/lib/jashn/icon'
 import { getInvitationType } from '@/lib/jashn/invitations'
-import { getTheme, getCategoryPatternClass, isLightVariant } from '@/lib/jashn/themes'
+import { getTheme, getCategoryPatternClass, isLightVariant, THEME_COLOR_VARS } from '@/lib/jashn/themes'
 import { CardDecor } from './decor'
 import { Countdown } from './countdown'
 import { RelationAvatar } from './relation-avatar'
@@ -310,13 +310,15 @@ function OrnamentDivider() {
 function TopOrnament({
   hasCouple,
   isIslamic,
+  isWedding,
   isGaming,
 }: {
   hasCouple: boolean
   isIslamic?: boolean
+  isWedding?: boolean
   isGaming?: boolean
 }) {
-  if (isIslamic) {
+  if (isIslamic || isWedding) {
     return (
       <div className="flex flex-col items-center justify-center my-1 ic-stagger select-none pointer-events-none max-w-full px-2" aria-hidden="true">
         {/* Crescent and 8-pointed star rosette */}
@@ -377,25 +379,32 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
   const theme = getTheme(data.themeId)
   const typeTheme = getInvitationTypeTheme(resolvedTypeId)
   const isIslamic = type?.category === 'Religious' || resolvedTypeId === 'nikkah' || resolvedTypeId === 'roza-kushai' || resolvedTypeId === 'hajj-dinner' || resolvedTypeId === 'eid-party' || resolvedTypeId === 'milad' || resolvedTypeId === 'iftaar'
+  const isWedding = type?.category === 'Wedding' || resolvedTypeId === 'nikkah' || resolvedTypeId === 'barat' || resolvedTypeId === 'walima' || resolvedTypeId === 'mehndi' || resolvedTypeId === 'dholki' || resolvedTypeId === 'mayun' || resolvedTypeId === 'engagement'
   const isGaming = resolvedTypeId === 'game-night'
   const isCouple = type?.couple
   const categoryPatternClass = getCategoryPatternClass(type?.category)
   const patternClass = type?.patternOverlay || categoryPatternClass
 
-  const activeVariant = type?.bgVariants?.find(v => v.id === data.bgVariantId) || type?.bgVariants?.find(v => v.id === 'default')
-  const isLight = isLightVariant(activeVariant?.id)
-  const radialGlow = `radial-gradient(ellipse 80% 40% at 50% 0%, color-mix(in oklab, var(--c-accent, #f0c060) 20%, transparent), transparent 65%)`
-  const backgroundStyle: React.CSSProperties = activeVariant
-    ? activeVariant.bgImage
+  const isCustomBgVariant = !!data.bgVariantId && data.bgVariantId !== 'default'
+  const customVariant = isCustomBgVariant
+    ? type?.bgVariants?.find(v => v.id === data.bgVariantId)
+    : undefined
+  const isLight = isLightVariant(customVariant?.id || data.themeId)
+  const themeVars = THEME_COLOR_VARS[data.themeId] || THEME_COLOR_VARS['mehndi-red']
+  const radialGlow = `radial-gradient(ellipse 80% 40% at 50% 0%, color-mix(in oklab, var(--c-accent, ${themeVars.accent}) 22%, transparent), transparent 65%)`
+  const backgroundStyle: React.CSSProperties = customVariant
+    ? customVariant.bgImage
       ? {
-          backgroundImage: `${radialGlow}, url(${activeVariant.bgImage})`,
+          backgroundImage: `${radialGlow}, url(${customVariant.bgImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }
       : {
-          background: `${radialGlow}, ${activeVariant.bgGradient}`,
+          background: `${radialGlow}, ${customVariant.bgGradient}`,
         }
-    : {}
+    : {
+        background: `${radialGlow}, linear-gradient(160deg, ${themeVars.bg1}, ${themeVars.bg2})`,
+      }
 
   const wrapRef = useRef<HTMLDivElement>(null)
 
@@ -567,8 +576,16 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
       <div
         ref={ref}
-        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${theme.cssClass} ${typeTheme?.typeClass ?? ''} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl shadow-2xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
-        style={{ transformStyle: 'preserve-3d', ...backgroundStyle }}
+        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${typeTheme?.typeClass ?? ''} ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl shadow-2xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
+        style={{
+          transformStyle: 'preserve-3d',
+          '--c-bg1': themeVars.bg1,
+          '--c-bg2': themeVars.bg2,
+          '--c-ink': themeVars.ink,
+          '--c-accent': themeVars.accent,
+          '--c-glow': themeVars.glow,
+          ...backgroundStyle,
+        } as React.CSSProperties}
       >
         {/* Decor layer (anchored to card frame) */}
         <CardDecor
@@ -634,7 +651,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
         <div className="relative z-10 flex flex-col items-center px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-5 gap-2 sm:gap-3 text-center">
 
           {/* Top ornament */}
-          <TopOrnament hasCouple={!!isCouple} isIslamic={isIslamic} isGaming={isGaming} />
+          <TopOrnament hasCouple={!!isCouple} isIslamic={isIslamic} isWedding={isWedding} isGaming={isGaming} />
 
           {/* Type label (Urdu or English depending on selected site language) */}
           {type && (

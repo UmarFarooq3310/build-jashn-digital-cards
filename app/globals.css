@@ -189,91 +189,149 @@
 }
 
 /* Free themes */
-.theme-mehndi-red {
-  --c-bg1: #8e0f24;
-  --c-bg2: #3a0210;
-  --c-ink: #fff8ee;
-  --c-accent: #f0c060;
-  --c-glow: #ffe090;
+.theme-mehndi-red, .jashn-card.theme-mehndi-red {
+  --c-bg1: #8e0f24 !important;
+  --c-bg2: #3a0210 !important;
+  --c-ink: #fff8ee !important;
+  --c-accent: #f0c060 !important;
+  --c-glow: #ffe090 !important;
 }
-.theme-feroza-teal {
-  --c-bg1: #005f63;
-  --c-bg2: #001e20;
-  --c-ink: #e8fafa;
-  --c-accent: #72dde0;
-  --c-glow: #a8efef;
+.theme-feroza-teal, .jashn-card.theme-feroza-teal {
+  --c-bg1: #005f63 !important;
+  --c-bg2: #001e20 !important;
+  --c-ink: #e8fafa !important;
+  --c-accent: #72dde0 !important;
+  --c-glow: #a8efef !important;
 }
-.theme-royal-blue {
-  --c-bg1: #1a237e;
-  --c-bg2: #080c2e;
-  --c-ink: #edf0ff;
-  --c-accent: #b8c4ff;
-  --c-glow: #ccd5ff;
+.theme-royal-blue, .jashn-card.theme-royal-blue {
+  --c-bg1: #1a237e !important;
+  --c-bg2: #080c2e !important;
+  --c-ink: #edf0ff !important;
+  --c-accent: #b8c4ff !important;
+  --c-glow: #ccd5ff !important;
 }
-.theme-emerald-classic {
-  --c-bg1: #1b5e20;
-  --c-bg2: #061408;
-  --c-ink: #f0fff2;
-  --c-accent: #f5d060;
-  --c-glow: #fae890;
+.theme-emerald-classic, .jashn-card.theme-emerald-classic {
+  --c-bg1: #1b5e20 !important;
+  --c-bg2: #061408 !important;
+  --c-ink: #f0fff2 !important;
+  --c-accent: #f5d060 !important;
+  --c-glow: #fae890 !important;
 }
 
 /* Premium themes */
-.theme-saffron-kesari {
-  --c-bg1: #d44a00;
-  --c-bg2: #481500;
-  --c-ink: #fff5e8;
-  --c-accent: #ffd060;
-  --c-glow: #ffe898;
+.theme-saffron-kesari, .jashn-card.theme-saffron-kesari {
+  --c-bg1: #d44a00 !important;
+  --c-bg2: #481500 !important;
+  --c-ink: #fff5e8 !important;
+  --c-accent: #ffd060 !important;
+  --c-glow: #ffe898 !important;
 }
-.theme-plum-jamuni {
-  --c-bg1: #4a148c;
-  --c-bg2: #160030;
-  --c-ink: #f5e8ff;
-  --c-accent: #f090c0;
-  --c-glow: #ffb8d8;
+.theme-plum-jamuni, .jashn-card.theme-plum-jamuni {
+  --c-bg1: #4a148c !important;
+  --c-bg2: #160030 !important;
+  --c-ink: #f5e8ff !important;
+  --c-accent: #f090c0 !important;
+  --c-glow: #ffb8d8 !important;
 }
-.theme-mughal-gold {
-  --c-bg1: #4e3220;
-  --c-bg2: #1c0c04;
-  --c-ink: #fff8ed;
-  --c-accent: #f0c060;
-  --c-glow: #ffe08c;
+.theme-mughal-gold, .jashn-card.theme-mughal-gold {
+  --c-bg1: #4e3220 !important;
+  --c-bg2: #1c0c04 !important;
+  --c-ink: #fff8ed !important;
+  --c-accent: #f0c060 !important;
+  --c-glow: #ffe08c !important;
 }
-.theme-violet-noor {
-  --c-bg1: #3d0c5c;
-  --c-bg2: #180028;
-  --c-ink: #f8eeff;
-  --c-accent: #d8a0ff;
-  --c-glow: #ecc8ff;
+.theme-violet-noor, .jashn-card.theme-violet-noor {
+  --c-bg1: #3d0c5c !important;
+  --c-bg2: #180028 !important;
+  --c-ink: #f8eeff !important;
+  --c-accent: #d8a0ff !important;
+  --c-glow: #ecc8ff !important;
 }
-.theme-pink-zardozi {
-  --c-bg1: #ad1457;
-  --c-bg2: #540026;
-  --c-ink: #fff2f8;
-  --c-accent: #ffd060;
-  --c-glow: #ffe89a;
+.theme-pink-zardozi, .jashn-card.theme-pink-zardozi {
+  --c-bg1: #ad1457 !important;
+  --c-bg2: #540026 !important;
+  --c-ink: #fff2f8 !important;
+  --c-accent: #ffd060 !important;
+  --c-glow: #ffe89a !important;
 }
-.theme-ivory-shahi {
-  --c-bg1: #f0e4c8;
-  --c-bg2: #dcc898;
-  --c-ink: #3a2008;
-  --c-accent: #8b5e10;
-  --c-glow: #c89830;
+.theme-ivory-shahi, .jashn-card.theme-ivory-shahi {
+  --c-bg1: #f0e4c8 !important;
+  --c-bg2: #dcc898 !important;
+  --c-ink: #3a2008 !important;
+  --c-accent: #8b5e10 !important;
+  --c-glow: #c89830 !important;
 }
-.theme-midnight-kashi {
-  --c-bg1: #0d1b4c;
-  --c-bg2: #030614;
-  --c-ink: #e8f0ff;
-  --c-accent: #60c0f0;
-  --c-glow: #90d8ff;
+.theme-midnight-kashi, .jashn-card.theme-midnight-kashi {
+  --c-bg1: #0d1b4c !important;
+  --c-bg2: #030614 !important;
+  --c-ink: #e8f0ff !important;
+  --c-accent: #60c0f0 !important;
+  --c-glow: #90d8ff !important;
 }
-.theme-ruby-gulabi {
-  --c-bg1: #980018;
-  --c-bg2: #400008;
-  --c-ink: #fff2f2;
-  --c-accent: #ffb0c8;
-  --c-glow: #ffd0dc;
+.theme-ruby-gulabi, .jashn-card.theme-ruby-gulabi {
+  --c-bg1: #980018 !important;
+  --c-bg2: #400008 !important;
+  --c-ink: #fff2f2 !important;
+  --c-accent: #ffb0c8 !important;
+  --c-glow: #ffd0dc !important;
+}
+
+/* ── Authentic Pakistani Heritage Themes ── */
+.theme-truck-art, .jashn-card.theme-truck-art {
+  --c-bg1: #bd0f34 !important;
+  --c-bg2: #24050d !important;
+  --c-ink: #fffdf5 !important;
+  --c-accent: #ffd600 !important;
+  --c-glow: #00f5d4 !important;
+}
+.theme-sindhi-ajrak, .jashn-card.theme-sindhi-ajrak {
+  --c-bg1: #101f42 !important;
+  --c-bg2: #420d12 !important;
+  --c-ink: #fff8f0 !important;
+  --c-accent: #d4af37 !important;
+  --c-glow: #f7a072 !important;
+}
+.theme-mayun-ubtan, .jashn-card.theme-mayun-ubtan {
+  --c-bg1: #d97706 !important;
+  --c-bg2: #451a03 !important;
+  --c-ink: #fffdfa !important;
+  --c-accent: #fde047 !important;
+  --c-glow: #fef08a !important;
+}
+.theme-lahori-badshahi, .jashn-card.theme-lahori-badshahi {
+  --c-bg1: #4c0519 !important;
+  --c-bg2: #1c0209 !important;
+  --c-ink: #fffbeb !important;
+  --c-accent: #f59e0b !important;
+  --c-glow: #fde68a !important;
+}
+.theme-barat-jamawar, .jashn-card.theme-barat-jamawar {
+  --c-bg1: #7f1d1d !important;
+  --c-bg2: #2b0404 !important;
+  --c-ink: #fef2f2 !important;
+  --c-accent: #fbbf24 !important;
+  --c-glow: #fef3c7 !important;
+}
+.theme-walima-champagne, .jashn-card.theme-walima-champagne {
+  --c-bg1: #1e3d34 !important;
+  --c-bg2: #091713 !important;
+  --c-ink: #f0fdf4 !important;
+  --c-accent: #fde68a !important;
+  --c-glow: #dcfce7 !important;
+}
+.theme-khyber-rubab, .jashn-card.theme-khyber-rubab {
+  --c-bg1: #7c2d12 !important;
+  --c-bg2: #270d06 !important;
+  --c-ink: #fffaf5 !important;
+  --c-accent: #fb923c !important;
+  --c-glow: #fed7aa !important;
+}
+.theme-sufi-qawwali, .jashn-card.theme-sufi-qawwali {
+  --c-bg1: #0f172a !important;
+  --c-bg2: #020617 !important;
+  --c-ink: #f8fafc !important;
+  --c-accent: #38bdf8 !important;
+  --c-glow: #bae6fd !important;
 }
 
 /* ----------------------------------------------------------------------------

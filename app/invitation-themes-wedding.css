@@ -91,6 +91,32 @@
   50%       { transform: translateY(-14px) scale(1.2); opacity: 1; }
 }
 
+/* ── Mayun & Ubtan 🌼 ────────────────────────────────────────────────────── */
+.inv-type-mayun {
+  --c-bg1: #2a1502;
+  --c-bg2: #190a00;
+  --c-ink: #fffbeb;
+  --c-accent: #f59e0b;
+  --c-glow: #fbbf24;
+  --c-accent2: #ea580c;
+  background:
+    radial-gradient(ellipse at 25% 15%, rgba(245,158,11,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 85%, rgba(234,88,12,0.18) 0%, transparent 55%),
+    linear-gradient(155deg, #2a1502 0%, #190a00 50%, #200f01 100%);
+}
+
+.inv-type-mayun::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+    transparent 0%, #f59e0b 25%, #ea580c 50%, #f59e0b 75%, transparent 100%);
+  background-size: 200% 100%;
+  animation: mehndi-line-flow 3s linear infinite;
+  z-index: 20;
+}
+
 /* ── Dholki 🥁 ──────────────────────────────────────────────────────────── */
 .inv-type-dholki {
   --c-bg1: #064e3b;

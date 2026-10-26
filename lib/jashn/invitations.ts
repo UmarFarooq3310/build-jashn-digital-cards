@@ -4,6 +4,7 @@ const RAW_INVITATION_TYPES: any[] = [
   // WEDDING & CELEBRATIONS
   { id: 'wedding-gala', label: 'Wedding Gala & Reception', category: 'Wedding', icon: 'Crown', couple: true, bgImage: '/invitations/barat.jpg', bgGradient: 'linear-gradient(160deg,#8e0f24,#4a0510)' },
   { id: 'mehndi',     label: 'Mehndi Night',            category: 'Wedding',      icon: 'Flower2',       couple: true, bgImage: '/invitations/mehndi.jpg',          bgGradient: 'linear-gradient(160deg,#2e7d32,#f9a825)' },
+  { id: 'mayun',      label: 'Mayun & Ubtan Ceremony',  category: 'Wedding',      icon: 'Flower2',       couple: true, bgImage: '/invitations/mehndi.jpg',          bgGradient: 'linear-gradient(160deg,#b45309,#f59e0b,#ca8a04)' },
   { id: 'dholki',     label: 'Dholki',           category: 'Wedding',      icon: 'Music',         couple: true, bgImage: '/invitations/dholki.jpg',          bgGradient: 'linear-gradient(160deg,#be185d,#ca8a04)' },
   { id: 'nikkah',     label: 'Nikkah Ceremony',             category: 'Wedding',      icon: 'Gem',           couple: true, bgImage: '/invitations/nikkah.jpg',          bgGradient: 'linear-gradient(160deg,#1c1000,#3a1e05,#120800)' },
   { id: 'barat',      label: 'Barat Day',            category: 'Wedding',      icon: 'Crown',         couple: true, bgImage: '/invitations/barat.jpg',           bgGradient: 'linear-gradient(160deg,#8e0f24,#4a0510)' },

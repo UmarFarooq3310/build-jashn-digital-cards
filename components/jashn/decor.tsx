@@ -84,6 +84,26 @@ export function CardDecor({
         <span className="border-woven pointer-events-none" aria-hidden="true" />
       )}
 
+      {/* 9. Gota Kinari Lace ── Authentic Pakistani Golden Scalloped Lace */}
+      {borderId === 'gota-kinari' && (
+        <GotaKinariBorder />
+      )}
+
+      {/* 10. Sindhi Ajrak Frame ── Geometric block-print frame */}
+      {borderId === 'ajrak-border' && (
+        <AjrakBorder />
+      )}
+
+      {/* 11. Truck Art Filigree ── Chamakpatti vibrant border */}
+      {borderId === 'truck-art-border' && (
+        <TruckArtBorder />
+      )}
+
+      {/* 12. Marigold Garland ── Festive Genda Phool Lori */}
+      {borderId === 'marigold-garland' && (
+        <MarigoldGarlandBorder />
+      )}
+
       {/* ── Type-specific decor (highest priority) ─────────────────── */}
       {typeDecor && <TypeDecor type={typeDecor} />}
 
@@ -1064,6 +1084,251 @@ export function CyberGamingHud() {
         <line x1="384" y1="280" x2="376" y2="280" stroke="#F59E0B" strokeWidth="1.5" opacity="0.8" />
         <line x1="384" y1="290" x2="372" y2="290" stroke="#F59E0B" strokeWidth="2" />
         <line x1="384" y1="300" x2="376" y2="300" stroke="#F59E0B" strokeWidth="1.5" opacity="0.8" />
+      </svg>
+    </div>
+  )
+}
+
+// ─── Authentic Pakistani Heritage Borders ──────────────────────────────────
+
+/**
+ * 1. Gota Kinari Lace ── Traditional golden scalloped lace border
+ */
+export function GotaKinariBorder() {
+  return (
+    <div className="absolute inset-1.5 sm:inset-2.5 pointer-events-none z-10 select-none overflow-hidden" aria-hidden="true">
+      <svg
+        className="w-full h-full"
+        viewBox="0 0 400 600"
+        preserveAspectRatio="none"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ filter: 'drop-shadow(0 2px 8px rgba(245, 158, 11, 0.45))' }}
+      >
+        <defs>
+          <linearGradient id="gotaGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFF9DB" />
+            <stop offset="30%" stopColor="#F59E0B" />
+            <stop offset="60%" stopColor="#D97706" />
+            <stop offset="85%" stopColor="#FDE68A" />
+            <stop offset="100%" stopColor="#B45309" />
+          </linearGradient>
+        </defs>
+
+        {/* Outer scallop decorative frame */}
+        <rect
+          x="14"
+          y="14"
+          width="372"
+          height="572"
+          rx="18"
+          stroke="url(#gotaGold)"
+          strokeWidth="2.5"
+          strokeDasharray="4 2"
+          fill="none"
+        />
+
+        {/* Inner delicate hairline border */}
+        <rect
+          x="20"
+          y="20"
+          width="360"
+          height="560"
+          rx="14"
+          stroke="url(#gotaGold)"
+          strokeWidth="1"
+          opacity="0.6"
+          fill="none"
+        />
+
+        {/* Corner Gota Florets (Traditional Lahori Bridal Kinari) */}
+        {[
+          { cx: 20, cy: 20 },
+          { cx: 380, cy: 20 },
+          { cx: 20, cy: 580 },
+          { cx: 380, cy: 580 },
+        ].map((pt, i) => (
+          <g key={i}>
+            <circle cx={pt.cx} cy={pt.cy} r="9" fill="url(#gotaGold)" opacity="0.3" />
+            <circle cx={pt.cx} cy={pt.cy} r="6" stroke="url(#gotaGold)" strokeWidth="1.5" fill="#FFFBEB" />
+            <circle cx={pt.cx} cy={pt.cy} r="2.5" fill="#B45309" />
+            {/* Scallop leaves */}
+            <path d={`M ${pt.cx-8} ${pt.cy} Q ${pt.cx} ${pt.cy-8} ${pt.cx+8} ${pt.cy}`} stroke="url(#gotaGold)" strokeWidth="1.2" fill="none" />
+            <path d={`M ${pt.cx} ${pt.cy-8} Q ${pt.cx+8} ${pt.cy} ${pt.cx} ${pt.cy+8}`} stroke="url(#gotaGold)" strokeWidth="1.2" fill="none" />
+          </g>
+        ))}
+
+        {/* Top & Bottom center Gota rosettes */}
+        <g>
+          <circle cx="200" cy="14" r="5" fill="url(#gotaGold)" />
+          <path d="M 180 14 L 192 10 L 208 10 L 220 14" stroke="url(#gotaGold)" strokeWidth="1.5" fill="none" />
+          <circle cx="200" cy="586" r="5" fill="url(#gotaGold)" />
+          <path d="M 180 586 L 192 590 L 208 590 L 220 586" stroke="url(#gotaGold)" strokeWidth="1.5" fill="none" />
+        </g>
+      </svg>
+    </div>
+  )
+}
+
+/**
+ * 2. Sindhi Ajrak Frame ── Authentic geometric block-print frame
+ */
+export function AjrakBorder() {
+  return (
+    <div className="absolute inset-1.5 sm:inset-2 pointer-events-none z-10 select-none overflow-hidden" aria-hidden="true">
+      <svg
+        className="w-full h-full"
+        viewBox="0 0 400 600"
+        preserveAspectRatio="none"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ filter: 'drop-shadow(0 2px 8px rgba(16, 31, 66, 0.5))' }}
+      >
+        {/* Outer Deep Indigo border */}
+        <rect x="12" y="12" width="376" height="576" rx="14" stroke="#D4AF37" strokeWidth="2" fill="none" />
+        <rect x="16" y="16" width="368" height="568" rx="10" stroke="#991B1B" strokeWidth="2.5" fill="none" />
+
+        {/* Top Ajrak 8-point stars / block print rosettes */}
+        {[35, 75, 115, 155, 200, 245, 285, 325, 365].map((x) => (
+          <g key={`top-${x}`}>
+            <rect x={x - 4} y="12" width="8" height="8" rx="1" fill="#FEF2F2" transform={`rotate(45 ${x} 16)`} />
+            <circle cx={x} cy="16" r="2" fill="#991B1B" />
+          </g>
+        ))}
+
+        {/* Bottom Ajrak 8-point stars */}
+        {[35, 75, 115, 155, 200, 245, 285, 325, 365].map((x) => (
+          <g key={`bot-${x}`}>
+            <rect x={x - 4} y="580" width="8" height="8" rx="1" fill="#FEF2F2" transform={`rotate(45 ${x} 584)`} />
+            <circle cx={x} cy="584" r="2" fill="#991B1B" />
+          </g>
+        ))}
+
+        {/* Corner Ajrak Blocks */}
+        {[
+          { x: 16, y: 16 },
+          { x: 368, y: 16 },
+          { x: 16, y: 568 },
+          { x: 368, y: 568 },
+        ].map((c, i) => (
+          <g key={`corner-${i}`}>
+            <rect x={c.x} y={c.y} width="16" height="16" fill="#1E3A8A" stroke="#D4AF37" strokeWidth="1" />
+            <circle cx={c.x + 8} cy={c.y + 8} r="4" fill="#DC2626" />
+            <circle cx={c.x + 8} cy={c.y + 8} r="1.5" fill="#FEF2F2" />
+          </g>
+        ))}
+      </svg>
+    </div>
+  )
+}
+
+/**
+ * 3. Truck Art Filigree ── Vibrant Pakistani chamakpatti floral frame
+ */
+export function TruckArtBorder() {
+  return (
+    <div className="absolute inset-1 sm:inset-2 pointer-events-none z-10 select-none overflow-hidden" aria-hidden="true">
+      <svg
+        className="w-full h-full"
+        viewBox="0 0 400 600"
+        preserveAspectRatio="none"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ filter: 'drop-shadow(0 2px 10px rgba(225, 29, 72, 0.4))' }}
+      >
+        {/* Fluorescent Truck Art Ribbon Borders */}
+        <rect x="10" y="10" width="380" height="580" rx="16" stroke="#FDE047" strokeWidth="3" fill="none" />
+        <rect x="14" y="14" width="372" height="572" rx="12" stroke="#E11D48" strokeWidth="2" fill="none" />
+        <rect x="18" y="18" width="364" height="564" rx="9" stroke="#06B6D4" strokeWidth="1.5" strokeDasharray="5 3" fill="none" />
+
+        {/* Top Chamakpatti Mor / Peacock Crest */}
+        <g transform="translate(160, 4)">
+          <path d="M 0 14 Q 40 2 80 14" stroke="#FDE047" strokeWidth="3" fill="none" />
+          <circle cx="40" cy="10" r="4" fill="#EC4899" />
+          <circle cx="20" cy="12" r="2.5" fill="#06B6D4" />
+          <circle cx="60" cy="12" r="2.5" fill="#06B6D4" />
+        </g>
+
+        {/* Bottom Filigree Crest */}
+        <g transform="translate(160, 582)">
+          <path d="M 0 4 Q 40 16 80 4" stroke="#FDE047" strokeWidth="3" fill="none" />
+          <circle cx="40" cy="8" r="4" fill="#06B6D4" />
+          <circle cx="20" cy="6" r="2.5" fill="#EC4899" />
+          <circle cx="60" cy="6" r="2.5" fill="#EC4899" />
+        </g>
+
+        {/* Four Chamakpatti Corner Floral Triangles */}
+        {[
+          { x: 10, y: 10, rot: 0 },
+          { x: 390, y: 10, rot: 90 },
+          { x: 390, y: 590, rot: 180 },
+          { x: 10, y: 590, rot: 270 },
+        ].map((pos, idx) => (
+          <g key={idx} transform={`translate(${pos.x}, ${pos.y}) rotate(${pos.rot})`}>
+            <polygon points="0,0 24,0 0,24" fill="#F43F5E" opacity="0.9" />
+            <polygon points="2,2 18,2 2,18" fill="#FACC15" />
+            <circle cx="7" cy="7" r="2.5" fill="#06B6D4" />
+          </g>
+        ))}
+      </svg>
+    </div>
+  )
+}
+
+/**
+ * 4. Marigold Garland (Genda Phool) ── Festive Mayun/Mehndi flower lori border
+ */
+export function MarigoldGarlandBorder() {
+  return (
+    <div className="absolute inset-0 pointer-events-none z-10 select-none overflow-hidden" aria-hidden="true">
+      <svg
+        className="w-full h-full"
+        viewBox="0 0 400 600"
+        preserveAspectRatio="none"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ filter: 'drop-shadow(0 3px 8px rgba(245, 158, 11, 0.4))' }}
+      >
+        {/* Top Swag String */}
+        <path d="M 20 8 Q 110 32 200 32 Q 290 32 380 8" stroke="#15803D" strokeWidth="2" fill="none" opacity="0.7" />
+
+        {/* Top Garland Flowers */}
+        {[20, 50, 80, 110, 140, 170, 200, 230, 260, 290, 320, 350, 380].map((x, i) => {
+          const dy = i === 6 ? 32 : (i <= 6 ? 8 + i * 4 : 8 + (12 - i) * 4)
+          const isOrange = i % 2 === 0
+          return (
+            <g key={`top-fl-${x}`}>
+              {/* Green leaf behind flower */}
+              <ellipse cx={x} cy={dy - 2} rx="8" ry="4" fill="#15803D" opacity="0.8" />
+              {/* Petals */}
+              <circle cx={x} cy={dy} r="7" fill={isOrange ? "#EA580C" : "#F59E0B"} />
+              <circle cx={x} cy={dy} r="5" fill={isOrange ? "#F97316" : "#FBBF24"} />
+              <circle cx={x} cy={dy} r="2.5" fill="#FEF08A" />
+            </g>
+          )
+        })}
+
+        {/* Left Hanging Lori (String) */}
+        <line x1="20" y1="8" x2="20" y2="480" stroke="#15803D" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
+        {[60, 120, 180, 240, 300, 360, 420, 480].map((y, idx) => (
+          <g key={`left-${y}`}>
+            <circle cx="20" cy={y} r="5" fill={idx % 2 === 0 ? "#F59E0B" : "#EA580C"} />
+            <circle cx="20" cy={y} r="2" fill="#FEF08A" />
+          </g>
+        ))}
+
+        {/* Right Hanging Lori (String) */}
+        <line x1="380" y1="8" x2="380" y2="480" stroke="#15803D" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
+        {[60, 120, 180, 240, 300, 360, 420, 480].map((y, idx) => (
+          <g key={`right-${y}`}>
+            <circle cx="380" cy={y} r="5" fill={idx % 2 === 0 ? "#EA580C" : "#F59E0B"} />
+            <circle cx="380" cy={y} r="2" fill="#FEF08A" />
+          </g>
+        ))}
+
+        {/* Bottom Little Golden Jhumka / Bell Accent */}
+        <circle cx="20" cy="495" r="3.5" fill="#F59E0B" />
+        <circle cx="380" cy="495" r="3.5" fill="#F59E0B" />
       </svg>
     </div>
   )

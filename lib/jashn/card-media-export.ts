@@ -59,9 +59,12 @@ function getBestVideoMimeType(): { mimeType: string; isRealMp4: boolean } {
   }
 
   const webmTypes = [
-    'video/webm;codecs=vp9,opus',
-    'video/webm;codecs=vp8,opus',
+    'video/webm;codecs=h264,opus',
     'video/webm;codecs=h264',
+    'video/webm;codecs=vp8,opus',
+    'video/webm;codecs=vp8',
+    'video/webm;codecs=vp9,opus',
+    'video/webm;codecs=vp9',
     'video/webm',
   ]
 
@@ -108,7 +111,7 @@ async function getFFmpegInstance(): Promise<any> {
     })
 
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('FFmpeg CDN download timed out')), 8000)
+      setTimeout(() => reject(new Error('FFmpeg CDN download timed out')), 25000)
     )
 
     await Promise.race([loadTask, timeoutPromise])
@@ -127,7 +130,8 @@ async function getFFmpegInstance(): Promise<any> {
 
 async function convertWebmToMp4(
   webmBlob: Blob,
-  onProgress?: (percent: number) => void
+  onProgress?: (percent: number) => void,
+  sourceMime?: string
 ): Promise<Blob | null> {
   try {
     const ffmpeg = await getFFmpegInstance()
@@ -145,17 +149,43 @@ async function convertWebmToMp4(
       const inputData = new Uint8Array(await webmBlob.arrayBuffer())
       await ffmpeg.writeFile('input.webm', inputData)
 
-      await ffmpeg.exec([
-        '-i', 'input.webm',
-        '-c:v', 'libx264',
-        '-preset', 'ultrafast',
-        '-crf', '23',
-        '-pix_fmt', 'yuv420p',
-        '-c:a', 'aac',
-        '-b:a', '128k',
-        '-movflags', '+faststart',
-        'output.mp4',
-      ])
+      // Fast path: if the browser captured H.264 video, copy the video stream directly (remux in ~0.5s instead of full re-encoding)
+      let remuxSuccess = false
+      const isAlreadyH264 = Boolean(
+        sourceMime && (sourceMime.includes('h264') || sourceMime.includes('avc'))
+      )
+
+      if (isAlreadyH264) {
+        try {
+          await ffmpeg.exec([
+            '-i', 'input.webm',
+            '-c:v', 'copy',
+            '-c:a', 'aac',
+            '-b:a', '128k',
+            '-movflags', '+faststart',
+            'output.mp4',
+          ])
+          remuxSuccess = true
+        } catch {
+          // If remuxing fails, fall through to transcode below
+        }
+      }
+
+      if (!remuxSuccess) {
+        await ffmpeg.exec([
+          '-i', 'input.webm',
+          '-c:v', 'libx264',
+          '-preset', 'ultrafast',
+          '-tune', 'fastdecode',
+          '-crf', '26',
+          '-threads', '0',
+          '-pix_fmt', 'yuv420p',
+          '-c:a', 'aac',
+          '-b:a', '128k',
+          '-movflags', '+faststart',
+          'output.mp4',
+        ])
+      }
 
       const outputData = await ffmpeg.readFile('output.mp4')
       const mp4Blob = new Blob([outputData as Uint8Array], { type: 'video/mp4' })
@@ -1181,7 +1211,7 @@ export async function recordImageAsVideo({
     throw new Error('Video recording not supported on this browser')
   }
 
-  const canvasStream: MediaStream = captureStreamFn.call(canvas, 30)
+  const canvasStream: MediaStream = captureStreamFn.call(canvas, 25)
 
   // ── Audio Track Setup ──
   let audioContext: AudioContext | null = null
@@ -1328,7 +1358,7 @@ export async function recordImageAsVideo({
         let ext = isRealMp4 ? 'mp4' : 'webm'
 
         if (!isRealMp4 && blob.type.includes('webm')) {
-          const mp4Blob = await convertWebmToMp4(blob, onProgress)
+          const mp4Blob = await convertWebmToMp4(blob, onProgress, actualMime)
           if (mp4Blob && mp4Blob.size > 0) {
             finalBlob = mp4Blob
             ext = 'mp4'
