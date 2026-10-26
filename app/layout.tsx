@@ -429,14 +429,40 @@ export default function RootLayout({
         />
       </head>
       <body className={`${poppins.variable} ${notoNastaliq.variable} ${playfair.variable} bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]`} suppressHydrationWarning>
-        {process.env.NODE_ENV === 'production' && (
-          <Script
-            id="google-adsense"
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
-            strategy="afterInteractive"
-            crossOrigin="anonymous"
-          />
-        )}
+        {/* ── Google Analytics 4 (GA4) with Google Consent Mode v2 ── */}
+        <Script
+          id="google-analytics-script"
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-90JTPVFNQ8"
+        />
+        <Script
+          id="google-analytics-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                'analytics_storage': 'granted',
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted'
+              });
+              gtag('js', new Date());
+              gtag('config', 'G-90JTPVFNQ8', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
+
+        {/* ── Google AdSense ── */}
+        <Script
+          id="google-adsense"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8899224608517833"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
         <Script
           id="cardzy-cookie-dispatcher"
           strategy="afterInteractive"
