@@ -129,3 +129,22 @@ export function getVisitingCardTheme(themeId?: string): VisitingCardTheme {
   return VISITING_CARD_THEMES.find((t) => t.id === themeId) || VISITING_CARD_THEMES[0]
 }
 
+export const VISITING_CARD_BG_VARIANTS = [
+  { id: 'default', name: 'Executive Gold', bgGradient: 'linear-gradient(135deg, #09090b 0%, #1e1b4b 50%, #ca8a04 100%)' },
+  { id: 'tech-dark', name: 'Cyber Tech Dark', bgGradient: 'linear-gradient(135deg, #030712 0%, #0f172a 60%, #06b6d4 100%)' },
+  { id: 'emerald-luxury', name: 'Royal Emerald', bgGradient: 'linear-gradient(135deg, #022c22 0%, #064e3b 50%, #d97706 100%)' },
+  { id: 'corporate-blue', name: 'Corporate Navy', bgGradient: 'linear-gradient(135deg, #0a0e3a 0%, #1e3a8a 60%, #3b82f6 100%)' },
+  { id: 'rose-gold-elegance', name: 'Rose Gold', bgGradient: 'linear-gradient(135deg, #4c0519 0%, #881337 50%, #fb7185 100%)' },
+  { id: 'minimal-clean', name: 'Clean Pearl', bgGradient: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 60%, #94a3b8 100%)' },
+  { id: 'achieve-steel', name: 'Steel Slate', bgGradient: 'linear-gradient(160deg,#37474f,#1a237e)' },
+  { id: 'achieve-emerald', name: 'Emerald Wealth', bgGradient: 'linear-gradient(160deg,#1b5e20,#004d40)' },
+  { id: 'achieve-bronze', name: 'Bronze Luxury', bgGradient: 'linear-gradient(160deg,#4e342e,#2c1a12)' },
+  { id: 'achieve-deep-space', name: 'Midnight Space', bgGradient: 'linear-gradient(160deg,#09090b,#172554,#3b82f6)' },
+  { id: 'achieve-platinum-silver', name: 'Silver Platinum', bgGradient: 'linear-gradient(160deg,#0f0f10,#27272a,#a1a1aa)' },
+  { id: 'achieve-purple-glow', name: 'Royal Purple Glow', bgGradient: 'linear-gradient(160deg,#1e1b4b,#4c1d95,#a78bfa)' },
+  { id: 'wedding-gold', name: '24K Mughal Gold', bgGradient: 'linear-gradient(160deg,#241703,#4a3206,#191002)' },
+  { id: 'wedding-crimson', name: 'Crimson Velvet', bgGradient: 'linear-gradient(160deg,#8e0f24,#4a0510)' },
+  { id: 'wedding-teal', name: 'Feroza Teal', bgGradient: 'linear-gradient(160deg,#006064,#004d40)' },
+]
+
+

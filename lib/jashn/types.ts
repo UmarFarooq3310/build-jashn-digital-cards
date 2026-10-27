@@ -239,7 +239,7 @@ export interface VisitingCard {
   fullName: string
   title: string
   company?: string
-  category: VisitingCardCategory
+  category: VisitingCardCategory | string
   phone: string
   whatsapp?: string
   email: string
@@ -251,6 +251,9 @@ export interface VisitingCard {
   logoUrl?: string
   coverImageUrl?: string
   themeId: string
+  borderId?: string
+  bgVariantId?: string
+  audioTrack?: string
   language: Language
   socialLinks?: {
     linkedin?: string

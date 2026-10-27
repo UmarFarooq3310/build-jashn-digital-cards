@@ -27,7 +27,8 @@ import {
   Globe2
 } from 'lucide-react'
 import type { VisitingCard } from '@/lib/jashn/types'
-import { getVisitingCardTheme } from '@/lib/jashn/visiting-card-themes'
+import { getVisitingCardTheme, VISITING_CARD_BG_VARIANTS } from '@/lib/jashn/visiting-card-themes'
+import { CardDecor } from './decor'
 import { CardQrCode } from '@/components/jashn/qr-code'
 import { useLang } from '@/lib/lang/context'
 import { cn } from '@/lib/utils'
@@ -73,6 +74,11 @@ export const VisitingCardView = forwardRef<HTMLDivElement, VisitingCardProps>(fu
 
   const theme = getVisitingCardTheme(data.themeId)
   const isLight = theme.id === 'minimal-clean' || theme.textColor === '#0f172a'
+
+  const bgVariant = data.bgVariantId && data.bgVariantId !== 'default'
+    ? VISITING_CARD_BG_VARIANTS.find((v) => v.id === data.bgVariantId)
+    : null
+  const resolvedBgGradient = bgVariant?.bgGradient || theme.bgGradient
 
   // Language auto-detection
   const cardLang = data.language || lang || 'en'
@@ -215,26 +221,48 @@ END:VCARD`
           className={cn(
             'visiting-card-surface relative overflow-hidden rounded-[32px] p-6 sm:p-8 transition-all duration-500 border-2 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-3xl xl:max-w-4xl mx-auto',
             isLight ? 'border-slate-300/80 shadow-[0_15px_45px_rgba(0,0,0,0.12)]' : 'border-[#D4AF37]/50 shadow-[0_20px_60px_rgba(0,0,0,0.6)]',
-            isRtl && 'text-right'
+            isRtl && 'text-right',
+            className
           )}
           dir={isRtl ? 'rtl' : 'ltr'}
           style={{
-            background: theme.bgGradient,
+            background: resolvedBgGradient,
             color: theme.textColor,
             transformStyle: 'preserve-3d',
             animation: isLight ? 'none' : 'pulseBorder 4s ease-in-out infinite',
-          }}
+            '--c-accent': theme.accentColor || '#D4AF37',
+            '--c-ink': theme.textColor || '#ffffff',
+            '--c-bg1': theme.cardBg || '#09090b',
+            '--c-glow': theme.accentColor || '#D4AF37',
+          } as React.CSSProperties}
         >
+          {/* Card Frame Decoration (Border & Accents) */}
+          <CardDecor
+            theme={{
+              id: theme.id,
+              name: theme.name,
+              cssClass: '',
+              isPremium: !!theme.isPremium,
+              previewColor: theme.accentColor || '#D4AF37',
+              motif: 'geometric',
+            }}
+            borderId={data.borderId || 'corners'}
+          />
+
           {/* Metallic Sheen Light Reflection */}
           <div className={cn("absolute inset-0 bg-gradient-to-r from-transparent pointer-events-none mix-blend-overlay", isLight ? "via-black/5 opacity-25" : "via-white/10 opacity-40")} />
           <div className={cn("absolute -top-32 -right-32 size-72 rounded-full blur-3xl pointer-events-none", isLight ? "bg-teal-500/10" : "bg-[#D4AF37]/20")} />
           <div className={cn("absolute -bottom-32 -left-32 size-72 rounded-full blur-3xl pointer-events-none", isLight ? "bg-slate-400/10" : "bg-emerald-500/15")} />
 
-          {/* Decorative Corner Trim */}
-          <div className={cn("absolute top-4 left-4 size-5 border-t-2 border-l-2 pointer-events-none", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
-          <div className={cn("absolute top-4 right-4 size-5 border-t-2 border-r-2 pointer-events-none", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
-          <div className={cn("absolute bottom-4 left-4 size-5 border-b-2 border-l-2 pointer-events-none", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
-          <div className={cn("absolute bottom-4 right-4 size-5 border-b-2 border-r-2 pointer-events-none", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
+          {/* Fallback Corner Trim if corners border selected or no borderId */}
+          {(!data.borderId || data.borderId === 'corners') && (
+            <>
+              <div className={cn("absolute top-4 left-4 size-5 border-t-2 border-l-2 pointer-events-none z-10", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
+              <div className={cn("absolute top-4 right-4 size-5 border-t-2 border-r-2 pointer-events-none z-10", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
+              <div className={cn("absolute bottom-4 left-4 size-5 border-b-2 border-l-2 pointer-events-none z-10", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
+              <div className={cn("absolute bottom-4 right-4 size-5 border-b-2 border-r-2 pointer-events-none z-10", isLight ? "border-slate-400/60" : "border-[#D4AF37]/70")} />
+            </>
+          )}
 
           {/* Front Side View */}
           {!isFlipped ? (

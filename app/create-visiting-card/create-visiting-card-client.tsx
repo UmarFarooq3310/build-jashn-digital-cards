@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
@@ -36,14 +36,34 @@ import { Textarea } from '@/components/ui/textarea'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang } from '@/lib/lang/context'
 import type { VisitingCardCategory, VisitingCard } from '@/lib/jashn/types'
-import { VISITING_CARD_CATEGORIES, VISITING_CARD_THEMES } from '@/lib/jashn/visiting-card-themes'
+import { VISITING_CARD_THEMES, VISITING_CARD_BG_VARIANTS } from '@/lib/jashn/visiting-card-themes'
 import { VisitingCardView, getInitials } from '@/components/jashn/visiting-card'
+import { BorderPicker } from '@/components/jashn/border-picker'
+import { BackgroundPicker } from '@/components/jashn/background-picker'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { recordCardShare } from '@/lib/jashn/magic-service'
 import { cn, validateWhatsAppNumber, isPageReload } from '@/lib/utils'
 import { db, getFirebaseDb, isFirebaseConfigured } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
+
+function normalizeCategory(cat?: string): string {
+  if (!cat) return 'Corporate & Business'
+  switch (cat) {
+    case 'business': return 'Corporate & Business'
+    case 'creative': return 'Tech & Freelancers'
+    case 'medical': return 'Medical & Healthcare'
+    case 'legal': return 'Legal & Advocate'
+    case 'real-estate': return 'Real Estate & Builders'
+    case 'beauty': return 'Fashion & Beauty'
+    case 'services': return 'Services & Consultants'
+    case 'education': return 'Education & Academics'
+    case 'culinary': return 'Chefs & Restaurants'
+    case 'fitness': return 'Fitness & Wellness'
+    case 'finance': return 'Finance & Accounting'
+    default: return cat
+  }
+}
 
 export default function CreateVisitingCardPage() {
   const router = useRouter()
@@ -81,13 +101,16 @@ export default function CreateVisitingCardPage() {
   const currentEditSlug = activeEditSlug || editSlug
 
   const { t, lang, setLang } = useLang()
-  const { createVisitingCard, updateVisitingCard, getVisitingCard, showToast } = useJashn()
+  const { user, isUserPlanActive, createVisitingCard, updateVisitingCard, getVisitingCard, showToast } = useJashn()
+  const isPro = user ? isUserPlanActive(user) : false
   const isUrdu = lang === 'ur' || lang === 'ar'
 
   // Step 1: Contact Details (Data Entry) -> Step 2: Theme & Style
   const [step, setStep] = useState<1 | 2>(1)
-  const [selectedCategory, setSelectedCategory] = useState<VisitingCardCategory>('business')
+  const [selectedCategory, setSelectedCategory] = useState<string>('Corporate & Business')
   const [selectedThemeId, setSelectedThemeId] = useState<string>('executive-gold')
+  const [borderId, setBorderId] = useState<string>('corners')
+  const [bgVariantId, setBgVariantId] = useState<string>('default')
 
   const [fullName, setFullName] = useState('')
   const [title, setTitle] = useState('')
@@ -158,6 +181,8 @@ export default function CreateVisitingCardPage() {
           setMapLink('')
           setBio('')
           setAvatarUrl('')
+          setBorderId('corners')
+          setBgVariantId('default')
           setStep(1)
           setIsInitialLoaded(true)
         }
@@ -201,8 +226,10 @@ export default function CreateVisitingCardPage() {
           if (loadedData.mapLink !== undefined) setMapLink(loadedData.mapLink)
           if (loadedData.bio !== undefined) setBio(loadedData.bio)
           if (loadedData.avatarUrl !== undefined) setAvatarUrl(loadedData.avatarUrl)
-          if (loadedData.category) setSelectedCategory(loadedData.category)
+          if (loadedData.category) setSelectedCategory(normalizeCategory(loadedData.category))
           if (loadedData.themeId) setSelectedThemeId(loadedData.themeId)
+          if (loadedData.borderId) setBorderId(loadedData.borderId)
+          if (loadedData.bgVariantId) setBgVariantId(loadedData.bgVariantId)
           if (loadedData.language) setLang(loadedData.language)
           if (loadedData.step) setStep(loadedData.step as 1 | 2)
           if (loadedData.editSlug && !activeEditSlug) setActiveEditSlug(loadedData.editSlug)
@@ -227,8 +254,10 @@ export default function CreateVisitingCardPage() {
               if (d.mapLink !== undefined) setMapLink(d.mapLink)
               if (d.bio !== undefined) setBio(d.bio)
               if (d.avatarUrl !== undefined) setAvatarUrl(d.avatarUrl)
-              if (d.selectedCategory) setSelectedCategory(d.selectedCategory)
+              if (d.selectedCategory) setSelectedCategory(normalizeCategory(d.selectedCategory))
               if (d.selectedThemeId) setSelectedThemeId(d.selectedThemeId)
+              if (d.borderId) setBorderId(d.borderId)
+              if (d.bgVariantId) setBgVariantId(d.bgVariantId)
               if (d.step) setStep(d.step as 1 | 2)
             }
           }
@@ -251,6 +280,8 @@ export default function CreateVisitingCardPage() {
       step,
       selectedCategory,
       selectedThemeId,
+      borderId,
+      bgVariantId,
       fullName,
       title,
       company,
@@ -274,6 +305,8 @@ export default function CreateVisitingCardPage() {
     step,
     selectedCategory,
     selectedThemeId,
+    borderId,
+    bgVariantId,
     fullName,
     title,
     company,
@@ -407,6 +440,8 @@ export default function CreateVisitingCardPage() {
     bio: bio.trim() || '',
     avatarUrl: avatarUrl.trim(),
     themeId: selectedThemeId,
+    borderId,
+    bgVariantId,
     language: lang,
   }
 
@@ -472,6 +507,8 @@ export default function CreateVisitingCardPage() {
           bio: bio.trim(),
           avatarUrl: avatarUrl.trim(),
           themeId: selectedThemeId,
+          borderId,
+          bgVariantId,
           language: lang,
         })
         try {
@@ -495,6 +532,8 @@ export default function CreateVisitingCardPage() {
           bio: bio.trim(),
           avatarUrl: avatarUrl.trim(),
           themeId: selectedThemeId,
+          borderId,
+          bgVariantId,
           language: lang,
         })
         try {
@@ -520,6 +559,19 @@ export default function CreateVisitingCardPage() {
     setCopiedLink(true)
     setTimeout(() => setCopiedLink(false), 2500)
   }
+
+  const visitingBgVariants = useMemo(() => {
+    return VISITING_CARD_BG_VARIANTS.map((v) => {
+      if (v.id === 'default') {
+        return {
+          ...v,
+          name: t('styleExecutiveGold') || 'Executive Gold',
+          bgGradient: 'linear-gradient(135deg, #09090b 0%, #1e1b4b 50%, #ca8a04 100%)',
+        }
+      }
+      return v
+    })
+  }, [t])
 
   return (
     <div className="w-full min-w-0 pb-20">
@@ -680,7 +732,7 @@ export default function CreateVisitingCardPage() {
               </button>
               <button
                 type="button"
-                onClick={handleProceedToTheme}
+                onClick={() => changeStep(2)}
                 className={cn(
                   'flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer',
                   step === 2
@@ -1003,114 +1055,119 @@ export default function CreateVisitingCardPage() {
             {/* ── STEP 2: THEME & STYLE PICKER (COLOR & CATEGORY) ── */}
             {step === 2 && (
               <div className="space-y-4 animate-in fade-in-50 duration-200">
-                {/* 1. Category Selection */}
-                <div className="bg-card border border-border rounded-3xl p-5 sm:p-7 shadow-xs space-y-4">
-                  <h3
-                    className={cn(
-                      'text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5',
-                      isUrdu ? 'text-right flex-row-reverse font-urdu' : 'text-left'
-                    )}
-                  >
-                    <Building2 className="size-4" /> {t('selectCategorySection') || '1. SELECT INDUSTRY / PROFESSION CATEGORY'}
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    {VISITING_CARD_CATEGORIES.map((cat) => {
-                      const catKey =
-                        cat.id === 'business'
-                          ? 'catCorporate'
-                          : cat.id === 'creative'
-                          ? 'catTech'
-                          : cat.id === 'medical'
-                          ? 'catMedical'
-                          : cat.id === 'legal'
-                          ? 'catLegal'
-                          : cat.id === 'real-estate'
-                          ? 'catRealEstate'
-                          : cat.id === 'beauty'
-                          ? 'catFashion'
-                          : cat.id === 'services'
-                          ? 'catServices'
-                          : ''
-                      const translatedLabel = catKey ? t(catKey) : cat.label
-                      const isSelected = selectedCategory === cat.id
-                      return (
-                        <button
-                          key={cat.id}
-                          type="button"
-                          onClick={() => setSelectedCategory(cat.id)}
-                          className={cn(
-                            'flex items-center gap-2 p-2.5 sm:p-3 rounded-2xl border text-left transition-all cursor-pointer shadow-xs',
-                            isSelected
-                              ? 'border-[#7B0D1E] bg-[#7B0D1E]/10 text-[#7B0D1E] font-bold ring-2 ring-[#7B0D1E]/20'
-                              : 'border-border bg-card hover:border-[#7B0D1E]/40 text-muted-foreground'
-                          )}
-                        >
-                          <span
-                            className={cn(
-                              'size-2.5 rounded-full shrink-0',
-                              isSelected ? 'bg-[#7B0D1E]' : 'bg-muted-foreground/40'
-                            )}
-                          />
-                          <span className="text-xs font-bold text-foreground truncate">{translatedLabel}</span>
-                        </button>
-                      )
-                    })}
+                {/* 1. Industry / Business Type Entry */}
+                <div className="bg-card border border-border rounded-3xl p-5 sm:p-7 shadow-xs space-y-3">
+                  <div className="border-b border-[#7B0D1E]/10 pb-1.5">
+                    <h3
+                      className={cn(
+                        'text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5',
+                        isUrdu ? 'text-right flex-row-reverse font-urdu' : 'text-left'
+                      )}
+                    >
+                      <Building2 className="size-4" /> {t('selectCategorySection') || '1. INDUSTRY / BUSINESS TYPE'}
+                    </h3>
+                    <p className={cn("text-[11px] text-muted-foreground mt-0.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                      {t('customBusinessTypeHint') || 'Enter any business type, industry, or profession to display on your verified badge.'}
+                    </p>
+                  </div>
+
+                  <div>
+                    <input
+                      id="field-category"
+                      type="text"
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      placeholder={t('customBusinessTypePlaceholder') || 'e.g. Software House, Dental Clinic, Legal Advisor, Real Estate, Fashion Boutique...'}
+                      dir={isUrdu ? 'rtl' : 'ltr'}
+                      className={cn(
+                        'w-full rounded-2xl border border-input p-3 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[#7B0D1E] transition-all shadow-xs font-medium',
+                        isUrdu ? 'text-right font-urdu' : 'text-left'
+                      )}
+                    />
+                  </div>
+
+                  {/* Quick Suggestions for 1-Tap Typing */}
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mr-1">
+                      {t('quickSuggestions') || 'Suggestions:'}
+                    </span>
+                    {[
+                      'Corporate & Business',
+                      'Tech & Software',
+                      'Medical & Healthcare',
+                      'Legal & Advocate',
+                      'Real Estate & Builders',
+                      'Fashion & Boutique',
+                      'Food & Restaurant',
+                      'Consulting & Services',
+                      'Education & Academics',
+                      'Fitness & Sports',
+                    ].map((sug) => (
+                      <button
+                        key={sug}
+                        type="button"
+                        onClick={() => setSelectedCategory(sug)}
+                        className={cn(
+                          'text-[11px] px-2.5 py-1 rounded-full border transition-all cursor-pointer shadow-2xs',
+                          selectedCategory.trim().toLowerCase() === sug.toLowerCase()
+                            ? 'bg-[#7B0D1E] text-white border-[#7B0D1E] font-bold'
+                            : 'bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground border-border'
+                        )}
+                      >
+                        {sug}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
-                {/* 2. Theme Selection */}
+                {/* 2. Border Frame Selection */}
                 <div className="bg-card border border-border rounded-3xl p-5 sm:p-7 shadow-xs space-y-4">
-                  <h3
-                    className={cn(
-                      'text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5 border-b border-[#7B0D1E]/10 pb-1.5',
-                      isUrdu ? 'text-right flex-row-reverse font-urdu' : 'text-left'
-                    )}
-                  >
-                    <Palette className="size-4" /> {t('selectThemeSection') || '2. SELECT CARD STYLE & COLORS'}
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                    {VISITING_CARD_THEMES.map((th) => {
-                      const styleKey =
-                        th.id === 'executive-gold'
-                          ? 'styleExecutiveGold'
-                          : th.id === 'tech-dark'
-                          ? 'styleCyberTech'
-                          : th.id === 'emerald-luxury'
-                          ? 'styleRoyalEmerald'
-                          : th.id === 'corporate-blue'
-                          ? 'styleCorporateNavy'
-                          : th.id === 'rose-gold-elegance'
-                          ? 'styleRoseGold'
-                          : th.id === 'minimal-clean'
-                          ? 'styleCleanPearl'
-                          : th.id === 'obsidian-gold'
-                          ? 'styleObsidianGold'
-                          : th.id === 'royal-amethyst'
-                          ? 'styleRoyalAmethyst'
-                          : ''
-                      const translatedThemeName = styleKey ? (t(styleKey as any) || th.name) : th.name
-                      const isSelected = selectedThemeId === th.id
-                      return (
-                        <button
-                          key={th.id}
-                          type="button"
-                          onClick={() => setSelectedThemeId(th.id)}
-                          className={cn(
-                            'flex items-center gap-2.5 p-3 rounded-2xl border transition-all text-left cursor-pointer shadow-xs',
-                            isSelected
-                              ? 'border-[#7B0D1E] bg-[#7B0D1E]/10 ring-2 ring-[#7B0D1E]/20 font-bold'
-                              : 'border-border hover:border-[#7B0D1E]/40 bg-card'
-                          )}
-                        >
-                          <div
-                            className="size-5 rounded-full shrink-0 border border-white/20 shadow-xs"
-                            style={{ background: th.bgGradient }}
-                          />
-                          <span className="text-xs font-bold text-foreground truncate">{translatedThemeName}</span>
-                        </button>
-                      )
-                    })}
+                  <div className="border-b border-[#7B0D1E]/10 pb-1.5">
+                    <h3
+                      className={cn(
+                        'text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5',
+                        isUrdu ? 'text-right flex-row-reverse font-urdu' : 'text-left'
+                      )}
+                    >
+                      <Sparkles className="size-4" /> {t('selectBorderFrame') || '2. SELECT BORDER FRAME'}
+                    </h3>
+                    <p className={cn("text-[11px] text-muted-foreground mt-0.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                      {t('selectBorderFrameHint') || 'Choose decorative borders, royal frames, or modern brackets.'}
+                    </p>
                   </div>
+                  <BorderPicker
+                    value={borderId}
+                    onChange={setBorderId}
+                    isPro={isPro}
+                    onLockedClick={() => router.push('/pricing')}
+                  />
+                </div>
+
+                {/* 3. Background Style Selection */}
+                <div className="bg-card border border-border rounded-3xl p-5 sm:p-7 shadow-xs space-y-4">
+                  <div className="border-b border-[#7B0D1E]/10 pb-1.5">
+                    <h3
+                      className={cn(
+                        'text-xs font-extrabold uppercase tracking-wider text-[#7B0D1E] flex items-center gap-1.5',
+                        isUrdu ? 'text-right flex-row-reverse font-urdu' : 'text-left'
+                      )}
+                    >
+                      <Palette className="size-4" /> {t('selectCardBackgroundStyle') || '3. CARD BACKGROUND STYLE'}
+                    </h3>
+                    <p className={cn("text-[11px] text-muted-foreground mt-0.5", isUrdu ? "text-right font-urdu" : "text-left")}>
+                      {t('cardBackgroundStyleHint') || 'Select your executive card color and luxury backdrop gradient.'}
+                    </p>
+                  </div>
+                  <BackgroundPicker
+                    value={bgVariantId}
+                    onChange={(id) => {
+                      setBgVariantId(id)
+                      if (VISITING_CARD_THEMES.some((t) => t.id === id)) {
+                        setSelectedThemeId(id)
+                      }
+                    }}
+                    variants={visitingBgVariants}
+                  />
                 </div>
 
                 {/* Step 2 Bottom Navigation (Back to Details + Submit / Update) */}
