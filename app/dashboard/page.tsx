@@ -42,6 +42,7 @@ export default function DashboardPage() {
     signOut,
     fetchUserCards,
     upgrade,
+    isUserPlanActive,
     isAuthLoading,
     downloadAllGuestsCsv,
     downloadAllGuestsPdf,
@@ -199,14 +200,14 @@ export default function DashboardPage() {
               onClick={handleDownloadGuestsPdf}
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-bold h-auto transition-all",
-                user.plan === 'pro' || user.plan === 'business'
+                isUserPlanActive(user)
                   ? "border-indigo-500/30 bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/20"
                   : "border-amber-500/40 bg-amber-500/10 text-amber-700 hover:bg-amber-500/20"
               )}
             >
               <FileText className="size-4" />
               <span>Download PDF Report</span>
-              {user.plan !== 'pro' && user.plan !== 'business' && (
+              {!isUserPlanActive(user) && (
                 <span className="ml-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-extrabold uppercase text-amber-800 border border-amber-500/30">
                   Pro
                 </span>
@@ -219,14 +220,14 @@ export default function DashboardPage() {
               onClick={handleDownloadGuests}
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-bold h-auto transition-all",
-                user.plan === 'pro' || user.plan === 'business'
+                isUserPlanActive(user)
                   ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/20"
                   : "border-amber-500/40 bg-amber-500/10 text-amber-700 hover:bg-amber-500/20"
               )}
             >
               <FileText className="size-4" />
               <span>Export CSV</span>
-              {user.plan !== 'pro' && user.plan !== 'business' && (
+              {!isUserPlanActive(user) && (
                 <span className="ml-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-extrabold uppercase text-amber-800 border border-amber-500/30">
                   Pro
                 </span>

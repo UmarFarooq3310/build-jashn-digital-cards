@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     const db = getAdminDb()
     const cleaned = cleanObjectForFirestore(data)
 
-    if (action === 'sync_user') {
+    if (action === 'admin_set_plan') {
       const uid = cleaned.uid || cleaned.id
       if (!uid) {
         return NextResponse.json({ error: 'Missing user uid' }, { status: 400 })
@@ -38,12 +38,55 @@ export async function POST(req: Request) {
       const userRef = db.collection('users').doc(uid)
       await userRef.set(
         {
-          ...cleaned,
+          plan: cleaned.plan || 'free',
+          planActivatedAt: cleaned.planActivatedAt || Date.now(),
+          planExpiresAt: cleaned.planExpiresAt || null,
           updatedAt: Date.now(),
         },
         { merge: true }
       )
-      return NextResponse.json({ success: true, action, id: uid })
+      return NextResponse.json({ success: true, action, id: uid, plan: cleaned.plan })
+    }
+
+    if (action === 'sync_user' || action === 'sync_user_profile') {
+      const uid = cleaned.uid || cleaned.id
+      if (!uid) {
+        return NextResponse.json({ error: 'Missing user uid' }, { status: 400 })
+      }
+      const userRef = db.collection('users').doc(uid)
+      const existingSnap = await userRef.get()
+      if (existingSnap.exists) {
+        const existingData = existingSnap.data() || {}
+        // Security guard: Never let client overwrite plan or expiry set by admin
+        delete cleaned.plan
+        delete cleaned.planActivatedAt
+        delete cleaned.planExpiresAt
+
+        await userRef.set(
+          {
+            ...cleaned,
+            updatedAt: Date.now(),
+          },
+          { merge: true }
+        )
+        return NextResponse.json({
+          success: true,
+          action,
+          id: uid,
+          plan: existingData.plan || 'free',
+          planExpiresAt: existingData.planExpiresAt || null,
+        })
+      } else {
+        await userRef.set(
+          {
+            ...cleaned,
+            plan: cleaned.plan || 'free',
+            updatedAt: Date.now(),
+          },
+          { merge: true }
+        )
+        return NextResponse.json({ success: true, action, id: uid, plan: cleaned.plan || 'free' })
+      }
     }
 
     if (action === 'sync_wish') {

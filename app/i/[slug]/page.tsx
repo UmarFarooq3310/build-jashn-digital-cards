@@ -226,9 +226,11 @@ function InvitationPublicContent({ slug }: { slug: string }) {
     )
   }
 
-  // ── 30-Day Expiration for Free Invitations ──
+  // ── 30-Day Expiration for Free Invitations & Pro Watermark Detection ──
   const isPreview = searchParams.get('preview') === 'true'
-  const isExpiredCard = isCardExpired(activeInvitation.createdAt, (activeInvitation as any).plan || (activeInvitation.creatorId === user?.uid ? user?.plan : undefined))
+  const effectiveCreatorPlan = (activeInvitation as any).creatorPlan || (activeInvitation as any).plan || (activeInvitation.creatorId === user?.uid ? user?.plan : undefined)
+  const isCreatorPro = effectiveCreatorPlan === 'pro' || effectiveCreatorPlan === 'business'
+  const isExpiredCard = isCardExpired(activeInvitation.createdAt, effectiveCreatorPlan)
   if (isExpiredCard && !isPreview) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center bg-slate-950 text-white space-y-4">
@@ -422,7 +424,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                     setRainActive(true)
                   }}
                 >
-                  <InvitationCard ref={cardRef} data={activeInvitation} watermark={true} showCountdown={false} />
+                  <InvitationCard ref={cardRef} data={activeInvitation} watermark={!isCreatorPro} showCountdown={false} />
                 </ThreeDCardWrapper>
               </div>
 
@@ -775,7 +777,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
               setRainActive(true)
             }}
           >
-            <InvitationCard ref={cardRef} data={activeInvitation} watermark={true} showCountdown={true} />
+            <InvitationCard ref={cardRef} data={activeInvitation} watermark={!isCreatorPro} showCountdown={true} />
           </ThreeDCardWrapper>
 
           {/* Host Preview Notice */}

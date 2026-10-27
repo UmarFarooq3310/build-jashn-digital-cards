@@ -56,6 +56,13 @@ function setAuthCookie(authed: boolean) {
  * Swap these functions for Firebase Auth + Firestore calls to go live.
  */
 
+export function isUserPlanActive(u?: JashnUser | null): boolean {
+  if (!u) return false
+  if (u.plan !== 'pro' && u.plan !== 'business') return false
+  if (!u.planExpiresAt) return true // no expiry limit set
+  return Date.now() < u.planExpiresAt
+}
+
 function slugify(): string {
   return Math.random().toString(36).slice(2, 8)
 }
@@ -573,13 +580,42 @@ export const useJashn = create<JashnState>()(
         }
         _userCardsCacheTs.set(activeUid, Date.now())
 
-        // Ensure user is synced to server admin database
-        if (activeUid) {
-          syncRecordToServer('sync_user', currentUser)
+        const activeDb = getFirebaseDb() || db
+
+        // ── Real-time User Plan & Profile Verification ──────────────────
+        // Check Firestore to ensure admin upgrades or plan revocations take effect immediately
+        if (activeUid && isFirebaseConfigured && activeDb) {
+          try {
+            const userSnap = await getDoc(doc(activeDb, 'users', activeUid))
+            if (userSnap.exists()) {
+              const serverData = userSnap.data() as Partial<JashnUser>
+              const serverPlan = serverData.plan || 'free'
+              const serverExpires = serverData.planExpiresAt || undefined
+              if (serverPlan !== currentUser.plan || serverExpires !== currentUser.planExpiresAt) {
+                currentUser = {
+                  ...currentUser,
+                  plan: serverPlan,
+                  planActivatedAt: serverData.planActivatedAt,
+                  planExpiresAt: serverExpires,
+                }
+                set((s) => ({
+                  user: currentUser,
+                  registeredUsers: s.registeredUsers.map((ru) =>
+                    ru.uid === activeUid ? { ...ru, ...currentUser } : ru
+                  ),
+                }))
+              }
+            }
+          } catch (e) {
+            console.warn('Failed to verify user plan with server:', e)
+          }
         }
 
-
-        const activeDb = getFirebaseDb() || db
+        // Sync client metadata to server, but NEVER overwrite server-controlled plan fields
+        if (activeUid) {
+          const { plan, planActivatedAt, planExpiresAt, ...safeProfile } = currentUser
+          syncRecordToServer('sync_user_profile', safeProfile)
+        }
         if (!currentUser.uid) {
           const generatedUid = uid()
           currentUser = { ...currentUser, uid: generatedUid }
@@ -653,11 +689,12 @@ export const useJashn = create<JashnState>()(
       createWish: async (data) => {
         // ── Free plan limit check ──────────────────────────────────────────────
         const currentUser = get().user
-        const plan = currentUser?.plan ?? 'free'
+        const isPlanActive = currentUser ? isUserPlanActive(currentUser) : false
+        const effectivePlan = isPlanActive ? currentUser!.plan : 'free'
         const storeWishCount = get().wishes.filter(w => w.creatorId === (currentUser?.uid ?? 'guest')).length
         const guestWishCount = currentUser ? 0 : getGuestCardCount('wish')
         const ownWishCount = Math.max(storeWishCount, guestWishCount)
-        const check = canCreateCard(plan, 'wish', ownWishCount, !!currentUser)
+        const check = canCreateCard(effectivePlan, 'wish', ownWishCount, !!currentUser)
         if (!check.allowed) {
           get().showToast(check.reason ?? 'Wish card limit reached. Upgrade to Pro for unlimited.', 'error')
           throw new Error(check.reason ?? 'Card limit reached')
@@ -669,6 +706,7 @@ export const useJashn = create<JashnState>()(
           id: uid(),
           slug: slugify(),
           creatorId: get().user?.uid ?? 'guest',
+          creatorPlan: effectivePlan,
           viewCount: 0,
           shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 },
           createdAt: Date.now(),
@@ -706,11 +744,12 @@ export const useJashn = create<JashnState>()(
       createInvitation: async (data) => {
         // ── Free plan limit check ──────────────────────────────────────────────
         const currentUser = get().user
-        const plan = currentUser?.plan ?? 'free'
+        const isPlanActive = currentUser ? isUserPlanActive(currentUser) : false
+        const effectivePlan = isPlanActive ? currentUser!.plan : 'free'
         const storeInvCount = get().invitations.filter(i => i.creatorId === (currentUser?.uid ?? 'guest')).length
         const guestInvCount = currentUser ? 0 : getGuestCardCount('invite')
         const ownCount = Math.max(storeInvCount, guestInvCount)
-        const check = canCreateCard(plan, 'invite', ownCount, !!currentUser)
+        const check = canCreateCard(effectivePlan, 'invite', ownCount, !!currentUser)
         if (!check.allowed) {
           get().showToast(check.reason ?? 'Invitation limit reached. Upgrade to Pro for unlimited.', 'error')
           throw new Error(check.reason ?? 'Invitation limit reached')
@@ -721,6 +760,7 @@ export const useJashn = create<JashnState>()(
           id: uid(),
           slug: slugify(),
           creatorId: get().user?.uid ?? 'guest',
+          creatorPlan: effectivePlan,
           rsvpCount: 0,
           viewCount: 0,
           shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 },
@@ -759,11 +799,12 @@ export const useJashn = create<JashnState>()(
       createVisitingCard: async (data) => {
         // ── Visiting cards limit check (5 free, unlimited pro) ────────────────
         const currentUser = get().user
-        const plan = currentUser?.plan ?? 'free'
+        const isPlanActive = currentUser ? isUserPlanActive(currentUser) : false
+        const effectivePlan = isPlanActive ? currentUser!.plan : 'free'
         const storeVcCount = (get().visitingCards || []).filter(v => v.creatorId === (currentUser?.uid ?? 'guest')).length
         const guestVcCount = currentUser ? 0 : getGuestCardCount('vcard')
         const ownVcCount = Math.max(storeVcCount, guestVcCount)
-        const check = canCreateCard(plan, 'vcard', ownVcCount, !!currentUser)
+        const check = canCreateCard(effectivePlan, 'vcard', ownVcCount, !!currentUser)
         if (!check.allowed) {
           get().showToast(check.reason ?? 'Visiting card limit reached. Upgrade to Pro for unlimited.', 'error')
           throw new Error(check.reason ?? 'Visiting card limit reached')
@@ -774,6 +815,7 @@ export const useJashn = create<JashnState>()(
           id: uid(),
           slug: slugify(),
           creatorId: get().user?.uid ?? 'guest',
+          creatorPlan: effectivePlan,
           viewCount: 0,
           shares: { whatsapp: 0, sms: 0, copy: 0, qr: 0, image: 0, video: 0, app: 0 },
           createdAt: Date.now(),
@@ -1075,43 +1117,42 @@ export const useJashn = create<JashnState>()(
 
       rsvps: [],
 
-      isUserPlanActive: (userToTest) => {
-        const u = userToTest || get().user
-        if (!u) return false
-        if (u.plan === 'free') return true
-        if (!u.planExpiresAt) return true // no expiry limit set
-        return Date.now() < u.planExpiresAt
-      },
+      isUserPlanActive: (userToTest) => isUserPlanActive(userToTest || get().user),
 
       adminUpdateUserPlan: async (uidToUpdate, newPlan, durationDays = 30) => {
         const now = Date.now()
         const planActivatedAt = now
-        // if free, no expiry limit; if pro/business set expiry date
-        const planExpiresAt = newPlan === 'free' ? undefined : now + (durationDays * 24 * 60 * 60 * 1000)
+        // if free, clear expiry date; if pro/business set expiry date
+        const planExpiresAt = newPlan === 'free' ? null : now + (durationDays * 24 * 60 * 60 * 1000)
 
         set((s) => {
           const updatedRegistered = s.registeredUsers.map((u) => {
             if (u.uid === uidToUpdate) {
-              return { ...u, plan: newPlan, planActivatedAt, planExpiresAt }
+              return { ...u, plan: newPlan, planActivatedAt, planExpiresAt: planExpiresAt || undefined }
             }
             return u
           })
           const isCurrent = s.user?.uid === uidToUpdate
           const updatedUser = isCurrent
-            ? { ...s.user!, plan: newPlan, planActivatedAt, planExpiresAt }
+            ? { ...s.user!, plan: newPlan, planActivatedAt, planExpiresAt: planExpiresAt || undefined }
             : s.user
           return { registeredUsers: updatedRegistered, user: updatedUser }
         })
 
         // Guaranteed Server Admin SDK sync to Firestore
-        syncRecordToServer('sync_user', { uid: uidToUpdate, plan: newPlan, planActivatedAt, planExpiresAt: planExpiresAt || null })
+        syncRecordToServer('admin_set_plan', {
+          uid: uidToUpdate,
+          plan: newPlan,
+          planActivatedAt,
+          planExpiresAt,
+        })
 
         const activeDb = getFirebaseDb() || db
         if (isFirebaseConfigured && activeDb) {
           try {
             await setDoc(
               doc(activeDb, 'users', uidToUpdate),
-              cleanForFirestore({ plan: newPlan, planActivatedAt, planExpiresAt: planExpiresAt || null }),
+              cleanForFirestore({ plan: newPlan, planActivatedAt, planExpiresAt }),
               { merge: true }
             )
           } catch (e) {

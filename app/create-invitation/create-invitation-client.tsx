@@ -143,7 +143,7 @@ const INVITATION_QUICK_STARTERS = [
 function CreateInvitationContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { user, createInvitation, updateInvitation, invitations, isAuthLoading, showToast } = useJashn()
+  const { user, isUserPlanActive, createInvitation, updateInvitation, invitations, isAuthLoading, showToast } = useJashn()
   const { t, lang } = useLang()
   const isUrdu = lang === 'ur' || lang === 'ar'
 
@@ -250,7 +250,7 @@ function CreateInvitationContent() {
 
   const selectedType = getInvitationType(typeId)
   const isCouple = selectedType?.couple
-  const isPro = user?.plan === 'pro' || user?.plan === 'business'
+  const isPro = user ? isUserPlanActive(user) : false
 
   const wordingTemplates = getInvitationWordingTemplates(typeId, lang)
 

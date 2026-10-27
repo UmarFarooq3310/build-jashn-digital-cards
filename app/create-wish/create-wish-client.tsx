@@ -126,7 +126,7 @@ const WISH_QUICK_STARTERS = [
 function CreateWishContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { user, createWish, updateWish, wishes, showToast } = useJashn()
+  const { user, isUserPlanActive, createWish, updateWish, wishes, showToast } = useJashn()
   const { t, lang } = useLang()
   const isUrdu = lang === 'ur' || lang === 'ar'
 
@@ -300,7 +300,7 @@ function CreateWishContent() {
 
   const templates = getTemplates(occasionId)
   const selectedOccasion = getOccasion(occasionId)
-  const isPro = user?.plan === 'pro' || user?.plan === 'business'
+  const isPro = user ? isUserPlanActive(user) : false
 
   function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]

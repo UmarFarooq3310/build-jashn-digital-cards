@@ -227,9 +227,11 @@ function WishPublicContent({ slug }: { slug: string }) {
     )
   }
 
-  // ── 30-Day Expiration for Free Cards ──
+  // ── 30-Day Expiration for Free Cards & Pro Watermark Detection ──
   const isPreview = searchParams.get('preview') === 'true'
-  const isExpiredCard = isCardExpired(activeWish.createdAt, (activeWish as any).plan || (activeWish.creatorId === user?.uid ? user?.plan : undefined))
+  const effectiveCreatorPlan = (activeWish as any).creatorPlan || (activeWish as any).plan || (activeWish.creatorId === user?.uid ? user?.plan : undefined)
+  const isCreatorPro = effectiveCreatorPlan === 'pro' || effectiveCreatorPlan === 'business'
+  const isExpiredCard = isCardExpired(activeWish.createdAt, effectiveCreatorPlan)
   if (isExpiredCard && !isPreview) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-6 text-center bg-slate-950 text-white space-y-4">
@@ -430,7 +432,7 @@ function WishPublicContent({ slug }: { slug: string }) {
                     }
                   }}
                 >
-                  <WishCard ref={cardRef} data={activeWish} watermark={true} />
+                  <WishCard ref={cardRef} data={activeWish} watermark={!isCreatorPro} />
                 </ThreeDCardWrapper>
               </div>
 
@@ -765,7 +767,7 @@ function WishPublicContent({ slug }: { slug: string }) {
               }
             }}
           >
-            <WishCard ref={cardRef} data={activeWish} watermark={true} />
+            <WishCard ref={cardRef} data={activeWish} watermark={!isCreatorPro} />
           </ThreeDCardWrapper>
 
           {/* Interactive Live Emoji Reactions Dock directly under card */}

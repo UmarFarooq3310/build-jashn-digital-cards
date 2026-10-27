@@ -133,6 +133,7 @@ export interface Wish {
   id: string
   slug: string
   creatorId: string
+  creatorPlan?: Plan | string
   occasionId: string
   message: string
   language: Language
@@ -174,6 +175,7 @@ export interface Invitation {
   id: string
   slug: string
   creatorId: string
+  creatorPlan?: Plan | string
   typeId: string
   title: string
   hostNames: string
@@ -236,6 +238,7 @@ export interface VisitingCard {
   id: string
   slug: string
   creatorId: string
+  creatorPlan?: Plan | string
   fullName: string
   title: string
   company?: string

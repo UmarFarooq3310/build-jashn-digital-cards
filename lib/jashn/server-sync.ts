@@ -5,6 +5,8 @@
 
 export type SyncAction =
   | 'sync_user'
+  | 'sync_user_profile'
+  | 'admin_set_plan'
   | 'sync_wish'
   | 'sync_invitation'
   | 'sync_vcard'

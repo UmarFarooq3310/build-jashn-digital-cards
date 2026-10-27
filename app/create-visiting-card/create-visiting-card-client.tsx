@@ -38,7 +38,7 @@ import { useLang } from '@/lib/lang/context'
 import type { VisitingCardCategory, VisitingCard } from '@/lib/jashn/types'
 import { VISITING_CARD_THEMES, VISITING_CARD_BG_VARIANTS } from '@/lib/jashn/visiting-card-themes'
 import { VisitingCardView, getInitials } from '@/components/jashn/visiting-card'
-import { BorderPicker } from '@/components/jashn/border-picker'
+import { BorderPicker, BORDERS } from '@/components/jashn/border-picker'
 import { BackgroundPicker } from '@/components/jashn/background-picker'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { recordCardShare } from '@/lib/jashn/magic-service'
@@ -486,6 +486,13 @@ export default function CreateVisitingCardPage() {
           }
         }, 120)
       }
+      return
+    }
+
+    const selectedBorder = BORDERS.find((b) => b.id === borderId)
+    if (selectedBorder?.isPremium && !isPro) {
+      showToast(t('premiumBorderUpgradeRequired') || 'This border requires a Pro plan. Please upgrade or choose a free border.', 'error')
+      router.push('/pricing')
       return
     }
 
@@ -1064,7 +1071,7 @@ export default function CreateVisitingCardPage() {
                         isUrdu ? 'text-right flex-row-reverse font-urdu' : 'text-left'
                       )}
                     >
-                      <Building2 className="size-4" /> {t('selectCategorySection') || '1. INDUSTRY / BUSINESS TYPE'}
+                      <Building2 className="size-4" /> {t('selectCategorySection') || 'Select Industry / Profession Category'}
                     </h3>
                     <p className={cn("text-[11px] text-muted-foreground mt-0.5", isUrdu ? "text-right font-urdu" : "text-left")}>
                       {t('customBusinessTypeHint') || 'Enter any business type, industry, or profession to display on your verified badge.'}
@@ -1129,7 +1136,7 @@ export default function CreateVisitingCardPage() {
                         isUrdu ? 'text-right flex-row-reverse font-urdu' : 'text-left'
                       )}
                     >
-                      <Sparkles className="size-4" /> {t('selectBorderFrame') || '2. SELECT BORDER FRAME'}
+                      <Sparkles className="size-4" /> {t('selectBorderFrame') || 'SELECT BORDER FRAME'}
                     </h3>
                     <p className={cn("text-[11px] text-muted-foreground mt-0.5", isUrdu ? "text-right font-urdu" : "text-left")}>
                       {t('selectBorderFrameHint') || 'Choose decorative borders, royal frames, or modern brackets.'}
@@ -1152,7 +1159,7 @@ export default function CreateVisitingCardPage() {
                         isUrdu ? 'text-right flex-row-reverse font-urdu' : 'text-left'
                       )}
                     >
-                      <Palette className="size-4" /> {t('selectCardBackgroundStyle') || '3. CARD BACKGROUND STYLE'}
+                      <Palette className="size-4" /> {t('selectCardBackgroundStyle') || 'CARD BACKGROUND STYLE'}
                     </h3>
                     <p className={cn("text-[11px] text-muted-foreground mt-0.5", isUrdu ? "text-right font-urdu" : "text-left")}>
                       {t('cardBackgroundStyleHint') || 'Select your executive card color and luxury backdrop gradient.'}

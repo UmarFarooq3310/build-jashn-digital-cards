@@ -4,6 +4,7 @@ import React, { useState, useMemo, useEffect, useCallback, useRef, Fragment } fr
 import Link from 'next/link'
 import {
   ShieldCheck,
+  Award,
   Users,
   Download,
   Search,
@@ -2627,30 +2628,34 @@ export default function AdminPortalPage() {
     const total = allUsersList.length
     const now = Date.now()
 
-    let proCount = 0
-    let bizCount = 0
+    let monthlyCount = 0
+    let annualCount = 0
     let expiredCount = 0
 
     allUsersList.forEach((u) => {
       const isExpired = u.planExpiresAt ? now > u.planExpiresAt : false
       if (isExpired) {
         expiredCount++
-      } else if (u.plan === 'pro') {
-        proCount++
-      } else if (u.plan === 'business') {
-        bizCount++
+      } else if (u.plan === 'pro' || u.plan === 'business') {
+        const durationMs = (u.planExpiresAt && u.planActivatedAt) ? (u.planExpiresAt - u.planActivatedAt) : 0
+        if (durationMs > 100 * 24 * 60 * 60 * 1000) {
+          annualCount++
+        } else {
+          monthlyCount++
+        }
       }
     })
 
-    const estRevenueUsd = proCount * 4 + bizCount * 18
-    const estRevenuePkr = proCount * 1100 + bizCount * 5000
+    const estRevenueUsd = monthlyCount * 1.99 + annualCount * 20.30
+    const estRevenuePkr = monthlyCount * 499 + annualCount * 5090
 
     return {
       total,
-      proCount,
-      bizCount,
+      proCount: monthlyCount + annualCount,
+      monthlyCount,
+      annualCount,
       expiredCount,
-      activePaid: proCount + bizCount,
+      activePaid: monthlyCount + annualCount,
       estRevenueUsd,
       estRevenuePkr,
     }
@@ -3161,9 +3166,11 @@ export default function AdminPortalPage() {
   }, [activeSessionsList])
 
 
-  const handleUpdateUserPlan = async (uid: string, plan: Plan) => {
-    await adminUpdateUserPlan(uid, plan, selectedDurationDays)
-    showToast(`Updated user plan to ${plan.toUpperCase()} for ${selectedDurationDays} days!`, 'success')
+  const handleUpdateUserPlan = async (uid: string, plan: Plan, durationDays?: number) => {
+    const days = durationDays !== undefined ? durationDays : selectedDurationDays
+    await adminUpdateUserPlan(uid, plan, days)
+    const label = plan === 'free' ? 'FREE' : days >= 365 ? 'ANNUAL PRO (1 Year)' : 'MONTHLY PRO (30 Days)'
+    showToast(`Updated user plan to ${label}!`, 'success')
   }
 
   // ── Geolocation and Country Aggregation ──────────────────────────────────
@@ -3569,8 +3576,8 @@ export default function AdminPortalPage() {
       'Account Level Audit',
       [
         { label: 'Total Registered Accounts', value: `${allUsersList.length} Users` },
-        { label: 'Active Pro Accounts', value: `${stats.proCount} Users` },
-        { label: 'Active Business Accounts', value: `${stats.bizCount} Users` },
+        { label: 'Active Monthly Pro Accounts', value: `${stats.monthlyCount} Users ($1.99 / Rs 499)` },
+        { label: 'Active Annual Pro Accounts', value: `${stats.annualCount} Users ($20.30 / Rs 5,090)` },
       ],
       ['#', 'User Name & Email', 'Phone', 'Registered When & From', 'Subscription Plan', 'Activated Date', 'Plan Expiry Status'],
       rowsHtml
@@ -3715,15 +3722,15 @@ export default function AdminPortalPage() {
           />
           <StatCard
             icon={<Sparkles className="size-5 text-amber-500" />}
-            title="Active Pro Users"
-            value={stats.proCount}
-            subtitle="$4 / Rs 1,100 plan"
+            title="Monthly Pro Users"
+            value={stats.monthlyCount}
+            subtitle="$1.99 / Rs 499 (30d)"
           />
           <StatCard
-            icon={<Building2 className="size-5 text-purple-500" />}
-            title="Active Business"
-            value={stats.bizCount}
-            subtitle="$18 / Rs 5,000 plan"
+            icon={<Award className="size-5 text-emerald-500" />}
+            title="Annual Pro Users"
+            value={stats.annualCount}
+            subtitle="$20.30 / Rs 5,090 (1yr)"
           />
           <StatCard
             icon={<AlertTriangle className="size-5 text-rose-500" />}
@@ -5049,11 +5056,10 @@ export default function AdminPortalPage() {
 
                 {/* Package Duration Selector */}
                 <div className="flex items-center gap-2 text-xs bg-muted/60 p-1.5 rounded-2xl border border-border">
-                  <span className="font-semibold text-muted-foreground px-2">Upgrade Duration:</span>
+                  <span className="font-semibold text-muted-foreground px-2">Preset Duration:</span>
                   {[
-                    { label: '30 Days', days: 30 },
-                    { label: '90 Days', days: 90 },
-                    { label: '1 Year', days: 365 },
+                    { label: 'Monthly (30 Days)', days: 30 },
+                    { label: 'Annual (365 Days)', days: 365 },
                   ].map((d) => (
                     <button
                       key={d.days}
@@ -5246,14 +5252,16 @@ export default function AdminPortalPage() {
                                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-500/10 text-rose-600 border border-rose-500/20 text-xs font-bold">
                                   <UserX className="size-3.5" /> Expired ({u.plan.toUpperCase()})
                                 </span>
-                              ) : u.plan === 'business' ? (
-                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-600 border border-purple-500/20 text-xs font-extrabold">
-                                  <Building2 className="size-3.5" /> Business Active
-                                </span>
-                              ) : u.plan === 'pro' ? (
-                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 border border-amber-500/20 text-xs font-bold">
-                                  <Sparkles className="size-3.5" /> Pro Active
-                                </span>
+                              ) : (u.plan === 'pro' || u.plan === 'business') ? (
+                                ((daysLeft && daysLeft > 100) || (u.planExpiresAt && u.planActivatedAt && (u.planExpiresAt - u.planActivatedAt > 100 * 24 * 60 * 60 * 1000))) ? (
+                                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 border border-amber-500/20 text-xs font-bold">
+                                    <Sparkles className="size-3.5" /> Annual Pro
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sky-500/10 text-sky-700 border border-sky-500/20 text-xs font-bold">
+                                    <Sparkles className="size-3.5" /> Monthly Pro
+                                  </span>
+                                )
                               ) : (
                                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-500/10 text-slate-600 border border-slate-500/20 text-xs font-medium">
                                   Free Plan
@@ -5293,25 +5301,28 @@ export default function AdminPortalPage() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => handleUpdateUserPlan(u.uid, 'pro')}
-                                  className="text-xs h-8 rounded-xl border-amber-500/30 text-amber-700 hover:bg-amber-500/10"
+                                  onClick={() => handleUpdateUserPlan(u.uid, 'pro', 30)}
+                                  className="text-xs h-8 rounded-xl border-sky-500/30 text-sky-700 hover:bg-sky-500/10 font-medium"
+                                  title="Activate 30-Day Monthly Pro ($1.99 / Rs 499)"
                                 >
-                                  + Pro ({selectedDurationDays}d)
+                                  + Monthly (30d)
                                 </Button>
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => handleUpdateUserPlan(u.uid, 'business')}
-                                  className="text-xs h-8 rounded-xl border-purple-500/30 text-purple-700 hover:bg-purple-500/10"
+                                  onClick={() => handleUpdateUserPlan(u.uid, 'pro', 365)}
+                                  className="text-xs h-8 rounded-xl border-amber-500/30 text-amber-700 hover:bg-amber-500/10 font-bold"
+                                  title="Activate 365-Day Annual Pro ($20.30 / Rs 5,090)"
                                 >
-                                  + Biz ({selectedDurationDays}d)
+                                  + Annual (1y)
                                 </Button>
                                 {u.plan !== 'free' && (
                                   <Button
                                     size="sm"
                                     variant="ghost"
-                                    onClick={() => handleUpdateUserPlan(u.uid, 'free')}
-                                    className="text-xs h-8 rounded-xl text-rose-600 hover:bg-rose-500/10"
+                                    onClick={() => handleUpdateUserPlan(u.uid, 'free', 0)}
+                                    className="text-xs h-8 rounded-xl text-rose-600 hover:bg-rose-500/10 font-medium"
+                                    title="Revoke Pro access back to Free"
                                   >
                                     Revoke
                                   </Button>

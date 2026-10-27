@@ -45,7 +45,7 @@ const PRO_PRICING: {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function PricingPage() {
   const router = useRouter()
-  const { user, upgrade } = useJashn()
+  const { user, isUserPlanActive, upgrade } = useJashn()
   const { t, lang } = useLang()
   const isUrdu = lang === 'ur' || lang === 'ar'
 
@@ -84,7 +84,7 @@ export default function PricingPage() {
     }
   }
 
-  const isPaidUser = user?.plan === 'pro' || user?.plan === 'business'
+  const isPaidUser = user ? isUserPlanActive(user) : false
   const activeProPrice = PRO_PRICING[billingCycle]
 
   return (
