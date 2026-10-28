@@ -773,6 +773,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
             occasionIdOrCategory={activeInvitation.typeId}
             audioTrack={activeInvitation.audioTrack}
             isIslamic={isIslamic}
+            autoOpen={true}
             onOpened={() => {
               setRainActive(true)
             }}

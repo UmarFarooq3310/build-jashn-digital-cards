@@ -9,6 +9,40 @@ class CelebrationAudioPlayer {
   private isPlaying = false
   private currentTrack: string = ''
   private activeTimers: ReturnType<typeof setTimeout>[] = []
+  private pendingUnlockListener: (() => void) | null = null
+
+  private removeUnlockListener() {
+    if (this.pendingUnlockListener && typeof window !== 'undefined') {
+      window.removeEventListener('click', this.pendingUnlockListener, true)
+      window.removeEventListener('touchstart', this.pendingUnlockListener, true)
+      window.removeEventListener('pointerdown', this.pendingUnlockListener, true)
+      window.removeEventListener('keydown', this.pendingUnlockListener, true)
+      this.pendingUnlockListener = null
+    }
+  }
+
+  private registerUnlockListener() {
+    if (typeof window === 'undefined') return
+    this.removeUnlockListener()
+
+    const unlock = () => {
+      this.removeUnlockListener()
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume().catch(() => {})
+      }
+      if (this.audioElement && this.isPlaying) {
+        this.audioElement.play().then(() => {
+          this.isPlaying = true
+        }).catch(() => {})
+      }
+    }
+
+    this.pendingUnlockListener = unlock
+    window.addEventListener('click', unlock, { once: true, capture: true })
+    window.addEventListener('touchstart', unlock, { once: true, capture: true })
+    window.addEventListener('pointerdown', unlock, { once: true, capture: true })
+    window.addEventListener('keydown', unlock, { once: true, capture: true })
+  }
 
   private initCtx() {
     if (typeof window === 'undefined') return
@@ -58,6 +92,7 @@ class CelebrationAudioPlayer {
   stop() {
     this.isPlaying = false
     this.currentTrack = ''
+    this.removeUnlockListener()
     this.clearTimers()
     if (this.audioElement) {
       try {
@@ -91,12 +126,23 @@ class CelebrationAudioPlayer {
     this.isPlaying = true
     this.currentTrack = trackId
 
-    // 1. Resolve audio track URL from AUDIO_TRACKS or occasionSoundMap
-    const trackObj = getAudioTrack(trackId)
-    let soundSrc = trackObj && trackObj.id !== 'none' ? trackObj.src : null
+    // 1. Resolve audio track URL from custom URL, AUDIO_TRACKS or occasionSoundMap
+    let soundSrc: string | null = null
+    if (
+      trackId.startsWith('data:') ||
+      trackId.startsWith('blob:') ||
+      trackId.startsWith('http://') ||
+      trackId.startsWith('https://') ||
+      trackId.startsWith('/')
+    ) {
+      soundSrc = trackId
+    } else {
+      const trackObj = getAudioTrack(trackId)
+      soundSrc = trackObj && trackObj.id !== 'none' ? trackObj.src : null
 
-    if (!soundSrc) {
-      soundSrc = getSoundForOccasion(trackId) || getSoundForInvitationType(trackId)
+      if (!soundSrc) {
+        soundSrc = getSoundForOccasion(trackId) || getSoundForInvitationType(trackId)
+      }
     }
 
     if (soundSrc) {
@@ -111,13 +157,17 @@ class CelebrationAudioPlayer {
           playPromise
             .then(() => {
               this.isPlaying = true
+              this.removeUnlockListener()
             })
             .catch(() => {
+              // Autoplay blocked by browser policy without user gesture - register unlock on first interaction
+              this.registerUnlockListener()
               this.playSynthesizerFallback(trackId)
             })
         }
         return
       } catch {
+        this.registerUnlockListener()
         this.playSynthesizerFallback(trackId)
         return
       }

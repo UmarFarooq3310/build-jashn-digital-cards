@@ -1,7 +1,8 @@
 'use client'
 
 import { recordCardShare } from '@/lib/jashn/magic-service'
-import { getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
+import { getDefaultAudioTrackForOccasion, getAudioTrack } from '@/lib/jashn/audio'
+import { getSoundForOccasion, getSoundForInvitationType } from '@/lib/jashn/occasionSoundMap'
 import fixWebmDuration from 'fix-webm-duration'
 
 export interface CardMediaExportOptions {
@@ -208,6 +209,43 @@ async function convertWebmToMp4(
 }
 
 function resolveSoundUrl(audioTrack?: string, cardType?: string, occasionId?: string): string {
+  // 1. Explicitly silent
+  if (audioTrack === 'none') {
+    return ''
+  }
+
+  // 2. Custom or provided audioTrack
+  if (audioTrack && audioTrack.trim()) {
+    const clean = audioTrack.trim()
+    // Data URL, Blob URL, Absolute HTTP URL, or local public path starting with /
+    if (
+      clean.startsWith('data:') ||
+      clean.startsWith('blob:') ||
+      clean.startsWith('http://') ||
+      clean.startsWith('https://') ||
+      clean.startsWith('/')
+    ) {
+      return clean
+    }
+
+    // Resolve via getAudioTrack (covers all 20+ AUDIO_TRACKS, aliases, and names)
+    const trackObj = getAudioTrack(clean)
+    if (trackObj && trackObj.id !== 'none' && trackObj.src) {
+      return trackObj.src
+    }
+
+    // Check occasionSoundMap
+    const mapped = getSoundForOccasion(clean) || getSoundForInvitationType(clean)
+    if (mapped) {
+      return mapped
+    }
+
+    if (clean.endsWith('.m4a') || clean.endsWith('.mp3') || clean.endsWith('.wav')) {
+      return `/${clean}`
+    }
+  }
+
+  // 3. Fallback to occasion if no custom audio was specified
   if (occasionId) {
     const cleanOccasion = occasionId.toLowerCase().trim()
     if (
@@ -218,69 +256,25 @@ function resolveSoundUrl(audioTrack?: string, cardType?: string, occasionId?: st
       cleanOccasion.includes('chelum') ||
       cleanOccasion.includes('majlis')
     ) {
-      if (!audioTrack || audioTrack === 'none' || audioTrack === 'birthday-dholki' || audioTrack === 'birthday-festive') {
-        return ''
-      }
+      return ''
     }
-  }
 
-  const trackMap: Record<string, string> = {
-    'friendship-soft': '/sounds/friendship-soft.m4a',
-    'friendship': '/sounds/friendship-soft.m4a',
-    'soft': '/sounds/friendship-soft.m4a',
-    'poetry': '/sounds/friendship-soft.m4a',
-    'wedding-shehnai': '/sounds/wedding-shehnai.m4a',
-    'wedding': '/sounds/wedding.m4a',
-    'punjabi-bhangra': '/sounds/mehndi-dholki.m4a',
-    'punjabi-bhangra-dhol': '/sounds/mehndi-dholki.m4a',
-    'dholak-tappe': '/sounds/mehndi-dholki.m4a',
-    'birthday-festive': '/sounds/birthday-dholki.m4a',
-    'birthday-dholki': '/sounds/birthday-dholki.m4a',
-    'birthday': '/sounds/birthday.m4a',
-    'indian-sitar': '/sounds/wedding.m4a',
-    'indian-sitar-classical': '/sounds/wedding.m4a',
-    'romantic-strings': '/sounds/romantic-strings.m4a',
-    'romantic-piano': '/sounds/romantic-piano.m4a',
-    'islamic-oud': '/sounds/islamic.m4a',
-    'islamic-chime': '/sounds/eid-chime.m4a',
-    'islamic': '/sounds/islamic.m4a',
-    'eid': '/sounds/eid-chime.m4a',
-    'sufi-harmonium': '/sounds/sufi-harmonium.m4a',
-    'sufi': '/sounds/sufi-harmonium.m4a',
-    'corporate-ambient': '/sounds/corporate-ambient.m4a',
-    'corporate': '/sounds/corporate-ambient.m4a',
-    'celebration-party': '/sounds/celebration-party.m4a',
-    'party': '/sounds/celebration-party.m4a',
-    'festive-garba': '/sounds/festive.m4a',
-    'festive': '/sounds/festive.m4a',
-    'gaming-victory': '/sounds/gaming-victory.m4a',
-    'gaming': '/sounds/gaming-victory.m4a',
-    'achievement-brass': '/sounds/achievement-brass.m4a',
-    'brass': '/sounds/achievement-brass.m4a',
-    'baby-lullaby': '/sounds/baby-lullaby.m4a',
-    'lullaby': '/sounds/baby-lullaby.m4a',
-    'holiday-bells': '/sounds/holiday-bells.m4a',
-    'bells': '/sounds/holiday-bells.m4a',
-    'dholki': '/sounds/dholki.m4a',
-    'general': '/sounds/general.m4a',
-  }
-
-  if (audioTrack && audioTrack !== 'none') {
-    if (audioTrack.startsWith('/')) return audioTrack
-    const cleanKey = audioTrack.toLowerCase().trim()
-    if (trackMap[cleanKey]) return trackMap[cleanKey]
-    if (cleanKey.endsWith('.m4a') || cleanKey.endsWith('.mp3')) return `/${cleanKey}`
-  }
-
-  if (occasionId) {
     const defaultOccasionTrack = getDefaultAudioTrackForOccasion(occasionId)
     if (defaultOccasionTrack === 'none') return ''
     if (defaultOccasionTrack) {
-      const cleanOccKey = defaultOccasionTrack.toLowerCase().trim()
-      if (trackMap[cleanOccKey]) return trackMap[cleanOccKey]
+      const defaultObj = getAudioTrack(defaultOccasionTrack)
+      if (defaultObj && defaultObj.id !== 'none' && defaultObj.src) {
+        return defaultObj.src
+      }
+    }
+
+    const occasionSound = getSoundForOccasion(occasionId) || getSoundForInvitationType(occasionId)
+    if (occasionSound) {
+      return occasionSound
     }
   }
 
+  // 4. Default fallbacks by cardType
   if (cardType === 'poetry') return '/sounds/friendship-soft.m4a'
   if (cardType === 'invite') return '/sounds/wedding-shehnai.m4a'
   if (cardType === 'vcard') return '/sounds/friendship-soft.m4a'

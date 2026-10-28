@@ -80,6 +80,16 @@ function cleanForFirestore<T>(data: T): T {
   const result: Record<string, any> = {}
   for (const [key, val] of Object.entries(data as Record<string, any>)) {
     if (val !== undefined) {
+      if (typeof val === 'string') {
+        if (key === 'audioTrack' && (val.startsWith('data:') || val.startsWith('blob:')) && val.length > 550000) {
+          console.warn(`[Firestore Safe Guard] audioTrack exceeds 550KB (${val.length} bytes), omitting to prevent document limit error.`)
+          continue
+        }
+        if (val.length > 900000) {
+          console.warn(`[Firestore Safe Guard] Property "${key}" exceeds 900KB (${val.length} bytes), omitting to prevent document limit error.`)
+          continue
+        }
+      }
       result[key] = typeof val === 'object' && val !== null ? cleanForFirestore(val) : val
     }
   }

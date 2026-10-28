@@ -761,6 +761,7 @@ function WishPublicContent({ slug }: { slug: string }) {
             isIslamic={isIslamic}
             isSensitive={isSensitive}
             audioTrack={activeWish.audioTrack}
+            autoOpen={true}
             onOpened={() => {
               if (!isSensitive) {
                 setRainActive(true)

@@ -54,6 +54,13 @@ export function ThreeDCardWrapper({
     cleanOcc === 'condolence' ||
     cleanOcc.includes('majlis_aza')
 
+  // Stop audio playback when card component unmounts
+  useEffect(() => {
+    return () => {
+      celebrationAudio.stop()
+    }
+  }, [])
+
   // Auto-open the card after 3 seconds if user doesn't tap it first
   useEffect(() => {
     if (!autoOpen || isOpen || hasOpened) return
@@ -64,17 +71,15 @@ export function ThreeDCardWrapper({
         setHasOpened(true)
         setTilt({ rx: 0, ry: 0, px: 50, py: 50 })
 
-        if (!isActuallySensitive) {
-          if (audioTrack && audioTrack !== 'none') {
-            celebrationAudio.playTrack(audioTrack)
-            setIsAudioActive(true)
-          } else if (audioTrack === 'none') {
-            celebrationAudio.stop()
-            setIsAudioActive(false)
-          } else {
-            celebrationAudio.playMelody(occasionIdOrCategory)
-            setIsAudioActive(true)
-          }
+        if (audioTrack && audioTrack !== 'none') {
+          celebrationAudio.playTrack(audioTrack)
+          setIsAudioActive(true)
+        } else if (audioTrack === 'none') {
+          celebrationAudio.stop()
+          setIsAudioActive(false)
+        } else if (!isActuallySensitive) {
+          celebrationAudio.playMelody(occasionIdOrCategory)
+          setIsAudioActive(true)
         }
 
         if (onOpened) {
@@ -88,7 +93,7 @@ export function ThreeDCardWrapper({
         clearTimeout(autoOpenTimerRef.current)
       }
     }
-  }, [autoOpen, isOpen, hasOpened, isActuallySensitive, occasionIdOrCategory, onOpened])
+  }, [autoOpen, isOpen, hasOpened, isActuallySensitive, occasionIdOrCategory, onOpened, audioTrack])
 
   useGSAP(() => {
     if (!isOpen) return
@@ -317,17 +322,15 @@ export function ThreeDCardWrapper({
     setHasOpened(true)
     setTilt({ rx: 0, ry: 0, px: 50, py: 50 }) // Reset tilt immediately on open
 
-    if (!isActuallySensitive) {
-      if (audioTrack && audioTrack !== 'none') {
-        celebrationAudio.playTrack(audioTrack)
-        setIsAudioActive(true)
-      } else if (audioTrack === 'none') {
-        celebrationAudio.stop()
-        setIsAudioActive(false)
-      } else {
-        celebrationAudio.playMelody(occasionIdOrCategory)
-        setIsAudioActive(true)
-      }
+    if (audioTrack && audioTrack !== 'none') {
+      celebrationAudio.playTrack(audioTrack)
+      setIsAudioActive(true)
+    } else if (audioTrack === 'none') {
+      celebrationAudio.stop()
+      setIsAudioActive(false)
+    } else if (!isActuallySensitive) {
+      celebrationAudio.playMelody(occasionIdOrCategory)
+      setIsAudioActive(true)
     }
 
     if (onOpened) {
@@ -709,7 +712,7 @@ export function ThreeDCardWrapper({
         )}
 
         {/* Floating Sound Toggle Button (Positioned cleanly inside the top-right corner of the card so it never hides under the navbar) */}
-        {isOpen && !isActuallySensitive && (
+        {isOpen && (audioTrack ? audioTrack !== 'none' : !isActuallySensitive) && (
           <button
             type="button"
             onClick={handleToggleAudio}

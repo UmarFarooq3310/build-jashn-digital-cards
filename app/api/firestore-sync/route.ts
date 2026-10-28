@@ -12,6 +12,16 @@ function cleanObjectForFirestore(obj: any): any {
   const clean: Record<string, any> = {}
   for (const [key, value] of Object.entries(obj)) {
     if (value !== undefined) {
+      if (typeof value === 'string') {
+        if (key === 'audioTrack' && (value.startsWith('data:') || value.startsWith('blob:')) && value.length > 550000) {
+          console.warn(`[Server Firestore Guard] audioTrack exceeds 550KB (${value.length} bytes), omitting to prevent 1MB limit error.`)
+          continue
+        }
+        if (value.length > 900000) {
+          console.warn(`[Server Firestore Guard] Property "${key}" exceeds 900KB (${value.length} bytes), omitting to prevent 1MB document limit error.`)
+          continue
+        }
+      }
       clean[key] = typeof value === 'object' && value !== null ? cleanObjectForFirestore(value) : value
     }
   }

@@ -275,8 +275,28 @@ const AUDIO_ALIASES: Record<string, string> = {
 
 export function getAudioTrack(id: string | undefined): AudioTrack {
   if (!id) return AUDIO_TRACKS[1]
-  const resolvedId = AUDIO_ALIASES[id] || id
-  return AUDIO_TRACKS.find((t) => t.id === resolvedId) || AUDIO_TRACKS[1]
+  const clean = id.toLowerCase().trim()
+  if (clean.startsWith('data:') || clean.startsWith('blob:') || clean.startsWith('http')) {
+    return {
+      id: 'custom-audio',
+      name: 'Custom Music Gallery Audio 🎵',
+      description: 'Custom audio chosen from music gallery',
+      category: 'all',
+      tag: 'Music Gallery',
+      src: id,
+      icon: 'Music',
+    }
+  }
+  const resolvedId = AUDIO_ALIASES[id] || AUDIO_ALIASES[clean] || id
+  const found = AUDIO_TRACKS.find(
+    (t) =>
+      t.id === resolvedId ||
+      t.id.toLowerCase() === clean ||
+      t.name.toLowerCase() === clean ||
+      t.src.toLowerCase() === clean ||
+      (clean.length > 5 && t.name.toLowerCase().includes(clean))
+  )
+  return found || AUDIO_TRACKS[1]
 }
 
 /**
@@ -611,7 +631,7 @@ export function getAudioTracksForOccasion(id: string | undefined): AudioTrack[] 
     romantic: ['romantic-piano', 'romantic-strings', 'friendship-soft', 'wedding-shehnai'],
     festive: ['festive-garba', 'indian-sitar', 'punjabi-bhangra', 'celebration-party', 'holiday-bells'],
     milestone: ['achievement-brass', 'celebration-party', 'gaming-victory', 'universal-cheer'],
-    ambient: ['corporate-ambient', 'universal-cheer', 'friendship-soft', 'romantic-piano'],
+    ambient: ['islamic-chime', 'islamic-oud', 'sufi-harmonium', 'corporate-ambient', 'friendship-soft', 'romantic-piano', 'universal-cheer'],
   }
 
   const allowedIds = tracksByGroup[group] || ['birthday-festive', 'birthday-chime', 'celebration-party']

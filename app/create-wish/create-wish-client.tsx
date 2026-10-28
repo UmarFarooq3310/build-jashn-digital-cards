@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight, UserCheck, Heart, Grid, Loader2, AlertCircle, Ed
 import { AUDIO_TRACKS, getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
 import { AudioTrackPicker } from '@/components/jashn/audio-track-picker'
 import { celebrationAudio } from '@/lib/jashn/audio-synth'
+import { trimAudioTo10Seconds } from '@/lib/jashn/audio-trimmer'
 import { generateAIWish, type AITone } from '@/lib/jashn/ai-generator'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
@@ -848,6 +849,15 @@ function CreateWishContent() {
         developerName: developerName.trim(),
         photoUrl,
         audioTrack,
+      }
+
+      // Auto-trim audioTrack to first 10 seconds if it's an oversized raw data URL (> 450KB)
+      if (payload.audioTrack && (payload.audioTrack.startsWith('data:') || payload.audioTrack.startsWith('blob:')) && payload.audioTrack.length > 450000) {
+        try {
+          payload.audioTrack = await trimAudioTo10Seconds(payload.audioTrack, 10)
+        } catch (e) {
+          console.warn('[createWish] auto-trim audioTrack fallback:', e)
+        }
       }
 
       const targetEditSlug = currentEditSlug || (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('edit') : null)
