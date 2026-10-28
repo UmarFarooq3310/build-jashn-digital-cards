@@ -9,6 +9,9 @@ interface PageProps {
   searchParams?: Promise<{ lang?: string }>
 }
 
+export const dynamic = 'force-static'
+export const dynamicParams = true
+
 export async function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({
     slug: post.slug,

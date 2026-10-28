@@ -51,9 +51,41 @@ export default function BirthdayGuideLayout({
       { '@type': 'ListItem', position: 3, name: 'Birthday Wishes Wording', item: 'https://cardzy.online/guide/birthday-wishes-wording' },
     ],
   }
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Birthday Wishes Wording: 50+ Copy-Ready Messages',
+    description:
+      'Find the perfect birthday card wording — heartfelt, funny, or formal messages for family & friends. 50+ copy-ready templates and 1-click 3D card creator.',
+    image: ['https://cardzy.online/og-image.jpg'],
+    datePublished: '2024-08-01T00:00:00Z',
+    dateModified: '2026-10-23T00:00:00Z',
+    inLanguage: 'en',
+    author: {
+      '@type': 'Organization',
+      name: 'Cardzy Editorial Team',
+      url: 'https://cardzy.online/about',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Cardzy',
+      url: 'https://cardzy.online',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://cardzy.online/favicon.svg',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': 'https://cardzy.online/guide/birthday-wishes-wording',
+    },
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       {children}
     </>
   )

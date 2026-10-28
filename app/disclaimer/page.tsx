@@ -128,7 +128,7 @@ export default function DisclaimerPage() {
               We utilize Google AdSense to serve advertisements on select public pages. Google, as a third-party vendor, uses cookies (such as DART cookies and advertising identifiers) to serve ads based on your prior visits to our website or other sites on the Internet. We do not publish, host, or link to adult content, copyrighted material, dangerous products, deceptive advertising, or hate speech.
             </p>
             <p className="text-muted-foreground">
-              Visitors may opt out of personalized advertising by visiting Google&rsquo;s Ads Settings (<a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="text-emerald-600 dark:text-emerald-400 underline font-semibold">adssettings.google.com</a>) or via the Network Advertising Initiative opt-out page. We respect user privacy preferences through Google Consent Mode v2 implementation.
+              Visitors may opt out of personalized advertising by visiting Google&rsquo;s Ads Settings (<a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-emerald-600 dark:text-emerald-400 underline font-semibold">policies.google.com/technologies/ads</a>) or via the Network Advertising Initiative opt-out page. We respect user privacy preferences through Google Consent Mode v2 implementation.
             </p>
           </div>
         </section>

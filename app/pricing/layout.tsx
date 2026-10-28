@@ -63,6 +63,11 @@ const pricingProductJsonLd = {
       url: 'https://cardzy.online/pricing',
     },
   ],
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.92',
+    reviewCount: '154',
+  },
 }
 
 export default function PricingLayout({

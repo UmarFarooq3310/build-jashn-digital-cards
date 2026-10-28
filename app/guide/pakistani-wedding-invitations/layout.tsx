@@ -50,9 +50,41 @@ export default function WeddingGuideLayout({
       { '@type': 'ListItem', position: 3, name: 'Pakistani Wedding Invitations', item: 'https://cardzy.online/guide/pakistani-wedding-invitations' },
     ],
   }
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Wedding Card Wording: Pakistani & Urdu Templates',
+    description:
+      'Explore 50+ royal wedding card wording templates in Urdu & English. Copy-ready lines for Nikkah, Mehndi, Barat & Walima with Bismillah text.',
+    image: ['https://cardzy.online/og-image.jpg'],
+    datePublished: '2024-08-01T00:00:00Z',
+    dateModified: '2026-10-23T00:00:00Z',
+    inLanguage: 'ur',
+    author: {
+      '@type': 'Organization',
+      name: 'Cardzy Editorial Team',
+      url: 'https://cardzy.online/about',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Cardzy',
+      url: 'https://cardzy.online',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://cardzy.online/favicon.svg',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': 'https://cardzy.online/guide/pakistani-wedding-invitations',
+    },
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       {children}
     </>
   )

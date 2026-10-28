@@ -49,9 +49,41 @@ export default function EidGuideLayout({
       { '@type': 'ListItem', position: 3, name: 'Eid Wording Ideas', item: 'https://cardzy.online/guide/eid-wording-ideas' },
     ],
   }
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Urdu Eid Wishes & Wording: 50+ Copy-Ready Quotes',
+    description:
+      'Discover 50+ beautiful Urdu Eid wishes, heartfelt poetry & Khair Mubarak replies. Copy-ready quotes in Urdu & English for cards and WhatsApp. Copy yours now!',
+    image: ['https://cardzy.online/og-image.jpg'],
+    datePublished: '2024-08-01T00:00:00Z',
+    dateModified: '2026-10-23T00:00:00Z',
+    inLanguage: 'ur',
+    author: {
+      '@type': 'Organization',
+      name: 'Cardzy Editorial Team',
+      url: 'https://cardzy.online/about',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Cardzy',
+      url: 'https://cardzy.online',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://cardzy.online/favicon.svg',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': 'https://cardzy.online/guide/eid-wording-ideas',
+    },
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       {children}
     </>
   )

@@ -5,6 +5,7 @@ import {
   Calendar,
   Clock,
   ArrowLeft,
+  ArrowRight,
   Share2,
   Sparkles,
   CheckCircle,
@@ -1079,6 +1080,87 @@ export function BlogPostClient({ initialPost }: { initialPost: BlogPost }) {
           </div>
         </section>
       )}
+
+      {/* Editorial Guides & Internal Hub Section */}
+      <section className="mt-12 pt-10 border-t border-white/10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="rounded-3xl border border-[#D4AF37]/30 bg-gradient-to-br from-[#0c0d12] via-[#12131a] to-[#0a0a0c] p-6 sm:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider text-[#D4AF37] mb-1">Celebration Knowledge Hub</div>
+              <h3 className="text-lg sm:text-xl font-extrabold text-white">Popular Guides, Wording Templates &amp; Tools</h3>
+            </div>
+            <Link
+              href="/guide"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#D4AF37] hover:underline"
+            >
+              <span>View All Celebration Guides</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Link
+              href="/guide/pakistani-wedding-invitations"
+              className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#D4AF37]/40 transition-colors group"
+            >
+              <div className="text-xs font-bold text-emerald-400 mb-1">Wedding &amp; Nikkah</div>
+              <div className="text-sm font-semibold text-slate-200 group-hover:text-[#D4AF37] transition-colors">
+                Pakistani Wedding Card Wording &amp; Invitation Guide
+              </div>
+            </Link>
+
+            <Link
+              href="/guide/eid-wording-ideas"
+              className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#D4AF37]/40 transition-colors group"
+            >
+              <div className="text-xs font-bold text-amber-400 mb-1">Eid &amp; Islamic Greetings</div>
+              <div className="text-sm font-semibold text-slate-200 group-hover:text-[#D4AF37] transition-colors">
+                Urdu Eid Wishes, Poetry &amp; Khair Mubarak Replies
+              </div>
+            </Link>
+
+            <Link
+              href="/guide/birthday-wishes-wording"
+              className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#D4AF37]/40 transition-colors group"
+            >
+              <div className="text-xs font-bold text-pink-400 mb-1">Birthdays &amp; Milestones</div>
+              <div className="text-sm font-semibold text-slate-200 group-hover:text-[#D4AF37] transition-colors">
+                50+ Heartfelt &amp; Formal Birthday Wishes Wording
+              </div>
+            </Link>
+
+            <Link
+              href="/guide/magic-links-guide"
+              className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#D4AF37]/40 transition-colors group"
+            >
+              <div className="text-xs font-bold text-purple-400 mb-1">3D Magic Surprises</div>
+              <div className="text-sm font-semibold text-slate-200 group-hover:text-[#D4AF37] transition-colors">
+                Interactive 3D Proposal Links &amp; Candle Blowing
+              </div>
+            </Link>
+
+            <Link
+              href="/guide/poetry-for-cards-and-invitations"
+              className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#D4AF37]/40 transition-colors group"
+            >
+              <div className="text-xs font-bold text-indigo-400 mb-1">Poetry Treasury</div>
+              <div className="text-sm font-semibold text-slate-200 group-hover:text-[#D4AF37] transition-colors">
+                1,000+ Classical Shayari &amp; WhatsApp Story Cards
+              </div>
+            </Link>
+
+            <Link
+              href="/authors"
+              className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#D4AF37]/40 transition-colors group"
+            >
+              <div className="text-xs font-bold text-blue-400 mb-1">Editorial Team</div>
+              <div className="text-sm font-semibold text-slate-200 group-hover:text-[#D4AF37] transition-colors">
+                Meet Cardzy Cultural Stylists &amp; Content Editors
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

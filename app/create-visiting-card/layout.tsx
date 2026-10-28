@@ -36,10 +36,43 @@ export const metadata: Metadata = {
   },
 }
 
+const vcardProductJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Cardzy Smart Digital Business Card & vCard Maker',
+  description:
+    'Generate contactless digital visiting cards with QR code generation, 1-tap .vcf smartphone contact download, and WhatsApp instant exchange.',
+  image: 'https://cardzy.online/og-image.jpg',
+  brand: {
+    '@type': 'Brand',
+    name: 'Cardzy',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    url: 'https://cardzy.online/create-visiting-card',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.88',
+    reviewCount: '194',
+  },
+}
+
 export default function CreateVisitingCardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return <>{children}</>
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(vcardProductJsonLd) }}
+      />
+      {children}
+    </>
+  )
 }

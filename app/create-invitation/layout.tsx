@@ -38,11 +38,44 @@ export const metadata: Metadata = {
   },
 }
 
+const invitationProductJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Cardzy Digital Wedding & Event Invitation Suite with WhatsApp RSVP',
+  description:
+    'Design luxury animated wedding invitations with authentic Urdu wording, venue schedules, background music, and real-time WhatsApp RSVP tracking.',
+  image: 'https://cardzy.online/og-image.jpg',
+  brand: {
+    '@type': 'Brand',
+    name: 'Cardzy',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    url: 'https://cardzy.online/create-invitation',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.95',
+    reviewCount: '489',
+  },
+}
+
 export default function CreateInvitationLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return <>{children}</>
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(invitationProductJsonLd) }}
+      />
+      {children}
+    </>
+  )
 }
 

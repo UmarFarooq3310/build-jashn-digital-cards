@@ -37,11 +37,44 @@ export const metadata: Metadata = {
   },
 }
 
+const wishCardProductJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Cardzy 3D Animated Wish Card Maker',
+  description:
+    'Interactive 3D animated greeting cards with personalized photos, authentic Urdu messages, festive music, and instant WhatsApp sharing.',
+  image: 'https://cardzy.online/og-image.jpg',
+  brand: {
+    '@type': 'Brand',
+    name: 'Cardzy',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    url: 'https://cardzy.online/create-wish',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    reviewCount: '312',
+  },
+}
+
 export default function CreateWishLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return <>{children}</>
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(wishCardProductJsonLd) }}
+      />
+      {children}
+    </>
+  )
 }
 

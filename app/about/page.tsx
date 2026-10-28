@@ -36,7 +36,7 @@ const jsonLd = {
   email: 'cardzyonline@gmail.com',
   telephone: '+923093518796',
   sameAs: [
-    'https://www.instagram.com/cardzyonline',
+    'https://www.instagram.com/cardzyonline/',
     'https://www.tiktok.com/@cardzyonline',
     'https://www.facebook.com/people/Cardzyonline/61591756277026/',
   ],

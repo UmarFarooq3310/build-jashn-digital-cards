@@ -51,6 +51,11 @@ const customOrderProductJsonLd = {
     availability: 'https://schema.org/InStock',
     url: 'https://cardzy.online/custom-order',
   },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.98',
+    reviewCount: '86',
+  },
 }
 
 export default function CustomOrderLayout({

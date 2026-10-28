@@ -51,9 +51,41 @@ export default function PoetryGuideLayout({
       { '@type': 'ListItem', position: 3, name: 'Poetry for Cards & Invitations', item: 'https://cardzy.online/guide/poetry-for-cards-and-invitations' },
     ],
   }
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Poetry Treasury & Story Cards Guide — 1,000+ Verses',
+    description:
+      'Explore 1,000+ verified poems from Iqbal, Ghalib, Faiz, and Rumi. Download royal 1080px story cards for WhatsApp and share timeless shayari.',
+    image: [`${SITE_URL}/og-image.jpg`],
+    datePublished: '2024-09-01T00:00:00Z',
+    dateModified: '2026-10-23T00:00:00Z',
+    inLanguage: 'ur',
+    author: {
+      '@type': 'Organization',
+      name: 'Cardzy Editorial Team',
+      url: `${SITE_URL}/about`,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Cardzy',
+      url: SITE_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/favicon.svg`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${SITE_URL}/guide/poetry-for-cards-and-invitations`,
+    },
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       {children}
     </>
   )
