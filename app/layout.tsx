@@ -199,10 +199,16 @@ const jsonLd = [
   },
   {
     '@context': 'https://schema.org',
-    '@type': 'WebApplication',
+    '@type': ['WebApplication', 'Product'],
     '@id': 'https://cardzy.online/#webapp',
     name: 'Cardzy — 3D Digital Cards & Wedding Invitations Generator',
     url: 'https://cardzy.online',
+    image: 'https://cardzy.online/og-image.jpg',
+    brand: {
+      '@type': 'Brand',
+      name: 'Cardzy',
+    },
+    sku: 'cardzy-suite',
     inLanguage: [
       'en', 'ur', 'ar', 'hi', 'es', 'fr', 'zh', 'pt', 'ru', 'de', 'ja', 'ko', 'it', 'tr', 'id', 'bn', 'vi', 'sw'
     ],

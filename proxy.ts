@@ -3,10 +3,14 @@ import type { NextRequest } from 'next/server'
 
 export function proxy(request: NextRequest) {
   const host = request.headers.get('host') || ''
+  const proto = request.headers.get('x-forwarded-proto')
 
-  // Enforce Canonical Domain: 301 Permanent Redirect www.cardzy.online -> cardzy.online
-  if (host.startsWith('www.')) {
-    const canonicalHost = host.replace(/^www\./, '')
+  // Enforce Canonical Domain & Protocol in a SINGLE hop (prevents 308 redirect chains):
+  // http://www.cardzy.online -> https://cardzy.online (1 hop)
+  // https://www.cardzy.online -> https://cardzy.online (1 hop)
+  // http://cardzy.online -> https://cardzy.online (1 hop)
+  if (host.startsWith('www.') || proto === 'http') {
+    const canonicalHost = host.replace(/^www\./, '') || 'cardzy.online'
     const url = request.nextUrl.clone()
     url.host = canonicalHost
     url.protocol = 'https:'
