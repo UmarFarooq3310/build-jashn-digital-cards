@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Sparkles, Trophy, Flame, Gamepad2, Hash, ArrowRight, Crown } from 'lucide-react'
 import { useLang } from '@/lib/lang/context'
 
@@ -110,6 +111,7 @@ const GAMING_CARDS = [
 ]
 
 export function GamingWinnersSection() {
+  const router = useRouter()
   const { t, lang } = useLang()
   const isUrdu = lang === 'ur' || lang === 'ar'
 
@@ -143,10 +145,17 @@ export function GamingWinnersSection() {
           {GAMING_CARDS.map((card) => {
             const Icon = card.icon
             return (
-              <Link
+              <div
                 key={card.slug}
-                href={`/create-wish?occasion=${card.slug}`}
-                rel="nofollow"
+                role="button"
+                tabIndex={0}
+                onClick={() => router.push(`/create-wish?occasion=${card.slug}`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    router.push(`/create-wish?occasion=${card.slug}`)
+                  }
+                }}
                 aria-label={`Create ${t(card.titleKey, card.titleFallback)} Winner Card`}
                 className={`group relative rounded-3xl border ${card.border} bg-gradient-to-b ${card.bgGradient} p-6 shadow-xl backdrop-blur-xl flex flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl ${card.glowHover} overflow-hidden cursor-pointer`}
               >
@@ -189,7 +198,7 @@ export function GamingWinnersSection() {
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                   </div>
                 </div>
-              </Link>
+              </div>
             )
           })}
         </div>

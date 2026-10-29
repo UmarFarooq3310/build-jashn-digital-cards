@@ -526,7 +526,7 @@ export function EidScenario({
 
             {/* CTA to studio */}
             <Link
-              href="/create-magic-link?occasion=eid" rel="nofollow"
+              href="/create-magic-link?occasion=eid"
               className="inline-block text-[10.5px] text-slate-400 hover:text-amber-300 transition-colors mt-2"
             >
               Crafted on Cardzy Jashn • Create your own Magic Link ✨

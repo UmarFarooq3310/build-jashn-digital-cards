@@ -466,7 +466,7 @@ export function GetWellScenario({
               )}
 
               <Link
-                href="/create-magic-link?occasion=getwell" rel="nofollow"
+                href="/create-magic-link?occasion=getwell"
                 className="w-full py-3 rounded-2xl font-bold text-xs uppercase tracking-wider text-slate-950 bg-amber-400 hover:bg-amber-300 transition-all shadow-md"
               >
                 Send a Get Well Magic Link to Someone 🪄

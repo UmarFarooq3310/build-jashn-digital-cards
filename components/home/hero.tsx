@@ -1,12 +1,14 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ArrowRight, MailOpen, Sparkles } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { useLang } from '@/lib/lang/context'
 import { HeroStaticCard } from './hero-static-card'
 
 export function Hero() {
+  const router = useRouter()
   const { t, lang } = useLang()
   const isUrdu = lang === 'ur' || lang === 'ar'
 
@@ -52,17 +54,17 @@ export function Hero() {
               <ArrowRight className="size-3 text-purple-400 group-hover:translate-x-0.5 transition-transform" />
             </Link>
 
-            <Link
-              href="/create-magic-link?demo=1"
-              rel="nofollow"
-              className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-amber-500/40 bg-gradient-to-r from-amber-500/20 via-rose-500/15 to-amber-500/20 backdrop-blur-md px-3 sm:px-3.5 py-1.5 text-xs font-black text-amber-900 dark:text-amber-200 shadow-sm hover:border-amber-400 hover:scale-105 transition-all group"
+            <button
+              type="button"
+              onClick={() => router.push('/create-magic-link?demo=1')}
+              className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-amber-500/40 bg-gradient-to-r from-amber-500/20 via-rose-500/15 to-amber-500/20 backdrop-blur-md px-3 sm:px-3.5 py-1.5 text-xs font-black text-amber-900 dark:text-amber-200 shadow-sm hover:border-amber-400 hover:scale-105 transition-all group cursor-pointer"
             >
               <span className="text-amber-500">▶</span>
               <span>Watch 3D Demo</span>
               <span className="text-[10px] uppercase font-black bg-gradient-to-r from-amber-600 to-rose-600 text-white px-1.5 py-0.5 rounded-full shadow-xs">
                 LIVE
               </span>
-            </Link>
+            </button>
 
             <span
               className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-sm px-3 py-1.5 text-xs font-bold text-emerald-800 dark:text-emerald-300 shadow-xs"

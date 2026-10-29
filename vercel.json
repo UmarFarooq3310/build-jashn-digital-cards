@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.cardzy.online"
+        }
+      ],
+      "destination": "https://cardzy.online/$1",
+      "permanent": true
+    }
+  ]
+}

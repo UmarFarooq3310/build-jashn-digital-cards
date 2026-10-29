@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Feather, Sparkles, ArrowRight, BookOpen, Copy, Check, Share2, Eye } from 'lucide-react'
 import { useJashn } from '@/lib/jashn/store'
 import { cn } from '@/lib/utils'
@@ -141,6 +142,7 @@ const FEATURED_VERSES: FeaturedVerse[] = [
 ]
 
 export function PoetryShowcaseSection() {
+  const router = useRouter()
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const showToast = useJashn((s) => s.showToast)
 
@@ -231,14 +233,14 @@ export function PoetryShowcaseSection() {
               { label: '🇸🇦 Arabic Classics (50+)', href: '/poetry?lang=ar' },
               { label: '🇬🇧 English (70+)', href: '/poetry?lang=en' },
             ].map((badge) => (
-              <Link
+              <button
                 key={badge.label}
-                href={badge.href}
-                rel="nofollow"
-                className="px-3 py-1 rounded-xl bg-slate-900/80 border border-slate-700/60 hover:border-amber-400/50 hover:bg-slate-800 text-[11px] sm:text-xs font-semibold text-slate-200 transition-all shadow-2xs"
+                type="button"
+                onClick={() => router.push(badge.href)}
+                className="px-3 py-1 rounded-xl bg-slate-900/80 border border-slate-700/60 hover:border-amber-400/50 hover:bg-slate-800 text-[11px] sm:text-xs font-semibold text-slate-200 transition-all shadow-2xs cursor-pointer"
               >
                 {badge.label}
-              </Link>
+              </button>
             ))}
           </div>
         </div>
@@ -277,10 +279,20 @@ export function PoetryShowcaseSection() {
                 </div>
 
                 {/* The Verse Calligraphy Box - Clicking navigates directly to the poem with language filter */}
-                <Link
-                  href={`/poetry?poem=${item.id}&lang=${item.lang}`}
-                  rel="nofollow"
-                  onClick={() => trackPoetryAction(item, 'click')}
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => {
+                    trackPoetryAction(item, 'click')
+                    router.push(`/poetry?poem=${item.id}&lang=${item.lang}`)
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      trackPoetryAction(item, 'click')
+                      router.push(`/poetry?poem=${item.id}&lang=${item.lang}`)
+                    }
+                  }}
                   translate="no"
                   className="notranslate mt-4 p-4 rounded-2xl bg-black/40 border border-slate-800/80 hover:border-amber-400/50 hover:bg-black/60 transition-all text-center block group/calligraphy cursor-pointer relative"
                   title="Click to view and download full poem in Poetry Treasury"
@@ -308,20 +320,22 @@ export function PoetryShowcaseSection() {
                     <span>Open in Poetry Hub</span>
                     <ArrowRight className="size-3" />
                   </div>
-                </Link>
+                </div>
               </div>
 
               {/* 1-Click Poetry to 3D Wish Card Conversion CTA */}
-              <Link
-                href={`/create-wish?poem=${item.id}&occasion=poetry`}
-                rel="nofollow"
-                onClick={() => trackPoetryAction(item, 'click')}
-                className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500/20 via-emerald-500/20 to-amber-500/20 hover:from-amber-500/30 hover:to-emerald-500/30 border border-amber-500/40 text-amber-300 hover:text-amber-200 text-xs font-bold transition-all active:scale-95 group mb-2 shadow-sm"
+              <button
+                type="button"
+                onClick={() => {
+                  trackPoetryAction(item, 'click')
+                  router.push(`/create-wish?poem=${item.id}&occasion=poetry`)
+                }}
+                className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500/20 via-emerald-500/20 to-amber-500/20 hover:from-amber-500/30 hover:to-emerald-500/30 border border-amber-500/40 text-amber-300 hover:text-amber-200 text-xs font-bold transition-all active:scale-95 group mb-2 shadow-sm cursor-pointer"
                 title="Turn this poem into an interactive 3D Wish Card"
               >
                 <Sparkles className="size-3.5 text-amber-400 group-hover:rotate-12 transition-transform" />
                 <span>Turn into 3D Wish Card ✨</span>
-              </Link>
+              </button>
 
               {/* Action Buttons: Pure Icons (Copy, Share, View in Treasury) */}
               <div className="pt-2 border-t border-slate-800/70 grid grid-cols-3 gap-2">
@@ -356,15 +370,17 @@ export function PoetryShowcaseSection() {
                 </button>
 
                 {/* Primary: View Full Poem & Flyer in Treasury */}
-                <Link
-                  href={`/poetry?poem=${item.id}&lang=${item.lang}`}
-                  rel="nofollow"
-                  onClick={() => trackPoetryAction(item, 'click')}
-                  className="py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 flex items-center justify-center shadow-md shadow-amber-500/20 hover:shadow-amber-500/30 transition-all hover:scale-[1.02] active:scale-95"
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackPoetryAction(item, 'click')
+                    router.push(`/poetry?poem=${item.id}&lang=${item.lang}`)
+                  }}
+                  className="py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 flex items-center justify-center shadow-md shadow-amber-500/20 hover:shadow-amber-500/30 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
                   title="View full poem and story flyer in Treasury"
                 >
                   <BookOpen className="size-4" />
-                </Link>
+                </button>
               </div>
             </div>
           ))}

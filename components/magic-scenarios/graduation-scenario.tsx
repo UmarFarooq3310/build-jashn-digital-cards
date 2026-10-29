@@ -520,7 +520,7 @@ export function GraduationScenario({
 
             {/* CTA to studio */}
             <Link
-              href="/create-magic-link?occasion=graduation" rel="nofollow"
+              href="/create-magic-link?occasion=graduation"
               className="inline-block text-[10.5px] text-slate-400 hover:text-amber-300 transition-colors mt-3"
             >
               Crafted on Cardzy Jashn • Create your own Magic Link ✨

@@ -548,7 +548,6 @@ export default function CookiesPage() {
                       ['Mozilla Firefox', 'https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer'],
                       ['Safari (macOS / iOS)', 'https://support.apple.com/guide/safari/manage-cookies-sfri11471/mac'],
                       ['Microsoft Edge', 'https://support.microsoft.com/en-us/edge/manage-cookies-in-microsoft-edge-view-allow-block-delete-and-use'],
-                      ['Opera', 'https://help.opera.com/en/latest/web-preferences/#cookies'],
                     ].map(([browser, link]) => (
                       <li key={browser}>
                         <a
@@ -561,6 +560,13 @@ export default function CookiesPage() {
                         </a>
                       </li>
                     ))}
+                    <li className="text-xs text-muted-foreground pt-0.5">
+                      <span className="font-semibold text-foreground">Opera:</span> Enter{' '}
+                      <code className="px-1.5 py-0.5 rounded bg-muted text-[11px] font-mono text-foreground">
+                        opera://settings/cookies
+                      </code>{' '}
+                      in your address bar or go to <span className="text-foreground font-medium">Settings &rarr; Privacy &amp; security &rarr; Cookies</span>.
+                    </li>
                   </ul>
                 </div>
 

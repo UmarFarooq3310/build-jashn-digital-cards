@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import {
   ArrowLeft,
   Clock,
@@ -808,6 +809,7 @@ const POETRY_GUIDE_TEXT: Record<string, Record<string, string>> = {
 
 
 export default function PoetryGuidePage() {
+  const router = useRouter()
   const { lang, t } = useLang()
   const isUrdu = lang === 'ur' || lang === 'ar'
   const showToast = useJashn((s) => s.showToast)
@@ -969,14 +971,14 @@ export default function PoetryGuidePage() {
                     <span>WhatsApp</span>
                   </button>
 
-                  <Link
-                    href={`/poetry?id=${v.verseId}`}
-                    rel="nofollow"
-                    className="flex items-center justify-center p-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-colors shrink-0"
+                  <button
+                    type="button"
+                    onClick={() => router.push(`/poetry?id=${v.verseId}`)}
+                    className="flex items-center justify-center p-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-colors shrink-0 cursor-pointer"
                     title="Open in Treasury"
                   >
                     <BookOpen className="size-3.5" />
-                  </Link>
+                  </button>
                 </div>
               </div>
             ))}

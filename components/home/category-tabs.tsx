@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState, useRef } from 'react'
 import {
   ArrowRight,
@@ -162,6 +163,7 @@ function getFriendshipCardTheme(id: string) {
 }
 
 export function CategoryTabs() {
+  const router = useRouter()
   const { t, lang } = useLang()
   const [activeTab, setActiveTab] = useState<TabType>('magic')
   const sectionRef = useRef<HTMLElement>(null)
@@ -362,11 +364,18 @@ export function CategoryTabs() {
                     btnColor: 'text-violet-600 dark:text-violet-400 group-hover:text-violet-700',
                   },
                 ].map((scenario) => (
-                  <Link
+                  <div
                     key={scenario.id}
-                    href={`/create-magic-link?occasion=${scenario.id}`}
-                    rel="nofollow"
-                    className={`group relative flex flex-col justify-between rounded-3xl border bg-gradient-to-br ${scenario.bg} p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl`}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => router.push(`/create-magic-link?occasion=${scenario.id}`)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        router.push(`/create-magic-link?occasion=${scenario.id}`)
+                      }
+                    }}
+                    className={`group relative flex flex-col justify-between rounded-3xl border bg-gradient-to-br ${scenario.bg} p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl cursor-pointer`}
                   >
                     <div className="space-y-3.5">
                       <div className="flex items-center justify-between gap-2">
@@ -396,7 +405,7 @@ export function CategoryTabs() {
                         Instant Delivery
                       </span>
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             </div>
@@ -422,13 +431,20 @@ export function CategoryTabs() {
                 {globalOccasions.map((o) => {
                   const theme = getGlobalCardTheme(o.id)
                   return (
-                    <Link
+                    <div
                       key={o.id}
-                      href={`/create-wish?occasion=${o.id}`}
-                      rel="nofollow"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => router.push(`/create-wish?occasion=${o.id}`)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          router.push(`/create-wish?occasion=${o.id}`)
+                        }
+                      }}
                       aria-label={`Create ${getOccasionLabel(o, lang, t)} Card`}
                       className={cn(
-                        "group relative flex flex-col justify-between p-6 rounded-3xl border bg-gradient-to-br transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl overflow-hidden",
+                        "group relative flex flex-col justify-between p-6 rounded-3xl border bg-gradient-to-br transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl overflow-hidden cursor-pointer",
                         theme.bg
                       )}
                     >
@@ -459,7 +475,7 @@ export function CategoryTabs() {
                           {t('animatedCardBadge') || 'Animated Card'}
                         </span>
                       </div>
-                    </Link>
+                    </div>
                   )
                 })}
               </div>
@@ -497,13 +513,20 @@ export function CategoryTabs() {
                     : 'bg-teal-500/10 text-teal-600 dark:text-teal-400 group-hover:bg-teal-600 group-hover:text-white'
 
                   return (
-                    <Link
+                    <div
                       key={o.id}
-                      href={`/create-wish?occasion=${o.id}`}
-                      rel="nofollow"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => router.push(`/create-wish?occasion=${o.id}`)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          router.push(`/create-wish?occasion=${o.id}`)
+                        }
+                      }}
                       aria-label={`Create ${t(`occ_${o.id.replace(/-/g, "_")}`) || o.label} Card`}
                       className={cn(
-                        "group relative flex flex-col justify-between p-6 rounded-3xl border bg-gradient-to-br transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl overflow-hidden",
+                        "group relative flex flex-col justify-between p-6 rounded-3xl border bg-gradient-to-br transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl overflow-hidden cursor-pointer",
                         bgClass
                       )}
                     >
@@ -533,14 +556,13 @@ export function CategoryTabs() {
                           {t('rsvpPlusCountdownBadge') || 'RSVP + Music'}
                         </span>
                       </div>
-                    </Link>
+                    </div>
                   )
                 })}
 
                 {/* Mughal Mehndi Invitation Special Feature Card */}
                 <Link
                   href="/create-invitation"
-                  rel="nofollow"
                   className="group relative flex flex-col justify-between p-6 rounded-3xl border-2 border-dashed border-amber-500/40 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-card hover:border-amber-500 hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 overflow-hidden"
                 >
                   <div>
@@ -639,23 +661,23 @@ export function CategoryTabs() {
                   </div>
 
                   <div className="pt-2 flex flex-wrap items-center gap-3">
-                    <Link
-                      href="/create-wish?occasion=birthday"
-                      rel="nofollow"
+                    <button
+                      type="button"
+                      onClick={() => router.push('/create-wish?occasion=birthday')}
                       aria-label="Create Personalized Birthday Greeting Card"
-                      className="inline-flex h-12 items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:opacity-95 px-7 text-xs sm:text-sm font-black text-white transition-all shadow-lg hover:shadow-pink-500/25 active:scale-98"
+                      className="inline-flex h-12 items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:opacity-95 px-7 text-xs sm:text-sm font-black text-white transition-all shadow-lg hover:shadow-pink-500/25 active:scale-98 cursor-pointer"
                     >
                       <span>{t('createBirthdayCard') || 'Create Birthday Card'}</span>
                       <ArrowRight className="size-4" />
-                    </Link>
-                    <Link
-                      href="/create-wish?occasion=birthday"
-                      rel="nofollow"
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => router.push('/create-wish?occasion=birthday')}
                       aria-label="Create Milestone Birthday Card (18th, 21st, 50th)"
-                      className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 px-5 text-xs sm:text-sm font-extrabold text-purple-700 dark:text-purple-300 transition-all"
+                      className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 px-5 text-xs sm:text-sm font-extrabold text-purple-700 dark:text-purple-300 transition-all cursor-pointer"
                     >
                       <span>{t('milestoneBirthdayBtn') || 'Milestone Birthday (18th/21st/50th)'}</span>
-                    </Link>
+                    </button>
                   </div>
                 </div>
 
@@ -776,13 +798,20 @@ export function CategoryTabs() {
                 {friendshipOccasions.map((o) => {
                   const theme = getFriendshipCardTheme(o.id)
                   return (
-                    <Link
+                    <div
                       key={o.id}
-                      href={`/create-wish?occasion=${o.id}`}
-                      rel="nofollow"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => router.push(`/create-wish?occasion=${o.id}`)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          router.push(`/create-wish?occasion=${o.id}`)
+                        }
+                      }}
                       aria-label={`Create ${t(`occ_${o.id.replace(/-/g, "_")}`) || o.label} Friendship Card`}
                       className={cn(
-                        "group relative flex flex-col justify-between p-6 rounded-3xl border bg-gradient-to-br transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl overflow-hidden",
+                        "group relative flex flex-col justify-between p-6 rounded-3xl border bg-gradient-to-br transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl overflow-hidden cursor-pointer",
                         theme.bg
                       )}
                     >
@@ -812,7 +841,7 @@ export function CategoryTabs() {
                           {t('heartfeltCardBadge') || 'Heartfelt Card'}
                         </span>
                       </div>
-                    </Link>
+                    </div>
                   )
                 })}
               </div>
@@ -842,12 +871,19 @@ export function CategoryTabs() {
                 </div>
                 <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4">
                   {religiousOccasions.map((o) => (
-                    <Link
+                    <div
                       key={o.id}
-                      href={`/create-wish?occasion=${o.id}`}
-                      rel="nofollow"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => router.push(`/create-wish?occasion=${o.id}`)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          router.push(`/create-wish?occasion=${o.id}`)
+                        }
+                      }}
                       aria-label={`Create ${t(`occ_${o.id.replace(/-/g, "_")}`) || o.label} Card`}
-                      className="group flex items-center gap-3 rounded-2xl border border-emerald-500/20 bg-card p-3.5 transition-all hover:border-emerald-500 hover:shadow-md hover:-translate-y-0.5"
+                      className="group flex items-center gap-3 rounded-2xl border border-emerald-500/20 bg-card p-3.5 transition-all hover:border-emerald-500 hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
                     >
                       <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-xs">
                         <JashnIcon name={o.icon} className="size-5" />
@@ -860,7 +896,7 @@ export function CategoryTabs() {
                           {t('sendGreetingsTo') || 'Send'} {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
                         </span>
                       </div>
-                    </Link>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -872,12 +908,19 @@ export function CategoryTabs() {
                 </div>
                 <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4">
                   {milestoneOccasions.map((o) => (
-                    <Link
+                    <div
                       key={o.id}
-                      href={`/create-wish?occasion=${o.id}`}
-                      rel="nofollow"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => router.push(`/create-wish?occasion=${o.id}`)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          router.push(`/create-wish?occasion=${o.id}`)
+                        }
+                      }}
                       aria-label={`Create ${t(`occ_${o.id.replace(/-/g, "_")}`) || o.label} Milestone Card`}
-                      className="group flex items-center gap-3 rounded-2xl border border-amber-500/20 bg-card p-3.5 transition-all hover:border-amber-500 hover:shadow-md hover:-translate-y-0.5"
+                      className="group flex items-center gap-3 rounded-2xl border border-amber-500/20 bg-card p-3.5 transition-all hover:border-amber-500 hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
                     >
                       <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 group-hover:bg-amber-500 group-hover:text-slate-950 transition-all shadow-xs">
                         <JashnIcon name={o.icon} className="size-5" />
@@ -890,7 +933,7 @@ export function CategoryTabs() {
                           {t('congratulateOn') || 'Celebrate'} {t(`occ_${o.id.replace(/-/g, '_')}`) || o.label}
                         </span>
                       </div>
-                    </Link>
+                    </div>
                   ))}
                 </div>
               </div>
