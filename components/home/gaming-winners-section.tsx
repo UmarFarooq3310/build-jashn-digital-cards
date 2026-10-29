@@ -146,6 +146,7 @@ export function GamingWinnersSection() {
               <Link
                 key={card.slug}
                 href={`/create-wish?occasion=${card.slug}`}
+                rel="nofollow"
                 aria-label={`Create ${t(card.titleKey, card.titleFallback)} Winner Card`}
                 className={`group relative rounded-3xl border ${card.border} bg-gradient-to-b ${card.bgGradient} p-6 shadow-xl backdrop-blur-xl flex flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl ${card.glowHover} overflow-hidden cursor-pointer`}
               >

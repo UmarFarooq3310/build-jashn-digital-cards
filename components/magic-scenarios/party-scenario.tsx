@@ -505,7 +505,7 @@ export function PartyScenario({
 
             {/* CTA to studio */}
             <Link
-              href="/create-magic-link?occasion=party"
+              href="/create-magic-link?occasion=party" rel="nofollow"
               className="inline-block text-[10.5px] text-slate-400 hover:text-amber-300 transition-colors mt-2"
             >
               Crafted on Cardzy Jashn • Create your own Magic Link ✨

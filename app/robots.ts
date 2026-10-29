@@ -14,6 +14,20 @@ const DISALLOWED_PATHS = [
   '/signup',
   '/campaign',
   '/campaign/',
+  '/create-wish?*',
+  '/create-invitation?*',
+  '/create-magic-link?*',
+  '/create-visiting-card?*',
+  '/poetry?*',
+  '/*?*occasion=*',
+  '/*?*message=*',
+  '/*?*type=*',
+  '/*?*date=*',
+  '/*?*title=*',
+  '/*?*poem=*',
+  '/*?*id=*',
+  '/*?*edit=*',
+  '/*?*mode=*',
 ]
 
 const AI_AGENTS = [

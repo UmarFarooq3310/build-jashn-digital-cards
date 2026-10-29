@@ -112,7 +112,7 @@ export default function PrivacyPolicyPage() {
                   <a
                     href="https://policies.google.com/technologies/ads"
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener noreferrer nofollow"
                     className="text-emerald-700 dark:text-emerald-400 font-bold underline inline-flex items-center gap-1"
                   >
                     Google Ad Technology &amp; Personalization <ExternalLink className="size-3.5" />
@@ -121,7 +121,7 @@ export default function PrivacyPolicyPage() {
                   <a
                     href="https://youradchoices.com/"
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener noreferrer nofollow"
                     className="text-emerald-700 dark:text-emerald-400 font-bold underline inline-flex items-center gap-1"
                   >
                     youradchoices.com <ExternalLink className="size-3.5" />
@@ -193,11 +193,11 @@ export default function PrivacyPolicyPage() {
                 </li>
                 <li>
                   <strong className="text-foreground">Ad Personalization Opt-Out:</strong> Visit{' '}
-                  <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-emerald-700 dark:text-emerald-400 underline font-semibold">
+                  <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer nofollow" className="text-emerald-700 dark:text-emerald-400 underline font-semibold">
                     Google Ads Settings
                   </a>{' '}
                   or{' '}
-                  <a href="https://youradchoices.com/" target="_blank" rel="noopener noreferrer" className="text-emerald-700 dark:text-emerald-400 underline font-semibold">
+                  <a href="https://youradchoices.com/" target="_blank" rel="noopener noreferrer nofollow" className="text-emerald-700 dark:text-emerald-400 underline font-semibold">
                     youradchoices.com
                   </a>{' '}
                   to opt out of cross-site behavioural profiling across digital ad networks.

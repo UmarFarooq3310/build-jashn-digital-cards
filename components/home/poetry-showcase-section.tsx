@@ -234,6 +234,7 @@ export function PoetryShowcaseSection() {
               <Link
                 key={badge.label}
                 href={badge.href}
+                rel="nofollow"
                 className="px-3 py-1 rounded-xl bg-slate-900/80 border border-slate-700/60 hover:border-amber-400/50 hover:bg-slate-800 text-[11px] sm:text-xs font-semibold text-slate-200 transition-all shadow-2xs"
               >
                 {badge.label}
@@ -278,6 +279,7 @@ export function PoetryShowcaseSection() {
                 {/* The Verse Calligraphy Box - Clicking navigates directly to the poem with language filter */}
                 <Link
                   href={`/poetry?poem=${item.id}&lang=${item.lang}`}
+                  rel="nofollow"
                   onClick={() => trackPoetryAction(item, 'click')}
                   translate="no"
                   className="notranslate mt-4 p-4 rounded-2xl bg-black/40 border border-slate-800/80 hover:border-amber-400/50 hover:bg-black/60 transition-all text-center block group/calligraphy cursor-pointer relative"
@@ -312,6 +314,7 @@ export function PoetryShowcaseSection() {
               {/* 1-Click Poetry to 3D Wish Card Conversion CTA */}
               <Link
                 href={`/create-wish?poem=${item.id}&occasion=poetry`}
+                rel="nofollow"
                 onClick={() => trackPoetryAction(item, 'click')}
                 className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500/20 via-emerald-500/20 to-amber-500/20 hover:from-amber-500/30 hover:to-emerald-500/30 border border-amber-500/40 text-amber-300 hover:text-amber-200 text-xs font-bold transition-all active:scale-95 group mb-2 shadow-sm"
                 title="Turn this poem into an interactive 3D Wish Card"
@@ -355,6 +358,7 @@ export function PoetryShowcaseSection() {
                 {/* Primary: View Full Poem & Flyer in Treasury */}
                 <Link
                   href={`/poetry?poem=${item.id}&lang=${item.lang}`}
+                  rel="nofollow"
                   onClick={() => trackPoetryAction(item, 'click')}
                   className="py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 flex items-center justify-center shadow-md shadow-amber-500/20 hover:shadow-amber-500/30 transition-all hover:scale-[1.02] active:scale-95"
                   title="View full poem and story flyer in Treasury"

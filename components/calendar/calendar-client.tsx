@@ -336,6 +336,7 @@ export function CelebrationCalendarClient() {
                   {item.hasWish && (
                     <Link
                       href={item.wishLink}
+                      rel="nofollow"
                       className={cn(
                         "flex-1 min-w-[90px] text-center rounded-xl py-1.5 px-2.5 text-xs font-bold transition-all shadow-xs",
                         item.primaryAction === 'wish'
@@ -350,6 +351,7 @@ export function CelebrationCalendarClient() {
                   {item.hasMagicLink && item.magicLink && (
                     <Link
                       href={item.magicLink}
+                      rel="nofollow"
                       className={cn(
                         "flex-1 min-w-[90px] text-center rounded-xl py-1.5 px-2.5 text-xs font-bold transition-all shadow-xs",
                         item.primaryAction === 'magic'
@@ -364,6 +366,7 @@ export function CelebrationCalendarClient() {
                   {item.hasInvitation && item.invitationLink && (
                     <Link
                       href={item.invitationLink}
+                      rel="nofollow"
                       className={cn(
                         "flex-1 min-w-[90px] text-center rounded-xl py-1.5 px-2.5 text-xs font-bold transition-all shadow-xs",
                         item.primaryAction === 'invitation'
@@ -605,6 +608,7 @@ export function CelebrationCalendarClient() {
                     {event.hasWish && (
                       <Link
                         href={event.wishLink}
+                        rel="nofollow"
                         className={cn(
                           "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all shadow-xs",
                           event.primaryAction === 'wish'
@@ -621,6 +625,7 @@ export function CelebrationCalendarClient() {
                     {event.hasMagicLink && event.magicLink && (
                       <Link
                         href={event.magicLink}
+                        rel="nofollow"
                         className={cn(
                           "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all shadow-xs",
                           event.primaryAction === 'magic'
@@ -637,6 +642,7 @@ export function CelebrationCalendarClient() {
                     {event.hasInvitation && event.invitationLink && (
                       <Link
                         href={event.invitationLink}
+                        rel="nofollow"
                         className={cn(
                           "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold transition-all shadow-xs",
                           event.primaryAction === 'invitation'

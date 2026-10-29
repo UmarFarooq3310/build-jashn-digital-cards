@@ -321,7 +321,7 @@ export default function CookiesPage() {
                 <a
                   href="https://policies.google.com/privacy"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow"
                   className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-0.5"
                 >
                   policies.google.com/privacy <ExternalLink className="size-3" />
@@ -355,7 +355,7 @@ export default function CookiesPage() {
                 <a
                   href="https://policies.google.com/technologies/ads"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow"
                   className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-0.5"
                 >
                   Google Ad Preferences Portal <ExternalLink className="size-3" />
@@ -481,7 +481,7 @@ export default function CookiesPage() {
                           <a
                             href={row.link}
                             target="_blank"
-                            rel="noopener noreferrer"
+                            rel="noopener noreferrer nofollow"
                             className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-0.5"
                           >
                             View <ExternalLink className="size-3" />
@@ -554,7 +554,7 @@ export default function CookiesPage() {
                         <a
                           href={link}
                           target="_blank"
-                          rel="noopener noreferrer"
+                          rel="noopener noreferrer nofollow"
                           className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-1 text-xs"
                         >
                           {browser} <ExternalLink className="size-3" />
@@ -571,7 +571,7 @@ export default function CookiesPage() {
                     <a
                       href="https://policies.google.com/technologies/ads"
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                       className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-0.5"
                     >
                       Google Ad Settings <ExternalLink className="size-3" />
@@ -580,7 +580,7 @@ export default function CookiesPage() {
                     <a
                       href="https://tools.google.com/dlpage/gaoptout"
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                       className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-0.5"
                     >
                       Google Analytics Opt-out Browser Add-on <ExternalLink className="size-3" />
@@ -598,7 +598,7 @@ export default function CookiesPage() {
                     <a
                       href="https://thenai.org/how-to-opt-out/"
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer nofollow"
                       className="text-amber-600 dark:text-amber-400 hover:underline inline-flex items-center gap-0.5"
                     >
                       thenai.org/how-to-opt-out <ExternalLink className="size-3" />

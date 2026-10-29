@@ -54,6 +54,7 @@ export function Hero() {
 
             <Link
               href="/create-magic-link?demo=1"
+              rel="nofollow"
               className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-amber-500/40 bg-gradient-to-r from-amber-500/20 via-rose-500/15 to-amber-500/20 backdrop-blur-md px-3 sm:px-3.5 py-1.5 text-xs font-black text-amber-900 dark:text-amber-200 shadow-sm hover:border-amber-400 hover:scale-105 transition-all group"
             >
               <span className="text-amber-500">▶</span>

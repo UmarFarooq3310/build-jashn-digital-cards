@@ -6,11 +6,10 @@ import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS, SITE_PUBLISHER } fr
 
 interface PageProps {
   params: Promise<{ slug: string }>
-  searchParams?: Promise<{ lang?: string }>
 }
 
 export const dynamic = 'force-static'
-export const dynamicParams = true
+export const dynamicParams = false
 
 export async function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({
@@ -18,10 +17,8 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const resolvedSearchParams = searchParams ? await searchParams : {}
-  const lang = resolvedSearchParams.lang || 'en'
   const rawPost = getBlogPost(slug)
 
   if (!rawPost) {
@@ -31,7 +28,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     }
   }
 
-  const post = getLocalizedPost(rawPost, lang)
+  const post = getLocalizedPost(rawPost, 'en')
 
   const baseTitle = post.seoTitle.includes('Cardzy') ? post.seoTitle : `${post.seoTitle} | Cardzy`
   const title = baseTitle.length > 60 ? baseTitle.slice(0, 57) + '...' : baseTitle
@@ -66,17 +63,15 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   }
 }
 
-export default async function BlogPostPage({ params, searchParams }: PageProps) {
+export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params
-  const resolvedSearchParams = searchParams ? await searchParams : {}
-  const lang = resolvedSearchParams.lang || 'en'
   const rawPost = getBlogPost(slug)
 
   if (!rawPost) {
     notFound()
   }
 
-  const post = getLocalizedPost(rawPost, lang)
+  const post = getLocalizedPost(rawPost, 'en')
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -86,7 +81,7 @@ export default async function BlogPostPage({ params, searchParams }: PageProps) 
     image: [post.featuredImage],
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
-    inLanguage: lang,
+    inLanguage: 'en',
     author: {
       '@type': 'Person',
       name: post.author.name,

@@ -627,7 +627,7 @@ export function ProposalScenario({
                   )}
 
                   <Link
-                    href="/create-magic-link?occasion=proposal"
+                    href="/create-magic-link?occasion=proposal" rel="nofollow"
                     className="magic-btn w-full block text-center"
                     style={{
                       background: 'rgba(255,255,255,0.12)',

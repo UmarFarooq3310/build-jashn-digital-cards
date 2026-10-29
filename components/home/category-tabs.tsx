@@ -365,6 +365,7 @@ export function CategoryTabs() {
                   <Link
                     key={scenario.id}
                     href={`/create-magic-link?occasion=${scenario.id}`}
+                    rel="nofollow"
                     className={`group relative flex flex-col justify-between rounded-3xl border bg-gradient-to-br ${scenario.bg} p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl`}
                   >
                     <div className="space-y-3.5">

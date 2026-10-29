@@ -971,6 +971,7 @@ export default function PoetryGuidePage() {
 
                   <Link
                     href={`/poetry?id=${v.verseId}`}
+                    rel="nofollow"
                     className="flex items-center justify-center p-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-colors shrink-0"
                     title="Open in Treasury"
                   >
