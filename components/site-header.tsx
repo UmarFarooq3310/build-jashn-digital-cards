@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
-import { Menu, X, LogOut, Globe, ChevronDown, Search, Bell } from 'lucide-react'
+import { Menu, X, LogOut, Globe, ChevronDown, Search } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { useJashn } from '@/lib/jashn/store'
 import { useLang, LANGUAGES } from '@/lib/lang/context'
@@ -322,18 +322,6 @@ function SiteHeaderInner() {
 
         <div className="flex items-center gap-1 lg:hidden">
           <button
-            className="min-h-[44px] min-w-[44px] rounded-xl p-2.5 text-amber-500 hover:bg-secondary flex items-center justify-center cursor-pointer"
-            onClick={() => {
-              if (typeof window !== 'undefined') {
-                window.dispatchEvent(new CustomEvent('open_push_prompt'));
-              }
-            }}
-            aria-label="Enable notifications"
-            title="Enable notifications"
-          >
-            <Bell className="size-5" />
-          </button>
-          <button
             className="min-h-[44px] min-w-[44px] rounded-xl p-2.5 text-foreground hover:bg-secondary flex items-center justify-center cursor-pointer"
             onClick={() => setSearchOpen(true)}
             aria-label="Search"
@@ -495,19 +483,6 @@ function SiteHeaderInner() {
                 </Link>
               </>
             )}
-
-            <button
-              onClick={() => {
-                setOpen(false);
-                if (typeof window !== 'undefined') {
-                  window.dispatchEvent(new CustomEvent('open_push_prompt'));
-                }
-              }}
-              className="flex items-center gap-2.5 rounded-xl px-3 py-3 text-base font-semibold text-amber-500 hover:bg-amber-500/10 min-h-[48px] w-full text-left transition-colors cursor-pointer border border-amber-500/20 mt-1"
-            >
-              <Bell className="size-4 text-amber-500 animate-pulse" />
-              <span>🔔 Enable Notifications</span>
-            </button>
           </nav>
         )}
 

@@ -5,6 +5,18 @@ export function proxy(request: NextRequest) {
   const host = request.headers.get('host') || ''
   const proto = request.headers.get('x-forwarded-proto')
 
+  // Never redirect local development or loopback addresses
+  if (
+    !host ||
+    host.includes('localhost') ||
+    host.includes('127.0.0.1') ||
+    host.startsWith('192.168.') ||
+    host.startsWith('10.') ||
+    host.endsWith('.local')
+  ) {
+    return NextResponse.next()
+  }
+
   // Enforce Canonical Domain & Protocol in a SINGLE hop (prevents 308 redirect chains):
   // http://www.cardzy.online -> https://cardzy.online (1 hop)
   // https://www.cardzy.online -> https://cardzy.online (1 hop)

@@ -1,5 +1,4 @@
 import { initializeApp, getApps, cert, type App } from 'firebase-admin/app';
-import { getMessaging, type Messaging } from 'firebase-admin/messaging';
 import { getFirestore, type Firestore } from 'firebase-admin/firestore';
 
 const DEFAULT_SERVICE_ACCOUNT = {
@@ -82,11 +81,6 @@ export function getFirebaseAdminApp(): App {
     },
     appName
   );
-}
-
-export function getAdminMessaging(): Messaging {
-  const app = getFirebaseAdminApp();
-  return getMessaging(app);
 }
 
 export function getAdminDb(): Firestore {

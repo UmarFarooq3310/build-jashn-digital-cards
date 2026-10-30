@@ -18,9 +18,6 @@ const AdSenseHandler = dynamic(
 const Analytics = dynamic(
   () => import('@vercel/analytics/next').then((mod) => mod.Analytics)
 )
-const PushNotificationPrompt = dynamic(
-  () => import('@/components/push-notification-prompt').then((mod) => mod.PushNotificationPrompt)
-)
 const LivePresenceTracker = dynamic(
   () => import('@/components/live-presence-tracker').then((mod) => mod.LivePresenceTracker)
 )
@@ -531,7 +528,6 @@ export default function RootLayout({
           </div>
           <ToastNotification />
           <ImageLightboxModal />
-          <PushNotificationPrompt />
           <LivePresenceTracker />
           {process.env.NODE_ENV === 'production' && process.env.VERCEL === '1' && <Analytics />}
         </LanguageProvider>
