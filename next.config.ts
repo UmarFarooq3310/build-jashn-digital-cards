@@ -452,6 +452,14 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  async rewrites() {
+    return [
+      {
+        source: '/__/auth/:path*',
+        destination: 'https://jashn-app-e3888.firebaseapp.com/__/auth/:path*',
+      },
+    ]
+  },
 }
 
 export default nextConfig

@@ -10,7 +10,7 @@ const cleanEnvVar = (val: string | undefined): string | undefined => {
 
 const DEFAULT_FIREBASE_CONFIG = {
   apiKey: 'AIzaSyD0asLsaVAmvj2RX_rJmGq5AIyg_MffyEs',
-  authDomain: 'jashn-app-e3888.firebaseapp.com',
+  authDomain: 'cardzy.online',
   projectId: 'jashn-app-e3888',
   storageBucket: 'jashn-app-e3888.firebasestorage.app',
   messagingSenderId: '399759583542',
