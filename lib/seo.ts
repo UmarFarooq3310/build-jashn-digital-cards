@@ -166,3 +166,79 @@ export const PRIVATE_ROBOTS = {
   },
 } as const
 
+/**
+ * Standard Schema.org MerchantReturnPolicy for Cardzy digital goods.
+ * Satisfies Google Search Console / Merchant listings 'hasMerchantReturnPolicy' requirement.
+ */
+export const DEFAULT_MERCHANT_RETURN_POLICY = {
+  '@type': 'MerchantReturnPolicy',
+  applicableCountry: ['PK', 'US', 'GB', 'CA', 'AE', 'SA'],
+  returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+  merchantReturnLink: 'https://cardzy.online/terms-of-service',
+} as const
+
+/**
+ * Standard Schema.org OfferShippingDetails for Cardzy digital goods & online software.
+ * For online/digital invitations and cards, shipping is instant ($0 cost, 0-day transit).
+ * Satisfies Google Search Console / Merchant listings 'shippingDetails' requirement.
+ */
+export function getDigitalOfferShippingDetails(currency: 'USD' | 'PKR' = 'USD') {
+  return [
+    {
+      '@type': 'OfferShippingDetails',
+      shippingRate: {
+        '@type': 'MonetaryAmount',
+        value: '0',
+        currency,
+      },
+      shippingDestination: {
+        '@type': 'DefinedRegion',
+        addressCountry: 'US',
+      },
+      deliveryTime: {
+        '@type': 'ShippingDeliveryTime',
+        handlingTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 0,
+          maxValue: 0,
+          unitCode: 'DAY',
+        },
+        transitTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 0,
+          maxValue: 0,
+          unitCode: 'DAY',
+        },
+      },
+    },
+    {
+      '@type': 'OfferShippingDetails',
+      shippingRate: {
+        '@type': 'MonetaryAmount',
+        value: '0',
+        currency,
+      },
+      shippingDestination: {
+        '@type': 'DefinedRegion',
+        addressCountry: 'PK',
+      },
+      deliveryTime: {
+        '@type': 'ShippingDeliveryTime',
+        handlingTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 0,
+          maxValue: 0,
+          unitCode: 'DAY',
+        },
+        transitTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 0,
+          maxValue: 0,
+          unitCode: 'DAY',
+        },
+      },
+    },
+  ]
+}
+
+

@@ -66,7 +66,15 @@ export const viewport: Viewport = {
   userScalable: true,
 }
 
-import { getPageAlternates, PUBLIC_ROBOTS, DEFAULT_KEYWORDS, SITE_PUBLISHER, SITE_CREATOR } from '@/lib/seo'
+import {
+  getPageAlternates,
+  PUBLIC_ROBOTS,
+  DEFAULT_KEYWORDS,
+  SITE_PUBLISHER,
+  SITE_CREATOR,
+  DEFAULT_MERCHANT_RETURN_POLICY,
+  getDigitalOfferShippingDetails,
+} from '@/lib/seo'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardzy.online'),
@@ -196,7 +204,7 @@ const jsonLd = [
   },
   {
     '@context': 'https://schema.org',
-    '@type': ['WebApplication', 'Product'],
+    '@type': 'WebApplication',
     '@id': 'https://cardzy.online/#webapp',
     name: 'Cardzy — 3D Digital Cards & Wedding Invitations Generator',
     url: 'https://cardzy.online',
@@ -236,6 +244,11 @@ const jsonLd = [
         name: 'Cardzy Free',
         price: '0',
         priceCurrency: 'PKR',
+        availability: 'https://schema.org/InStock',
+        priceValidUntil: '2027-12-31',
+        url: 'https://cardzy.online',
+        hasMerchantReturnPolicy: DEFAULT_MERCHANT_RETURN_POLICY,
+        shippingDetails: getDigitalOfferShippingDetails('PKR'),
         description: '5 free cards per category, 30-day active links, 5 classic themes & background audio',
       },
       {
@@ -243,6 +256,11 @@ const jsonLd = [
         name: 'Cardzy Pro Monthly',
         price: '499',
         priceCurrency: 'PKR',
+        availability: 'https://schema.org/InStock',
+        priceValidUntil: '2027-12-31',
+        url: 'https://cardzy.online/pricing',
+        hasMerchantReturnPolicy: DEFAULT_MERCHANT_RETURN_POLICY,
+        shippingDetails: getDigitalOfferShippingDetails('PKR'),
         priceSpecification: {
           '@type': 'UnitPriceSpecification',
           price: '499',
@@ -261,6 +279,11 @@ const jsonLd = [
         name: 'Cardzy Pro USD',
         price: '1.99',
         priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+        priceValidUntil: '2027-12-31',
+        url: 'https://cardzy.online/pricing',
+        hasMerchantReturnPolicy: DEFAULT_MERCHANT_RETURN_POLICY,
+        shippingDetails: getDigitalOfferShippingDetails('USD'),
         priceSpecification: {
           '@type': 'UnitPriceSpecification',
           price: '1.99',

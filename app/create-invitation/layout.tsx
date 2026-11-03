@@ -1,5 +1,10 @@
 import { Metadata } from 'next'
-import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
+import {
+  getPageAlternates,
+  PUBLIC_ROBOTS,
+  DEFAULT_MERCHANT_RETURN_POLICY,
+  getDigitalOfferShippingDetails,
+} from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Free Digital Wedding Invitations with WhatsApp RSVP | Cardzy',
@@ -54,7 +59,10 @@ const invitationProductJsonLd = {
     price: '0',
     priceCurrency: 'USD',
     availability: 'https://schema.org/InStock',
+    priceValidUntil: '2027-12-31',
     url: 'https://cardzy.online/create-invitation',
+    hasMerchantReturnPolicy: DEFAULT_MERCHANT_RETURN_POLICY,
+    shippingDetails: getDigitalOfferShippingDetails('USD'),
   },
   aggregateRating: {
     '@type': 'AggregateRating',

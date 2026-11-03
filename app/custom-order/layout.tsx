@@ -1,5 +1,10 @@
 import { Metadata } from 'next'
-import { getPageAlternates, PUBLIC_ROBOTS } from '@/lib/seo'
+import {
+  getPageAlternates,
+  PUBLIC_ROBOTS,
+  DEFAULT_MERCHANT_RETURN_POLICY,
+  getDigitalOfferShippingDetails,
+} from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Custom 3D Card Design Order — Concierge Service | Cardzy',
@@ -49,7 +54,10 @@ const customOrderProductJsonLd = {
     price: '9.99',
     priceCurrency: 'USD',
     availability: 'https://schema.org/InStock',
+    priceValidUntil: '2027-12-31',
     url: 'https://cardzy.online/custom-order',
+    hasMerchantReturnPolicy: DEFAULT_MERCHANT_RETURN_POLICY,
+    shippingDetails: getDigitalOfferShippingDetails('USD'),
   },
   aggregateRating: {
     '@type': 'AggregateRating',
