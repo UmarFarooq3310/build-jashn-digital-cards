@@ -385,8 +385,8 @@ export function ThreeDCardWrapper({
       onMouseLeave={handleMouseLeave}
       onClick={!isOpen ? handleOpen : undefined}
       className={cn(
-        "relative w-full mx-auto rounded-[2.5rem] select-none transition-all duration-500",
-        isOpen ? "max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl cursor-default" : "max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl cursor-pointer hover:shadow-[0_45px_70px_-15px_rgba(0,0,0,0.65)]"
+        "relative w-full mx-auto rounded-[2.5rem] select-none transition-all duration-500 max-w-[430px]",
+        isOpen ? "cursor-default" : "cursor-pointer hover:shadow-[0_45px_70px_-15px_rgba(0,0,0,0.65)]"
       )}
       style={{
         perspective: '1100px', // Stronger 3D perspective depth (closer virtual camera)

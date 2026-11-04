@@ -334,29 +334,41 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
     justifyContent?: string
   }[] = []
 
-  // If capturing for video on desktop where the card is rendered wide (e.g. > 460px),
-  // temporarily constrain to standard mobile card width (430px) during capture
+  // Constrain width to standard portrait mobile card width (430px) during capture
   // so that headings, message fonts, avatars, and decorations render at their
-  // maximum scale to cover the full vertical card, exactly like mobile downloads.
-  if (forVideo) {
-    const isWideScreen = element.offsetWidth > 460
-    const exportWidth = 430
+  // optimal mobile portrait scale to cover the full vertical card, exactly like mobile downloads.
+  const exportWidth = 430
+  const isWide = element.offsetWidth > exportWidth
+  if (isWide) {
+    savedStyles.push({
+      el: element,
+      maxHeight: element.style.maxHeight,
+      overflow: element.style.overflow,
+      overflowY: element.style.overflowY,
+      height: element.style.height,
+      width: element.style.width,
+      maxWidth: element.style.maxWidth,
+      minWidth: element.style.minWidth,
+    })
+    element.style.width = `${exportWidth}px`
+    element.style.maxWidth = `${exportWidth}px`
+    element.style.minWidth = `${exportWidth}px`
+  }
 
-    if (isWideScreen) {
-      savedStyles.push({
-        el: element,
-        maxHeight: element.style.maxHeight,
-        overflow: element.style.overflow,
-        overflowY: element.style.overflowY,
-        height: element.style.height,
-        width: element.style.width,
-        maxWidth: element.style.maxWidth,
-        minWidth: element.style.minWidth,
-      })
-      element.style.width = `${exportWidth}px`
-      element.style.maxWidth = `${exportWidth}px`
-      element.style.minWidth = `${exportWidth}px`
-    }
+  // Size the card container to match 9:16 mobile story aspect ratio (430x764)
+  // so BOTH Image and Video downloads fill the screen completely from edge-to-edge
+  // and top-to-bottom as ONE full card with exact identical dimensions and zero stretching!
+  const targetMinH = Math.round(exportWidth * (1280 / 720))
+  if (element.scrollHeight < targetMinH) {
+    savedStyles.push({
+      el: element,
+      maxHeight: element.style.maxHeight,
+      overflow: element.style.overflow,
+      overflowY: element.style.overflowY,
+      height: element.style.height,
+      minHeight: element.style.minHeight,
+    })
+    element.style.minHeight = `${targetMinH}px`
   }
 
   // Temporarily reset any active 3D transforms (e.g. GSAP hover tilt) during capture
@@ -533,8 +545,23 @@ export async function downloadCardPng({
       recordCardShare(cardType, cardSlug, 'image')
     }
 
-    const capturedCanvas = await captureCardCanvas(element, false)
-    const dataUrl = capturedCanvas.toDataURL('image/png')
+    const capturedCanvas = await captureCardCanvas(element, true)
+
+    let finalCanvas = capturedCanvas
+    if (cardType === 'invite') {
+      const igCanvas = document.createElement('canvas')
+      igCanvas.width = 720
+      igCanvas.height = 1280
+      const ctx = igCanvas.getContext('2d')
+      if (ctx) {
+        ctx.imageSmoothingEnabled = true
+        ctx.imageSmoothingQuality = 'high'
+        ctx.drawImage(capturedCanvas, 0, 0, 720, 1280)
+        finalCanvas = igCanvas
+      }
+    }
+
+    const dataUrl = finalCanvas.toDataURL('image/png')
     const link = document.createElement('a')
     link.download = `${fileName}.png`
     link.href = dataUrl
@@ -603,7 +630,8 @@ function drawSafeRoundRect(
 
 function computeVideoDimensions(
   img: HTMLImageElement,
-  targetAspectRatio: 'auto' | '9:16' | 'original' = '9:16'
+  targetAspectRatio: 'auto' | '9:16' | 'original' = '9:16',
+  cardType?: string
 ): {
   targetWidth: number
   targetHeight: number
@@ -626,8 +654,8 @@ function computeVideoDimensions(
     const targetWidth = 720
     const targetHeight = 1280
 
-    // If the image is ALREADY ~9:16 (like poetry stories or full-bleed cards):
-    if (Math.abs(imgAspect - (9 / 16)) < 0.08) {
+    // Full-bleed edge-to-edge 9:16 mobile video for invitations, poetry stories, or vertical cards:
+    if (cardType === 'invite' || cardType === 'poetry' || imgAspect <= 0.68 || Math.abs(imgAspect - (9 / 16)) < 0.12) {
       return {
         targetWidth,
         targetHeight,
@@ -955,7 +983,7 @@ async function recordImageAsMp4WebCodecs({
   const DURATION_SEC = Math.max(5, durationSeconds || 10)
 
   // ── Compute 16-pixel aligned video dimensions (default 720x1280 9:16) ──
-  const dims = computeVideoDimensions(img, targetAspectRatio)
+  const dims = computeVideoDimensions(img, targetAspectRatio, cardType)
   const { targetWidth, targetHeight, isNineSixteen, cardX, cardY, cardW, cardH } = dims
 
   // Pre-render static card, drop shadow, background glow, and badges ONCE (major speedup!)
@@ -1322,7 +1350,7 @@ export async function recordImageAsVideo({
   const DURATION_MS = DURATION_SEC * 1000
 
   // 16-pixel aligned video dimensions
-  const dims = computeVideoDimensions(img, targetAspectRatio)
+  const dims = computeVideoDimensions(img, targetAspectRatio, cardType)
   const { targetWidth, targetHeight, isNineSixteen, cardX, cardY, cardW, cardH } = dims
 
   // Pre-render static card base ONCE

@@ -576,7 +576,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
       <div
         ref={ref}
-        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${typeTheme?.typeClass ?? ''} ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl shadow-2xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
+        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${typeTheme?.typeClass ?? ''} ${theme.cssClass} mx-auto w-full max-w-[430px] rounded-3xl shadow-2xl transition-all duration-300 min-h-[660px] sm:min-h-[720px] flex flex-col justify-between ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
         style={{
           transformStyle: 'preserve-3d',
           '--c-bg1': themeVars.bg1,
@@ -648,282 +648,288 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
         <CardAnimLayers typeId={resolvedTypeId} />
 
         {/* ── Card body ──────────────────────────────────────────────── */}
-        <div className="relative z-10 flex flex-col items-center px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-5 gap-2 sm:gap-3 text-center">
+        <div className="relative z-10 flex flex-col items-center justify-between flex-1 w-full px-4 py-5 sm:px-6 sm:py-6 gap-3 sm:gap-4 text-center">
 
-          {/* Top ornament */}
-          <TopOrnament hasCouple={!!isCouple} isIslamic={isIslamic} isWedding={isWedding} isGaming={isGaming} />
+          {/* ── Block 1: Top Header (Ornament + Type + Avatars) ── */}
+          <div className="flex flex-col items-center gap-1 sm:gap-1.5 w-full">
+            {/* Top ornament */}
+            <TopOrnament hasCouple={!!isCouple} isIslamic={isIslamic} isWedding={isWedding} isGaming={isGaming} />
 
-          {/* Type label (Urdu or English depending on selected site language) */}
-          {type && (
-            <div className="ic-stagger inv-parallax-mid flex flex-col items-center">
-              <p
-                className={cn(
-                  "gold-foil-text text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] font-extrabold opacity-85",
-                  (lang === 'ur' || lang === 'ar') && "font-urdu text-sm sm:text-base tracking-normal"
-                )}
-                style={{ color: 'var(--c-accent)' }}
-              >
-                {t(`type_${type.id.replace(/-/g, '_')}`) || type.label}
-              </p>
-            </div>
-          )}
-
-          {/* ── Couple avatars or Custom Uploaded Photos ── */}
-          {isCouple ? (
-            (data.photoUrl && data.photoUrl2) ? (
-              <div className="flex items-center justify-center gap-3 sm:gap-5 inv-parallax-near py-1">
-                {/* Groom photo (First) */}
-                <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
-                  <ZoomableImageBadge
-                    src={data.photoUrl}
-                    alt={data.groom || 'Groom Photo'}
-                    title={data.groom ? `${data.groom} (Groom / Host)` : 'Portrait Photo'}
-                    badgeText="Tap to zoom"
-                    badgePosition="center"
-                    className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] shadow-lg bg-black/40"
-                  >
-                    <img src={data.photoUrl} alt={data.groom || "Photo 1"} crossOrigin="anonymous" className="size-full object-cover" />
-                  </ZoomableImageBadge>
-                </div>
-
-                {/* Ampersand / heart centre */}
-                <div className="flex flex-col items-center inv-avatar-anim">
-                  <svg width="32" height="28" viewBox="0 0 36 32" fill="none" className="size-6 sm:size-7">
-                    <path
-                      d="M18 28 Q5 20 5 11 A7 7 0 0 1 18 9 A7 7 0 0 1 31 11 Q31 20 18 28Z"
-                      fill="var(--c-accent)"
-                      opacity="0.85"
-                    />
-                  </svg>
-                </div>
-
-                {/* Bride photo (Second) */}
-                <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
-                  <ZoomableImageBadge
-                    src={data.photoUrl2}
-                    alt={data.bride || 'Bride Photo'}
-                    title={data.bride ? `${data.bride} (Bride / Host)` : 'Portrait Photo'}
-                    badgeText="Tap to zoom"
-                    badgePosition="center"
-                    className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] shadow-lg bg-black/40"
-                  >
-                    <img src={data.photoUrl2} alt={data.bride || "Photo 2"} crossOrigin="anonymous" className="size-full object-cover" />
-                  </ZoomableImageBadge>
-                </div>
+            {/* Type label (Urdu or English depending on selected site language) */}
+            {type && (
+              <div className="ic-stagger inv-parallax-mid flex flex-col items-center">
+                <p
+                  className={cn(
+                    "gold-foil-text text-[10px] sm:text-xs uppercase tracking-[0.2em] font-extrabold opacity-85",
+                    (lang === 'ur' || lang === 'ar') && "font-urdu text-sm sm:text-base tracking-normal"
+                  )}
+                  style={{ color: 'var(--c-accent)' }}
+                >
+                  {t(`type_${type.id.replace(/-/g, '_')}`) || type.label}
+                </p>
               </div>
+            )}
+
+            {/* ── Couple avatars or Custom Uploaded Photos ── */}
+            {isCouple ? (
+              (data.photoUrl && data.photoUrl2) ? (
+                <div className="flex items-center justify-center gap-3 sm:gap-5 inv-parallax-near py-1">
+                  {/* Groom photo (First) */}
+                  <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
+                    <ZoomableImageBadge
+                      src={data.photoUrl}
+                      alt={data.groom || 'Groom Photo'}
+                      title={data.groom ? `${data.groom} (Groom / Host)` : 'Portrait Photo'}
+                      badgeText="Tap to zoom"
+                      badgePosition="center"
+                      className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] shadow-lg bg-black/40"
+                    >
+                      <img src={data.photoUrl} alt={data.groom || "Photo 1"} crossOrigin="anonymous" className="size-full object-cover" />
+                    </ZoomableImageBadge>
+                  </div>
+
+                  {/* Ampersand / heart centre */}
+                  <div className="flex flex-col items-center inv-avatar-anim">
+                    <svg width="32" height="28" viewBox="0 0 36 32" fill="none" className="size-6 sm:size-7">
+                      <path
+                        d="M18 28 Q5 20 5 11 A7 7 0 0 1 18 9 A7 7 0 0 1 31 11 Q31 20 18 28Z"
+                        fill="var(--c-accent)"
+                        opacity="0.85"
+                      />
+                    </svg>
+                  </div>
+
+                  {/* Bride photo (Second) */}
+                  <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
+                    <ZoomableImageBadge
+                      src={data.photoUrl2}
+                      alt={data.bride || 'Bride Photo'}
+                      title={data.bride ? `${data.bride} (Bride / Host)` : 'Portrait Photo'}
+                      badgeText="Tap to zoom"
+                      badgePosition="center"
+                      className="size-16 sm:size-20 rounded-full border-2 border-[#D4AF37] shadow-lg bg-black/40"
+                    >
+                      <img src={data.photoUrl2} alt={data.bride || "Photo 2"} crossOrigin="anonymous" className="size-full object-cover" />
+                    </ZoomableImageBadge>
+                  </div>
+                </div>
+              ) : (data.photoUrl || data.photoUrl2) ? (
+                /* If only 1 image added: show 1 image only in center */
+                <div className="flex items-center justify-center my-2 inv-parallax-near">
+                  <ZoomableImageBadge
+                    src={data.photoUrl || data.photoUrl2}
+                    alt={data.groom || data.bride || "Wedding Photo"}
+                    title="Wedding Celebration Photo"
+                    badgeText="Tap to zoom"
+                    className="size-20 sm:size-24 rounded-full border-2 border-[#D4AF37] shadow-xl bg-black/40"
+                  >
+                    <img src={data.photoUrl || data.photoUrl2} alt="Wedding Photo" crossOrigin="anonymous" className="size-full object-cover" />
+                  </ZoomableImageBadge>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center gap-3 sm:gap-5 inv-parallax-near py-1">
+                  {/* Groom avatar (First) */}
+                  <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
+                    <RelationAvatar relation="groom" size={60} />
+                  </div>
+
+                  {/* Ampersand / heart centre */}
+                  <div className="flex flex-col items-center inv-avatar-anim">
+                    <svg width="32" height="28" viewBox="0 0 36 32" fill="none" className="size-6 sm:size-7">
+                      <path
+                        d="M18 28 Q5 20 5 11 A7 7 0 0 1 18 9 A7 7 0 0 1 31 11 Q31 20 18 28Z"
+                        fill="var(--c-accent)"
+                        opacity="0.85"
+                      />
+                    </svg>
+                  </div>
+
+                  {/* Bride avatar (Second) */}
+                  <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
+                    <RelationAvatar relation="bride" size={60} />
+                  </div>
+                </div>
+              )
             ) : (data.photoUrl || data.photoUrl2) ? (
-              /* If only 1 image added: show 1 image only in center */
+              /* ── Custom Event Photo (Single / Non-couple) ── */
               <div className="flex items-center justify-center my-2 inv-parallax-near">
                 <ZoomableImageBadge
                   src={data.photoUrl || data.photoUrl2}
-                  alt={data.groom || data.bride || "Wedding Photo"}
-                  title="Wedding Celebration Photo"
+                  alt="Event Photo"
+                  title={data.title ? `${data.title} — Event Photo` : 'Event Photo'}
                   badgeText="Tap to zoom"
-                  className="size-20 sm:size-24 rounded-full border-2 border-[#D4AF37] shadow-xl bg-black/40"
+                  className="size-20 sm:size-24 rounded-2xl border-2 border-[#D4AF37] shadow-xl bg-black/40"
                 >
-                  <img src={data.photoUrl || data.photoUrl2} alt="Wedding Photo" crossOrigin="anonymous" className="size-full object-cover" />
+                  <img src={data.photoUrl || data.photoUrl2} alt="Event Photo" crossOrigin="anonymous" className="size-full object-cover" />
                 </ZoomableImageBadge>
               </div>
             ) : (
-              <div className="flex items-center justify-center gap-3 sm:gap-5 inv-parallax-near py-1">
-                {/* Groom avatar (First) */}
-                <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
-                  <RelationAvatar relation="groom" size={60} />
-                </div>
-
-                {/* Ampersand / heart centre */}
-                <div className="flex flex-col items-center inv-avatar-anim">
-                  <svg width="32" height="28" viewBox="0 0 36 32" fill="none" className="size-6 sm:size-7">
-                    <path
-                      d="M18 28 Q5 20 5 11 A7 7 0 0 1 18 9 A7 7 0 0 1 31 11 Q31 20 18 28Z"
-                      fill="var(--c-accent)"
-                      opacity="0.85"
-                    />
-                  </svg>
-                </div>
-
-                {/* Bride avatar (Second) */}
-                <div className="inv-avatar-anim" style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.32))' }}>
-                  <RelationAvatar relation="bride" size={60} />
-                </div>
-              </div>
-            )
-          ) : (data.photoUrl || data.photoUrl2) ? (
-            /* ── Custom Event Photo (Single / Non-couple) ── */
-            <div className="flex items-center justify-center my-2 inv-parallax-near">
-              <ZoomableImageBadge
-                src={data.photoUrl || data.photoUrl2}
-                alt="Event Photo"
-                title={data.title ? `${data.title} — Event Photo` : 'Event Photo'}
-                badgeText="Tap to zoom"
-                className="size-20 sm:size-24 rounded-2xl border-2 border-[#D4AF37] shadow-xl bg-black/40"
+              /* ── Single event icon ── */
+              <div
+                className="ic-stagger inv-parallax-mid flex items-center justify-center rounded-full transition-transform duration-300 hover:scale-105 my-1"
+                style={{
+                  width: 52, height: 52,
+                  border: '1.5px solid color-mix(in oklab,var(--c-accent) 50%,transparent)',
+                  color: 'var(--c-accent)',
+                  background: 'color-mix(in oklab,var(--c-accent) 10%,transparent)',
+                  boxShadow: '0 0 0 4px color-mix(in oklab,var(--c-accent) 8%,transparent), 0 4px 18px color-mix(in oklab,var(--c-accent) 25%,transparent)',
+                }}
               >
-                <img src={data.photoUrl || data.photoUrl2} alt="Event Photo" crossOrigin="anonymous" className="size-full object-cover" />
-              </ZoomableImageBadge>
-            </div>
-          ) : (
-            /* ── Single event icon ── */
-            <div
-              className="ic-stagger inv-parallax-mid flex items-center justify-center rounded-full transition-transform duration-300 hover:scale-105 my-1"
-              style={{
-                width: 52, height: 52,
-                border: '1.5px solid color-mix(in oklab,var(--c-accent) 50%,transparent)',
-                color: 'var(--c-accent)',
-                background: 'color-mix(in oklab,var(--c-accent) 10%,transparent)',
-                boxShadow: '0 0 0 4px color-mix(in oklab,var(--c-accent) 8%,transparent), 0 4px 18px color-mix(in oklab,var(--c-accent) 25%,transparent)',
-              }}
-            >
-              {type && <JashnIcon name={type.icon} className="size-6 sm:size-7" />}
-            </div>
-          )}
+                {type && <JashnIcon name={type.icon} className="size-6 sm:size-7" />}
+              </div>
+            )}
+          </div>
 
-          {/* Couple headline or event title */}
-          {isCouple ? (
-            <div className="ic-stagger inv-parallax-near text-center w-full px-2">
-              {/* Optional custom event subtitle/title if present */}
-              {data.title && data.title !== type?.label && (
-                <div className="mb-2 max-w-full">
+          {/* ── Block 2: Center Main Details (Hero Headline + Details) ── */}
+          <div className="flex flex-col items-center gap-2 sm:gap-2.5 w-full my-auto">
+            {/* Couple headline or event title */}
+            {isCouple ? (
+              <div className="ic-stagger inv-parallax-near text-center w-full px-2">
+                {/* Optional custom event subtitle/title if present */}
+                {data.title && data.title !== type?.label && (
+                  <div className="mb-1.5 max-w-full">
+                    <span
+                      className={cn(
+                        "gold-cartouche inline-block text-xs sm:text-sm font-extrabold tracking-wider uppercase px-3 py-0.5 rounded-full border border-[var(--c-accent)]/30 bg-[var(--c-accent)]/10 text-center max-w-full text-balance leading-snug shadow-xs",
+                        (lang === 'ur' || lang === 'ar') && "font-urdu text-sm sm:text-base tracking-normal leading-relaxed"
+                      )}
+                      style={{ color: 'var(--c-accent)' }}
+                    >
+                      {data.title}
+                    </span>
+                  </div>
+                )}
+
+                <div
+                  className={cn(
+                    "shimmer-text gold-foil-emboss font-extrabold flex flex-wrap items-center justify-center gap-x-2.5 sm:gap-x-3 gap-y-0.5 text-center w-full my-1 leading-normal",
+                    (lang === 'ur' || lang === 'ar')
+                      ? "font-urdu text-xl sm:text-2xl leading-loose"
+                      : "text-2xl sm:text-3xl tracking-tight"
+                  )}
+                >
+                  <span className="inline-block max-w-full text-center">
+                    {data.groom || '---'}
+                  </span>
+                  <span
+                    className="inline-flex items-center justify-center font-serif italic text-lg sm:text-xl px-1.5 opacity-80 shrink-0 select-none"
+                    style={{ color: 'var(--c-accent)' }}
+                    aria-hidden="true"
+                  >
+                    {t('andWord', '&')}
+                  </span>
+                  <span className="inline-block max-w-full text-center">
+                    {data.bride || '---'}
+                  </span>
+                </div>
+
+                {(data.hostNames || !isPublicCard) && (
+                  <p className={cn(
+                    "mt-1 opacity-80 tracking-wide text-balance px-2",
+                    (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm leading-loose" : "text-xs sm:text-sm leading-relaxed"
+                  )}>
+                    {data.hostNames || '---'} {t('joyfullyInvite')}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <div className="ic-stagger inv-parallax-near text-center w-full px-2">
+                <h2 className={cn(
+                  "shimmer-text gold-foil-emboss font-extrabold tracking-normal leading-snug text-balance px-2",
+                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl leading-loose" : "text-2xl sm:text-3xl"
+                )}>
+                  {data.title || data.hostNames || (!isPublicCard ? '---' : (t(`type_${type?.id.replace(/-/g, '_')}`) || type?.label))}
+                </h2>
+                {(data.hostNames || !isPublicCard) && (
+                  <p className={cn(
+                    "mt-1 opacity-80 tracking-wide text-balance px-2",
+                    (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm leading-loose" : "text-xs sm:text-sm leading-relaxed"
+                  )}>{t('hostedBy')} {data.hostNames || '---'}</p>
+                )}
+              </div>
+            )}
+
+            <OrnamentDivider />
+
+            {/* ── Event details as elegant centered flowing text (printed card style) ── */}
+            <div className="ic-stagger inv-parallax-near flex flex-col items-center gap-2 sm:gap-2.5 w-full text-center px-3">
+              {/* Date in gold cartouche frame */}
+              {(data.date || !isPublicCard) && (
+                <div className="gold-cartouche">
                   <span
                     className={cn(
-                      "gold-cartouche inline-block text-xs sm:text-sm font-extrabold tracking-wider uppercase px-3.5 py-1 rounded-full border border-[var(--c-accent)]/30 bg-[var(--c-accent)]/10 text-center max-w-full text-balance leading-snug shadow-xs",
-                      (lang === 'ur' || lang === 'ar') && "font-urdu text-sm sm:text-base tracking-normal leading-relaxed"
+                      "font-bold tracking-wider",
+                      (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm sm:text-base" : "text-sm sm:text-base uppercase"
                     )}
                     style={{ color: 'var(--c-accent)' }}
                   >
-                    {data.title}
+                    {data.date ? formatDate(data.date, lang) : '---'}
                   </span>
                 </div>
               )}
 
-              <div
-                className={cn(
-                  "shimmer-text gold-foil-emboss font-extrabold flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-5 gap-y-1 sm:gap-y-2 text-center w-full my-1 leading-normal",
-                  (lang === 'ur' || lang === 'ar')
-                    ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose"
-                    : "text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-normal"
-                )}
-              >
-                <span className="inline-block whitespace-nowrap max-w-full text-center">
-                  {data.groom || '---'}
-                </span>
-                <span
-                  className="inline-flex items-center justify-center font-serif italic text-base sm:text-xl md:text-2xl px-2 sm:px-3 opacity-80 shrink-0 select-none"
-                  style={{ color: 'var(--c-accent)' }}
-                  aria-hidden="true"
-                >
-                  {t('andWord', '&')}
-                </span>
-                <span className="inline-block whitespace-nowrap max-w-full text-center">
-                  {data.bride || '---'}
-                </span>
-              </div>
-
-              {(data.hostNames || !isPublicCard) && (
-                <p className={cn(
-                  "mt-2 opacity-80 tracking-wide text-balance px-2",
-                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm leading-loose" : "text-xs sm:text-sm leading-relaxed"
-                )}>
-                  {data.hostNames || '---'} {t('joyfullyInvite')}
-                </p>
-              )}
-            </div>
-          ) : (
-            <div className="ic-stagger inv-parallax-near text-center w-full px-2">
-              <h2 className={cn(
-                "shimmer-text gold-foil-emboss font-extrabold tracking-normal leading-snug text-balance px-2",
-                (lang === 'ur' || lang === 'ar') ? "font-urdu text-xl sm:text-2xl md:text-3xl leading-loose" : "text-xl sm:text-2xl md:text-3xl lg:text-4xl"
-              )}>
-                {data.title || data.hostNames || (!isPublicCard ? '---' : (t(`type_${type?.id.replace(/-/g, '_')}`) || type?.label))}
-              </h2>
-              {(data.hostNames || !isPublicCard) && (
-                <p className={cn(
-                  "mt-2 opacity-80 tracking-wide text-balance px-2",
-                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm leading-loose" : "text-xs sm:text-sm leading-relaxed"
-                )}>{t('hostedBy')} {data.hostNames || '---'}</p>
-              )}
-            </div>
-          )}
-
-          <OrnamentDivider />
-
-          {/* ── Event details as elegant centered flowing text (printed card style) ── */}
-          <div className="ic-stagger inv-parallax-near flex flex-col items-center gap-2.5 sm:gap-3 w-full text-center px-3">
-            {/* Date in gold cartouche frame */}
-            {(data.date || !isPublicCard) && (
-              <div className="gold-cartouche">
-                <span
-                  className={cn(
-                    "font-bold tracking-wider",
-                    (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm sm:text-base" : "text-sm sm:text-base uppercase"
-                  )}
-                  style={{ color: 'var(--c-accent)' }}
-                >
-                  {data.date ? formatDate(data.date, lang) : '---'}
-                </span>
-              </div>
-            )}
-
-            {/* Time */}
-            {(data.time || !isPublicCard) && (
-              <p
-                className={cn(
-                  "font-semibold tracking-wide opacity-90",
-                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm sm:text-base" : "text-xs sm:text-sm italic"
-                )}
-                style={{ color: 'var(--c-ink)' }}
-              >
-                {data.time ? formatTime12h(data.time, lang) : '---'}
-              </p>
-            )}
-
-            {/* Venue & City */}
-            {(data.venue || data.city || !isPublicCard) && (
-              <div className="flex flex-col items-center gap-0.5">
+              {/* Time */}
+              {(data.time || !isPublicCard) && (
                 <p
                   className={cn(
-                    "font-bold tracking-wide",
-                    (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm sm:text-base" : "text-sm sm:text-base"
+                    "font-semibold tracking-wide opacity-90",
+                    (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm sm:text-base" : "text-xs sm:text-sm italic"
                   )}
                   style={{ color: 'var(--c-ink)' }}
                 >
-                  {data.venue || '---'}
+                  {data.time ? formatTime12h(data.time, lang) : '---'}
                 </p>
+              )}
+
+              {/* Venue & City */}
+              {(data.venue || data.city || !isPublicCard) && (
+                <div className="flex flex-col items-center gap-0.5">
+                  <p
+                    className={cn(
+                      "font-bold tracking-wide",
+                      (lang === 'ur' || lang === 'ar') ? "font-urdu text-sm sm:text-base" : "text-sm sm:text-base"
+                    )}
+                    style={{ color: 'var(--c-ink)' }}
+                  >
+                    {data.venue || '---'}
+                  </p>
+                  <p
+                    className={cn(
+                      "opacity-80 tracking-wider",
+                      (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm" : "text-xs sm:text-sm uppercase"
+                    )}
+                    style={{ color: 'var(--c-ink)' }}
+                  >
+                    {data.city || '---'}
+                  </p>
+                </div>
+              )}
+
+              {/* Dress Code */}
+              {(data.dressCode || !isPublicCard) && (
                 <p
                   className={cn(
-                    "opacity-80 tracking-wider",
-                    (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm" : "text-xs sm:text-sm uppercase"
+                    "italic opacity-80 tracking-wide",
+                    (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm" : "text-[11px] sm:text-xs"
                   )}
-                  style={{ color: 'var(--c-ink)' }}
+                  style={{ color: 'var(--c-accent)' }}
                 >
-                  {data.city || '---'}
+                  {data.dressCode || '---'}
                 </p>
-              </div>
-            )}
+              )}
+            </div>
 
-            {/* Dress Code */}
-            {(data.dressCode || !isPublicCard) && (
-              <p
-                className={cn(
-                  "italic opacity-80 tracking-wide",
-                  (lang === 'ur' || lang === 'ar') ? "font-urdu text-xs sm:text-sm" : "text-[11px] sm:text-xs"
-                )}
-                style={{ color: 'var(--c-accent)' }}
-              >
-                {data.dressCode || '---'}
-              </p>
+            {/* ── Live Countdown Flip Clock ── */}
+            {showCountdown && data.date && (
+              <div className="ic-stagger inv-parallax-near my-1 flex flex-col items-center scale-90 sm:scale-100">
+                <Countdown date={data.date} time={data.time} />
+              </div>
             )}
           </div>
 
-          {/* ── Live Countdown Flip Clock ── */}
-          {showCountdown && data.date && (
-            <div className="ic-stagger inv-parallax-near my-1.5 flex flex-col items-center scale-90 sm:scale-100">
-              <Countdown date={data.date} time={data.time} />
-            </div>
-          )}
-
-          {/* Personal notes / message — elegant calligraphy style */}
+          {/* ── Block 3: Footer (Personal Notes / Quote) ── */}
           {(data.notes || !isPublicCard) && (
-            <div className="ic-stagger flex flex-col items-center w-full px-4 sm:px-6">
+            <div className="ic-stagger flex flex-col items-center w-full px-4 sm:px-6 mt-auto">
               <OrnamentDivider />
               <p
                 className={cn(
