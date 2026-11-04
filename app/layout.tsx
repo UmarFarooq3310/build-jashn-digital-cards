@@ -312,11 +312,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://firestore.googleapis.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        <Script
-          src="https://analytics.ahrefs.com/analytics.js"
-          data-key="cKRdWrDWn4jrJ4Btb4eAfg"
-          strategy="afterInteractive"
-        />
         {jsonLd.map((item, idx) => (
           <script
             key={`ld-json-${idx}`}
@@ -390,72 +385,23 @@ export default function RootLayout({
             `,
           }}
         />
-        <Script
-          id="cardzy-ad-error-trap"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                if (typeof window === 'undefined') return;
-                function isAdError(msg, src) {
-                  if (!msg && !src) return false;
-                  var str = (String(msg || '') + ' ' + String(src || '')).toLowerCase();
-                  return str.indexOf('adsbygoogle') !== -1 ||
-                         str.indexOf('tagerror') !== -1 ||
-                         str.indexOf('all \\'ins\\' elements') !== -1 ||
-                         str.indexOf('already have ads') !== -1 ||
-                         str.indexOf('no_div') !== -1 ||
-                         str.indexOf('pagead2') !== -1 ||
-                         str.indexOf('gsi_logger') !== -1;
-                }
-                // Intercept console.error and console.warn before dev overlays capture them
-                var origConsoleError = console.error;
-                console.error = function() {
-                  var argsStr = Array.prototype.slice.call(arguments).map(function(a) {
-                    return String((a && a.message) || a || '');
-                  }).join(' ');
-                  if (isAdError(argsStr, '')) {
-                    return;
-                  }
-                  if (origConsoleError) origConsoleError.apply(console, arguments);
-                };
-                var origConsoleWarn = console.warn;
-                console.warn = function() {
-                  var argsStr = Array.prototype.slice.call(arguments).map(function(a) {
-                    return String((a && a.message) || a || '');
-                  }).join(' ');
-                  if (isAdError(argsStr, '')) {
-                    return;
-                  }
-                  if (origConsoleWarn) origConsoleWarn.apply(console, arguments);
-                };
-                window.addEventListener('error', function(e) {
-                  if (e && (isAdError(e.message, e.filename) || isAdError(e.error && e.error.message, e.filename))) {
-                    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-                    if (e.preventDefault) e.preventDefault();
-                    return true;
-                  }
-                }, true);
-                window.addEventListener('unhandledrejection', function(e) {
-                  if (e && (isAdError(e.reason && e.reason.message, '') || isAdError(e.reason, ''))) {
-                    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-                    if (e.preventDefault) e.preventDefault();
-                  }
-                }, true);
-                var origOnError = window.onerror;
-                window.onerror = function(msg, url, line, col, err) {
-                  if (isAdError(msg, url) || (err && isAdError(err.message, url))) {
-                    return true;
-                  }
-                  if (origOnError) return origOnError.apply(this, arguments);
-                  return false;
-                };
-              })();
-            `,
-          }}
-        />
       </head>
       <body className={`${poppins.variable} ${notoNastaliq.variable} ${playfair.variable} bg-background font-sans antialiased overflow-x-hidden w-full max-w-[100vw]`} suppressHydrationWarning>
+        {/* Error/warning trap for ad engines and third-party scripts */}
+        <Script
+          id="cardzy-ad-error-trap"
+          src="/ad-error-trap.js"
+          strategy="beforeInteractive"
+        />
+
+        {/* Ahrefs Analytics */}
+        <Script
+          id="ahrefs-analytics"
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="cKRdWrDWn4jrJ4Btb4eAfg"
+          strategy="afterInteractive"
+        />
+
         {/* ── Google Analytics 4 (GA4) with Google Consent Mode v2 ── */}
         <Script
           id="google-analytics-script"
