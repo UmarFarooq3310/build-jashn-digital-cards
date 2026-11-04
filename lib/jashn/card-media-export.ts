@@ -286,6 +286,8 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
     width?: string
     maxWidth?: string
     minWidth?: string
+    height?: string
+    minHeight?: string
   }[] = []
 
   const isWideOnLaptop = element.offsetWidth > 440
@@ -303,6 +305,18 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
     element.style.minWidth = `${mobileWidth}px`
   }
 
+  // Ensure standard 9:16 vertical card height (430 x 764 -> exactly 9:16 aspect ratio)
+  const targetMinH = Math.round(mobileWidth * (1280 / 720))
+  if (element.scrollHeight < targetMinH || element.offsetHeight < targetMinH) {
+    savedStyles.push({
+      el: element,
+      height: element.style.height,
+      minHeight: element.style.minHeight,
+    })
+    element.style.minHeight = `${targetMinH}px`
+    element.style.height = `${targetMinH}px`
+  }
+
   // Reset 3D tilt transform during capture so snapshot is clean
   const savedTransform = element.style.transform
   const savedTransformStyle = element.style.transformStyle
@@ -312,7 +326,10 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
   const naturalWidth = isWideOnLaptop
     ? mobileWidth
     : Math.max(element.offsetWidth || Math.round(element.getBoundingClientRect().width), 320)
-  const naturalHeight = Math.max(element.scrollHeight || element.offsetHeight || Math.round(element.getBoundingClientRect().height), 280)
+  const naturalHeight = Math.max(
+    element.scrollHeight || element.offsetHeight || Math.round(element.getBoundingClientRect().height),
+    targetMinH
+  )
 
   const TRANSPARENT_PIXEL =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIABQABNjN9GQAAAAlwSFlzAAAWJQAAFiUBSVIk8AAAAA0lEQVQI12P4z8BQDwAEgAF/QualzQAAAABJRU5ErkJggg=='
@@ -356,10 +373,12 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
   } finally {
     element.style.transform = savedTransform
     element.style.transformStyle = savedTransformStyle
-    savedStyles.forEach(({ el, width, maxWidth, minWidth }) => {
+    savedStyles.forEach(({ el, width, maxWidth, minWidth, height, minHeight }) => {
       if (width !== undefined) el.style.width = width
       if (maxWidth !== undefined) el.style.maxWidth = maxWidth
       if (minWidth !== undefined) el.style.minWidth = minWidth
+      if (height !== undefined) el.style.height = height
+      if (minHeight !== undefined) el.style.minHeight = minHeight
     })
     if (originalCssRules) {
       Object.defineProperty(CSSStyleSheet.prototype, 'cssRules', originalCssRules)
@@ -381,6 +400,33 @@ export async function downloadCardPng({
     }
 
     const dataUrl = await captureCardDataUrl(element)
+
+    // For invitations, export high-res 720x1280 9:16 image
+    if (cardType === 'invite') {
+      const img = new Image()
+      await new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve()
+        img.onerror = () => reject(new Error('Failed to load captured card image'))
+        img.src = dataUrl
+      })
+
+      const igCanvas = document.createElement('canvas')
+      igCanvas.width = 720
+      igCanvas.height = 1280
+      const ctx = igCanvas.getContext('2d')
+      if (ctx) {
+        ctx.imageSmoothingEnabled = true
+        ctx.imageSmoothingQuality = 'high'
+        ctx.drawImage(img, 0, 0, 720, 1280)
+        const igDataUrl = igCanvas.toDataURL('image/png')
+        const link = document.createElement('a')
+        link.download = `${fileName}.png`
+        link.href = igDataUrl
+        link.click()
+        return true
+      }
+    }
+
     const link = document.createElement('a')
     link.download = `${fileName}.png`
     link.href = dataUrl
