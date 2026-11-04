@@ -578,9 +578,32 @@ function drawDiamondStar(
   c.restore()
 }
 
+function drawSafeRoundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number
+) {
+  if (typeof (ctx as any).roundRect === 'function') {
+    ;(ctx as any).roundRect(x, y, w, h, r)
+  } else {
+    ctx.moveTo(x + r, y)
+    ctx.lineTo(x + w - r, y)
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r)
+    ctx.lineTo(x + w, y + h - r)
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h)
+    ctx.lineTo(x + r, y + h)
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r)
+    ctx.lineTo(x, y + r)
+    ctx.quadraticCurveTo(x, y, x + r, y)
+  }
+}
+
 function computeVideoDimensions(
   img: HTMLImageElement,
-  targetAspectRatio: 'auto' | '9:16' | 'original' = 'auto'
+  targetAspectRatio: 'auto' | '9:16' | 'original' = '9:16'
 ): {
   targetWidth: number
   targetHeight: number
@@ -590,20 +613,67 @@ function computeVideoDimensions(
   cardW: number
   cardH: number
 } {
-  const imgW = img.naturalWidth || img.width || 480
-  const imgH = img.naturalHeight || img.height || 850
+  const imgW = img.naturalWidth || img.width || 720
+  const imgH = img.naturalHeight || img.height || 1280
+  const imgAspect = imgW / Math.max(1, imgH)
 
-  // Natural full-height card video export (like WhatsApp video status):
-  // Scale the video canvas directly to the card's natural aspect ratio.
-  // The card fills 100% of the video edge-to-edge from top to bottom
-  // without stretching the text/data and without any empty space!
-  let targetWidth = 480
-  if (imgW >= 640) {
-    targetWidth = 720
+  // Standard 9:16 mobile story / reel / Instagram resolution (720x1280):
+  // 720 and 1280 are both exact multiples of 16 (720=16*45, 1280=16*80),
+  // which guarantees 100% compatibility with Android hardware encoders (MediaCodec / WebCodecs).
+  const isNineSixteen = targetAspectRatio === '9:16' || targetAspectRatio === 'auto' || imgAspect <= 0.75
+
+  if (isNineSixteen) {
+    const targetWidth = 720
+    const targetHeight = 1280
+
+    // If the image is ALREADY ~9:16 (like poetry stories or full-bleed cards):
+    if (Math.abs(imgAspect - (9 / 16)) < 0.08) {
+      return {
+        targetWidth,
+        targetHeight,
+        isNineSixteen: true,
+        cardX: 0,
+        cardY: 0,
+        cardW: targetWidth,
+        cardH: targetHeight,
+      }
+    }
+
+    // For cards with other aspect ratios (landscape vcards, compact wish cards):
+    // Center the card in the 720x1280 frame with balanced margins, preserving aspect ratio!
+    const maxCardW = 660 // 30px padding on left and right
+    const maxCardH = 1120 // 80px padding top/bottom for header/footer
+    const scale = Math.min(maxCardW / imgW, maxCardH / imgH, 1.45)
+    const cardW = Math.round(imgW * scale)
+    const cardH = Math.round(imgH * scale)
+    const cardX = Math.round((targetWidth - cardW) / 2)
+    const cardY = Math.round((targetHeight - cardH) / 2)
+
+    return {
+      targetWidth,
+      targetHeight,
+      isNineSixteen: true,
+      cardX,
+      cardY,
+      cardW,
+      cardH,
+    }
   }
-  let targetHeight = Math.round(targetWidth * (imgH / imgW))
 
-  // Ensure minimum height
+  // targetAspectRatio === 'original':
+  let targetWidth = imgW
+  let targetHeight = imgH
+
+  if (targetWidth > 720) {
+    const s = 720 / targetWidth
+    targetWidth = 720
+    targetHeight = Math.round(targetHeight * s)
+  } else if (targetWidth < 480) {
+    const s = 480 / targetWidth
+    targetWidth = 480
+    targetHeight = Math.round(targetHeight * s)
+  }
+
   targetHeight = Math.max(360, targetHeight)
 
   // Enforce 16-pixel boundary alignment for Android MediaCodec hardware encoder
@@ -625,10 +695,12 @@ function createCardVideoBaseCanvas({
   img,
   targetWidth,
   targetHeight,
+  isNineSixteen,
   cardX,
   cardY,
   cardW,
   cardH,
+  cardType,
 }: {
   img: HTMLImageElement
   targetWidth: number
@@ -649,8 +721,114 @@ function createCardVideoBaseCanvas({
   bCtx.imageSmoothingEnabled = true
   bCtx.imageSmoothingQuality = 'high'
 
-  // Draw card full-bleed edge-to-edge to fill the video canvas completely
-  bCtx.drawImage(img, cardX, cardY, cardW, cardH)
+  if (isNineSixteen && (cardW < targetWidth || cardH < targetHeight)) {
+    // 1. Draw rich thematic backdrop
+    const bgGrad = bCtx.createLinearGradient(0, 0, targetWidth, targetHeight)
+    if (cardType === 'vcard') {
+      bgGrad.addColorStop(0, '#0a0f1d')
+      bgGrad.addColorStop(0.5, '#111827')
+      bgGrad.addColorStop(1, '#030712')
+    } else if (cardType === 'invite') {
+      bgGrad.addColorStop(0, '#19061c')
+      bgGrad.addColorStop(0.5, '#2a0a25')
+      bgGrad.addColorStop(1, '#0a020c')
+    } else {
+      bgGrad.addColorStop(0, '#0a101f')
+      bgGrad.addColorStop(0.5, '#1e1b4b')
+      bgGrad.addColorStop(1, '#050814')
+    }
+    bCtx.fillStyle = bgGrad
+    bCtx.fillRect(0, 0, targetWidth, targetHeight)
+
+    // Center radial glow
+    const glow = bCtx.createRadialGradient(
+      targetWidth / 2,
+      targetHeight / 2,
+      40,
+      targetWidth / 2,
+      targetHeight / 2,
+      targetHeight * 0.6
+    )
+    if (cardType === 'vcard') {
+      glow.addColorStop(0, 'rgba(212, 175, 55, 0.16)')
+      glow.addColorStop(1, 'rgba(0, 0, 0, 0)')
+    } else if (cardType === 'invite') {
+      glow.addColorStop(0, 'rgba(245, 158, 11, 0.18)')
+      glow.addColorStop(1, 'rgba(0, 0, 0, 0)')
+    } else {
+      glow.addColorStop(0, 'rgba(168, 85, 247, 0.16)')
+      glow.addColorStop(1, 'rgba(0, 0, 0, 0)')
+    }
+    bCtx.fillStyle = glow
+    bCtx.fillRect(0, 0, targetWidth, targetHeight)
+
+    // 2. Ambient blurred background preview of the card
+    bCtx.save()
+    bCtx.globalAlpha = 0.22
+    bCtx.drawImage(img, -40, -40, targetWidth + 80, targetHeight + 80)
+    bCtx.restore()
+
+    // 3. Top header pill
+    bCtx.save()
+    const headerY = Math.max(40, Math.min(cardY - 44, 76))
+    const pillText = cardType === 'vcard'
+      ? '💼 DIGITAL BUSINESS CARD'
+      : cardType === 'invite'
+      ? '✨ CORDIAL INVITATION'
+      : '🎉 SPECIAL GREETING'
+    bCtx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    const textW = bCtx.measureText(pillText).width
+    const pillW = textW + 36
+    const pillH = 34
+    const pillX = (targetWidth - pillW) / 2
+
+    bCtx.fillStyle = 'rgba(15, 23, 42, 0.78)'
+    bCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)'
+    bCtx.lineWidth = 1
+    bCtx.beginPath()
+    drawSafeRoundRect(bCtx, pillX, headerY - 22, pillW, pillH, 17)
+    bCtx.fill()
+    bCtx.stroke()
+
+    bCtx.fillStyle = '#f8fafc'
+    bCtx.textAlign = 'center'
+    bCtx.textBaseline = 'middle'
+    bCtx.fillText(pillText, targetWidth / 2, headerY - 5)
+    bCtx.restore()
+
+    // 4. Draw card with realistic soft drop shadow (pre-rendered ONCE for major speedup!)
+    bCtx.save()
+    bCtx.shadowColor = 'rgba(0, 0, 0, 0.65)'
+    bCtx.shadowBlur = 36
+    bCtx.shadowOffsetY = 18
+    bCtx.drawImage(img, cardX, cardY, cardW, cardH)
+    bCtx.restore()
+
+    // 5. Draw bottom footer pill
+    bCtx.save()
+    const footerY = Math.min(targetHeight - 40, Math.max(cardY + cardH + 44, targetHeight - 74))
+    const footerText = '✦ CARDZY · DIGITAL EXPERIENCES ✦'
+    bCtx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    const footW = bCtx.measureText(footerText).width + 36
+    const footH = 32
+    const footX = (targetWidth - footW) / 2
+
+    bCtx.fillStyle = 'rgba(15, 23, 42, 0.78)'
+    bCtx.strokeStyle = 'rgba(212, 175, 55, 0.35)'
+    bCtx.lineWidth = 1
+    bCtx.beginPath()
+    drawSafeRoundRect(bCtx, footX, footerY - 20, footW, footH, 16)
+    bCtx.fill()
+    bCtx.stroke()
+
+    bCtx.fillStyle = '#fbbf24'
+    bCtx.textAlign = 'center'
+    bCtx.textBaseline = 'middle'
+    bCtx.fillText(footerText, targetWidth / 2, footerY - 4)
+    bCtx.restore()
+  } else {
+    bCtx.drawImage(img, cardX, cardY, cardW, cardH)
+  }
 
   return baseCanvas
 }
@@ -760,7 +938,7 @@ async function recordImageAsMp4WebCodecs({
   occasionId,
   audioTrack,
   audioUrl,
-  targetAspectRatio = 'auto',
+  targetAspectRatio = '9:16',
   durationSeconds = 10,
   onProgress,
 }: {
@@ -1105,7 +1283,7 @@ export async function recordImageAsVideo({
   occasionId,
   audioTrack,
   audioUrl,
-  targetAspectRatio = 'auto',
+  targetAspectRatio = '9:16',
   durationSeconds = 10,
   onProgress,
 }: {
@@ -1445,7 +1623,7 @@ export async function downloadCanvasAsVideo({
   audioTrack = 'friendship-soft',
   audioUrl,
   occasionId,
-  targetAspectRatio = 'auto',
+  targetAspectRatio = '9:16',
   durationSeconds = 10,
   onProgress,
 }: {
@@ -1492,7 +1670,7 @@ export async function downloadCardVideo({
   occasionId,
   audioTrack,
   audioUrl,
-  targetAspectRatio = 'auto',
+  targetAspectRatio = '9:16',
   durationSeconds = 10,
   onProgress,
 }: CardMediaExportOptions): Promise<boolean> {

@@ -321,7 +321,7 @@ function WishPublicContent({ slug }: { slug: string }) {
         cardSlug: slug,
         occasionId: activeWish?.occasionId,
         audioTrack: activeWish?.audioTrack,
-        targetAspectRatio: 'auto',
+        targetAspectRatio: '9:16',
         durationSeconds: 10,
         onProgress: (p) => setVideoProgress(p),
       })
