@@ -312,10 +312,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://firestore.googleapis.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        <script
+        <Script
           src="https://analytics.ahrefs.com/analytics.js"
           data-key="cKRdWrDWn4jrJ4Btb4eAfg"
-          async
+          strategy="afterInteractive"
         />
         {jsonLd.map((item, idx) => (
           <script
@@ -390,8 +390,9 @@ export default function RootLayout({
             `,
           }}
         />
-        <script
+        <Script
           id="cardzy-ad-error-trap"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
