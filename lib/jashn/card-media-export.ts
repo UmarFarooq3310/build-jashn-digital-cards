@@ -1,8 +1,7 @@
 'use client'
 
 import { recordCardShare } from '@/lib/jashn/magic-service'
-import { getDefaultAudioTrackForOccasion, getAudioTrack } from '@/lib/jashn/audio'
-import { getSoundForOccasion, getSoundForInvitationType } from '@/lib/jashn/occasionSoundMap'
+import { getDefaultAudioTrackForOccasion } from '@/lib/jashn/audio'
 import fixWebmDuration from 'fix-webm-duration'
 
 export interface CardMediaExportOptions {
@@ -60,12 +59,9 @@ function getBestVideoMimeType(): { mimeType: string; isRealMp4: boolean } {
   }
 
   const webmTypes = [
-    'video/webm;codecs=h264,opus',
-    'video/webm;codecs=h264',
-    'video/webm;codecs=vp8,opus',
-    'video/webm;codecs=vp8',
     'video/webm;codecs=vp9,opus',
-    'video/webm;codecs=vp9',
+    'video/webm;codecs=vp8,opus',
+    'video/webm;codecs=h264',
     'video/webm',
   ]
 
@@ -105,17 +101,10 @@ async function getFFmpegInstance(): Promise<any> {
 
     const ffmpeg = new FFmpeg()
     const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.9/dist/umd'
-
-    const loadTask = ffmpeg.load({
+    await ffmpeg.load({
       coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
       wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
     })
-
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('FFmpeg CDN download timed out')), 25000)
-    )
-
-    await Promise.race([loadTask, timeoutPromise])
 
     ffmpegInstance = ffmpeg
     return ffmpeg
@@ -131,8 +120,7 @@ async function getFFmpegInstance(): Promise<any> {
 
 async function convertWebmToMp4(
   webmBlob: Blob,
-  onProgress?: (percent: number) => void,
-  sourceMime?: string
+  onProgress?: (percent: number) => void
 ): Promise<Blob | null> {
   try {
     const ffmpeg = await getFFmpegInstance()
@@ -150,43 +138,17 @@ async function convertWebmToMp4(
       const inputData = new Uint8Array(await webmBlob.arrayBuffer())
       await ffmpeg.writeFile('input.webm', inputData)
 
-      // Fast path: if the browser captured H.264 video, copy the video stream directly (remux in ~0.5s instead of full re-encoding)
-      let remuxSuccess = false
-      const isAlreadyH264 = Boolean(
-        sourceMime && (sourceMime.includes('h264') || sourceMime.includes('avc'))
-      )
-
-      if (isAlreadyH264) {
-        try {
-          await ffmpeg.exec([
-            '-i', 'input.webm',
-            '-c:v', 'copy',
-            '-c:a', 'aac',
-            '-b:a', '128k',
-            '-movflags', '+faststart',
-            'output.mp4',
-          ])
-          remuxSuccess = true
-        } catch {
-          // If remuxing fails, fall through to transcode below
-        }
-      }
-
-      if (!remuxSuccess) {
-        await ffmpeg.exec([
-          '-i', 'input.webm',
-          '-c:v', 'libx264',
-          '-preset', 'ultrafast',
-          '-tune', 'fastdecode',
-          '-crf', '26',
-          '-threads', '0',
-          '-pix_fmt', 'yuv420p',
-          '-c:a', 'aac',
-          '-b:a', '128k',
-          '-movflags', '+faststart',
-          'output.mp4',
-        ])
-      }
+      await ffmpeg.exec([
+        '-i', 'input.webm',
+        '-c:v', 'libx264',
+        '-preset', 'ultrafast',
+        '-crf', '23',
+        '-pix_fmt', 'yuv420p',
+        '-c:a', 'aac',
+        '-b:a', '128k',
+        '-movflags', '+faststart',
+        'output.mp4',
+      ])
 
       const outputData = await ffmpeg.readFile('output.mp4')
       const mp4Blob = new Blob([outputData as Uint8Array], { type: 'video/mp4' })
@@ -209,43 +171,6 @@ async function convertWebmToMp4(
 }
 
 function resolveSoundUrl(audioTrack?: string, cardType?: string, occasionId?: string): string {
-  // 1. Explicitly silent
-  if (audioTrack === 'none') {
-    return ''
-  }
-
-  // 2. Custom or provided audioTrack
-  if (audioTrack && audioTrack.trim()) {
-    const clean = audioTrack.trim()
-    // Data URL, Blob URL, Absolute HTTP URL, or local public path starting with /
-    if (
-      clean.startsWith('data:') ||
-      clean.startsWith('blob:') ||
-      clean.startsWith('http://') ||
-      clean.startsWith('https://') ||
-      clean.startsWith('/')
-    ) {
-      return clean
-    }
-
-    // Resolve via getAudioTrack (covers all 20+ AUDIO_TRACKS, aliases, and names)
-    const trackObj = getAudioTrack(clean)
-    if (trackObj && trackObj.id !== 'none' && trackObj.src) {
-      return trackObj.src
-    }
-
-    // Check occasionSoundMap
-    const mapped = getSoundForOccasion(clean) || getSoundForInvitationType(clean)
-    if (mapped) {
-      return mapped
-    }
-
-    if (clean.endsWith('.m4a') || clean.endsWith('.mp3') || clean.endsWith('.wav')) {
-      return `/${clean}`
-    }
-  }
-
-  // 3. Fallback to occasion if no custom audio was specified
   if (occasionId) {
     const cleanOccasion = occasionId.toLowerCase().trim()
     if (
@@ -256,28 +181,76 @@ function resolveSoundUrl(audioTrack?: string, cardType?: string, occasionId?: st
       cleanOccasion.includes('chelum') ||
       cleanOccasion.includes('majlis')
     ) {
-      return ''
-    }
-
-    const defaultOccasionTrack = getDefaultAudioTrackForOccasion(occasionId)
-    if (defaultOccasionTrack === 'none') return ''
-    if (defaultOccasionTrack) {
-      const defaultObj = getAudioTrack(defaultOccasionTrack)
-      if (defaultObj && defaultObj.id !== 'none' && defaultObj.src) {
-        return defaultObj.src
+      if (!audioTrack || audioTrack === 'none' || audioTrack === 'birthday-dholki' || audioTrack === 'birthday-festive') {
+        return ''
       }
-    }
-
-    const occasionSound = getSoundForOccasion(occasionId) || getSoundForInvitationType(occasionId)
-    if (occasionSound) {
-      return occasionSound
     }
   }
 
-  // 4. Default fallbacks by cardType
+  if (audioTrack && audioTrack !== 'none') {
+    if (audioTrack.startsWith('/')) return audioTrack
+    const trackMap: Record<string, string> = {
+      'friendship-soft': '/sounds/friendship-soft.m4a',
+      'friendship': '/sounds/friendship-soft.m4a',
+      'soft': '/sounds/friendship-soft.m4a',
+      'poetry': '/sounds/friendship-soft.m4a',
+      'wedding-shehnai': '/sounds/wedding-shehnai.m4a',
+      'wedding': '/sounds/wedding.m4a',
+      'punjabi-bhangra': '/sounds/mehndi-dholki.m4a',
+      'punjabi-bhangra-dhol': '/sounds/mehndi-dholki.m4a',
+      'dholak-tappe': '/sounds/mehndi-dholki.m4a',
+      'birthday-festive': '/sounds/birthday-dholki.m4a',
+      'birthday-dholki': '/sounds/birthday-dholki.m4a',
+      'birthday': '/sounds/birthday.m4a',
+      'indian-sitar': '/sounds/wedding.m4a',
+      'indian-sitar-classical': '/sounds/wedding.m4a',
+      'romantic-strings': '/sounds/romantic-strings.m4a',
+      'romantic-piano': '/sounds/romantic-piano.m4a',
+      'islamic-oud': '/sounds/islamic.m4a',
+      'islamic-chime': '/sounds/eid-chime.m4a',
+      'sufi-harmonium': '/sounds/sufi-harmonium.m4a',
+      'corporate-ambient': '/sounds/corporate-ambient.m4a',
+      'celebration-party': '/sounds/celebration-party.m4a',
+      'festive-garba': '/sounds/festive.m4a',
+      'baby-lullaby': '/sounds/baby-lullaby.m4a',
+      'holiday-bells': '/sounds/holiday-bells.m4a',
+      'festive': '/sounds/festive.m4a',
+      'general': '/sounds/general.m4a',
+    }
+    if (trackMap[audioTrack]) return trackMap[audioTrack]
+  }
+
+  if (occasionId) {
+    const defaultOccasionTrack = getDefaultAudioTrackForOccasion(occasionId)
+    if (defaultOccasionTrack === 'none') return ''
+    if (defaultOccasionTrack) {
+      const trackMap: Record<string, string> = {
+        'wedding-shehnai': '/sounds/wedding-shehnai.m4a',
+        'punjabi-bhangra': '/sounds/mehndi-dholki.m4a',
+        'dholak-tappe': '/sounds/mehndi-dholki.m4a',
+        'birthday-festive': '/sounds/birthday-dholki.m4a',
+        'birthday-dholki': '/sounds/birthday-dholki.m4a',
+        'indian-sitar': '/sounds/wedding.m4a',
+        'romantic-strings': '/sounds/romantic-strings.m4a',
+        'romantic-piano': '/sounds/romantic-piano.m4a',
+        'islamic-oud': '/sounds/islamic.m4a',
+        'islamic-chime': '/sounds/eid-chime.m4a',
+        'sufi-harmonium': '/sounds/sufi-harmonium.m4a',
+        'corporate-ambient': '/sounds/corporate-ambient.m4a',
+        'celebration-party': '/sounds/celebration-party.m4a',
+        'festive-garba': '/sounds/festive.m4a',
+        'baby-lullaby': '/sounds/baby-lullaby.m4a',
+        'holiday-bells': '/sounds/holiday-bells.m4a',
+        'festive': '/sounds/festive.m4a',
+        'general': '/sounds/general.m4a',
+      }
+      if (trackMap[defaultOccasionTrack]) return trackMap[defaultOccasionTrack]
+    }
+  }
+
   if (cardType === 'poetry') return '/sounds/friendship-soft.m4a'
   if (cardType === 'invite') return '/sounds/wedding-shehnai.m4a'
-  if (cardType === 'vcard') return '/sounds/friendship-soft.m4a'
+  if (cardType === 'vcard') return '/sounds/corporate-ambient.m4a'
   if (cardType === 'wish') return '/sounds/birthday-dholki.m4a'
   return '/sounds/festive.m4a'
 }
@@ -290,14 +263,8 @@ function extractErrorMessage(e: unknown): string {
   return String(e)
 }
 
-/**
- * Captures a DOM element to an HTMLCanvasElement using html-to-image.
- * Used by both downloadCardVideo and downloadCardPng so they share the
- * same capture logic, and downloadCardVideo can use the memory-efficient
- * blob-URL path instead of a large base64 data URL string.
- */
-async function captureCardCanvas(element: HTMLElement, forVideo = false): Promise<HTMLCanvasElement> {
-  const { toCanvas } = await import('html-to-image')
+async function captureCardDataUrl(element: HTMLElement): Promise<string> {
+  const { toPng } = await import('html-to-image')
 
   const originalCssRules = Object.getOwnPropertyDescriptor(CSSStyleSheet.prototype, 'cssRules')
   if (originalCssRules) {
@@ -313,106 +280,19 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
     })
   }
 
-  // ── Temporarily expand all scrollable / max-height containers so the
-  // FULL text is captured — not just the visible scrolled portion.
-  // This fixes wish cards (and any other card) where the message sits
-  // inside a max-h-* overflow-y-auto box. Styles are restored after
-  // capture so the live page is unaffected.
-  const savedStyles: {
-    el: HTMLElement
-    maxHeight: string
-    overflow: string
-    overflowY: string
-    height: string
-    width?: string
-    maxWidth?: string
-    minWidth?: string
-    minHeight?: string
-  }[] = []
+  const rect = element.getBoundingClientRect()
+  const offsetW = element.offsetWidth || 0
+  const rectW = Math.round(rect.width) || 0
+  const naturalWidth = Math.max(offsetW || rectW, 320)
 
-  // If capturing on desktop where the card is rendered wide (e.g. > 460px),
-  // temporarily constrain to standard mobile card width (430px) during capture
-  // so that headings, message fonts, avatars, and decorations render at their
-  // maximum scale to cover the full vertical card, exactly like mobile downloads.
-  const isWideScreen = element.offsetWidth > 460
-  const exportWidth = 430
-
-  if (isWideScreen) {
-    savedStyles.push({
-      el: element,
-      maxHeight: element.style.maxHeight,
-      overflow: element.style.overflow,
-      overflowY: element.style.overflowY,
-      height: element.style.height,
-      width: element.style.width,
-      maxWidth: element.style.maxWidth,
-      minWidth: element.style.minWidth,
-    })
-    element.style.width = `${exportWidth}px`
-    element.style.maxWidth = `${exportWidth}px`
-    element.style.minWidth = `${exportWidth}px`
-  }
-
-  // Size the card container to match 9:16 mobile story aspect ratio (430x764)
-  // so BOTH Image and Video downloads fill the screen completely from edge-to-edge
-  // and top-to-bottom as ONE full card with exact identical dimensions and zero stretching!
-  const targetMinH = Math.round(exportWidth * (1280 / 720))
-  if (element.scrollHeight < targetMinH) {
-    savedStyles.push({
-      el: element,
-      maxHeight: element.style.maxHeight,
-      overflow: element.style.overflow,
-      overflowY: element.style.overflowY,
-      height: element.style.height,
-      minHeight: element.style.minHeight,
-    })
-    element.style.minHeight = `${targetMinH}px`
-  }
-
-  // Temporarily reset any active 3D transforms (e.g. GSAP hover tilt) during capture
-  // so the captured card is measured flat and not clipped or distorted in SVG foreignObject
-  const savedTransform = element.style.transform
-  const savedTransformStyle = element.style.transformStyle
-  element.style.transform = 'none'
-  element.style.transformStyle = 'flat'
-
-  const expandElement = (el: HTMLElement) => {
-    const computed = window.getComputedStyle(el)
-    if (
-      computed.maxHeight !== 'none' ||
-      computed.overflowY === 'auto' ||
-      computed.overflowY === 'scroll'
-    ) {
-      savedStyles.push({
-        el,
-        maxHeight: el.style.maxHeight,
-        overflow: el.style.overflow,
-        overflowY: el.style.overflowY,
-        height: el.style.height,
-      })
-      el.style.maxHeight = 'none'
-      el.style.overflow = 'visible'
-      el.style.overflowY = 'visible'
-    }
-  }
-
-  // Expand the root element itself
-  expandElement(element)
-  // Expand only scrollable / max-height candidates (instant, avoids 100+ synchronous style recalcs)
-  const scrollCandidates = element.querySelectorAll<HTMLElement>(
-    '.overflow-y-auto, .overflow-auto, [class*="max-h-"], [class*="overflow-"], [style*="max-height"], [style*="overflow"]'
-  )
-  scrollCandidates.forEach(expandElement)
-
-  // Force a synchronous reflow so scrollHeight reflects the expanded layout
-  const naturalWidth = Math.max(element.offsetWidth || Math.round(element.getBoundingClientRect().width), 320)
-  const naturalHeight = Math.max(element.scrollHeight, 280)
-  const captureHeight = naturalHeight
+  const offsetH = element.offsetHeight || 0
+  const rectH = Math.round(rect.height) || 0
+  const naturalHeight = Math.max(offsetH || rectH, 280)
 
   const TRANSPARENT_PIXEL =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIABQABNjN9GQAAAAlwSFlzAAAWJQAAFiUBSVIk8AAAAA0lEQVQI12P4z8BQDwAEgAF/QualzQAAAABJRU5ErkJggg=='
 
-  const captureOptions = {
+  const toPngOptions = {
     cacheBust: true,
     filter: (node: Node) => {
       const el = node as HTMLElement
@@ -423,12 +303,8 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
       return true
     },
     width: naturalWidth,
-    height: captureHeight,
-    // Use pixelRatio 1 for video — the video encoder scales down to 720px
-    // width anyway, so 2x capture is wasted work that doubles capture time
-    // for invitation/wish/vcard cards with complex DOM. Keep 2x for PNG
-    // downloads where sharpness matters.
-    pixelRatio: forVideo ? 1 : 2,
+    height: naturalHeight,
+    pixelRatio: 2,
     imagePlaceholder: TRANSPARENT_PIXEL,
     skipFonts: false,
     fetchRequestInit: { cache: 'force-cache' as RequestCache },
@@ -444,70 +320,19 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
       maxWidth: `${naturalWidth}px`,
       minWidth: `${naturalWidth}px`,
       width: `${naturalWidth}px`,
-      height: `${captureHeight}px`,
-      minHeight: `${captureHeight}px`,
+      height: `${naturalHeight}px`,
     },
   }
 
   try {
-    return await toCanvas(element, captureOptions)
+    return await toPng(element, toPngOptions)
   } catch {
-    return await toCanvas(element, { ...captureOptions, skipFonts: true, pixelRatio: 1 })
+    return await toPng(element, { ...toPngOptions, skipFonts: true, pixelRatio: 1 })
   } finally {
-    // Restore 3D transform styles
-    element.style.transform = savedTransform
-    element.style.transformStyle = savedTransformStyle
-
-    // Restore all temporarily expanded elements
-    savedStyles.forEach(({ el, maxHeight, overflow, overflowY, height, width, maxWidth, minWidth, minHeight }) => {
-      el.style.maxHeight = maxHeight
-      el.style.overflow = overflow
-      el.style.overflowY = overflowY
-      el.style.height = height
-      if (width !== undefined) el.style.width = width
-      if (maxWidth !== undefined) el.style.maxWidth = maxWidth
-      if (minWidth !== undefined) el.style.minWidth = minWidth
-      if (minHeight !== undefined) el.style.minHeight = minHeight
-    })
     if (originalCssRules) {
       Object.defineProperty(CSSStyleSheet.prototype, 'cssRules', originalCssRules)
     }
   }
-}
-
-async function captureCardDataUrl(element: HTMLElement): Promise<string> {
-  const canvas = await captureCardCanvas(element)
-  return canvas.toDataURL('image/png')
-}
-
-/**
- * Converts a canvas to an Image using blob URLs for mobile memory efficiency.
- * canvas.toDataURL on a large canvas produces a multi-MB base64 string that
- * can cause Image loading to fail on Android — which forces a fallback to
- * MediaRecorder (known "00:01" duration bug). Blob URLs are far lighter.
- * Returns the Image and the URL so the caller can revoke it after use.
- */
-async function canvasToImage(canvas: HTMLCanvasElement): Promise<{ img: HTMLImageElement; imgUrl: string }> {
-  const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, 'image/png')
-  )
-
-  let imgUrl: string
-  if (blob && blob.size > 0) {
-    imgUrl = URL.createObjectURL(blob)
-  } else {
-    // Fallback for very old browsers without toBlob
-    imgUrl = canvas.toDataURL('image/png')
-  }
-
-  const img = new Image()
-  img.src = imgUrl
-  await new Promise((resolve, reject) => {
-    img.onload = resolve
-    img.onerror = () => reject(new Error('Image load failed'))
-  })
-
-  return { img, imgUrl }
 }
 
 export async function downloadCardPng({
@@ -523,20 +348,7 @@ export async function downloadCardPng({
       recordCardShare(cardType, cardSlug, 'image')
     }
 
-    const capturedCanvas = await captureCardCanvas(element)
-
-    // Render to exact 720x1280 resolution so image size is identical to video
-    const finalCanvas = document.createElement('canvas')
-    finalCanvas.width = 720
-    finalCanvas.height = 1280
-    const ctx = finalCanvas.getContext('2d')
-    if (ctx) {
-      ctx.imageSmoothingEnabled = true
-      ctx.imageSmoothingQuality = 'high'
-      ctx.drawImage(capturedCanvas, 0, 0, 720, 1280)
-    }
-
-    const dataUrl = (ctx ? finalCanvas : capturedCanvas).toDataURL('image/png')
+    const dataUrl = await captureCardDataUrl(element)
     const link = document.createElement('a')
     link.download = `${fileName}.png`
     link.href = dataUrl
@@ -580,210 +392,10 @@ function drawDiamondStar(
   c.restore()
 }
 
-function computeVideoDimensions(
-  img: HTMLImageElement,
-  targetAspectRatio: 'auto' | '9:16' | 'original' = '9:16'
-): {
-  targetWidth: number
-  targetHeight: number
-  isNineSixteen: boolean
-  cardX: number
-  cardY: number
-  cardW: number
-  cardH: number
-} {
-  const imgW = img.naturalWidth || img.width || 720
-  const imgH = img.naturalHeight || img.height || 1280
-  const imgAspect = imgW / Math.max(1, imgH)
-
-  // Standard 9:16 mobile story / reel resolution (720x1280):
-  // 720 and 1280 are both exact multiples of 16 (720=16*45, 1280=16*80),
-  // which guarantees 100% compatibility with Android hardware encoders (MediaCodec / WebCodecs).
-  const isNineSixteen = targetAspectRatio === '9:16' || targetAspectRatio === 'auto' || imgAspect <= 0.75
-
-  if (isNineSixteen) {
-    const targetWidth = 720
-    const targetHeight = 1280
-
-    // Full-bleed edge-to-edge 9:16 mobile video (WhatsApp Status / Instagram Story / Reels)
-    return {
-      targetWidth,
-      targetHeight,
-      isNineSixteen: true,
-      cardX: 0,
-      cardY: 0,
-      cardW: targetWidth,
-      cardH: targetHeight,
-    }
-  }
-
-  // targetAspectRatio === 'original':
-  let targetWidth = imgW
-  let targetHeight = imgH
-
-  if (targetWidth > 720) {
-    const s = 720 / targetWidth
-    targetWidth = 720
-    targetHeight = Math.round(targetHeight * s)
-  } else if (targetWidth < 480) {
-    const s = 480 / targetWidth
-    targetWidth = 480
-    targetHeight = Math.round(targetHeight * s)
-  }
-
-  targetHeight = Math.max(360, targetHeight)
-
-  // Enforce 16-pixel boundary alignment for Android MediaCodec hardware encoder
-  targetWidth = Math.round(targetWidth / 16) * 16
-  targetHeight = Math.round(targetHeight / 16) * 16
-
-  return {
-    targetWidth,
-    targetHeight,
-    isNineSixteen: false,
-    cardX: 0,
-    cardY: 0,
-    cardW: targetWidth,
-    cardH: targetHeight,
-  }
-}
-
-function createCardVideoBaseCanvas({
-  img,
-  targetWidth,
-  targetHeight,
-  isNineSixteen,
-  cardX,
-  cardY,
-  cardW,
-  cardH,
-}: {
-  img: HTMLImageElement
-  targetWidth: number
-  targetHeight: number
-  isNineSixteen: boolean
-  cardX: number
-  cardY: number
-  cardW: number
-  cardH: number
-  cardType?: string
-}): HTMLCanvasElement {
-  const baseCanvas = document.createElement('canvas')
-  baseCanvas.width = targetWidth
-  baseCanvas.height = targetHeight
-  const bCtx = baseCanvas.getContext('2d', { alpha: false })
-  if (!bCtx) return baseCanvas
-
-  bCtx.imageSmoothingEnabled = true
-  bCtx.imageSmoothingQuality = 'high'
-
-  if (isNineSixteen) {
-    // Full-bleed edge-to-edge: ONE complete card on full screen — NO card inside card!
-    bCtx.drawImage(img, 0, 0, targetWidth, targetHeight)
-  } else {
-    bCtx.drawImage(img, cardX, cardY, cardW, cardH)
-  }
-
-  return baseCanvas
-}
-
-function drawCardVideoFrame({
-  ctx,
-  baseCanvas,
-  t,
-  elapsed,
-  dtFactor,
-  targetWidth,
-  targetHeight,
-  ribbons,
-  stars,
-}: {
-  ctx: CanvasRenderingContext2D
-  baseCanvas: HTMLCanvasElement
-  t: number
-  elapsed: number
-  dtFactor: number
-  targetWidth: number
-  targetHeight: number
-  ribbons: any[]
-  stars: any[]
-}) {
-  // 1. Instantly blit the pre-rendered base canvas (single fast GPU drawImage)
-  ctx.drawImage(baseCanvas, 0, 0)
-
-  // 2. Micro-pixel noise to force Android GPU hardware encoder to serialize every frame
-  ctx.fillStyle = (Math.floor(elapsed / 100) % 2 === 0) ? 'rgba(255, 255, 255, 0.008)' : 'rgba(0, 0, 0, 0.008)'
-  ctx.fillRect(0, 0, 2, 2)
-
-  // 3. Shimmer sheen sweep
-  const sheenPeriod = 2.4
-  const cycleProgress = (t % sheenPeriod) / sheenPeriod
-  const sheenAlpha = Math.sin(cycleProgress * Math.PI) * 0.8
-  const sheenPos = -targetWidth * 0.4 + cycleProgress * (targetWidth * 1.8)
-
-  ctx.save()
-  ctx.globalCompositeOperation = 'screen'
-  const beamGrad = ctx.createLinearGradient(
-    sheenPos,
-    0,
-    sheenPos + targetWidth * 0.35,
-    targetHeight
-  )
-  beamGrad.addColorStop(0, 'rgba(255, 255, 255, 0)')
-  beamGrad.addColorStop(0.5, `rgba(255, 255, 255, ${0.75 * sheenAlpha})`)
-  beamGrad.addColorStop(1, 'rgba(255, 255, 255, 0)')
-  ctx.fillStyle = beamGrad
-  ctx.fillRect(0, 0, targetWidth, targetHeight)
-  ctx.restore()
-
-  // 4. Confetti ribbons
-  ctx.save()
-  for (let i = 0; i < ribbons.length; i++) {
-    const r = ribbons[i]
-    r.y += r.vy * dtFactor
-    r.x += (r.vx + Math.sin(t * r.wobbleSpeed + r.wobbleOffset) * 0.8) * dtFactor
-    r.rotX += r.speedX * dtFactor
-    r.rotY += r.speedY * dtFactor
-    r.rotZ += r.speedZ * dtFactor
-    if (r.y > targetHeight + 30) {
-      r.y = -30
-      r.x = Math.random() * targetWidth
-    }
-
-    ctx.save()
-    ctx.translate(r.x, r.y)
-    ctx.rotate(r.rotZ)
-    const scaleX = Math.cos(r.rotY)
-    const scaleY = Math.sin(r.rotX)
-    ctx.scale(scaleX, scaleY)
-    ctx.fillStyle = r.color
-    ctx.fillRect(-r.w / 2, -r.h / 2, r.w, r.h)
-    ctx.restore()
-  }
-  ctx.restore()
-
-  // 5. Diamond stars
-  ctx.save()
-  ctx.globalCompositeOperation = 'screen'
-  for (let i = 0; i < stars.length; i++) {
-    const s = stars[i]
-    s.y -= s.speedY * dtFactor
-    if (s.y < -20) {
-      s.y = targetHeight + 20
-      s.x = Math.random() * targetWidth
-    }
-    const posX = s.x + Math.sin(t * 1.5 + s.wobbleOffset) * 6
-    const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed + s.twinkleOffset)
-    drawDiamondStar(ctx, posX, s.y, s.size, twinkle, t * s.rotSpeed)
-  }
-  ctx.restore()
-}
-
 /**
  * Records the card video using WebCodecs API + mp4-muxer.
  * Produces a true H.264/AAC MP4 directly — no WebM, no ffmpeg.wasm, no CDN download.
  * Works on Chrome 94+ (including Android Chrome) and Safari 16.4+.
- * Guarantees standard 10-second duration and ultra-fast (1-2s) offline encoding.
  */
 async function recordImageAsMp4WebCodecs({
   img,
@@ -792,7 +404,6 @@ async function recordImageAsMp4WebCodecs({
   occasionId,
   audioTrack,
   audioUrl,
-  targetAspectRatio = '9:16',
   durationSeconds = 10,
   onProgress,
 }: {
@@ -802,28 +413,28 @@ async function recordImageAsMp4WebCodecs({
   occasionId?: string
   audioTrack?: string
   audioUrl?: string
-  targetAspectRatio?: 'auto' | '9:16' | 'original'
   durationSeconds?: number
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
   const DURATION_SEC = Math.max(5, durationSeconds || 10)
+  const DURATION_MS = DURATION_SEC * 1000
 
-  // ── Compute 16-pixel aligned video dimensions (default 720x1280 9:16) ──
-  const dims = computeVideoDimensions(img, targetAspectRatio)
-  const { targetWidth, targetHeight, isNineSixteen, cardX, cardY, cardW, cardH } = dims
+  // ── Canvas setup ──
+  const MAX_VIDEO_WIDTH = 720
+  let targetWidth = img.naturalWidth || img.width || 720
+  let targetHeight = img.naturalHeight || img.height || 1280
 
-  // Pre-render static card, drop shadow, background glow, and badges ONCE (major speedup!)
-  const baseCanvas = createCardVideoBaseCanvas({
-    img,
-    targetWidth,
-    targetHeight,
-    isNineSixteen,
-    cardX,
-    cardY,
-    cardW,
-    cardH,
-    cardType,
-  })
+  if (targetWidth > MAX_VIDEO_WIDTH) {
+    const scale = MAX_VIDEO_WIDTH / targetWidth
+    targetWidth = MAX_VIDEO_WIDTH
+    targetHeight = Math.round(targetHeight * scale)
+  } else if (targetWidth < 480) {
+    const scale = 480 / targetWidth
+    targetWidth = 480
+    targetHeight = Math.round(targetHeight * scale)
+  }
+  if (targetWidth % 2 !== 0) targetWidth += 1
+  if (targetHeight % 2 !== 0) targetHeight += 1
 
   const canvas = document.createElement('canvas')
   canvas.width = targetWidth
@@ -834,23 +445,11 @@ async function recordImageAsMp4WebCodecs({
   ctx.imageSmoothingQuality = 'high'
 
   // ── Check WebCodecs + H.264 support ──
-  if (typeof VideoEncoder === 'undefined') {
-    throw new Error('VideoEncoder not supported')
+  if (typeof VideoEncoder === 'undefined' || typeof AudioEncoder === 'undefined') {
+    throw new Error('WebCodecs not supported')
   }
 
-  // Broad set of H.264 profiles covering all Android chipsets & iOS versions
-  const codecCandidates = [
-    'avc1.42E01E', // Baseline Level 3.0 (broadest mobile hardware support)
-    'avc1.42E01F', // Baseline Level 3.1
-    'avc1.42001E', // Constrained Baseline Level 3.0
-    'avc1.42001F',
-    'avc1.4D401E', // Main Level 3.0
-    'avc1.4D401F', // Main Level 3.1
-    'avc1.4D4028', // Main Level 4.0
-    'avc1.64001F', // High Level 3.1
-    'avc1.640028', // High Level 4.0
-  ]
-
+  const codecCandidates = ['avc1.4D401F', 'avc1.42E01F', 'avc1.64001F']
   let videoConfig: VideoEncoderConfig | null = null
   for (const codec of codecCandidates) {
     const cfg: VideoEncoderConfig = {
@@ -869,74 +468,45 @@ async function recordImageAsMp4WebCodecs({
       }
     } catch {}
   }
-  if (!videoConfig) throw new Error('No H.264 video codec supported for dimensions')
+  if (!videoConfig) throw new Error('No H.264 codec supported')
 
-  // ── Probe AudioEncoder Support ──
+  // ── Render audio offline ──
   const SAMPLE_RATE = 44100
   const NUM_CHANNELS = 2
   const totalAudioSamples = Math.ceil(SAMPLE_RATE * DURATION_SEC)
+  const offlineCtx = new OfflineAudioContext(NUM_CHANNELS, totalAudioSamples, SAMPLE_RATE)
 
-  let audioConfigured = false
-  let audioCandidateConfig: AudioEncoderConfig | null = null
-
-  if (typeof AudioEncoder !== 'undefined') {
-    const audioCandidates: AudioEncoderConfig[] = [
-      { codec: 'mp4a.40.2', sampleRate: SAMPLE_RATE, numberOfChannels: NUM_CHANNELS, bitrate: 128000 },
-      { codec: 'mp4a.40.02', sampleRate: SAMPLE_RATE, numberOfChannels: NUM_CHANNELS, bitrate: 128000 },
-    ]
-    for (const ac of audioCandidates) {
-      try {
-        const sup = await AudioEncoder.isConfigSupported(ac)
-        if (sup.supported) {
-          audioCandidateConfig = ac
-          audioConfigured = true
-          break
-        }
-      } catch {}
-    }
-  }
-
-  // ── Render audio offline if AudioEncoder is available ──
-  let renderedAudio: AudioBuffer | null = null
-  if (audioConfigured) {
+  const soundSrc = resolveSoundUrl(audioTrack || audioUrl, cardType, occasionId)
+  if (soundSrc) {
     try {
-      const AudioCtxClass = window.OfflineAudioContext || (window as any).webkitOfflineAudioContext
-      if (AudioCtxClass) {
-        const offlineCtx = new AudioCtxClass(NUM_CHANNELS, totalAudioSamples, SAMPLE_RATE)
-        const soundSrc = resolveSoundUrl(audioTrack || audioUrl, cardType, occasionId)
-        if (soundSrc) {
-          try {
-            const res = await fetch(soundSrc)
-            if (res.ok) {
-              const arr = await res.arrayBuffer()
-              const audioBuf = await offlineCtx.decodeAudioData(arr)
-              const srcNode = offlineCtx.createBufferSource()
-              srcNode.buffer = audioBuf
-              srcNode.loop = true
+      const res = await fetch(soundSrc)
+      if (res.ok) {
+        const arr = await res.arrayBuffer()
+        const audioBuf = await offlineCtx.decodeAudioData(arr)
+        const srcNode = offlineCtx.createBufferSource()
+        srcNode.buffer = audioBuf
+        srcNode.loop = true
 
-              const gain = offlineCtx.createGain()
-              gain.gain.setValueAtTime(0.001, 0)
-              gain.gain.exponentialRampToValueAtTime(0.75, 0.35)
-              const fadeOutStart = Math.max(0.5, DURATION_SEC - 0.8)
-              gain.gain.setValueAtTime(0.75, fadeOutStart)
-              gain.gain.exponentialRampToValueAtTime(0.001, DURATION_SEC)
+        const gain = offlineCtx.createGain()
+        gain.gain.setValueAtTime(0.001, 0)
+        gain.gain.exponentialRampToValueAtTime(0.75, 0.35)
+        const fadeOutStart = Math.max(0.5, DURATION_SEC - 0.8)
+        gain.gain.setValueAtTime(0.75, fadeOutStart)
+        gain.gain.exponentialRampToValueAtTime(0.001, DURATION_SEC)
 
-              srcNode.connect(gain)
-              gain.connect(offlineCtx.destination)
-              srcNode.start(0)
-            }
-          } catch {}
-        }
-        renderedAudio = await offlineCtx.startRendering()
+        srcNode.connect(gain)
+        gain.connect(offlineCtx.destination)
+        srcNode.start(0)
       }
-    } catch {
-      audioConfigured = false
-    }
+    } catch {}
   }
+
+  const renderedAudio = await offlineCtx.startRendering()
+  const audioChannels = Math.min(renderedAudio.numberOfChannels, NUM_CHANNELS)
 
   // ── Set up mp4-muxer ──
   const { Muxer, ArrayBufferTarget } = await import('mp4-muxer')
-  const muxerConfig: any = {
+  const muxer = new Muxer({
     target: new ArrayBufferTarget(),
     video: {
       codec: 'avc',
@@ -944,17 +514,14 @@ async function recordImageAsMp4WebCodecs({
       height: targetHeight,
       frameRate: 30,
     },
-    fastStart: 'in-memory',
-    firstTimestampBehavior: 'offset',
-  }
-  if (audioConfigured) {
-    muxerConfig.audio = {
+    audio: {
       codec: 'aac',
       sampleRate: SAMPLE_RATE,
       numberOfChannels: NUM_CHANNELS,
-    }
-  }
-  const muxer = new Muxer(muxerConfig)
+    },
+    fastStart: 'in-memory',
+    firstTimestampBehavior: 'offset',
+  })
 
   // ── Set up video encoder ──
   let videoError: Error | null = null
@@ -964,50 +531,46 @@ async function recordImageAsMp4WebCodecs({
   })
   videoEncoder.configure(videoConfig)
 
-  // ── Set up audio encoder if configured ──
-  let audioEncoder: AudioEncoder | null = null
-  if (audioConfigured && audioCandidateConfig && renderedAudio) {
-    try {
-      audioEncoder = new AudioEncoder({
-        output: (chunk, meta) => muxer.addAudioChunk(chunk, meta),
-        error: (e) => {
-          console.warn('AudioEncoder warning:', e)
-        },
-      })
-      audioEncoder.configure(audioCandidateConfig)
+  // ── Set up audio encoder ──
+  let audioError: Error | null = null
+  const audioEncoder = new AudioEncoder({
+    output: (chunk, meta) => muxer.addAudioChunk(chunk, meta),
+    error: (e) => { audioError = e instanceof Error ? e : new Error(String(e)) },
+  })
+  audioEncoder.configure({
+    codec: 'mp4a.40.2',
+    sampleRate: SAMPLE_RATE,
+    numberOfChannels: NUM_CHANNELS,
+    bitrate: 128000,
+  })
 
-      const audioChannels = Math.min(renderedAudio.numberOfChannels, NUM_CHANNELS)
-      const channelData: Float32Array[] = []
-      for (let ch = 0; ch < audioChannels; ch++) {
-        channelData.push(renderedAudio.getChannelData(ch))
-      }
+  // ── Encode audio in 1024-sample chunks ──
+  const channelData: Float32Array[] = []
+  for (let ch = 0; ch < audioChannels; ch++) {
+    channelData.push(renderedAudio.getChannelData(ch))
+  }
 
-      for (let offset = 0; offset < totalAudioSamples; offset += 1024) {
-        const frameCount = Math.min(1024, totalAudioSamples - offset)
-        const planar = new Float32Array(frameCount * NUM_CHANNELS)
-        for (let ch = 0; ch < NUM_CHANNELS; ch++) {
-          const src = ch < audioChannels ? channelData[ch] : channelData[0]
-          planar.set(src.subarray(offset, offset + frameCount), ch * frameCount)
-        }
+  for (let offset = 0; offset < totalAudioSamples; offset += 1024) {
+    const frameCount = Math.min(1024, totalAudioSamples - offset)
+    const planar = new Float32Array(frameCount * NUM_CHANNELS)
+    for (let ch = 0; ch < NUM_CHANNELS; ch++) {
+      const src = ch < audioChannels ? channelData[ch] : channelData[0]
+      planar.set(src.subarray(offset, offset + frameCount), ch * frameCount)
+    }
 
-        const audioData = new AudioData({
-          format: 'f32-planar',
-          sampleRate: SAMPLE_RATE,
-          numberOfFrames: frameCount,
-          numberOfChannels: NUM_CHANNELS,
-          data: planar,
-          timestamp: Math.round((offset / SAMPLE_RATE) * 1_000_000),
-        })
-        audioEncoder.encode(audioData)
-        audioData.close()
+    const audioData = new AudioData({
+      format: 'f32-planar',
+      sampleRate: SAMPLE_RATE,
+      numberOfFrames: frameCount,
+      numberOfChannels: NUM_CHANNELS,
+      data: planar,
+      timestamp: Math.round((offset / SAMPLE_RATE) * 1_000_000),
+    })
+    audioEncoder.encode(audioData)
+    audioData.close()
 
-        if (audioEncoder.encodeQueueSize > 10) {
-          await new Promise((r) => setTimeout(r, 0))
-        }
-      }
-    } catch {
-      audioEncoder = null
-      audioConfigured = false
+    if (audioEncoder.encodeQueueSize > 10) {
+      await new Promise((r) => setTimeout(r, 0))
     }
   }
 
@@ -1047,23 +610,65 @@ async function recordImageAsMp4WebCodecs({
     wobbleOffset: Math.random() * Math.PI * 2,
   }))
 
-  // ── Encode video frames (Ultra-fast offline rendering) ──
+  // ── Encode video frames ──
   for (let frameIdx = 0; frameIdx < TOTAL_FRAMES; frameIdx++) {
     const t = frameIdx / FPS
-    const elapsed = frameIdx * (1000 / FPS)
 
-    drawCardVideoFrame({
-      ctx,
-      baseCanvas,
-      t,
-      elapsed,
-      dtFactor,
-      targetWidth,
-      targetHeight,
-      ribbons,
-      stars,
+    // Draw frame (same animation as MediaRecorder path)
+    ctx.clearRect(0, 0, targetWidth, targetHeight)
+    ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
+
+    // Micro-pixel noise
+    ctx.fillStyle = (frameIdx % 2 === 0) ? 'rgba(255,255,255,0.008)' : 'rgba(0,0,0,0.008)'
+    ctx.fillRect(0, 0, 2, 2)
+
+    // Shimmer sheen sweep
+    const sheenPeriod = 2.4
+    const cycleProgress = (t % sheenPeriod) / sheenPeriod
+    const sheenAlpha = Math.sin(cycleProgress * Math.PI) * 0.8
+    const sheenPos = -targetWidth * 0.4 + cycleProgress * (targetWidth * 1.8)
+    ctx.save()
+    ctx.globalCompositeOperation = 'screen'
+    const beamGrad = ctx.createLinearGradient(sheenPos, 0, sheenPos + targetWidth * 0.35, targetHeight)
+    beamGrad.addColorStop(0, 'rgba(255,255,255,0)')
+    beamGrad.addColorStop(0.5, `rgba(255,255,255,${0.75 * sheenAlpha})`)
+    beamGrad.addColorStop(1, 'rgba(255,255,255,0)')
+    ctx.fillStyle = beamGrad
+    ctx.fillRect(0, 0, targetWidth, targetHeight)
+    ctx.restore()
+
+    // Confetti ribbons
+    ctx.save()
+    ribbons.forEach((r) => {
+      r.y += r.vy * dtFactor
+      r.x += (r.vx + Math.sin(t * r.wobbleSpeed + r.wobbleOffset) * 0.8) * dtFactor
+      r.rotX += r.speedX * dtFactor
+      r.rotY += r.speedY * dtFactor
+      r.rotZ += r.speedZ * dtFactor
+      if (r.y > targetHeight + 30) { r.y = -30; r.x = Math.random() * targetWidth }
+      ctx.save()
+      ctx.translate(r.x, r.y)
+      ctx.rotate(r.rotZ)
+      ctx.scale(Math.cos(r.rotY), Math.sin(r.rotX))
+      ctx.fillStyle = r.color
+      ctx.fillRect(-r.w / 2, -r.h / 2, r.w, r.h)
+      ctx.restore()
     })
+    ctx.restore()
 
+    // Diamond stars
+    ctx.save()
+    ctx.globalCompositeOperation = 'screen'
+    stars.forEach((s) => {
+      s.y -= s.speedY * dtFactor
+      if (s.y < -20) { s.y = targetHeight + 20; s.x = Math.random() * targetWidth }
+      const posX = s.x + Math.sin(t * 1.5 + s.wobbleOffset) * 6
+      const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed + s.twinkleOffset)
+      drawDiamondStar(ctx, posX, s.y, s.size, twinkle, t * s.rotSpeed)
+    })
+    ctx.restore()
+
+    // Create and encode video frame
     const videoFrame = new VideoFrame(canvas, {
       timestamp: frameIdx * FRAME_DURATION_US,
       duration: FRAME_DURATION_US,
@@ -1073,12 +678,14 @@ async function recordImageAsMp4WebCodecs({
     })
     videoFrame.close()
 
-    if (onProgress) {
-      onProgress(Math.min(84, Math.round((frameIdx / TOTAL_FRAMES) * 84)))
-    }
+    // Progress (0-84% for encoding phase)
+    if (onProgress) onProgress(Math.min(84, Math.round((frameIdx / TOTAL_FRAMES) * 84)))
 
-    if (videoEncoder.encodeQueueSize > 8) {
-      await new Promise((r) => setTimeout(r, 0))
+    // Backpressure: if encoder queue is too deep, wait
+    if (videoEncoder.encodeQueueSize > 10) {
+      while (videoEncoder.encodeQueueSize > 5) {
+        await new Promise((r) => setTimeout(r, 1))
+      }
     }
 
     if (videoError) throw videoError
@@ -1087,15 +694,10 @@ async function recordImageAsMp4WebCodecs({
   // ── Flush encoders ──
   if (onProgress) onProgress(88)
   await videoEncoder.flush()
+  if (onProgress) onProgress(94)
+  await audioEncoder.flush()
   videoEncoder.close()
-
-  if (audioEncoder) {
-    if (onProgress) onProgress(94)
-    try {
-      await audioEncoder.flush()
-      audioEncoder.close()
-    } catch {}
-  }
+  audioEncoder.close()
 
   if (videoError) throw videoError
 
@@ -1116,7 +718,6 @@ async function recordImageAsMp4WebCodecs({
   link.style.display = 'none'
   document.body.appendChild(link)
   link.click()
-
   setTimeout(() => {
     document.body.removeChild(link)
     URL.revokeObjectURL(blobUrl)
@@ -1127,8 +728,7 @@ async function recordImageAsMp4WebCodecs({
 
 /**
  * Animates and records the card video.
- * Solves the 00:01 / 25fps bug on Android video players by guaranteeing
- * true 10-second MP4 output via WebCodecs + 9:16 aligned canvas.
+ * Solves the 00:01 / 25fps bug on Android video players.
  */
 export async function recordImageAsVideo({
   img,
@@ -1137,7 +737,6 @@ export async function recordImageAsVideo({
   occasionId,
   audioTrack,
   audioUrl,
-  targetAspectRatio = '9:16',
   durationSeconds = 10,
   onProgress,
 }: {
@@ -1151,8 +750,10 @@ export async function recordImageAsVideo({
   durationSeconds?: number
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
-  // ── Try WebCodecs first (native H.264 → MP4, no external downloads needed) ──
-  if (typeof window !== 'undefined' && typeof VideoEncoder !== 'undefined') {
+  // ── Try WebCodecs first (native H.264 → MP4, no downloads needed) ──
+  if (typeof window !== 'undefined' &&
+      typeof VideoEncoder !== 'undefined' &&
+      typeof AudioEncoder !== 'undefined') {
     try {
       const result = await recordImageAsMp4WebCodecs({
         img,
@@ -1161,13 +762,12 @@ export async function recordImageAsVideo({
         occasionId,
         audioTrack,
         audioUrl,
-        targetAspectRatio,
         durationSeconds,
         onProgress,
       })
       if (result) return result
     } catch (e) {
-      console.warn('WebCodecs MP4 recording fallback to MediaRecorder:', extractErrorMessage(e))
+      console.error('WebCodecs MP4 recording failed, falling back to MediaRecorder:', extractErrorMessage(e))
     }
   }
 
@@ -1175,22 +775,23 @@ export async function recordImageAsVideo({
   const DURATION_SEC = Math.max(5, durationSeconds || 10)
   const DURATION_MS = DURATION_SEC * 1000
 
-  // 16-pixel aligned video dimensions
-  const dims = computeVideoDimensions(img, targetAspectRatio)
-  const { targetWidth, targetHeight, isNineSixteen, cardX, cardY, cardW, cardH } = dims
+  // Standard 720p resolution with guaranteed even pixel boundaries
+  const MAX_VIDEO_WIDTH = 720
+  let targetWidth = img.naturalWidth || img.width || 720
+  let targetHeight = img.naturalHeight || img.height || 1280
 
-  // Pre-render static card base ONCE
-  const baseCanvas = createCardVideoBaseCanvas({
-    img,
-    targetWidth,
-    targetHeight,
-    isNineSixteen,
-    cardX,
-    cardY,
-    cardW,
-    cardH,
-    cardType,
-  })
+  if (targetWidth > MAX_VIDEO_WIDTH) {
+    const scale = MAX_VIDEO_WIDTH / targetWidth
+    targetWidth = MAX_VIDEO_WIDTH
+    targetHeight = Math.round(targetHeight * scale)
+  } else if (targetWidth < 480) {
+    const scale = 480 / targetWidth
+    targetWidth = 480
+    targetHeight = Math.round(targetHeight * scale)
+  }
+
+  if (targetWidth % 2 !== 0) targetWidth += 1
+  if (targetHeight % 2 !== 0) targetHeight += 1
 
   const canvas = document.createElement('canvas')
   canvas.width = targetWidth
@@ -1200,12 +801,13 @@ export async function recordImageAsVideo({
   ctx.imageSmoothingEnabled = true
   ctx.imageSmoothingQuality = 'high'
 
+  // Explicit 30 FPS stream for Android hardware encoder
   const captureStreamFn = canvas.captureStream || (canvas as any).mozCaptureStream
   if (!captureStreamFn || typeof MediaRecorder === 'undefined') {
     throw new Error('Video recording not supported on this browser')
   }
 
-  const canvasStream: MediaStream = captureStreamFn.call(canvas, 25)
+  const canvasStream: MediaStream = captureStreamFn.call(canvas, 30)
 
   // ── Audio Track Setup ──
   let audioContext: AudioContext | null = null
@@ -1254,6 +856,7 @@ export async function recordImageAsVideo({
           } catch {}
         }
 
+        // Ambient sub-audible oscillator prevents Android stream stalling if audio fails
         if (!audioLoaded) {
           const osc = audioContext.createOscillator()
           const gain = audioContext.createGain()
@@ -1282,6 +885,8 @@ export async function recordImageAsVideo({
 
   const { mimeType: chosenMime, isRealMp4 } = getBestVideoMimeType()
 
+  // Preload FFmpeg in the background while recording if we'll need WebM→MP4 conversion.
+  // This overlaps the ~30MB core download with the 10-14s recording to save time.
   if (!isRealMp4) {
     getFFmpegInstance().catch(() => {})
   }
@@ -1339,20 +944,24 @@ export async function recordImageAsVideo({
         }
 
         // CRITICAL: Fix WebM duration metadata if not true MP4.
+        // Android Chrome's MediaRecorder produces WebM files WITHOUT a Duration
+        // element in the EBML header. The fix-webm-duration package properly parses
+        // the EBML structure and INSERTS the Duration element when missing — fixing
+        // the "00:01" bug in Android media players, Instagram, and Facebook.
         if (!isRealMp4 && (actualMime.includes('webm') || blob.type.includes('webm'))) {
           try {
-            const fixFn = (fixWebmDuration as any)?.default || fixWebmDuration
-            if (typeof fixFn === 'function') {
-              blob = await fixFn(blob, DURATION_MS, { logger: false })
-            }
+            blob = await fixWebmDuration(blob, DURATION_MS, { logger: false })
           } catch {}
         }
 
+        // Convert WebM → MP4 (H.264/AAC) for maximum compatibility with
+        // Instagram, Facebook, WhatsApp status, and Android Gallery.
+        // Falls back to .webm download if ffmpeg conversion fails.
         let finalBlob = blob
         let ext = isRealMp4 ? 'mp4' : 'webm'
 
         if (!isRealMp4 && blob.type.includes('webm')) {
-          const mp4Blob = await convertWebmToMp4(blob, onProgress, actualMime)
+          const mp4Blob = await convertWebmToMp4(blob, onProgress)
           if (mp4Blob && mp4Blob.size > 0) {
             finalBlob = mp4Blob
             ext = 'mp4'
@@ -1382,6 +991,7 @@ export async function recordImageAsVideo({
     }
   })
 
+  // Flush video chunks every 500ms
   try {
     recorder.start(500)
   } catch {
@@ -1429,18 +1039,76 @@ export async function recordImageAsVideo({
       lastFrameTime = now
       const dtFactor = dt * 60
 
-      drawCardVideoFrame({
-        ctx,
-        baseCanvas,
-        t,
-        elapsed,
-        dtFactor,
-        targetWidth,
-        targetHeight,
-        ribbons,
-        stars,
-      })
+      ctx.clearRect(0, 0, targetWidth, targetHeight)
 
+      // 1. Draw base card
+      ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
+
+      // 2. Micro-pixel noise to force Android GPU hardware encoder to serialize every frame
+      ctx.fillStyle = (Math.floor(elapsed / 100) % 2 === 0) ? 'rgba(255, 255, 255, 0.008)' : 'rgba(0, 0, 0, 0.008)'
+      ctx.fillRect(0, 0, 2, 2)
+
+      // 3. Shimmer sheen sweep
+      const sheenPeriod = 2.4
+      const cycleProgress = (t % sheenPeriod) / sheenPeriod
+      const sheenAlpha = Math.sin(cycleProgress * Math.PI) * 0.8
+      const sheenPos = -targetWidth * 0.4 + cycleProgress * (targetWidth * 1.8)
+
+      ctx.save()
+      ctx.globalCompositeOperation = 'screen'
+      const beamGrad = ctx.createLinearGradient(
+        sheenPos,
+        0,
+        sheenPos + targetWidth * 0.35,
+        targetHeight
+      )
+      beamGrad.addColorStop(0, 'rgba(255, 255, 255, 0)')
+      beamGrad.addColorStop(0.5, `rgba(255, 255, 255, ${0.75 * sheenAlpha})`)
+      beamGrad.addColorStop(1, 'rgba(255, 255, 255, 0)')
+      ctx.fillStyle = beamGrad
+      ctx.fillRect(0, 0, targetWidth, targetHeight)
+      ctx.restore()
+
+      // 4. Confetti & Stars
+      ctx.save()
+      ribbons.forEach((r) => {
+        r.y += r.vy * dtFactor
+        r.x += (r.vx + Math.sin(t * r.wobbleSpeed + r.wobbleOffset) * 0.8) * dtFactor
+        r.rotX += r.speedX * dtFactor
+        r.rotY += r.speedY * dtFactor
+        r.rotZ += r.speedZ * dtFactor
+        if (r.y > targetHeight + 30) {
+          r.y = -30
+          r.x = Math.random() * targetWidth
+        }
+
+        ctx.save()
+        ctx.translate(r.x, r.y)
+        ctx.rotate(r.rotZ)
+        const scaleX = Math.cos(r.rotY)
+        const scaleY = Math.sin(r.rotX)
+        ctx.scale(scaleX, scaleY)
+        ctx.fillStyle = r.color
+        ctx.fillRect(-r.w / 2, -r.h / 2, r.w, r.h)
+        ctx.restore()
+      })
+      ctx.restore()
+
+      ctx.save()
+      ctx.globalCompositeOperation = 'screen'
+      stars.forEach((s) => {
+        s.y -= s.speedY * dtFactor
+        if (s.y < -20) {
+          s.y = targetHeight + 20
+          s.x = Math.random() * targetWidth
+        }
+        const posX = s.x + Math.sin(t * 1.5 + s.wobbleOffset) * 6
+        const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed + s.twinkleOffset)
+        drawDiamondStar(ctx, posX, s.y, s.size, twinkle, t * s.rotSpeed)
+      })
+      ctx.restore()
+
+      // Progress reporting (capped at 84% — 85-100% reserved for MP4 conversion phase)
       const progressPercent = Math.min(84, Math.round((elapsed / DURATION_MS) * 84))
       if (onProgress) onProgress(progressPercent)
 
@@ -1477,7 +1145,7 @@ export async function downloadCanvasAsVideo({
   audioTrack = 'friendship-soft',
   audioUrl,
   occasionId,
-  targetAspectRatio = '9:16',
+  targetAspectRatio,
   durationSeconds = 10,
   onProgress,
 }: {
@@ -1490,30 +1158,25 @@ export async function downloadCanvasAsVideo({
   durationSeconds?: number
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
-  try {
-    const { img, imgUrl } = await canvasToImage(canvas)
+  const dataUrl = canvas.toDataURL('image/png')
+  const img = new Image()
+  img.src = dataUrl
+  await new Promise((resolve, reject) => {
+    img.onload = resolve
+    img.onerror = () => reject(new Error('Canvas image load failed'))
+  })
 
-    try {
-      return await recordImageAsVideo({
-        img,
-        fileName,
-        cardType: 'poetry',
-        occasionId,
-        audioTrack: audioTrack || 'friendship-soft',
-        audioUrl,
-        targetAspectRatio,
-        durationSeconds,
-        onProgress,
-      })
-    } finally {
-      if (imgUrl.startsWith('blob:')) {
-        URL.revokeObjectURL(imgUrl)
-      }
-    }
-  } catch (e: unknown) {
-    console.error('Canvas video export error:', extractErrorMessage(e))
-    return false
-  }
+  return recordImageAsVideo({
+    img,
+    fileName,
+    cardType: 'poetry',
+    occasionId,
+    audioTrack: audioTrack || 'friendship-soft',
+    audioUrl,
+    targetAspectRatio,
+    durationSeconds,
+    onProgress,
+  })
 }
 
 export async function downloadCardVideo({
@@ -1524,7 +1187,7 @@ export async function downloadCardVideo({
   occasionId,
   audioTrack,
   audioUrl,
-  targetAspectRatio = '9:16',
+  targetAspectRatio,
   durationSeconds = 10,
   onProgress,
 }: CardMediaExportOptions): Promise<boolean> {
@@ -1535,27 +1198,25 @@ export async function downloadCardVideo({
       recordCardShare(cardType, cardSlug, 'video')
     }
 
-    // Capture DOM element → canvas → blob URL
-    const capturedCanvas = await captureCardCanvas(element, true)
-    const { img, imgUrl } = await canvasToImage(capturedCanvas)
+    const dataUrl = await captureCardDataUrl(element)
+    const img = new Image()
+    img.src = dataUrl
+    await new Promise((resolve, reject) => {
+      img.onload = resolve
+      img.onerror = () => reject(new Error('Snapshot image failed to load'))
+    })
 
-    try {
-      return await recordImageAsVideo({
-        img,
-        fileName,
-        cardType,
-        occasionId,
-        audioTrack,
-        audioUrl,
-        targetAspectRatio,
-        durationSeconds,
-        onProgress,
-      })
-    } finally {
-      if (imgUrl.startsWith('blob:')) {
-        URL.revokeObjectURL(imgUrl)
-      }
-    }
+    return recordImageAsVideo({
+      img,
+      fileName,
+      cardType,
+      occasionId,
+      audioTrack,
+      audioUrl,
+      targetAspectRatio,
+      durationSeconds,
+      onProgress,
+    })
   } catch (e: unknown) {
     console.error('Video export error:', extractErrorMessage(e))
     return false
