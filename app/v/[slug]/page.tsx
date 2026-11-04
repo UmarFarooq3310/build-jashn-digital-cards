@@ -248,7 +248,7 @@ export default function VisitingCardPublicPage({ params }: { params: Promise<{ s
         cardType: 'vcard',
         cardSlug: card.slug,
         audioTrack: 'friendship-soft',
-        targetAspectRatio: '9:16',
+        targetAspectRatio: 'auto',
         durationSeconds: 10,
         onProgress: (p) => setVideoProgress(p),
       })

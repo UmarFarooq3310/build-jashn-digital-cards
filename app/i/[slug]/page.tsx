@@ -320,7 +320,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         cardSlug: slug,
         occasionId: activeInvitation.typeId,
         audioTrack: activeInvitation.audioTrack,
-        targetAspectRatio: '9:16',
+        targetAspectRatio: 'auto',
         durationSeconds: 10,
         onProgress: (p) => setVideoProgress(p),
       })

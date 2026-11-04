@@ -357,49 +357,6 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
       element.style.maxWidth = `${exportWidth}px`
       element.style.minWidth = `${exportWidth}px`
     }
-
-    // Size the card container to match 9:16 mobile story aspect ratio (430x764)
-    // for video downloads so they fill the 9:16 screen
-    const targetMinH = Math.round(exportWidth * (1280 / 720))
-    if (element.scrollHeight < targetMinH) {
-      savedStyles.push({
-        el: element,
-        maxHeight: element.style.maxHeight,
-        overflow: element.style.overflow,
-        overflowY: element.style.overflowY,
-        height: element.style.height,
-        minHeight: element.style.minHeight,
-        display: element.style.display,
-        flexDirection: element.style.flexDirection,
-        justifyContent: element.style.justifyContent,
-      })
-      element.style.minHeight = `${targetMinH}px`
-      element.style.display = 'flex'
-      element.style.flexDirection = 'column'
-      element.style.justifyContent = 'space-between'
-
-      // Also ensure the inner content child expands and distributes vertically
-      const contentChild = element.querySelector<HTMLElement>(':scope > .relative.z-10, :scope > div.relative')
-      if (contentChild) {
-        savedStyles.push({
-          el: contentChild,
-          maxHeight: contentChild.style.maxHeight,
-          overflow: contentChild.style.overflow,
-          overflowY: contentChild.style.overflowY,
-          height: contentChild.style.height,
-          minHeight: contentChild.style.minHeight,
-          flex: contentChild.style.flex,
-          display: contentChild.style.display,
-          flexDirection: contentChild.style.flexDirection,
-          justifyContent: contentChild.style.justifyContent,
-        })
-        contentChild.style.minHeight = '100%'
-        contentChild.style.flex = '1'
-        contentChild.style.display = 'flex'
-        contentChild.style.flexDirection = 'column'
-        contentChild.style.justifyContent = 'space-between'
-      }
-    }
   }
 
   // Temporarily reset any active 3D transforms (e.g. GSAP hover tilt) during capture
@@ -623,7 +580,7 @@ function drawDiamondStar(
 
 function computeVideoDimensions(
   img: HTMLImageElement,
-  targetAspectRatio: 'auto' | '9:16' | 'original' = '9:16'
+  targetAspectRatio: 'auto' | '9:16' | 'original' = 'auto'
 ): {
   targetWidth: number
   targetHeight: number
@@ -633,68 +590,20 @@ function computeVideoDimensions(
   cardW: number
   cardH: number
 } {
-  const imgW = img.naturalWidth || img.width || 720
-  const imgH = img.naturalHeight || img.height || 1280
-  const imgAspect = imgW / Math.max(1, imgH)
+  const imgW = img.naturalWidth || img.width || 480
+  const imgH = img.naturalHeight || img.height || 850
 
-  // Standard 9:16 mobile story / reel resolution (720x1280):
-  // 720 and 1280 are both exact multiples of 16 (720=16*45, 1280=16*80),
-  // which guarantees 100% compatibility with Android hardware encoders (MediaCodec / WebCodecs).
-  const isNineSixteen = targetAspectRatio === '9:16' || targetAspectRatio === 'auto' || imgAspect <= 0.75
-
-  if (isNineSixteen) {
-    const targetWidth = 720
-    const targetHeight = 1280
-
-    // If card is already vertical / story proportion (imgAspect <= 0.65):
-    // Full bleed edge-to-edge
-    if (imgAspect <= 0.65) {
-      return {
-        targetWidth,
-        targetHeight,
-        isNineSixteen: true,
-        cardX: 0,
-        cardY: 0,
-        cardW: targetWidth,
-        cardH: targetHeight,
-      }
-    }
-
-    // For cards with wider aspect ratio (e.g. business cards / horizontal cards):
-    // Center the card in the 720x1280 frame preserving its natural aspect ratio
-    const maxCardW = 680
-    const maxCardH = 1200
-    const scale = Math.min(maxCardW / imgW, maxCardH / imgH, 1.45)
-    const cardW = Math.round(imgW * scale)
-    const cardH = Math.round(imgH * scale)
-    const cardX = Math.round((targetWidth - cardW) / 2)
-    const cardY = Math.round((targetHeight - cardH) / 2)
-
-    return {
-      targetWidth,
-      targetHeight,
-      isNineSixteen: true,
-      cardX,
-      cardY,
-      cardW,
-      cardH,
-    }
-  }
-
-  // targetAspectRatio === 'original':
-  let targetWidth = imgW
-  let targetHeight = imgH
-
-  if (targetWidth > 720) {
-    const s = 720 / targetWidth
+  // Natural full-height card video export (like WhatsApp video status):
+  // Scale the video canvas directly to the card's natural aspect ratio.
+  // The card fills 100% of the video edge-to-edge from top to bottom
+  // without stretching the text/data and without any empty space!
+  let targetWidth = 480
+  if (imgW >= 640) {
     targetWidth = 720
-    targetHeight = Math.round(targetHeight * s)
-  } else if (targetWidth < 480) {
-    const s = 480 / targetWidth
-    targetWidth = 480
-    targetHeight = Math.round(targetHeight * s)
   }
+  let targetHeight = Math.round(targetWidth * (imgH / imgW))
 
+  // Ensure minimum height
   targetHeight = Math.max(360, targetHeight)
 
   // Enforce 16-pixel boundary alignment for Android MediaCodec hardware encoder
@@ -716,7 +625,6 @@ function createCardVideoBaseCanvas({
   img,
   targetWidth,
   targetHeight,
-  isNineSixteen,
   cardX,
   cardY,
   cardW,
@@ -725,7 +633,7 @@ function createCardVideoBaseCanvas({
   img: HTMLImageElement
   targetWidth: number
   targetHeight: number
-  isNineSixteen: boolean
+  isNineSixteen?: boolean
   cardX: number
   cardY: number
   cardW: number
@@ -741,30 +649,8 @@ function createCardVideoBaseCanvas({
   bCtx.imageSmoothingEnabled = true
   bCtx.imageSmoothingQuality = 'high'
 
-  if (isNineSixteen && (cardW < targetWidth || cardH < targetHeight)) {
-    // 1. Dark ambient background
-    bCtx.fillStyle = '#0a0d16'
-    bCtx.fillRect(0, 0, targetWidth, targetHeight)
-
-    // 2. Blurred ambient background glow from the card itself
-    bCtx.save()
-    bCtx.globalAlpha = 0.35
-    bCtx.drawImage(img, -20, -20, targetWidth + 40, targetHeight + 40)
-    bCtx.restore()
-
-    // 3. Realistic soft drop shadow
-    bCtx.save()
-    bCtx.shadowColor = 'rgba(0, 0, 0, 0.65)'
-    bCtx.shadowBlur = 32
-    bCtx.shadowOffsetY = 16
-    bCtx.drawImage(img, cardX, cardY, cardW, cardH)
-    bCtx.restore()
-  } else if (isNineSixteen) {
-    // Full-bleed edge-to-edge: ONE complete card on full screen — NO card inside card!
-    bCtx.drawImage(img, 0, 0, targetWidth, targetHeight)
-  } else {
-    bCtx.drawImage(img, cardX, cardY, cardW, cardH)
-  }
+  // Draw card full-bleed edge-to-edge to fill the video canvas completely
+  bCtx.drawImage(img, cardX, cardY, cardW, cardH)
 
   return baseCanvas
 }
@@ -874,7 +760,7 @@ async function recordImageAsMp4WebCodecs({
   occasionId,
   audioTrack,
   audioUrl,
-  targetAspectRatio = '9:16',
+  targetAspectRatio = 'auto',
   durationSeconds = 10,
   onProgress,
 }: {
@@ -1219,7 +1105,7 @@ export async function recordImageAsVideo({
   occasionId,
   audioTrack,
   audioUrl,
-  targetAspectRatio = '9:16',
+  targetAspectRatio = 'auto',
   durationSeconds = 10,
   onProgress,
 }: {
@@ -1559,7 +1445,7 @@ export async function downloadCanvasAsVideo({
   audioTrack = 'friendship-soft',
   audioUrl,
   occasionId,
-  targetAspectRatio = '9:16',
+  targetAspectRatio = 'auto',
   durationSeconds = 10,
   onProgress,
 }: {
@@ -1606,7 +1492,7 @@ export async function downloadCardVideo({
   occasionId,
   audioTrack,
   audioUrl,
-  targetAspectRatio = '9:16',
+  targetAspectRatio = 'auto',
   durationSeconds = 10,
   onProgress,
 }: CardMediaExportOptions): Promise<boolean> {
