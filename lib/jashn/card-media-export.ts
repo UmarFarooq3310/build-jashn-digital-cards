@@ -328,45 +328,78 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
     maxWidth?: string
     minWidth?: string
     minHeight?: string
+    flex?: string
+    display?: string
+    flexDirection?: string
+    justifyContent?: string
   }[] = []
 
-  // If capturing on desktop where the card is rendered wide (e.g. > 460px),
+  // If capturing for video on desktop where the card is rendered wide (e.g. > 460px),
   // temporarily constrain to standard mobile card width (430px) during capture
   // so that headings, message fonts, avatars, and decorations render at their
   // maximum scale to cover the full vertical card, exactly like mobile downloads.
-  const isWideScreen = element.offsetWidth > 460
-  const exportWidth = 430
+  if (forVideo) {
+    const isWideScreen = element.offsetWidth > 460
+    const exportWidth = 430
 
-  if (isWideScreen) {
-    savedStyles.push({
-      el: element,
-      maxHeight: element.style.maxHeight,
-      overflow: element.style.overflow,
-      overflowY: element.style.overflowY,
-      height: element.style.height,
-      width: element.style.width,
-      maxWidth: element.style.maxWidth,
-      minWidth: element.style.minWidth,
-    })
-    element.style.width = `${exportWidth}px`
-    element.style.maxWidth = `${exportWidth}px`
-    element.style.minWidth = `${exportWidth}px`
-  }
+    if (isWideScreen) {
+      savedStyles.push({
+        el: element,
+        maxHeight: element.style.maxHeight,
+        overflow: element.style.overflow,
+        overflowY: element.style.overflowY,
+        height: element.style.height,
+        width: element.style.width,
+        maxWidth: element.style.maxWidth,
+        minWidth: element.style.minWidth,
+      })
+      element.style.width = `${exportWidth}px`
+      element.style.maxWidth = `${exportWidth}px`
+      element.style.minWidth = `${exportWidth}px`
+    }
 
-  // Size the card container to match 9:16 mobile story aspect ratio (430x764)
-  // so BOTH Image and Video downloads fill the screen completely from edge-to-edge
-  // and top-to-bottom as ONE full card with exact identical dimensions and zero stretching!
-  const targetMinH = Math.round(exportWidth * (1280 / 720))
-  if (element.scrollHeight < targetMinH) {
-    savedStyles.push({
-      el: element,
-      maxHeight: element.style.maxHeight,
-      overflow: element.style.overflow,
-      overflowY: element.style.overflowY,
-      height: element.style.height,
-      minHeight: element.style.minHeight,
-    })
-    element.style.minHeight = `${targetMinH}px`
+    // Size the card container to match 9:16 mobile story aspect ratio (430x764)
+    // for video downloads so they fill the 9:16 screen
+    const targetMinH = Math.round(exportWidth * (1280 / 720))
+    if (element.scrollHeight < targetMinH) {
+      savedStyles.push({
+        el: element,
+        maxHeight: element.style.maxHeight,
+        overflow: element.style.overflow,
+        overflowY: element.style.overflowY,
+        height: element.style.height,
+        minHeight: element.style.minHeight,
+        display: element.style.display,
+        flexDirection: element.style.flexDirection,
+        justifyContent: element.style.justifyContent,
+      })
+      element.style.minHeight = `${targetMinH}px`
+      element.style.display = 'flex'
+      element.style.flexDirection = 'column'
+      element.style.justifyContent = 'space-between'
+
+      // Also ensure the inner content child expands and distributes vertically
+      const contentChild = element.querySelector<HTMLElement>(':scope > .relative.z-10, :scope > div.relative')
+      if (contentChild) {
+        savedStyles.push({
+          el: contentChild,
+          maxHeight: contentChild.style.maxHeight,
+          overflow: contentChild.style.overflow,
+          overflowY: contentChild.style.overflowY,
+          height: contentChild.style.height,
+          minHeight: contentChild.style.minHeight,
+          flex: contentChild.style.flex,
+          display: contentChild.style.display,
+          flexDirection: contentChild.style.flexDirection,
+          justifyContent: contentChild.style.justifyContent,
+        })
+        contentChild.style.minHeight = '100%'
+        contentChild.style.flex = '1'
+        contentChild.style.display = 'flex'
+        contentChild.style.flexDirection = 'column'
+        contentChild.style.justifyContent = 'space-between'
+      }
+    }
   }
 
   // Temporarily reset any active 3D transforms (e.g. GSAP hover tilt) during capture
@@ -375,6 +408,17 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
   const savedTransformStyle = element.style.transformStyle
   element.style.transform = 'none'
   element.style.transformStyle = 'flat'
+
+  // Also temporarily reset any parent/ancestor scale transforms (e.g. viewport fitting)
+  const ancestorFits: { el: HTMLElement; transform: string }[] = []
+  let parentNode = element.parentElement
+  while (parentNode && parentNode !== document.body) {
+    if (parentNode.classList.contains('card-viewport-fit') || (parentNode.style.transform && parentNode.style.transform !== 'none')) {
+      ancestorFits.push({ el: parentNode, transform: parentNode.style.transform })
+      parentNode.style.transform = 'none'
+    }
+    parentNode = parentNode.parentElement
+  }
 
   const expandElement = (el: HTMLElement) => {
     const computed = window.getComputedStyle(el)
@@ -458,8 +502,13 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
     element.style.transform = savedTransform
     element.style.transformStyle = savedTransformStyle
 
+    // Restore ancestor transforms
+    ancestorFits.forEach(({ el, transform }) => {
+      el.style.transform = transform
+    })
+
     // Restore all temporarily expanded elements
-    savedStyles.forEach(({ el, maxHeight, overflow, overflowY, height, width, maxWidth, minWidth, minHeight }) => {
+    savedStyles.forEach(({ el, maxHeight, overflow, overflowY, height, width, maxWidth, minWidth, minHeight, flex, display, flexDirection, justifyContent }) => {
       el.style.maxHeight = maxHeight
       el.style.overflow = overflow
       el.style.overflowY = overflowY
@@ -468,6 +517,10 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
       if (maxWidth !== undefined) el.style.maxWidth = maxWidth
       if (minWidth !== undefined) el.style.minWidth = minWidth
       if (minHeight !== undefined) el.style.minHeight = minHeight
+      if (flex !== undefined) el.style.flex = flex
+      if (display !== undefined) el.style.display = display
+      if (flexDirection !== undefined) el.style.flexDirection = flexDirection
+      if (justifyContent !== undefined) el.style.justifyContent = justifyContent
     })
     if (originalCssRules) {
       Object.defineProperty(CSSStyleSheet.prototype, 'cssRules', originalCssRules)
@@ -523,20 +576,8 @@ export async function downloadCardPng({
       recordCardShare(cardType, cardSlug, 'image')
     }
 
-    const capturedCanvas = await captureCardCanvas(element)
-
-    // Render to exact 720x1280 resolution so image size is identical to video
-    const finalCanvas = document.createElement('canvas')
-    finalCanvas.width = 720
-    finalCanvas.height = 1280
-    const ctx = finalCanvas.getContext('2d')
-    if (ctx) {
-      ctx.imageSmoothingEnabled = true
-      ctx.imageSmoothingQuality = 'high'
-      ctx.drawImage(capturedCanvas, 0, 0, 720, 1280)
-    }
-
-    const dataUrl = (ctx ? finalCanvas : capturedCanvas).toDataURL('image/png')
+    const capturedCanvas = await captureCardCanvas(element, false)
+    const dataUrl = capturedCanvas.toDataURL('image/png')
     const link = document.createElement('a')
     link.download = `${fileName}.png`
     link.href = dataUrl
@@ -605,15 +646,38 @@ function computeVideoDimensions(
     const targetWidth = 720
     const targetHeight = 1280
 
-    // Full-bleed edge-to-edge 9:16 mobile video (WhatsApp Status / Instagram Story / Reels)
+    // If card is already vertical / story proportion (imgAspect <= 0.65):
+    // Full bleed edge-to-edge
+    if (imgAspect <= 0.65) {
+      return {
+        targetWidth,
+        targetHeight,
+        isNineSixteen: true,
+        cardX: 0,
+        cardY: 0,
+        cardW: targetWidth,
+        cardH: targetHeight,
+      }
+    }
+
+    // For cards with wider aspect ratio (e.g. business cards / horizontal cards):
+    // Center the card in the 720x1280 frame preserving its natural aspect ratio
+    const maxCardW = 680
+    const maxCardH = 1200
+    const scale = Math.min(maxCardW / imgW, maxCardH / imgH, 1.45)
+    const cardW = Math.round(imgW * scale)
+    const cardH = Math.round(imgH * scale)
+    const cardX = Math.round((targetWidth - cardW) / 2)
+    const cardY = Math.round((targetHeight - cardH) / 2)
+
     return {
       targetWidth,
       targetHeight,
       isNineSixteen: true,
-      cardX: 0,
-      cardY: 0,
-      cardW: targetWidth,
-      cardH: targetHeight,
+      cardX,
+      cardY,
+      cardW,
+      cardH,
     }
   }
 
@@ -677,7 +741,25 @@ function createCardVideoBaseCanvas({
   bCtx.imageSmoothingEnabled = true
   bCtx.imageSmoothingQuality = 'high'
 
-  if (isNineSixteen) {
+  if (isNineSixteen && (cardW < targetWidth || cardH < targetHeight)) {
+    // 1. Dark ambient background
+    bCtx.fillStyle = '#0a0d16'
+    bCtx.fillRect(0, 0, targetWidth, targetHeight)
+
+    // 2. Blurred ambient background glow from the card itself
+    bCtx.save()
+    bCtx.globalAlpha = 0.35
+    bCtx.drawImage(img, -20, -20, targetWidth + 40, targetHeight + 40)
+    bCtx.restore()
+
+    // 3. Realistic soft drop shadow
+    bCtx.save()
+    bCtx.shadowColor = 'rgba(0, 0, 0, 0.65)'
+    bCtx.shadowBlur = 32
+    bCtx.shadowOffsetY = 16
+    bCtx.drawImage(img, cardX, cardY, cardW, cardH)
+    bCtx.restore()
+  } else if (isNineSixteen) {
     // Full-bleed edge-to-edge: ONE complete card on full screen — NO card inside card!
     bCtx.drawImage(img, 0, 0, targetWidth, targetHeight)
   } else {

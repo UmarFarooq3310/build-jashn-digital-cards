@@ -576,7 +576,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
 
       <div
         ref={ref}
-        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${typeTheme?.typeClass ?? ''} ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl shadow-2xl transition-all duration-300 ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
+        className={`inv-card-surface jashn-card animate-slow-gradient card-3d-surface card-3d-entrance ${typeTheme?.typeClass ?? ''} ${theme.cssClass} mx-auto w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl shadow-2xl transition-all duration-300 min-h-[520px] sm:min-h-[580px] flex flex-col justify-between ${isLight ? 'light-bg' : 'dark-bg'} ${className ?? ''}`}
         style={{
           transformStyle: 'preserve-3d',
           '--c-bg1': themeVars.bg1,
@@ -648,7 +648,7 @@ export const InvitationCard = forwardRef<HTMLDivElement, {
         <CardAnimLayers typeId={resolvedTypeId} />
 
         {/* ── Card body ──────────────────────────────────────────────── */}
-        <div className="relative z-10 flex flex-col items-center px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-5 gap-2 sm:gap-3 text-center">
+        <div className="relative z-10 flex-1 w-full flex flex-col items-center justify-between px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-5 gap-2 sm:gap-3 text-center">
 
           {/* Top ornament */}
           <TopOrnament hasCouple={!!isCouple} isIslamic={isIslamic} isWedding={isWedding} isGaming={isGaming} />

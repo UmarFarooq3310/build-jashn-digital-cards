@@ -594,7 +594,7 @@ export function ThreeDCardWrapper({
         className={cn(
           "w-full z-10 relative transition-all duration-700",
           isOpen 
-            ? "relative h-auto opacity-100 pointer-events-auto scale-100 card-viewport-fit rounded-none shadow-none" 
+            ? "relative h-auto opacity-100 pointer-events-auto scale-100 rounded-none shadow-none" 
             : "absolute inset-0 h-full opacity-0 pointer-events-none scale-95 overflow-hidden rounded-[2.5rem]"
         )}
         style={{
