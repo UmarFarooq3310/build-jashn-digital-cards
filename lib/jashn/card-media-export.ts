@@ -328,18 +328,16 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
     maxWidth?: string
     minWidth?: string
     minHeight?: string
-    flex?: string
-    display?: string
-    flexDirection?: string
-    justifyContent?: string
   }[] = []
 
-  // Constrain width to standard portrait mobile card width (430px) during capture
+  // If capturing on desktop where the card is rendered wide (e.g. > 460px),
+  // temporarily constrain to standard mobile card width (430px) during capture
   // so that headings, message fonts, avatars, and decorations render at their
-  // optimal mobile portrait scale to cover the full vertical card, exactly like mobile downloads.
+  // maximum scale to cover the full vertical card, exactly like mobile downloads.
+  const isWideScreen = element.offsetWidth > 460
   const exportWidth = 430
-  const isWide = element.offsetWidth > exportWidth
-  if (isWide) {
+
+  if (isWideScreen) {
     savedStyles.push({
       el: element,
       maxHeight: element.style.maxHeight,
@@ -377,17 +375,6 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
   const savedTransformStyle = element.style.transformStyle
   element.style.transform = 'none'
   element.style.transformStyle = 'flat'
-
-  // Also temporarily reset any parent/ancestor scale transforms (e.g. viewport fitting)
-  const ancestorFits: { el: HTMLElement; transform: string }[] = []
-  let parentNode = element.parentElement
-  while (parentNode && parentNode !== document.body) {
-    if (parentNode.classList.contains('card-viewport-fit') || (parentNode.style.transform && parentNode.style.transform !== 'none')) {
-      ancestorFits.push({ el: parentNode, transform: parentNode.style.transform })
-      parentNode.style.transform = 'none'
-    }
-    parentNode = parentNode.parentElement
-  }
 
   const expandElement = (el: HTMLElement) => {
     const computed = window.getComputedStyle(el)
@@ -471,13 +458,8 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
     element.style.transform = savedTransform
     element.style.transformStyle = savedTransformStyle
 
-    // Restore ancestor transforms
-    ancestorFits.forEach(({ el, transform }) => {
-      el.style.transform = transform
-    })
-
     // Restore all temporarily expanded elements
-    savedStyles.forEach(({ el, maxHeight, overflow, overflowY, height, width, maxWidth, minWidth, minHeight, flex, display, flexDirection, justifyContent }) => {
+    savedStyles.forEach(({ el, maxHeight, overflow, overflowY, height, width, maxWidth, minWidth, minHeight }) => {
       el.style.maxHeight = maxHeight
       el.style.overflow = overflow
       el.style.overflowY = overflowY
@@ -486,10 +468,6 @@ async function captureCardCanvas(element: HTMLElement, forVideo = false): Promis
       if (maxWidth !== undefined) el.style.maxWidth = maxWidth
       if (minWidth !== undefined) el.style.minWidth = minWidth
       if (minHeight !== undefined) el.style.minHeight = minHeight
-      if (flex !== undefined) el.style.flex = flex
-      if (display !== undefined) el.style.display = display
-      if (flexDirection !== undefined) el.style.flexDirection = flexDirection
-      if (justifyContent !== undefined) el.style.justifyContent = justifyContent
     })
     if (originalCssRules) {
       Object.defineProperty(CSSStyleSheet.prototype, 'cssRules', originalCssRules)
@@ -545,23 +523,20 @@ export async function downloadCardPng({
       recordCardShare(cardType, cardSlug, 'image')
     }
 
-    const capturedCanvas = await captureCardCanvas(element, true)
+    const capturedCanvas = await captureCardCanvas(element)
 
-    let finalCanvas = capturedCanvas
-    if (cardType === 'invite') {
-      const igCanvas = document.createElement('canvas')
-      igCanvas.width = 720
-      igCanvas.height = 1280
-      const ctx = igCanvas.getContext('2d')
-      if (ctx) {
-        ctx.imageSmoothingEnabled = true
-        ctx.imageSmoothingQuality = 'high'
-        ctx.drawImage(capturedCanvas, 0, 0, 720, 1280)
-        finalCanvas = igCanvas
-      }
+    // Render to exact 720x1280 resolution so image size is identical to video
+    const finalCanvas = document.createElement('canvas')
+    finalCanvas.width = 720
+    finalCanvas.height = 1280
+    const ctx = finalCanvas.getContext('2d')
+    if (ctx) {
+      ctx.imageSmoothingEnabled = true
+      ctx.imageSmoothingQuality = 'high'
+      ctx.drawImage(capturedCanvas, 0, 0, 720, 1280)
     }
 
-    const dataUrl = finalCanvas.toDataURL('image/png')
+    const dataUrl = (ctx ? finalCanvas : capturedCanvas).toDataURL('image/png')
     const link = document.createElement('a')
     link.download = `${fileName}.png`
     link.href = dataUrl
@@ -605,33 +580,9 @@ function drawDiamondStar(
   c.restore()
 }
 
-function drawSafeRoundRect(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number
-) {
-  if (typeof (ctx as any).roundRect === 'function') {
-    ;(ctx as any).roundRect(x, y, w, h, r)
-  } else {
-    ctx.moveTo(x + r, y)
-    ctx.lineTo(x + w - r, y)
-    ctx.quadraticCurveTo(x + w, y, x + w, y + r)
-    ctx.lineTo(x + w, y + h - r)
-    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h)
-    ctx.lineTo(x + r, y + h)
-    ctx.quadraticCurveTo(x, y + h, x, y + h - r)
-    ctx.lineTo(x, y + r)
-    ctx.quadraticCurveTo(x, y, x + r, y)
-  }
-}
-
 function computeVideoDimensions(
   img: HTMLImageElement,
-  targetAspectRatio: 'auto' | '9:16' | 'original' = '9:16',
-  cardType?: string
+  targetAspectRatio: 'auto' | '9:16' | 'original' = '9:16'
 ): {
   targetWidth: number
   targetHeight: number
@@ -645,7 +596,7 @@ function computeVideoDimensions(
   const imgH = img.naturalHeight || img.height || 1280
   const imgAspect = imgW / Math.max(1, imgH)
 
-  // Standard 9:16 mobile story / reel / Instagram resolution (720x1280):
+  // Standard 9:16 mobile story / reel resolution (720x1280):
   // 720 and 1280 are both exact multiples of 16 (720=16*45, 1280=16*80),
   // which guarantees 100% compatibility with Android hardware encoders (MediaCodec / WebCodecs).
   const isNineSixteen = targetAspectRatio === '9:16' || targetAspectRatio === 'auto' || imgAspect <= 0.75
@@ -654,37 +605,15 @@ function computeVideoDimensions(
     const targetWidth = 720
     const targetHeight = 1280
 
-    // Full-bleed edge-to-edge 9:16 mobile video for invitations, poetry stories, or vertical cards:
-    if (cardType === 'invite' || cardType === 'poetry' || imgAspect <= 0.68 || Math.abs(imgAspect - (9 / 16)) < 0.12) {
-      return {
-        targetWidth,
-        targetHeight,
-        isNineSixteen: true,
-        cardX: 0,
-        cardY: 0,
-        cardW: targetWidth,
-        cardH: targetHeight,
-      }
-    }
-
-    // For cards with other aspect ratios (landscape vcards, compact wish cards):
-    // Center the card in the 720x1280 frame with balanced margins, preserving aspect ratio!
-    const maxCardW = 660 // 30px padding on left and right
-    const maxCardH = 1120 // 80px padding top/bottom for header/footer
-    const scale = Math.min(maxCardW / imgW, maxCardH / imgH, 1.45)
-    const cardW = Math.round(imgW * scale)
-    const cardH = Math.round(imgH * scale)
-    const cardX = Math.round((targetWidth - cardW) / 2)
-    const cardY = Math.round((targetHeight - cardH) / 2)
-
+    // Full-bleed edge-to-edge 9:16 mobile video (WhatsApp Status / Instagram Story / Reels)
     return {
       targetWidth,
       targetHeight,
       isNineSixteen: true,
-      cardX,
-      cardY,
-      cardW,
-      cardH,
+      cardX: 0,
+      cardY: 0,
+      cardW: targetWidth,
+      cardH: targetHeight,
     }
   }
 
@@ -728,12 +657,11 @@ function createCardVideoBaseCanvas({
   cardY,
   cardW,
   cardH,
-  cardType,
 }: {
   img: HTMLImageElement
   targetWidth: number
   targetHeight: number
-  isNineSixteen?: boolean
+  isNineSixteen: boolean
   cardX: number
   cardY: number
   cardW: number
@@ -749,111 +677,9 @@ function createCardVideoBaseCanvas({
   bCtx.imageSmoothingEnabled = true
   bCtx.imageSmoothingQuality = 'high'
 
-  if (isNineSixteen && (cardW < targetWidth || cardH < targetHeight)) {
-    // 1. Draw rich thematic backdrop
-    const bgGrad = bCtx.createLinearGradient(0, 0, targetWidth, targetHeight)
-    if (cardType === 'vcard') {
-      bgGrad.addColorStop(0, '#0a0f1d')
-      bgGrad.addColorStop(0.5, '#111827')
-      bgGrad.addColorStop(1, '#030712')
-    } else if (cardType === 'invite') {
-      bgGrad.addColorStop(0, '#19061c')
-      bgGrad.addColorStop(0.5, '#2a0a25')
-      bgGrad.addColorStop(1, '#0a020c')
-    } else {
-      bgGrad.addColorStop(0, '#0a101f')
-      bgGrad.addColorStop(0.5, '#1e1b4b')
-      bgGrad.addColorStop(1, '#050814')
-    }
-    bCtx.fillStyle = bgGrad
-    bCtx.fillRect(0, 0, targetWidth, targetHeight)
-
-    // Center radial glow
-    const glow = bCtx.createRadialGradient(
-      targetWidth / 2,
-      targetHeight / 2,
-      40,
-      targetWidth / 2,
-      targetHeight / 2,
-      targetHeight * 0.6
-    )
-    if (cardType === 'vcard') {
-      glow.addColorStop(0, 'rgba(212, 175, 55, 0.16)')
-      glow.addColorStop(1, 'rgba(0, 0, 0, 0)')
-    } else if (cardType === 'invite') {
-      glow.addColorStop(0, 'rgba(245, 158, 11, 0.18)')
-      glow.addColorStop(1, 'rgba(0, 0, 0, 0)')
-    } else {
-      glow.addColorStop(0, 'rgba(168, 85, 247, 0.16)')
-      glow.addColorStop(1, 'rgba(0, 0, 0, 0)')
-    }
-    bCtx.fillStyle = glow
-    bCtx.fillRect(0, 0, targetWidth, targetHeight)
-
-    // 2. Ambient blurred background preview of the card
-    bCtx.save()
-    bCtx.globalAlpha = 0.22
-    bCtx.drawImage(img, -40, -40, targetWidth + 80, targetHeight + 80)
-    bCtx.restore()
-
-    // 3. Top header pill
-    bCtx.save()
-    const headerY = Math.max(40, Math.min(cardY - 44, 76))
-    const pillText = cardType === 'vcard'
-      ? '💼 DIGITAL BUSINESS CARD'
-      : cardType === 'invite'
-      ? '✨ CORDIAL INVITATION'
-      : '🎉 SPECIAL GREETING'
-    bCtx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-    const textW = bCtx.measureText(pillText).width
-    const pillW = textW + 36
-    const pillH = 34
-    const pillX = (targetWidth - pillW) / 2
-
-    bCtx.fillStyle = 'rgba(15, 23, 42, 0.78)'
-    bCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)'
-    bCtx.lineWidth = 1
-    bCtx.beginPath()
-    drawSafeRoundRect(bCtx, pillX, headerY - 22, pillW, pillH, 17)
-    bCtx.fill()
-    bCtx.stroke()
-
-    bCtx.fillStyle = '#f8fafc'
-    bCtx.textAlign = 'center'
-    bCtx.textBaseline = 'middle'
-    bCtx.fillText(pillText, targetWidth / 2, headerY - 5)
-    bCtx.restore()
-
-    // 4. Draw card with realistic soft drop shadow (pre-rendered ONCE for major speedup!)
-    bCtx.save()
-    bCtx.shadowColor = 'rgba(0, 0, 0, 0.65)'
-    bCtx.shadowBlur = 36
-    bCtx.shadowOffsetY = 18
-    bCtx.drawImage(img, cardX, cardY, cardW, cardH)
-    bCtx.restore()
-
-    // 5. Draw bottom footer pill
-    bCtx.save()
-    const footerY = Math.min(targetHeight - 40, Math.max(cardY + cardH + 44, targetHeight - 74))
-    const footerText = '✦ CARDZY · DIGITAL EXPERIENCES ✦'
-    bCtx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-    const footW = bCtx.measureText(footerText).width + 36
-    const footH = 32
-    const footX = (targetWidth - footW) / 2
-
-    bCtx.fillStyle = 'rgba(15, 23, 42, 0.78)'
-    bCtx.strokeStyle = 'rgba(212, 175, 55, 0.35)'
-    bCtx.lineWidth = 1
-    bCtx.beginPath()
-    drawSafeRoundRect(bCtx, footX, footerY - 20, footW, footH, 16)
-    bCtx.fill()
-    bCtx.stroke()
-
-    bCtx.fillStyle = '#fbbf24'
-    bCtx.textAlign = 'center'
-    bCtx.textBaseline = 'middle'
-    bCtx.fillText(footerText, targetWidth / 2, footerY - 4)
-    bCtx.restore()
+  if (isNineSixteen) {
+    // Full-bleed edge-to-edge: ONE complete card on full screen — NO card inside card!
+    bCtx.drawImage(img, 0, 0, targetWidth, targetHeight)
   } else {
     bCtx.drawImage(img, cardX, cardY, cardW, cardH)
   }
@@ -983,7 +809,7 @@ async function recordImageAsMp4WebCodecs({
   const DURATION_SEC = Math.max(5, durationSeconds || 10)
 
   // ── Compute 16-pixel aligned video dimensions (default 720x1280 9:16) ──
-  const dims = computeVideoDimensions(img, targetAspectRatio, cardType)
+  const dims = computeVideoDimensions(img, targetAspectRatio)
   const { targetWidth, targetHeight, isNineSixteen, cardX, cardY, cardW, cardH } = dims
 
   // Pre-render static card, drop shadow, background glow, and badges ONCE (major speedup!)
@@ -1350,7 +1176,7 @@ export async function recordImageAsVideo({
   const DURATION_MS = DURATION_SEC * 1000
 
   // 16-pixel aligned video dimensions
-  const dims = computeVideoDimensions(img, targetAspectRatio, cardType)
+  const dims = computeVideoDimensions(img, targetAspectRatio)
   const { targetWidth, targetHeight, isNineSixteen, cardX, cardY, cardW, cardH } = dims
 
   // Pre-render static card base ONCE

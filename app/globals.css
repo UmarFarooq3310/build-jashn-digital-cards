@@ -1545,10 +1545,24 @@ font {
 }
 
 /* ── Card Viewport Fit ──
-   Keep natural full height on mobile devices without shrinking to top */
-.card-viewport-fit {
-  transform: none;
-  transform-origin: center center;
+   Scale down the card on small viewports so it never needs internal scroll */
+@media (max-height: 700px) {
+  .card-viewport-fit {
+    transform: scale(0.78);
+    transform-origin: top center;
+  }
+}
+@media (min-height: 701px) and (max-height: 800px) {
+  .card-viewport-fit {
+    transform: scale(0.85);
+    transform-origin: top center;
+  }
+}
+@media (min-height: 801px) and (max-height: 900px) {
+  .card-viewport-fit {
+    transform: scale(0.92);
+    transform-origin: top center;
+  }
 }
 
 /* ── 3D Stage & Velvet Ring Box Animations ── */
