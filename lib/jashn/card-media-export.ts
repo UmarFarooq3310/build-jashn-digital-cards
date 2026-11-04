@@ -280,14 +280,39 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
     })
   }
 
-  const rect = element.getBoundingClientRect()
-  const offsetW = element.offsetWidth || 0
-  const rectW = Math.round(rect.width) || 0
-  const naturalWidth = Math.max(offsetW || rectW, 320)
+  // Always download in mobile format (430px wide portrait) even when using laptop!
+  const savedStyles: {
+    el: HTMLElement
+    width?: string
+    maxWidth?: string
+    minWidth?: string
+  }[] = []
 
-  const offsetH = element.offsetHeight || 0
-  const rectH = Math.round(rect.height) || 0
-  const naturalHeight = Math.max(offsetH || rectH, 280)
+  const isWideOnLaptop = element.offsetWidth > 440
+  const mobileWidth = 430
+
+  if (isWideOnLaptop) {
+    savedStyles.push({
+      el: element,
+      width: element.style.width,
+      maxWidth: element.style.maxWidth,
+      minWidth: element.style.minWidth,
+    })
+    element.style.width = `${mobileWidth}px`
+    element.style.maxWidth = `${mobileWidth}px`
+    element.style.minWidth = `${mobileWidth}px`
+  }
+
+  // Reset 3D tilt transform during capture so snapshot is clean
+  const savedTransform = element.style.transform
+  const savedTransformStyle = element.style.transformStyle
+  element.style.transform = 'none'
+  element.style.transformStyle = 'flat'
+
+  const naturalWidth = isWideOnLaptop
+    ? mobileWidth
+    : Math.max(element.offsetWidth || Math.round(element.getBoundingClientRect().width), 320)
+  const naturalHeight = Math.max(element.scrollHeight || element.offsetHeight || Math.round(element.getBoundingClientRect().height), 280)
 
   const TRANSPARENT_PIXEL =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIABQABNjN9GQAAAAlwSFlzAAAWJQAAFiUBSVIk8AAAAA0lEQVQI12P4z8BQDwAEgAF/QualzQAAAABJRU5ErkJggg=='
@@ -329,6 +354,13 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
   } catch {
     return await toPng(element, { ...toPngOptions, skipFonts: true, pixelRatio: 1 })
   } finally {
+    element.style.transform = savedTransform
+    element.style.transformStyle = savedTransformStyle
+    savedStyles.forEach(({ el, width, maxWidth, minWidth }) => {
+      if (width !== undefined) el.style.width = width
+      if (maxWidth !== undefined) el.style.maxWidth = maxWidth
+      if (minWidth !== undefined) el.style.minWidth = minWidth
+    })
     if (originalCssRules) {
       Object.defineProperty(CSSStyleSheet.prototype, 'cssRules', originalCssRules)
     }
@@ -404,6 +436,7 @@ async function recordImageAsMp4WebCodecs({
   occasionId,
   audioTrack,
   audioUrl,
+  targetAspectRatio = '9:16',
   durationSeconds = 10,
   onProgress,
 }: {
@@ -413,25 +446,31 @@ async function recordImageAsMp4WebCodecs({
   occasionId?: string
   audioTrack?: string
   audioUrl?: string
+  targetAspectRatio?: 'auto' | '9:16' | 'original'
   durationSeconds?: number
   onProgress?: (percent: number) => void
 }): Promise<boolean> {
   const DURATION_SEC = Math.max(5, durationSeconds || 10)
   const DURATION_MS = DURATION_SEC * 1000
 
-  // ── Canvas setup ──
+  // ── Canvas setup: 720x1280 mobile story format for Instagram / WhatsApp ──
+  const isNineSixteen = targetAspectRatio === '9:16' || cardType === 'invite' || cardType === 'poetry' || (img.naturalWidth <= 480 && img.naturalHeight >= 640)
   const MAX_VIDEO_WIDTH = 720
-  let targetWidth = img.naturalWidth || img.width || 720
-  let targetHeight = img.naturalHeight || img.height || 1280
+  let targetWidth = 720
+  let targetHeight = 1280
 
-  if (targetWidth > MAX_VIDEO_WIDTH) {
-    const scale = MAX_VIDEO_WIDTH / targetWidth
-    targetWidth = MAX_VIDEO_WIDTH
-    targetHeight = Math.round(targetHeight * scale)
-  } else if (targetWidth < 480) {
-    const scale = 480 / targetWidth
-    targetWidth = 480
-    targetHeight = Math.round(targetHeight * scale)
+  if (!isNineSixteen) {
+    targetWidth = img.naturalWidth || img.width || 720
+    targetHeight = img.naturalHeight || img.height || 1280
+    if (targetWidth > MAX_VIDEO_WIDTH) {
+      const scale = MAX_VIDEO_WIDTH / targetWidth
+      targetWidth = MAX_VIDEO_WIDTH
+      targetHeight = Math.round(targetHeight * scale)
+    } else if (targetWidth < 480) {
+      const scale = 480 / targetWidth
+      targetWidth = 480
+      targetHeight = Math.round(targetHeight * scale)
+    }
   }
   if (targetWidth % 2 !== 0) targetWidth += 1
   if (targetHeight % 2 !== 0) targetHeight += 1
@@ -737,6 +776,7 @@ export async function recordImageAsVideo({
   occasionId,
   audioTrack,
   audioUrl,
+  targetAspectRatio = '9:16',
   durationSeconds = 10,
   onProgress,
 }: {
@@ -762,6 +802,7 @@ export async function recordImageAsVideo({
         occasionId,
         audioTrack,
         audioUrl,
+        targetAspectRatio,
         durationSeconds,
         onProgress,
       })
@@ -775,19 +816,24 @@ export async function recordImageAsVideo({
   const DURATION_SEC = Math.max(5, durationSeconds || 10)
   const DURATION_MS = DURATION_SEC * 1000
 
-  // Standard 720p resolution with guaranteed even pixel boundaries
+  // Standard 720p resolution with guaranteed even pixel boundaries (720x1280 mobile format)
+  const isNineSixteen = targetAspectRatio === '9:16' || cardType === 'invite' || cardType === 'poetry' || (img.naturalWidth <= 480 && img.naturalHeight >= 640)
   const MAX_VIDEO_WIDTH = 720
-  let targetWidth = img.naturalWidth || img.width || 720
-  let targetHeight = img.naturalHeight || img.height || 1280
+  let targetWidth = 720
+  let targetHeight = 1280
 
-  if (targetWidth > MAX_VIDEO_WIDTH) {
-    const scale = MAX_VIDEO_WIDTH / targetWidth
-    targetWidth = MAX_VIDEO_WIDTH
-    targetHeight = Math.round(targetHeight * scale)
-  } else if (targetWidth < 480) {
-    const scale = 480 / targetWidth
-    targetWidth = 480
-    targetHeight = Math.round(targetHeight * scale)
+  if (!isNineSixteen) {
+    targetWidth = img.naturalWidth || img.width || 720
+    targetHeight = img.naturalHeight || img.height || 1280
+    if (targetWidth > MAX_VIDEO_WIDTH) {
+      const scale = MAX_VIDEO_WIDTH / targetWidth
+      targetWidth = MAX_VIDEO_WIDTH
+      targetHeight = Math.round(targetHeight * scale)
+    } else if (targetWidth < 480) {
+      const scale = 480 / targetWidth
+      targetWidth = 480
+      targetHeight = Math.round(targetHeight * scale)
+    }
   }
 
   if (targetWidth % 2 !== 0) targetWidth += 1
@@ -1145,7 +1191,7 @@ export async function downloadCanvasAsVideo({
   audioTrack = 'friendship-soft',
   audioUrl,
   occasionId,
-  targetAspectRatio,
+  targetAspectRatio = '9:16',
   durationSeconds = 10,
   onProgress,
 }: {
@@ -1187,7 +1233,7 @@ export async function downloadCardVideo({
   occasionId,
   audioTrack,
   audioUrl,
-  targetAspectRatio,
+  targetAspectRatio = '9:16',
   durationSeconds = 10,
   onProgress,
 }: CardMediaExportOptions): Promise<boolean> {

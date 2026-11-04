@@ -397,7 +397,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center lg:h-full lg:max-h-full">
           {/* Interactive Guest Preview Column */}
           <div className="order-2 lg:order-1 lg:col-span-8 xl:col-span-8 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
-            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
+            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10 max-w-[430px] mx-auto">
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Eye className="size-3.5 text-amber-400" /> Interactive Guest View
               </span>
@@ -413,7 +413,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
             </div>
 
             <div className="w-full flex-1 min-h-0 pt-6 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
-              <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
+              <div className="w-full max-w-[430px] mx-auto">
                 <ThreeDCardWrapper
                   eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
                   occasionIdOrCategory={activeInvitation.typeId}
@@ -783,13 +783,13 @@ function InvitationPublicContent({ slug }: { slug: string }) {
 
           {/* Host Preview Notice */}
           {isSender && (
-            <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mt-2 p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs text-center font-medium">
+            <div className="w-full max-w-[430px] mx-auto mt-2 p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs text-center font-medium">
               👀 <strong>Preview Mode:</strong> You are viewing your invitation as the host.
             </div>
           )}
 
           {/* WhatsApp RSVP Button directly under card */}
-          <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mt-3 px-2">
+          <div className="w-full max-w-[430px] mx-auto mt-3 px-2">
             <Button
               onClick={handleRsvp}
               size="lg"
