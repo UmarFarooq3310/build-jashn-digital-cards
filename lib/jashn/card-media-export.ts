@@ -511,26 +511,51 @@ async function recordImageAsMp4WebCodecs({
     throw new Error('WebCodecs not supported')
   }
 
-  const codecCandidates = ['avc1.4D401F', 'avc1.42E01F', 'avc1.64001F']
+  const codecCandidates = [
+    // High Profile (preferred quality)
+    'avc1.640028', // High Level 4.0
+    'avc1.640029', // High Level 4.1
+    'avc1.64002a', // High Level 4.2
+    'avc1.640033', // High Level 5.1
+    'avc1.64001f', // High Level 3.1
+    // Main Profile
+    'avc1.4d0028', // Main Level 4.0
+    'avc1.4d0029', // Main Level 4.1
+    'avc1.4D4028',
+    'avc1.4D4029',
+    'avc1.4D401F',
+    // Constrained Baseline / Baseline (maximum device compatibility)
+    'avc1.42e028', // Constrained Baseline Level 4.0
+    'avc1.42e029', // Constrained Baseline Level 4.1
+    'avc1.42e02a', // Constrained Baseline Level 4.2
+    'avc1.42e01f', // Constrained Baseline Level 3.1
+    'avc1.420028', // Baseline Level 4.0
+    'avc1.420029', // Baseline Level 4.1
+    'avc1.42001f', // Baseline Level 3.1
+  ]
+
   let videoConfig: VideoEncoderConfig | null = null
   for (const codec of codecCandidates) {
-    const cfg: VideoEncoderConfig = {
-      codec,
-      width: targetWidth,
-      height: targetHeight,
-      bitrate: 4_500_000,
-      framerate: 30,
-      avc: { format: 'avc' },
-    }
-    try {
-      const support = await VideoEncoder.isConfigSupported(cfg)
-      if (support.supported) {
-        videoConfig = cfg
-        break
+    for (const avcOpt of [{ avc: { format: 'avc' as const } }, {}]) {
+      const cfg: VideoEncoderConfig = {
+        codec,
+        width: targetWidth,
+        height: targetHeight,
+        bitrate: 4_500_000,
+        framerate: 30,
+        ...avcOpt,
       }
-    } catch {}
+      try {
+        const support = await VideoEncoder.isConfigSupported(cfg)
+        if (support.supported) {
+          videoConfig = cfg
+          break
+        }
+      } catch {}
+    }
+    if (videoConfig) break
   }
-  if (!videoConfig) throw new Error('No H.264 codec supported')
+  if (!videoConfig) throw new Error('No H.264 codec supported for resolution ' + targetWidth + 'x' + targetHeight)
 
   // ── Render audio offline ──
   const SAMPLE_RATE = 44100
@@ -831,7 +856,7 @@ export async function recordImageAsVideo({
       })
       if (result) return result
     } catch (e) {
-      console.error('WebCodecs MP4 recording failed, falling back to MediaRecorder:', extractErrorMessage(e))
+      console.warn('WebCodecs MP4 recording unavailable, falling back to MediaRecorder:', extractErrorMessage(e))
     }
   }
 
