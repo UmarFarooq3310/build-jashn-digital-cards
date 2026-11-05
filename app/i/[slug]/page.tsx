@@ -43,7 +43,9 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   const router = useRouter()
   const { user, invitations, incrementInvitationView, incrementRsvp, deleteInvitation, showToast } = useJashn()
   const cardRef = useRef<HTMLDivElement>(null)
+  const previewBoxRef = useRef<HTMLDivElement>(null)
   const viewIncrementedRef = useRef<string | null>(null)
+  const [desktopScale, setDesktopScale] = useState(1)
 
   const [isMounted, setIsMounted] = useState(false)
   const [activeInvitation, setActiveInvitation] = useState<Invitation | null>(null)
@@ -68,6 +70,44 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (!isSenderMode) return
+
+    const updateScale = () => {
+      if (typeof window === 'undefined' || window.innerWidth < 1024) {
+        setDesktopScale(1)
+        return
+      }
+      if (!previewBoxRef.current || !cardRef.current) return
+
+      const availableHeight = previewBoxRef.current.clientHeight
+      const cardHeight = cardRef.current.offsetHeight || 774
+
+      if (availableHeight > 0 && cardHeight > 0) {
+        // Scale to fit available desktop preview column with zero scrolling
+        const targetScale = Math.min(1, Math.max(0.4, (availableHeight - 16) / cardHeight))
+        setDesktopScale(targetScale)
+      }
+    }
+
+    updateScale()
+    const t = setTimeout(updateScale, 200)
+
+    window.addEventListener('resize', updateScale)
+    let ro: ResizeObserver | null = null
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => updateScale())
+      if (previewBoxRef.current) ro.observe(previewBoxRef.current)
+      if (cardRef.current) ro.observe(cardRef.current)
+    }
+
+    return () => {
+      clearTimeout(t)
+      window.removeEventListener('resize', updateScale)
+      if (ro) ro.disconnect()
+    }
+  }, [isSenderMode, activeInvitation])
 
   useEffect(() => {
     if (!isMounted) return
@@ -412,8 +452,24 @@ function InvitationPublicContent({ slug }: { slug: string }) {
               </Button>
             </div>
 
-            <div className="w-full flex-1 min-h-0 pt-6 pb-6 px-1 flex flex-col items-center justify-start lg:max-h-[calc(100dvh-6.5rem)] overflow-y-auto scrollbar-none">
-              <div className="w-full max-w-[430px] mx-auto">
+            <div
+              ref={previewBoxRef}
+              className="w-full flex-1 min-h-0 py-1 px-1 flex flex-col items-center justify-center lg:overflow-hidden overflow-y-auto scrollbar-none"
+            >
+              <div
+                className="w-full max-w-[430px] mx-auto flex flex-col items-center justify-center transition-transform duration-200"
+                style={
+                  desktopScale < 1
+                    ? {
+                        transform: `scale(${desktopScale})`,
+                        transformOrigin: 'top center',
+                        height: cardRef.current?.offsetHeight
+                          ? `${Math.round(cardRef.current.offsetHeight * desktopScale)}px`
+                          : `${Math.round(774 * desktopScale)}px`,
+                      }
+                    : undefined
+                }
+              >
                 <ThreeDCardWrapper
                   eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
                   occasionIdOrCategory={activeInvitation.typeId}
@@ -428,9 +484,9 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                 </ThreeDCardWrapper>
               </div>
 
-              {/* Attached Event Portraits / Photos */}
+              {/* Attached Event Portraits / Photos (visible on mobile where scrolling is natural) */}
               {(activeInvitation.photoUrl || activeInvitation.photoUrl2) && (
-                <div className="mt-3 w-full max-w-sm p-2 rounded-xl border border-border bg-card/80 backdrop-blur-md shadow-xs text-center">
+                <div className="mt-3 w-full max-w-sm p-2 rounded-xl border border-border bg-card/80 backdrop-blur-md shadow-xs text-center lg:hidden">
                   <div className="flex items-center justify-center gap-1.5 mb-1">
                     <Camera className="size-3 text-amber-500" />
                     <span className="text-[10px] font-bold text-foreground">Attached Event Portraits</span>
