@@ -486,20 +486,23 @@ async function recordImageAsMp4WebCodecs({
   const DURATION_SEC = Math.max(5, durationSeconds || 10)
   const DURATION_MS = DURATION_SEC * 1000
 
-  // ── Canvas setup: Match natural card aspect ratio (fills video edge-to-edge like WhatsApp video status) ──
-  const imgW = img.naturalWidth || img.width || 480
-  const imgH = img.naturalHeight || img.height || 850
+  // ── Canvas setup: Standard 9:16 Instagram Story / Reel format (720x1280) ──
+  const imgW = img.naturalWidth || img.width || 720
+  const imgH = img.naturalHeight || img.height || 1280
+  const isNineSixteen = targetAspectRatio === '9:16' || targetAspectRatio === 'auto' || cardType === 'invite' || cardType === 'wish'
+  let targetWidth = 720
+  let targetHeight = 1280
 
-  let targetWidth = 480
-  if (imgW >= 600) {
-    targetWidth = 720
+  if (!isNineSixteen) {
+    targetWidth = 480
+    if (imgW >= 600) {
+      targetWidth = 720
+    }
+    targetHeight = Math.round(targetWidth * (imgH / imgW))
+    targetHeight = Math.max(360, targetHeight)
+    targetWidth = Math.round(targetWidth / 16) * 16
+    targetHeight = Math.round(targetHeight / 16) * 16
   }
-  let targetHeight = Math.round(targetWidth * (imgH / imgW))
-  targetHeight = Math.max(360, targetHeight)
-
-  // Enforce 16-pixel boundary alignment for Android hardware encoders (MediaCodec / WebCodecs)
-  targetWidth = Math.round(targetWidth / 16) * 16
-  targetHeight = Math.round(targetHeight / 16) * 16
 
   const canvas = document.createElement('canvas')
   canvas.width = targetWidth
@@ -867,20 +870,23 @@ export async function recordImageAsVideo({
   const DURATION_SEC = Math.max(5, durationSeconds || 10)
   const DURATION_MS = DURATION_SEC * 1000
 
-  // ── Canvas setup: Match natural card aspect ratio (fills video edge-to-edge like WhatsApp video status) ──
-  const imgW = img.naturalWidth || img.width || 480
-  const imgH = img.naturalHeight || img.height || 850
+  // ── Canvas setup: Standard 9:16 Instagram Story / Reel format (720x1280) ──
+  const imgW = img.naturalWidth || img.width || 720
+  const imgH = img.naturalHeight || img.height || 1280
+  const isNineSixteen = targetAspectRatio === '9:16' || targetAspectRatio === 'auto' || cardType === 'invite' || cardType === 'wish'
+  let targetWidth = 720
+  let targetHeight = 1280
 
-  let targetWidth = 480
-  if (imgW >= 600) {
-    targetWidth = 720
+  if (!isNineSixteen) {
+    targetWidth = 480
+    if (imgW >= 600) {
+      targetWidth = 720
+    }
+    targetHeight = Math.round(targetWidth * (imgH / imgW))
+    targetHeight = Math.max(360, targetHeight)
+    targetWidth = Math.round(targetWidth / 16) * 16
+    targetHeight = Math.round(targetHeight / 16) * 16
   }
-  let targetHeight = Math.round(targetWidth * (imgH / imgW))
-  targetHeight = Math.max(360, targetHeight)
-
-  // Enforce 16-pixel boundary alignment for Android hardware encoders (MediaCodec / WebCodecs)
-  targetWidth = Math.round(targetWidth / 16) * 16
-  targetHeight = Math.round(targetHeight / 16) * 16
 
   const canvas = document.createElement('canvas')
   canvas.width = targetWidth
