@@ -280,6 +280,22 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
     })
   }
 
+  // Temporarily reset ancestor transforms (e.g. .card-viewport-fit scaling or 3D perspective)
+  const ancestorTransforms: { el: HTMLElement; transform: string; transformOrigin: string }[] = []
+  let curr = element.parentElement
+  while (curr && curr !== document.body) {
+    if (curr.style.transform || (typeof window !== 'undefined' && window.getComputedStyle(curr).transform !== 'none')) {
+      ancestorTransforms.push({
+        el: curr,
+        transform: curr.style.transform,
+        transformOrigin: curr.style.transformOrigin,
+      })
+      curr.style.transform = 'none'
+      curr.style.transformOrigin = 'top center'
+    }
+    curr = curr.parentElement
+  }
+
   // Always download in mobile format (430px wide portrait) even when using laptop!
   const savedStyles: {
     el: HTMLElement
@@ -305,18 +321,6 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
     element.style.minWidth = `${mobileWidth}px`
   }
 
-  // Ensure standard 9:16 vertical card height (430 x 764 -> exactly 9:16 aspect ratio)
-  const targetMinH = Math.round(mobileWidth * (1280 / 720))
-  if (element.scrollHeight < targetMinH || element.offsetHeight < targetMinH) {
-    savedStyles.push({
-      el: element,
-      height: element.style.height,
-      minHeight: element.style.minHeight,
-    })
-    element.style.minHeight = `${targetMinH}px`
-    element.style.height = `${targetMinH}px`
-  }
-
   // Reset 3D tilt transform during capture so snapshot is clean
   const savedTransform = element.style.transform
   const savedTransformStyle = element.style.transformStyle
@@ -328,7 +332,7 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
     : Math.max(element.offsetWidth || Math.round(element.getBoundingClientRect().width), 320)
   const naturalHeight = Math.max(
     element.scrollHeight || element.offsetHeight || Math.round(element.getBoundingClientRect().height),
-    targetMinH
+    360
   )
 
   const TRANSPARENT_PIXEL =
@@ -373,6 +377,10 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
   } finally {
     element.style.transform = savedTransform
     element.style.transformStyle = savedTransformStyle
+    ancestorTransforms.forEach(({ el, transform, transformOrigin }) => {
+      el.style.transform = transform
+      el.style.transformOrigin = transformOrigin
+    })
     savedStyles.forEach(({ el, width, maxWidth, minWidth, height, minHeight }) => {
       if (width !== undefined) el.style.width = width
       if (maxWidth !== undefined) el.style.maxWidth = maxWidth
@@ -401,35 +409,11 @@ export async function downloadCardPng({
 
     const dataUrl = await captureCardDataUrl(element)
 
-    // For invitations, export high-res 720x1280 9:16 image
-    if (cardType === 'invite') {
-      const img = new Image()
-      await new Promise<void>((resolve, reject) => {
-        img.onload = () => resolve()
-        img.onerror = () => reject(new Error('Failed to load captured card image'))
-        img.src = dataUrl
-      })
-
-      const igCanvas = document.createElement('canvas')
-      igCanvas.width = 720
-      igCanvas.height = 1280
-      const ctx = igCanvas.getContext('2d')
-      if (ctx) {
-        ctx.imageSmoothingEnabled = true
-        ctx.imageSmoothingQuality = 'high'
-        ctx.drawImage(img, 0, 0, 720, 1280)
-        const igDataUrl = igCanvas.toDataURL('image/png')
-        const link = document.createElement('a')
-        link.download = `${fileName}.png`
-        link.href = igDataUrl
-        link.click()
-        return true
-      }
-    }
-
     const link = document.createElement('a')
     link.download = `${fileName}.png`
     link.href = dataUrl
+    link.click()
+    return true
     link.click()
     return true
   } catch (e) {
@@ -499,27 +483,20 @@ async function recordImageAsMp4WebCodecs({
   const DURATION_SEC = Math.max(5, durationSeconds || 10)
   const DURATION_MS = DURATION_SEC * 1000
 
-  // ── Canvas setup: 720x1280 mobile story format for Instagram / WhatsApp ──
-  const isNineSixteen = targetAspectRatio === '9:16' || cardType === 'invite' || cardType === 'poetry' || (img.naturalWidth <= 480 && img.naturalHeight >= 640)
-  const MAX_VIDEO_WIDTH = 720
-  let targetWidth = 720
-  let targetHeight = 1280
+  // ── Canvas setup: Match natural card aspect ratio (fills video edge-to-edge like WhatsApp video status) ──
+  const imgW = img.naturalWidth || img.width || 480
+  const imgH = img.naturalHeight || img.height || 850
 
-  if (!isNineSixteen) {
-    targetWidth = img.naturalWidth || img.width || 720
-    targetHeight = img.naturalHeight || img.height || 1280
-    if (targetWidth > MAX_VIDEO_WIDTH) {
-      const scale = MAX_VIDEO_WIDTH / targetWidth
-      targetWidth = MAX_VIDEO_WIDTH
-      targetHeight = Math.round(targetHeight * scale)
-    } else if (targetWidth < 480) {
-      const scale = 480 / targetWidth
-      targetWidth = 480
-      targetHeight = Math.round(targetHeight * scale)
-    }
+  let targetWidth = 480
+  if (imgW >= 600) {
+    targetWidth = 720
   }
-  if (targetWidth % 2 !== 0) targetWidth += 1
-  if (targetHeight % 2 !== 0) targetHeight += 1
+  let targetHeight = Math.round(targetWidth * (imgH / imgW))
+  targetHeight = Math.max(360, targetHeight)
+
+  // Enforce 16-pixel boundary alignment for Android hardware encoders (MediaCodec / WebCodecs)
+  targetWidth = Math.round(targetWidth / 16) * 16
+  targetHeight = Math.round(targetHeight / 16) * 16
 
   const canvas = document.createElement('canvas')
   canvas.width = targetWidth
@@ -862,28 +839,20 @@ export async function recordImageAsVideo({
   const DURATION_SEC = Math.max(5, durationSeconds || 10)
   const DURATION_MS = DURATION_SEC * 1000
 
-  // Standard 720p resolution with guaranteed even pixel boundaries (720x1280 mobile format)
-  const isNineSixteen = targetAspectRatio === '9:16' || cardType === 'invite' || cardType === 'poetry' || (img.naturalWidth <= 480 && img.naturalHeight >= 640)
-  const MAX_VIDEO_WIDTH = 720
-  let targetWidth = 720
-  let targetHeight = 1280
+  // ── Canvas setup: Match natural card aspect ratio (fills video edge-to-edge like WhatsApp video status) ──
+  const imgW = img.naturalWidth || img.width || 480
+  const imgH = img.naturalHeight || img.height || 850
 
-  if (!isNineSixteen) {
-    targetWidth = img.naturalWidth || img.width || 720
-    targetHeight = img.naturalHeight || img.height || 1280
-    if (targetWidth > MAX_VIDEO_WIDTH) {
-      const scale = MAX_VIDEO_WIDTH / targetWidth
-      targetWidth = MAX_VIDEO_WIDTH
-      targetHeight = Math.round(targetHeight * scale)
-    } else if (targetWidth < 480) {
-      const scale = 480 / targetWidth
-      targetWidth = 480
-      targetHeight = Math.round(targetHeight * scale)
-    }
+  let targetWidth = 480
+  if (imgW >= 600) {
+    targetWidth = 720
   }
+  let targetHeight = Math.round(targetWidth * (imgH / imgW))
+  targetHeight = Math.max(360, targetHeight)
 
-  if (targetWidth % 2 !== 0) targetWidth += 1
-  if (targetHeight % 2 !== 0) targetHeight += 1
+  // Enforce 16-pixel boundary alignment for Android hardware encoders (MediaCodec / WebCodecs)
+  targetWidth = Math.round(targetWidth / 16) * 16
+  targetHeight = Math.round(targetHeight / 16) * 16
 
   const canvas = document.createElement('canvas')
   canvas.width = targetWidth
@@ -1279,7 +1248,7 @@ export async function downloadCardVideo({
   occasionId,
   audioTrack,
   audioUrl,
-  targetAspectRatio = '9:16',
+  targetAspectRatio = 'auto',
   durationSeconds = 10,
   onProgress,
 }: CardMediaExportOptions): Promise<boolean> {
