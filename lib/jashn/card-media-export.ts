@@ -330,8 +330,11 @@ async function captureCardDataUrl(element: HTMLElement): Promise<string> {
   const naturalWidth = isWideOnLaptop
     ? mobileWidth
     : Math.max(element.offsetWidth || Math.round(element.getBoundingClientRect().width), 320)
+  // CRITICAL: Use offsetHeight or boundingClientRect height — DO NOT use scrollHeight!
+  // scrollHeight is inflated to 2000px+ by oversized absolute particle/shimmer layers,
+  // which causes an enormous empty background below the card content.
   const naturalHeight = Math.max(
-    element.scrollHeight || element.offsetHeight || Math.round(element.getBoundingClientRect().height),
+    element.offsetHeight || Math.round(element.getBoundingClientRect().height),
     360
   )
 
