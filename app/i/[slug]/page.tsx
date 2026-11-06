@@ -20,7 +20,6 @@ import { CardQrCode } from '@/components/jashn/qr-code'
 import { CardzyLogo } from '@/components/ui/logo'
 import { CardShareModal } from '@/components/dashboard/card-share-modal'
 import { CardGuestbookModal } from '@/components/jashn/card-guestbook-modal'
-import { CardLiveReactions } from '@/components/jashn/card-reactions'
 import { ZoomableImageBadge } from '@/components/ui/image-lightbox'
 import { ViralFooterBadge } from '@/components/viral/viral-footer-badge'
 import { Button } from '@/components/ui/button'
@@ -752,7 +751,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
       <ConfettiRain active={rainActive} />
 
       {/* Receiver Screen Top Minimal Bar */}
-      <header className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl flex items-center justify-between z-20 py-2 px-3.5 rounded-full bg-slate-900/80 backdrop-blur-xl border border-white/10 text-white shadow-xl shrink-0">
+      <header className="w-full max-w-6xl flex items-center justify-between z-20 py-2 px-3.5 rounded-full bg-slate-900/80 backdrop-blur-xl border border-white/10 text-white shadow-xl shrink-0">
         <Link href="/" className="flex items-center gap-2 group">
           <CardzyLogo className="size-7 transition-transform group-hover:scale-105" />
           <span className="text-sm font-extrabold tracking-tight bg-gradient-to-r from-amber-400 via-yellow-200 to-emerald-300 bg-clip-text text-transparent">
@@ -769,9 +768,11 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         </Link>
       </header>
 
-      {/* Receiver Screen Main Centered Card Container */}
-      <main className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl flex-1 flex flex-col items-center justify-center my-auto py-2 z-10">
-        <div className="w-full flex flex-col items-center justify-center">
+      {/* Receiver Screen Main: on desktop = 2-col (card left, actions right), on mobile = single col */}
+      <main className="w-full max-w-6xl flex-1 flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-center gap-6 my-auto py-2 z-10">
+
+        {/* ── Card Column ── */}
+        <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-sm xl:max-w-md flex-shrink-0 flex flex-col items-center justify-center">
           <ThreeDCardWrapper
             eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
             occasionIdOrCategory={activeInvitation.typeId}
@@ -784,67 +785,69 @@ function InvitationPublicContent({ slug }: { slug: string }) {
           >
             <InvitationCard ref={cardRef} data={activeInvitation} watermark={!isCreatorPro} showCountdown={true} />
           </ThreeDCardWrapper>
+        </div>
+
+        {/* ── Actions Column (right side on desktop, below card on mobile) ── */}
+        <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xs xl:max-w-sm flex flex-col gap-3 lg:pt-4">
 
           {/* Host Preview Notice */}
           {isSender && (
-            <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto mt-2 p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs text-center font-medium">
+            <div className="w-full p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs text-center font-medium">
               👀 <strong>Preview Mode:</strong> You are viewing your invitation as the host.
             </div>
           )}
 
-          {/* WhatsApp RSVP Button directly under card */}
-          <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto mt-3 px-2">
-            <Button
-              onClick={handleRsvp}
-              size="lg"
-              disabled={isSender}
-              className={cn(
-                "w-full h-11 font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2",
-                isSender
-                  ? "bg-slate-750 text-slate-400 border border-white/10 cursor-not-allowed opacity-80"
-                  : "bg-[#25D366] text-white hover:bg-[#1eb955] hover:scale-[1.02] active:scale-98 cursor-pointer"
-              )}
-            >
-              {isSender ? (
-                <>
-                  <MessageCircle className="size-4 shrink-0 opacity-50" />
-                  <span>RSVP via WhatsApp (Host Preview)</span>
-                </>
-              ) : rsvped ? (
-                <>
-                  <CheckCircle2 className="size-4 shrink-0" />
-                  <span>RSVP Confirmed!</span>
-                </>
-              ) : (
-                <>
-                  <MessageCircle className="size-4 shrink-0" />
-                  <span>RSVP via WhatsApp</span>
-                </>
-              )}
-            </Button>
+          {/* Event Title & Summary card */}
+          <div className="hidden lg:block w-full p-4 rounded-2xl bg-slate-900/80 border border-white/10 backdrop-blur-md text-white">
+            <h2 className="text-base font-black leading-tight text-amber-300 mb-0.5">
+              {activeInvitation.title || (activeInvitation.groom ? `${activeInvitation.groom} & ${activeInvitation.bride}` : 'You&apos;re Invited!')}
+            </h2>
+            {activeInvitation.date && (
+              <p className="text-xs text-slate-300 mt-1">📅 {activeInvitation.date}</p>
+            )}
+            {activeInvitation.venue && (
+              <p className="text-xs text-slate-300 mt-0.5">📍 {activeInvitation.venue}{activeInvitation.city ? `, ${activeInvitation.city}` : ''}</p>
+            )}
+            {activeInvitation.time && (
+              <p className="text-xs text-slate-300 mt-0.5">🕐 {activeInvitation.time}</p>
+            )}
           </div>
 
-          {/* Interactive Live Emoji Reactions Dock directly under card */}
-          <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mt-2.5 flex flex-col items-center gap-1.5 px-2">
-            <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Heart className="size-3.5 text-rose-400" /> Send Live Reaction
-            </span>
-            <div className="w-full flex justify-center">
-              <CardLiveReactions
-                cardSlug={slug}
-                cardType="invite"
-                isUrdu={lang === 'ur' || lang === 'ar'}
-                theme="dark"
-                disabled={isSender}
-              />
-            </div>
-          </div>
+          {/* WhatsApp RSVP Button */}
+          <Button
+            onClick={handleRsvp}
+            size="lg"
+            disabled={isSender}
+            className={cn(
+              "w-full h-11 font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2",
+              isSender
+                ? "bg-slate-750 text-slate-400 border border-white/10 cursor-not-allowed opacity-80"
+                : "bg-[#25D366] text-white hover:bg-[#1eb955] hover:scale-[1.02] active:scale-98 cursor-pointer"
+            )}
+          >
+            {isSender ? (
+              <>
+                <MessageCircle className="size-4 shrink-0 opacity-50" />
+                <span>RSVP via WhatsApp (Host Preview)</span>
+              </>
+            ) : rsvped ? (
+              <>
+                <CheckCircle2 className="size-4 shrink-0" />
+                <span>RSVP Confirmed!</span>
+              </>
+            ) : (
+              <>
+                <MessageCircle className="size-4 shrink-0" />
+                <span>RSVP via WhatsApp</span>
+              </>
+            )}
+          </Button>
 
-          {/* Wishes Wall & Share Action Buttons directly under card */}
-          <div className="grid grid-cols-2 gap-2.5 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mt-2.5 px-2">
+          {/* Wishes Wall & Share Buttons */}
+          <div className="grid grid-cols-2 gap-2.5 w-full">
             <button
               onClick={() => setShowGuestbookModal(true)}
-              className="flex items-center justify-center gap-2 py-2 px-3 rounded-2xl bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 hover:from-purple-600 hover:to-indigo-600 text-white font-extrabold text-xs shadow-lg border border-purple-400/40 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 hover:from-purple-600 hover:to-indigo-600 text-white font-extrabold text-xs shadow-lg border border-purple-400/40 hover:scale-105 active:scale-95 transition-all cursor-pointer"
             >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
@@ -855,21 +858,33 @@ function InvitationPublicContent({ slug }: { slug: string }) {
 
             <button
               onClick={() => setShowShareModal(true)}
-              className="flex items-center justify-center gap-2 py-2 px-3 rounded-2xl border border-white/20 bg-slate-800 hover:bg-slate-700 text-white font-extrabold text-xs shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl border border-white/20 bg-slate-800 hover:bg-slate-700 text-white font-extrabold text-xs shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
             >
               <Share2 className="size-3.5 text-amber-400" />
               <span>Share</span>
             </button>
           </div>
+
+          {/* Make your own CTA (desktop only) */}
+          <div className="hidden lg:flex flex-col items-center gap-2 w-full p-3.5 rounded-2xl bg-gradient-to-br from-amber-500/10 via-emerald-500/5 to-slate-900/80 border border-amber-500/20 backdrop-blur-md text-center">
+            <p className="text-[11px] text-slate-400 leading-tight">Create beautiful animated invitations just like this one — free!</p>
+            <Link
+              href="/create-invitation"
+              className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-500 to-emerald-500 hover:from-amber-400 hover:to-emerald-400 text-white px-4 py-2 text-xs font-extrabold shadow-md transition-all hover:scale-105"
+            >
+              <Sparkles className="size-3 text-amber-100 animate-pulse" />
+              Create My Invitation
+            </Link>
+          </div>
         </div>
       </main>
 
       {/* Receiver Screen Viral Footer Badge */}
-      <footer className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl flex flex-col items-center justify-center z-20 pt-1 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] shrink-0">
+      <footer className="w-full max-w-6xl flex flex-col items-center justify-center z-20 pt-1 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] shrink-0">
         <ViralFooterBadge variant="invitation" />
       </footer>
 
-      {/* Floating Action Pill for Wishes Wall & Share - Visible on mobile only, hidden on desktop to avoid duplicate share button */}
+      {/* Floating Action Pill for Wishes Wall & Share - Visible on mobile only */}
       <div className="lg:hidden fixed bottom-4 right-4 z-40 flex items-center gap-2">
         <button
           onClick={() => setShowShareModal(true)}
