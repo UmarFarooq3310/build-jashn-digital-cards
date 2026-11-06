@@ -42,7 +42,9 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   const router = useRouter()
   const { user, invitations, incrementInvitationView, incrementRsvp, deleteInvitation, showToast } = useJashn()
   const cardRef = useRef<HTMLDivElement>(null)
+  const receiverCardColRef = useRef<HTMLDivElement>(null)
   const viewIncrementedRef = useRef<string | null>(null)
+  const [receiverCardScale, setReceiverCardScale] = useState(1)
 
   const [isMounted, setIsMounted] = useState(false)
   const [activeInvitation, setActiveInvitation] = useState<Invitation | null>(null)
@@ -67,6 +69,37 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  // Auto-scale card on desktop receiver screen so the full card is visible without scrolling
+  useEffect(() => {
+    const updateScale = () => {
+      if (typeof window === 'undefined' || window.innerWidth < 1024) {
+        setReceiverCardScale(1)
+        return
+      }
+      if (!receiverCardColRef.current || !cardRef.current) return
+      const availH = receiverCardColRef.current.clientHeight
+      const cardH = cardRef.current.offsetHeight || 700
+      if (availH > 0 && cardH > 0) {
+        const s = Math.min(1, Math.max(0.4, (availH - 16) / cardH))
+        setReceiverCardScale(s)
+      }
+    }
+    updateScale()
+    const t = setTimeout(updateScale, 300)
+    window.addEventListener('resize', updateScale)
+    let ro: ResizeObserver | null = null
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => updateScale())
+      if (receiverCardColRef.current) ro.observe(receiverCardColRef.current)
+      if (cardRef.current) ro.observe(cardRef.current)
+    }
+    return () => {
+      clearTimeout(t)
+      window.removeEventListener('resize', updateScale)
+      if (ro) ro.disconnect()
+    }
+  }, [activeInvitation])
 
   useEffect(() => {
     if (!isMounted) return
@@ -746,7 +779,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
 
   // ── 2. RECEIVER SCREEN (Clean Full-Screen Viewport + Cardzy Make Your Own) ──
   return (
-    <div className="flex min-h-[100dvh] flex-col justify-between items-center relative overflow-y-auto px-3 py-3 w-full select-none">
+    <div className="flex min-h-[100dvh] lg:h-[100dvh] lg:max-h-[100dvh] flex-col justify-between items-center relative overflow-y-auto lg:overflow-hidden px-3 py-3 w-full select-none">
       {/* Celebration Effects Rain */}
       <ConfettiRain active={rainActive} />
 
@@ -768,27 +801,45 @@ function InvitationPublicContent({ slug }: { slug: string }) {
         </Link>
       </header>
 
-      {/* Receiver Screen Main: on desktop = 2-col (card left, actions right), on mobile = single col */}
-      <main className="w-full max-w-6xl flex-1 flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-center gap-6 my-auto py-2 z-10">
+      {/* Receiver Screen Main: on desktop = 2-col full-height no-scroll, on mobile = single col */}
+      <main className="w-full max-w-6xl flex-1 min-h-0 flex flex-col lg:flex-row items-center lg:items-stretch justify-center gap-6 py-2 z-10 lg:overflow-hidden">
 
-        {/* ── Card Column ── */}
-        <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-sm xl:max-w-md flex-shrink-0 flex flex-col items-center justify-center">
-          <ThreeDCardWrapper
-            eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
-            occasionIdOrCategory={activeInvitation.typeId}
-            audioTrack={activeInvitation.audioTrack}
-            isIslamic={isIslamic}
-            autoOpen={true}
-            onOpened={() => {
-              setRainActive(true)
-            }}
+        {/* ── Card Column (left, large, auto-scaled to fit height) ── */}
+        <div
+          ref={receiverCardColRef}
+          className="w-full lg:flex-1 flex flex-col items-center justify-center min-h-0 lg:overflow-hidden"
+        >
+          <div
+            className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-none mx-auto transition-transform duration-200"
+            style={
+              receiverCardScale < 1
+                ? {
+                    transform: `scale(${receiverCardScale})`,
+                    transformOrigin: 'top center',
+                    height: cardRef.current?.offsetHeight
+                      ? `${Math.round(cardRef.current.offsetHeight * receiverCardScale)}px`
+                      : `${Math.round(700 * receiverCardScale)}px`,
+                  }
+                : undefined
+            }
           >
-            <InvitationCard ref={cardRef} data={activeInvitation} watermark={!isCreatorPro} showCountdown={true} />
-          </ThreeDCardWrapper>
+            <ThreeDCardWrapper
+              eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
+              occasionIdOrCategory={activeInvitation.typeId}
+              audioTrack={activeInvitation.audioTrack}
+              isIslamic={isIslamic}
+              autoOpen={true}
+              onOpened={() => {
+                setRainActive(true)
+              }}
+            >
+              <InvitationCard ref={cardRef} data={activeInvitation} watermark={!isCreatorPro} showCountdown={true} />
+            </ThreeDCardWrapper>
+          </div>
         </div>
 
-        {/* ── Actions Column (right side on desktop, below card on mobile) ── */}
-        <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xs xl:max-w-sm flex flex-col gap-3 lg:pt-4">
+        {/* ── Actions Column (right on desktop, below card on mobile) ── */}
+        <div className="w-full max-w-sm lg:w-72 xl:w-80 flex-shrink-0 flex flex-col justify-center gap-3">
 
           {/* Host Preview Notice */}
           {isSender && (
@@ -797,10 +848,10 @@ function InvitationPublicContent({ slug }: { slug: string }) {
             </div>
           )}
 
-          {/* Event Title & Summary card */}
+          {/* Event Title & Summary card (desktop only) */}
           <div className="hidden lg:block w-full p-4 rounded-2xl bg-slate-900/80 border border-white/10 backdrop-blur-md text-white">
             <h2 className="text-base font-black leading-tight text-amber-300 mb-0.5">
-              {activeInvitation.title || (activeInvitation.groom ? `${activeInvitation.groom} & ${activeInvitation.bride}` : 'You&apos;re Invited!')}
+              {activeInvitation.title || (activeInvitation.groom ? `${activeInvitation.groom} & ${activeInvitation.bride}` : "You're Invited!")}
             </h2>
             {activeInvitation.date && (
               <p className="text-xs text-slate-300 mt-1">📅 {activeInvitation.date}</p>
