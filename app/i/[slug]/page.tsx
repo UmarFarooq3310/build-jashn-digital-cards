@@ -43,9 +43,7 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   const router = useRouter()
   const { user, invitations, incrementInvitationView, incrementRsvp, deleteInvitation, showToast } = useJashn()
   const cardRef = useRef<HTMLDivElement>(null)
-  const previewBoxRef = useRef<HTMLDivElement>(null)
   const viewIncrementedRef = useRef<string | null>(null)
-  const [desktopScale, setDesktopScale] = useState(1)
 
   const [isMounted, setIsMounted] = useState(false)
   const [activeInvitation, setActiveInvitation] = useState<Invitation | null>(null)
@@ -70,44 +68,6 @@ function InvitationPublicContent({ slug }: { slug: string }) {
   useEffect(() => {
     setIsMounted(true)
   }, [])
-
-  useEffect(() => {
-    if (!isSenderMode) return
-
-    const updateScale = () => {
-      if (typeof window === 'undefined' || window.innerWidth < 1024) {
-        setDesktopScale(1)
-        return
-      }
-      if (!previewBoxRef.current || !cardRef.current) return
-
-      const availableHeight = previewBoxRef.current.clientHeight
-      const cardHeight = cardRef.current.offsetHeight || 774
-
-      if (availableHeight > 0 && cardHeight > 0) {
-        // Scale to fit available desktop preview column with zero scrolling
-        const targetScale = Math.min(1, Math.max(0.4, (availableHeight - 16) / cardHeight))
-        setDesktopScale(targetScale)
-      }
-    }
-
-    updateScale()
-    const t = setTimeout(updateScale, 200)
-
-    window.addEventListener('resize', updateScale)
-    let ro: ResizeObserver | null = null
-    if (typeof ResizeObserver !== 'undefined') {
-      ro = new ResizeObserver(() => updateScale())
-      if (previewBoxRef.current) ro.observe(previewBoxRef.current)
-      if (cardRef.current) ro.observe(cardRef.current)
-    }
-
-    return () => {
-      clearTimeout(t)
-      window.removeEventListener('resize', updateScale)
-      if (ro) ro.disconnect()
-    }
-  }, [isSenderMode, activeInvitation])
 
   useEffect(() => {
     if (!isMounted) return
@@ -430,14 +390,14 @@ function InvitationPublicContent({ slug }: { slug: string }) {
     const eventName = activeInvitation.title || (activeInvitation.groom ? `${activeInvitation.groom} & ${activeInvitation.bride}` : 'Event Invitation')
 
     return (
-      <div className="pt-2 sm:pt-3 pb-24 sm:pb-8 lg:py-2 px-3 sm:px-5 max-w-7xl mx-auto lg:h-[calc(100dvh-4.25rem)] lg:max-h-[calc(100dvh-4.25rem)] flex flex-col justify-center">
+      <div className="pt-2 sm:pt-3 pb-24 sm:pb-8 lg:py-2 px-3 sm:px-5 max-w-7xl mx-auto lg:h-[calc(100dvh-4.25rem)] flex flex-col justify-start">
         <ConfettiRain active={rainActive} />
 
         {/* ── Main Responsive Grid: Invitation Preview (Left on Desktop, Below on Mobile) + Delivery Hub (Top on Mobile, Right on Desktop) ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center lg:h-full lg:max-h-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start lg:h-full lg:max-h-full">
           {/* Interactive Guest Preview Column */}
           <div className="order-2 lg:order-1 lg:col-span-8 xl:col-span-8 flex flex-col items-center text-center lg:h-full lg:max-h-full lg:justify-start lg:min-h-0">
-            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-1.5 z-10 max-w-[430px] mx-auto">
+            <div className="w-full shrink-0 flex items-center justify-between px-2 mb-2 z-10 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto">
               <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Eye className="size-3.5 text-amber-400" /> Interactive Guest View
               </span>
@@ -453,22 +413,10 @@ function InvitationPublicContent({ slug }: { slug: string }) {
             </div>
 
             <div
-              ref={previewBoxRef}
-              className="w-full flex-1 min-h-0 py-1 px-1 flex flex-col items-center justify-center lg:overflow-hidden overflow-y-auto scrollbar-none"
+              className="w-full flex-1 min-h-0 py-2 px-1 flex flex-col items-center justify-start overflow-y-auto scrollbar-none"
             >
               <div
-                className="w-full max-w-[430px] mx-auto flex flex-col items-center justify-center transition-transform duration-200"
-                style={
-                  desktopScale < 1
-                    ? {
-                        transform: `scale(${desktopScale})`,
-                        transformOrigin: 'top center',
-                        height: cardRef.current?.offsetHeight
-                          ? `${Math.round(cardRef.current.offsetHeight * desktopScale)}px`
-                          : `${Math.round(774 * desktopScale)}px`,
-                      }
-                    : undefined
-                }
+                className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto flex flex-col items-center justify-start"
               >
                 <ThreeDCardWrapper
                   eventTitle={activeInvitation.title || `${activeInvitation.groom} & ${activeInvitation.bride}`}
@@ -484,9 +432,9 @@ function InvitationPublicContent({ slug }: { slug: string }) {
                 </ThreeDCardWrapper>
               </div>
 
-              {/* Attached Event Portraits / Photos (visible on mobile where scrolling is natural) */}
+              {/* Attached Event Portraits / Photos */}
               {(activeInvitation.photoUrl || activeInvitation.photoUrl2) && (
-                <div className="mt-3 w-full max-w-sm p-2 rounded-xl border border-border bg-card/80 backdrop-blur-md shadow-xs text-center lg:hidden">
+                <div className="mt-3 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto p-2 rounded-xl border border-border bg-card/80 backdrop-blur-md shadow-xs text-center">
                   <div className="flex items-center justify-center gap-1.5 mb-1">
                     <Camera className="size-3 text-amber-500" />
                     <span className="text-[10px] font-bold text-foreground">Attached Event Portraits</span>
@@ -839,13 +787,13 @@ function InvitationPublicContent({ slug }: { slug: string }) {
 
           {/* Host Preview Notice */}
           {isSender && (
-            <div className="w-full max-w-[430px] mx-auto mt-2 p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs text-center font-medium">
+            <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto mt-2 p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs text-center font-medium">
               👀 <strong>Preview Mode:</strong> You are viewing your invitation as the host.
             </div>
           )}
 
           {/* WhatsApp RSVP Button directly under card */}
-          <div className="w-full max-w-[430px] mx-auto mt-3 px-2">
+          <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto mt-3 px-2">
             <Button
               onClick={handleRsvp}
               size="lg"
