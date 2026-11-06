@@ -47,6 +47,7 @@ const invitationProductJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: 'Cardzy Digital Wedding & Event Invitation Suite with WhatsApp RSVP',
+  sku: 'cardzy-invitation-suite',
   description:
     'Design luxury animated wedding invitations with authentic Urdu wording, venue schedules, background music, and real-time WhatsApp RSVP tracking.',
   image: 'https://cardzy.online/og-image.jpg',

@@ -46,6 +46,7 @@ const wishCardProductJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: 'Cardzy 3D Animated Wish Card Maker',
+  sku: 'cardzy-wish-maker',
   description:
     'Interactive 3D animated greeting cards with personalized photos, authentic Urdu messages, festive music, and instant WhatsApp sharing.',
   image: 'https://cardzy.online/og-image.jpg',

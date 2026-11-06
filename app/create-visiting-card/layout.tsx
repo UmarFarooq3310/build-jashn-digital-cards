@@ -45,6 +45,7 @@ const vcardProductJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: 'Cardzy Smart Digital Business Card & vCard Maker',
+  sku: 'cardzy-vcard-maker',
   description:
     'Generate contactless digital visiting cards with QR code generation, 1-tap .vcf smartphone contact download, and WhatsApp instant exchange.',
   image: 'https://cardzy.online/og-image.jpg',

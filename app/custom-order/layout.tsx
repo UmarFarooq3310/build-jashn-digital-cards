@@ -42,6 +42,7 @@ const customOrderProductJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: 'Cardzy Bespoke Custom Card & Invitation Design Service',
+  sku: 'cardzy-custom-bespoke',
   description:
     'Dedicated concierge design service for bespoke 3D animated cards, luxury wedding invitations, and corporate e-invites crafted by Cardzy artists.',
   image: 'https://cardzy.online/og-image.jpg',

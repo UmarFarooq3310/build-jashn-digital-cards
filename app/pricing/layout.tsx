@@ -43,6 +43,7 @@ const pricingProductJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: 'Cardzy Pro Digital Celebration & RSVP Suite',
+  sku: 'cardzy-pro-suite',
   description:
     'Unlimited 4K animated wedding invitations, live WhatsApp RSVP management, smart contactless digital visiting cards (vCards), and lifetime storage.',
   image: 'https://cardzy.online/og-image.jpg',
